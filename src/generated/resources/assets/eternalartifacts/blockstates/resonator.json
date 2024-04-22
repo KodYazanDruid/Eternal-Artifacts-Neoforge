@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "eternalartifacts:block/resonator",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "eternalartifacts:block/resonator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/resonator"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/resonator",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "eternalartifacts:block/resonator",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/resonator",
+      "y": 270
+    }
+  }
+}

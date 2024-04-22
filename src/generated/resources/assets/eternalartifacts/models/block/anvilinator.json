@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "eternalartifacts:block/anvilinator_down",
+    "east": "eternalartifacts:block/anvilinator_side",
+    "north": "eternalartifacts:block/anvilinator_front",
+    "particle": "eternalartifacts:block/anvilinator_side",
+    "south": "eternalartifacts:block/anvilinator_side",
+    "up": "eternalartifacts:block/anvilinator_up",
+    "west": "eternalartifacts:block/anvilinator_side"
+  }
+}

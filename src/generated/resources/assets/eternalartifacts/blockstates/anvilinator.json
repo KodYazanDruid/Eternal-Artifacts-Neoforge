@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/anvilinator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/anvilinator"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/anvilinator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/anvilinator",
+      "y": 270
+    }
+  }
+}

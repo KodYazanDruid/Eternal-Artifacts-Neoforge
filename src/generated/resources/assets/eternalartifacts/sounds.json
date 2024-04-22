@@ -1,0 +1,8 @@
+{
+  "holy_dagger_activate": {
+    "sounds": [
+      "eternalartifacts:holy_dagger_activate"
+    ],
+    "subtitle": "eternalartifacts.subtitle.holy_dagger_activate"
+  }
+}

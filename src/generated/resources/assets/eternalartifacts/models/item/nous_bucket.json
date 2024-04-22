@@ -1,0 +1,6 @@
+{
+  "parent": "neoforge:item/bucket_drip",
+  "apply_tint": true,
+  "fluid": "eternalartifacts:nous",
+  "loader": "neoforge:fluid_container"
+}

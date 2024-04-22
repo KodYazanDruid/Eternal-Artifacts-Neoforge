@@ -1,0 +1,5 @@
+// 1.20.4	2024-04-20T13:45:04.2455637	vanilla/Tags for minecraft:block mod id eternalartifacts
+570859f6f31298505c124817b821bfa6593366a4 data/minecraft/tags/blocks/bamboo_plantable_on.json
+9d05818a90909f169c7a4c55864d328715e669d5 data/minecraft/tags/blocks/mineable/pickaxe.json
+5f026f3bf02bafd91aa9332a1f4a6dcc12f7d2a8 data/minecraft/tags/blocks/needs_iron_tool.json
+015113bee6a9b060dc2c0ff140782fac354f34e1 data/minecraft/tags/blocks/needs_stone_tool.json

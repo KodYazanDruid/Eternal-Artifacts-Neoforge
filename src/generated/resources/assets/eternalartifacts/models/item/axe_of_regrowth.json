@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "eternalartifacts:item/axe_of_regrowth"
+  }
+}
