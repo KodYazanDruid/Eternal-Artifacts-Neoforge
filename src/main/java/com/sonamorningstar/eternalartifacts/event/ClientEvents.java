@@ -9,7 +9,6 @@ import com.sonamorningstar.eternalartifacts.content.entity.client.DemonEyeModel;
 import com.sonamorningstar.eternalartifacts.content.entity.client.DemonEyeRenderer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
-import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
