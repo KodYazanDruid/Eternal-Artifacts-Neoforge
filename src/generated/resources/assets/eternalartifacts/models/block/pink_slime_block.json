@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slime_block",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "eternalartifacts:block/pink_slime_block",
+    "texture": "eternalartifacts:block/pink_slime_block"
+  }
+}
