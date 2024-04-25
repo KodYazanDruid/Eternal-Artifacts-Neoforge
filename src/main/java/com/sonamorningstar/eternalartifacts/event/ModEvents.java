@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -19,11 +20,14 @@ public class ModEvents {
     public static void registerCaps(RegisterCapabilitiesEvent event) {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.NOUS_BUCKET.get());
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
+
     }
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.DEMON_EYE.get(), DemonEyeEntity.createAttributes().build());
+        event.put(ModEntities.PINKY.get(), PinkyEntity.createAttributes().build());
     }
+
 
 }

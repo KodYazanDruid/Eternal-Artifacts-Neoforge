@@ -1,13 +1,15 @@
 package com.sonamorningstar.eternalartifacts.event;
 
-import com.sonamorningstar.eternalartifacts.client.GardeningPotColor;
+import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.AnvilinatorScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.BioFurnaceScreen;
 import com.sonamorningstar.eternalartifacts.client.model.ColoredBlockModel;
 import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
+import com.sonamorningstar.eternalartifacts.client.renderer.FancyChestRenderer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.DemonEyeModel;
 import com.sonamorningstar.eternalartifacts.content.entity.client.DemonEyeRenderer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
+import com.sonamorningstar.eternalartifacts.content.entity.client.PinkyRenderer;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
@@ -41,12 +43,14 @@ public class ClientEvents{
             else return -1;
         }, ModItems.NOUS_BUCKET.get());
 
-        event.register(new GardeningPotColor() , ModItems.GARDENING_POT.get());
+        event.register(new RetexturedColor(), ModItems.GARDENING_POT.get());
+        event.register(new RetexturedColor(), ModItems.FANCY_CHEST.get());
     }
 
     @SubscribeEvent
     public static void registerColorHandlerBlock(RegisterColorHandlersEvent.Block event) {
-        event.register(new GardeningPotColor(), ModBlocks.GARDENING_POT.get());
+        event.register(new RetexturedColor(), ModBlocks.GARDENING_POT.get());
+        event.register(new RetexturedColor(), ModBlocks.FANCY_CHEST.get());
     }
 
     @SubscribeEvent
@@ -57,17 +61,25 @@ public class ClientEvents{
 
     @SubscribeEvent
     public static void fmlClient(FMLClientSetupEvent event) {
-        event.enqueueWork(
-        ()->
-        ItemProperties.register(ModItems.ENCUMBATOR.get(), new ResourceLocation(MODID, "active"), (s, l, e, sd) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F)
+        event.enqueueWork( () ->
+            ItemProperties.register(ModItems.ENCUMBATOR.get(),
+                    new ResourceLocation(MODID, "active"), (s, l, e, sd) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F)
         );
 
         EntityRenderers.register(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
+        EntityRenderers.register(ModEntities.PINKY.get(), PinkyRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.DEMON_EYE_LAYER, DemonEyeModel::createBodyLayer);
+
+        event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
     }
 
 

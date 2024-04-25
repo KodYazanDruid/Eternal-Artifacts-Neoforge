@@ -6,11 +6,13 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -31,12 +33,21 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         //simpleBlockWithItem(ModBlocks.LUTFI.get());
         simpleBlockWithItem(ModBlocks.BIOFURNACE.get());
 
+        simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
+            ConfiguredModel.builder().modelFile(
+                models().withExistingParent("pink_slime_block", mcLoc("block/slime_block"))
+                    .texture("texture", modLoc("block/pink_slime_block"))
+                    .texture("particle", modLoc("block/pink_slime_block"))
+                    .renderType(mcLoc("translucent"))).build());
+
         directionBlock(ModBlocks.ANVILINATOR.get(), (state, builder) ->
                 builder.modelFile(models().cube(ModBlocks.ANVILINATOR.getId().getPath(), modLoc("block/anvilinator_down"), modLoc("block/anvilinator_up"), modLoc("block/anvilinator_front"), modLoc("block/anvilinator_side"), modLoc("block/anvilinator_side"), modLoc("block/anvilinator_side"))
                         .texture("particle", modLoc("block/anvilinator_side"))), BlockStateProperties.HORIZONTAL_FACING);
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
+        directionBlock(ModBlocks.FANCY_CHEST.get(), (state, builder) ->
+                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
 
         simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
 

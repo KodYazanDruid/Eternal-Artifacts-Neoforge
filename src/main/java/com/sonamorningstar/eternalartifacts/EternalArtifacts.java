@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts;
 
 import com.mojang.logging.LogUtils;
+import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
@@ -24,15 +25,13 @@ public class EternalArtifacts {
     /**
      * TODO: Add proper power generation system (like biodiesel engine from IE, peat generator from cyclic(originally from forestry)) instead of burning oranges.
      * TODO: Add orange tree or add orange as a drop for acacia leaves.
-     * TODO: Add disenchanter an other enchantment related blocks.
+     * TODO: Add disenchanter and other enchantment related blocks.
      * TODO: A storage block can storage items, fluids and energy dynamically.
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
     */
-
-    //Add pinky and meat ingot.
 
     public static final String MODID = "eternalartifacts";
     public static final Logger LOGGER = LogUtils.getLogger();
@@ -48,9 +47,7 @@ public class EternalArtifacts {
                     else output.accept(item.get());
                 }
                 for(DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
-                    if(block.get().asItem() instanceof RetexturedBlockItem pot) {
-                    }
-                    else output.accept(block.get());
+                    if(!(block.get() instanceof GardeningPotBlock)) output.accept(block.get());
                 }
             }).build());
 
@@ -64,6 +61,7 @@ public class EternalArtifacts {
         ModLoots.FUNCTIONS.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
+        ModEffects.EFFECTS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(Channel::onRegisterPayloadHandler);

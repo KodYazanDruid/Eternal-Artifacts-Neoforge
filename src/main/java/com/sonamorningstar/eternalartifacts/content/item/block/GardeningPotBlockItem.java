@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.item.block;
 
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -22,6 +23,6 @@ public class GardeningPotBlockItem extends RetexturedBlockItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-        pTooltip.add(Component.translatable("key." + MODID + ".gardening_pot_item.desc"));
+        pTooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("gardening_pot_item.desc")));
     }
 }

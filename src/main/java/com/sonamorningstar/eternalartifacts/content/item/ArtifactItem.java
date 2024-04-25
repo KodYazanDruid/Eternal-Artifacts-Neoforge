@@ -12,7 +12,7 @@ import java.util.List;
 public class ArtifactItem extends Item {
 
     public ArtifactItem(Properties pProperties) {
-        super(pProperties);
+        super(pProperties.stacksTo(1));
     }
 
     @Override

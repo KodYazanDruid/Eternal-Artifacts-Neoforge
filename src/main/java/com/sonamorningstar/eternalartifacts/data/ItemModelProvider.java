@@ -33,6 +33,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.ANCIENT_SEED.get());
         basicItem(ModItems.ANCIENT_FRUIT.get());
         handheld(ModItems.AXE_OF_REGROWTH);
+        basicItem(ModItems.MEAT_INGOT.get());
+        basicItem(ModItems.PINK_SLIME.get());
+        basicItem(ModItems.ENDER_POUCH.get());
+        basicItem(ModItems.PORTABLE_CRAFTER.get());
+        basicItem(ModItems.GOLDEN_ANCIENT_FRUIT.get());
 
         basicItem(modLoc("encumbator_active"));
 
@@ -40,10 +45,14 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(modLoc("encumbator")).override().model(encumbator).predicate(modLoc("active"), 1.0F);
 
         withExistingParent(ModItems.DEMON_EYE_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.PINKY_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
+        withExistingParent(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.getId().getPath(), modLoc("item/golden_ancient_fruit"));
 
         withExistingParent(ModBlocks.ANVILINATOR.getId().getPath(), modLoc("block/anvilinator"));
         withExistingParent(ModBlocks.RESONATOR.getId().getPath(), modLoc("block/resonator"));
         withExistingParent(ModBlocks.GARDENING_POT.getId().getPath(), modLoc("block/gardening_pot"));
+        withExistingParent(ModBlocks.FANCY_CHEST.getId().getPath(), modLoc("block/fancy_chest"));
+        withExistingParent(ModBlocks.PINK_SLIME_BLOCK.getId().getPath(), modLoc("block/pink_slime_block"));
 
         withExistingParent(ModItems.NOUS_BUCKET.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)

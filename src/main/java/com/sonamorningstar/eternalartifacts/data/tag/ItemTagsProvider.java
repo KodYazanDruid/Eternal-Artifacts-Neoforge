@@ -7,6 +7,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
@@ -25,14 +27,19 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.FRUITS).add(ModItems.ORANGE.get(), ModItems.ANCIENT_FRUIT.get());
         tag(ModTags.Items.FRUITS_ORANGE).add(ModItems.ORANGE.get());
         tag(ModTags.Items.FRUITS_ANCIENT).add(ModItems.ANCIENT_FRUIT.get());
+        tag(Tags.Items.INGOTS).add(ModItems.MEAT_INGOT.get());
+        tag(ModTags.Items.INGOTS_MEAT).add(ModItems.MEAT_INGOT.get());
+        tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
+        tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
+
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
                 ItemTags.STONE_BRICKS,
-                ItemTags.STONE_CRAFTING_MATERIALS
+                ItemTags.STONE_CRAFTING_MATERIALS,
+                Tags.Items.SANDSTONE
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),
-                Blocks.OAK_LOG.asItem(),
                 Blocks.QUARTZ_BLOCK.asItem(),
                 Blocks.QUARTZ_BRICKS.asItem(),
                 Blocks.MELON.asItem(),
@@ -40,6 +47,33 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Blocks.HONEYCOMB_BLOCK.asItem(),
                 Blocks.PRISMARINE.asItem(),
                 Blocks.DARK_PRISMARINE.asItem(),
+                Blocks.SHROOMLIGHT.asItem(),
+                Blocks.GLOWSTONE.asItem(),
+                Blocks.RED_MUSHROOM_BLOCK.asItem(),
+                Blocks.BROWN_MUSHROOM_BLOCK.asItem(),
+                Blocks.MUSHROOM_STEM.asItem(),
+                Blocks.OCHRE_FROGLIGHT.asItem(),
+                Blocks.VERDANT_FROGLIGHT.asItem(),
+                Blocks.PEARLESCENT_FROGLIGHT.asItem(),
+                //Glazed terracottas
+                Blocks.WHITE_GLAZED_TERRACOTTA.asItem(),
+                Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.asItem(),
+                Blocks.GRAY_GLAZED_TERRACOTTA.asItem(),
+                Blocks.BLACK_GLAZED_TERRACOTTA.asItem(),
+                Blocks.BROWN_GLAZED_TERRACOTTA.asItem(),
+                Blocks.RED_GLAZED_TERRACOTTA.asItem(),
+                Blocks.ORANGE_GLAZED_TERRACOTTA.asItem(),
+                Blocks.YELLOW_GLAZED_TERRACOTTA.asItem(),
+                Blocks.LIME_GLAZED_TERRACOTTA.asItem(),
+                Blocks.GREEN_GLAZED_TERRACOTTA.asItem(),
+                Blocks.CYAN_GLAZED_TERRACOTTA.asItem(),
+                Blocks.LIGHT_BLUE_GLAZED_TERRACOTTA.asItem(),
+                Blocks.BLUE_GLAZED_TERRACOTTA.asItem(),
+                Blocks.PURPLE_GLAZED_TERRACOTTA.asItem(),
+                Blocks.MAGENTA_GLAZED_TERRACOTTA.asItem(),
+                Blocks.PINK_GLAZED_TERRACOTTA.asItem(),
+                //Logs
+                Blocks.OAK_LOG.asItem(),
                 Blocks.STRIPPED_OAK_LOG.asItem(),
                 Blocks.SPRUCE_LOG.asItem(),
                 Blocks.STRIPPED_SPRUCE_LOG.asItem(),

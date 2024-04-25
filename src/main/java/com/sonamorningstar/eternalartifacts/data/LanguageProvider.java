@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 
@@ -36,6 +38,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ANCIENT_FRUIT.get(), "Ancient Fruit");
                 add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "Demon Eye Spawn Egg");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Axe of Regrowth");
+                add(ModItems.MEAT_INGOT.get(), "Meat Ingot");
+                add(ModItems.PINK_SLIME.get(), "Pink Slime");
+                add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Spawn Egg");
+                add(ModItems.ENDER_POUCH.get(), "Ender Pouch");
+                add(ModItems.PORTABLE_CRAFTER.get(), "Portable Crafter");
+                add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Golden Ancient Fruit");
+                add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Enchanted Golden Ancient Fruit");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -43,20 +52,31 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
                 add(ModBlocks.RESONATOR.get(), "Resonator");
                 add(ModBlocks.GARDENING_POT.get(), "Gardening Pot");
+                add(ModBlocks.FANCY_CHEST.get(), "Fancy Chest");
+                add(ModBlocks.PINK_SLIME_BLOCK.get(), "Pink Slime Block");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
+                add(ModEntities.PINKY.get(), "Pinky");
+
+                //Effects
+                add(ModEffects.FLIGHT.get(), "Flight");
 
                 //Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Naming disabled.");
                 add("itemGroup." + MODID, "Eternal Artifacts");
                 add(MODID + ".subtitle.holy_dagger_activate", "Holy dagger activated!");
-                add("key." + MODID + ".tooltip." + ModItems.ENCUMBATOR.getId().getPath() + ".active", "Item pickup disabled!");
-                add("key." + MODID + ".tooltip." + ModItems.ENCUMBATOR.getId().getPath() + ".passive", "Item pickup is normal.");
-                add("key." + MODID + ".tooltip." + ModItems.ENCUMBATOR.getId().getPath() + ".switch", "Right click in inventory to switch.");
-                add("key." + MODID + ".gardening_pot_item.desc", "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.");
-                add("key."+MODID+".axe_of_regrowth_ench_text", "Always has %s");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.active"), "Item pickup disabled!");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive"), "Item pickup is normal.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Right click in inventory to switch.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "You can right click in inventory to open.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("gardening_pot_desc"), "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), "Always has %s");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Magic feather is active!");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Magic feather is not active.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "Gives two minutes of flight, speed and haste.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Gives five minues of flight and enhanced speed, haste and absorption.");
 
             }
             case "tr_tr" -> {
@@ -77,6 +97,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ANCIENT_FRUIT.get(), "Antik Meyve");
                 add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "İblis Gözü Canlandırma Yumurtası");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Yeşertme Baltası");
+                add(ModItems.MEAT_INGOT.get(), "Et Külçesi");
+                add(ModItems.PINK_SLIME.get(), "Pembe Balçık");
+                add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Çağırma Yumurtası");
+                add(ModItems.ENDER_POUCH.get(), "Ender Çantası");
+                add(ModItems.PORTABLE_CRAFTER.get(), "Taşınabilir Üretim Masası");
+                add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Altın Antik Meyve");
+                add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Büyülü Altın Antik Meyve");
+
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -84,21 +112,31 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BIOFURNACE.get(), "BiyoFırın");
                 add(ModBlocks.RESONATOR.get(), "Yankılayıcı");
                 add(ModBlocks.GARDENING_POT.get(), "Bahçe Saksısı");
+                add(ModBlocks.FANCY_CHEST.get(), "Süslü Sandık");
+                add(ModBlocks.PINK_SLIME_BLOCK.get(), "Pembe Balçık Bloğu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
+                add(ModEntities.PINKY.get(), "Pinky");
+
+                //Efektler
+                add(ModEffects.FLIGHT.get(), "Uçuş");
 
                 //Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Adlandırma kapalı.");
                 add("itemGroup." + MODID, "Eternal Artifacts");
                 add(MODID + ".subtitle.holy_dagger_activate", "Kutsal hançer aktifleştirildi!");
-                add("key." + MODID + ".tooltip." + ModItems.ENCUMBATOR.getId().getPath() + ".active", "Yerden eşya almak engellendi!");
-                add("key." + MODID + ".tooltip." + ModItems.ENCUMBATOR.getId().getPath() + ".passive", "Yerden eşya alma faaliyeti normal.");
-                add("key." + MODID + ".tooltip." + ModItems.ENCUMBATOR.getId().getPath()+ ".switch", "Değiştirmek için envanterinde sağ tıkla.");
-                add("key." + MODID + ".gardening_pot_item.desc", "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.");
-                add("key."+MODID+".axe_of_regrowth_ench_text", "Her zaman %s'a sahip");
-
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.active"), "Yerden eşya almak engellendi!");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive"), "Yerden eşya alma faaliyeti normal.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Değiştirmek için envanterinde sağ tıkla.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "Envanterine sağ tıklayarak açabilirsin.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("gardening_pot_desc"), "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), "Her zaman %s'a sahip");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Büyülü tüy aktif!");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Büyülü tüy aktif değil.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "İki dakikalığına uçuş, hız ve acele verir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Beş dakikalığına uçuş ve gelişmiş hız, acele ve emiş verir.");
             }
         }
     }

@@ -32,6 +32,19 @@ public class EntityLootSubProvider extends net.minecraft.data.loot.EntityLootSub
                     )
                 )
         );
+
+        add(ModEntities.PINKY.get(),
+                LootTable.lootTable()
+                        .withPool(LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1))
+                                .add(LootItem.lootTableItem(ModItems.PINK_SLIME.get())
+                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
+                                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))
+                                )
+                        )
+        );
+
+
     }
 
     @Override

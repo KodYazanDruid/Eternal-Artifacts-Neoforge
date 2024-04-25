@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.event;
 
+import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.content.item.AxeOfRegrowthItem;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
+import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModSounds;
 import com.sonamorningstar.eternalartifacts.network.Channel;
@@ -13,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.profiling.jfr.event.ServerTickTimeEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -25,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
+import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
@@ -126,6 +130,18 @@ public class CommonEvents {
             if (sapling.getItem() instanceof BlockItem bi && bi.getBlock() instanceof SaplingBlock saplingBlock && saplingBlock.canSurvive(soil, level, pos)) {
                 level.setBlockAndUpdate(pos, saplingBlock.defaultBlockState());
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void serverTick(TickEvent.ServerTickEvent event) {
+        Pair<Boolean, Integer> activeTicks = MagicFeatherItem.activeTicks;
+        if(activeTicks != null){
+            boolean bool = activeTicks.getFirst();
+            int ticks = activeTicks.getSecond();
+            if (ticks > 0) ticks--;
+            else bool = false;
+            MagicFeatherItem.activeTicks = Pair.of(bool, ticks);
         }
     }
 

@@ -31,6 +31,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.ANVILINATOR.get());
         dropSelf(ModBlocks.BIOFURNACE.get());
         dropSelf(ModBlocks.RESONATOR.get());
+        dropSelf(ModBlocks.PINK_SLIME_BLOCK.get());
         add(ModBlocks.GARDENING_POT.get(), LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()
@@ -40,6 +41,16 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                             .apply(RetexturedLootFunction.builder())
                     )
             )
+        );
+        add(ModBlocks.FANCY_CHEST.get(), LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(ModItems.FANCY_CHEST.get())
+                                                .apply(RetexturedLootFunction.builder())
+                                )
+                )
         );
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition

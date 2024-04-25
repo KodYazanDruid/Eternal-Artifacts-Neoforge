@@ -21,7 +21,7 @@ public final class RetexturedHelper {
     public static final ModelProperty<Block> PROPERTY = new ModelProperty<>(block -> block != Blocks.AIR);
 
     public static Block getBlock(String name) {
-        return name.isEmpty() ? Blocks.AIR : BuiltInRegistries.BLOCK.get(new ResourceLocation(name));
+        return name.isEmpty() ? Blocks.AIR : BuiltInRegistries.BLOCK.get(new ResourceLocation(name.toLowerCase()));
     }
 
     public static String getTextureName(CompoundTag tag) {

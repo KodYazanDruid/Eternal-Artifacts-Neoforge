@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "eternalartifacts:retexture"
+            }
+          ],
+          "name": "eternalartifacts:fancy_chest"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eternalartifacts:blocks/fancy_chest"
+}

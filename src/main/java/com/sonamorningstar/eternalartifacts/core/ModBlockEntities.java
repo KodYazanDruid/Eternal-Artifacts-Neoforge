@@ -1,10 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.AnvilinatorBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.BioFurnaceEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.GardeningPotEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ResonatorBlockEntity;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -27,5 +23,8 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->
             BlockEntityType.Builder.of(GardeningPotEntity::new, ModBlocks.GARDENING_POT.get()).build(null));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FancyChestBlockEntity>> FANCY_CHEST = BLOCK_ENTITIES.register("fancy_chest", () ->
+            BlockEntityType.Builder.of(FancyChestBlockEntity::new, ModBlocks.FANCY_CHEST.get()).build(null));
 
 }

@@ -1,8 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.SlotAccess;
@@ -21,7 +20,6 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class EncumbatorItem extends ArtifactItem {
 
     public static final String ACTIVE = MODID+":active";
-    private final String TOOLTIP = "key." + MODID + ".tooltip.encumbator";
 
     public EncumbatorItem(Properties pProperties) {
         super(pProperties);
@@ -44,9 +42,9 @@ public class EncumbatorItem extends ArtifactItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        if(stack.hasTag() && stack.getTag().getBoolean(ACTIVE)) tooltip.add(Component.translatable(TOOLTIP + ".active").withStyle(ChatFormatting.RED));
-        else tooltip.add(Component.translatable(TOOLTIP + ".passive").withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(TOOLTIP + ".switch"));
+        if(stack.hasTag() && stack.getTag().getBoolean(ACTIVE)) tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("active")).withStyle(ChatFormatting.DARK_RED));
+        else tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("passive")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("switch")));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 

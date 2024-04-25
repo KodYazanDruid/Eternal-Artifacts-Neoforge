@@ -1,40 +1,55 @@
 package com.sonamorningstar.eternalartifacts.mixins;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
+import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
-import net.neoforged.neoforge.common.NeoForgeMod;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.List;
-import java.util.Objects;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import javax.annotation.Nullable;
 
 @Debug(export = true)
 @Mixin(value = BeaconBlockEntity.class)
-public class BeaconEntityMixin {
+public abstract class BeaconEntityMixin {
 
-    @ModifyExpressionValue(method = "applyEffects",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getEntitiesOfClass(Ljava/lang/Class;Lnet/minecraft/world/phys/AABB;)Ljava/util/List;"))
-    private static List<Player> toggleFlight(List<Player> original) {
-        for (Player player : original) {
-            if (PlayerHelper.findInStack(player, ModItems.MAGIC_FEATHER.get())) {
-                //How can i do this without adding effects?
-                if(!player.mayFly()) Objects.requireNonNull(player.getAttribute(NeoForgeMod.CREATIVE_FLIGHT.value())).setBaseValue(1);
-            }else{
-                Objects.requireNonNull(player.getAttribute(NeoForgeMod.CREATIVE_FLIGHT.value())).setBaseValue(0);
-            }
+    @Shadow
+    private static void applyEffects(Level pLevel, BlockPos pPos, int pLevels, @Nullable MobEffect pPrimary, @Nullable MobEffect pSecondary) {}
 
-        }
-        return original;
+    @WrapWithCondition(method = "applyEffects",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;addEffect(Lnet/minecraft/world/effect/MobEffectInstance;)Z", ordinal = 0))
+    private static boolean applyEffectsCheck(Player player, MobEffectInstance mobEffectInstance, Level level, BlockPos pos, int j, @Nullable MobEffect primary, @Nullable MobEffect secondary) {
+        int duration = mobEffectInstance.getDuration();
+        return primary != ModEffects.FLIGHT.get() || (primary == ModEffects.FLIGHT.get() && findFeather(player, duration));
     }
 
+    @Inject(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/entity/BeaconBlockEntity;applyEffects(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;ILnet/minecraft/world/effect/MobEffect;Lnet/minecraft/world/effect/MobEffect;)V"))
+    private static void tick(Level pLevel, BlockPos pPos, BlockState pState, BeaconBlockEntity pBlockEntity, CallbackInfo ci) {
+        applyEffects(pLevel, pPos, pBlockEntity.levels, ModEffects.FLIGHT.get(), null);
+    }
 
+    private static boolean findFeather(Player player, int ticks){
+        MagicFeatherItem feather = (MagicFeatherItem) ModItems.MAGIC_FEATHER.get();
+        if(PlayerHelper.findInStack(player, feather)) {
+            MagicFeatherItem.activeTicks = Pair.of(true, ticks);
+            return true;
+        }else {
+            return false;
+        }
+    }
 
 }
