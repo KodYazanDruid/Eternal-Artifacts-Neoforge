@@ -45,6 +45,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PORTABLE_CRAFTER.get(), "Portable Crafter");
                 add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Golden Ancient Fruit");
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Enchanted Golden Ancient Fruit");
+                add(ModItems.COMFY_SHOES.get(), "Comfy Shoes");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -54,6 +55,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GARDENING_POT.get(), "Gardening Pot");
                 add(ModBlocks.FANCY_CHEST.get(), "Fancy Chest");
                 add(ModBlocks.PINK_SLIME_BLOCK.get(), "Pink Slime Block");
+                add(ModBlocks.ROSY_FROGLIGHT.get(), "Rosy Froglight");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -77,6 +79,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Magic feather is not active.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "Gives two minutes of flight, speed and haste.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Gives five minues of flight and enhanced speed, haste and absorption.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("comfy_shoes"), "Gives step height when worn.");
 
             }
             case "tr_tr" -> {
@@ -104,6 +107,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PORTABLE_CRAFTER.get(), "Taşınabilir Üretim Masası");
                 add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Altın Antik Meyve");
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Büyülü Altın Antik Meyve");
+                add(ModItems.COMFY_SHOES.get(), "Rahat Ayakkabılar");
 
 
                 //Bloklar
@@ -114,6 +118,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GARDENING_POT.get(), "Bahçe Saksısı");
                 add(ModBlocks.FANCY_CHEST.get(), "Süslü Sandık");
                 add(ModBlocks.PINK_SLIME_BLOCK.get(), "Pembe Balçık Bloğu");
+                add(ModBlocks.ROSY_FROGLIGHT.get(), "Gülcük Kurbağa Işığı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -137,6 +142,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Büyülü tüy aktif değil.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "İki dakikalığına uçuş, hız ve acele verir.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Beş dakikalığına uçuş ve gelişmiş hız, acele ve emiş verir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("comfy_shoes"), "Giyildiğinde adım yüksekliği verir.");
             }
         }
     }

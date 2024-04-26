@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "eternalartifacts:block/rosy_froglight_top",
+    "side": "eternalartifacts:block/rosy_froglight_side"
+  }
+}

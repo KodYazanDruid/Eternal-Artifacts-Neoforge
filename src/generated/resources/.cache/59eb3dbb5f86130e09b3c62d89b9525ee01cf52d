@@ -1,4 +1,4 @@
-// 1.20.4	2024-04-23T20:16:00.4213497	Loot Tables
+// 1.20.4	2024-04-25T22:52:38.7903254	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 1a3d962a463b100e0202e85cbbb340a920e90378 data/eternalartifacts/loot_tables/blocks/biofurnace.json
@@ -6,5 +6,6 @@
 17d46b00052e07090dc714a7fd2743706fc5768f data/eternalartifacts/loot_tables/blocks/gardening_pot.json
 68cbd8c32f7be9bad5fa4e1de06852f7be205a3b data/eternalartifacts/loot_tables/blocks/pink_slime_block.json
 e097efa9397ef97b629a68c1f969714ec4032796 data/eternalartifacts/loot_tables/blocks/resonator.json
+b686ed87f1ee8bc993b0915508faab7ec6b07113 data/eternalartifacts/loot_tables/blocks/rosy_froglight.json
 c0e3731ff79dbcd23191ed8563f789961ec2fb15 data/eternalartifacts/loot_tables/entities/demon_eye.json
-4b20d67c328713a8594bb190cea6498a6bf1001f data/eternalartifacts/loot_tables/entities/pinky.json
+adc9376497f9c09e0788f0c1c265d8f48955d0cf data/eternalartifacts/loot_tables/entities/pinky.json

@@ -32,6 +32,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
     protected void registerStatesAndModels() {
         //simpleBlockWithItem(ModBlocks.LUTFI.get());
         simpleBlockWithItem(ModBlocks.BIOFURNACE.get());
+        axisBlock(ModBlocks.ROSY_FROGLIGHT.get(), modLoc("block/rosy_froglight_side"), modLoc("block/rosy_froglight_top"));
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

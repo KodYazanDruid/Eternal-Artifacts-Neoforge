@@ -27,6 +27,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GARDENING_POT.get(), "stone", "pickaxe");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
+
     }
 
     private void tierAndTool(Block block, String tier, String tool) {

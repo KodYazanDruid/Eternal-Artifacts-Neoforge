@@ -32,6 +32,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.BIOFURNACE.get());
         dropSelf(ModBlocks.RESONATOR.get());
         dropSelf(ModBlocks.PINK_SLIME_BLOCK.get());
+        dropSelf(ModBlocks.ROSY_FROGLIGHT.get());
         add(ModBlocks.GARDENING_POT.get(), LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()

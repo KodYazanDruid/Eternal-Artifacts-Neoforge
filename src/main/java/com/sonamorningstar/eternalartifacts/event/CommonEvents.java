@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.content.item.AxeOfRegrowthItem;
+import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -13,13 +14,12 @@ import com.sonamorningstar.eternalartifacts.util.PlantHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.profiling.jfr.event.ServerTickTimeEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
@@ -27,13 +27,13 @@ import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -142,6 +142,18 @@ public class CommonEvents {
             if (ticks > 0) ticks--;
             else bool = false;
             MagicFeatherItem.activeTicks = Pair.of(bool, ticks);
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        AttributeInstance stepHeight = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
+
+        if(!(player.hasItemInSlot(EquipmentSlot.FEET) && player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.COMFY_SHOES.get()))) {
+            if(stepHeight != null && stepHeight.hasModifier(ComfyShoesItem.getStepHeight())) {
+                stepHeight.removeModifier(ComfyShoesItem.getStepHeight().getId());
+            }
         }
     }
 

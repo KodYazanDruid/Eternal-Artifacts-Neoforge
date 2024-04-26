@@ -6,6 +6,8 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -21,6 +23,10 @@ public class ModBlocks {
     /*public static final DeferredBlock<Block> LUTFI = registerWithItem("lutfi",
                 ()-> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(0.5f).mapColor(MapColor.COLOR_BROWN)), new Item.Properties());
 */
+    public static final DeferredBlock<RotatedPillarBlock> ROSY_FROGLIGHT = registerWithItem("rosy_froglight",
+            ()-> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(0.3F).lightLevel(p_220869_ -> 15).sound(SoundType.FROGLIGHT)),
+            new Item.Properties());
+
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
                 ()-> new AnvilinatorBlock(Blocks.ANVIL.properties()), new Item.Properties());
 

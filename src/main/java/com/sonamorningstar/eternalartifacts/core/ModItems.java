@@ -62,6 +62,7 @@ public class ModItems {
     public static final DeferredItem<Item> ENCUMBATOR = registerArtifact("encumbator", EncumbatorItem::new);
     public static final DeferredItem<Item> ENDER_POUCH = registerArtifact("ender_pouch", EnderPouchItem::new);
     public static final DeferredItem<Item> PORTABLE_CRAFTER = registerArtifact("portable_crafter", PortableCrafterItem::new);
+    public static final DeferredItem<Item> COMFY_SHOES = registerArtifact("comfy_shoes", ComfyShoesItem::new);
 
     //Tools.
     public static final DeferredItem<Item> AXE_OF_REGROWTH = register("axe_of_regrowth", AxeOfRegrowthItem::new, new Item.Properties().stacksTo(1));

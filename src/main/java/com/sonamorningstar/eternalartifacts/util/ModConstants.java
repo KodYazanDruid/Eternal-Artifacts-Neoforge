@@ -17,4 +17,8 @@ public enum ModConstants {
     public String withSuffix(String suffix) {
         return string+"."+suffix;
     }
+
+    public static String withId(String text) {
+        return MODID + ":" + text;
+    }
 }

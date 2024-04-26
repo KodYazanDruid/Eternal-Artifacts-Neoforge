@@ -59,6 +59,7 @@ public class EternalArtifacts {
         ModFluids.FLUIDS.register(modEventBus);
         ModFluidTypes.FLUID_TYPES.register(modEventBus);
         ModLoots.FUNCTIONS.register(modEventBus);
+        ModLoots.GLOBAL_MODIFIER.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);

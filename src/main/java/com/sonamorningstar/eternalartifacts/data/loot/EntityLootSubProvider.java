@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data.loot;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.world.entity.EntityType;
@@ -34,14 +35,18 @@ public class EntityLootSubProvider extends net.minecraft.data.loot.EntityLootSub
         );
 
         add(ModEntities.PINKY.get(),
-                LootTable.lootTable()
-                        .withPool(LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(ModItems.PINK_SLIME.get())
-                                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
-                                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))
-                                )
-                        )
+            LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(ModItems.PINK_SLIME.get())
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))
+                    )
+                    .add(LootItem.lootTableItem(ModBlocks.ROSY_FROGLIGHT.asItem())
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+                        .when(killedByFrog())
+                    )
+                )
         );
 
 

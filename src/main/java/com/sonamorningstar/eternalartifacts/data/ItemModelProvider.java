@@ -38,6 +38,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.ENDER_POUCH.get());
         basicItem(ModItems.PORTABLE_CRAFTER.get());
         basicItem(ModItems.GOLDEN_ANCIENT_FRUIT.get());
+        basicItem(ModItems.COMFY_SHOES.get());
 
         basicItem(modLoc("encumbator_active"));
 
@@ -53,6 +54,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.GARDENING_POT.getId().getPath(), modLoc("block/gardening_pot"));
         withExistingParent(ModBlocks.FANCY_CHEST.getId().getPath(), modLoc("block/fancy_chest"));
         withExistingParent(ModBlocks.PINK_SLIME_BLOCK.getId().getPath(), modLoc("block/pink_slime_block"));
+        withExistingParent(ModBlocks.ROSY_FROGLIGHT.getId().getPath(), modLoc("block/rosy_froglight"));
 
         withExistingParent(ModItems.NOUS_BUCKET.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
