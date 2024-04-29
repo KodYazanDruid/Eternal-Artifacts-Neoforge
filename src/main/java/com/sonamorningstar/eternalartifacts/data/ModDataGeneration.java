@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.data.loot.GlobalLootModifierProvider;
 import com.sonamorningstar.eternalartifacts.data.loot.LootTableProvider;
+import com.sonamorningstar.eternalartifacts.data.recipe.RecipeProvider;
 import com.sonamorningstar.eternalartifacts.data.tag.BlockTagsProvider;
 import com.sonamorningstar.eternalartifacts.data.tag.EntityTypeTagsProvider;
 import com.sonamorningstar.eternalartifacts.data.tag.FluidTagsProvider;

@@ -22,9 +22,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
     protected void addTags(HolderLookup.Provider pProvider) {
         //tierAndTool(ModBlocks.LUTFI.get(), "diamond", "axe");
         tierAndTool(ModBlocks.ANVILINATOR.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.BOOK_DUPLICATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BIOFURNACE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RESONATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.GARDENING_POT.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
 

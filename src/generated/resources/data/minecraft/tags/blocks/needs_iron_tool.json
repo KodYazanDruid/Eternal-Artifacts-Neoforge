@@ -1,6 +1,8 @@
 {
   "values": [
     "eternalartifacts:anvilinator",
-    "eternalartifacts:resonator"
+    "eternalartifacts:book_duplicator",
+    "eternalartifacts:resonator",
+    "eternalartifacts:machine_block"
   ]
 }

@@ -8,6 +8,8 @@ import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -29,10 +31,14 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
     protected void generate() {
         //dropSelf(ModBlocks.LUTFI.get());
         dropSelf(ModBlocks.ANVILINATOR.get());
+        dropSelf(ModBlocks.BOOK_DUPLICATOR.get());
         dropSelf(ModBlocks.BIOFURNACE.get());
         dropSelf(ModBlocks.RESONATOR.get());
         dropSelf(ModBlocks.PINK_SLIME_BLOCK.get());
         dropSelf(ModBlocks.ROSY_FROGLIGHT.get());
+        dropSelf(ModBlocks.MACHINE_BLOCK.get());
+        add(ModBlocks.FORSYTHIA.get(), createSinglePropConditionTable(ModBlocks.FORSYTHIA.get(), DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
+
         add(ModBlocks.GARDENING_POT.get(), LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()

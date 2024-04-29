@@ -2,9 +2,11 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.core.ModTiers;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
@@ -60,6 +62,8 @@ public class AxeOfRegrowthItem extends AxeItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-        pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), Enchantments.BLOCK_FORTUNE.getFullname(3)));
+        MutableComponent ench = Enchantments.BLOCK_FORTUNE.getFullname(3).copy();
+        //pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), ench.withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY));
+        pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), ench));
     }
 }

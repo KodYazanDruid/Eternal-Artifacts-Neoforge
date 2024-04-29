@@ -12,27 +12,30 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 
+import java.util.List;
 import java.util.function.Supplier;
 
-public class AddItemModifier extends LootModifier {
+public class AddItemListModifier extends LootModifier {
 
-    public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(()-> RecordCodecBuilder.create(instance -> codecStart(instance)
-                    .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(m -> m.item))
-                    .apply(instance, AddItemModifier::new)));
+    public static final Supplier<Codec<AddItemListModifier>> CODEC = Suppliers.memoize(()-> RecordCodecBuilder.create(instance -> codecStart(instance)
+                    .and(BuiltInRegistries.ITEM.byNameCodec().listOf().fieldOf("item").forGetter(m -> m.itemList))
+                    .apply(instance, AddItemListModifier::new)));
 
 
-    private final Item item;
+    private final List<Item> itemList;
 
-    public AddItemModifier(LootItemCondition[] conditionsIn, Item item) {
+    public AddItemListModifier(LootItemCondition[] conditionsIn, List<Item> item) {
         super(conditionsIn);
-        this.item = item;
+        this.itemList = item;
     }
 
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         for(LootItemCondition condition : conditions)
             if(!condition.test(context)) return generatedLoot;
-        generatedLoot.add(item.getDefaultInstance());
+
+        itemList.forEach(i -> generatedLoot.add(i.getDefaultInstance()));
+
         return generatedLoot;
     }
 

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "eternalartifacts:ancient_fruit"
+    },
+    "N": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "NNN",
+    "NFN",
+    "NNN"
+  ],
+  "result": {
+    "item": "eternalartifacts:golden_ancient_fruit"
+  }
+}

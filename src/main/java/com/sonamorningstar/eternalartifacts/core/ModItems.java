@@ -27,7 +27,6 @@ public class ModItems {
             new FoodProperties.Builder()
                 .nutrition(4)
                 .saturationMod(1.2F)
-                .effect(()->new MobEffectInstance(ModEffects.FLIGHT.get(), 2400, 0), 1.0F)
                 .effect(()->new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 1), 1.0F)
                 .effect(()->new MobEffectInstance(MobEffects.DIG_SPEED, 2400, 1), 1.0F)
                 .alwaysEat()
@@ -36,10 +35,10 @@ public class ModItems {
             new FoodProperties.Builder()
                 .nutrition(4)
                 .saturationMod(1.2F)
-                .effect(()->new MobEffectInstance(ModEffects.FLIGHT.get(), 6000, 0), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 6000, 2), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.DIG_SPEED, 6000, 2), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.ABSORPTION, 6000, 4), 1.0F)
+                .effect(()->new MobEffectInstance(ModEffects.FLIGHT.get(), 2400, 0), 1.0F)
+                .effect(()->new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 2), 1.0F)
+                .effect(()->new MobEffectInstance(MobEffects.DIG_SPEED, 2400, 2), 1.0F)
+                .effect(()->new MobEffectInstance(MobEffects.ABSORPTION, 2400, 4), 1.0F)
                 .alwaysEat()
                 .build()));
     public static final DeferredItem<Item> BATTERY = register("battery", Item::new);
@@ -57,7 +56,7 @@ public class ModItems {
     //Actual artifacts.
     public static final DeferredItem<Item> HOLY_DAGGER = registerArtifact("holy_dagger", HolyDaggerItem::new);
     public static final DeferredItem<Item> MEDKIT = registerArtifact("medkit", MedkitItem::new);
-    public static final DeferredItem<Item> FROG_LEGS = registerArtifact("frog_legs", ArtifactItem::new);
+    public static final DeferredItem<Item> FROG_LEGS = registerArtifact("frog_legs", FrogLegsItem::new);
     public static final DeferredItem<Item> MAGIC_FEATHER = registerArtifact("magic_feather", MagicFeatherItem::new);
     public static final DeferredItem<Item> ENCUMBATOR = registerArtifact("encumbator", EncumbatorItem::new);
     public static final DeferredItem<Item> ENDER_POUCH = registerArtifact("ender_pouch", EnderPouchItem::new);
@@ -76,6 +75,7 @@ public class ModItems {
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));
+    public static final DeferredItem<DoubleHighBlockItem> FORSYTHIA = register("forsythia", ()-> new DoubleHighBlockItem(ModBlocks.FORSYTHIA.get(), new Item.Properties()));
 
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> supplier) {
         return ITEMS.register(name, supplier);

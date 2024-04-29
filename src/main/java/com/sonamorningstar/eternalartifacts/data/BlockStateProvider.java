@@ -1,21 +1,22 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.google.gson.JsonObject;
 import com.mojang.datafixers.types.Func;
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CropBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -41,21 +42,49 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                     .texture("particle", modLoc("block/pink_slime_block"))
                     .renderType(mcLoc("translucent"))).build());
 
-        directionBlock(ModBlocks.ANVILINATOR.get(), (state, builder) ->
-                builder.modelFile(models().cube(ModBlocks.ANVILINATOR.getId().getPath(), modLoc("block/anvilinator_down"), modLoc("block/anvilinator_up"), modLoc("block/anvilinator_front"), modLoc("block/anvilinator_side"), modLoc("block/anvilinator_side"), modLoc("block/anvilinator_side"))
-                        .texture("particle", modLoc("block/anvilinator_side"))), BlockStateProperties.HORIZONTAL_FACING);
+        simpleBlock(ModBlocks.MACHINE_BLOCK.get(),
+            ConfiguredModel.builder().modelFile(
+                models().cube(ModBlocks.MACHINE_BLOCK.getId().getPath(),
+                        modLoc("block/machine_bottom"),
+                        modLoc("block/machine_top"),
+                        modLoc("block/machine_side"),
+                        modLoc("block/machine_side"),
+                        modLoc("block/machine_side"),
+                        modLoc("block/machine_side")
+                ).texture("particle", modLoc("block/machine_side"))
+            ).build());
+
+        machineBlock(ModBlocks.ANVILINATOR, false);
+        machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
+        //machineBlock(ModBlocks.RESONATOR, true);
+        //machineBlock(ModBlocks.FANCY_CHEST, false);
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
+
         directionBlock(ModBlocks.FANCY_CHEST.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
 
         simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
-
+        tallFlower(ModBlocks.FORSYTHIA);
 
     }
+
+    private void machineBlock(DeferredBlock<? extends Block> holder, boolean allFaces) {
+        String name = holder.getId().getPath();
+        directionBlock(holder.get(), (state, builder) ->
+            builder.modelFile(models().cube(name,
+                modLoc("block/machine_bottom"),
+                modLoc("block/machine_top"),
+                modLoc("block/"+name+"_front"),
+                modLoc("block/machine_side"),
+                modLoc("block/machine_side"),
+                modLoc("block/machine_side"))
+            .texture("particle", modLoc("block/machine_side"))), allFaces ? BlockStateProperties.FACING : BlockStateProperties.HORIZONTAL_FACING);
+        simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
+    };
 
     private void makeAncientCrop(CropBlock crop, String textureName) {
         Function<BlockState, ConfiguredModel[]> func = state -> ancientCropStates(state, crop, textureName);
@@ -68,6 +97,16 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         models[0] = new ConfiguredModel(models().crop(textureName + "_" + state.getValue(((AncientCropBlock) crop).getAgeProperty()),
                 modLoc("block/" + textureName + "_" + state.getValue(((AncientCropBlock) crop).getAgeProperty()))).renderType("cutout"));
         return models;
+    }
+
+    private void tallFlower(DeferredBlock<TallFlowerBlock> flower) {
+        String name = flower.getId().getPath();
+        getVariantBuilder(flower.get()).forAllStates(state -> {
+            DoubleBlockHalf half = state.getValue(DoublePlantBlock.HALF);
+            String partName = name + '_' + half.getSerializedName();
+            ModelFile model = models().cross(partName, modLoc("block/"+partName)).renderType("cutout");
+            return ConfiguredModel.builder().modelFile(model).build();
+        });
     }
 
     private VariantBlockStateBuilder directionBlock(Block block, BiConsumer<BlockState, ConfiguredModel.Builder<?>> model, Property<Direction> direction) {

@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:block/cube",
   "textures": {
-    "down": "eternalartifacts:block/anvilinator_down",
-    "east": "eternalartifacts:block/anvilinator_side",
+    "down": "eternalartifacts:block/machine_bottom",
+    "east": "eternalartifacts:block/machine_side",
     "north": "eternalartifacts:block/anvilinator_front",
-    "particle": "eternalartifacts:block/anvilinator_side",
-    "south": "eternalartifacts:block/anvilinator_side",
-    "up": "eternalartifacts:block/anvilinator_up",
-    "west": "eternalartifacts:block/anvilinator_side"
+    "particle": "eternalartifacts:block/machine_side",
+    "south": "eternalartifacts:block/machine_side",
+    "up": "eternalartifacts:block/machine_top",
+    "west": "eternalartifacts:block/machine_side"
   }
 }

@@ -4,12 +4,10 @@ import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -23,12 +21,17 @@ public class ModBlocks {
     /*public static final DeferredBlock<Block> LUTFI = registerWithItem("lutfi",
                 ()-> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(0.5f).mapColor(MapColor.COLOR_BROWN)), new Item.Properties());
 */
+    public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
+            ()-> new Block(Blocks.IRON_BLOCK.properties().mapColor(MapColor.STONE)), new Item.Properties());
+
     public static final DeferredBlock<RotatedPillarBlock> ROSY_FROGLIGHT = registerWithItem("rosy_froglight",
             ()-> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(0.3F).lightLevel(p_220869_ -> 15).sound(SoundType.FROGLIGHT)),
             new Item.Properties());
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
-                ()-> new AnvilinatorBlock(Blocks.ANVIL.properties()), new Item.Properties());
+                ()-> new AnvilinatorBlock(Blocks.IRON_BLOCK.properties()), new Item.Properties());
+    public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",
+                ()-> new BookDuplicatorBlock(Blocks.IRON_BLOCK.properties()), new Item.Properties());
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
                 ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()), new Item.Properties());
@@ -47,7 +50,16 @@ public class ModBlocks {
 
     public static final DeferredBlock<AncientCropBlock> ANCIENT_CROP = registerNoItem("ancient_crop",
                 ()-> new AncientCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
-
+    public static final DeferredBlock<TallFlowerBlock> FORSYTHIA = registerNoItem("forsythia",
+                ()-> new TallFlowerBlock(BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.PLANT)
+                        .noCollission()
+                        .instabreak()
+                        .sound(SoundType.GRASS)
+                        .offsetType(BlockBehaviour.OffsetType.XZ)
+                        .ignitedByLava()
+                        .pushReaction(PushReaction.DESTROY)
+                ));
 
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }
     private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier, Item.Properties props){

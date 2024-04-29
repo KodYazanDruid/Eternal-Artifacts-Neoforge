@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
@@ -55,6 +56,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Blocks.OCHRE_FROGLIGHT.asItem(),
                 Blocks.VERDANT_FROGLIGHT.asItem(),
                 Blocks.PEARLESCENT_FROGLIGHT.asItem(),
+                ModBlocks.ROSY_FROGLIGHT.asItem(),
                 //Glazed terracottas
                 Blocks.WHITE_GLAZED_TERRACOTTA.asItem(),
                 Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.asItem(),

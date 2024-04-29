@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=lower": {
+      "model": "eternalartifacts:block/forsythia_lower"
+    },
+    "half=upper": {
+      "model": "eternalartifacts:block/forsythia_upper"
+    }
+  }
+}

@@ -14,6 +14,8 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AnvilinatorBlockEntity>> ANVILINATOR = BLOCK_ENTITIES.register("anvilinator", ()->
             BlockEntityType.Builder.of(AnvilinatorBlockEntity::new, ModBlocks.ANVILINATOR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BookDuplicatorBlockEntity>> BOOK_DUPLICATOR = BLOCK_ENTITIES.register("book_duplicator", ()->
+            BlockEntityType.Builder.of(BookDuplicatorBlockEntity::new, ModBlocks.BOOK_DUPLICATOR.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));

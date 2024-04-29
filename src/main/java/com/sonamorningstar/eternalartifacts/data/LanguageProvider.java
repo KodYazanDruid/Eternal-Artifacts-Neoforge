@@ -56,6 +56,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.FANCY_CHEST.get(), "Fancy Chest");
                 add(ModBlocks.PINK_SLIME_BLOCK.get(), "Pink Slime Block");
                 add(ModBlocks.ROSY_FROGLIGHT.get(), "Rosy Froglight");
+                add(ModBlocks.FORSYTHIA.get(), "Forsythia");
+                add(ModBlocks.MACHINE_BLOCK.get(), "Machine Block");
+                add(ModBlocks.BOOK_DUPLICATOR.get(), "Book Duplicator");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -73,13 +76,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive"), "Item pickup is normal.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Right click in inventory to switch.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "You can right click in inventory to open.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("gardening_pot_desc"), "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), "Always has %s");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Magic feather is active!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Magic feather is not active.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "Gives two minutes of flight, speed and haste.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Gives five minues of flight and enhanced speed, haste and absorption.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "Gives two minutes of speed and haste.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Gives two minues of flight and enhanced speed, haste and absorption.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("comfy_shoes"), "Gives step height when worn.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.FROG_LEGS), "Increases jumping height and decreases fall damage.");
+
 
             }
             case "tr_tr" -> {
@@ -119,6 +124,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.FANCY_CHEST.get(), "Süslü Sandık");
                 add(ModBlocks.PINK_SLIME_BLOCK.get(), "Pembe Balçık Bloğu");
                 add(ModBlocks.ROSY_FROGLIGHT.get(), "Gülcük Kurbağa Işığı");
+                add(ModBlocks.FORSYTHIA.get(), "Hor Çiçeği");
+                add(ModBlocks.MACHINE_BLOCK.get(), "Makine Bloğu");
+                add(ModBlocks.BOOK_DUPLICATOR.get(), "Kitap Çoğaltıcı");
+
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -135,14 +144,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.active"), "Yerden eşya almak engellendi!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive"), "Yerden eşya alma faaliyeti normal.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Değiştirmek için envanterinde sağ tıkla.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "Envanterine sağ tıklayarak açabilirsin.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("gardening_pot_desc"), "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "Envanterde sağ tıklayarak açabilirsin.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), "Her zaman %s'a sahip");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Büyülü tüy aktif!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Büyülü tüy aktif değil.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "İki dakikalığına uçuş, hız ve acele verir.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Beş dakikalığına uçuş ve gelişmiş hız, acele ve emiş verir.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("comfy_shoes"), "Giyildiğinde adım yüksekliği verir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GOLDEN_ANCIENT_FRUIT), "İki dakikalığına hız ve acele verir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT), "İki dakikalığına uçuş ve gelişmiş hız, acele ve emiş verir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.COMFY_SHOES), "Giyildiğinde adım yüksekliği verir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.FROG_LEGS), "Zıplama yüksekliğini arttırır ve düşüş hasarını azaltır.");
             }
         }
     }

@@ -1,5 +1,8 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.registries.DeferredItem;
+
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public enum ModConstants {
@@ -16,6 +19,11 @@ public enum ModConstants {
 
     public String withSuffix(String suffix) {
         return string+"."+suffix;
+    }
+
+    public String ofItem(DeferredItem<? extends Item> item) {
+        String path = item.getId().getPath();
+        return withSuffix(path);
     }
 
     public static String withId(String text) {

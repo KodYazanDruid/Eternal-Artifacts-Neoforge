@@ -58,6 +58,7 @@ public class FancyChestBlockEntity extends ChestBlockEntity implements IRetextur
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
+        saveAdditional(tag);
         return tag;
     }
 

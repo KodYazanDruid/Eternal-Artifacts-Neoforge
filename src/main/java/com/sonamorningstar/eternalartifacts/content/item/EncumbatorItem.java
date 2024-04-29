@@ -42,9 +42,9 @@ public class EncumbatorItem extends ArtifactItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        if(stack.hasTag() && stack.getTag().getBoolean(ACTIVE)) tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("active")).withStyle(ChatFormatting.DARK_RED));
-        else tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("passive")).withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("switch")));
+        if(stack.hasTag() && stack.getTag().getBoolean(ACTIVE)) tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.active")).withStyle(ChatFormatting.DARK_RED));
+        else tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive")).withStyle(ChatFormatting.GRAY));
+        tooltip.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch")).withStyle(ChatFormatting.GRAY));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 

@@ -1,8 +1,10 @@
 {
   "values": [
     "eternalartifacts:anvilinator",
+    "eternalartifacts:book_duplicator",
     "eternalartifacts:biofurnace",
     "eternalartifacts:resonator",
-    "eternalartifacts:gardening_pot"
+    "eternalartifacts:gardening_pot",
+    "eternalartifacts:machine_block"
   ]
 }

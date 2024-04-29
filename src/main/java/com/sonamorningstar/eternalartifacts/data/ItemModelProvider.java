@@ -49,12 +49,15 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModItems.PINKY_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
         withExistingParent(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.getId().getPath(), modLoc("item/golden_ancient_fruit"));
 
-        withExistingParent(ModBlocks.ANVILINATOR.getId().getPath(), modLoc("block/anvilinator"));
         withExistingParent(ModBlocks.RESONATOR.getId().getPath(), modLoc("block/resonator"));
         withExistingParent(ModBlocks.GARDENING_POT.getId().getPath(), modLoc("block/gardening_pot"));
         withExistingParent(ModBlocks.FANCY_CHEST.getId().getPath(), modLoc("block/fancy_chest"));
         withExistingParent(ModBlocks.PINK_SLIME_BLOCK.getId().getPath(), modLoc("block/pink_slime_block"));
         withExistingParent(ModBlocks.ROSY_FROGLIGHT.getId().getPath(), modLoc("block/rosy_froglight"));
+        withExistingParent(ModBlocks.MACHINE_BLOCK.getId().getPath(), modLoc("block/machine_block"));
+        getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
+            .parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", modLoc("block/forsythia_upper"));
 
         withExistingParent(ModItems.NOUS_BUCKET.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)

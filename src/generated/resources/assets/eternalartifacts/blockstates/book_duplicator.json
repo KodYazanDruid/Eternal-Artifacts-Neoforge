@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/book_duplicator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/book_duplicator"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/book_duplicator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/book_duplicator",
+      "y": 270
+    }
+  }
+}

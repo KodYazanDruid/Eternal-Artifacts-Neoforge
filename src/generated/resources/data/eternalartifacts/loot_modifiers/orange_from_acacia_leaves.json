@@ -10,5 +10,7 @@
       "condition": "minecraft:random_chance"
     }
   ],
-  "item": "eternalartifacts:orange"
+  "item": [
+    "eternalartifacts:orange"
+  ]
 }

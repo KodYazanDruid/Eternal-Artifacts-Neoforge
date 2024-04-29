@@ -75,7 +75,7 @@ public class AnvilinatorBlock extends BaseEntityBlock {
         if(!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof AnvilinatorBlockEntity be) {
-                if(!FluidUtil.interactWithFluidHandler(pPlayer, pHand, ((AnvilinatorBlockEntity) entity).getFluidHandler())) {
+                if(!FluidUtil.interactWithFluidHandler(pPlayer, pHand, be.getFluidHandler())) {
                     AnvilinatorMenu.openContainer((ServerPlayer) pPlayer, pPos);
                 }
             } else {

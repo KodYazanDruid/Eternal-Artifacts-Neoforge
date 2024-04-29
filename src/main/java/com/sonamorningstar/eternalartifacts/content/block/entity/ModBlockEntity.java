@@ -33,6 +33,7 @@ public class ModBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
         saveSynced(tag);
+        saveAdditional(tag);
         return tag;
     }
 
