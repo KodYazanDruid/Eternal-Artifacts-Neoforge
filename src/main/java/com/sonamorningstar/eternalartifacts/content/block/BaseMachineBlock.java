@@ -2,7 +2,9 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BioFurnaceEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ITickable;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -32,6 +34,10 @@ public class BaseMachineBlock<T extends BlockEntity> extends BaseEntityBlock {
         this.fun = fun;
     }
 
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        level.invalidateCapabilities(pos);
+    }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
@@ -52,6 +58,18 @@ public class BaseMachineBlock<T extends BlockEntity> extends BaseEntityBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(BlockStateProperties.HORIZONTAL_FACING);
+    }
+
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
+        if(pState.getBlock() != pNewState.getBlock()) {
+            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+            if(blockEntity instanceof MachineBlockEntity machine) {
+                machine.drops();
+            }
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
+        pLevel.invalidateCapabilities(pPos);
     }
 
     @Nullable

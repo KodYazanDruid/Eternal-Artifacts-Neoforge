@@ -1,5 +1,6 @@
 {
   "type": "eternalartifacts:shaped_retextured_recipe",
   "category": "misc",
-  "item": "eternalartifacts:gardening_pot"
+  "item": "eternalartifacts:gardening_pot",
+  "texture": "eternalartifacts:gardening_pot_suitable"
 }

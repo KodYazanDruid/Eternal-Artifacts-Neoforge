@@ -6,7 +6,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public enum ModConstants {
-   TRANSLATE_KEY_PREFIX("key."+MODID+".tooltip");
+   TRANSLATE_KEY_PREFIX("key."+MODID+".tooltip"),
+   GUI("gui."+MODID);
 
    String string;
     ModConstants(String string) {

@@ -56,7 +56,7 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity implements Men
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new BookDuplicatorMenu(pContainerId, pPlayerInventory, this);
+        return new BookDuplicatorMenu(pContainerId, pPlayerInventory, this, data);
     }
 
     public void tick(Level lvl, BlockPos pos, BlockState st) {

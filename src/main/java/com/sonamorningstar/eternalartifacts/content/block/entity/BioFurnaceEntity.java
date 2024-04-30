@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
+public class BioFurnaceEntity extends MachineBlockEntity implements MenuProvider, ITickable {
     @SubscribeEvent
     private static void registerCapability(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(
@@ -54,38 +54,13 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
         protected void onContentsChanged(int slot) { BioFurnaceEntity.this.sendUpdate(); }
     };
     private static final int FUEL_SLOT = 0;
-    private static final int MAXTRANSFER = 2000;
-    private static final int GENERATE = 40;
-    private final ModEnergyStorage ENERGY_HANDLER = new ModEnergyStorage(100000, GENERATE, MAXTRANSFER) {
+    private final ModEnergyStorage ENERGY_HANDLER = new ModEnergyStorage(100000, 40, 5000) {
         @Override
         public void onEnergyChanged() { BioFurnaceEntity.this.sendUpdate(); }
     };
 
-    protected final ContainerData DATA;
-    private int progress = 0;
-    private int maxProgress = 100;
-
     public BioFurnaceEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState);
-        this.DATA = new ContainerData() {
-            @Override
-            public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> BioFurnaceEntity.this.progress;
-                    case 1 -> BioFurnaceEntity.this.maxProgress;
-                    default -> 0;
-                };
-            }
-            @Override
-            public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case 0 -> BioFurnaceEntity.this.progress = pValue;
-                    case 1 -> BioFurnaceEntity.this.maxProgress = pValue;
-                }
-            }
-            @Override
-            public int getCount() { return 2; }
-        };
     }
 
     @Override
@@ -94,20 +69,7 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new BioFurnaceMenu(pContainerId, pPlayerInventory, this, this.DATA);
-    }
-
-    @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
-        return tag;
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
+        return new BioFurnaceMenu(pContainerId, pPlayerInventory, this, this.data);
     }
 
     @Override
@@ -115,7 +77,6 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
         super.load(pTag);
         ENERGY_HANDLER.deserializeNBT(pTag.get("Energy"));
         ITEM_HANDLER.deserializeNBT(pTag.getCompound("Inventory"));
-        progress = pTag.getInt("biofuel_progress");
     }
 
     @Override
@@ -123,15 +84,6 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
         super.saveAdditional(pTag);
         pTag.put("Energy", ENERGY_HANDLER.serializeNBT());
         pTag.put("Inventory", ITEM_HANDLER.serializeNBT());
-        pTag.putInt("biofuel_progress", progress);
-    }
-
-    public void drops() {
-        SimpleContainer inventory = new SimpleContainer(ITEM_HANDLER.getSlots());
-        for(int i = 0; i < ITEM_HANDLER.getSlots(); i++) {
-            inventory.setItem(i, ITEM_HANDLER.getStackInSlot(i));
-        }
-        Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
@@ -141,14 +93,14 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
 
     private void generatePower() {
         ItemStack fuel = ITEM_HANDLER.getStackInSlot(FUEL_SLOT);
-        if(ENERGY_HANDLER.getEnergyStored()  < ENERGY_HANDLER.getMaxEnergyStored()) {
+        if(ENERGY_HANDLER.getEnergyStored() < ENERGY_HANDLER.getMaxEnergyStored()) {
             if(progress <= 0) {
                 if(fuel.isEmpty() || !fuel.is(ModItems.ORANGE.get())) return;
                 ITEM_HANDLER.extractItem(FUEL_SLOT, 1, false);
                 progress = maxProgress;
             }else{
                 progress--;
-                ENERGY_HANDLER.receiveEnergy(GENERATE, false);
+                ENERGY_HANDLER.receiveEnergy(40, false);
             }
             setChanged();
         }
@@ -161,7 +113,7 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
             if(be != null) {
                 IEnergyStorage es = level.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), direction.getOpposite());
                 if(es != null && es.canReceive()) {
-                    int received = es.receiveEnergy(Math.min(ENERGY_HANDLER.getEnergyStored() , MAXTRANSFER), false);
+                    int received = es.receiveEnergy(Math.min(ENERGY_HANDLER.getEnergyStored() , 5000), false);
                     ENERGY_HANDLER.extractEnergy(received, false);
                     setChanged();
                 }
@@ -169,14 +121,6 @@ public class BioFurnaceEntity extends BlockEntity implements MenuProvider {
         }
     }
 
-    public int getStoredEnergy(){ return ENERGY_HANDLER.getEnergyStored(); }
-
-    public int getEnergyCapacity(){ return ENERGY_HANDLER.getMaxEnergyStored(); }
-
-    private void sendUpdate(){
-        setChanged();
-        if(this.level != null) this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-    }
 }
 
 

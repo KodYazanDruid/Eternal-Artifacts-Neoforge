@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.AnvilinatorBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.PacketAnvilatorSwitchToServer;
 import net.minecraft.client.gui.Font;
@@ -26,9 +27,11 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
     private EditBox name;
     private Button nameSwitchButton;
     private Font switchInfo;
+    private final AnvilinatorBlockEntity anvilinatorBlockEntity;
 
     public AnvilinatorScreen(AnvilinatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        this.anvilinatorBlockEntity = (AnvilinatorBlockEntity) menu.getBlockEntity();
     }
 
     @Override
@@ -40,18 +43,18 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
         name.setTextColorUneditable(-1);
         name.setBordered(false);
         name.setMaxLength(50);
-        name.setValue(this.menu.getBlockEntity().getName());
-        name.setEditable(!menu.getBlockEntity().getEnableNaming());
-        name.setFocused(!menu.getBlockEntity().getEnableNaming());
+        name.setValue(anvilinatorBlockEntity.getName());
+        name.setEditable(!anvilinatorBlockEntity.getEnableNaming());
+        name.setFocused(!anvilinatorBlockEntity.getEnableNaming());
         addWidget(this.name);
 
         nameSwitchButton = addWidget(Button.builder(Component.empty(), this::setNameSwitch).bounds(leftPos + 70, topPos + 38, 85, 7).build());
     }
 
     private void setNameSwitch(Button button) {
-        boolean invertedValue = !menu.getBlockEntity().getEnableNaming();
-        name.setEditable(menu.getBlockEntity().getEnableNaming());
-        name.setFocused(menu.getBlockEntity().getEnableNaming());
+        boolean invertedValue = !anvilinatorBlockEntity.getEnableNaming();
+        name.setEditable(anvilinatorBlockEntity.getEnableNaming());
+        name.setFocused(anvilinatorBlockEntity.getEnableNaming());
 
         String naming = "";
         if (invertedValue) {
@@ -63,7 +66,7 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
 
     @Override
     public void onClose() {
-        Channel.sendToServer(new PacketAnvilatorSwitchToServer(menu.getBlockEntity().getEnableNaming(), menu.getBlockEntity().getBlockPos(), name.getValue()));
+        Channel.sendToServer(new PacketAnvilatorSwitchToServer(anvilinatorBlockEntity.getEnableNaming(), menu.getBlockEntity().getBlockPos(), name.getValue()));
         super.onClose();
     }
 
@@ -75,7 +78,7 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
         pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        if(menu.getBlockEntity().getEnableNaming()) pGuiGraphics.blit(TEXTURE, x + 70, y + 20, 0, 166, 94, 16);
+        if(anvilinatorBlockEntity.getEnableNaming()) pGuiGraphics.blit(TEXTURE, x + 70, y + 20, 0, 166, 94, 16);
         else pGuiGraphics.blit(TEXTURE, x + 70, y + 20, 0, 182, 94, 16);
         renderProgressArrow(pGuiGraphics, x, y);
         renderEnergyBar(pGuiGraphics, x, y);
@@ -91,13 +94,13 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
     //Render misc stuff on the screen.
     private void renderSwitch(GuiGraphics guiGraphics, int x, int y) {
         int offset;
-        if(menu.getBlockEntity().getEnableNaming()) offset = 0;
+        if(anvilinatorBlockEntity.getEnableNaming()) offset = 0;
         else offset = 5;
         guiGraphics.blit(BARS, x + 69, y + 40, 48, offset, 5, 5, 64, 64);
     }
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isCrafting()) {
+        if(menu.isWorking()) {
             guiGraphics.blit(TEXTURE, x + 122, y + 53, 179, 24, menu.getScaledProgress(), 16);
         }
     }
@@ -110,7 +113,7 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
     private void renderFluidBar(GuiGraphics guiGraphics, int x, int y) {
         guiGraphics.blit(BARS, x + 24, y + 20, 30, 0, 18, 56, 64, 64);
 
-        FluidStack stack = getMenu().getBlockEntity().getFluidStack();
+        FluidStack stack = anvilinatorBlockEntity.getFluidStack();
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
         ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(stack);
         if(stillTexture == null) return;
@@ -153,7 +156,7 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
 
         int color;
         String key;
-        if(menu.getBlockEntity().getEnableNaming()) {
+        if(anvilinatorBlockEntity.getEnableNaming()) {
             color = 0x187718;
             key = "key." + MODID + ".anvilinator.enabled_naming";
         } else {
