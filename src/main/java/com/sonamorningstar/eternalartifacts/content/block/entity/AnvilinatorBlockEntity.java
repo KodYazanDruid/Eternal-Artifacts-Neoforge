@@ -167,6 +167,9 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
     public final ModEnergyStorage ENERGY_HANDLER = new ModEnergyStorage(50000, 2500) {
         @Override
         public void onEnergyChanged() { AnvilinatorBlockEntity.this.sendUpdate(); }
+
+        @Override
+        public boolean canExtract() { return false; }
     };
 
     private final FluidTank FLUID_TANK = new ModFluidStorage(64000) {
@@ -337,7 +340,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         int fluidAmount = (int) (reelCost * 20);
         if((output.isEmpty() || ItemHandlerHelper.canItemStacksStack(output, result)) && FLUID_TANK.getFluidAmount() >= fluidAmount) {
             progress++;
-            ENERGY_HANDLER.extractEnergy(consumePerTick, false);
+            ENERGY_HANDLER.extractEnergyForced(consumePerTick, false);
             setChanged();
             if (progress >= maxProgress) {
                 input.shrink(1);
@@ -357,7 +360,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         if(ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT).getCount() + output.getCount() >= 64) return;
         if(output.isEmpty() && !ItemHandlerHelper.canItemStacksStack(ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT), output)) return;
         progress++;
-        ENERGY_HANDLER.extractEnergy(consumePerTick, false);
+        ENERGY_HANDLER.extractEnergyForced(consumePerTick, false);
         setChanged();
         if(progress >= maxProgress) {
             input.shrink(1);

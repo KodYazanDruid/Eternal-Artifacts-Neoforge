@@ -38,6 +38,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ANCIENT_FRUIT.get(), "Ancient Fruit");
                 add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "Demon Eye Spawn Egg");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Axe of Regrowth");
+                add(ModItems.RAW_MEAT_INGOT.get(), "Raw Meat Ingot");
                 add(ModItems.MEAT_INGOT.get(), "Meat Ingot");
                 add(ModItems.PINK_SLIME.get(), "Pink Slime");
                 add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Spawn Egg");
@@ -46,6 +47,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Golden Ancient Fruit");
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Enchanted Golden Ancient Fruit");
                 add(ModItems.COMFY_SHOES.get(), "Comfy Shoes");
+                add(ModItems.SUGAR_CHARCOAL.get(), "Sugar Charcoal");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -59,6 +61,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.FORSYTHIA.get(), "Forsythia");
                 add(ModBlocks.MACHINE_BLOCK.get(), "Machine Block");
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Book Duplicator");
+                add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Sugar Charcoal Block");
+                add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Four Leaf Clover");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -105,6 +109,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ANCIENT_FRUIT.get(), "Antik Meyve");
                 add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "İblis Gözü Canlandırma Yumurtası");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Yeşertme Baltası");
+                add(ModItems.RAW_MEAT_INGOT.get(), "Çiğ Et Külçesi");
                 add(ModItems.MEAT_INGOT.get(), "Et Külçesi");
                 add(ModItems.PINK_SLIME.get(), "Pembe Balçık");
                 add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Çağırma Yumurtası");
@@ -113,6 +118,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Altın Antik Meyve");
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Büyülü Altın Antik Meyve");
                 add(ModItems.COMFY_SHOES.get(), "Rahat Ayakkabılar");
+                add(ModItems.SUGAR_CHARCOAL.get(), "Şeker Odun Kömürü");
+
 
 
                 //Bloklar
@@ -127,7 +134,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.FORSYTHIA.get(), "Hor Çiçeği");
                 add(ModBlocks.MACHINE_BLOCK.get(), "Makine Bloğu");
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Kitap Çoğaltıcı");
-
+                add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Şeker Odun Kömürü Bloğu");
+                add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Dört Yapraklı Yonca");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

@@ -14,9 +14,14 @@ import com.sonamorningstar.eternalartifacts.content.entity.client.PinkyRenderer;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
+import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -44,7 +49,10 @@ public class ClientEvents{
             if(pTintIndex == 1) return ((BaseFluidType) ModFluidTypes.NOUS.get()).getTintColor();
             else return -1;
         }, ModItems.NOUS_BUCKET.get());
-
+        event.register((stack, ti) ->{
+            BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();
+            return BlockColors.createDefault().getColor(blockstate, null, null, ti);
+        }, ModBlocks.FOUR_LEAF_CLOVER.asItem());
         event.register(new RetexturedColor(), ModItems.GARDENING_POT.get());
         event.register(new RetexturedColor(), ModItems.FANCY_CHEST.get());
     }
@@ -53,6 +61,10 @@ public class ClientEvents{
     public static void registerColorHandlerBlock(RegisterColorHandlersEvent.Block event) {
         event.register(new RetexturedColor(), ModBlocks.GARDENING_POT.get());
         event.register(new RetexturedColor(), ModBlocks.FANCY_CHEST.get());
+        event.register((state, level, pos, ti) ->
+            level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos)
+                    : GrassColor.getDefaultColor()
+        , ModBlocks.FOUR_LEAF_CLOVER.get());
     }
 
     @SubscribeEvent

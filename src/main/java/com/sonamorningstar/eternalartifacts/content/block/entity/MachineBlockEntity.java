@@ -1,30 +1,22 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.capablities.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capablities.ModItemStorage;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Containers;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 
-public class MachineBlockEntity extends ModBlockEntity {
-    private final BlockPos pos;
-    private IItemHandler inventory;
-    private IFluidHandler tank;
-    private IEnergyStorage energy;
+public abstract class MachineBlockEntity extends ModBlockEntity {
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
         super(type, pos, blockState);
-        this.pos = pos;
-        if(level != null){
-            this.inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
-            this.tank = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
-            this.energy = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, null);
-        }
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -52,6 +44,7 @@ public class MachineBlockEntity extends ModBlockEntity {
 
     protected ContainerData data;
     protected int progress;
+    @Setter
     protected int maxProgress = 100;
 
     @Override
@@ -71,13 +64,22 @@ public class MachineBlockEntity extends ModBlockEntity {
         progress = tag.getInt("progress");
     }
 
-    public void drops() {
-        if(inventory != null){
-            SimpleContainer container = new SimpleContainer(inventory.getSlots());
-            for (int i = 0; i < inventory.getSlots(); i++) {
-                container.setItem(i, inventory.getStackInSlot(i));
+    protected void fillTankFromSlot(ModItemStorage inventory, ModFluidStorage tank, int fluidSlot) {
+        ItemStack stack = inventory.getStackInSlot(fluidSlot);
+        if(!stack.isEmpty() && tank.getFluidAmount() < tank.getCapacity()) {
+            IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+            if(itemHandler != null && tank.isFluidValid(itemHandler.getFluidInTank(0)) && tank.getFluid().getFluid() == itemHandler.getFluidInTank(0).getFluid()) {
+                int amountToDrain = tank.getCapacity() - tank.getFluidAmount();
+                int amount = itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.SIMULATE).getAmount();
+                if (amount > 0) {
+                    tank.fill(itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
+                }
+                if (amount <= amountToDrain) {
+                    inventory.setStackInSlot(fluidSlot, itemHandler.getContainer());
+                }
             }
-            Containers.dropContents(this.level, this.worldPosition, container);
         }
     }
+
+    public abstract void drops();
 }

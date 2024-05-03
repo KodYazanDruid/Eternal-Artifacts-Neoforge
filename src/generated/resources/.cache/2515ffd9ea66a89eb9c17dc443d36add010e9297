@@ -1,5 +1,8 @@
-// 1.20.4	2024-04-28T20:03:56.6181337	Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-05-02T16:44:10.1757566	Tags for minecraft:block mod id eternalartifacts
+23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/blocks/needs_wood_tool.json
+23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/blocks/storage_blocks/coal.json
 570859f6f31298505c124817b821bfa6593366a4 data/minecraft/tags/blocks/bamboo_plantable_on.json
-bcf0f0d141af2a0ebc28b18c941b1122eb6dcfc5 data/minecraft/tags/blocks/mineable/pickaxe.json
+2d6f68d961a722c859d0471037bcad86593bb7b9 data/minecraft/tags/blocks/mineable/pickaxe.json
 0b4110261ce6a3567df47c0472261e0d739f752b data/minecraft/tags/blocks/needs_iron_tool.json
 015113bee6a9b060dc2c0ff140782fac354f34e1 data/minecraft/tags/blocks/needs_stone_tool.json
+e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/blocks/small_flowers.json

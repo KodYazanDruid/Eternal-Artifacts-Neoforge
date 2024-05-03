@@ -1,16 +1,25 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
+import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.GardeningPotEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.IRetexturedBlockEntity;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,6 +43,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -103,6 +113,39 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
         }
     }
 
+    @Override
+    public boolean hasDynamicLightEmission(BlockState state) {
+        return true;
+    }
+
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if(entity instanceof GardeningPotEntity potEntity) {
+            BlockState light = RetexturedHelper.getBlock(potEntity.getTextureName()).defaultBlockState();
+            return light.getLightEmission(level, pos);
+        }
+        return super.getLightEmission(state, level, pos);
+    }
+
+    @Override
+    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if(entity instanceof IRetexturedBlockEntity retexture) {
+            BlockState texture = RetexturedHelper.getBlock(retexture.getTextureName()).defaultBlockState();
+            return texture.getShadeBrightness(level, pos);
+        }else return super.getShadeBrightness(state, level, pos);
+    }
+
+    @Override
+    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+        BlockEntity entity = level.getBlockEntity(pos);
+        if(entity instanceof IRetexturedBlockEntity retexture) {
+            BlockState texture = RetexturedHelper.getBlock(retexture.getTextureName()).defaultBlockState();
+            return texture.getLightBlock(level, pos);
+        }else return super.getLightBlock(state, level, pos);
+    }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
@@ -115,6 +158,29 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
                 }
             };
         }
+    }
+
+    @Override
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if(!level.isClientSide()) {
+            BlockEntity entity = level.getBlockEntity(pos);
+            ItemStack texture = player.getItemInHand(hand);
+            if(entity instanceof IRetexturedBlockEntity retexturable
+                    && texture.getItem() instanceof BlockItem bi
+                    && texture.is(ModTags.Items.GARDENING_POT_SUITABLE)
+                    && !retexturable.getTexture().defaultBlockState().is(bi.getBlock())) {
+                if(!player.getAbilities().instabuild){
+                    ItemStack oldTexture = retexturable.getTexture().asItem().getDefaultInstance();
+                    ItemEntity oldTextureEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, oldTexture);
+                    if (oldTexture != null) level.addFreshEntity(oldTextureEntity);
+                    texture.shrink(1);
+                }
+                level.levelEvent(player, 2001, pos, getId(state));
+                retexturable.updateTexture(RetexturedHelper.getTextureName(bi.getBlock()));
+                entity.getBlockState().setValue(LIGHT_LEVEL, bi.getBlock().getLightEmission(state, level, pos));
+            } else return super.use(state, level, pos, player, hand, hit);
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide());
     }
 
     @Override
@@ -179,6 +245,7 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
         if (state.getValue(WATERLOGGED)) {
             levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
         }
+
         return super.updateShape(state, direction, neighborState, levelAccessor, pos, neighborPos);
     }
 

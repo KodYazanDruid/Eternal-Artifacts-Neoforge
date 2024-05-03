@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "eternalartifacts:sugar_charcoal_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "eternalartifacts:sugar_charcoal"
+  }
+}

@@ -2,14 +2,11 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.BioFurnaceEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ITickable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -23,20 +20,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 
-public class BaseMachineBlock<T extends BlockEntity> extends BaseEntityBlock {
+public class BaseMachineBlock<T extends MachineBlockEntity> extends BaseEntityBlock {
     private final BiFunction<BlockPos, BlockState, T> fun;
     protected BaseMachineBlock(Properties pProperties, BiFunction<BlockPos, BlockState, T> fun) {
         super(pProperties);
         this.fun = fun;
-    }
-
-    @Override
-    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        level.invalidateCapabilities(pos);
     }
 
     @Override
@@ -61,20 +56,20 @@ public class BaseMachineBlock<T extends BlockEntity> extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if(pState.getBlock() != pNewState.getBlock()) {
-            BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if(state.getBlock() != newState.getBlock()) {
+            BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof MachineBlockEntity machine) {
                 machine.drops();
             }
         }
-        super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
-        pLevel.invalidateCapabilities(pPos);
+        super.onRemove(state, level, pos, newState, movedByPiston);
+        level.invalidateCapabilities(pos);
     }
 
     @Nullable
     @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+    public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level level, BlockState pState, BlockEntityType<B> pBlockEntityType) {
         if (level.isClientSide) {
             return null;
         } else {
@@ -91,7 +86,9 @@ public class BaseMachineBlock<T extends BlockEntity> extends BaseEntityBlock {
         if(!level.isClientSide()) {
             BlockEntity entity = level.getBlockEntity(pos);
             if(entity instanceof MenuProvider) {
-                AbstractMachineMenu.openContainer((ServerPlayer) player, pos);
+                IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+                if(fluidHandler == null) AbstractMachineMenu.openContainer((ServerPlayer) player, pos);
+                else if(!FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) AbstractMachineMenu.openContainer((ServerPlayer) player, pos);
             }else {
                 throw new IllegalStateException("Container provider is missing!");
             }

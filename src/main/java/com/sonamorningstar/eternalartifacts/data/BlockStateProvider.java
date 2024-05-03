@@ -33,6 +33,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
     protected void registerStatesAndModels() {
         //simpleBlockWithItem(ModBlocks.LUTFI.get());
         simpleBlockWithItem(ModBlocks.BIOFURNACE.get());
+        simpleBlockWithItem(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         axisBlock(ModBlocks.ROSY_FROGLIGHT.get(), modLoc("block/rosy_froglight_side"), modLoc("block/rosy_froglight_top"));
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
@@ -69,6 +70,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
+        tintedCrossBlock(ModBlocks.FOUR_LEAF_CLOVER);
 
     }
 
@@ -107,6 +109,22 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
             ModelFile model = models().cross(partName, modLoc("block/"+partName)).renderType("cutout");
             return ConfiguredModel.builder().modelFile(model).build();
         });
+    }
+
+    private void crossBlock(DeferredBlock<? extends Block> block) {
+        ModelFile model = models()
+            .cross(block.getId().getPath(), blockTexture(block.get()))
+            .renderType("cutout");
+
+        simpleBlock(block.get(), model);
+    }
+
+    private void tintedCrossBlock(DeferredBlock<? extends Block> block) {
+        ModelFile model = models()
+            .withExistingParent(block.getId().getPath(), mcLoc("block/tinted_cross"))
+            .texture("cross", "block/"+block.getId().getPath())
+            .renderType("cutout");
+        simpleBlock(block.get(), model);
     }
 
     private VariantBlockStateBuilder directionBlock(Block block, BiConsumer<BlockState, ConfiguredModel.Builder<?>> model, Property<Direction> direction) {

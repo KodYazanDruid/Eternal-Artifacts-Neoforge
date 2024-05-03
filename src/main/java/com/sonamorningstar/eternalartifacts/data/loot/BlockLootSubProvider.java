@@ -37,7 +37,9 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.PINK_SLIME_BLOCK.get());
         dropSelf(ModBlocks.ROSY_FROGLIGHT.get());
         dropSelf(ModBlocks.MACHINE_BLOCK.get());
+        dropSelf(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         add(ModBlocks.FORSYTHIA.get(), createSinglePropConditionTable(ModBlocks.FORSYTHIA.get(), DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
+        dropSelf(ModBlocks.FOUR_LEAF_CLOVER.get());
 
         add(ModBlocks.GARDENING_POT.get(), LootTable.lootTable()
             .withPool(

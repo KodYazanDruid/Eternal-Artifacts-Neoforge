@@ -34,5 +34,17 @@ public abstract class ModEnergyStorage extends EnergyStorage {
         return amount;
     }
 
+    public int extractEnergyForced(int maxExtract, boolean simulate) {
+        int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+        if (!simulate) energy -= energyExtracted;
+        return energyExtracted;
+    }
+
+    public int receiveEnergyForced(int maxReceive, boolean simulate) {
+        int energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+        if (!simulate) energy += energyReceived;
+        return energyReceived;
+    }
+
     public abstract void onEnergyChanged();
 }

@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,10 +29,18 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.FRUITS).add(ModItems.ORANGE.get(), ModItems.ANCIENT_FRUIT.get());
         tag(ModTags.Items.FRUITS_ORANGE).add(ModItems.ORANGE.get());
         tag(ModTags.Items.FRUITS_ANCIENT).add(ModItems.ANCIENT_FRUIT.get());
-        tag(Tags.Items.INGOTS).add(ModItems.MEAT_INGOT.get());
+        tag(Tags.Items.INGOTS).add(
+                ModItems.RAW_MEAT_INGOT.get(),
+                ModItems.MEAT_INGOT.get()
+        );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.MEAT_INGOT.get());
+        tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
+        tag(ItemTags.COALS).add(ModItems.SUGAR_CHARCOAL.get());
+        tag(Tags.Items.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.asItem());
+        tag(ItemTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
+        tag(ItemTags.FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,

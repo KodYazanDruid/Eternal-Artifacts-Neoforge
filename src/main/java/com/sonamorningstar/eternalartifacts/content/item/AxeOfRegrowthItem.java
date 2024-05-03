@@ -63,7 +63,6 @@ public class AxeOfRegrowthItem extends AxeItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         MutableComponent ench = Enchantments.BLOCK_FORTUNE.getFullname(3).copy();
-        //pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), ench.withStyle(ChatFormatting.ITALIC)).withStyle(ChatFormatting.GRAY));
         pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), ench));
     }
 }

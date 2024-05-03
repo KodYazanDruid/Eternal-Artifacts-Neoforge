@@ -44,5 +44,6 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeServer(), new LootTableProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(), new GlobalLootModifierProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(), new RecipeProvider(packOutput));
+        dataGenerator.addProvider(event.includeServer(), new DataMapProvider(packOutput, lookupProvider));
     }
 }

@@ -42,16 +42,16 @@ public class JeiCompat implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-        registration.addRecipeCatalyst(new ItemStack(ModItems.GARDENING_POT.get()), GardeningPotCategory.RETEXTURING);
+        //registration.addRecipeCatalyst(new ItemStack(ModItems.GARDENING_POT.get()), GardeningPotCategory.RETEXTURING);
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
-        registration.addRecipeCategories(new GardeningPotCategory(registration.getJeiHelpers().getGuiHelper()));
+        //registration.addRecipeCategories(new GardeningPotCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(GardeningPotCategory.RETEXTURING, List.of(new ShapedRetexturedRecipe(CraftingBookCategory.MISC, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE)));
+        //registration.addRecipes(GardeningPotCategory.RETEXTURING, List.of(new ShapedRetexturedRecipe(CraftingBookCategory.MISC, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE)));
     }
 }

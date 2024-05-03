@@ -13,6 +13,7 @@ import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.PlantHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -127,7 +128,7 @@ public class CommonEvents {
                 ItemHandlerHelper.giveItemToPlayer(player, is);
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             }
-            if (sapling.getItem() instanceof BlockItem bi && bi.getBlock() instanceof SaplingBlock saplingBlock && saplingBlock.canSurvive(soil, level, pos)) {
+            if (sapling.getItem() instanceof BlockItem bi && bi.getBlock() instanceof SaplingBlock saplingBlock && soil.canSustainPlant(level, pos, Direction.UP, saplingBlock)) {
                 level.setBlockAndUpdate(pos, saplingBlock.defaultBlockState());
             }
         }

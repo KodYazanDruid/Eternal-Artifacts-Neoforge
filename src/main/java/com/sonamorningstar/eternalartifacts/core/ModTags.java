@@ -19,6 +19,7 @@ public class ModTags {
         public static final TagKey<Item> FRUITS_ANCIENT = forgeTag("fruits/ancient");
         public static final TagKey<Item> GARDENING_POT_SUITABLE = modTag("gardening_pot_suitable");
         public static final TagKey<Item> INGOTS_MEAT = forgeTag("ingots/meat");
+        public static final TagKey<Item> INGOTS_RAW_MEAT = forgeTag("ingots/raw_meat");
         public static final TagKey<Item> SLIMEBALLS_PINK = forgeTag("slimeballs/pink");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }

@@ -1,4 +1,4 @@
-// 1.20.4	2024-04-29T17:12:14.4919697	Item Models: eternalartifacts
+// 1.20.4	2024-05-02T19:52:48.1008851	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
@@ -12,6 +12,7 @@ bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/com
 a0623a5915f2cd12361259e198947935b3335943 assets/eternalartifacts/models/item/ender_pouch.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json
 c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/forsythia.json
+8dbc4a5b8db74c606be2099f6043700716fd7bfd assets/eternalartifacts/models/item/four_leaf_clover.json
 5b5b72db5847d5995c7212078a95b198a9a89493 assets/eternalartifacts/models/item/frog_legs.json
 7d0e656ecf2f61bedbab2793001bae737289d13b assets/eternalartifacts/models/item/gardening_pot.json
 aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/golden_ancient_fruit.json
@@ -29,5 +30,7 @@ e27a29410dee3d2b3bcee6f52a1cd980728b1076 assets/eternalartifacts/models/item/med
 2173cdec69a7965d1efd41f53cf0b743228cade1 assets/eternalartifacts/models/item/pink_slime_block.json
 a82a650b3c02ef68ab64fd1e4a4623566f81f23a assets/eternalartifacts/models/item/plant_matter.json
 94a79bbcf69b4808293feeb6b54f52fd15260cae assets/eternalartifacts/models/item/portable_crafter.json
+08d60efc2125a901b49bb0452f036921e8501c14 assets/eternalartifacts/models/item/raw_meat_ingot.json
 62a008a8d95c366702b9e51a4e1d4c85fd09a5ff assets/eternalartifacts/models/item/resonator.json
 08a2d746a6f53b410d3c0fa6c4895e19929e07a6 assets/eternalartifacts/models/item/rosy_froglight.json
+ba733dcc4dedb590bfbd7153bcdec9552b070693 assets/eternalartifacts/models/item/sugar_charcoal.json
