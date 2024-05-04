@@ -1,12 +1,12 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capablities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capablities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capablities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModFluidTypes;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 public class BookDuplicatorBlockEntity extends MachineBlockEntity implements MenuProvider, ITickable {
     public BookDuplicatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState);
+        setMaxProgress(500);
     }
 
     // 0 -> input
@@ -46,7 +47,8 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity implements Men
         @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             switch (slot) {
-                case 0, 1 -> {return stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK);}
+                case 0 -> {return stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK);}
+                case 1 -> {return false;}
                 case 2 -> {return stack.is(Items.BOOK) || stack.is(Items.WRITABLE_BOOK);}
                 case 3 -> {return stack.is(Tags.Items.FEATHERS);}
                 case 4 -> {return stack.is(Items.INK_SAC);}
@@ -61,7 +63,14 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity implements Men
                 default -> {return super.isItemValid(slot, stack);}
             }
         }
+
+        /*@Override
+        public ItemStack extractItem(int slot, int amount, boolean simulate) {
+            return slot == 1 ? super.extractItem(slot, amount, simulate) : ItemStack.EMPTY;
+        }*/
+
     };
+
     public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
         @Override
         public void onEnergyChanged() {
@@ -76,7 +85,7 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity implements Men
 
         @Override
         public boolean isFluidValid(FluidStack stack) {
-            return stack.is(ModFluidTypes.NOUS.get());
+            return stack.is(ModTags.Fluids.EXPERIENCE);
         }
     };
 
@@ -118,6 +127,7 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity implements Men
 
     public void tick(Level lvl, BlockPos pos, BlockState st) {
         fillTankFromSlot(inventory, tank, 5);
+
     }
 
 }

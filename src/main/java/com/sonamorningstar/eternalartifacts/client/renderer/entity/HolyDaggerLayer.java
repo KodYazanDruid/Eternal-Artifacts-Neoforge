@@ -1,51 +1,47 @@
-package com.sonamorningstar.eternalartifacts.event;
+package com.sonamorningstar.eternalartifacts.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.ArrayUtils;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+public class HolyDaggerLayer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
 
-@Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
-public class ClientEvents {
+    final BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
     private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 
-    @SubscribeEvent
-    public static void renderLevelStage(final RenderLevelStageEvent event) {
-        PoseStack pose = event.getPoseStack();
-        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
-        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        LivingEntity living = Minecraft.getInstance().player;
+    public HolyDaggerLayer(RenderLayerParent<T, M> pRenderer) {
+        super(pRenderer);
+    }
 
-        /**
-         * Source: https://github.com/TeamTwilight/twilightforest/blob/1.20.x/src/main/java/twilightforest/client/renderer/entity/ShieldLayer.java#L25
-         * @link{com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer} for entity layer rendering.
-         * This is for first person rendering.
-         */
-        if(event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES) && living.hasEffect(ModEffects.FLIGHT.get())) {
-            float age = living.tickCount + event.getPartialTick();
+    @Override
+    public void render(
+            PoseStack pose,
+            MultiBufferSource buffer,
+            int pPackedLight, T living,
+            float limbSwing,
+            float limbSwingAmount,
+            float partialTick,
+            float ageInTicks,
+            float netHeadYaw,
+            float headPitch) {
+
+        if(living.hasEffect(ModEffects.FLIGHT.get())) {
+            float age = living.tickCount + partialTick;
             float rotateAngleY = age / -50.0F;
             float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
             float rotateAngleZ = Mth.cos(age / 5.0F) / 4.0F;
@@ -53,7 +49,7 @@ public class ClientEvents {
             int count = 8;
             for(int c = 0; c < count; c++){
                 pose.pushPose();
-                pose.mulPose(Axis.ZP.rotationDegrees(rotateAngleZ * (180F / (float) Math.PI)));
+                pose.mulPose(Axis.ZP.rotationDegrees(180 + rotateAngleZ * (180F / (float) Math.PI)));
                 pose.mulPose(Axis.YP.rotationDegrees(rotateAngleY * (180F / (float) Math.PI) + (c * (360F / count))));
                 pose.mulPose(Axis.XP.rotationDegrees(rotateAngleX * (180F / (float) Math.PI)));
                 pose.translate(-0.5, -0.65, -0.5);
@@ -71,8 +67,6 @@ public class ClientEvents {
                 pose.popPose();
             }
         }
+
     }
-
-
-
 }

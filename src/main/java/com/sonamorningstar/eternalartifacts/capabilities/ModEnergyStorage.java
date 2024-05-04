@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.capablities;
+package com.sonamorningstar.eternalartifacts.capabilities;
 
 import net.neoforged.neoforge.energy.EnergyStorage;
 

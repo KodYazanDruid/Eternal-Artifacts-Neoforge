@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capablities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capablities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -12,7 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.items.IItemHandler;
 
 public abstract class MachineBlockEntity extends ModBlockEntity {
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {

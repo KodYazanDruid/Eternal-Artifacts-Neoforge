@@ -96,22 +96,22 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
         int offset;
         if(anvilinatorBlockEntity.getEnableNaming()) offset = 0;
         else offset = 5;
-        guiGraphics.blit(BARS, x + 69, y + 40, 48, offset, 5, 5, 64, 64);
+        guiGraphics.blit(BARS, x + 69, y + 40, 48, offset, 5, 5);
     }
 
     private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
         if(menu.isWorking()) {
-            guiGraphics.blit(TEXTURE, x + 122, y + 53, 179, 24, menu.getScaledProgress(), 16);
+            guiGraphics.blit(BARS, x + 122, y + 53, 0, 56, menu.getScaledProgress(22), 16);
         }
     }
 
     private void renderEnergyBar(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(BARS, x + 5, y + 20, 0, 0, 18, 56, 64, 64);
-        guiGraphics.blit(BARS, x + 8, y + 73 - menu.getEnergyProgress(), 18, 53 - menu.getEnergyProgress(), 12, menu.getEnergyProgress(), 64, 64);
+        guiGraphics.blit(BARS, x + 5, y + 20, 0, 0, 18, 56);
+        guiGraphics.blit(BARS, x + 8, y + 73 - menu.getEnergyProgress(), 18, 53 - menu.getEnergyProgress(), 12, menu.getEnergyProgress());
     }
 
     private void renderFluidBar(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(BARS, x + 24, y + 20, 30, 0, 18, 56, 64, 64);
+        guiGraphics.blit(BARS, x + 24, y + 20, 30, 0, 18, 56);
 
         FluidStack stack = anvilinatorBlockEntity.getFluidStack();
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());

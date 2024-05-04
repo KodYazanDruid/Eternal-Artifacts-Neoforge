@@ -67,7 +67,7 @@ public final class ItemRendererHelper {
         RenderSystem.applyModelViewMatrix();
     }
 
-    private static MultiBufferSource wrapBuffer(MultiBufferSource.BufferSource buffer, int alpha, boolean b) {
+    public static MultiBufferSource wrapBuffer(MultiBufferSource.BufferSource buffer, int alpha, boolean b) {
         return renderType -> new GhostVertexConsumer(buffer.getBuffer(b ? TRANSLUCENT : renderType), alpha);
     }
 }

@@ -19,7 +19,7 @@ import javax.annotation.Nonnull;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class AbstractMachineScreen<T extends AbstractMachineMenu> extends AbstractContainerScreen<T> {
-    private static final ResourceLocation BARS = new ResourceLocation(MODID, "textures/gui/bars.png");
+    private static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
     @Nonnull
     @Setter
     protected static ResourceLocation texture;
@@ -48,12 +48,12 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     protected void renderEnergyBar(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(BARS, x, y, 0, 0, 18, 56, 64, 64);
-        guiGraphics.blit(BARS, x + 3, y + 53 - menu.getEnergyProgress(), 18, 53 - menu.getEnergyProgress(), 12, menu.getEnergyProgress(), 64, 64);
+        guiGraphics.blit(bars, x, y, 0, 0, 18, 56);
+        guiGraphics.blit(bars, x + 3, y + 53 - menu.getEnergyProgress(), 18, 53 - menu.getEnergyProgress(), 12, menu.getEnergyProgress());
     }
 
     protected void renderFluidBar(GuiGraphics guiGraphics, int x, int y, FluidStack stack) {
-        guiGraphics.blit(BARS, x, y, 30, 0, 18, 56, 64, 64);
+        guiGraphics.blit(bars, x, y, 30, 0, 18, 56);
 
         //FluidStack stack = anvilinatorBlockEntity.getFluidStack();
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
@@ -85,7 +85,13 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     protected void renderBurn(GuiGraphics pGuiGraphics, int x, int y) {
-        if(menu.isWorking()) pGuiGraphics.blit(texture, x + 81, y + 55 + menu.getScaledProgress(), 176, menu.getScaledProgress(), 14, 14 - menu.getScaledProgress());
+        if(menu.isWorking()) pGuiGraphics.blit(bars, x, y + menu.getScaledProgress(14), 0,  72 + menu.getScaledProgress(14), 14, 14 - menu.getScaledProgress(14));
+    }
+
+    protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
+        if(menu.isWorking()) {
+            guiGraphics.blit(bars, x, y, 0, 56, menu.getScaledProgress(22), 16);
+        }
     }
 
 }

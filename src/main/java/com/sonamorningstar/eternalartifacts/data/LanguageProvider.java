@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModEffects;
-import com.sonamorningstar.eternalartifacts.core.ModEntities;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -52,6 +49,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
+                add(ModFluidTypes.NOUS.get().getDescriptionId(), "Nous");
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
                 add(ModBlocks.RESONATOR.get(), "Resonator");
                 add(ModBlocks.GARDENING_POT.get(), "Gardening Pot");
@@ -125,6 +123,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
+                add(ModFluidTypes.NOUS.get().getDescriptionId(), "İdrak");
                 add(ModBlocks.BIOFURNACE.get(), "BiyoFırın");
                 add(ModBlocks.RESONATOR.get(), "Yankılayıcı");
                 add(ModBlocks.GARDENING_POT.get(), "Bahçe Saksısı");

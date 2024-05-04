@@ -79,9 +79,5 @@ public class FancyChestBlockEntity extends ChestBlockEntity implements IRetextur
         super.load(tag);
         texture = RetexturedHelper.getBlock(tag.getString(TEXTURE_TAG_KEY));
         RetexturedHelper.onTextureUpdated(this);
-        /*if(tag.contains(TEXTURE_TAG_KEY, Tag.TAG_STRING)) {
-            texture = RetexturedHelper.getBlock(tag.getString(TEXTURE_TAG_KEY));
-            RetexturedHelper.onTextureUpdated(this);
-        }*/
     }
 }

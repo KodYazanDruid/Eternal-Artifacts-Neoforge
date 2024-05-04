@@ -29,6 +29,7 @@ public class BookDuplicatorScreen extends AbstractMachineScreen<BookDuplicatorMe
     protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
         renderEnergyBar(pGuiGraphics, x + 5, y + 20);
+        renderProgressArrow(pGuiGraphics, x + 104, y + 49);
         IFluidHandler tank = menu.getBlockEntity().getLevel().getCapability(Capabilities.FluidHandler.BLOCK, menu.getBlockEntity().getBlockPos(), null);
         if(tank != null) renderFluidBar(pGuiGraphics, x + 24, y + 20, tank.getFluidInTank(0));
         IItemHandler inventory = menu.getBlockEntity().getLevel().getCapability(Capabilities.ItemHandler.BLOCK, menu.getBlockEntity().getBlockPos(), null);

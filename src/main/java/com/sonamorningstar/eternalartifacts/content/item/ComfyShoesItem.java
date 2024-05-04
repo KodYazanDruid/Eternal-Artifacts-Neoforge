@@ -35,7 +35,7 @@ public class ComfyShoesItem extends ArmorItem {
     public void inventoryTick(ItemStack pStack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if(pEntity instanceof LivingEntity living && pSlotId == 36) {
             AttributeInstance step = living.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
-            if(step != null && !step.hasModifier(stepHeight)){
+            if(step != null && !step.hasModifier(stepHeight) && !living.isCrouching()){
                 step.addTransientModifier(stepHeight);
             }
         }

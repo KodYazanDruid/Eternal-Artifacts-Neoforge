@@ -1,8 +1,9 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capablities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capablities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capablities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.WrappedModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -42,9 +43,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.Util;
@@ -122,7 +121,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.ANVILINATOR.get(),
-                (be, context) -> be.ITEM_HANDLER);
+                (be, context) -> context != null ? new WrappedModItemStorage(be.ITEM_HANDLER, i-> i == OUTPUT_SLOT, (i, s) -> i != OUTPUT_SLOT) : be.ITEM_HANDLER);
 
         event.registerBlockEntity(
                 Capabilities.EnergyStorage.BLOCK,
@@ -139,7 +138,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
     private static final int SECONDARY_SLOT = 1;
     private static final int OUTPUT_SLOT = 2;
     private static final int FLUID_SLOT = 3;
-    private final ItemStackHandler ITEM_HANDLER = new ModItemStorage(4) {
+    private final ModItemStorage ITEM_HANDLER = new ModItemStorage(4) {
         @Override
         protected void onContentsChanged(int slot) {
             if(slot != FLUID_SLOT && slot != OUTPUT_SLOT) progress = 0;
@@ -149,8 +148,8 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         @Override
         public boolean isItemValid(int slot, @NotNull ItemStack stack) {
             switch (slot) {
-                case 0, 1, 2:
-                    return true;
+                case 0, 1: return true;
+                case 2: return false;
                 case 3 :
                     IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack).orElse(null);
                     if(fh == null) return false;
@@ -172,7 +171,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         public boolean canExtract() { return false; }
     };
 
-    private final FluidTank FLUID_TANK = new ModFluidStorage(64000) {
+    private final ModFluidStorage FLUID_TANK = new ModFluidStorage(64000) {
         @Override
         protected void onContentsChanged() {
             AnvilinatorBlockEntity.this.sendUpdate();
@@ -180,6 +179,11 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         @Override
         public boolean isFluidValid(FluidStack stack) {
             return stack.getFluid().is(ModTags.Fluids.EXPERIENCE);
+        }
+
+        @Override
+        public FluidStack drain(int maxDrain, FluidAction action) {
+            return FluidStack.EMPTY;
         }
     };
 
@@ -338,6 +342,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         if(enableNaming && !Util.isBlank(name)) result.setHoverName(Component.literal(name));
         double reelCost = ExperienceHelper.totalXpForLevel(event.getCost());
         int fluidAmount = (int) (reelCost * 20);
+        if(output.getCount() + result.getCount() >= 64) return true;
         if((output.isEmpty() || ItemHandlerHelper.canItemStacksStack(output, result)) && FLUID_TANK.getFluidAmount() >= fluidAmount) {
             progress++;
             ENERGY_HANDLER.extractEnergyForced(consumePerTick, false);
@@ -345,8 +350,9 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
             if (progress >= maxProgress) {
                 input.shrink(1);
                 secondary.shrink(1);
-                FLUID_TANK.drain(fluidAmount, IFluidHandler.FluidAction.EXECUTE);
-                ITEM_HANDLER.insertItem(OUTPUT_SLOT, result, false);
+                FLUID_TANK.drainForced(fluidAmount, IFluidHandler.FluidAction.EXECUTE);
+                //result.setCount(result.getCount() + output.getCount());
+                ITEM_HANDLER.insertItemForced(OUTPUT_SLOT, result, false);
                 progress = 0;
                 return false;
             }
@@ -356,9 +362,10 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         return false;
     }
 
-    private void progressAndCraft(ItemStack input, @Nullable ItemStack secondary, ItemStack output){
-        if(ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT).getCount() + output.getCount() >= 64) return;
-        if(output.isEmpty() && !ItemHandlerHelper.canItemStacksStack(ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT), output)) return;
+    private void progressAndCraft(ItemStack input, @Nullable ItemStack secondary, ItemStack result){
+        ItemStack output = ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT);
+        if(output.getCount() + result.getCount() >= 64) return;
+        if(result.isEmpty() || ( !output.isEmpty() && !ItemHandlerHelper.canItemStacksStack(output, result))) return;
         progress++;
         ENERGY_HANDLER.extractEnergyForced(consumePerTick, false);
         setChanged();
@@ -367,15 +374,15 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
 
             //Renaming stuff.
             if(enableNaming && !Util.isBlank(name) && !input.getHoverName().equals(Component.literal(name))) {
-                output.setHoverName(Component.literal(name));
+                result.setHoverName(Component.literal(name));
             } else if(enableNaming) {
-                output.resetHoverName();
+                result.resetHoverName();
             }
 
             if(secondary != null) secondary.shrink(1);
             //TODO: Calculate from xp cost instead of level.
-            //FLUID_TANK.drain( cost * 20, IFluidHandler.FluidAction.EXECUTE);
-            ITEM_HANDLER.insertItem(OUTPUT_SLOT, output, false);
+            //FLUID_TANK.drainForced( cost * 20, IFluidHandler.FluidAction.EXECUTE);
+            ITEM_HANDLER.insertItemForced(OUTPUT_SLOT, result, false);
             progress = 0;
         }
     }

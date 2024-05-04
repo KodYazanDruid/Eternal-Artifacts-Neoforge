@@ -112,10 +112,10 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         } else return 0;
     }
 
-    public int getScaledProgress() {
+    public int getScaledProgress(int size) {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);
-        int maxProgressSize = 14;
+        int maxProgressSize = size;
 
         return maxProgress != 0 && progress != 0 ? progress * maxProgressSize / maxProgress : 0;
     }

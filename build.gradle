@@ -21,6 +21,14 @@ repositories {
     maven { // TOP
         url "https://maven.k-4u.nl"
     }
+    maven {
+        name "Modmaven"
+        url "https://modmaven.dev/"
+        // For Gradle 5.1 and above, limit it to just AE2
+        content {
+            includeGroup 'appeng'
+        }
+    }
 }
 
 base {
@@ -75,7 +83,7 @@ dependencies {
     // at runtime, use the full JEI jar for NeoForge
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
-
+    implementation "appeng:appliedenergistics2-neoforge:${ae2_version}"
 
 }
 
