@@ -40,7 +40,7 @@ public class HolyDaggerLayer<T extends LivingEntity, M extends EntityModel<T>> e
             float netHeadYaw,
             float headPitch) {
 
-        if(living.hasEffect(ModEffects.FLIGHT.get())) {
+        if(living.hasEffect(ModEffects.DIVINE_PROTECTION.get())) {
             float age = living.tickCount + partialTick;
             float rotateAngleY = age / -50.0F;
             float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;

@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.content.item.AxeOfRegrowthItem;
 import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
+import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModSounds;
 import com.sonamorningstar.eternalartifacts.network.Channel;
@@ -67,7 +68,7 @@ public class CommonEvents {
                     float absorption = player.getAbsorptionAmount();
                     float maxHealth = player.getMaxHealth();
                     if (health + absorption <= damage || health + absorption / maxHealth <= 0.2F) {
-                        player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 4));
+                        player.addEffect(new MobEffectInstance(ModEffects.DIVINE_PROTECTION.get(), 600, 0));
                         player.getCooldowns().addCooldown(dagger, 6000);
                         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
                         Channel.sendToPlayer(new ItemActivationToClient(dagger.getDefaultInstance()), (ServerPlayer) player);

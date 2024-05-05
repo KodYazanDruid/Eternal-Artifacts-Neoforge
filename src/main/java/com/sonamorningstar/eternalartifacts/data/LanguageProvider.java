@@ -68,6 +68,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
 
                 //Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
+                add(ModEffects.DIVINE_PROTECTION.get(), "Divine Protection");
 
                 //Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -142,6 +143,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
 
                 //Efektler
                 add(ModEffects.FLIGHT.get(), "Uçuş");
+                add(ModEffects.DIVINE_PROTECTION.get(), "Kutsal Koruma");
 
                 //Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");

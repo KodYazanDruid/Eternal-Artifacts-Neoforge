@@ -44,7 +44,7 @@ public class ClientEvents {
          * @link{com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer} for entity layer rendering.
          * This is for first person rendering.
          */
-        if(event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES) && living.hasEffect(ModEffects.FLIGHT.get())) {
+        if(event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES) && living.hasEffect(ModEffects.DIVINE_PROTECTION.get())) {
             float age = living.tickCount + event.getPartialTick();
             float rotateAngleY = age / -50.0F;
             float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
