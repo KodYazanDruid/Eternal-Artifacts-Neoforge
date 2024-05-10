@@ -38,13 +38,6 @@ public class BookDuplicatorScreen extends AbstractMachineScreen<BookDuplicatorMe
         //Cycle between book and book and quill.
         ItemRendererHelper.renderFakeItemTransparent(pGuiGraphics.pose(), Items.BOOK.getDefaultInstance(), x + 80, y + 26, 96);
 
-        if(inventory != null && inventory.getStackInSlot(3).isEmpty())
-        //Cycle through all items that are tagged.
-        ItemRendererHelper.renderFakeItemTransparent(pGuiGraphics.pose(), Items.FEATHER.getDefaultInstance(), x + 98, y + 26, 96);
-
-        if(inventory != null && inventory.getStackInSlot(4).isEmpty())
-        ItemRendererHelper.renderFakeItemTransparent(pGuiGraphics.pose(), Items.INK_SAC.getDefaultInstance(), x + 116, y + 26, 96);
-
     }
 
     @Override

@@ -28,10 +28,18 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GARDENING_POT.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "wood", "pickaxe");
+        tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "wood", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_COPPER_ORE.get(), "stone", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_IRON_ORE.get(), "stone", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_GOLD_ORE.get(), "iron", "shovel");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());
+        tag(BlockTags.COAL_ORES).add(ModBlocks.GRAVEL_COAL_ORE.get());
+        tag(BlockTags.COPPER_ORES).add(ModBlocks.GRAVEL_COPPER_ORE.get());
+        tag(BlockTags.IRON_ORES).add(ModBlocks.GRAVEL_IRON_ORE.get());
+        tag(BlockTags.GOLD_ORES).add(ModBlocks.GRAVEL_GOLD_ORE.get());
 
     }
 

@@ -41,9 +41,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.GOLDEN_ANCIENT_FRUIT.get());
         basicItem(ModItems.COMFY_SHOES.get());
         basicItem(ModItems.SUGAR_CHARCOAL.get());
+        basicItem(ModItems.BANANA.get());
 
         basicItem(modLoc("encumbator_active"));
-
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
         basicItem(modLoc("encumbator")).override().model(encumbator).predicate(modLoc("active"), 1.0F);
 

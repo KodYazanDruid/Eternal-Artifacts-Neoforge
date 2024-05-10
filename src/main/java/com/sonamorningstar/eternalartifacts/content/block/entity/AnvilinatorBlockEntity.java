@@ -142,6 +142,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         @Override
         protected void onContentsChanged(int slot) {
             if(slot != FLUID_SLOT && slot != OUTPUT_SLOT) progress = 0;
+            if(slot == INPUT_SLOT && ITEM_HANDLER.getStackInSlot(INPUT_SLOT).isEmpty()) progress = 0;
             anvilUpdateEvent = new AnvilUpdateEvent(ITEM_HANDLER.getStackInSlot(INPUT_SLOT), ITEM_HANDLER.getStackInSlot(SECONDARY_SLOT), name, cost, fakePlayer.get());
             AnvilinatorBlockEntity.this.sendUpdate();
         }

@@ -26,9 +26,14 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     @Override
     @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider pProvider) {
-        tag(ModTags.Items.FRUITS).add(ModItems.ORANGE.get(), ModItems.ANCIENT_FRUIT.get());
+        tag(ModTags.Items.FRUITS).add(
+                ModItems.ORANGE.get(),
+                ModItems.ANCIENT_FRUIT.get(),
+                ModItems.BANANA.get()
+        );
         tag(ModTags.Items.FRUITS_ORANGE).add(ModItems.ORANGE.get());
         tag(ModTags.Items.FRUITS_ANCIENT).add(ModItems.ANCIENT_FRUIT.get());
+        tag(ModTags.Items.BANANA).add(ModItems.BANANA.get());
         tag(Tags.Items.INGOTS).add(
                 ModItems.RAW_MEAT_INGOT.get(),
                 ModItems.MEAT_INGOT.get()

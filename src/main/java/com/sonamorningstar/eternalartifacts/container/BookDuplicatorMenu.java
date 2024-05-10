@@ -21,9 +21,7 @@ public class BookDuplicatorMenu extends AbstractMachineMenu {
             addSlot(new SlotItemHandler(beInventory, 0, 80, 48));
             addSlot(new SlotItemHandler(beInventory, 1, 134, 48));
             addSlot(new SlotItemHandler(beInventory, 2, 80, 26));
-            addSlot(new SlotItemHandler(beInventory, 3, 98, 26));
-            addSlot(new SlotItemHandler(beInventory, 4, 116, 26));
-            addSlot(new SlotItemHandler(beInventory, 5, 44, 26));
+            addSlot(new SlotItemHandler(beInventory, 3, 44, 26));
         }
 
     }

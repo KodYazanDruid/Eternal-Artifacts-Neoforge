@@ -16,6 +16,7 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> FRUITS = forgeTag("fruits");
         public static final TagKey<Item> FRUITS_ORANGE = forgeTag("fruits/orange");
+        public static final TagKey<Item> BANANA = forgeTag("fruits/banana");
         public static final TagKey<Item> FRUITS_ANCIENT = forgeTag("fruits/ancient");
         public static final TagKey<Item> GARDENING_POT_SUITABLE = modTag("gardening_pot_suitable");
         public static final TagKey<Item> INGOTS_MEAT = forgeTag("ingots/meat");

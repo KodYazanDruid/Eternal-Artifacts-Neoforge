@@ -1,6 +1,8 @@
 {
   "values": [
     "eternalartifacts:biofurnace",
-    "eternalartifacts:gardening_pot"
+    "eternalartifacts:gardening_pot",
+    "eternalartifacts:gravel_copper_ore",
+    "eternalartifacts:gravel_iron_ore"
   ]
 }

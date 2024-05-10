@@ -1,7 +1,8 @@
-// 1.20.4	2024-05-02T19:52:48.1008851	Item Models: eternalartifacts
+// 1.20.4	2024-05-09T21:20:48.821618	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
+b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/banana.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json

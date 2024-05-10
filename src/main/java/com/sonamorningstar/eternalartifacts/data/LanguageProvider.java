@@ -45,7 +45,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Enchanted Golden Ancient Fruit");
                 add(ModItems.COMFY_SHOES.get(), "Comfy Shoes");
                 add(ModItems.SUGAR_CHARCOAL.get(), "Sugar Charcoal");
-
+                add(ModItems.BANANA.get(), "Banana");
+                
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -61,6 +62,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Book Duplicator");
                 add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Sugar Charcoal Block");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Four Leaf Clover");
+                add(ModBlocks.GRAVEL_COAL_ORE.get(), "Gravel Coal Ore");
+                add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Gravel Copper Ore");
+                add(ModBlocks.GRAVEL_IRON_ORE.get(), "Gravel Iron Ore");
+                add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Gravel Gold Ore");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -118,8 +123,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Büyülü Altın Antik Meyve");
                 add(ModItems.COMFY_SHOES.get(), "Rahat Ayakkabılar");
                 add(ModItems.SUGAR_CHARCOAL.get(), "Şeker Odun Kömürü");
-
-
+                add(ModItems.BANANA.get(), "Muz");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -136,10 +140,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Kitap Çoğaltıcı");
                 add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Şeker Odun Kömürü Bloğu");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Dört Yapraklı Yonca");
+                add(ModBlocks.GRAVEL_COAL_ORE.get(), "Çakılda Kömür Cevheri");
+                add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Çakılda Bakır Cevheri");
+                add(ModBlocks.GRAVEL_IRON_ORE.get(), "Çakılda Demir Cevheri");
+                add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
-                add(ModEntities.PINKY.get(), "Pinky");
+                add(ModEntities.PINKY.get(), "Pembiş");
 
                 //Efektler
                 add(ModEffects.FLIGHT.get(), "Uçuş");

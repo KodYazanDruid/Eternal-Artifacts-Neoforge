@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
@@ -45,6 +47,8 @@ public abstract class MachineBlockEntity extends ModBlockEntity {
     protected int progress;
     @Setter
     protected int maxProgress = 100;
+    @Setter
+    protected int consume = 40;
 
     @Override
     protected boolean shouldSyncOnUpdate() {
@@ -77,6 +81,14 @@ public abstract class MachineBlockEntity extends ModBlockEntity {
                     inventory.setStackInSlot(fluidSlot, itemHandler.getContainer());
                 }
             }
+        }
+    }
+
+    protected boolean hasEnergy(int amount, ModEnergyStorage energy) {
+        if(energy.extractEnergyForced(amount, true) < amount) return false;
+        else {
+            energy.extractEnergyForced(amount, false);
+            return true;
         }
     }
 
