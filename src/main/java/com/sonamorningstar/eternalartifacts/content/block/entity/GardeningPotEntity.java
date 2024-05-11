@@ -16,6 +16,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
+import java.util.Collections;
 import java.util.List;
 
 public class GardeningPotEntity extends DefaultRetexturedBlockEntity{
@@ -24,16 +25,17 @@ public class GardeningPotEntity extends DefaultRetexturedBlockEntity{
         super(ModBlockEntities.GARDENING_POT.get(), pPos, pBlockState);
     }
 
-    //Needs chopping delay.
-    //Sapling may not drop.
     public void tick(Level level, BlockPos pos, BlockState state) {
         if(level.isClientSide || !(level instanceof ServerLevel)) return;
         IItemHandler inventoryBelow = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
-        if(level.getBlockState(pos.above()).getBlock() instanceof SugarCaneBlock ||
-                level.getBlockState(pos.above()).getBlock() instanceof CactusBlock ||
-                level.getBlockState(pos.above()).getBlock() instanceof BambooStalkBlock) {
+        BlockState plantState = level.getBlockState(pos.above());
+        if(plantState.getBlock() instanceof SugarCaneBlock ||
+                plantState.getBlock() instanceof CactusBlock ||
+                plantState.getBlock() instanceof BambooStalkBlock) {
 
-            List<ItemStack> drops = PlantHelper.doReedlikeHarvest((ServerLevel) level, pos.above(2));
+            BlockPos toBreak = pos.above(2);
+            List<ItemStack> drops = Collections.emptyList();
+            if (level.getBlockState(toBreak).is(plantState.getBlock())) drops = PlantHelper.doReedlikeHarvest((ServerLevel) level, toBreak);
             pushOrPop(drops, level, pos.above(), inventoryBelow);
         }
         /*else if(BlockHelper.isLog(level, pos.above())){

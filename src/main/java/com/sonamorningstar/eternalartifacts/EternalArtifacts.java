@@ -65,6 +65,9 @@ public class EternalArtifacts {
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);
         ModRecipes.RECIPES.register(modEventBus);
+        //ModConfiguredFeatures.CONFIGURED_FEATURES.register(modEventBus);
+        //ModConfiguredFeatures.FEATURES.register(modEventBus);
+        //ModPlacedFeatures.PLACED_FEATURES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(Channel::onRegisterPayloadHandler);

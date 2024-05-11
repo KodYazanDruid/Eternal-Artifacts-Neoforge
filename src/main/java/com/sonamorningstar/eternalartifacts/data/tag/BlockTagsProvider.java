@@ -19,7 +19,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.Provider provider) {
         //tierAndTool(ModBlocks.LUTFI.get(), "diamond", "axe");
         tierAndTool(ModBlocks.ANVILINATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BOOK_DUPLICATOR.get(), "iron", "pickaxe");
@@ -40,6 +40,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(BlockTags.COPPER_ORES).add(ModBlocks.GRAVEL_COPPER_ORE.get());
         tag(BlockTags.IRON_ORES).add(ModBlocks.GRAVEL_IRON_ORE.get());
         tag(BlockTags.GOLD_ORES).add(ModBlocks.GRAVEL_GOLD_ORE.get());
+        tag(Tags.Blocks.ORE_RATES_DENSE).add(ModBlocks.GRAVEL_COPPER_ORE.get());
+        tag(Tags.Blocks.ORE_RATES_SINGULAR).add(ModBlocks.GRAVEL_COAL_ORE.get(), ModBlocks.GRAVEL_IRON_ORE.get(), ModBlocks.GRAVEL_GOLD_ORE.get());
 
     }
 
