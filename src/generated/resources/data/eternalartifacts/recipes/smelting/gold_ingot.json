@@ -4,7 +4,7 @@
   "cookingtime": 200,
   "experience": 1.0,
   "ingredient": {
-    "item": "minecraft:sugar_cane"
+    "item": "eternalartifacts:gravel_gold_ore"
   },
-  "result": "eternalartifacts:sugar_charcoal"
+  "result": "minecraft:gold_ingot"
 }

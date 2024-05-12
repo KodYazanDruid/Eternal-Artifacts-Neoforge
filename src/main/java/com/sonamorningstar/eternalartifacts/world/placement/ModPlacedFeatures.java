@@ -15,8 +15,6 @@ import java.util.List;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModPlacedFeatures {
-    /*public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registries.PLACED_FEATURE, MODID);*/
-
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_COAL_ORE = registerKey("gravel_coal_ore");
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_COPPER_ORE = registerKey("gravel_copper_ore");
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_IRON_ORE = registerKey("gravel_iron_ore");

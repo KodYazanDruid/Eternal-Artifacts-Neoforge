@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.checkerframework.checker.units.qual.C;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -39,8 +41,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(recipeOutput, new ResourceLocation(MODID, "gardening_pot_recipe"));*/
 
         craftingRecipes(recipeOutput);
-        smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL);
-        createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.MEAT_INGOT);
+        smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
+        createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.MEAT_INGOT, 0.35f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COAL_ORE, Items.COAL, 0.1f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COPPER_ORE, Items.COPPER_INGOT, 0.7f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_IRON_ORE, Items.IRON_INGOT, 0.7f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
 
     }
 
@@ -70,22 +76,34 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(recipeOutput);
     }
 
-    private void smeltingRecipe(RecipeOutput output, ItemLike input, DeferredItem<Item> result) {
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, 0.35f, 200)
+    private void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(result.asItem());
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+result.getId().getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+id.getPath()));
     }
 
-    private void createFoodCookingRecipe(RecipeOutput output, ItemLike input, DeferredItem<Item> result) {
-        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.FOOD, result, 0.35f, 200)
+    private void createFoodCookingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(result.asItem());
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+result.getId().getPath()));
-        SimpleCookingRecipeBuilder.smoking(Ingredient.of(input), RecipeCategory.FOOD, result, 0.35f, 100)
+                .save(output, new ResourceLocation(MODID, "smelting/"+id.getPath()));
+        SimpleCookingRecipeBuilder.smoking(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 100)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smoking/"+result.getId().getPath()));
-        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(input), RecipeCategory.FOOD, result, 0.35f, 600)
+                .save(output, new ResourceLocation(MODID, "smoking/"+id.getPath()));
+        SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 600)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "campfire_cooking/"+result.getId().getPath()));
+                .save(output, new ResourceLocation(MODID, "campfire_cooking/"+id.getPath()));
+    }
+
+    private void createOreSmeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(result.asItem());
+        SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 200)
+                .unlockedBy("has_item", has(input))
+                .save(output, new ResourceLocation(MODID, "smelting/"+id.getPath()));
+        SimpleCookingRecipeBuilder.blasting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 100)
+                .unlockedBy("has_item", has(input))
+                .save(output, new ResourceLocation(MODID, "blasting/"+id.getPath()));
     }
 
 }
