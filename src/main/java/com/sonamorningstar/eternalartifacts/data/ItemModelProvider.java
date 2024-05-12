@@ -5,10 +5,14 @@ import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -66,13 +70,23 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc("block/four_leaf_clover"));
 
-        withExistingParent(ModItems.NOUS_BUCKET.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
+        /*withExistingParent(ModItems.NOUS_BUCKET.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(ModFluids.NOUS_SOURCE.get())
-                .applyTint(true);
+                .applyTint(true);*/
+        bucketItem(ModItems.NOUS_BUCKET, ModFluids.NOUS_SOURCE);
+        bucketItem(ModItems.LIQUID_MEAT_BUCKET, ModFluids.LIQUID_MEAT_SOURCE);
+        bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME_SOURCE);
     }
 
     private void handheld(DeferredItem<Item> deferred) {
         singleTexture(deferred.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/" + deferred.getId().getPath()));
+    }
+
+    private void bucketItem(DeferredHolder<Item, BucketItem> bucket, DeferredHolder<Fluid, BaseFlowingFluid.Source> source) {
+        withExistingParent(bucket.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
+                .customLoader(DynamicFluidContainerModelBuilder::begin)
+                .fluid(source.get())
+                .applyTint(true);
     }
 }

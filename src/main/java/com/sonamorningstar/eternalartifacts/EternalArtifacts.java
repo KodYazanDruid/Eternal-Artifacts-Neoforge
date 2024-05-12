@@ -10,6 +10,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -48,7 +49,9 @@ public class EternalArtifacts {
                     else output.accept(item.get());
                 }
                 for(DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
-                    if(!(block.get() instanceof GardeningPotBlock)) output.accept(block.get());
+                    if(!(block.get() instanceof GardeningPotBlock) && !(block.get() instanceof LiquidBlock)) {
+                        output.accept(block.get());
+                    }
                 }
             }).build());
 

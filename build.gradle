@@ -20,6 +20,9 @@ repositories {
     }
     maven { // TOP
         url "https://maven.k-4u.nl"
+        content {
+            includeGroup "mcjty.theoneprobe"
+        }
     }
     maven {
         name "Modmaven"
@@ -27,6 +30,12 @@ repositories {
         // For Gradle 5.1 and above, limit it to just AE2
         content {
             includeGroup 'appeng'
+        }
+    }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
         }
     }
 }
@@ -84,6 +93,7 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
     implementation "appeng:appliedenergistics2-neoforge:${ae2_version}"
+    implementation "curse.maven:prettypipes-376737:5165292"
 
 }
 

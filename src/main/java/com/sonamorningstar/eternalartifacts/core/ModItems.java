@@ -71,7 +71,10 @@ public class ModItems {
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
-
+    public static final DeferredHolder<Item, BucketItem> LIQUID_MEAT_BUCKET = register("liquid_meat_bucket",
+            p -> new BucketItem(ModFluids.LIQUID_MEAT_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final DeferredHolder<Item, BucketItem> PINK_SLIME_BUCKET = register("pink_slime_bucket",
+            p -> new BucketItem(ModFluids.PINK_SLIME_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

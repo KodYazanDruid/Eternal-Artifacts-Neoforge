@@ -87,10 +87,4 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                 .collect(Collectors.toList());
     }
 
-    /*private LootTable.Builder createOreDrop(Block pBlock, Item pItem) {
-        return createSilkTouchDispatchTable(
-                pBlock,
-                this.applyExplosionDecay(pBlock, LootItem.lootTableItem(pItem).apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE)))
-        );
-    }*/
 }

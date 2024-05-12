@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.*;
+import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
@@ -36,6 +37,13 @@ public class ModBlocks {
             () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()), new Item.Properties());
     public static final DeferredBlock<Block> GRAVEL_GOLD_ORE = registerWithItem("gravel_gold_ore",
             () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()), new Item.Properties());
+
+    public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous_block",
+            ()-> new LiquidBlock(ModFluids.NOUS_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
+    public static final DeferredBlock<LiquidBlock> LIQUID_MEAT_BLOCK = registerNoItem("liquid_meat_block",
+            ()-> new LiquidBlock(ModFluids.LIQUID_MEAT_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BROWN)));
+    public static final DeferredBlock<LiquidBlock> PINK_SLIME_FLUID_BLOCK = registerNoItem("pink_slime_fluid_block",
+            ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(Blocks.IRON_BLOCK.properties()), new Item.Properties());

@@ -29,6 +29,8 @@ public class ModTags {
 
     public static class Fluids {
         public static final TagKey<Fluid> EXPERIENCE = forgeTag("experience");
+        public static final TagKey<Fluid> MEAT = forgeTag("meat");
+        public static final TagKey<Fluid> PINK_SLIME = forgeTag("pink_slime");
 
         private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }

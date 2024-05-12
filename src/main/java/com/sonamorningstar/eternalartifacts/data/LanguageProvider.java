@@ -46,6 +46,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COMFY_SHOES.get(), "Comfy Shoes");
                 add(ModItems.SUGAR_CHARCOAL.get(), "Sugar Charcoal");
                 add(ModItems.BANANA.get(), "Banana");
+                add(ModItems.LIQUID_MEAT_BUCKET.get(), "Liquid Meat Bucket");
+                add(ModItems.PINK_SLIME_BUCKET.get(), "Pink Slime Bucket");
                 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -124,6 +126,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COMFY_SHOES.get(), "Rahat Ayakkabılar");
                 add(ModItems.SUGAR_CHARCOAL.get(), "Şeker Odun Kömürü");
                 add(ModItems.BANANA.get(), "Muz");
+                add(ModItems.LIQUID_MEAT_BUCKET.get(), "Sıvı Et Kovası");
+                add(ModItems.PINK_SLIME_BUCKET.get(), "Pembe Balçık Kovası");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");

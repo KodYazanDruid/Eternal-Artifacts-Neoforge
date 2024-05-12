@@ -18,5 +18,7 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(ModTags.Fluids.EXPERIENCE).add(ModFluids.NOUS_SOURCE.get());
+        tag(ModTags.Fluids.MEAT).add(ModFluids.LIQUID_MEAT_SOURCE.get());
+        tag(ModTags.Fluids.PINK_SLIME).add(ModFluids.PINK_SLIME_SOURCE.get());
     }
 }

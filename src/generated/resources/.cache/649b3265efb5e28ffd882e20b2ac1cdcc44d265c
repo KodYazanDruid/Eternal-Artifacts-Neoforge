@@ -1,2 +1,4 @@
-// 1.20.4	2024-03-22T13:05:57.0971438	Tags for minecraft:fluid mod id eternalartifacts
+// 1.20.4	2024-05-12T20:26:54.076404	Tags for minecraft:fluid mod id eternalartifacts
 2871ea1cbaf7f984df5d296fa2c217ffe29faed1 data/forge/tags/fluids/experience.json
+aea35528b249e04bd1aea332e4d5baecfcd85205 data/forge/tags/fluids/meat.json
+9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/fluids/pink_slime.json
