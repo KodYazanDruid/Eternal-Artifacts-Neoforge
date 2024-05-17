@@ -1,8 +1,10 @@
-// 1.20.4	2024-05-12T19:37:13.5678523	Item Models: eternalartifacts
+// 1.20.4	2024-05-16T18:30:06.399739	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
+795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
 b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/banana.json
+ed67fafb38c72f12af67434f3f9b4c42b336271d assets/eternalartifacts/models/item/banana_cream_pie.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json
@@ -10,6 +12,7 @@ bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/com
 9448010b52f766ba963e7846446966ddc53e5dd7 assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
 917c9fb8d52a3487b58003fa6ac88c0d056be391 assets/eternalartifacts/models/item/encumbator.json
 78bc681824bce9b7f3f76f1c096673a70d98f0de assets/eternalartifacts/models/item/encumbator_active.json
+c90643f23e4462e731095ab5da3ec58e9c67289b assets/eternalartifacts/models/item/ender_notebook.json
 a0623a5915f2cd12361259e198947935b3335943 assets/eternalartifacts/models/item/ender_pouch.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json
 c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/forsythia.json

@@ -30,7 +30,7 @@ public class EternalArtifacts {
      * TODO: A storage block can storage items, fluids and energy dynamically.
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
-     * TODO: Gravel Ores.
+     * TODO: Banana bread, pie.
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
     */

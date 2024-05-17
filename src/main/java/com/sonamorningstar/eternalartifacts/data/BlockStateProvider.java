@@ -5,6 +5,7 @@ import com.mojang.datafixers.types.Func;
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -61,8 +63,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
-        //machineBlock(ModBlocks.RESONATOR, true);
-        //machineBlock(ModBlocks.FANCY_CHEST, false);
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
@@ -75,6 +75,12 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
         tintedCrossBlock(ModBlocks.FOUR_LEAF_CLOVER);
+
+        /*for(DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
+            if(block.get() instanceof LiquidBlock) {
+
+            }
+        }*/
 
     }
 

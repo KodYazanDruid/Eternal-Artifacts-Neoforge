@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -48,11 +47,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.BANANA.get(), "Banana");
                 add(ModItems.LIQUID_MEAT_BUCKET.get(), "Liquid Meat Bucket");
                 add(ModItems.PINK_SLIME_BUCKET.get(), "Pink Slime Bucket");
-                
+                add(ModItems.ENDER_NOTEBOOK.get(), "Ender Notebook");
+                add(ModItems.APPLE_PIE.get(), "Apple Pie");
+                add(ModItems.BANANA_CREAM_PIE.get(), "Banana Cream Pie");
+
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
                 add(ModFluidTypes.NOUS.get().getDescriptionId(), "Nous");
+                add(ModFluidTypes.LIQUID_MEAT.get().getDescriptionId(), "Liquid Meat");
+                add(ModFluidTypes.PINK_SLIME.get().getDescriptionId(), "Pink Slime");
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
                 add(ModBlocks.RESONATOR.get(), "Resonator");
                 add(ModBlocks.GARDENING_POT.get(), "Gardening Pot");
@@ -128,11 +132,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.BANANA.get(), "Muz");
                 add(ModItems.LIQUID_MEAT_BUCKET.get(), "Sıvı Et Kovası");
                 add(ModItems.PINK_SLIME_BUCKET.get(), "Pembe Balçık Kovası");
+                add(ModItems.ENDER_NOTEBOOK.get(), "Ender Defteri");
+                add(ModItems.APPLE_PIE.get(), "Elmalı Turta");
+                add(ModItems.BANANA_CREAM_PIE.get(), "Muz Kremalı Turta");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
                 add(ModFluidTypes.NOUS.get().getDescriptionId(), "İdrak");
+                add(ModFluidTypes.LIQUID_MEAT.get().getDescriptionId(), "Sıvı Et");
+                add(ModFluidTypes.PINK_SLIME.get().getDescriptionId(), "Pembe Balçık");
                 add(ModBlocks.BIOFURNACE.get(), "BiyoFırın");
                 add(ModBlocks.RESONATOR.get(), "Yankılayıcı");
                 add(ModBlocks.GARDENING_POT.get(), "Bahçe Saksısı");

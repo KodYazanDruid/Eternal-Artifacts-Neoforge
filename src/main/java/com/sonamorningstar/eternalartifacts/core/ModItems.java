@@ -25,6 +25,8 @@ public class ModItems {
     public static final DeferredItem<Item> ANCIENT_FRUIT = register("ancient_fruit", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()));
     public static final DeferredItem<Item> RAW_MEAT_INGOT = register("raw_meat_ingot", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(0.3f).meat().build()));
     public static final DeferredItem<Item> MEAT_INGOT = register("meat_ingot", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8f).meat().build()));
+    public static final DeferredItem<Item> APPLE_PIE = register("apple_pie", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.3f).build()));
+    public static final DeferredItem<Item> BANANA_CREAM_PIE = register("banana_cream_pie", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.3f).build()));
     public static final DeferredItem<Item> GOLDEN_ANCIENT_FRUIT = register("golden_ancient_fruit", GoldenAncientFruitItem::new, new Item.Properties().rarity(Rarity.RARE).food(
             new FoodProperties.Builder()
                 .nutrition(4)
@@ -49,7 +51,7 @@ public class ModItems {
     public static final DeferredItem<Item> PLANT_MATTER = register("plant_matter", Item::new);
     public static final DeferredItem<Item> PINK_SLIME = register("pink_slime", Item::new);
     public static final DeferredItem<Item> GOLD_RING = registerArtifact("gold_ring", Item::new);
-    public static final DeferredItem<Item> SUGAR_CHARCOAL = register("sugar_charcoal", Item::new, new Item.Properties());
+    public static final DeferredItem<Item> SUGAR_CHARCOAL = register("sugar_charcoal", Item::new);
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -65,6 +67,7 @@ public class ModItems {
     public static final DeferredItem<Item> ENDER_POUCH = registerArtifact("ender_pouch", EnderPouchItem::new);
     public static final DeferredItem<Item> PORTABLE_CRAFTER = registerArtifact("portable_crafter", PortableCrafterItem::new);
     public static final DeferredItem<Item> COMFY_SHOES = registerArtifact("comfy_shoes", ComfyShoesItem::new);
+    public static final DeferredItem<Item> ENDER_NOTEBOOK = registerArtifact("ender_notebook", EnderNotebookItem::new);
 
     //Tools.
     public static final DeferredItem<Item> AXE_OF_REGROWTH = register("axe_of_regrowth", AxeOfRegrowthItem::new, new Item.Properties().stacksTo(1));

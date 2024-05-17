@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class FallingDropExperienceBlock extends FallingBlock {
     private final IntProvider xpRange;
     public FallingDropExperienceBlock(IntProvider xpRange, Properties props) {
-        super(props);
+        super(props.requiresCorrectToolForDrops());
         this.xpRange = xpRange;
     }
 

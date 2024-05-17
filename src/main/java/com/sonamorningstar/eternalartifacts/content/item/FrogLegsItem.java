@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FrogLegsItem extends ArtifactItem{
+public class FrogLegsItem extends ArtifactItem {
     public FrogLegsItem(Properties pProperties) {
         super(pProperties);
     }
