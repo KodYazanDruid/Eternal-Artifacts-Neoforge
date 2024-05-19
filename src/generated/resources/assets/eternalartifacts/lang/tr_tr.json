@@ -28,9 +28,10 @@
   "item.eternalartifacts.apple_pie": "Elmalı Turta",
   "item.eternalartifacts.axe_of_regrowth": "Yeşertme Baltası",
   "item.eternalartifacts.banana": "Muz",
-  "item.eternalartifacts.banana_cream_pie": "Muzlu Turta",
+  "item.eternalartifacts.banana_cream_pie": "Muz Kremalı Turta",
   "item.eternalartifacts.battery": "Pil",
   "item.eternalartifacts.capacitor": "Kondansatör",
+  "item.eternalartifacts.chlorovein_pickaxe": "Klorodamar Kazma",
   "item.eternalartifacts.comfy_shoes": "Rahat Ayakkabılar",
   "item.eternalartifacts.demon_eye_spawn_egg": "İblis Gözü Canlandırma Yumurtası",
   "item.eternalartifacts.enchanted_golden_ancient_fruit": "Büyülü Altın Antik Meyve",
@@ -58,7 +59,6 @@
   "itemGroup.eternalartifacts": "Eternal Artifacts",
   "key.eternalartifacts.anvilinator.disabled_naming": "Adlandırma kapalı.",
   "key.eternalartifacts.anvilinator.enabled_naming": "Adlandırma açık.",
-  "key.eternalartifacts.tooltip.axe_of_regrowth_ench_text": "Her zaman %s'a sahip",
   "key.eternalartifacts.tooltip.comfy_shoes": "Giyildiğinde adım yüksekliği verir.",
   "key.eternalartifacts.tooltip.enchanted_golden_ancient_fruit": "İki dakikalığına uçuş ve gelişmiş hız, acele ve emilim verir.",
   "key.eternalartifacts.tooltip.encumbator.active": "Yerden eşya almak engellendi!",
@@ -68,6 +68,7 @@
   "key.eternalartifacts.tooltip.gardening_pot": "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.",
   "key.eternalartifacts.tooltip.golden_ancient_fruit": "İki dakikalığına hız ve acele verir.",
   "key.eternalartifacts.tooltip.inventory_right_click": "Envanterde sağ tıklayarak açabilirsin.",
+  "key.eternalartifacts.tooltip.item_ench_text": "Her zaman %s'a sahip",
   "key.eternalartifacts.tooltip.magic_feather_active": "Büyülü tüy aktif!",
   "key.eternalartifacts.tooltip.magic_feather_not_active": "Büyülü tüy aktif değil."
 }

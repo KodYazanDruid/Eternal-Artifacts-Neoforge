@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.EnderNotebookAddNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.EnderNotebookRemoveNbtToServer;
@@ -38,10 +39,11 @@ public class EnderNotebookScreen extends Screen {
     private Button addWarp;
     private EditBox name;
     private final List<Pair<Pair<String, ResourceKey<Level>>, BlockPos>> warps = Lists.newArrayList();
-    private final List<Pair<Pair<Button, Button>, Pair<Pair<String, ResourceKey<Level>>, BlockPos>>> keyList = Lists.newArrayList();
+    private final List<Pair<Pair<CustomRenderButton, CustomRenderButton>, Pair<Pair<String, ResourceKey<Level>>, BlockPos>>> keyList = Lists.newArrayList();
     int x;
     int y;
     int margin = 20;
+    int textColor = 16777215;
     public final EnderNotebookScreen.EnderNotebookAccess bookAccess;
     public EnderNotebookScreen(EnderNotebookScreen.EnderNotebookAccess bookAccess) {
         super(GameNarrator.NO_TITLE);
@@ -59,6 +61,7 @@ public class EnderNotebookScreen extends Screen {
         addWarp = addRenderableWidget(Button.builder(Component.translatable("button.addwarp"), this::onAddWarpPress).bounds(x + 7, y + 196, 98, 20).build());
         name = new EditBox(minecraft.font, x + 107, y + 196, 82, 20, Component.empty());
         name.setMaxLength(20);
+        name.setCanLoseFocus(true);
         addRenderableWidget(this.name);
         for(int i = 0; i < warps.size(); i++) {
             generateButtonsInit(i, keyList, this::addWidget);
@@ -66,7 +69,7 @@ public class EnderNotebookScreen extends Screen {
     }
 
     private void onAddWarpPress(Button button) {
-        if(minecraft != null && minecraft.player != null) {
+        if(minecraft != null && minecraft.player != null && warps.size() < 8) {
             addWarpSynced(Pair.of(Pair.of(name.getValue(), minecraft.player.level().dimension()), minecraft.player.blockPosition()));
         }
     }
@@ -83,11 +86,13 @@ public class EnderNotebookScreen extends Screen {
         Channel.sendToServer(new EnderNotebookTeleportToServer(warp.getFirst().getSecond(), warp.getSecond()));
     }
 
-    private void generateButtonsInit(int i, List<Pair<Pair<Button, Button>, Pair<Pair<String, ResourceKey<Level>>, BlockPos>>> keyList, Function<Button, ?> func) {
-        Pair<Button, Button> buttonPair = generateButtonPair(i);
+    private void generateButtonsInit(int i, List<Pair<Pair<CustomRenderButton, CustomRenderButton>, Pair<Pair<String, ResourceKey<Level>>, BlockPos>>> keyList, Function<Button, ?> func) {
+        Pair<CustomRenderButton, CustomRenderButton> buttonPair = generateButtonPair(i);
         keyList.add(i, Pair.of(buttonPair, Pair.of(Pair.of(warps.get(i).getFirst().getFirst(), warps.get(i).getFirst().getSecond()), warps.get(i).getSecond())));
         func.apply(buttonPair.getFirst());
         func.apply(buttonPair.getSecond());
+        renderables.add(buttonPair.getFirst());
+        renderables.add(buttonPair.getSecond());
     }
 
     private void addWarpSynced(Pair<Pair<String, ResourceKey<Level>>, BlockPos> warp) {
@@ -95,12 +100,19 @@ public class EnderNotebookScreen extends Screen {
         warps.add(Pair.of(warp.getFirst(), warp.getSecond()));
         int i = warps.size();
         keyList.add(Pair.of(generateButtonPair(i), warp));
+        renderables.add(keyList.get(i - 1).getFirst().getFirst());
+        renderables.add(keyList.get(i - 1).getFirst().getSecond());
         rebuildWidgets();
     }
 
-    private Pair<Button, Button> generateButtonPair(int i) {
-        Button delete = Button.builder(Component.empty(), button -> onRemoveWarpPress(button, i)).bounds(x + 172, y + 16 + (margin * i), 7, 7).build();
-        Button teleport = Button.builder(Component.empty(), button -> onTeleportWarpPress(button, i)).bounds(x + 13, y + 16 + (margin * i), 7, 7).build();
+    private Pair<CustomRenderButton, CustomRenderButton> generateButtonPair(int i) {
+        CustomRenderButton delete = CustomRenderButton.builder(Component.empty(), button -> onRemoveWarpPress(button, i),
+                        new ResourceLocation(MODID, "textures/gui/sprites/blank_red.png"), new ResourceLocation(MODID, "textures/gui/sprites/trash_can.png"))
+                .bounds(x + 160, y + 11 + (margin * i), 18, 18).build();
+        CustomRenderButton teleport = CustomRenderButton.builder(Component.empty(), button -> onTeleportWarpPress(button, i),
+                        new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png"))
+                .bounds(x + 13, y + 11 + (margin * i), 147, 18).build();
+        teleport.setAlpha(0.5f);
         return Pair.of(delete, teleport);
     }
 
@@ -115,8 +127,8 @@ public class EnderNotebookScreen extends Screen {
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.drawString(minecraft.font, String.valueOf(warps.size()), mouseX, mouseY, 16777215);
         renderWarps(guiGraphics, mouseX, mouseY, partialTick);
+        guiGraphics.drawString(font, Component.literal("Warps:").append(String.valueOf(warps.size())).append("/8"), x + 130, y + 171, textColor);
     }
 
     @Override
@@ -137,13 +149,13 @@ public class EnderNotebookScreen extends Screen {
 
             Component info = Component.literal(prettyPath.toString().trim()).append(" ").append(pos.getX() + " " + pos.getY() + " " + pos.getZ());
 
-            gui.drawString(font, warp.getFirst().getFirst(), x + 23, y + 12 + (margin * i), 16777215);
-            gui.drawString(font, info, x + 23, y + 19 + (margin * i), 16777215);
+            gui.drawString(font, warp.getFirst().getFirst(), x + 16, y + 12 + (margin * i), textColor);
+            gui.drawString(font, info, x + 16, y + 20 + (margin * i), textColor);
 
-            Pair<Button, Button> buttons = keyList.get(i).getFirst();
+            Pair<CustomRenderButton, CustomRenderButton> buttons = keyList.get(i).getFirst();
 
-            buttons.getFirst().render(gui, mouseX, mouseY, tick);
-            buttons.getSecond().render(gui, mouseX, mouseY, tick);
+            /*buttons.getFirst().render(gui, mouseX, mouseY, tick);
+            buttons.getSecond().render(gui, mouseX, mouseY, tick);*/
         }
     }
 

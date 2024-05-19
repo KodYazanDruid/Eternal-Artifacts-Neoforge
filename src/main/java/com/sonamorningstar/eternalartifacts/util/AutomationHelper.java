@@ -22,7 +22,7 @@ import org.antlr.v4.runtime.tree.Tree;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class PlantHelper {
+public class AutomationHelper {
 
     /**
      * @param level The level that harvesting happens.
@@ -46,7 +46,6 @@ public class PlantHelper {
         return totalDrops;
     }
 
-
     public static List<ItemStack> doTreeHarvest(Level level, BlockPos pos, @Nullable ItemStack axe, @Nullable BlockEntity blockEntity) {
         TreeCache cache = new TreeCache(level, pos, axe, blockEntity);
         cache.scanForTreeBlockSection();
@@ -56,6 +55,19 @@ public class PlantHelper {
         while(!cache.getLeavesCache().isEmpty() || !cache.getWoodCache().isEmpty()) {
             if(!cache.getLeavesCache().isEmpty()) totalDrops.addAll(cache.chop(cache.getLeavesCache()));
             else totalDrops.addAll(cache.chop(cache.getWoodCache()));
+        }
+
+        return totalDrops;
+    }
+
+    public static List<ItemStack> doOreVeinMine(Level level, BlockPos pos, @Nullable ItemStack pickaxe, @Nullable BlockEntity blockEntity) {
+        OreCache cache = new OreCache(level, pos, pickaxe, blockEntity);
+        cache.scanForOreVein();
+
+        NonNullList<ItemStack> totalDrops = NonNullList.create();
+
+        while(!cache.getOreCache().isEmpty()) {
+            totalDrops.addAll(cache.mine(cache.getOreCache()));
         }
 
         return totalDrops;

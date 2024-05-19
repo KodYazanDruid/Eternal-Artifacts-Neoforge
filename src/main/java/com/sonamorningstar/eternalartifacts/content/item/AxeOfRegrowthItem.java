@@ -29,8 +29,8 @@ import java.util.List;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class AxeOfRegrowthItem extends AxeItem {
-    public AxeOfRegrowthItem(Properties pProperties) {
-        super(ModTiers.CHLOROPHYTE, 5.0F, -3.0F, pProperties);
+    public AxeOfRegrowthItem(Properties properties) {
+        super(ModTiers.CHLOROPHYTE, 5.0F, -3.0F, properties);
     }
 
     @Override
@@ -63,6 +63,6 @@ public class AxeOfRegrowthItem extends AxeItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         MutableComponent ench = Enchantments.BLOCK_FORTUNE.getFullname(3).copy();
-        pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), ench));
+        pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("item_ench_text"), ench));
     }
 }

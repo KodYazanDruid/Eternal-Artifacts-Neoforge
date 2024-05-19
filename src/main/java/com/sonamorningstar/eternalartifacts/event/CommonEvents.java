@@ -1,24 +1,20 @@
 package com.sonamorningstar.eternalartifacts.event;
 
 import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.content.item.AxeOfRegrowthItem;
-import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
-import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
-import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
+import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModSounds;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
+import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
-import com.sonamorningstar.eternalartifacts.util.PlantHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -114,9 +110,10 @@ public class CommonEvents {
         BlockPos pos = event.getPos();
         BlockState soil = level.getBlockState(pos.below());
         ItemStack stack = player.getMainHandItem();
+        //Tree chopping.
         if(BlockHelper.isLog(level, pos) && stack.getItem() instanceof AxeOfRegrowthItem){
             event.setCanceled(true);
-            List<ItemStack> drops = PlantHelper.doTreeHarvest(level, pos, stack, null);
+            List<ItemStack> drops = AutomationHelper.doTreeHarvest(level, pos, stack, null);
             ItemStack sapling = ItemStack.EMPTY;
             boolean saplingSetted = false;
 
@@ -129,10 +126,24 @@ public class CommonEvents {
                 ItemHandlerHelper.giveItemToPlayer(player, is);
                 stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
             }
-            if (sapling.getItem() instanceof BlockItem bi && bi.getBlock() instanceof SaplingBlock saplingBlock && soil.canSustainPlant(level, pos, Direction.UP, saplingBlock)) {
+            if (sapling.getItem() instanceof BlockItem bi &&
+                    bi.getBlock() instanceof SaplingBlock saplingBlock &&
+                    soil.canSustainPlant(level, pos, Direction.UP, saplingBlock)) {
                 level.setBlockAndUpdate(pos, saplingBlock.defaultBlockState());
+                //level.scheduleTick(pos, saplingBlock, 1);
             }
         }
+        //Ore breaking.
+        if(BlockHelper.isOre(level, pos) && stack.getItem() instanceof ChloroveinPickaxeItem) {
+            event.setCanceled(true);
+            List<ItemStack> drops = AutomationHelper.doOreVeinMine(level, pos, stack, null);
+            for (ItemStack is : drops) {
+                ItemHandlerHelper.giveItemToPlayer(player, is);
+                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+            }
+        }
+
+
     }
 
     @SubscribeEvent

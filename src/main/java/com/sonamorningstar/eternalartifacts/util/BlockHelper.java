@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -16,6 +17,7 @@ import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
@@ -37,6 +39,14 @@ public class BlockHelper {
 
     public static boolean isLog(Level level, BlockPos pos) {
         return isBlockTag(level, pos, BlockTags.LOGS) || level.getBlockState(pos).is(Blocks.MANGROVE_ROOTS);
+    }
+
+    public static boolean isOre(Level level, BlockPos pos) {
+        return isBlockTag(level, pos, Tags.Blocks.ORES);
+    }
+
+    public static boolean isSame(Level level, BlockPos original, Block comparedTo) {
+        return level.getBlockState(original).is(comparedTo);
     }
 
     public static boolean isLeaves(Level level, BlockPos pos) {

@@ -71,6 +71,7 @@ public class ModItems {
 
     //Tools.
     public static final DeferredItem<Item> AXE_OF_REGROWTH = register("axe_of_regrowth", AxeOfRegrowthItem::new, new Item.Properties().stacksTo(1));
+    public static final DeferredItem<Item> CHLOROVEIN_PICKAXE = register("chlorovein_pickaxe", ChloroveinPickaxeItem::new, new Item.Properties().stacksTo(1));
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));

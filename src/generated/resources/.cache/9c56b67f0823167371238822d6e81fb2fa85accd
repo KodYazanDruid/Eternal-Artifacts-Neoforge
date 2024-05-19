@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-16T18:30:06.399739	Item Models: eternalartifacts
+// 1.20.4	2024-05-19T15:59:25.3841419	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -7,6 +7,7 @@ b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/ban
 ed67fafb38c72f12af67434f3f9b4c42b336271d assets/eternalartifacts/models/item/banana_cream_pie.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
+3e1e9359c90a259be8d047ec9cb010a08ebd4287 assets/eternalartifacts/models/item/chlorovein_pickaxe.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/demon_eye_spawn_egg.json
 9448010b52f766ba963e7846446966ddc53e5dd7 assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json

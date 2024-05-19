@@ -28,9 +28,10 @@
   "item.eternalartifacts.apple_pie": "Apple Pie",
   "item.eternalartifacts.axe_of_regrowth": "Axe of Regrowth",
   "item.eternalartifacts.banana": "Banana",
-  "item.eternalartifacts.banana_cream_pie": "Banana Pie",
+  "item.eternalartifacts.banana_cream_pie": "Banana Cream Pie",
   "item.eternalartifacts.battery": "Battery",
   "item.eternalartifacts.capacitor": "Capacitor",
+  "item.eternalartifacts.chlorovein_pickaxe": "Chlorovein Pickaxe",
   "item.eternalartifacts.comfy_shoes": "Comfy Shoes",
   "item.eternalartifacts.demon_eye_spawn_egg": "Demon Eye Spawn Egg",
   "item.eternalartifacts.enchanted_golden_ancient_fruit": "Enchanted Golden Ancient Fruit",
@@ -58,7 +59,6 @@
   "itemGroup.eternalartifacts": "Eternal Artifacts",
   "key.eternalartifacts.anvilinator.disabled_naming": "Naming disabled.",
   "key.eternalartifacts.anvilinator.enabled_naming": "Naming enabled.",
-  "key.eternalartifacts.tooltip.axe_of_regrowth_ench_text": "Always has %s",
   "key.eternalartifacts.tooltip.comfy_shoes": "Gives step height when worn.",
   "key.eternalartifacts.tooltip.enchanted_golden_ancient_fruit": "Gives two minues of flight and enhanced speed, haste and absorption.",
   "key.eternalartifacts.tooltip.encumbator.active": "Item pickup disabled!",
@@ -68,7 +68,7 @@
   "key.eternalartifacts.tooltip.gardening_pot": "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.",
   "key.eternalartifacts.tooltip.golden_ancient_fruit": "Gives two minutes of speed and haste.",
   "key.eternalartifacts.tooltip.inventory_right_click": "You can right click in inventory to open.",
+  "key.eternalartifacts.tooltip.item_ench_text": "Always has %s",
   "key.eternalartifacts.tooltip.magic_feather_active": "Magic feather is active!",
-  "key.eternalartifacts.tooltip.magic_feather_not_active": "Magic feather is not active.",
-  "dimension.minecraft.overworld": "Overworld"
+  "key.eternalartifacts.tooltip.magic_feather_not_active": "Magic feather is not active."
 }

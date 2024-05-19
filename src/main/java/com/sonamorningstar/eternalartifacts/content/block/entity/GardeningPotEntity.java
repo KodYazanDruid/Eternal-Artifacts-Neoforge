@@ -1,13 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
-import com.sonamorningstar.eternalartifacts.util.BlockHelper;
-import com.sonamorningstar.eternalartifacts.util.PlantHelper;
+import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
@@ -35,11 +32,11 @@ public class GardeningPotEntity extends DefaultRetexturedBlockEntity{
 
             BlockPos toBreak = pos.above(2);
             List<ItemStack> drops = Collections.emptyList();
-            if (level.getBlockState(toBreak).is(plantState.getBlock())) drops = PlantHelper.doReedlikeHarvest((ServerLevel) level, toBreak);
+            if (level.getBlockState(toBreak).is(plantState.getBlock())) drops = AutomationHelper.doReedlikeHarvest((ServerLevel) level, toBreak);
             pushOrPop(drops, level, pos.above(), inventoryBelow);
         }
         /*else if(BlockHelper.isLog(level, pos.above())){
-            List<ItemStack> drops = PlantHelper.doTreeHarvest(level, pos.above(), ItemStack.EMPTY, this);
+            List<ItemStack> drops = AutomationHelper.doTreeHarvest(level, pos.above(), ItemStack.EMPTY, this);
             if(!drops.isEmpty()){
                 boolean saplingSet = false;
                 ItemStack sapling = ItemStack.EMPTY;

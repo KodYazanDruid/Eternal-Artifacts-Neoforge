@@ -49,6 +49,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.ENDER_NOTEBOOK.get());
         basicItem(ModItems.APPLE_PIE.get());
         basicItem(ModItems.BANANA_CREAM_PIE.get());
+        handheld(ModItems.CHLOROVEIN_PICKAXE);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

@@ -50,6 +50,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENDER_NOTEBOOK.get(), "Ender Notebook");
                 add(ModItems.APPLE_PIE.get(), "Apple Pie");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Banana Cream Pie");
+                add(ModItems.CHLOROVEIN_PICKAXE.get(), "Chlorovein Pickaxe");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -91,7 +92,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Right click in inventory to switch.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "You can right click in inventory to open.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), "Always has %s");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("item_ench_text"), "Always has %s");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Magic feather is active!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Magic feather is not active.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("golden_ancient_fruit"), "Gives two minutes of speed and haste.");
@@ -135,6 +136,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENDER_NOTEBOOK.get(), "Ender Defteri");
                 add(ModItems.APPLE_PIE.get(), "Elmalı Turta");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Muz Kremalı Turta");
+                add(ModItems.CHLOROVEIN_PICKAXE.get(), "Klorodamar Kazma");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -176,7 +178,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Değiştirmek için envanterinde sağ tıkla.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "Envanterde sağ tıklayarak açabilirsin.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("axe_of_regrowth_ench_text"), "Her zaman %s'a sahip");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("item_ench_text"), "Her zaman %s'a sahip");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Büyülü tüy aktif!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Büyülü tüy aktif değil.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GOLDEN_ANCIENT_FRUIT), "İki dakikalığına hız ve acele verir.");
