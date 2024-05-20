@@ -5,23 +5,12 @@ import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.WrittenBookItem;
-import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -33,11 +22,10 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-import java.util.Optional;
 
-public class BookDuplicatorBlockEntity extends MachineBlockEntity implements MenuProvider, ITickable {
+public class BookDuplicatorBlockEntity extends MachineBlockEntity<BookDuplicatorMenu> {
     public BookDuplicatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState);
+        super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
     }
 
@@ -108,26 +96,6 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity implements Men
         inventory.deserializeNBT(tag.getCompound("Inventory"));
         energy.deserializeNBT(tag.get("Energy"));
         tank.readFromNBT(tag);
-    }
-
-    @Override
-    public void drops() {
-        SimpleContainer container = new SimpleContainer(inventory.getSlots());
-        for(int i = 0; i < inventory.getSlots(); i++) {
-            container.setItem(i, inventory.getStackInSlot(i));
-        }
-        Containers.dropContents(level, this.worldPosition, container);
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return Component.translatable(ModBlocks.BOOK_DUPLICATOR.get().getDescriptionId());
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new BookDuplicatorMenu(pContainerId, pPlayerInventory, this, data);
     }
 
     public void tick(Level lvl, BlockPos pos, BlockState st) {

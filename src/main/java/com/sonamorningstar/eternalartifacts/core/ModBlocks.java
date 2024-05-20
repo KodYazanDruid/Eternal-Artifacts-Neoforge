@@ -46,9 +46,11 @@ public class ModBlocks {
             ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
-            ()-> new AnvilinatorBlock(Blocks.IRON_BLOCK.properties()), new Item.Properties());
+            ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()), new Item.Properties());
     public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",
-            ()-> new BookDuplicatorBlock(Blocks.IRON_BLOCK.properties()), new Item.Properties());
+            ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()), new Item.Properties());
+    public static final DeferredBlock<MeatPackerBlock> MEAT_PACKER = registerWithItem("meat_packer",
+            ()-> new MeatPackerBlock(MACHINE_BLOCK.get().properties()), new Item.Properties());
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()), new Item.Properties());

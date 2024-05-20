@@ -58,7 +58,7 @@ public class OreCache {
             if(checked.contains(pos)) continue;
             checked.add(pos.immutable());
             if(!vein.contains(pos) && BlockHelper.isSame(level, pos, minedOre)) {
-                if (pos.distSqr(new Vec3i(current.getX(), current.getY(), current.getZ())) <= 5) scanArea(pos, vein, checked);
+                if (pos.distSqr(new Vec3i(current.getX(), current.getY(), current.getZ())) <= 10) scanArea(pos, vein, checked);
                 vein.add(pos.immutable());
             }
         }

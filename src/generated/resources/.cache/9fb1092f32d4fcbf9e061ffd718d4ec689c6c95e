@@ -1,4 +1,5 @@
-// 1.20.4	2024-05-11T21:50:14.5163548	Recipes
+// 1.20.4	2024-05-19T23:09:46.3066021	Recipes
+1dc3ff242bda0de185641d64da91915dcbb5f074 data/eternalartifacts/advancements/recipes/building_blocks/pink_slime_block.json
 50deffa9c78012d384dfe5cdf31ba8044e3eca30 data/eternalartifacts/advancements/recipes/building_blocks/sugar_charcoal_block.json
 1911e622aab2b1ec9df76de8f10842ec3c5c7255 data/eternalartifacts/advancements/recipes/decorations/gardening_pot.json
 57ec410f482bb3d23df593aa62403a2261fb2852 data/eternalartifacts/advancements/recipes/food/campfire_cooking/meat_ingot.json
@@ -9,6 +10,7 @@
 f1013b983808d68f96d88c70c183a51d5f636bcd data/eternalartifacts/advancements/recipes/misc/blasting/copper_ingot.json
 67544ec13e9599ca4d75e8cd6400e7de7e5ff00b data/eternalartifacts/advancements/recipes/misc/blasting/gold_ingot.json
 1d4ace5ec179e3e2fe74515748de3fb6db5aaf8c data/eternalartifacts/advancements/recipes/misc/blasting/iron_ingot.json
+7ebe6f1dd772779bcee4231dcdd5756cf85ed4db data/eternalartifacts/advancements/recipes/misc/ender_notebook.json
 c3aabd56d46012d885e1996b2a4ce55ef2ab0a8f data/eternalartifacts/advancements/recipes/misc/smelting/coal.json
 1dd275430aa6d3783d1f8769e1e7b3d1872e3ad9 data/eternalartifacts/advancements/recipes/misc/smelting/copper_ingot.json
 793a6b2d180d4e681b3520b406942c513e9992ab data/eternalartifacts/advancements/recipes/misc/smelting/gold_ingot.json
@@ -20,8 +22,10 @@ bd49473634e72f28dd2c90a8d48daf84b9f1ddfb data/eternalartifacts/recipes/blasting/
 b4b650c1da37c7f748c0f3c13161bf0182416b0e data/eternalartifacts/recipes/blasting/gold_ingot.json
 1ebdd10b3ddbad21e9a187a1e4d2f562ceb3ed9e data/eternalartifacts/recipes/blasting/iron_ingot.json
 90fa831b2105086a32fc7ead2156f27f365ea0d6 data/eternalartifacts/recipes/campfire_cooking/meat_ingot.json
+30cb21aa45d4b7420d2e3e3505c85a623fc8fa63 data/eternalartifacts/recipes/ender_notebook.json
 5cd6b0ddf48c510887b909c1ac61e756bd631b9e data/eternalartifacts/recipes/gardening_pot.json
 32ab5ddf2c8f9d474c295ee0ef7619019f0a8c7e data/eternalartifacts/recipes/golden_ancient_fruit.json
+052627b320d04ee205d5851571251b3688451aeb data/eternalartifacts/recipes/pink_slime_block.json
 6437711dc43fa942f2b22f6e1fa3584079b4a53f data/eternalartifacts/recipes/smelting/coal.json
 184b30bb847e11f44811b38dd86e76f03a7ee6b2 data/eternalartifacts/recipes/smelting/copper_ingot.json
 ac407cf047242758bcd5240803f88a5bd5a1955b data/eternalartifacts/recipes/smelting/gold_ingot.json

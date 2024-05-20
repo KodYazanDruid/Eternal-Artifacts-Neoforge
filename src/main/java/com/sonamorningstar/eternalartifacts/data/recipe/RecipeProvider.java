@@ -57,8 +57,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .unlockedBy("has_item", has(ModItems.ANCIENT_FRUIT))
                 .save(recipeOutput);
 
-        //CompoundTag terracottaTag = new CompoundTag();
-        //terracottaTag.putString(RetexturedHelper.TEXTURE_TAG_KEY, RetexturedHelper.getTextureName(Blocks.TERRACOTTA));
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GARDENING_POT)
                 .pattern(" B ").pattern("TDT").pattern(" T ")
                 .define('B', Items.BONE_MEAL).define('T', Items.TERRACOTTA).define('D', Items.DIRT)
@@ -70,9 +68,18 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('S', ModItems.SUGAR_CHARCOAL)
                 .unlockedBy("has_item", has(ModItems.SUGAR_CHARCOAL))
                 .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.PINK_SLIME_BLOCK)
+                .pattern("SSS").pattern("SSS").pattern("SSS")
+                .define('S', ModItems.PINK_SLIME)
+                .unlockedBy("has_item", has(ModItems.PINK_SLIME))
+                .save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.SUGAR_CHARCOAL_BLOCK))
+                .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENDER_NOTEBOOK)
+                .requires(Items.FEATHER).requires(ModItems.ENDER_TABLET).requires(Items.DIAMOND)
+                .unlockedBy("has_item", has(ModItems.ENDER_TABLET))
                 .save(recipeOutput);
     }
 

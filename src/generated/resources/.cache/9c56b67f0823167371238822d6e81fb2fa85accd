@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-19T15:59:25.3841419	Item Models: eternalartifacts
+// 1.20.4	2024-05-19T20:53:15.4180664	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -15,6 +15,7 @@ bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/com
 78bc681824bce9b7f3f76f1c096673a70d98f0de assets/eternalartifacts/models/item/encumbator_active.json
 c90643f23e4462e731095ab5da3ec58e9c67289b assets/eternalartifacts/models/item/ender_notebook.json
 a0623a5915f2cd12361259e198947935b3335943 assets/eternalartifacts/models/item/ender_pouch.json
+886377bc2674537be2ca5d4c14dd015e1c75474d assets/eternalartifacts/models/item/ender_tablet.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json
 c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/forsythia.json
 8dbc4a5b8db74c606be2099f6043700716fd7bfd assets/eternalartifacts/models/item/four_leaf_clover.json

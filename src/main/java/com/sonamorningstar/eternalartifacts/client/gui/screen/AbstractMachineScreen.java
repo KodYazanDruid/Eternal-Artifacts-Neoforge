@@ -55,7 +55,6 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     protected void renderFluidBar(GuiGraphics guiGraphics, int x, int y, FluidStack stack) {
         guiGraphics.blit(bars, x, y, 30, 0, 18, 56);
 
-        //FluidStack stack = anvilinatorBlockEntity.getFluidStack();
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
         ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(stack);
         if(stillTexture == null) return;
@@ -89,9 +88,9 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isWorking()) {
-            guiGraphics.blit(bars, x, y, 0, 56, menu.getScaledProgress(22), 16);
-        }
+        guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
+        if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
+
     }
 
 }

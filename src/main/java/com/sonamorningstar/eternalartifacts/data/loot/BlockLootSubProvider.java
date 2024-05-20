@@ -45,6 +45,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         add(ModBlocks.FORSYTHIA.get(), createSinglePropConditionTable(ModBlocks.FORSYTHIA.get(), DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
         dropSelf(ModBlocks.FOUR_LEAF_CLOVER.get());
+        dropSelf(ModBlocks.MEAT_PACKER.get());
 
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);

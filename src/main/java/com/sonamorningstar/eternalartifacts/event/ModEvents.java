@@ -34,6 +34,14 @@ public class ModEvents {
         });
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.tank);
 
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> {
+            if (ctx != null) return new WrappedModItemStorage(be.inventory, i -> true, (i, s) -> false);
+            else return be.inventory;
+        });
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> be.tank);
+
+
     }
 
     @SubscribeEvent

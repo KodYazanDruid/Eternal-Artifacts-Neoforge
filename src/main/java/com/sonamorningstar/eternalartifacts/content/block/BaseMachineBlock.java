@@ -23,11 +23,12 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 
-public class BaseMachineBlock<T extends MachineBlockEntity> extends BaseEntityBlock {
+public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntityBlock {
     private final BiFunction<BlockPos, BlockState, T> fun;
     protected BaseMachineBlock(Properties pProperties, BiFunction<BlockPos, BlockState, T> fun) {
         super(pProperties);
@@ -60,7 +61,14 @@ public class BaseMachineBlock<T extends MachineBlockEntity> extends BaseEntityBl
         if(state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof MachineBlockEntity machine) {
-                machine.drops();
+                IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
+                if(inventory != null) {
+                    SimpleContainer container = new SimpleContainer(inventory.getSlots());
+                    for (int i = 0; i < inventory.getSlots(); i++) {
+                        container.setItem(i, inventory.getStackInSlot(i));
+                    }
+                    Containers.dropContents(level, pos.immutable(), container);
+                }
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);

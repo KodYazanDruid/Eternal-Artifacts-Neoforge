@@ -24,7 +24,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
-public class BioFurnaceEntity extends MachineBlockEntity implements MenuProvider, ITickable {
+public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> {
 
     public final ModItemStorage inventory = new ModItemStorage(1) {
         @Override
@@ -39,16 +39,7 @@ public class BioFurnaceEntity extends MachineBlockEntity implements MenuProvider
     };
 
     public BioFurnaceEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState);
-    }
-
-    @Override
-    public Component getDisplayName() { return Component.translatable(ModBlocks.BIOFURNACE.get().getDescriptionId()); }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new BioFurnaceMenu(pContainerId, pPlayerInventory, this, this.data);
+        super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState, BioFurnaceMenu::new);
     }
 
     @Override
@@ -56,15 +47,6 @@ public class BioFurnaceEntity extends MachineBlockEntity implements MenuProvider
         super.load(pTag);
         energy.deserializeNBT(pTag.get("Energy"));
         inventory.deserializeNBT(pTag.getCompound("Inventory"));
-    }
-
-    @Override
-    public void drops() {
-        SimpleContainer container = new SimpleContainer(inventory.getSlots());
-        for(int i = 0; i < inventory.getSlots(); i++) {
-            container.setItem(i, inventory.getStackInSlot(i));
-        }
-        Containers.dropContents(level, this.worldPosition, container);
     }
 
     @Override

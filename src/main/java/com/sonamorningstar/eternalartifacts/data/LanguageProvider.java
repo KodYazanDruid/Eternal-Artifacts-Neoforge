@@ -51,6 +51,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.APPLE_PIE.get(), "Apple Pie");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Banana Cream Pie");
                 add(ModItems.CHLOROVEIN_PICKAXE.get(), "Chlorovein Pickaxe");
+                add(ModItems.ENDER_TABLET.get(), "Ender Tablet");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -73,6 +74,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Gravel Copper Ore");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Gravel Iron Ore");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Gravel Gold Ore");
+                add(ModBlocks.MEAT_PACKER.get(), "Meat Packer");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -137,6 +139,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.APPLE_PIE.get(), "Elmalı Turta");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Muz Kremalı Turta");
                 add(ModItems.CHLOROVEIN_PICKAXE.get(), "Klorodamar Kazma");
+                add(ModItems.ENDER_TABLET.get(), "Ender Plaka");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -159,6 +162,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Çakılda Bakır Cevheri");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Çakılda Demir Cevheri");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
+                add(ModBlocks.MEAT_PACKER.get(), "Et Paketleyici");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

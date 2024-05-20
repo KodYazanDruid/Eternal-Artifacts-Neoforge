@@ -45,13 +45,14 @@ public class ModItems {
                 .effect(()->new MobEffectInstance(MobEffects.ABSORPTION, 2400, 4), 1.0F)
                 .alwaysEat()
                 .build()));
-    public static final DeferredItem<Item> BATTERY = register("battery", Item::new);
-    public static final DeferredItem<Item> CAPACITOR = register("capacitor", Item::new);
-    public static final DeferredItem<Item> LENS = register("lens", Item::new);
-    public static final DeferredItem<Item> PLANT_MATTER = register("plant_matter", Item::new);
-    public static final DeferredItem<Item> PINK_SLIME = register("pink_slime", Item::new);
-    public static final DeferredItem<Item> GOLD_RING = registerArtifact("gold_ring", Item::new);
-    public static final DeferredItem<Item> SUGAR_CHARCOAL = register("sugar_charcoal", Item::new);
+    public static final DeferredItem<Item> BATTERY = register("battery");
+    public static final DeferredItem<Item> CAPACITOR = register("capacitor");
+    public static final DeferredItem<Item> LENS = register("lens");
+    public static final DeferredItem<Item> PLANT_MATTER = register("plant_matter");
+    public static final DeferredItem<Item> PINK_SLIME = register("pink_slime");
+    public static final DeferredItem<Item> GOLD_RING = registerArtifact("gold_ring");
+    public static final DeferredItem<Item> SUGAR_CHARCOAL = register("sugar_charcoal");
+    public static final DeferredItem<Item> ENDER_TABLET = register("ender_tablet");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -91,8 +92,16 @@ public class ModItems {
         return ITEMS.register(name, supplier);
     }
 
+    private static DeferredItem<Item> register(String name) {
+        return register(name, ()-> new Item(new Item.Properties()));
+    }
+
     private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func) {
         return register(name, ()-> func.apply(new Item.Properties()));
+    }
+
+    private static DeferredItem<Item> registerArtifact(String name) {
+        return register(name, ()-> new Item(new Item.Properties().stacksTo(1)));
     }
 
     private static <T extends Item> DeferredItem<T> registerArtifact(String name, Function<Item.Properties, T> func) {

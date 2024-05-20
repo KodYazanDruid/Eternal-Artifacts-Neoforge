@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-10T16:29:35.9802437	Block States: eternalartifacts
+// 1.20.4	2024-05-19T23:09:46.2976008	Block States: eternalartifacts
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
 31ccf79f94568a40a5b2214ce81d9b952c686a5b assets/eternalartifacts/blockstates/anvilinator.json
 d358a8c69d5821dccf9fe8b8ac51476ace8108a1 assets/eternalartifacts/blockstates/biofurnace.json
@@ -12,6 +12,7 @@ a0913f199fb3673bbb36558a83f42a80b50b3635 assets/eternalartifacts/blockstates/gra
 14efb1f5c77b818c24b290c2452e6c738e4ffdb1 assets/eternalartifacts/blockstates/gravel_gold_ore.json
 dba5a07d43d1d713d16678adaacc499f3493464d assets/eternalartifacts/blockstates/gravel_iron_ore.json
 245a29b651ef782db011509234503d4ae811c5b6 assets/eternalartifacts/blockstates/machine_block.json
+dacf43745fcfdd019645822ae59a31eb2d670e46 assets/eternalartifacts/blockstates/meat_packer.json
 787d609e24765f7406d3e43a9c80dba1bc86e34e assets/eternalartifacts/blockstates/pink_slime_block.json
 d9a18d27fb189a721e5dc4f92061e3ff1fb2c221 assets/eternalartifacts/blockstates/resonator.json
 91dfded36b8eae9beea36d9ac3934c3a764a6429 assets/eternalartifacts/blockstates/rosy_froglight.json
@@ -35,6 +36,7 @@ f09319decd1a802489b0ad708b5a06178b6e2e59 assets/eternalartifacts/models/block/gr
 8e01a72d4715739317cbc1c1c30cc9694c1589dd assets/eternalartifacts/models/block/gravel_gold_ore.json
 4389cfdf6f358bab384c7552c621583bdac0a5fe assets/eternalartifacts/models/block/gravel_iron_ore.json
 c340771bd3c86592d0a96bf8d5e647893e038003 assets/eternalartifacts/models/block/machine_block.json
+d6afdcce8a80697698af7c25b105357e74b84009 assets/eternalartifacts/models/block/meat_packer.json
 3ad5a59d34ef80426e9beb731161297d470acd9a assets/eternalartifacts/models/block/pink_slime_block.json
 282d770af228d6c89ed674677350c52ee5cc8fc7 assets/eternalartifacts/models/block/rosy_froglight.json
 2110bd49508e517fcb6853a7b19e77a33dcadf34 assets/eternalartifacts/models/block/rosy_froglight_horizontal.json
@@ -46,4 +48,5 @@ e2da4d6f0379a28b261cd4f22a3dd3663b677cff assets/eternalartifacts/models/item/gra
 1d125bd45f2f4acc3641effeb745cc8499642805 assets/eternalartifacts/models/item/gravel_copper_ore.json
 675514099114ec4074cb49ef11e65553d9063e4c assets/eternalartifacts/models/item/gravel_gold_ore.json
 80bbd8b2e4e4212658bade6268819d49b2f7c324 assets/eternalartifacts/models/item/gravel_iron_ore.json
+7a50e7be3962d1f20a7d6ad3968e1acfeebd77e1 assets/eternalartifacts/models/item/meat_packer.json
 d24b19b7fa0bc2c0d3e9e3afe9e1a05f8544f3b9 assets/eternalartifacts/models/item/sugar_charcoal_block.json

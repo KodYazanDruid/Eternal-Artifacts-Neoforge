@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/meat_packer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/meat_packer"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/meat_packer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/meat_packer",
+      "y": 270
+    }
+  }
+}

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
+import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,10 +19,10 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<AnvilinatorMenu>> ANVILINATOR = MENUS.register("anvilinator",
             ()-> IMenuTypeExtension.create(AnvilinatorMenu::new));
-
     public static final DeferredHolder<MenuType<?>, MenuType<BioFurnaceMenu>> BIOFURNACE = MENUS.register("biofurnace",
             ()-> IMenuTypeExtension.create(BioFurnaceMenu::new));
-
     public static final DeferredHolder<MenuType<?>, MenuType<BookDuplicatorMenu>> BOOK_DUPLICATOR = MENUS.register("book_duplicator",
             ()-> IMenuTypeExtension.create(BookDuplicatorMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<MeatPackerMenu>> MEAT_PACKER = MENUS.register("meat_packer",
+            ()-> IMenuTypeExtension.create(MeatPackerMenu::new));
 }
