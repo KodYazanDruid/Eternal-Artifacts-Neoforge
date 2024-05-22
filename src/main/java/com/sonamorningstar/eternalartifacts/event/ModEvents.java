@@ -2,15 +2,20 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.capabilities.WrappedModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -48,7 +53,12 @@ public class ModEvents {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.DEMON_EYE.get(), DemonEyeEntity.createAttributes().build());
         event.put(ModEntities.PINKY.get(), PinkyEntity.createAttributes().build());
+        event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
     }
 
+    @SubscribeEvent
+    public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+        event.register(ModEntities.DUCK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+    }
 
 }

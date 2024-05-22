@@ -7,5 +7,6 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModModelLayers {
     public static final ModelLayerLocation DEMON_EYE_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "demon_eye_layer"), "main");
+    public static final ModelLayerLocation DUCK_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "duck_layer"), "main");
     public static final ModelLayerLocation FANCY_CHEST_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "fancy_chest_layer"), "main");
 }

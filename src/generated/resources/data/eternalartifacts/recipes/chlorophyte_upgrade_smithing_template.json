@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:diamond"
+    },
+    "C": {
+      "item": "eternalartifacts:chlorophyte_tablet"
+    },
+    "S": {
+      "item": "eternalartifacts:chlorophyte_upgrade_smithing_template"
+    }
+  },
+  "pattern": [
+    "#S#",
+    "#C#",
+    "###"
+  ],
+  "result": {
+    "count": 2,
+    "item": "eternalartifacts:chlorophyte_upgrade_smithing_template"
+  }
+}

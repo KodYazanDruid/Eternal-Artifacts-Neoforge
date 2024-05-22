@@ -25,18 +25,19 @@ public class ModBlocks {
                 ()-> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(0.5f).mapColor(MapColor.COLOR_BROWN)), new Item.Properties());
 */
     public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
-            ()-> new Block(Blocks.IRON_BLOCK.properties().mapColor(MapColor.STONE)), new Item.Properties());
+            () -> new Block(Blocks.IRON_BLOCK.properties().mapColor(MapColor.STONE)));
     public static final DeferredBlock<RotatedPillarBlock> ROSY_FROGLIGHT = registerWithItem("rosy_froglight",
-            ()-> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(0.3F).lightLevel(p_220869_ -> 15).sound(SoundType.FROGLIGHT)),
-            new Item.Properties());
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(0.3F).lightLevel(p_220869_ -> 15).sound(SoundType.FROGLIGHT)));
     public static final DeferredBlock<Block> GRAVEL_COAL_ORE = registerWithItem("gravel_coal_ore",
-            () -> new FallingDropExperienceBlock(UniformInt.of(0, 2), Blocks.GRAVEL.properties()), new Item.Properties());
+            () -> new FallingDropExperienceBlock(UniformInt.of(0, 2), Blocks.GRAVEL.properties()));
     public static final DeferredBlock<Block> GRAVEL_COPPER_ORE = registerWithItem("gravel_copper_ore",
-            () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()), new Item.Properties());
+            () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()));
     public static final DeferredBlock<Block> GRAVEL_IRON_ORE = registerWithItem("gravel_iron_ore",
-            () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()), new Item.Properties());
+            () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()));
     public static final DeferredBlock<Block> GRAVEL_GOLD_ORE = registerWithItem("gravel_gold_ore",
-            () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()), new Item.Properties());
+            () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()));
+    public static final DeferredBlock<Block> CHLOROPHYTE_DEBRIS = registerWithItem("chlorophyte_debris",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.3F).sound(SoundType.MOSS)));
 
     public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous_block",
             ()-> new LiquidBlock(ModFluids.NOUS_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
@@ -46,22 +47,22 @@ public class ModBlocks {
             ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
-            ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()), new Item.Properties());
+            ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",
-            ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()), new Item.Properties());
+            ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MeatPackerBlock> MEAT_PACKER = registerWithItem("meat_packer",
-            ()-> new MeatPackerBlock(MACHINE_BLOCK.get().properties()), new Item.Properties());
+            ()-> new MeatPackerBlock(MACHINE_BLOCK.get().properties()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()), new Item.Properties());
 
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
-            ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties(), 128), new Item.Properties());
+            ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties(), 128));
 
     public static final DeferredBlock<PinkSlimeBlock> PINK_SLIME_BLOCK = registerWithItem("pink_slime_block",
-            ()-> new PinkSlimeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK)), new Item.Properties());
+            ()-> new PinkSlimeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK)));
     public static final DeferredBlock<Block> SUGAR_CHARCOAL_BLOCK = registerWithItem("sugar_charcoal_block",
-            ()-> new Block(Blocks.COAL_BLOCK.properties()), new Item.Properties());
+            ()-> new Block(Blocks.COAL_BLOCK.properties()));
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot",
             ()-> new GardeningPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).randomTicks()));
@@ -91,9 +92,16 @@ public class ModBlocks {
                     .sound(SoundType.GRASS)
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)
-            ), new Item.Properties());
+            ));
 
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }
+
+    private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier){
+        DeferredBlock<T> block = BLOCKS.register(name, supplier);
+        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return block;
+    }
+
     private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier, Item.Properties props){
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), props));

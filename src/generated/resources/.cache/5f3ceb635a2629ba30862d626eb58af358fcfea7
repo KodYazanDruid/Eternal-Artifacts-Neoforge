@@ -1,15 +1,21 @@
-// 1.20.4	2024-05-09T21:20:48.8186196	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2024-05-21T19:02:09.9043056	Tags for minecraft:item mod id eternalartifacts
 739b14f3f9fa7b447d8ac1989c2d47a24f23a539 data/eternalartifacts/tags/items/gardening_pot_suitable.json
+b638cbec9c06736da968938f14d76dba04a9c255 data/eternalartifacts/tags/items/tablets.json
 28c2f9209bde6aac38a44aeb9f557059cf5cd1e6 data/forge/tags/items/fruits.json
 c6c66e730827f409622e82c9dc0a843c22bb8094 data/forge/tags/items/fruits/ancient.json
 ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.json
 91aab86753deb913a975f3639150d05d0706b6fd data/forge/tags/items/fruits/orange.json
-6d8e6ef4dfdfc4230de2aed41435a095339b6cd5 data/forge/tags/items/ingots.json
+e30312d061c38283bd89113b0bbd56bb057b636b data/forge/tags/items/ingots.json
 49561d1964884e94195f462abd9a9e82efa0365d data/forge/tags/items/ingots/meat.json
 5ca6381b9b4ec51f9048388f2ebfa25614327c38 data/forge/tags/items/ingots/raw_meat.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
+1247507c3b27d84e64eec122d4cc88ffb823a08e data/minecraft/tags/items/axes.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/minecraft/tags/items/coals.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/items/flowers.json
+54d1d9b626e18f38865a0341784d1a3c3c933cef data/minecraft/tags/items/hoes.json
+779594871a6ff44a423b632cb41535507ceef500 data/minecraft/tags/items/pickaxes.json
+b0051d25823943787cdcd975c6ff0ff13d07d6fc data/minecraft/tags/items/shovels.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/items/small_flowers.json
+51400e01661afe892a1b9902872ded2e1c174133 data/minecraft/tags/items/swords.json

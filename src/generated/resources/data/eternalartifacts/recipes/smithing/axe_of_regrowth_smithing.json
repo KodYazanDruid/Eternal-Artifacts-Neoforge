@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "eternalartifacts:chlorophyte_ingot"
+  },
+  "base": {
+    "item": "eternalartifacts:copper_axe"
+  },
+  "result": {
+    "item": "eternalartifacts:axe_of_regrowth"
+  },
+  "template": {
+    "item": "eternalartifacts:chlorophyte_upgrade_smithing_template"
+  }
+}

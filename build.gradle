@@ -38,6 +38,10 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
 }
 
 base {
@@ -94,6 +98,9 @@ dependencies {
     implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
     implementation "appeng:appliedenergistics2-neoforge:${ae2_version}"
     implementation "curse.maven:prettypipes-376737:5165292"
+
+    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 
 }
 

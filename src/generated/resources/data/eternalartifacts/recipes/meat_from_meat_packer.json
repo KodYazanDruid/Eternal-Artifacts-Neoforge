@@ -1,0 +1,9 @@
+{
+  "type": "eternalartifacts:meat_packer",
+  "amount": 250,
+  "fluidIn": "forge:meat",
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:raw_meat_ingot"
+  }
+}

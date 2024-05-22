@@ -5,11 +5,9 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -36,7 +34,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.BANANA).add(ModItems.BANANA.get());
         tag(Tags.Items.INGOTS).add(
                 ModItems.RAW_MEAT_INGOT.get(),
-                ModItems.MEAT_INGOT.get()
+                ModItems.MEAT_INGOT.get(),
+                ModItems.CHLOROPHYTE_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
@@ -46,12 +45,28 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(Tags.Items.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.asItem());
         tag(ItemTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
         tag(ItemTags.FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
+        tag(ItemTags.SWORDS).add(ModItems.COPPER_SWORD.get());
+        tag(ItemTags.PICKAXES).add(
+                ModItems.COPPER_PICKAXE.get(),
+                ModItems.CHLOROVEIN_PICKAXE.get()
+        );
+        tag(ItemTags.AXES).add(
+                ModItems.COPPER_AXE.get(),
+                ModItems.AXE_OF_REGROWTH.get()
+        );
+        tag(ItemTags.SHOVELS).add(ModItems.COPPER_SHOVEL.get());
+        tag(ItemTags.HOES).add(ModItems.COPPER_HOE.get());
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
                 ItemTags.STONE_BRICKS,
                 ItemTags.STONE_CRAFTING_MATERIALS,
                 Tags.Items.SANDSTONE
+        );
+        tag(ModTags.Items.TABLETS).add(
+                ModItems.STONE_TABLET.get(),
+                ModItems.ENDER_TABLET.get(),
+                ModItems.CHLOROPHYTE_TABLET.get()
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),

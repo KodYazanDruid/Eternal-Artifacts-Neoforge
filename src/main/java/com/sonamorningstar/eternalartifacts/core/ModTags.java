@@ -22,6 +22,7 @@ public class ModTags {
         public static final TagKey<Item> INGOTS_MEAT = forgeTag("ingots/meat");
         public static final TagKey<Item> INGOTS_RAW_MEAT = forgeTag("ingots/raw_meat");
         public static final TagKey<Item> SLIMEBALLS_PINK = forgeTag("slimeballs/pink");
+        public static final TagKey<Item> TABLETS = modTag("tablets");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

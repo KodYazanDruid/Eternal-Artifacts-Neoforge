@@ -9,10 +9,7 @@ import com.sonamorningstar.eternalartifacts.client.model.ColoredBlockModel;
 import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.renderer.FancyChestRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
-import com.sonamorningstar.eternalartifacts.content.entity.client.DemonEyeModel;
-import com.sonamorningstar.eternalartifacts.content.entity.client.DemonEyeRenderer;
-import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
-import com.sonamorningstar.eternalartifacts.content.entity.client.PinkyRenderer;
+import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
@@ -93,11 +90,13 @@ public class ClientModEvents {
 
         EntityRenderers.register(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
         EntityRenderers.register(ModEntities.PINKY.get(), PinkyRenderer::new);
+        EntityRenderers.register(ModEntities.DUCK.get(), DuckRenderer::new);
     }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.DEMON_EYE_LAYER, DemonEyeModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.DUCK_LAYER, DuckModel::createBodyLayer);
 
         event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
     }

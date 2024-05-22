@@ -1,8 +1,9 @@
-// 1.20.4	2024-05-19T23:09:46.3026011	Loot Tables
+// 1.20.4	2024-05-22T18:13:10.3409833	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 1a3d962a463b100e0202e85cbbb340a920e90378 data/eternalartifacts/loot_tables/blocks/biofurnace.json
 eb7db2f39c6e32c067983cfe28a95a7b70cf6a33 data/eternalartifacts/loot_tables/blocks/book_duplicator.json
+2e6d7a85424e2e0e6a176c7bcda87f605bf2e7e5 data/eternalartifacts/loot_tables/blocks/chlorophyte_debris.json
 323005a0f50f9eb7749fa98dd542be7032c56f17 data/eternalartifacts/loot_tables/blocks/fancy_chest.json
 c1447597e3f4cff0cdd64963fd28122eea363d87 data/eternalartifacts/loot_tables/blocks/forsythia.json
 46352d2960ffae7373ef1f76927fd873a7f6ef86 data/eternalartifacts/loot_tables/blocks/four_leaf_clover.json
@@ -18,4 +19,5 @@ e097efa9397ef97b629a68c1f969714ec4032796 data/eternalartifacts/loot_tables/block
 b686ed87f1ee8bc993b0915508faab7ec6b07113 data/eternalartifacts/loot_tables/blocks/rosy_froglight.json
 c1bc5e28cf5db7bcd682ba3f629a120acfefc497 data/eternalartifacts/loot_tables/blocks/sugar_charcoal_block.json
 c0e3731ff79dbcd23191ed8563f789961ec2fb15 data/eternalartifacts/loot_tables/entities/demon_eye.json
+d26bde7061c68cb46df47f99ef922293ee9308b7 data/eternalartifacts/loot_tables/entities/duck.json
 adc9376497f9c09e0788f0c1c265d8f48955d0cf data/eternalartifacts/loot_tables/entities/pinky.json

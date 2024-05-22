@@ -19,6 +19,6 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(EntityTypeTags.FROG_FOOD).add(ModEntities.PINKY.get());
-
+        tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModEntities.DUCK.get());
     }
 }

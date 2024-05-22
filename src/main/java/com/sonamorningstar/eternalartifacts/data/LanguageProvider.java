@@ -2,7 +2,9 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -52,6 +54,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.BANANA_CREAM_PIE.get(), "Banana Cream Pie");
                 add(ModItems.CHLOROVEIN_PICKAXE.get(), "Chlorovein Pickaxe");
                 add(ModItems.ENDER_TABLET.get(), "Ender Tablet");
+                add(ModItems.STONE_TABLET.get(), "Stone Tablet");
+                add(ModItems.COPPER_SWORD.get(), "Copper Sword");
+                add(ModItems.COPPER_PICKAXE.get(), "Copper Pickaxe");
+                add(ModItems.COPPER_AXE.get(), "Copper Axe");
+                add(ModItems.COPPER_SHOVEL.get(), "Copper Shovel");
+                add(ModItems.COPPER_HOE.get(), "Copper Hoe");
+                add(ModItems.CHLOROPHYTE_TABLET.get(), "Chlorophyte Tablet");
+                add(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.get(), "Smithing Template");
+                add(ModItems.CHLOROPHYTE_INGOT.get(), "Chlorophyte Ingot");
+                add(ModItems.DUCK_EGG.get(), "Duck Spawn Egg");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -68,17 +80,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.FORSYTHIA.get(), "Forsythia");
                 add(ModBlocks.MACHINE_BLOCK.get(), "Machine Block");
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Book Duplicator");
-                add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Sugar Charcoal Block");
+                add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Block of Sugar Charcoal");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Four Leaf Clover");
                 add(ModBlocks.GRAVEL_COAL_ORE.get(), "Gravel Coal Ore");
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Gravel Copper Ore");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Gravel Iron Ore");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Gravel Gold Ore");
                 add(ModBlocks.MEAT_PACKER.get(), "Meat Packer");
+                add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Chlorophyte Debris");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
                 add(ModEntities.PINKY.get(), "Pinky");
+                add(ModEntities.DUCK.get(), "Duck");
 
                 //Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -101,7 +115,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("enchanted_golden_ancient_fruit"), "Gives two minues of flight and enhanced speed, haste and absorption.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("comfy_shoes"), "Gives step height when worn.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.FROG_LEGS), "Increases jumping height and decreases fall damage.");
-
+                add(ModConstants.CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION.getString(), "Add Chlorophyte Ingot");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_APPLIES_TO.getString(), "Copper Equipment");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Add Copper tool");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Chlorophyte Ingot");
+                add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Chlorophyte Upgrade");
 
             }
             case "tr_tr" -> {
@@ -140,6 +158,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.BANANA_CREAM_PIE.get(), "Muz Kremalı Turta");
                 add(ModItems.CHLOROVEIN_PICKAXE.get(), "Klorodamar Kazma");
                 add(ModItems.ENDER_TABLET.get(), "Ender Plaka");
+                add(ModItems.STONE_TABLET.get(), "Taş Plaka");
+                add(ModItems.COPPER_SWORD.get(), "Bakır Kılıç");
+                add(ModItems.COPPER_PICKAXE.get(), "Bakır Kazma");
+                add(ModItems.COPPER_AXE.get(), "Bakır Balta");
+                add(ModItems.COPPER_SHOVEL.get(), "Bakır Kürek");
+                add(ModItems.COPPER_HOE.get(), "Bakır Çapa");
+                add(ModItems.CHLOROPHYTE_TABLET.get(), "Klorofit Plaka");
+                add(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.get(), "Demirci Şablonu");
+                add(ModItems.CHLOROPHYTE_INGOT.get(), "Klorofit Külçesi");
+                add(ModItems.DUCK_EGG.get(), "Ördek Çağırma Yumurtası");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -163,10 +191,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Çakılda Demir Cevheri");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
                 add(ModBlocks.MEAT_PACKER.get(), "Et Paketleyici");
+                add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Klorofit Kalıntısı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
                 add(ModEntities.PINKY.get(), "Pembiş");
+                add(ModEntities.DUCK.get(), "Ördek");
 
                 //Efektler
                 add(ModEffects.FLIGHT.get(), "Uçuş");
@@ -189,6 +219,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT), "İki dakikalığına uçuş ve gelişmiş hız, acele ve emilim verir.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.COMFY_SHOES), "Giyildiğinde adım yüksekliği verir.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.FROG_LEGS), "Zıplama yüksekliğini arttırır ve düşüş hasarını azaltır.");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION.getString(), "Klorofit Külçesi ekleyin.");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_APPLIES_TO.getString(), "Bakır Ekipman");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Bakır alet ekleyin.");
+                add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Klorofit Külçesi");
+                add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Klorofit Yükseltmesi");
             }
         }
     }

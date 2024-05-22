@@ -3,6 +3,11 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
@@ -12,6 +17,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -50,29 +56,50 @@ public class ModItems {
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> PLANT_MATTER = register("plant_matter");
     public static final DeferredItem<Item> PINK_SLIME = register("pink_slime");
-    public static final DeferredItem<Item> GOLD_RING = registerArtifact("gold_ring");
+    public static final DeferredItem<Item> GOLD_RING = registerStacksToOne("gold_ring");
     public static final DeferredItem<Item> SUGAR_CHARCOAL = register("sugar_charcoal");
     public static final DeferredItem<Item> ENDER_TABLET = register("ender_tablet");
+    public static final DeferredItem<Item> STONE_TABLET = register("stone_tablet");
+    public static final DeferredItem<Item> CHLOROPHYTE_TABLET = register("chlorophyte_tablet");
+    public static final DeferredItem<Item> CHLOROPHYTE_INGOT = register("chlorophyte_ingot");
+    public static final DeferredItem<Item> CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE = register("chlorophyte_upgrade_smithing_template",
+            ()-> new SmithingTemplateItem(
+                    ModConstants.CHLOROPHYTE_UPGRADE_APPLIES_TO.translatable().withStyle(ChatFormatting.BLUE),
+                    ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.translatable().withStyle(ChatFormatting.BLUE),
+                    Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade"))).withStyle(ChatFormatting.GRAY),
+                    ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.translatable(),
+                    ModConstants.CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION.translatable(),
+                    List.of(new ResourceLocation("item/empty_slot_axe"),
+                            new ResourceLocation("item/empty_slot_pickaxe")),
+                    List.of(new ResourceLocation("item/empty_slot_ingot"))
+            ));
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
     public static final DeferredItem<Item> PINKY_SPAWN_EGG = register("pinky_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.PINKY, 0xE8B3E2, 0xC062B3, new Item.Properties()));
+    public static final DeferredItem<Item> DUCK_EGG = register("duck_spawn_egg",
+            ()-> new DeferredSpawnEggItem(ModEntities.DUCK, 0x126700, 0xF2691B, new Item.Properties()));
 
     //Actual artifacts.
-    public static final DeferredItem<Item> HOLY_DAGGER = registerArtifact("holy_dagger", HolyDaggerItem::new);
-    public static final DeferredItem<Item> MEDKIT = registerArtifact("medkit", MedkitItem::new);
-    public static final DeferredItem<Item> FROG_LEGS = registerArtifact("frog_legs", FrogLegsItem::new);
-    public static final DeferredItem<Item> MAGIC_FEATHER = registerArtifact("magic_feather", MagicFeatherItem::new);
-    public static final DeferredItem<Item> ENCUMBATOR = registerArtifact("encumbator", EncumbatorItem::new);
-    public static final DeferredItem<Item> ENDER_POUCH = registerArtifact("ender_pouch", EnderPouchItem::new);
-    public static final DeferredItem<Item> PORTABLE_CRAFTER = registerArtifact("portable_crafter", PortableCrafterItem::new);
-    public static final DeferredItem<Item> COMFY_SHOES = registerArtifact("comfy_shoes", ComfyShoesItem::new);
-    public static final DeferredItem<Item> ENDER_NOTEBOOK = registerArtifact("ender_notebook", EnderNotebookItem::new);
+    public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger", HolyDaggerItem::new);
+    public static final DeferredItem<Item> MEDKIT = registerStacksToOne("medkit", MedkitItem::new);
+    public static final DeferredItem<Item> FROG_LEGS = registerStacksToOne("frog_legs", FrogLegsItem::new);
+    public static final DeferredItem<Item> MAGIC_FEATHER = registerStacksToOne("magic_feather", MagicFeatherItem::new);
+    public static final DeferredItem<Item> ENCUMBATOR = registerStacksToOne("encumbator", EncumbatorItem::new);
+    public static final DeferredItem<Item> ENDER_POUCH = registerStacksToOne("ender_pouch", EnderPouchItem::new);
+    public static final DeferredItem<Item> PORTABLE_CRAFTER = registerStacksToOne("portable_crafter", PortableCrafterItem::new);
+    public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes", ComfyShoesItem::new);
+    public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
 
     //Tools.
-    public static final DeferredItem<Item> AXE_OF_REGROWTH = register("axe_of_regrowth", AxeOfRegrowthItem::new, new Item.Properties().stacksTo(1));
-    public static final DeferredItem<Item> CHLOROVEIN_PICKAXE = register("chlorovein_pickaxe", ChloroveinPickaxeItem::new, new Item.Properties().stacksTo(1));
+    public static final DeferredItem<Item> COPPER_SWORD = register("copper_sword", ()-> new SwordItem(ModTiers.COPPER, 3, -2.4f, new Item.Properties()));
+    public static final DeferredItem<Item> COPPER_PICKAXE = register("copper_pickaxe", ()-> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, new Item.Properties()));
+    public static final DeferredItem<Item> COPPER_AXE = register("copper_axe", ()-> new AxeItem(ModTiers.COPPER, 7, -3.2f, new Item.Properties()));
+    public static final DeferredItem<Item> COPPER_SHOVEL = register("copper_shovel", ()-> new ShovelItem(ModTiers.COPPER, 1.5F, -3.0f, new Item.Properties()));
+    public static final DeferredItem<Item> COPPER_HOE = register("copper_hoe", ()-> new HoeItem(ModTiers.COPPER, -1, -2.0f, new Item.Properties()));
+    public static final DeferredItem<Item> AXE_OF_REGROWTH = registerStacksToOne("axe_of_regrowth", AxeOfRegrowthItem::new);
+    public static final DeferredItem<Item> CHLOROVEIN_PICKAXE = registerStacksToOne("chlorovein_pickaxe", ChloroveinPickaxeItem::new);
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
@@ -100,11 +127,11 @@ public class ModItems {
         return register(name, ()-> func.apply(new Item.Properties()));
     }
 
-    private static DeferredItem<Item> registerArtifact(String name) {
+    private static DeferredItem<Item> registerStacksToOne(String name) {
         return register(name, ()-> new Item(new Item.Properties().stacksTo(1)));
     }
 
-    private static <T extends Item> DeferredItem<T> registerArtifact(String name, Function<Item.Properties, T> func) {
+    private static <T extends Item> DeferredItem<T> registerStacksToOne(String name, Function<Item.Properties, T> func) {
         return register(name, ()-> func.apply(new Item.Properties().stacksTo(1)));
     }
 

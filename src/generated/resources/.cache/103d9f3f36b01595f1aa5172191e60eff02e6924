@@ -1,8 +1,9 @@
-// 1.20.4	2024-05-11T20:38:27.490118	Registries
+// 1.20.4	2024-05-21T23:49:31.0567871	Registries
 368f3e60809b5bad82578412be10caabb6eec0e3 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_coal_ore.json
 468ba395d6cbef1b3d38a68caae705e4ed670be3 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_copper_ore.json
 6d2eaa1aba4c8356e91250a67c485b18e81111a0 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_gold_ore.json
 4f246ca837d3a5ec31d538a595bddc2874adb7f0 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_iron_ore.json
+1243ee48c8d0e4e4bf94b930868ed190b3fb857a data/eternalartifacts/neoforge/biome_modifier/spawn/spawn_duck.json
 3c3ce001f5bc32d60356419a98c5fa842bb00cff data/eternalartifacts/worldgen/configured_feature/gravel_coal_ore.json
 1a0282a99b3b550c244603bd79537cd06cac6202 data/eternalartifacts/worldgen/configured_feature/gravel_copper_ore.json
 5d5ff9e3609d6df63a7e17622d778ffc0678c1ed data/eternalartifacts/worldgen/configured_feature/gravel_gold_ore.json

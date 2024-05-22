@@ -1,14 +1,17 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.util.Lazy;
 
 import java.util.function.Supplier;
 
 public enum ModTiers implements Tier {
-    CHLOROPHYTE(3, 1749, 10.0F, 3.0F, 20, ()-> Ingredient.of(ModItems.PLANT_MATTER.get()));
+    CHLOROPHYTE(3, 1749, 10.0F, 3.0F, 20, ()-> Ingredient.of(ModItems.CHLOROPHYTE_INGOT.get())),
+    COPPER(1, 192, 5.0F, 1.5F, 17, () -> Ingredient.of(Tags.Items.INGOTS_COPPER));
 
     private final int level;
     private final int uses;

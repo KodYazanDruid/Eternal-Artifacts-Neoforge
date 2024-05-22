@@ -30,7 +30,8 @@ public class EternalArtifacts {
      * TODO: A storage block can storage items, fluids and energy dynamically.
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
-     * TODO: Banana bread, pie.
+     * TODO: Banana bread.
+     * TODO: https://minecraft.fandom.com/wiki/Minecraft_Dungeons:Golden_Parrot maybe.
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
     */
@@ -67,7 +68,7 @@ public class EternalArtifacts {
         ModSounds.SOUNDS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);
-        ModRecipes.RECIPES.register(modEventBus);
+        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
         //ModConfiguredFeatures.CONFIGURED_FEATURES.register(modEventBus);
         //ModConfiguredFeatures.FEATURES.register(modEventBus);
         //ModPlacedFeatures.PLACED_FEATURES.register(modEventBus);

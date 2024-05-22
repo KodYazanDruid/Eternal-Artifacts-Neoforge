@@ -3,15 +3,11 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class BioFurnaceScreen extends AbstractMachineScreen<BioFurnaceMenu> {
     public BioFurnaceScreen(BioFurnaceMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        setTexture(new ResourceLocation(MODID, "textures/gui/biofurnace.png"));
     }
 
     @Override
@@ -20,11 +16,10 @@ public class BioFurnaceScreen extends AbstractMachineScreen<BioFurnaceMenu> {
     }
 
     @Override
-    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
-
-        renderEnergyBar(pGuiGraphics, x + 5, y + 20);
-        renderBurn(pGuiGraphics, x + 81, y + 55);
+    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
+        super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
+        renderDefaultEnergyBar(gui);
+        renderBurn(gui, x + 81, y + 55);
     }
 
 }
