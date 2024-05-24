@@ -47,6 +47,8 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.FOUR_LEAF_CLOVER.get());
         dropSelf(ModBlocks.MEAT_PACKER.get());
         dropSelf(ModBlocks.CHLOROPHYTE_DEBRIS.get());
+        dropSelf(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
+        dropSelf(ModBlocks.SANDY_STONE_BRICKS.get());
 
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);

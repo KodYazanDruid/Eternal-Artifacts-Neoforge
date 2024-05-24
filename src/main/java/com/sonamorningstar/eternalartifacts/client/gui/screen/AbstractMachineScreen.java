@@ -1,9 +1,15 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.SidedTransferAutoSaveToServer;
+import com.sonamorningstar.eternalartifacts.network.SidedTransferSideSaveToServer;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -12,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -19,7 +26,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nonnull;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -30,8 +39,51 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     protected static ResourceLocation texture = new ResourceLocation(MODID, "textures/gui/template.png");
     protected int x;
     protected int y;
+    private boolean sidedTransferBarActive;
+    private final List<CustomRenderButton> sideSetters = new ArrayList<>(6);
+    private final List<CustomRenderButton> autoSetters = new ArrayList<>(2);
+    private static final ResourceLocation allow = new ResourceLocation(MODID,"textures/gui/sprites/allow.png");
+    private static final ResourceLocation deny = new ResourceLocation(MODID,"textures/gui/sprites/deny.png");
+    private static final ResourceLocation input = new ResourceLocation(MODID,"textures/gui/sprites/input.png");
+    private static final ResourceLocation output = new ResourceLocation(MODID,"textures/gui/sprites/output.png");
+    private static final ResourceLocation auto_input = new ResourceLocation(MODID,"textures/gui/sprites/auto_input.png");
+    private static final ResourceLocation auto_output = new ResourceLocation(MODID,"textures/gui/sprites/auto_output.png");
+    private static final ResourceLocation auto_input_enabled = new ResourceLocation(MODID,"textures/gui/sprites/auto_input_enabled.png");
+    private static final ResourceLocation auto_output_enabled = new ResourceLocation(MODID,"textures/gui/sprites/auto_output_enabled.png");
     public AbstractMachineScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        for(int i = 0; i < 6; i++) {
+            int finalI = i;
+            sideSetters.add(CustomRenderButton.builder(Component.empty(), button -> buttonSideSet(button, finalI), allow).size(9, 9).build());
+            addRenderableWidget(sideSetters.get(i));
+        }
+        for(int i = 0; i < 2; i++) {
+            int finalI = i;
+            autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonAutoSet(button, finalI)).size(9, 9).build());
+            addRenderableWidget(autoSetters.get(i));
+        }
+        autoSetters.get(0).setTextures(auto_input);
+        autoSetters.get(1).setTextures(auto_output);
+    }
+
+    private void buttonSideSet(Button button, int index) {
+        Channel.sendToServer(new SidedTransferSideSaveToServer(
+                index,
+                SidedTransferBlockEntity.TransferType.cycleNext(index, ((SidedTransferBlockEntity<?>) menu.getBlockEntity())),
+                menu.getBlockEntity().getBlockPos()));
+    }
+
+    private void buttonAutoSet(Button button, int index) {
+        BlockEntity be = menu.getBlockEntity();
+        if(be instanceof SidedTransferBlockEntity<?> sided) {
+            boolean auto = sided.getAutoConfigs().get(index) != null && sided.getAutoConfigs().get(index);
+            Channel.sendToServer(new SidedTransferAutoSaveToServer(index, !auto, menu.getBlockEntity().getBlockPos()));
+        }
     }
 
     @Override
@@ -43,16 +95,17 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         this.y = (height - imageHeight) / 2;
         gui.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
         for(Slot slot : menu.slots) {
-            gui.blit(bars, x + slot.x-1, y + slot.y-1, 16, 72, 18, 18);
+            gui.blit(bars, x + slot.x-1, y + slot.y-1, 48, 37, 18, 18);
         }
     }
 
     @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
+    public void render(GuiGraphics gui, int mx, int my, float pPartialTick) {
         inventoryLabelX = 46;
-        renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        sidedTransferBarActive = mx >= x+5 && mx <= x+101 && my >= y-29 && my <= y+3;
+        renderBackground(gui, mx, my, pPartialTick);
+        super.render(gui, mx, my, pPartialTick);
+        renderTooltip(gui, mx, my);
     }
 
     protected void renderDefaultEnergyAndFluidBar(GuiGraphics gui) {
@@ -105,6 +158,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     protected void renderBurn(GuiGraphics guiGraphics, int x, int y) {
+        guiGraphics.blit(bars, x + 1, y + 1, 48, 10, 13, 13);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y + menu.getScaledProgress(14), 0,  72 + menu.getScaledProgress(14), 14, 14 - menu.getScaledProgress(14));
     }
 
@@ -115,7 +169,60 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     }
 
     protected void renderLArraow(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(bars, x, y, 34, 72, 10, 9);
+        guiGraphics.blit(bars, x, y, 53, 0, 10, 9);
+    }
+
+    // 0 -> top
+    // 1 -> left
+    // 2 -> front
+    // 3 -> right
+    // 4 -> bottom
+    // 5 -> back
+    protected void renderSidedTransferTab(GuiGraphics guiGraphics, SidedTransferBlockEntity<?> sided) {
+        int sidedX = x + 5;
+        int sidedY = y - 29;
+        Map<Integer, SidedTransferBlockEntity.TransferType> side = sided.getSideConfigs();
+        Map<Integer, Boolean> auto = sided.getAutoConfigs();
+        sideSetters.forEach(button -> button.visible = sidedTransferBarActive);
+        autoSetters.forEach(button -> button.visible = sidedTransferBarActive);
+        if(sidedTransferBarActive) {
+            guiGraphics.blit(bars, sidedX, sidedY, 0, 84, 96, 32);
+            for(int i = 0; i < sideSetters.size(); i++) {
+                switch (i) {
+                    case 0 -> sideSetters.get(i).setPosition(sidedX + 13, sidedY + 3);
+                    case 1 -> sideSetters.get(i).setPosition(sidedX + 3, sidedY + 13);
+                    case 2 -> sideSetters.get(i).setPosition(sidedX + 13, sidedY + 13);
+                    case 3 -> sideSetters.get(i).setPosition(sidedX + 23, sidedY + 13);
+                    case 4 -> sideSetters.get(i).setPosition(sidedX + 13, sidedY + 23);
+                    case 5 -> sideSetters.get(i).setPosition(sidedX + 23, sidedY + 23);
+                }
+                sideSetters.get(i).setTextures(getTextureForTransferType(side.get(i)));
+            }
+            for(int i = 0; i < autoSetters.size(); i++) {
+                switch (i) {
+                    case 0 -> {
+                        autoSetters.get(i).setPosition(sidedX + 37, sidedY + 7);
+                        if(auto.get(i) != null && auto.get(i)) autoSetters.get(i).setTextures(auto_input_enabled);
+                        else autoSetters.get(i).setTextures(auto_input);
+                    }
+                    case 1 -> {
+                        autoSetters.get(i).setPosition(sidedX + 37, sidedY + 17);
+                        if(auto.get(i) != null && auto.get(i)) autoSetters.get(i).setTextures(auto_output_enabled);
+                        else  autoSetters.get(i).setTextures(auto_output);
+                    }
+                }
+            }
+        } else {
+            guiGraphics.blit(bars, sidedX, sidedY + 26, 0, 84, 96, 6);
+        }
+    }
+
+    private ResourceLocation getTextureForTransferType(SidedTransferBlockEntity.TransferType transferType) {
+        if(transferType == SidedTransferBlockEntity.TransferType.DEFAULT) return allow;
+        if(transferType == SidedTransferBlockEntity.TransferType.NONE) return deny;
+        if(transferType == SidedTransferBlockEntity.TransferType.PULL) return input;
+        if(transferType == SidedTransferBlockEntity.TransferType.PUSH) return output;
+        return allow;
     }
 
 }

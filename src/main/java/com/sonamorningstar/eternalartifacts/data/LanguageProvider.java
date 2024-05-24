@@ -88,6 +88,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Gravel Gold Ore");
                 add(ModBlocks.MEAT_PACKER.get(), "Meat Packer");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Chlorophyte Debris");
+                add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Sandy Tiled Stone Bricks");
+                add(ModBlocks.SANDY_STONE_BRICKS.get(), "Sandy Stone Bricks");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -192,6 +194,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
                 add(ModBlocks.MEAT_PACKER.get(), "Et Paketleyici");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Klorofit Kalıntısı");
+                add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Kumlu Döşemeli Taş Tuğlaları");
+                add(ModBlocks.SANDY_STONE_BRICKS.get(), "Kumlu Taş Tuğlaları");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

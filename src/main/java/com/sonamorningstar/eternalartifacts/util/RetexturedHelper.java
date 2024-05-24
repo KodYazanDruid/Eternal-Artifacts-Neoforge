@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 
+import java.text.Normalizer;
 import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -21,6 +22,8 @@ public final class RetexturedHelper {
     public static final ModelProperty<Block> PROPERTY = new ModelProperty<>(block -> block != Blocks.AIR);
 
     public static Block getBlock(String name) {
+        name = Normalizer.normalize(name, Normalizer.Form.NFD);
+        name = name.replaceAll("[^\\p{ASCII}]", "");
         return name.isEmpty() ? Blocks.AIR : BuiltInRegistries.BLOCK.get(new ResourceLocation(name.toLowerCase()));
     }
 

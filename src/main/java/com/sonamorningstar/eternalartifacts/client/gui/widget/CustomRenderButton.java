@@ -12,10 +12,14 @@ import net.neoforged.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 
 public class CustomRenderButton extends Button {
-    private final ResourceLocation[] textures;
+    private ResourceLocation[] textures;
 
     public static CustomRenderButton.Builder builder(Component pMessage, CustomRenderButton.OnPress pOnPress, ResourceLocation... textures) {
         return new CustomRenderButton.Builder(pMessage, pOnPress, textures);
+    }
+
+    public static CustomRenderButton.Builder builderNoTexture(Component pMessage, CustomRenderButton.OnPress pOnPress) {
+        return new CustomRenderButton.Builder(pMessage, pOnPress);
     }
 
     public CustomRenderButton(Builder builder) {
@@ -38,11 +42,15 @@ public class CustomRenderButton extends Button {
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
+    public void setTextures(ResourceLocation... textures) {
+        this.textures = textures;
+    }
+
     @OnlyIn(Dist.CLIENT)
     public static class Builder {
         private final Component message;
         private final CustomRenderButton.OnPress onPress;
-        private final ResourceLocation[] textures;
+        private ResourceLocation[] textures;
         @Nullable
         private Tooltip tooltip;
         private int x;
@@ -55,6 +63,11 @@ public class CustomRenderButton extends Button {
             this.message = pMessage;
             this.onPress = pOnPress;
             this.textures = textures;
+        }
+
+        public Builder(Component pMessage, CustomRenderButton.OnPress pOnPress) {
+            this.message = pMessage;
+            this.onPress = pOnPress;
         }
 
         public CustomRenderButton.Builder pos(int pX, int pY) {

@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-22T18:13:10.3409833	Loot Tables
+// 1.20.4	2024-05-23T00:26:28.0121641	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 1a3d962a463b100e0202e85cbbb340a920e90378 data/eternalartifacts/loot_tables/blocks/biofurnace.json
@@ -17,6 +17,8 @@ ff4634efc5abe0988d07834740af6481c2db8c4f data/eternalartifacts/loot_tables/block
 68cbd8c32f7be9bad5fa4e1de06852f7be205a3b data/eternalartifacts/loot_tables/blocks/pink_slime_block.json
 e097efa9397ef97b629a68c1f969714ec4032796 data/eternalartifacts/loot_tables/blocks/resonator.json
 b686ed87f1ee8bc993b0915508faab7ec6b07113 data/eternalartifacts/loot_tables/blocks/rosy_froglight.json
+8db9218e28d384200124270dc55e8030b5b860ea data/eternalartifacts/loot_tables/blocks/sandy_stone_bricks.json
+dd29dd415f32b17e7bb174e525f10b3ad21e4c4f data/eternalartifacts/loot_tables/blocks/sandy_tiled_stone_bricks.json
 c1bc5e28cf5db7bcd682ba3f629a120acfefc497 data/eternalartifacts/loot_tables/blocks/sugar_charcoal_block.json
 c0e3731ff79dbcd23191ed8563f789961ec2fb15 data/eternalartifacts/loot_tables/entities/demon_eye.json
 d26bde7061c68cb46df47f99ef922293ee9308b7 data/eternalartifacts/loot_tables/entities/duck.json

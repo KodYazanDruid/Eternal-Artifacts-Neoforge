@@ -43,7 +43,7 @@ public class ModBlockEntity extends BlockEntity {
         saveSynced(pTag);
     }
 
-    protected void sendUpdate(){
+    public void sendUpdate(){
         setChanged();
         if(level != null && level.hasChunkAt(worldPosition)) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }

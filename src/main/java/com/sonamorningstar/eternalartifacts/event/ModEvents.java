@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.capabilities.WrappedModItemStorage;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
@@ -34,7 +35,9 @@ public class ModEvents {
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> {
-            if (ctx != null) return new WrappedModItemStorage(be.inventory, i -> i == 1, (i, s) -> i != 1);
+            if (ctx != null) {
+                return new WrappedModItemStorage(be.inventory, i -> i == 1, (i, s) -> i != 1);
+            }
             else return be.inventory;
         });
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.tank);

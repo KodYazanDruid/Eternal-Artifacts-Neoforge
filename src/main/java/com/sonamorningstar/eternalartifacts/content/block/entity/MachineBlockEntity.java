@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.mojang.datafixers.types.Func;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
@@ -10,16 +9,12 @@ import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Containers;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,8 +22,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickable {
@@ -102,7 +95,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         ItemStack stack = inventory.getStackInSlot(fluidSlot);
         if(!stack.isEmpty() && tank.getFluidAmount() < tank.getCapacity()) {
             IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            if(itemHandler != null && tank.isFluidValid(itemHandler.getFluidInTank(0)) && tank.getFluid().getFluid() == itemHandler.getFluidInTank(0).getFluid()) {
+            if(itemHandler != null && tank.isFluidValid(itemHandler.getFluidInTank(0)) &&
+                    (tank.getFluid().getFluid() == itemHandler.getFluidInTank(0).getFluid() || tank.getFluid().isEmpty())) {
                 int amountToDrain = tank.getCapacity() - tank.getFluidAmount();
                 int amount = itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.SIMULATE).getAmount();
                 if (amount > 0) {
@@ -116,11 +110,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected boolean hasEnergy(int amount, ModEnergyStorage energy) {
-        if(energy.extractEnergyForced(amount, true) < amount) return false;
-        else {
-            energy.extractEnergyForced(amount, false);
-            return true;
-        }
+        return energy.extractEnergyForced(amount, true) >= amount;
     }
 
 }

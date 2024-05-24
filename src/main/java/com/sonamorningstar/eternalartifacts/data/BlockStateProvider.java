@@ -41,6 +41,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.GRAVEL_IRON_ORE.get());
         simpleBlockWithItem(ModBlocks.GRAVEL_GOLD_ORE.get());
         simpleBlockWithItem(ModBlocks.CHLOROPHYTE_DEBRIS.get());
+        simpleBlockWithItem(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
+        simpleBlockWithItem(ModBlocks.SANDY_STONE_BRICKS.get());
         axisBlock(ModBlocks.ROSY_FROGLIGHT.get(), modLoc("block/rosy_froglight_side"), modLoc("block/rosy_froglight_top"));
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),

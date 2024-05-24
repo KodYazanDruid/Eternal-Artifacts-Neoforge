@@ -11,11 +11,6 @@ public class BioFurnaceScreen extends AbstractMachineScreen<BioFurnaceMenu> {
     }
 
     @Override
-    protected void init() {
-        super.init();
-    }
-
-    @Override
     protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
         renderDefaultEnergyBar(gui);

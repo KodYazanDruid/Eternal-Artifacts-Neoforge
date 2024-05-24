@@ -32,6 +32,7 @@ public class EternalArtifacts {
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
      * TODO: Banana bread.
      * TODO: https://minecraft.fandom.com/wiki/Minecraft_Dungeons:Golden_Parrot maybe.
+     * TODO: MC:DG yosunlu bloklar.
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
     */

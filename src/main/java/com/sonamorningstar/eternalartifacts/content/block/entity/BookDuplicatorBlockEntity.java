@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class BookDuplicatorBlockEntity extends MachineBlockEntity<BookDuplicatorMenu> {
+public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDuplicatorMenu> {
     public BookDuplicatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
@@ -100,6 +100,9 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity<BookDuplicator
 
     public void tick(Level lvl, BlockPos pos, BlockState st) {
         fillTankFromSlot(inventory, tank, 3);
+        performAutoInputFluids(lvl, pos, tank);
+        performAutoInput(lvl, pos, inventory);
+        performAutoOutput(lvl, pos, inventory, 1, 3);
         ItemStack inputBook = inventory.getStackInSlot(0);
         ItemStack output = inventory.getStackInSlot(1);
         ItemStack consumableBook = inventory.getStackInSlot(2);
@@ -144,6 +147,7 @@ public class BookDuplicatorBlockEntity extends MachineBlockEntity<BookDuplicator
             progress = 0;
             return;
         }
+        energy.extractEnergyForced(consume, false);
         progress++;
         if (progress >= maxProgress) {
             consumableBook.shrink(1);

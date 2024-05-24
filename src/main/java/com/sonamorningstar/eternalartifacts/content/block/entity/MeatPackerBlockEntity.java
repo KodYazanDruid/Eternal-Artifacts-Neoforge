@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class MeatPackerBlockEntity extends MachineBlockEntity<MeatPackerMenu>{
+public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMenu>{
     public MeatPackerBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MEAT_PACKER.get(), pos, blockState, MeatPackerMenu::new);
     }
@@ -73,6 +73,7 @@ public class MeatPackerBlockEntity extends MachineBlockEntity<MeatPackerMenu>{
 
     @Override
     public void tick(Level lvl, BlockPos pos, BlockState st) {
+        performAutoOutput(lvl, pos, inventory, 0);
         FluidStack meatFluid = tank.getFluid();
         if(meatFluid.getAmount() >= 250) {
             progressAndCraft(ModItems.RAW_MEAT_INGOT.toStack(), 250);

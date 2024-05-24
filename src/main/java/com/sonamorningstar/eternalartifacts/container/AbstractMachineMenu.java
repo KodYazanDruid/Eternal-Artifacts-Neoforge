@@ -23,7 +23,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     protected final Level level;
     @Getter
     protected final BlockEntity blockEntity;
-    protected final ContainerData data;
+    public final ContainerData data;
 
     public AbstractMachineMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(pMenuType, pContainerId);
@@ -95,7 +95,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     public int getEnergyProgress() {
         IEnergyStorage energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), null);
         if(energyStorage != null){
-            int stored =energyStorage.getEnergyStored();
+            int stored = energyStorage.getEnergyStored();
             int max = energyStorage.getMaxEnergyStored();
             int barHeight = 50;
             return max != 0 && stored != 0 ? stored * barHeight / max : 0;
@@ -115,9 +115,8 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     public int getScaledProgress(int size) {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);
-        int maxProgressSize = size;
 
-        return maxProgress != 0 && progress != 0 ? progress * maxProgressSize / maxProgress : 0;
+        return maxProgress != 0 && progress != 0 ? progress * size / maxProgress : 0;
     }
 
     public boolean isWorking() {
