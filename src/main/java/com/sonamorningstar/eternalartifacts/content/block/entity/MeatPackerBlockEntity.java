@@ -1,12 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -15,11 +14,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMenu>{
+public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public MeatPackerBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MEAT_PACKER.get(), pos, blockState, MeatPackerMenu::new);
     }
 
+    @Getter
     public ModItemStorage inventory = new ModItemStorage(1) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -31,12 +31,16 @@ public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMe
             return false;
         }
     };
+
+    @Getter
     public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
         @Override
         public void onEnergyChanged() {
             MeatPackerBlockEntity.this.sendUpdate();
         }
     };
+
+    @Getter
     public ModFluidStorage tank = new ModFluidStorage(10000) {
         @Override
         protected void onContentsChanged() {
@@ -74,6 +78,7 @@ public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMe
     @Override
     public void tick(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutput(lvl, pos, inventory, 0);
+        performAutoInputFluids(lvl, pos, tank);
         FluidStack meatFluid = tank.getFluid();
         if(meatFluid.getAmount() >= 250) {
             progressAndCraft(ModItems.RAW_MEAT_INGOT.toStack(), 250);

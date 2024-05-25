@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event;
 
+import com.sonamorningstar.eternalartifacts.capabilities.WrappedModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.WrappedModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
@@ -8,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -17,7 +19,12 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+
+import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -34,23 +41,34 @@ public class ModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> {
-            if (ctx != null) {
-                return new WrappedModItemStorage(be.inventory, i -> i == 1, (i, s) -> i != 1);
-            }
-            else return be.inventory;
-        });
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.tank);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> {
-            if (ctx != null) return new WrappedModItemStorage(be.inventory, i -> true, (i, s) -> false);
-            else return be.inventory;
-        });
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> be.tank);
-
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
     }
+
+    private static IItemHandler regSidedItemCaps(SidedTransferBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, List<Integer> outputSlots) {
+        if (ctx != null) {
+            return new WrappedModItemStorage(inventory,
+                    i -> (outputSlots == null || outputSlots.contains(i)) && SidedTransferBlockEntity.canPerformTransfers(be, ctx, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT),
+                    (i, s) ->(outputSlots != null && !outputSlots.contains(i)) && SidedTransferBlockEntity.canPerformTransfers(be ,ctx, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT));
+        } else if(ctx == null) return inventory;
+        else return null;
+    }
+
+    private static IFluidHandler regSidedFluidCaps(SidedTransferBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
+        if(ctx != null) {
+            return new WrappedModFluidStorage(tank,
+                    dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT),
+                    (dir, fs) -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT),
+                    ctx);
+        } else if(ctx == null) return tank;
+        else return null;
+    }
+
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {

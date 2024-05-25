@@ -1,11 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDuplicatorMenu> {
+public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDuplicatorMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public BookDuplicatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
@@ -33,6 +32,7 @@ public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDupl
     // 1 -> output
     // 2 -> book/writable book slot
     // 3 -> fluid filler
+    @Getter
     public ModItemStorage inventory = new ModItemStorage(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -58,12 +58,14 @@ public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDupl
             }
         }
     };
+    @Getter
     public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
         @Override
         public void onEnergyChanged() {
             BookDuplicatorBlockEntity.this.sendUpdate();
         }
     };
+    @Getter
     public ModFluidStorage tank = new ModFluidStorage(10000) {
         @Override
         protected void onContentsChanged() {

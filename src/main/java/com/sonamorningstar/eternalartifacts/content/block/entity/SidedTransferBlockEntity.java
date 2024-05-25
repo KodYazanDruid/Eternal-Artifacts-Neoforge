@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.capabilities.IHasInventory;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
@@ -14,14 +15,12 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -171,6 +170,23 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
             autoConfigs.add(entry);
         });
         tag.put("AutoConfigs", autoConfigs);
+    }
+
+    public static boolean canPerformTransfer(SidedTransferBlockEntity<?> be, Direction dir, TransferType wanted) {
+        List<Direction> available = new ArrayList<>();
+        for(int i = 0; i < 6; i++) {
+            SidedTransferBlockEntity.TransferType type = be.sideConfigs.get(i) == null ? SidedTransferBlockEntity.TransferType.DEFAULT : be.sideConfigs.get(i);
+            if(type == wanted) available.add(SidedTransferBlockEntity.resolveActualDir(be.getBlockState(), i));
+        }
+        return available.contains(dir);
+    }
+
+    public static boolean canPerformTransfers(SidedTransferBlockEntity<?> be, Direction dir, TransferType... wanted) {
+        List<Direction> available = new ArrayList<>();
+        for(TransferType type : wanted) {
+            if(canPerformTransfer(be, dir, type)) return true;
+        }
+        return false;
     }
 
     public static Direction resolveActualDir(BlockState state, int index) {

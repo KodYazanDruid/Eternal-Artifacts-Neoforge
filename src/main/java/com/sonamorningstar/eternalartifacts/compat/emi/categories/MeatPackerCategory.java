@@ -1,30 +1,37 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
+import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+
 public class MeatPackerCategory extends BasicEmiRecipe {
-    public MeatPackerCategory(EmiRecipeCategory category) {
-        super(category, category.id, 112, 18);
+    public static final ResourceLocation ID = new ResourceLocation(MODID, "fake_recipe/meat_packer");
+    public static final EmiRecipeCategory MEAT_PACKER_CATEGORY = new EmiRecipeCategory(ID, EmiStack.of(ModBlocks.MEAT_PACKER));
+    public MeatPackerCategory() {
+        super(MEAT_PACKER_CATEGORY, MEAT_PACKER_CATEGORY.id, 112, 18);
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addSlot(EmiIngredient.of(ModTags.Fluids.MEAT, 250), 0, 0);
+        widgets.addSlot(EmiIngredient.of(ModTags.Fluids.MEAT).setAmount(250), 0, 0);
         widgets.addFillingArrow(49, 0, 10000);
         widgets.addSlot(EmiStack.of(ModItems.RAW_MEAT_INGOT), 94, 0).recipeContext(this);
     }
 
     @Override
     public List<EmiIngredient> getInputs() {
-        return List.of(EmiIngredient.of(ModTags.Fluids.MEAT, 250));
+        return List.of(EmiIngredient.of(ModTags.Fluids.MEAT).setAmount(250));
     }
 
     @Override

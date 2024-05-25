@@ -33,6 +33,7 @@ public class EternalArtifacts {
      * TODO: Banana bread.
      * TODO: https://minecraft.fandom.com/wiki/Minecraft_Dungeons:Golden_Parrot maybe.
      * TODO: MC:DG yosunlu bloklar.
+     * TODO: Geothermal Generator, Piezoelectric Plane
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
     */

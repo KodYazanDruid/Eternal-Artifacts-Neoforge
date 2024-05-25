@@ -14,14 +14,13 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @EmiEntrypoint
 public class EmiCompat implements EmiPlugin {
-    public static final ResourceLocation SPRITE = new ResourceLocation(MODID, "textures/gui/meat_packer.png");
-    public static final EmiStack MEAT_PACKER = EmiStack.of(ModBlocks.MEAT_PACKER);
-    public static final EmiRecipeCategory MEAT_PACKER_CATEGORY = new EmiRecipeCategory(SPRITE, new EmiTexture(MEAT_PACKER.getId(), 0, 0, 16, 16));
+
     @Override
     public void register(EmiRegistry registry) {
-        registry.addCategory(MEAT_PACKER_CATEGORY);
-        registry.addWorkstation(MEAT_PACKER_CATEGORY, MEAT_PACKER);
+        registry.addCategory(MeatPackerCategory.MEAT_PACKER_CATEGORY);
 
-        registry.addRecipe(new MeatPackerCategory(MEAT_PACKER_CATEGORY));
+        registry.addWorkstation(MeatPackerCategory.MEAT_PACKER_CATEGORY, EmiStack.of(ModBlocks.MEAT_PACKER));
+
+        registry.addRecipe(new MeatPackerCategory());
     }
 }
