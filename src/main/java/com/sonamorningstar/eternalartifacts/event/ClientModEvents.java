@@ -1,10 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.AnvilinatorScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.BioFurnaceScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.BookDuplicatorScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.MeatPackerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.model.ColoredBlockModel;
 import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.renderer.FancyChestRenderer;
@@ -49,6 +46,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.BIOFURNACE.get(), BioFurnaceScreen::new);
         event.register(ModMenuTypes.BOOK_DUPLICATOR.get(), BookDuplicatorScreen::new);
         event.register(ModMenuTypes.MEAT_PACKER.get(), MeatPackerScreen::new);
+        event.register(ModMenuTypes.MEAT_SHREDDER.get(), MeatShredderScreen::new);
     }
 
     @SubscribeEvent

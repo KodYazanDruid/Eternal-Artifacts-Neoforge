@@ -35,6 +35,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.MEAT_PACKER.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SANDY_STONE_BRICKS.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.MEAT_SHREDDER.get(), "iron", "pickaxe");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());

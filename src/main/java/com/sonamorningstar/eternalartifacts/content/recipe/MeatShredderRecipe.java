@@ -1,0 +1,75 @@
+package com.sonamorningstar.eternalartifacts.content.recipe;
+
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.core.ModRecipes;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.fluids.FluidStack;
+
+public class MeatShredderRecipe implements Recipe<SimpleContainer> {
+    @Getter
+    private final Ingredient input;
+    @Getter
+    private final FluidStack output;
+
+    public MeatShredderRecipe(Ingredient input, FluidStack output) {
+        this.input = input;
+        this.output = output;
+    }
+
+    @Override
+    public boolean matches(SimpleContainer container, Level level) {
+        NonNullList<ItemStack> stacks = container.getItems();
+        for(ItemStack stack : stacks) { return input.test(stack); }
+        return false;
+    }
+
+    @Override
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY;}
+    @Override
+    public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
+    @Override
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {return ItemStack.EMPTY;}
+    @Override
+    public RecipeType<?> getType() {return ModRecipes.MEAT_SHREDDING_TYPE.get();}
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+        return ModRecipes.MEAT_SHREDDING_SERIALIZER.get();
+    }
+
+    public static class Serializer implements RecipeSerializer<MeatShredderRecipe> {
+        private static final Codec<MeatShredderRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                Ingredient.CODEC.fieldOf("input").forGetter(recipe -> recipe.input),
+                FluidStack.CODEC.fieldOf("output").forGetter(recipe -> recipe.output)
+        ).apply(instance, MeatShredderRecipe::new));
+
+        @Override
+        public Codec<MeatShredderRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public MeatShredderRecipe fromNetwork(FriendlyByteBuf buffer) {
+            Ingredient input = Ingredient.fromNetwork(buffer);
+            FluidStack output = buffer.readFluidStack();
+            return new MeatShredderRecipe(input, output);
+        }
+
+        @Override
+        public void toNetwork(FriendlyByteBuf buffer, MeatShredderRecipe recipe) {
+            recipe.input.toNetwork(buffer);
+            buffer.writeFluidStack(recipe.output);
+        }
+    }
+}

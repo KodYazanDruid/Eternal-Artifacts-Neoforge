@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatPackerCategory;
+import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatShredderCategory;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
@@ -63,7 +65,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CHLOROPHYTE_TABLET.get(), "Chlorophyte Tablet");
                 add(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.get(), "Smithing Template");
                 add(ModItems.CHLOROPHYTE_INGOT.get(), "Chlorophyte Ingot");
-                add(ModItems.DUCK_EGG.get(), "Duck Spawn Egg");
+                add(ModItems.DUCK_SPAWN_EGG.get(), "Duck Spawn Egg");
+                add(ModItems.DUCK_MEAT.get(), "Duck Meat");
+                add(ModItems.COOKED_DUCK_MEAT.get(), "Cooked Duck Meat");
+                add(ModItems.DUCK_FEATHER.get(), "Duck Feather");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -90,6 +95,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Chlorophyte Debris");
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Sandy Tiled Stone Bricks");
                 add(ModBlocks.SANDY_STONE_BRICKS.get(), "Sandy Stone Bricks");
+                add(ModBlocks.MEAT_SHREDDER.get(), "Meat Shredder");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -122,6 +128,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Add Copper tool");
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Chlorophyte Ingot");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Chlorophyte Upgrade");
+                add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Meat Packing");
+                add("emi.category." + MeatShredderCategory.ID.getNamespace() + "." + MeatShredderCategory.ID.getPath().replace('/', '.'), "Meat Shredding");
 
             }
             case "tr_tr" -> {
@@ -169,7 +177,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CHLOROPHYTE_TABLET.get(), "Klorofit Plaka");
                 add(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.get(), "Demirci Şablonu");
                 add(ModItems.CHLOROPHYTE_INGOT.get(), "Klorofit Külçesi");
-                add(ModItems.DUCK_EGG.get(), "Ördek Çağırma Yumurtası");
+                add(ModItems.DUCK_SPAWN_EGG.get(), "Ördek Çağırma Yumurtası");
+                add(ModItems.DUCK_MEAT.get(), "Ördek Eti");
+                add(ModItems.COOKED_DUCK_MEAT.get(), "Pişmiş Ördek Eti");
+                add(ModItems.DUCK_FEATHER.get(), "Ördek Tüyü");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -196,6 +207,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Klorofit Kalıntısı");
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Kumlu Döşemeli Taş Tuğlaları");
                 add(ModBlocks.SANDY_STONE_BRICKS.get(), "Kumlu Taş Tuğlaları");
+                add(ModBlocks.MEAT_SHREDDER.get(), "Et Parçalayıcı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -228,6 +240,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Bakır alet ekleyin.");
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Klorofit Külçesi");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Klorofit Yükseltmesi");
+                add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Et Paketleme");
+                add("emi.category." + MeatShredderCategory.ID.getNamespace() + "." + MeatShredderCategory.ID.getPath().replace('/', '.'), "Et Parçalama");
             }
         }
     }

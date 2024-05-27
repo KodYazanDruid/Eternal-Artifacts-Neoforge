@@ -33,6 +33,8 @@ public class ModItems {
     public static final DeferredItem<Item> MEAT_INGOT = register("meat_ingot", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8f).meat().build()));
     public static final DeferredItem<Item> APPLE_PIE = register("apple_pie", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.3f).build()));
     public static final DeferredItem<Item> BANANA_CREAM_PIE = register("banana_cream_pie", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.3f).build()));
+    public static final DeferredItem<Item> DUCK_MEAT = register("duck_meat", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.3f).meat().build()));
+    public static final DeferredItem<Item> COOKED_DUCK_MEAT = register("cooked_duck_meat", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6f).meat().build()));
     public static final DeferredItem<Item> GOLDEN_ANCIENT_FRUIT = register("golden_ancient_fruit", GoldenAncientFruitItem::new, new Item.Properties().rarity(Rarity.RARE).food(
             new FoodProperties.Builder()
                 .nutrition(4)
@@ -73,12 +75,13 @@ public class ModItems {
                             new ResourceLocation("item/empty_slot_pickaxe")),
                     List.of(new ResourceLocation("item/empty_slot_ingot"))
             ));
+    public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
     public static final DeferredItem<Item> PINKY_SPAWN_EGG = register("pinky_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.PINKY, 0xE8B3E2, 0xC062B3, new Item.Properties()));
-    public static final DeferredItem<Item> DUCK_EGG = register("duck_spawn_egg",
+    public static final DeferredItem<Item> DUCK_SPAWN_EGG = register("duck_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DUCK, 0x126700, 0xF2691B, new Item.Properties()));
 
     //Actual artifacts.

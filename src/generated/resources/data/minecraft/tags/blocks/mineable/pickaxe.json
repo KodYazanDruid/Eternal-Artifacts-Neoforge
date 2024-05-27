@@ -7,6 +7,9 @@
     "eternalartifacts:gardening_pot",
     "eternalartifacts:machine_block",
     "eternalartifacts:sugar_charcoal_block",
-    "eternalartifacts:meat_packer"
+    "eternalartifacts:meat_packer",
+    "eternalartifacts:sandy_tiled_stone_bricks",
+    "eternalartifacts:sandy_stone_bricks",
+    "eternalartifacts:meat_shredder"
   ]
 }

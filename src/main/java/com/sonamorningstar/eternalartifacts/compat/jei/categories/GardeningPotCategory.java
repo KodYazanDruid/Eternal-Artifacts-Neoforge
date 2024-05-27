@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.compat.jei.categories;
 
 import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.data.recipe.ShapedRetexturedRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import mezz.jei.api.constants.ModIds;
@@ -13,13 +13,10 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 

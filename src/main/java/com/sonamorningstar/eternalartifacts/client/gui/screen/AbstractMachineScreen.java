@@ -97,6 +97,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
         for(Slot slot : menu.slots) {
             gui.blit(bars, x + slot.x-1, y + slot.y-1, 48, 37, 18, 18);
         }
+        if(menu.getBlockEntity() instanceof SidedTransferBlockEntity<?> sided) renderSidedTransferTab(gui, sided);
     }
 
     @Override

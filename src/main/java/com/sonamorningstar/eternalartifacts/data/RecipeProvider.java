@@ -1,33 +1,25 @@
-package com.sonamorningstar.eternalartifacts.data.recipe;
+package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
-import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.ItemLike;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.NeoForgeRegistries;
-import org.checkerframework.checker.units.qual.C;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -41,14 +33,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     protected void buildRecipes(RecipeOutput recipeOutput) {
         /*SpecialRecipeBuilder.special(category -> new ShapedRetexturedRecipe(category, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE))
                 .save(recipeOutput, new ResourceLocation(MODID, "gardening_pot_recipe"));*/
-        SpecialRecipeBuilder.special(category -> new MeatPackerRecipe(ModItems.RAW_MEAT_INGOT.toStack(), ModTags.Fluids.MEAT, 250))
-                    .save(recipeOutput, new ResourceLocation(MODID, "meat_from_meat_packer"));
-        SpecialRecipeBuilder.special(category -> new MeatPackerRecipe(ModItems.BANANA_CREAM_PIE.toStack(), Tags.Fluids.MILK, 400))
-                .save(recipeOutput, new ResourceLocation(MODID, "test_for_jei"));
-
         craftingRecipes(recipeOutput);
         smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.MEAT_INGOT, 0.35f);
+        createFoodCookingRecipe(recipeOutput, ModItems.DUCK_MEAT, ModItems.COOKED_DUCK_MEAT, 0.35f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COAL_ORE, Items.COAL, 0.1f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COPPER_ORE, Items.COPPER_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_IRON_ORE, Items.IRON_INGOT, 0.7f);
@@ -57,6 +45,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_AXE.get(), RecipeCategory.TOOLS, ModItems.AXE_OF_REGROWTH.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_PICKAXE.get(), RecipeCategory.TOOLS, ModItems.CHLOROVEIN_PICKAXE.get());
+
+        createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, 20));
+        createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, 250));
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
@@ -184,6 +175,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 )
                 .unlocks("has_item", has(ModItems.CHLOROPHYTE_INGOT))
                 .save(recipeOutput, new ResourceLocation(MODID, "smithing/"+getItemName(resultItem)+"_smithing"));
+    }
+
+    private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, FluidStack output) {
+        String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), output))
+                .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+path));
+    }
+    private void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, FluidStack output) {
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), output))
+                .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+input.location().getPath()));
     }
 
 }

@@ -67,6 +67,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
         machineBlock(ModBlocks.MEAT_PACKER, false);
+        machineBlock(ModBlocks.MEAT_SHREDDER, false);
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);

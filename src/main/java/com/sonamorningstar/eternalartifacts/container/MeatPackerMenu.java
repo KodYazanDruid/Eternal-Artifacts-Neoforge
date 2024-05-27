@@ -18,5 +18,6 @@ public class MeatPackerMenu extends AbstractMachineMenu{
         if(beInventory != null) {
             addSlot(new SlotItemHandler(beInventory, 0, 80, 35));
         }
+        outputSlots.add(0);
     }
 }

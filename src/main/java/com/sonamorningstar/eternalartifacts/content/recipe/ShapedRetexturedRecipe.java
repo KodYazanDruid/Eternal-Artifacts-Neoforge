@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.data.recipe;
+package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

@@ -2,11 +2,8 @@ package com.sonamorningstar.eternalartifacts.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
-import com.sonamorningstar.eternalartifacts.client.model.util.ModelHelper;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FancyChestBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -27,12 +24,12 @@ import org.joml.Quaternionf;
 public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEntity> {
 
     private final ModelPart lid;
-    private final ModelPart bottom;
+    private final ModelPart base;
     private final ModelPart lock;
 
     public FancyChestRenderer(BlockEntityRendererProvider.Context context) {
         ModelPart modelpart = context.bakeLayer(ModModelLayers.FANCY_CHEST_LAYER);
-        this.bottom = modelpart.getChild("bottom");
+        this.base = modelpart.getChild("base");
         this.lid = modelpart.getChild("lid");
         this.lock = modelpart.getChild("lock");
     }
@@ -40,7 +37,7 @@ public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEn
     public static LayerDefinition createSingleBodyLayer() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
-        partdefinition.addOrReplaceChild("bottom",
+        partdefinition.addOrReplaceChild("base",
                 CubeListBuilder.create().texOffs(0, 19).addBox(1.0F, 0.0F, 1.0F, 14.0F, 10.0F, 14.0F), PartPose.ZERO);
         partdefinition.addOrReplaceChild("lid",
                 CubeListBuilder.create().texOffs(0, 0).addBox(1.0F, 0.0F, 0.0F, 14.0F, 5.0F, 14.0F),
@@ -48,13 +45,14 @@ public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEn
         partdefinition.addOrReplaceChild("lock",
                 CubeListBuilder.create().texOffs(0, 0).addBox(7.0F, -1.0F, 15.0F, 2.0F, 4.0F, 1.0F),
                 PartPose.offset(0.0F, 9.0F, 0.0F));
+
         return LayerDefinition.create(meshdefinition, 16, 16);
     }
 
     @Override
     public void render(FancyChestBlockEntity blockEntity, float partialTicks, PoseStack matrixStackIn,
                        MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        /*matrixStackIn.pushPose();
+        matrixStackIn.pushPose();
         float f = blockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING).toYRot();
         matrixStackIn.translate(0.5D, 0.5D, 0.5D);
         matrixStackIn.mulPose(new Quaternionf().rotationY(Mth.DEG_TO_RAD * -f));
@@ -65,11 +63,11 @@ public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEn
         f1 = 1.0F - f1 * f1 * f1;
         Material material = getRenderMaterial(blockEntity);
         VertexConsumer vertexbuilder = material.buffer(bufferIn, RenderType::entityCutout);
-        this.renderModels(matrixStackIn, vertexbuilder, this.lid, this.lock, this.bottom, f1,
+        this.renderModels(matrixStackIn, vertexbuilder, this.lid, this.lock, this.base, f1,
                 combinedLightIn, combinedOverlayIn);
 
-        matrixStackIn.popPose();*/
-
+        matrixStackIn.popPose();
+/*
         RetexturedModel.Baked model = ModelHelper.getBakedModel(blockEntity.getBlockState(), RetexturedModel.Baked.class);
         matrixStackIn.pushPose();
         Material material = getRenderMaterial(blockEntity);
@@ -78,7 +76,7 @@ public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEn
             Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(
                     matrixStackIn.last(), vertexbuilder, blockEntity.getBlockState(), model, 255, 255, 255, combinedLightIn, combinedOverlayIn);
         }
-        matrixStackIn.popPose();
+        matrixStackIn.popPose();*/
 
     }
 

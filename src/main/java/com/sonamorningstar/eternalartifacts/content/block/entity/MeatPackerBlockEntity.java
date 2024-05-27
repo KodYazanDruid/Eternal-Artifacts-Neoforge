@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public MeatPackerBlockEntity(BlockPos pos, BlockState blockState) {
@@ -75,22 +76,27 @@ public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMe
         tank.readFromNBT(tag);
     }
 
+    //buggy
     @Override
     public void tick(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutput(lvl, pos, inventory, 0);
         performAutoInputFluids(lvl, pos, tank);
         FluidStack meatFluid = tank.getFluid();
-        if(meatFluid.getAmount() >= 250) {
+        if(meatFluid.getAmount() >= 250 && hasEnergy(consume, energy)) {
             progressAndCraft(ModItems.RAW_MEAT_INGOT.toStack(), 250);
         }
 
     }
 
     private void progressAndCraft(ItemStack result, int meatCost) {
+        ItemStack slot = inventory.getStackInSlot(0);
         if(meatCost > tank.getFluidAmount()) {
             progress = 0;
             return;
         }
+        if(slot.getCount() + result.getCount() > 64) return;
+        if(result.isEmpty() || ( !slot.isEmpty() && !ItemHandlerHelper.canItemStacksStack(slot, result))) return;
+        energy.extractEnergyForced(consume, false);
         progress++;
         if (progress >= maxProgress) {
             tank.drainForced(meatCost, IFluidHandler.FluidAction.EXECUTE);

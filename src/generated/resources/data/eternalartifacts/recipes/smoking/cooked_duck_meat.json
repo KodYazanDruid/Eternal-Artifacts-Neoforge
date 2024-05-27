@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "cookingtime": 100,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "eternalartifacts:duck_meat"
+  },
+  "result": "eternalartifacts:cooked_duck_meat"
+}

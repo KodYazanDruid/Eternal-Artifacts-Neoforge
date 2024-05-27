@@ -1,9 +1,0 @@
-{
-  "type": "eternalartifacts:meat_packer",
-  "amount": 400,
-  "fluidIn": "forge:milk",
-  "output": {
-    "Count": 1,
-    "id": "eternalartifacts:banana_cream_pie"
-  }
-}

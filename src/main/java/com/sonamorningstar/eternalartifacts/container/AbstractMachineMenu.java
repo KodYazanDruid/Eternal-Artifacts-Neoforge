@@ -14,8 +14,11 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.OptionalInt;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
@@ -23,6 +26,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     protected final Level level;
     @Getter
     protected final BlockEntity blockEntity;
+    protected final List<Integer> outputSlots = new ArrayList<>();
     public final ContainerData data;
 
     public AbstractMachineMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -40,13 +44,20 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
         Slot sourceSlot = slots.get(pIndex);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
+
         ItemStack sourceStack = sourceSlot.getItem();
         ItemStack copyOfSourceStack = sourceStack.copy();
 
+        //Player inventory
         if (pIndex < 36) {
+            for(int output : outputSlots) {
+                ItemStack inserted = beInventory.insertItem(output, sourceStack, true);
+                if(!inserted.isEmpty()) return ItemStack.EMPTY;
+            }
             if (!moveItemStackTo(sourceStack, 36, 36 + beInventory.getSlots(), false)) {
                 return ItemStack.EMPTY;
             }
+        //Machine inventory
         } else if (pIndex < 36 + beInventory.getSlots()) {
             if (!moveItemStackTo(sourceStack, 0, 36, false)) {
                 return ItemStack.EMPTY;

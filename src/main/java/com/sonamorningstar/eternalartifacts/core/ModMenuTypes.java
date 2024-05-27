@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
-import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
-import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
+import com.sonamorningstar.eternalartifacts.container.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -25,4 +22,6 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BookDuplicatorMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MeatPackerMenu>> MEAT_PACKER = MENUS.register("meat_packer",
             ()-> IMenuTypeExtension.create(MeatPackerMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<MeatShredderMenu>> MEAT_SHREDDER = MENUS.register("meat_shredder",
+            ()-> IMenuTypeExtension.create(MeatShredderMenu::new));
 }

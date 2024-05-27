@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.entity;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
+import com.sonamorningstar.eternalartifacts.core.ModSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -104,7 +105,7 @@ public class DuckEntity extends Animal {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.CHICKEN_AMBIENT;
+        return ModSounds.DUCK_AMBIENT.get();
     }
 
     @Override
@@ -119,7 +120,7 @@ public class DuckEntity extends Animal {
 
     @Override
     protected void playStepSound(BlockPos pPos, BlockState pBlock) {
-        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(ModSounds.DUCK_STEP.get(), 0.15F, 1.0F);
     }
 
     @Nullable

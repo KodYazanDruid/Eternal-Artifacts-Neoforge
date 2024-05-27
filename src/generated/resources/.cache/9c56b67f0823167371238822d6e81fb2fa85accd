@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-21T21:12:53.1293879	Item Models: eternalartifacts
+// 1.20.4	2024-05-26T18:45:20.860563	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -12,12 +12,15 @@ c28a6e21fcb0b4beeb03ff435bade36ed0b86462 assets/eternalartifacts/models/item/chl
 cdc897d603b343e881b0dabb96a42c3ab5da8aab assets/eternalartifacts/models/item/chlorophyte_upgrade_smithing_template.json
 3e1e9359c90a259be8d047ec9cb010a08ebd4287 assets/eternalartifacts/models/item/chlorovein_pickaxe.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json
+c4b6d532ce2e21a9a09107482c4b2398be18c975 assets/eternalartifacts/models/item/cooked_duck_meat.json
 c78b55733b75ccccae2e361537d3e3ed38d29842 assets/eternalartifacts/models/item/copper_axe.json
 7834cade4ae586aa372fbf0906dbe3c89d38bf57 assets/eternalartifacts/models/item/copper_hoe.json
 8080fe598462699567ebca537d0e157ab5fcead7 assets/eternalartifacts/models/item/copper_pickaxe.json
 3402b2a4051ec8fbfcd9a6a0af26663f3d1c0e6b assets/eternalartifacts/models/item/copper_shovel.json
 b33d6742df572cdf9f5475167dc52f6dc51bb9d6 assets/eternalartifacts/models/item/copper_sword.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/demon_eye_spawn_egg.json
+c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duck_feather.json
+558a11394d26f4ac2ffe1f71505cf5d7f69bacff assets/eternalartifacts/models/item/duck_meat.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/duck_spawn_egg.json
 9448010b52f766ba963e7846446966ddc53e5dd7 assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
 917c9fb8d52a3487b58003fa6ac88c0d056be391 assets/eternalartifacts/models/item/encumbator.json

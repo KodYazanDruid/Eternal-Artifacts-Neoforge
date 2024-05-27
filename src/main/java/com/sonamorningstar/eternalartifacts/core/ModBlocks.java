@@ -56,6 +56,8 @@ public class ModBlocks {
             ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MeatPackerBlock> MEAT_PACKER = registerWithItem("meat_packer",
             ()-> new MeatPackerBlock(MACHINE_BLOCK.get().properties()));
+    public static final DeferredBlock<MeatShredderBlock> MEAT_SHREDDER = registerWithItem("meat_shredder",
+            ()-> new MeatShredderBlock(MACHINE_BLOCK.get().properties()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()), new Item.Properties());

@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:meat_shredding",
+  "input": {
+    "item": "minecraft:rotten_flesh"
+  },
+  "output": {
+    "Amount": 20,
+    "FluidName": "eternalartifacts:liquid_meat"
+  }
+}

@@ -59,6 +59,7 @@ public class EternalArtifacts {
             }).build());
 
     public EternalArtifacts(IEventBus modEventBus) {
+        enableMilkFluid();
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -70,15 +71,11 @@ public class EternalArtifacts {
         ModSounds.SOUNDS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);
+        ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
-        //ModConfiguredFeatures.CONFIGURED_FEATURES.register(modEventBus);
-        //ModConfiguredFeatures.FEATURES.register(modEventBus);
-        //ModPlacedFeatures.PLACED_FEATURES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(Channel::onRegisterPayloadHandler);
-
-        enableMilkFluid();
 
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }

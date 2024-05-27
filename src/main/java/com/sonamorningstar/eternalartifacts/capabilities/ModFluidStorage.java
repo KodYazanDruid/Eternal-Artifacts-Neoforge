@@ -14,6 +14,40 @@ public class ModFluidStorage extends FluidTank {
         super(capacity, validator);
     }
 
+    public int fillForced(FluidStack resource, FluidAction action) {
+        if (resource.isEmpty() /*|| !isFluidValid(resource)*/) {
+            return 0;
+        }
+        if (action.simulate()) {
+            if (fluid.isEmpty()) {
+                return Math.min(capacity, resource.getAmount());
+            }
+            if (!fluid.isFluidEqual(resource)) {
+                return 0;
+            }
+            return Math.min(capacity - fluid.getAmount(), resource.getAmount());
+        }
+        if (fluid.isEmpty()) {
+            fluid = new FluidStack(resource, Math.min(capacity, resource.getAmount()));
+            onContentsChanged();
+            return fluid.getAmount();
+        }
+        if (!fluid.isFluidEqual(resource)) {
+            return 0;
+        }
+        int filled = capacity - fluid.getAmount();
+
+        if (resource.getAmount() < filled) {
+            fluid.grow(resource.getAmount());
+            filled = resource.getAmount();
+        } else {
+            fluid.setAmount(capacity);
+        }
+        if (filled > 0)
+            onContentsChanged();
+        return filled;
+    }
+
     public FluidStack drainForced(FluidStack resource, FluidAction action) {
         if (resource.isEmpty() || !resource.isFluidEqual(fluid)) {
             return FluidStack.EMPTY;

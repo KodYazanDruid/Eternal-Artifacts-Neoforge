@@ -1,4 +1,25 @@
 {
+  "duck_ambient": {
+    "sounds": [
+      "eternalartifacts:duck_idle_1",
+      "eternalartifacts:duck_idle_2",
+      "eternalartifacts:duck_idle_3",
+      "eternalartifacts:duck_idle_4",
+      "eternalartifacts:duck_idle_5"
+    ],
+    "subtitle": "eternalartifacts.subtitle.duck_ambient"
+  },
+  "duck_step": {
+    "sounds": [
+      "eternalartifacts:duck_step_1",
+      "eternalartifacts:duck_step_2",
+      "eternalartifacts:duck_step_3",
+      "eternalartifacts:duck_step_4",
+      "eternalartifacts:duck_step_5",
+      "eternalartifacts:duck_step_6"
+    ],
+    "subtitle": "eternalartifacts.subtitle.duck_step"
+  },
   "holy_dagger_activate": {
     "sounds": [
       "eternalartifacts:holy_dagger_activate"

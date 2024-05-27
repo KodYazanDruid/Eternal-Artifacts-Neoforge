@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -19,7 +18,6 @@ public class BookDuplicatorScreen extends AbstractMachineScreen<BookDuplicatorMe
     @Override
     protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
-        renderSidedTransferTab(gui, ((SidedTransferBlockEntity<?>) menu.getBlockEntity()));
         renderDefaultEnergyAndFluidBar(gui);
         renderProgressArrow(gui, x + 104, y + 49);
         renderLArraow(gui, x + 43, y + 45);
