@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "eternalartifacts:chlorophyte_ingot"
+  },
+  "base": {
+    "item": "eternalartifacts:copper_sword"
+  },
+  "result": {
+    "item": "eternalartifacts:sword_of_the_green_earth"
+  },
+  "template": {
+    "item": "eternalartifacts:chlorophyte_upgrade_smithing_template"
+  }
+}

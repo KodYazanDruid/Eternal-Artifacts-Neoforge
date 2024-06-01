@@ -6,4 +6,5 @@ public class MeatShredderBlock extends BaseMachineBlock<MeatShredderBlockEntity>
     public MeatShredderBlock(Properties pProperties) {
         super(pProperties, MeatShredderBlockEntity::new);
     }
+
 }

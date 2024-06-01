@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "eternalartifacts:block/stripped_citrus_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "eternalartifacts:block/stripped_citrus_log"
+    },
+    "axis=z": {
+      "model": "eternalartifacts:block/stripped_citrus_log_horizontal",
+      "x": 90
+    }
+  }
+}

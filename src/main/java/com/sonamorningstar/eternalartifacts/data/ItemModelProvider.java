@@ -63,6 +63,10 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.DUCK_MEAT.get());
         basicItem(ModItems.COOKED_DUCK_MEAT.get());
         basicItem(ModItems.DUCK_FEATHER.get());
+        handheld(ModItems.SWORD_OF_THE_GREEN_EARTH);
+        handheld(ModItems.NATURAL_SPADE);
+        handheld(ModItems.LUSH_GRUBBER);
+        basicItem(ModItems.COPPER_TABLET.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -80,6 +84,10 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.PINK_SLIME_BLOCK.getId().getPath(), modLoc("block/pink_slime_block"));
         withExistingParent(ModBlocks.ROSY_FROGLIGHT.getId().getPath(), modLoc("block/rosy_froglight"));
         withExistingParent(ModBlocks.MACHINE_BLOCK.getId().getPath(), modLoc("block/machine_block"));
+        withExistingParent(ModBlocks.CITRUS_LOG.getId().getPath(), modLoc("block/citrus_log"));
+        withExistingParent(ModBlocks.STRIPPED_CITRUS_LOG.getId().getPath(), modLoc("block/stripped_citrus_log"));
+        withExistingParent(ModBlocks.CITRUS_WOOD.getId().getPath(), modLoc("block/citrus_wood"));
+        withExistingParent(ModBlocks.STRIPPED_CITRUS_WOOD.getId().getPath(), modLoc("block/stripped_citrus_wood"));
         //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))

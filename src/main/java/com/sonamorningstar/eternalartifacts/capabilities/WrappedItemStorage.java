@@ -12,9 +12,9 @@ import java.util.function.Predicate;
  * under https://github.com/ModdingX/LibX/blob/1.19/LICENSE
 
  */
-public record WrappedModItemStorage(IItemHandlerModifiable handler,
-                                    Predicate<Integer> extract,
-                                    BiPredicate<Integer, ItemStack> insert) implements IItemHandlerModifiable {
+public record WrappedItemStorage(IItemHandlerModifiable handler,
+                                 Predicate<Integer> extract,
+                                 BiPredicate<Integer, ItemStack> insert) implements IItemHandlerModifiable {
 
     @Override
     public void setStackInSlot(int slot, @Nonnull ItemStack stack) {

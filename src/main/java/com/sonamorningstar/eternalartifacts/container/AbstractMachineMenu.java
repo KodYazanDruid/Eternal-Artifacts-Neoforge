@@ -50,12 +50,11 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
         //Player inventory
         if (pIndex < 36) {
-            for(int output : outputSlots) {
-                ItemStack inserted = beInventory.insertItem(output, sourceStack, true);
-                if(!inserted.isEmpty()) return ItemStack.EMPTY;
-            }
-            if (!moveItemStackTo(sourceStack, 36, 36 + beInventory.getSlots(), false)) {
-                return ItemStack.EMPTY;
+            for(int i = 0; i < beInventory.getSlots(); i++) {
+                if(outputSlots.contains(i)) return ItemStack.EMPTY;
+                else if (!moveItemStackTo(sourceStack, 36, 36 + beInventory.getSlots(), false)) {
+                    return ItemStack.EMPTY;
+                }
             }
         //Machine inventory
         } else if (pIndex < 36 + beInventory.getSlots()) {
@@ -113,11 +112,11 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         } else return 0;
     }
 
-    public int getFluidProgress() {
+    public int getFluidProgress(int slot) {
         IFluidHandler tank = level.getCapability(Capabilities.FluidHandler.BLOCK, blockEntity.getBlockPos(), null);
         if(tank != null){
-            int amount = tank.getFluidInTank(0).getAmount();
-            int max = tank.getTankCapacity(0);
+            int amount = tank.getFluidInTank(slot).getAmount();
+            int max = tank.getTankCapacity(slot);
             int barHeight = 50;
             return max != 0 && amount != 0 ? amount * barHeight / max : 0;
         } else return 0;

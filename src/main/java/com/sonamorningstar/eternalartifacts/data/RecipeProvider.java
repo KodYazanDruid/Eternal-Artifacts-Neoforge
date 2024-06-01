@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -19,7 +20,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.registries.DeferredItem;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -31,8 +31,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     @Override
     protected void buildRecipes(RecipeOutput recipeOutput) {
-        /*SpecialRecipeBuilder.special(category -> new ShapedRetexturedRecipe(category, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE))
-                .save(recipeOutput, new ResourceLocation(MODID, "gardening_pot_recipe"));*/
+        SpecialRecipeBuilder.special(category -> new ShapedRetexturedRecipe(category, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE))
+                .save(recipeOutput, new ResourceLocation(MODID, "gardening_pot_recipe"));
         craftingRecipes(recipeOutput);
         smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.MEAT_INGOT, 0.35f);
@@ -43,11 +43,24 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
 
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
-        chlorophyteSmithing(recipeOutput, ModItems.COPPER_AXE.get(), RecipeCategory.TOOLS, ModItems.AXE_OF_REGROWTH.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_PICKAXE.get(), RecipeCategory.TOOLS, ModItems.CHLOROVEIN_PICKAXE.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_AXE.get(), RecipeCategory.TOOLS, ModItems.AXE_OF_REGROWTH.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_SHOVEL.get(), RecipeCategory.TOOLS, ModItems.NATURAL_SPADE.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_HOE.get(), RecipeCategory.TOOLS, ModItems.LUSH_GRUBBER.get());
 
-        createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, 20));
-        createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, 250));
+        createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, 250);
+        createMeatShredderRecipe(recipeOutput, Items.BEEF.getDefaultInstance(), 250);
+        createMeatShredderRecipe(recipeOutput, Items.PORKCHOP.getDefaultInstance(), 250);
+        createMeatShredderRecipe(recipeOutput, Items.CHICKEN.getDefaultInstance(), 200);
+        createMeatShredderRecipe(recipeOutput, ModItems.DUCK_MEAT.toStack(), 200);
+        createMeatShredderRecipe(recipeOutput, Items.MUTTON.getDefaultInstance(), 200);
+        createMeatShredderRecipe(recipeOutput, Items.RABBIT.getDefaultInstance(), 200);
+        createMeatShredderRecipe(recipeOutput, Items.COD.getDefaultInstance(), 125);
+        createMeatShredderRecipe(recipeOutput, Items.SALMON.getDefaultInstance(), 125);
+        createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
+        createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
+
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
@@ -56,11 +69,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('N', Items.GOLD_INGOT).define('F', ModItems.ANCIENT_FRUIT)
                 .unlockedBy("has_item", has(ModItems.ANCIENT_FRUIT))
                 .save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GARDENING_POT)
+        /*ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GARDENING_POT)
                 .pattern(" B ").pattern("TDT").pattern(" T ")
                 .define('B', Items.BONE_MEAL).define('T', Items.TERRACOTTA).define('D', Items.DIRT)
                 .unlockedBy("has_item", has(Items.TERRACOTTA))
-                .save(recipeOutput);
+                .save(recipeOutput);*/
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .pattern("SSS").pattern("SSS").pattern("SSS")
                 .define('S', ModItems.SUGAR_CHARCOAL)
@@ -128,6 +141,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('E', ModItems.CHLOROPHYTE_INGOT)
                 .unlockedBy("has_item", has(ModItems.STONE_TABLET))
                 .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_TABLET)
+                .pattern("CBC")
+                .define('B', Items.COPPER_BLOCK)
+                .define('C', Items.COPPER_INGOT)
+                .unlockedBy("has_item", has(Items.COPPER_INGOT))
+                .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -177,13 +196,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(recipeOutput, new ResourceLocation(MODID, "smithing/"+getItemName(resultItem)+"_smithing"));
     }
 
-    private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, FluidStack output) {
+    private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, int output) {
         String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
-        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), output))
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+path));
     }
-    private void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, FluidStack output) {
-        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), output))
+    private void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, int output) {
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+input.location().getPath()));
     }
 

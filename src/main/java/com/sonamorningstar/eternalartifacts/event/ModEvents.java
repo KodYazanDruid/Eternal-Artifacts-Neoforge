@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event;
 
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.WrappedFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
@@ -24,6 +24,7 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -39,37 +40,44 @@ public class ModEvents {
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.tanks);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(0)));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(0)));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
     }
 
-    private static IItemHandler regSidedItemCaps(SidedTransferBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, List<Integer> outputSlots) {
+    private static IItemHandler regSidedItemCaps(SidedTransferBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
-            if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE)) return null;
-            return new WrappedModItemStorage(inventory,
-                    i -> (outputSlots == null || outputSlots.contains(i)) && SidedTransferBlockEntity.canPerformTransfers(be, ctx, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT),
-                    (i, s) ->(outputSlots != null && !outputSlots.contains(i)) && SidedTransferBlockEntity.canPerformTransfers(be ,ctx, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT));
+            if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
+            return new WrappedItemStorage(inventory,
+                    i -> (outputSlots != null && outputSlots.contains(i)) &&
+                            SidedTransferBlockEntity.canPerformTransfers(be, ctx, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT) &&
+                            be.isItemsAllowed(),
+                    (i, s) -> (outputSlots == null || !outputSlots.contains(i)) &&
+                            SidedTransferBlockEntity.canPerformTransfers(be ,ctx, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT) &&
+                            be.isItemsAllowed());
         } else if(ctx == null) return inventory;
         else return null;
     }
 
     private static IFluidHandler regSidedFluidCaps(SidedTransferBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
         if(ctx != null) {
-            if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE)) return null;
-            return new WrappedModFluidStorage(tank,
-                    dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT),
-                    (dir, fs) -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT),
+            if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
+            return new WrappedFluidStorage(tank,
+                    dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT) &&
+                            be.isFluidsAllowed(),
+                    (dir, fs) -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT) &&
+                            be.isFluidsAllowed(),
                     ctx);
         } else if(ctx == null) return tank;
         else return null;

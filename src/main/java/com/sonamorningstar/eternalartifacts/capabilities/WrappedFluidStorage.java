@@ -7,10 +7,10 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
-public record WrappedModFluidStorage(IFluidHandler tank,
-                                     Predicate<Direction> extract,
-                                     BiPredicate<Direction, FluidStack> insert,
-                                     Direction ctx) implements IFluidHandler {
+public record WrappedFluidStorage(IFluidHandler tank,
+                                  Predicate<Direction> extract,
+                                  BiPredicate<Direction, FluidStack> insert,
+                                  Direction ctx) implements IFluidHandler {
 
     @Override
     public int getTanks() {

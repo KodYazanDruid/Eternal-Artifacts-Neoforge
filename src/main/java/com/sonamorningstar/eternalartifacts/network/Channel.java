@@ -32,6 +32,8 @@ public class Channel {
                 SidedTransferSideSaveToServer::create, handler -> handler.server(SidedTransferSideSaveToServer::handle));
         registrar.play(SidedTransferAutoSaveToServer.ID,
                 SidedTransferAutoSaveToServer::create, handler -> handler.server(SidedTransferAutoSaveToServer::handle));
+        registrar.play(SidedTransferRedstoneToServer.ID,
+                SidedTransferRedstoneToServer::create, handler -> handler.server(SidedTransferRedstoneToServer::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {

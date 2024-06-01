@@ -5,10 +5,12 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -47,8 +49,14 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ItemTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
         tag(ItemTags.FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
         tag(Tags.Items.FEATHERS).add(ModItems.DUCK_FEATHER.get());
+        tag(ItemTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
+        tag(ItemTags.LOGS).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
+        tag(ItemTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.asItem());
 
-        tag(ItemTags.SWORDS).add(ModItems.COPPER_SWORD.get());
+        tag(ItemTags.SWORDS).add(
+                ModItems.COPPER_SWORD.get(),
+                ModItems.SWORD_OF_THE_GREEN_EARTH.get()
+        );
         tag(ItemTags.PICKAXES).add(
                 ModItems.COPPER_PICKAXE.get(),
                 ModItems.CHLOROVEIN_PICKAXE.get()
@@ -57,8 +65,14 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.COPPER_AXE.get(),
                 ModItems.AXE_OF_REGROWTH.get()
         );
-        tag(ItemTags.SHOVELS).add(ModItems.COPPER_SHOVEL.get());
-        tag(ItemTags.HOES).add(ModItems.COPPER_HOE.get());
+        tag(ItemTags.SHOVELS).add(
+                ModItems.COPPER_SHOVEL.get(),
+                ModItems.NATURAL_SPADE.get()
+        );
+        tag(ItemTags.HOES).add(
+                ModItems.COPPER_HOE.get(),
+                ModItems.LUSH_GRUBBER.get()
+        );
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
@@ -69,7 +83,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.TABLETS).add(
                 ModItems.STONE_TABLET.get(),
                 ModItems.ENDER_TABLET.get(),
-                ModItems.CHLOROPHYTE_TABLET.get()
+                ModItems.CHLOROPHYTE_TABLET.get(),
+                ModItems.COPPER_TABLET.get()
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),

@@ -21,9 +21,6 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
-    /*public static final DeferredBlock<Block> LUTFI = registerWithItem("lutfi",
-                ()-> new Block(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(0.5f).mapColor(MapColor.COLOR_BROWN)), new Item.Properties());
-*/
     public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
             () -> new Block(Blocks.IRON_BLOCK.properties().mapColor(MapColor.STONE)));
     public static final DeferredBlock<RotatedPillarBlock> ROSY_FROGLIGHT = registerWithItem("rosy_froglight",
@@ -38,10 +35,37 @@ public class ModBlocks {
             () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()));
     public static final DeferredBlock<Block> CHLOROPHYTE_DEBRIS = registerWithItem("chlorophyte_debris",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.3F).sound(SoundType.MOSS)));
+
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));
     public static final DeferredBlock<Block> SANDY_STONE_BRICKS = registerWithItem("sandy_stone_bricks",
             () -> new Block(Blocks.STONE_BRICKS.properties()));
+    public static final DeferredBlock<Block> SANDY_PRISMARINE = registerWithItem("sandy_prismarine",
+            () -> new Block(Blocks.PRISMARINE.properties()));
+    public static final DeferredBlock<Block> VERY_SANDY_PRISMARINE = registerWithItem("very_sandy_prismarine",
+            () -> new Block(Blocks.PRISMARINE.properties()));
+    public static final DeferredBlock<Block> SANDY_DARK_PRISMARINE = registerWithItem("sandy_dark_prismarine",
+            () -> new Block(Blocks.DARK_PRISMARINE.properties()));
+    public static final DeferredBlock<Block> VERY_SANDY_DARK_PRISMARINE = registerWithItem("very_sandy_dark_prismarine",
+            () -> new Block(Blocks.DARK_PRISMARINE.properties()));
+    public static final DeferredBlock<Block> PAVED_PRISMARINE_BRICKS = registerWithItem("paved_prismarine_bricks",
+            () -> new Block(Blocks.PRISMARINE_BRICKS.properties()));
+    public static final DeferredBlock<Block> SANDY_PAVED_PRISMARINE_BRICKS = registerWithItem("sandy_paved_prismarine_bricks",
+            () -> new Block(Blocks.PRISMARINE_BRICKS.properties()));
+    public static final DeferredBlock<Block> SANDY_PRISMARINE_BRICKS = registerWithItem("sandy_prismarine_bricks",
+            () -> new Block(Blocks.PRISMARINE_BRICKS.properties()));
+    public static final DeferredBlock<Block> LAYERED_PRISMARINE = registerWithItem("layered_prismarine",
+            () -> new Block(Blocks.PRISMARINE.properties()));
+    public static final DeferredBlock<RotatedPillarBlock> CITRUS_LOG = registerWithItem("citrus_log",
+            ()-> new RotatedPillarBlock(Blocks.JUNGLE_LOG.properties()));
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_CITRUS_LOG = registerWithItem("stripped_citrus_log",
+            ()-> new RotatedPillarBlock(Blocks.JUNGLE_LOG.properties()));
+    public static final DeferredBlock<RotatedPillarBlock> CITRUS_WOOD = registerWithItem("citrus_wood",
+            ()-> new RotatedPillarBlock(Blocks.JUNGLE_WOOD.properties()));
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_CITRUS_WOOD = registerWithItem("stripped_citrus_wood",
+            ()-> new RotatedPillarBlock(Blocks.JUNGLE_WOOD.properties()));
+    public static final DeferredBlock<Block> CITRUS_PLANKS = registerWithItem("citrus_planks",
+            ()-> new Block(Blocks.JUNGLE_PLANKS.properties()));
 
     public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous_block",
             ()-> new LiquidBlock(ModFluids.NOUS_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
@@ -60,7 +84,7 @@ public class ModBlocks {
             ()-> new MeatShredderBlock(MACHINE_BLOCK.get().properties()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
-            ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()), new Item.Properties());
+            ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
 
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
             ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties(), 128));

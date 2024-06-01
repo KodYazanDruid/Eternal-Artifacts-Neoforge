@@ -5,16 +5,23 @@ import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.SignalGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,9 +31,18 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
+
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickable {
     Lazy<BlockEntity> entity;
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF;
+    protected Recipe<SimpleContainer> currentRecipe = null;
+    @Getter
+    @Setter
+    protected Map<Integer, SidedTransferBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         entity = Lazy.of(()->level.getBlockEntity(pos));
@@ -109,8 +125,39 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
+    protected void progress(BooleanSupplier test, Runnable run, ModEnergyStorage energy) {
+        if(!hasEnergy(consume, energy)) return;
+        SidedTransferBlockEntity.RedstoneType type = redstoneConfigs.get(0);
+        if(type == SidedTransferBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
+            type == SidedTransferBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
+            (type == SidedTransferBlockEntity.RedstoneType.IGNORED || type == null)){
+            if (test.getAsBoolean()) {
+                progress = 0;
+                return;
+            }
+            energy.extractEnergyForced(consume, false);
+            progress++;
+            if (progress >= maxProgress) {
+                run.run();
+                progress = 0;
+            }
+        }
+    }
+
     protected boolean hasEnergy(int amount, ModEnergyStorage energy) {
         return energy.extractEnergyForced(amount, true) >= amount;
+    }
+
+    protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, SimpleContainer container) {
+        if(currentRecipe != null && currentRecipe.matches(container, level)) return;
+        currentRecipe = null;
+        List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
+        for(R recipe : recipeList) {
+            if(recipe.matches(container, level)) {
+                currentRecipe = recipe;
+                return;
+            }
+        }
     }
 
 }

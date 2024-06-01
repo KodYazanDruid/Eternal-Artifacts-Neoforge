@@ -27,8 +27,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.RESONATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.GARDENING_POT.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "wood", "pickaxe");
-        tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "wood", "shovel");
+        tierAndTool(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "", "shovel");
         tierAndTool(ModBlocks.GRAVEL_COPPER_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.GRAVEL_IRON_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.GRAVEL_GOLD_ORE.get(), "iron", "shovel");
@@ -36,6 +36,18 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SANDY_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MEAT_SHREDDER.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.SANDY_PRISMARINE.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.VERY_SANDY_PRISMARINE.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.SANDY_DARK_PRISMARINE.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.VERY_SANDY_DARK_PRISMARINE.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.PAVED_PRISMARINE_BRICKS.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.SANDY_PRISMARINE_BRICKS.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.LAYERED_PRISMARINE.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.CITRUS_LOG.get(), "", "axe");
+        tierAndTool(ModBlocks.STRIPPED_CITRUS_LOG.get(), "", "axe");
+        tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
+        tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
@@ -46,7 +58,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(BlockTags.GOLD_ORES).add(ModBlocks.GRAVEL_GOLD_ORE.get());
         tag(Tags.Blocks.ORE_RATES_DENSE).add(ModBlocks.GRAVEL_COPPER_ORE.get());
         tag(Tags.Blocks.ORE_RATES_SINGULAR).add(ModBlocks.GRAVEL_COAL_ORE.get(), ModBlocks.GRAVEL_IRON_ORE.get(), ModBlocks.GRAVEL_GOLD_ORE.get());
-
+        tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
+        tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());
     }
 
     private void tierAndTool(Block block, String tier, String tool) {

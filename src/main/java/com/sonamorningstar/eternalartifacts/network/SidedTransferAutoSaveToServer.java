@@ -46,6 +46,7 @@ public record SidedTransferAutoSaveToServer(int index, boolean auto, BlockPos po
                 Map<Integer, Boolean> autoConfigs = sided.getAutoConfigs();
                 autoConfigs.put(index, auto);
                 sided.sendUpdate();
+                level.updateNeighborsAt(pos, entity.getBlockState().getBlock());
             }
         }));
     }

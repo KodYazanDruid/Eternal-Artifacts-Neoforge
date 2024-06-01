@@ -76,6 +76,7 @@ public class ModItems {
                     List.of(new ResourceLocation("item/empty_slot_ingot"))
             ));
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
+    public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -101,8 +102,11 @@ public class ModItems {
     public static final DeferredItem<Item> COPPER_AXE = register("copper_axe", ()-> new AxeItem(ModTiers.COPPER, 7, -3.2f, new Item.Properties()));
     public static final DeferredItem<Item> COPPER_SHOVEL = register("copper_shovel", ()-> new ShovelItem(ModTiers.COPPER, 1.5F, -3.0f, new Item.Properties()));
     public static final DeferredItem<Item> COPPER_HOE = register("copper_hoe", ()-> new HoeItem(ModTiers.COPPER, -1, -2.0f, new Item.Properties()));
-    public static final DeferredItem<Item> AXE_OF_REGROWTH = registerStacksToOne("axe_of_regrowth", AxeOfRegrowthItem::new);
+    public static final DeferredItem<Item> SWORD_OF_THE_GREEN_EARTH = registerStacksToOne("sword_of_the_green_earth", SwordOfTheGreenEarthItem::new);
     public static final DeferredItem<Item> CHLOROVEIN_PICKAXE = registerStacksToOne("chlorovein_pickaxe", ChloroveinPickaxeItem::new);
+    public static final DeferredItem<Item> AXE_OF_REGROWTH = registerStacksToOne("axe_of_regrowth", AxeOfRegrowthItem::new);
+    public static final DeferredItem<Item> NATURAL_SPADE = registerStacksToOne("natural_spade", NaturalSpadeItem::new);
+    public static final DeferredItem<Item> LUSH_GRUBBER = registerStacksToOne("lush_grubber", LushGrubberItem::new);
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));

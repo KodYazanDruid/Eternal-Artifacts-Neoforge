@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.IHasInventory;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
@@ -40,7 +39,7 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     private Map<Integer, TransferType> sideConfigs = new HashMap<>(6);
     @Getter
     @Setter
-    private Map<Integer, Boolean> autoConfigs = new HashMap<>(2);
+    private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
 
     @Override
     public void tick(Level lvl, BlockPos pos, BlockState st) {
@@ -48,8 +47,9 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     }
 
     protected void performAutoInput(Level lvl, BlockPos pos, ModItemStorage inventory) {
-        boolean isAllowed = autoConfigs.get(0) != null && autoConfigs.get(0);
-        if(!isAllowed) return;
+        boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
+        boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
+        if(!isAllowedAuto || isDisabled) return;
         List<Direction> inputDirs = new ArrayList<>();
         for(int i = 0; i < 6; i++) {
             TransferType type = sideConfigs.get(i) == null ? TransferType.DEFAULT : sideConfigs.get(i);
@@ -74,8 +74,9 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     }
 
     protected void performAutoOutput(Level lvl, BlockPos pos, ModItemStorage inventory, int... outputSlots) {
-        boolean isAllowed = autoConfigs.get(1) != null && autoConfigs.get(1);
-        if(!isAllowed) return;
+        boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
+        boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
+        if(!isAllowedAuto || isDisabled) return;
         List<Direction> outputDirs = new ArrayList<>();
         for(int i = 0; i < 6; i++) {
             TransferType type = sideConfigs.get(i) == null ? TransferType.DEFAULT : sideConfigs.get(i);
@@ -99,8 +100,9 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     }
 
     protected void performAutoInputFluids(Level lvl, BlockPos pos, ModFluidStorage tank) {
-        boolean isAllowed = autoConfigs.get(0) != null && autoConfigs.get(0);
-        if(!isAllowed) return;
+        boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
+        boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
+        if(!isAllowedAuto || isDisabled) return;
         List<Direction> inputDirs = new ArrayList<>();
         for(int i = 0; i < 6; i++) {
             TransferType type = sideConfigs.get(i) == null ? TransferType.DEFAULT : sideConfigs.get(i);
@@ -118,8 +120,9 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     }
 
     protected void performAutoOutputFluids(Level lvl, BlockPos pos, ModFluidStorage tank) {
-        boolean isAllowed = autoConfigs.get(1) != null && autoConfigs.get(1);
-        if(!isAllowed) return;
+        boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
+        boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
+        if(!isAllowedAuto || isDisabled) return;
         List<Direction> outputDirs = new ArrayList<>();
         for(int i = 0; i < 6; i++) {
             TransferType type = sideConfigs.get(i) == null ? TransferType.DEFAULT : sideConfigs.get(i);
@@ -149,6 +152,11 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
             CompoundTag entry = autoConfigs.getCompound(i);
             this.autoConfigs.put(entry.getInt("Index"), entry.getBoolean("Enabled"));
         }
+        ListTag redstoneConfigs = tag.getList("RedstoneConfigs", Tag.TAG_COMPOUND);
+        for(int i = 0; i < redstoneConfigs.size(); i++) {
+            CompoundTag entry = redstoneConfigs.getCompound(i);
+            this.redstoneConfigs.put(entry.getInt("Index"), RedstoneType.valueOf(entry.getString("Type")));
+        }
     }
 
     @Override
@@ -170,6 +178,14 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
             autoConfigs.add(entry);
         });
         tag.put("AutoConfigs", autoConfigs);
+        ListTag redstoneConfigs = new ListTag();
+        this.redstoneConfigs.forEach((k, v) -> {
+            CompoundTag entry = new CompoundTag();
+            entry.putInt("Index", k);
+            entry.putString("Type", v.toString());
+            redstoneConfigs.add(entry);
+        });
+        tag.put("RedstoneConfigs", redstoneConfigs);
     }
 
     public static boolean canPerformTransfer(SidedTransferBlockEntity<?> be, Direction dir, TransferType wanted) {
@@ -182,11 +198,18 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     }
 
     public static boolean canPerformTransfers(SidedTransferBlockEntity<?> be, Direction dir, TransferType... wanted) {
-        List<Direction> available = new ArrayList<>();
         for(TransferType type : wanted) {
             if(canPerformTransfer(be, dir, type)) return true;
         }
         return false;
+    }
+
+    public boolean isItemsAllowed() {
+        return autoConfigs.get(2) == null || !autoConfigs.get(2);
+    }
+
+    public boolean isFluidsAllowed() {
+        return autoConfigs.get(3) == null || !autoConfigs.get(3);
     }
 
     public static Direction resolveActualDir(BlockState state, int index) {
@@ -202,12 +225,6 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
         };
     }
 
-    // 0 -> top
-    // 1 -> left
-    // 2 -> front
-    // 3 -> right
-    // 4 -> bottom
-    // 5 -> back
     public enum TransferType {
         DEFAULT,
         NONE,
@@ -228,6 +245,26 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
             if(type == NONE) return DEFAULT;
             if(type == PULL) return NONE;
             return PULL;
+        }
+    }
+
+    public enum RedstoneType {
+        IGNORED,
+        HIGH,
+        LOW;
+
+        public static RedstoneType cycleNext(int index, SidedTransferBlockEntity<?> entity) {
+            RedstoneType type = entity.redstoneConfigs.get(index) == null ? IGNORED : entity.redstoneConfigs.get(index);
+            if(type == IGNORED) return HIGH;
+            if(type == HIGH) return LOW;
+            return IGNORED;
+        }
+
+        public static RedstoneType cyclePrev(int index, SidedTransferBlockEntity<?> entity) {
+            RedstoneType type = entity.redstoneConfigs.get(index) == null ? IGNORED : entity.redstoneConfigs.get(index);
+            if(type == IGNORED) return LOW;
+            if(type == HIGH) return IGNORED;
+            return HIGH;
         }
     }
 }

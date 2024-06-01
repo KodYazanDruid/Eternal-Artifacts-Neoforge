@@ -12,10 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class MeatShredderCategory extends BasicEmiRecipe {
-    public static final ResourceLocation ID = new ResourceLocation(MODID, "meat_shredding");
-    public static final EmiRecipeCategory MEAT_SHREDDER_CATEGORY = new EmiRecipeCategory(ID, EmiStack.of(ModBlocks.MEAT_SHREDDER));
-    public MeatShredderCategory(MeatShredderRecipe recipe) {
-        super(MEAT_SHREDDER_CATEGORY, MEAT_SHREDDER_CATEGORY.id, 112, 18);
+    public static final EmiRecipeCategory MEAT_SHREDDER_CATEGORY = new EmiRecipeCategory(new ResourceLocation(MODID, "meat_shredding"), EmiStack.of(ModBlocks.MEAT_SHREDDER));
+    public MeatShredderCategory(MeatShredderRecipe recipe, ResourceLocation id) {
+        super(MEAT_SHREDDER_CATEGORY, id, 112, 18);
         inputs.add(EmiIngredient.of(recipe.getInput()));
         outputs.add(EmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount()));
     }

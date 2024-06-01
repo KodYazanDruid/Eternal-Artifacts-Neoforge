@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 public class ShapedRetexturedRecipe extends CustomRecipe {
     private final Item item;
     private final TagKey<Item> texture;
+    private ItemStack result;
 
     public ShapedRetexturedRecipe(CraftingBookCategory pCategory, Item item, TagKey<Item> texture) {
         super(pCategory);
@@ -50,10 +51,16 @@ public class ShapedRetexturedRecipe extends CustomRecipe {
         ) {
             ItemStack result = new ItemStack(item);
             if(inv.getItem(3).getItem() instanceof BlockItem bi) result = RetexturedBlockItem.setTexture(result, bi.getBlock());
+            this.result = result;
             return result;
         }
 
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+        return result;
     }
 
     @Override

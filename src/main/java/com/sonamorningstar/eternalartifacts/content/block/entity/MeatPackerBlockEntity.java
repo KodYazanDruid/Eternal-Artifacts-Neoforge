@@ -81,27 +81,15 @@ public class MeatPackerBlockEntity extends SidedTransferBlockEntity<MeatPackerMe
     public void tick(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutput(lvl, pos, inventory, 0);
         performAutoInputFluids(lvl, pos, tank);
-        FluidStack meatFluid = tank.getFluid();
-        if(meatFluid.getAmount() >= 250 && hasEnergy(consume, energy)) {
-            progressAndCraft(ModItems.RAW_MEAT_INGOT.toStack(), 250);
-        }
+        progress(()-> {
+            ItemStack remainder = inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), true);
+            FluidStack drained = tank.drainForced(250, IFluidHandler.FluidAction.SIMULATE);
+            return !remainder.isEmpty() || drained.getAmount() < 250;
+        }, ()-> {
+            tank.drainForced(250, IFluidHandler.FluidAction.EXECUTE);
+            inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), false);
+        }, energy);
 
     }
 
-    private void progressAndCraft(ItemStack result, int meatCost) {
-        ItemStack slot = inventory.getStackInSlot(0);
-        if(meatCost > tank.getFluidAmount()) {
-            progress = 0;
-            return;
-        }
-        if(slot.getCount() + result.getCount() > 64) return;
-        if(result.isEmpty() || ( !slot.isEmpty() && !ItemHandlerHelper.canItemStacksStack(slot, result))) return;
-        energy.extractEnergyForced(consume, false);
-        progress++;
-        if (progress >= maxProgress) {
-            tank.drainForced(meatCost, IFluidHandler.FluidAction.EXECUTE);
-            inventory.insertItemForced(0, result, false);
-            progress = 0;
-        }
-    }
 }

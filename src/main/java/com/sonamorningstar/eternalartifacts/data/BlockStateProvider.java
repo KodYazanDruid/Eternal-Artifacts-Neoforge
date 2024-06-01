@@ -1,11 +1,8 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.google.gson.JsonObject;
-import com.mojang.datafixers.types.Func;
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,12 +10,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
-import net.neoforged.neoforge.client.model.generators.ModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -33,7 +28,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
     @Override
     protected void registerStatesAndModels() {
-        //simpleBlockWithItem(ModBlocks.LUTFI.get());
         simpleBlockWithItem(ModBlocks.BIOFURNACE.get());
         simpleBlockWithItem(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         simpleBlockWithItem(ModBlocks.GRAVEL_COAL_ORE.get());
@@ -43,7 +37,20 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.CHLOROPHYTE_DEBRIS.get());
         simpleBlockWithItem(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
         simpleBlockWithItem(ModBlocks.SANDY_STONE_BRICKS.get());
+        simpleBlockWithItem(ModBlocks.SANDY_PRISMARINE.get());
+        simpleBlockWithItem(ModBlocks.VERY_SANDY_PRISMARINE.get());
+        simpleBlockWithItem(ModBlocks.SANDY_DARK_PRISMARINE.get());
+        simpleBlockWithItem(ModBlocks.VERY_SANDY_DARK_PRISMARINE.get());
+        simpleBlockWithItem(ModBlocks.PAVED_PRISMARINE_BRICKS.get());
+        simpleBlockWithItem(ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS.get());
+        simpleBlockWithItem(ModBlocks.SANDY_PRISMARINE_BRICKS.get());
+        simpleBlockWithItem(ModBlocks.LAYERED_PRISMARINE.get());
+        simpleBlockWithItem(ModBlocks.CITRUS_PLANKS.get());
         axisBlock(ModBlocks.ROSY_FROGLIGHT.get(), modLoc("block/rosy_froglight_side"), modLoc("block/rosy_froglight_top"));
+        axisBlock(ModBlocks.CITRUS_LOG.get(), modLoc("block/citrus_log"), modLoc("block/citrus_log_top"));
+        axisBlock(ModBlocks.STRIPPED_CITRUS_LOG.get(), modLoc("block/stripped_citrus_log"), modLoc("block/stripped_citrus_log_top"));
+        axisBlock(ModBlocks.CITRUS_WOOD.get(), modLoc("block/citrus_log"), modLoc("block/citrus_log"));
+        axisBlock(ModBlocks.STRIPPED_CITRUS_WOOD.get(), modLoc("block/stripped_citrus_log"), modLoc("block/stripped_citrus_log"));
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

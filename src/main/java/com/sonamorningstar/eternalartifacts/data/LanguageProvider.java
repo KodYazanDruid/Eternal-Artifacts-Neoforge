@@ -69,6 +69,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DUCK_MEAT.get(), "Duck Meat");
                 add(ModItems.COOKED_DUCK_MEAT.get(), "Cooked Duck Meat");
                 add(ModItems.DUCK_FEATHER.get(), "Duck Feather");
+                add(ModItems.SWORD_OF_THE_GREEN_EARTH.get(), "Sword of the Green Earth");
+                add(ModItems.NATURAL_SPADE.get(), "Natural Spade");
+                add(ModItems.LUSH_GRUBBER.get(), "Lush Grubber");
+                add(ModItems.COPPER_TABLET.get(), "Copper Tablet");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -96,6 +100,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Sandy Tiled Stone Bricks");
                 add(ModBlocks.SANDY_STONE_BRICKS.get(), "Sandy Stone Bricks");
                 add(ModBlocks.MEAT_SHREDDER.get(), "Meat Shredder");
+                add(ModBlocks.SANDY_PRISMARINE.get(), "Sandy Prismarine");
+                add(ModBlocks.VERY_SANDY_PRISMARINE.get(), "Very Sandy Prismarine");
+                add(ModBlocks.SANDY_DARK_PRISMARINE.get(), "Sandy Dark Prismarine");
+                add(ModBlocks.VERY_SANDY_DARK_PRISMARINE.get(), "Very Sandy Dark Prismarine");
+                add(ModBlocks.PAVED_PRISMARINE_BRICKS.get(), "Paved Prismarine Bricks");
+                add(ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS.get(), "Sandy Paved Prismarine Bricks");
+                add(ModBlocks.SANDY_PRISMARINE_BRICKS.get(), "Sandy Prismarine Bricks");
+                add(ModBlocks.LAYERED_PRISMARINE.get(), "Layered Prismarine");
+                add(ModBlocks.CITRUS_LOG.get(), "Citrus Log");
+                add(ModBlocks.STRIPPED_CITRUS_LOG.get(), "Stripped Citrus Log");
+                add(ModBlocks.CITRUS_WOOD.get(), "Citrus Wood");
+                add(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "Stripped Citrus Wood");
+                add(ModBlocks.CITRUS_PLANKS.get(), "Citrus Planks");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -115,7 +132,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive"), "Item pickup is normal.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Right click in inventory to switch.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "You can right click in inventory to open.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "Grows crops faster and automatically harvests. If there is inventory under it, puts the items there, otherwise puts them on top of it in the world. Able to grow cacti and sugar cane.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "todo");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("item_ench_text"), "Always has %s");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Magic feather is active!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Magic feather is not active.");
@@ -129,7 +146,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Chlorophyte Ingot");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Chlorophyte Upgrade");
                 add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Meat Packing");
-                add("emi.category." + MeatShredderCategory.ID.getNamespace() + "." + MeatShredderCategory.ID.getPath().replace('/', '.'), "Meat Shredding");
+                add("emi.category."+MODID+".meat_shredding", "Meat Shredding");
+                add(ModConstants.GUI.withSuffix("energy"), "Energy");
+                add(ModConstants.GUI.withSuffix("fluid"), "Fluid");
 
             }
             case "tr_tr" -> {
@@ -181,6 +200,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DUCK_MEAT.get(), "Ördek Eti");
                 add(ModItems.COOKED_DUCK_MEAT.get(), "Pişmiş Ördek Eti");
                 add(ModItems.DUCK_FEATHER.get(), "Ördek Tüyü");
+                add(ModItems.SWORD_OF_THE_GREEN_EARTH.get(), "Yeşil Dünya'nın Kılıcı");
+                add(ModItems.NATURAL_SPADE.get(), "Doğal Kürek");
+                add(ModItems.LUSH_GRUBBER.get(), "Bereketli Çapa");
+                add(ModItems.COPPER_TABLET.get(), "Bakır Plaka");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -205,9 +228,22 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
                 add(ModBlocks.MEAT_PACKER.get(), "Et Paketleyici");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Klorofit Kalıntısı");
-                add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Kumlu Döşemeli Taş Tuğlaları");
-                add(ModBlocks.SANDY_STONE_BRICKS.get(), "Kumlu Taş Tuğlaları");
+                add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Kumlu Döşeme Taş Tuğlası");
+                add(ModBlocks.SANDY_STONE_BRICKS.get(), "Kumlu Taş Tuğlası");
                 add(ModBlocks.MEAT_SHREDDER.get(), "Et Parçalayıcı");
+                add(ModBlocks.SANDY_PRISMARINE.get(), "Kumlu Prizmarin");
+                add(ModBlocks.VERY_SANDY_PRISMARINE.get(), "Bayağı Kumlu Prizmarin");
+                add(ModBlocks.SANDY_DARK_PRISMARINE.get(), "Kumlu Koyu Prizmarin");
+                add(ModBlocks.VERY_SANDY_DARK_PRISMARINE.get(), "Bayağı Kumlu Koyu Prizmarin");
+                add(ModBlocks.PAVED_PRISMARINE_BRICKS.get(), "Döşeme Prizmarin Tuğlası");
+                add(ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS.get(), "Kumlu Döşeme Prizmarin Tuğlası");
+                add(ModBlocks.SANDY_PRISMARINE_BRICKS.get(), "Kumlu Prizmarin Tuğlası");
+                add(ModBlocks.LAYERED_PRISMARINE.get(), "Katmanlı Prizmarin");
+                add(ModBlocks.CITRUS_LOG.get(), "Narenciye Kütüğü");
+                add(ModBlocks.STRIPPED_CITRUS_LOG.get(), "Soyulmuş Narenciye Kütüğü");
+                add(ModBlocks.CITRUS_WOOD.get(), "Narenciye Odunu");
+                add(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "Soyulmuş Narenciye Odunu");
+                add(ModBlocks.CITRUS_PLANKS.get(), "Narenciye Tahtası");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -227,7 +263,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.passive"), "Yerden eşya alma faaliyeti normal.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("encumbator.switch"), "Değiştirmek için envanterinde sağ tıkla.");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("inventory_right_click"), "Envanterde sağ tıklayarak açabilirsin.");
-                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "Bitkileri hızlı büyütür ve otomatik olarak hasat eder. Eşyaları eğer altında envanter varsa oraya yoksa dünyada üstüne koyar. Kaktüs ve şeker kamışı büyütebilir.");
+                add(ModConstants.TRANSLATE_KEY_PREFIX.ofItem(ModItems.GARDENING_POT), "todo");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("item_ench_text"), "Her zaman %s'a sahip");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_active"), "Büyülü tüy aktif!");
                 add(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("magic_feather_not_active"), "Büyülü tüy aktif değil.");
@@ -241,7 +277,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Klorofit Külçesi");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Klorofit Yükseltmesi");
                 add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Et Paketleme");
-                add("emi.category." + MeatShredderCategory.ID.getNamespace() + "." + MeatShredderCategory.ID.getPath().replace('/', '.'), "Et Parçalama");
+                add("emi.category."+MODID+".meat_shredding", "Et Parçalama");
+                add(ModConstants.GUI.withSuffix("energy"), "Enerji");
+                add(ModConstants.GUI.withSuffix("fluid"), "Sıvı");
+
             }
         }
     }

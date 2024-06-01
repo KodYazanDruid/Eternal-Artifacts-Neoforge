@@ -1,26 +1,21 @@
 package com.sonamorningstar.eternalartifacts.data.loot;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
-import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
@@ -50,6 +45,19 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
         dropSelf(ModBlocks.SANDY_STONE_BRICKS.get());
         dropSelf(ModBlocks.MEAT_SHREDDER.get());
+        dropSelf(ModBlocks.SANDY_PRISMARINE.get());
+        dropSelf(ModBlocks.VERY_SANDY_PRISMARINE.get());
+        dropSelf(ModBlocks.SANDY_DARK_PRISMARINE.get());
+        dropSelf(ModBlocks.VERY_SANDY_DARK_PRISMARINE.get());
+        dropSelf(ModBlocks.PAVED_PRISMARINE_BRICKS.get());
+        dropSelf(ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS.get());
+        dropSelf(ModBlocks.SANDY_PRISMARINE_BRICKS.get());
+        dropSelf(ModBlocks.LAYERED_PRISMARINE.get());
+        dropSelf(ModBlocks.CITRUS_LOG.get());
+        dropSelf(ModBlocks.STRIPPED_CITRUS_LOG.get());
+        dropSelf(ModBlocks.CITRUS_WOOD.get());
+        dropSelf(ModBlocks.STRIPPED_CITRUS_WOOD.get());
+        dropSelf(ModBlocks.CITRUS_PLANKS.get());
 
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);

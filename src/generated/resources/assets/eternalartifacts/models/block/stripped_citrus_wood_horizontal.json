@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "eternalartifacts:block/stripped_citrus_log",
+    "side": "eternalartifacts:block/stripped_citrus_log"
+  }
+}

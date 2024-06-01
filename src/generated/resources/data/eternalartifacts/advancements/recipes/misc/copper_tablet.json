@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:terracotta"
+              "minecraft:copper_ingot"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "eternalartifacts:gardening_pot"
+        "recipe": "eternalartifacts:copper_tablet"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "eternalartifacts:gardening_pot"
+      "eternalartifacts:copper_tablet"
     ]
   }
 }

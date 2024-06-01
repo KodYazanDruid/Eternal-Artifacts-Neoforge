@@ -131,7 +131,6 @@ public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDupl
         } else if (inputBook.getItem() == Items.WRITTEN_BOOK &&
                     consumableBook.getItem() == Items.WRITABLE_BOOK &&
                     output.isEmpty() &&
-                    hasEnergy(consume, energy) &&
                     inputBook.getTag() != null &&
                     WrittenBookItem.getGeneration(inputBook) < 2) {
             ItemStack copy = new ItemStack(Items.WRITTEN_BOOK);
@@ -139,7 +138,11 @@ public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDupl
             compoundtag.putInt("generation", WrittenBookItem.getGeneration(inputBook) + 1);
             copy.setTag(compoundtag);
             net.neoforged.neoforge.attachment.AttachmentUtils.copyStackAttachments(inputBook, copy);
-            progressAndCraft(copy, consumableBook, 500);
+            progress(()->tank.getFluidAmount() < 500, ()->{
+                consumableBook.shrink(1);
+                tank.drainForced(500, IFluidHandler.FluidAction.EXECUTE);
+                inventory.setStackInSlot(1, copy);
+            }, energy);
         }
 
     }

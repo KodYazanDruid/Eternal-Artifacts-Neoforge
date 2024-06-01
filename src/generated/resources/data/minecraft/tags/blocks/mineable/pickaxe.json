@@ -10,6 +10,14 @@
     "eternalartifacts:meat_packer",
     "eternalartifacts:sandy_tiled_stone_bricks",
     "eternalartifacts:sandy_stone_bricks",
-    "eternalartifacts:meat_shredder"
+    "eternalartifacts:meat_shredder",
+    "eternalartifacts:sandy_prismarine",
+    "eternalartifacts:very_sandy_prismarine",
+    "eternalartifacts:sandy_dark_prismarine",
+    "eternalartifacts:very_sandy_dark_prismarine",
+    "eternalartifacts:paved_prismarine_bricks",
+    "eternalartifacts:sandy_paved_prismarine_bricks",
+    "eternalartifacts:sandy_prismarine_bricks",
+    "eternalartifacts:layered_prismarine"
   ]
 }

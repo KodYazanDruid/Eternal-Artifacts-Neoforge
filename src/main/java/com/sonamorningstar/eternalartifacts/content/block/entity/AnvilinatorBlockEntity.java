@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -121,7 +121,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         event.registerBlockEntity(
                 Capabilities.ItemHandler.BLOCK,
                 ModBlockEntities.ANVILINATOR.get(),
-                (be, context) -> context != null ? new WrappedModItemStorage(be.ITEM_HANDLER, i-> i == OUTPUT_SLOT, (i, s) -> i != OUTPUT_SLOT) : be.ITEM_HANDLER);
+                (be, context) -> context != null ? new WrappedItemStorage(be.ITEM_HANDLER, i-> i == OUTPUT_SLOT, (i, s) -> i != OUTPUT_SLOT) : be.ITEM_HANDLER);
 
         event.registerBlockEntity(
                 Capabilities.EnergyStorage.BLOCK,
