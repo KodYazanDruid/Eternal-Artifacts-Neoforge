@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-01T00:11:37.2340783	Item Models: eternalartifacts
+// 1.20.4	2024-06-01T20:45:12.9187132	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -17,6 +17,7 @@ bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/com
 c4b6d532ce2e21a9a09107482c4b2398be18c975 assets/eternalartifacts/models/item/cooked_duck_meat.json
 c78b55733b75ccccae2e361537d3e3ed38d29842 assets/eternalartifacts/models/item/copper_axe.json
 7834cade4ae586aa372fbf0906dbe3c89d38bf57 assets/eternalartifacts/models/item/copper_hoe.json
+130ff3859ef6765d7cf420da7c77e6a485802737 assets/eternalartifacts/models/item/copper_oreberry.json
 8080fe598462699567ebca537d0e157ab5fcead7 assets/eternalartifacts/models/item/copper_pickaxe.json
 3402b2a4051ec8fbfcd9a6a0af26663f3d1c0e6b assets/eternalartifacts/models/item/copper_shovel.json
 b33d6742df572cdf9f5475167dc52f6dc51bb9d6 assets/eternalartifacts/models/item/copper_sword.json
@@ -37,8 +38,10 @@ c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/for
 5b5b72db5847d5995c7212078a95b198a9a89493 assets/eternalartifacts/models/item/frog_legs.json
 7d0e656ecf2f61bedbab2793001bae737289d13b assets/eternalartifacts/models/item/gardening_pot.json
 aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/golden_ancient_fruit.json
+df2644d1984cf0b62f3bdc77fde033a2e0818907 assets/eternalartifacts/models/item/gold_oreberry.json
 20d21c39c19c51e80328abe3103e4c9229641fee assets/eternalartifacts/models/item/gold_ring.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
+22d616680d46d49c8e5d3928a400d64a51d3d028 assets/eternalartifacts/models/item/iron_oreberry.json
 f244cc9ae51e0947ad50cb4f4e7d4a5c36861a92 assets/eternalartifacts/models/item/lens.json
 622d062f81af2dec58f7896f954c6762d63d1be1 assets/eternalartifacts/models/item/liquid_meat_bucket.json
 96ceecf7541e5c363e94df98ec3b72b6921fac2f assets/eternalartifacts/models/item/lush_grubber.json

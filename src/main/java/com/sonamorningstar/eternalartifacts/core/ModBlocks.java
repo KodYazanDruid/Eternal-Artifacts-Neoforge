@@ -2,13 +2,17 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -19,6 +23,17 @@ import java.util.function.Supplier;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModBlocks {
+    static final BlockBehaviour.Properties oreBerryProps = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_ORANGE)
+            .sound(SoundType.COPPER)
+            .pushReaction(PushReaction.DESTROY)
+            .randomTicks()
+            .noOcclusion()
+            .isValidSpawn(ModBlocks::never)
+            .isRedstoneConductor(ModBlocks::never)
+            .isSuffocating(ModBlocks::never)
+            .isViewBlocking(ModBlocks::never);
+
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
@@ -95,7 +110,7 @@ public class ModBlocks {
             ()-> new Block(Blocks.COAL_BLOCK.properties()));
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot",
-            ()-> new GardeningPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).randomTicks()));
+            ()-> new GardeningPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().randomTicks()));
 
     public static final DeferredBlock<FancyChestBlock> FANCY_CHEST = registerNoItem("fancy_chest",
             ()-> new FancyChestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)));
@@ -123,6 +138,9 @@ public class ModBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)
             ));
+    public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerWithItem("copper_oreberry", ()-> new OreBerryBlock(oreBerryProps, OreBerryBlock.BerryMaterial.COPPER));
+    public static final DeferredBlock<OreBerryBlock> IRON_ORE_BERRY = registerWithItem("iron_oreberry", ()-> new OreBerryBlock(oreBerryProps, OreBerryBlock.BerryMaterial.IRON));
+    public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerWithItem("gold_oreberry", ()-> new OreBerryBlock(oreBerryProps, OreBerryBlock.BerryMaterial.GOLD));
 
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }
 
@@ -137,6 +155,15 @@ public class ModBlocks {
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), props));
         return block;
     }
+
+    private static Boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {return false;}
+    private static Boolean always(BlockState p_50810_, BlockGetter p_50811_, BlockPos p_50812_, EntityType<?> p_50813_) {return true;}
+    private static boolean never(BlockState p_50806_, BlockGetter p_50807_, BlockPos p_50808_) {return false;}
+    private static boolean always(BlockState p_50775_, BlockGetter p_50776_, BlockPos p_50777_) {
+        return true;
+    }
+
+
 
 }
 

@@ -3,7 +3,9 @@ package com.sonamorningstar.eternalartifacts.data;
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -19,6 +21,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.AGE_3;
 
 
 public class BlockStateProvider extends net.neoforged.neoforge.client.model.generators.BlockStateProvider {
@@ -88,11 +91,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         tallFlower(ModBlocks.FORSYTHIA);
         tintedCrossBlock(ModBlocks.FOUR_LEAF_CLOVER);
 
-        /*for(DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
-            if(block.get() instanceof LiquidBlock) {
-
-            }
-        }*/
+        createOreBerries(ModBlocks.COPPER_ORE_BERRY);
+        createOreBerries(ModBlocks.IRON_ORE_BERRY);
+        createOreBerries(ModBlocks.GOLD_ORE_BERRY);
 
     }
 
@@ -169,6 +170,22 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
             case SOUTH -> builder.rotationY(180);
             case WEST -> builder.rotationY(270);
         }
+    }
+
+    private void createOreBerries(DeferredBlock<?> deferred) {
+        VariantBlockStateBuilder cobVariant = getVariantBuilder(deferred.get());
+        cobVariant.forAllStates(state -> {
+            int age = state.getValue(AGE_3);
+            String path = BuiltInRegistries.BLOCK.getKey(deferred.get()).getPath();
+            String texture = age == 3 ? "block/"+path+"_ripe" : "block/"+path;
+            ModelFile model;
+            switch(age) {
+                case 0 -> model = models().withExistingParent(path+"_stage0", new ResourceLocation(MODID, "block/cube4")).texture("all", "block/"+path).renderType("cutout");
+                case 1 -> model = models().withExistingParent(path+"_stage1", new ResourceLocation(MODID, "block/cube10")).texture("all", "block/"+path).renderType("cutout");
+                default -> model = models().withExistingParent(path+"_stage"+age,mcLoc("block/cube_all")).texture("all", texture).renderType("cutout");
+            }
+            return ConfiguredModel.builder().modelFile(model).build();
+        });
     }
 
     private void simpleBlockWithItem(Block block) {

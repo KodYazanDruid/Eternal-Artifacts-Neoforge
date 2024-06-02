@@ -29,7 +29,6 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
 
     @Override
     protected void generate() {
-        //dropSelf(ModBlocks.LUTFI.get());
         dropSelf(ModBlocks.ANVILINATOR.get());
         dropSelf(ModBlocks.BOOK_DUPLICATOR.get());
         dropSelf(ModBlocks.BIOFURNACE.get());
@@ -58,6 +57,9 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.CITRUS_WOOD.get());
         dropSelf(ModBlocks.STRIPPED_CITRUS_WOOD.get());
         dropSelf(ModBlocks.CITRUS_PLANKS.get());
+        dropSelf(ModBlocks.COPPER_ORE_BERRY.get());
+        dropSelf(ModBlocks.IRON_ORE_BERRY.get());
+        dropSelf(ModBlocks.GOLD_ORE_BERRY.get());
 
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);

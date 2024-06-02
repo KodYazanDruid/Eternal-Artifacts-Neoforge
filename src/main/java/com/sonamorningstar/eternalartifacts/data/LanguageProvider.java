@@ -113,6 +113,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.CITRUS_WOOD.get(), "Citrus Wood");
                 add(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "Stripped Citrus Wood");
                 add(ModBlocks.CITRUS_PLANKS.get(), "Citrus Planks");
+                add(ModBlocks.COPPER_ORE_BERRY.get(), "Copper Oreberry");
+                add(ModBlocks.IRON_ORE_BERRY.get(), "Iron Oreberry");
+                add(ModBlocks.GOLD_ORE_BERRY.get(), "Gold Oreberry");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -244,6 +247,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.CITRUS_WOOD.get(), "Narenciye Odunu");
                 add(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "Soyulmuş Narenciye Odunu");
                 add(ModBlocks.CITRUS_PLANKS.get(), "Narenciye Tahtası");
+                add(ModBlocks.COPPER_ORE_BERRY.get(), "Bakır Cevherçalısı");
+                add(ModBlocks.IRON_ORE_BERRY.get(), "Demir Cevherçalısı");
+                add(ModBlocks.GOLD_ORE_BERRY.get(), "Altın Cevherçalısı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
