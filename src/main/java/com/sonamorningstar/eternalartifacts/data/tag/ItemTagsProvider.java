@@ -86,6 +86,12 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.CHLOROPHYTE_TABLET.get(),
                 ModItems.COPPER_TABLET.get()
         );
+        tag(Tags.Items.NUGGETS).add(
+                ModItems.COPPER_NUGGET.get()
+        );
+        tag(ModTags.Items.NUGGETS_COPPER).add(
+                ModItems.COPPER_NUGGET.get()
+        );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),
                 Blocks.QUARTZ_BLOCK.asItem(),

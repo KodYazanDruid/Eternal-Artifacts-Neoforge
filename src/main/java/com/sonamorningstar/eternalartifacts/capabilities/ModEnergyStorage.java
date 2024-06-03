@@ -14,26 +14,33 @@ public abstract class ModEnergyStorage extends EnergyStorage {
     @Override
     public int extractEnergy(int maxExtract, boolean simulate) {
         int extractedEnergy = super.extractEnergy(maxExtract, simulate);
-        if(extractedEnergy != 0) {onEnergyChanged();}
+        if(extractedEnergy != 0) { onEnergyChanged(); }
         return extractedEnergy;
     }
 
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         int receiveEnergy = super.receiveEnergy(maxReceive, simulate);
-        if(receiveEnergy != 0) {onEnergyChanged();}
+        if(receiveEnergy != 0) { onEnergyChanged(); }
         return receiveEnergy;
     }
 
-    public int setEnergy(int amount) {
-        this.energy = amount;
-        return amount;
+    public int getEmptyCapacity() {
+        return getMaxEnergyStored() - getEnergyStored();
+    }
+
+    public int getMaxReceive() {
+        return maxReceive;
+    }
+
+    public int getMaxExtract() {
+        return maxExtract;
     }
 
     public int extractEnergyForced(int maxExtract, boolean simulate) {
         int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
         if (!simulate) {
-            if(energyExtracted != 0) {onEnergyChanged();}
+            if(energyExtracted != 0) { onEnergyChanged();}
             energy -= energyExtracted;
         }
         return energyExtracted;

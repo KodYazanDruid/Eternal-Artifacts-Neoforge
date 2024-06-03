@@ -18,7 +18,11 @@ public class EnderNotebookItem extends ArtifactItem{
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        if(player instanceof ServerPlayer serverPlayer)Channel.sendToPlayer(new EnderNotebookOpenToClient(itemstack), serverPlayer);
+        if(player instanceof ServerPlayer serverPlayer) {
+            Channel.sendToPlayer(new EnderNotebookOpenToClient(itemstack), serverPlayer);
+            //serverPlayer.openMenu()
+        }
+
         player.awardStat(Stats.ITEM_USED.get(this));
         return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
     }

@@ -1,5 +1,6 @@
 {
   "block.eternalartifacts.anvilinator": "Örsinatör",
+  "block.eternalartifacts.battery_box": "Pil Kutusu",
   "block.eternalartifacts.biofurnace": "BiyoFırın",
   "block.eternalartifacts.book_duplicator": "Kitap Çoğaltıcı",
   "block.eternalartifacts.chlorophyte_debris": "Klorofit Kalıntısı",
@@ -65,6 +66,7 @@
   "item.eternalartifacts.cooked_duck_meat": "Pişmiş Ördek Eti",
   "item.eternalartifacts.copper_axe": "Bakır Balta",
   "item.eternalartifacts.copper_hoe": "Bakır Çapa",
+  "item.eternalartifacts.copper_nugget": "Bakır Parçası",
   "item.eternalartifacts.copper_pickaxe": "Bakır Kazma",
   "item.eternalartifacts.copper_shovel": "Bakır Kürek",
   "item.eternalartifacts.copper_sword": "Bakır Kılıç",

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -134,6 +136,54 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
                 IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
                 if(targetTank != null) {
                     FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
+                }
+            }
+        }
+    }
+
+    protected void performAutoInputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
+        boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
+        if(!isAllowedAuto) return;
+        List<Direction> inputDirs = new ArrayList<>();
+        for(int i = 0; i < 6; i++) {
+            TransferType type = sideConfigs.get(i) == null ? TransferType.DEFAULT : sideConfigs.get(i);
+            if(type == TransferType.PULL || type == TransferType.DEFAULT) inputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
+        }
+        for(Direction dir : inputDirs) {
+            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
+            if(be != null) {
+                IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
+                if(target != null && target.canExtract()) {
+                    int received = target.extractEnergy(Math.min(energy.getEmptyCapacity(), energy.getMaxReceive()), true);
+                    if(received > 0) {
+                        energy.receiveEnergyForced(received, false);
+                        target.extractEnergy(received, false);
+                        this.sendUpdate();
+                    }
+                }
+            }
+        }
+    }
+
+    protected void performAutoOutputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
+        boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
+        if(!isAllowedAuto) return;
+        List<Direction> outputDirs = new ArrayList<>();
+        for(int i = 0; i < 6; i++) {
+            TransferType type = sideConfigs.get(i) == null ? TransferType.DEFAULT : sideConfigs.get(i);
+            if(type == TransferType.PUSH || type == TransferType.DEFAULT) outputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
+        }
+        for(Direction dir : outputDirs) {
+            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
+            if(be != null) {
+                IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
+                if(target != null && target.canReceive()) {
+                    int extracted = target.receiveEnergy(Math.min(energy.getEnergyStored(), energy.getMaxExtract()), true);
+                    if(extracted > 0) {
+                        target.receiveEnergy(extracted, false);
+                        energy.extractEnergyForced(extracted, false);
+                        this.sendUpdate();
+                    }
                 }
             }
         }

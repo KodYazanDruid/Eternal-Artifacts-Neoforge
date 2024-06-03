@@ -1,6 +1,7 @@
-// 1.20.4	2024-06-01T20:45:12.9057145	Block States: eternalartifacts
+// 1.20.4	2024-06-02T21:05:36.7812064	Block States: eternalartifacts
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
 31ccf79f94568a40a5b2214ce81d9b952c686a5b assets/eternalartifacts/blockstates/anvilinator.json
+bc8f7974fb4476aa0b74a9f8c1bfbff0f9ed0461 assets/eternalartifacts/blockstates/battery_box.json
 d358a8c69d5821dccf9fe8b8ac51476ace8108a1 assets/eternalartifacts/blockstates/biofurnace.json
 9b9e52ed1a492b4c995bf9775dce98a093469f1b assets/eternalartifacts/blockstates/book_duplicator.json
 80f7f0622e3c02272702d0b9d555f1e4dce5a948 assets/eternalartifacts/blockstates/chlorophyte_debris.json
@@ -46,6 +47,7 @@ f9825724d03d480cce9f01e5f52c958c9782d8ef assets/eternalartifacts/blockstates/str
 2b5285047fae9d3d0f2fd62bcbd045398ad91122 assets/eternalartifacts/models/block/ancient_crop_6.json
 b24d735eae293baeb94bf4c26457818c5686f23c assets/eternalartifacts/models/block/ancient_crop_7.json
 4f9319fa38529c80de5d036ccf2358c3ecff96b9 assets/eternalartifacts/models/block/anvilinator.json
+13c3f47fccff201a1e3e4c2347282947688a2510 assets/eternalartifacts/models/block/battery_box.json
 f602f14b30b3bf353cf9885210bdcb56818f541d assets/eternalartifacts/models/block/biofurnace.json
 eda9c84c62ce4e5b8ad1e51f15086932d6c83162 assets/eternalartifacts/models/block/book_duplicator.json
 3ea51934a246057445897ae9038c2921d04c0e0d assets/eternalartifacts/models/block/chlorophyte_debris.json

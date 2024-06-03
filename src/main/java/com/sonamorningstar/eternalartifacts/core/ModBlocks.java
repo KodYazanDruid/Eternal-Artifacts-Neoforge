@@ -97,6 +97,8 @@ public class ModBlocks {
             ()-> new MeatPackerBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MeatShredderBlock> MEAT_SHREDDER = registerWithItem("meat_shredder",
             ()-> new MeatShredderBlock(MACHINE_BLOCK.get().properties()));
+    public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
+            ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));

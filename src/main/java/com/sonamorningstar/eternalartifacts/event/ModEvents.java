@@ -1,11 +1,13 @@
 package com.sonamorningstar.eternalartifacts.event;
 
+import com.sonamorningstar.eternalartifacts.capabilities.WrappedEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.WrappedFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
+import com.sonamorningstar.eternalartifacts.content.item.BatteryItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -17,6 +19,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -36,6 +39,9 @@ public class ModEvents {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.NOUS_BUCKET.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.LIQUID_MEAT_BUCKET.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.PINK_SLIME_BUCKET.get());
+
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> stack.getItem() instanceof BatteryItem bi ? bi.getEnergy() : null, ModItems.BATTERY.get());
+
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
@@ -53,6 +59,8 @@ public class ModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
 
     }
 
@@ -80,6 +88,17 @@ public class ModEvents {
                             be.isFluidsAllowed(),
                     ctx);
         } else if(ctx == null) return tank;
+        else return null;
+    }
+
+    private static IEnergyStorage regSidedEnergyCaps(SidedTransferBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
+        if(ctx != null) {
+            if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE)) return null;
+            return new WrappedEnergyStorage(energy,
+                    dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT),
+                    dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT),
+                    ctx);
+        }else if(ctx == null) return energy;
         else return null;
     }
 

@@ -30,6 +30,7 @@ repositories {
         // For Gradle 5.1 and above, limit it to just AE2
         content {
             includeGroup 'appeng'
+            includeGroup 'mekanism'
         }
     }
     maven {
@@ -101,6 +102,11 @@ dependencies {
 
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+
+    runtimeOnly "mekanism:Mekanism:${mekanism_version}"// Mekanism
+    runtimeOnly "mekanism:Mekanism:${mekanism_version}:additions"// Mekanism: Additions
+    runtimeOnly "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
+    runtimeOnly "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
 }
 

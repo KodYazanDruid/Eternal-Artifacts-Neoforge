@@ -1,6 +1,7 @@
-// 1.20.4	2024-06-01T20:45:12.9137157	Loot Tables
+// 1.20.4	2024-06-02T21:05:36.7902024	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
+e51e792e7824f51f301b4f1a6a9200e89727acad data/eternalartifacts/loot_tables/blocks/battery_box.json
 1a3d962a463b100e0202e85cbbb340a920e90378 data/eternalartifacts/loot_tables/blocks/biofurnace.json
 eb7db2f39c6e32c067983cfe28a95a7b70cf6a33 data/eternalartifacts/loot_tables/blocks/book_duplicator.json
 2e6d7a85424e2e0e6a176c7bcda87f605bf2e7e5 data/eternalartifacts/loot_tables/blocks/chlorophyte_debris.json

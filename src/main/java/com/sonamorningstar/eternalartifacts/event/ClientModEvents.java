@@ -47,6 +47,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.BOOK_DUPLICATOR.get(), BookDuplicatorScreen::new);
         event.register(ModMenuTypes.MEAT_PACKER.get(), MeatPackerScreen::new);
         event.register(ModMenuTypes.MEAT_SHREDDER.get(), MeatShredderScreen::new);
+        event.register(ModMenuTypes.BATTERY_BOX.get(), BatteryBoxScreen::new);
     }
 
     @SubscribeEvent

@@ -53,7 +53,7 @@ public class ModItems {
                 .effect(()->new MobEffectInstance(MobEffects.ABSORPTION, 2400, 4), 1.0F)
                 .alwaysEat()
                 .build()));
-    public static final DeferredItem<Item> BATTERY = register("battery");
+    public static final DeferredItem<Item> BATTERY = registerStacksToOne("battery", BatteryItem::new);
     public static final DeferredItem<Item> CAPACITOR = register("capacitor");
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> PLANT_MATTER = register("plant_matter");
@@ -77,6 +77,7 @@ public class ModItems {
             ));
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
     public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
+    public static final DeferredItem<Item> COPPER_NUGGET = register("copper_nugget");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));

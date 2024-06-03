@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-01T20:45:12.9187132	Item Models: eternalartifacts
+// 1.20.4	2024-06-02T21:05:36.7972023	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -6,6 +6,7 @@
 b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/banana.json
 ed67fafb38c72f12af67434f3f9b4c42b336271d assets/eternalartifacts/models/item/banana_cream_pie.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
+0cc868a9f308e87b07a6b548fe521193c957b6a7 assets/eternalartifacts/models/item/battery_box.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 66eec94e2e9ef972b02e8054ef7bccaa254aab86 assets/eternalartifacts/models/item/chlorophyte_ingot.json
 c28a6e21fcb0b4beeb03ff435bade36ed0b86462 assets/eternalartifacts/models/item/chlorophyte_tablet.json
@@ -17,6 +18,7 @@ bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/com
 c4b6d532ce2e21a9a09107482c4b2398be18c975 assets/eternalartifacts/models/item/cooked_duck_meat.json
 c78b55733b75ccccae2e361537d3e3ed38d29842 assets/eternalartifacts/models/item/copper_axe.json
 7834cade4ae586aa372fbf0906dbe3c89d38bf57 assets/eternalartifacts/models/item/copper_hoe.json
+e1f07f5a829413e448bd46b3389512dae91765ab assets/eternalartifacts/models/item/copper_nugget.json
 130ff3859ef6765d7cf420da7c77e6a485802737 assets/eternalartifacts/models/item/copper_oreberry.json
 8080fe598462699567ebca537d0e157ab5fcead7 assets/eternalartifacts/models/item/copper_pickaxe.json
 3402b2a4051ec8fbfcd9a6a0af26663f3d1c0e6b assets/eternalartifacts/models/item/copper_shovel.json

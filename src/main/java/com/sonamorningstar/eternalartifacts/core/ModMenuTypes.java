@@ -24,4 +24,6 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(MeatPackerMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MeatShredderMenu>> MEAT_SHREDDER = MENUS.register("meat_shredder",
             ()-> IMenuTypeExtension.create(MeatShredderMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<BatteryBoxMenu>> BATTERY_BOX = MENUS.register("battery_box",
+            ()-> IMenuTypeExtension.create(BatteryBoxMenu::new));
 }

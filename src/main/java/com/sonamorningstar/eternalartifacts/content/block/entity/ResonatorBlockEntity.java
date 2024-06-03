@@ -22,10 +22,15 @@ public class ResonatorBlockEntity extends ModBlockEntity {
         public void onEnergyChanged() {
             sendUpdate();
         }
+
+        @Override
+        public boolean canReceive() {
+            return false;
+        }
     };
 
     public void tick(Level lvl, BlockPos pos, BlockState st, int rate) {
-        energy.receiveEnergy(rate, false);
+        energy.receiveEnergyForced(rate, false);
         distributePower();
     }
 

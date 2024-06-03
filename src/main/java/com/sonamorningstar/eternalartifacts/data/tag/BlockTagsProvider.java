@@ -48,6 +48,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.STRIPPED_CITRUS_LOG.get(), "", "axe");
         tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
+        tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());

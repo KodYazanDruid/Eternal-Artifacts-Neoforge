@@ -79,6 +79,18 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         machineBlock(ModBlocks.MEAT_PACKER, false);
         machineBlock(ModBlocks.MEAT_SHREDDER, false);
 
+        simpleBlock(ModBlocks.BATTERY_BOX.get(),
+                ConfiguredModel.builder().modelFile(
+                        models().cube(ModBlocks.BATTERY_BOX.getId().getPath(),
+                                modLoc("block/battery_box_bottom"),
+                                modLoc("block/battery_box_top"),
+                                modLoc("block/battery_box_side"),
+                                modLoc("block/battery_box_side"),
+                                modLoc("block/battery_box_side"),
+                                modLoc("block/battery_box_side")
+                        ).texture("particle", modLoc("block/battery_box_side"))
+                ).build());
+
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
 
@@ -109,7 +121,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 modLoc("block/machine_side"))
             .texture("particle", modLoc("block/machine_side"))), allFaces ? BlockStateProperties.FACING : BlockStateProperties.HORIZONTAL_FACING);
         simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
-    };
+    }
 
     private void makeAncientCrop(CropBlock crop, String textureName) {
         Function<BlockState, ConfiguredModel[]> func = state -> ancientCropStates(state, crop, textureName);

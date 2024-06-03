@@ -82,7 +82,7 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
                 progress--;
                 energy.receiveEnergyForced(40, false);
             }
-            setChanged();
+            //setChanged();
         }
     }
 
@@ -95,7 +95,7 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
                 if(es != null && es.canReceive()) {
                     int received = es.receiveEnergy(Math.min(energy.getEnergyStored() , 5000), false);
                     energy.extractEnergy(received, false);
-                    setChanged();
+                    //setChanged();
                 }
             }
         }

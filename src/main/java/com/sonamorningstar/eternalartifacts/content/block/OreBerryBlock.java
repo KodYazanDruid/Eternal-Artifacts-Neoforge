@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
@@ -33,6 +34,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.util.Lazy;
 
 public class OreBerryBlock extends BushBlock {
     public static final int MAX_AGE = 3;
@@ -130,18 +132,19 @@ public class OreBerryBlock extends BushBlock {
     }
 
     public enum BerryMaterial{
-        COPPER(Items.COPPER_INGOT, UniformInt.of(1, 3)),
-        IRON(Items.IRON_NUGGET, ConstantInt.of(1)),
-        GOLD(Items.GOLD_NUGGET, ConstantInt.of(1));
+        COPPER(Lazy.of(ModItems.COPPER_NUGGET), UniformInt.of(1, 3)),
+        IRON(Lazy.of(()->Items.IRON_NUGGET), ConstantInt.of(1)),
+        GOLD(Lazy.of(()-> Items.GOLD_NUGGET), ConstantInt.of(1));
 
-        @Getter
-        final Item harvest;
+        final Lazy<Item> harvest;
         final IntProvider yield;
 
-        BerryMaterial(Item harvest, IntProvider yield) {
+        BerryMaterial(Lazy<Item> harvest, IntProvider yield) {
             this.harvest = harvest;
             this.yield = yield;
         }
+
+        public Item getHarvest() { return harvest.get(); }
 
         public ItemStack getHarvestStack(RandomSource random) { return new ItemStack(getHarvest(), getYield(random)); }
 

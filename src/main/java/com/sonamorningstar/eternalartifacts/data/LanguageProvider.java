@@ -73,6 +73,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.NATURAL_SPADE.get(), "Natural Spade");
                 add(ModItems.LUSH_GRUBBER.get(), "Lush Grubber");
                 add(ModItems.COPPER_TABLET.get(), "Copper Tablet");
+                add(ModItems.COPPER_NUGGET.get(), "Copper Nugget");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -116,6 +117,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COPPER_ORE_BERRY.get(), "Copper Oreberry");
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Iron Oreberry");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Gold Oreberry");
+                add(ModBlocks.BATTERY_BOX.get(), "Battery Box");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -207,6 +209,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.NATURAL_SPADE.get(), "Doğal Kürek");
                 add(ModItems.LUSH_GRUBBER.get(), "Bereketli Çapa");
                 add(ModItems.COPPER_TABLET.get(), "Bakır Plaka");
+                add(ModItems.COPPER_NUGGET.get(), "Bakır Parçası");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -250,6 +253,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COPPER_ORE_BERRY.get(), "Bakır Cevherçalısı");
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Demir Cevherçalısı");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Altın Cevherçalısı");
+                add(ModBlocks.BATTERY_BOX.get(), "Pil Kutusu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

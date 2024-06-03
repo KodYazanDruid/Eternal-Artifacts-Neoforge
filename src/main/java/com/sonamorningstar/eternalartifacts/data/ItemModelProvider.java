@@ -67,6 +67,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.NATURAL_SPADE);
         handheld(ModItems.LUSH_GRUBBER);
         basicItem(ModItems.COPPER_TABLET.get());
+        basicItem(ModItems.COPPER_NUGGET.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -91,6 +92,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.COPPER_ORE_BERRY.getId().getPath(), modLoc("block/copper_oreberry_stage1"));
         withExistingParent(ModBlocks.IRON_ORE_BERRY.getId().getPath(), modLoc("block/iron_oreberry_stage1"));
         withExistingParent(ModBlocks.GOLD_ORE_BERRY.getId().getPath(), modLoc("block/gold_oreberry_stage1"));
+        withExistingParent(ModBlocks.BATTERY_BOX.getId().getPath(), modLoc("block/battery_box"));
         //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))

@@ -1,4 +1,4 @@
-// 1.20.4	2024-05-29T00:44:43.3939945	Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-06-02T21:05:36.7932044	Tags for minecraft:block mod id eternalartifacts
 23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/blocks/ore_rates/dense.json
 9547ece2d8fffa9d9e3343738634d696dc233a7c data/forge/tags/blocks/ore_rates/singular.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/blocks/storage_blocks/coal.json
@@ -9,9 +9,9 @@ f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/minecraft/tags/blocks/gold_ores.js
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/minecraft/tags/blocks/iron_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
-f19887984af62a9784601bcbb4e97d994f567ef9 data/minecraft/tags/blocks/mineable/pickaxe.json
+040cdf0c0e3719a04f8afc5f9ae1d6432f431d6f data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
-26729f513de92d1e8195fe2c2b0cb82d1fd759ff data/minecraft/tags/blocks/needs_iron_tool.json
+5841a98ffad120b6d424f5b749001471a7b7072d data/minecraft/tags/blocks/needs_iron_tool.json
 0849779f0ecb9601b43ad5b413d2ee5aa132cb18 data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/blocks/small_flowers.json

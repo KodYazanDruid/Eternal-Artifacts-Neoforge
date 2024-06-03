@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.capabilities.IHasEnergy;
 import com.sonamorningstar.eternalartifacts.capabilities.IHasFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.IHasInventory;
 import com.sonamorningstar.eternalartifacts.capabilities.IHasMultiFluidTank;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
@@ -46,6 +47,8 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
     protected static ResourceLocation texture = new ResourceLocation(MODID, "textures/gui/template.png");
     protected int x;
     protected int y;
+    @Setter
+    protected boolean redstoneControllable = true;
     private final Map<String, Integer> energyLoc = new HashMap<>();
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
     private boolean sidedTransferBarActive;
@@ -83,13 +86,17 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
             }
             for (int i = 0; i < 4; i++) {
                 int finalI = i;
+                if(i == 2 && !(menu.getBlockEntity() instanceof IHasInventory)) continue;
+                if(i == 3 && (!(menu.getBlockEntity() instanceof IHasFluidTank) || !(menu.getBlockEntity() instanceof IHasMultiFluidTank))) continue;
                 autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonAutoSet(button, finalI)).size(9, 9).build());
                 addRenderableWidget(autoSetters.get(i));
             }
-            for(int i = 0; i < 1; i++) {
-                int finalI = i;
-                redstoneSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonRedstoneSet(button, finalI)).size(9, 9).build());
-                addRenderableWidget(redstoneSetters.get(i));
+            if(redstoneControllable){
+                for (int i = 0; i < 1; i++) {
+                    int finalI = i;
+                    redstoneSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonRedstoneSet(button, finalI)).size(9, 9).build());
+                    addRenderableWidget(redstoneSetters.get(i));
+                }
             }
         }
 
@@ -276,19 +283,27 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
                         else autoSetters.get(i).setTextures(auto_output);
                     }
                     case 2 -> {
-                        autoSetters.get(i).setPosition(sidedX + 47, sidedY + 7);
-                        if(auto.get(i) != null && auto.get(i)) autoSetters.get(i).setTextures(item_transfer_disabled);
-                        else autoSetters.get(i).setTextures(item_transfer);
+                        if(menu.getBlockEntity() instanceof IHasInventory){
+                            autoSetters.get(i).setPosition(sidedX + 47, sidedY + 7);
+                            if (auto.get(i) != null && auto.get(i))
+                                autoSetters.get(i).setTextures(item_transfer_disabled);
+                            else autoSetters.get(i).setTextures(item_transfer);
+                        }
                     }
                     case 3 -> {
-                        autoSetters.get(i).setPosition(sidedX + 47, sidedY + 17);
-                        if(auto.get(i) != null && auto.get(i)) autoSetters.get(i).setTextures(fluid_transfer_disabled);
-                        else autoSetters.get(i).setTextures(fluid_transfer);
+                        if(menu.getBlockEntity() instanceof IHasFluidTank || menu.getBlockEntity() instanceof IHasMultiFluidTank){
+                            autoSetters.get(i).setPosition(sidedX + 47, sidedY + 17);
+                            if (auto.get(i) != null && auto.get(i))
+                                autoSetters.get(i).setTextures(fluid_transfer_disabled);
+                            else autoSetters.get(i).setTextures(fluid_transfer);
+                        }
                     }
                 }
             }
-            redstoneSetters.get(0).setPosition(sidedX + 57, sidedY + 12);
-            redstoneSetters.get(0).setTextures(getTextureForRedstoneType(redstone.get(0)));
+            if(redstoneControllable){
+                redstoneSetters.get(0).setPosition(sidedX + 57, sidedY + 12);
+                redstoneSetters.get(0).setTextures(getTextureForRedstoneType(redstone.get(0)));
+            }
 
         } else {
             guiGraphics.blit(bars, sidedX, sidedY + 26, 0, 84, 96, 6);

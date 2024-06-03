@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "eternalartifacts:block/battery_box_bottom",
+    "east": "eternalartifacts:block/battery_box_side",
+    "north": "eternalartifacts:block/battery_box_side",
+    "particle": "eternalartifacts:block/machine_side",
+    "south": "eternalartifacts:block/battery_box_side",
+    "up": "eternalartifacts:block/battery_box_top",
+    "west": "eternalartifacts:block/battery_box_side"
+  }
+}

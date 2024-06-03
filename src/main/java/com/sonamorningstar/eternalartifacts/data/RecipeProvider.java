@@ -147,6 +147,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('C', Items.COPPER_INGOT)
                 .unlockedBy("has_item", has(Items.COPPER_INGOT))
                 .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.COPPER_INGOT)
+                .pattern("NNN")
+                .pattern("NNN")
+                .pattern("NNN")
+                .define('N', ModTags.Items.NUGGETS_COPPER)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER))
+                .save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -155,6 +162,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENDER_NOTEBOOK)
                 .requires(Items.FEATHER).requires(ModItems.ENDER_TABLET).requires(Items.DIAMOND)
                 .unlockedBy("has_item", has(ModItems.ENDER_TABLET))
+                .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.COPPER_NUGGET, 9)
+                .requires(Items.COPPER_INGOT)
+                .unlockedBy("has_item", has(ModItems.COPPER_NUGGET))
                 .save(recipeOutput);
     }
 

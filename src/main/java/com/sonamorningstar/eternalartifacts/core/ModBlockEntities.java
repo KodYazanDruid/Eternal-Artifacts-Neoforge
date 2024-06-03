@@ -20,6 +20,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(MeatPackerBlockEntity::new, ModBlocks.MEAT_PACKER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeatShredderBlockEntity>> MEAT_SHREDDER = BLOCK_ENTITIES.register("meat_shredder", ()->
             BlockEntityType.Builder.of(MeatShredderBlockEntity::new, ModBlocks.MEAT_SHREDDER.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBoxBlockEntity>> BATTERY_BOX = BLOCK_ENTITIES.register("battery_box", ()->
+            BlockEntityType.Builder.of(BatteryBoxBlockEntity::new, ModBlocks.BATTERY_BOX.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));

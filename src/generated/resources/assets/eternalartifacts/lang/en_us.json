@@ -1,5 +1,6 @@
 {
   "block.eternalartifacts.anvilinator": "Anvilinator",
+  "block.eternalartifacts.battery_box": "Battery Box",
   "block.eternalartifacts.biofurnace": "BioFurnace",
   "block.eternalartifacts.book_duplicator": "Book Duplicator",
   "block.eternalartifacts.chlorophyte_debris": "Chlorophyte Debris",
@@ -65,6 +66,7 @@
   "item.eternalartifacts.cooked_duck_meat": "Cooked Duck Meat",
   "item.eternalartifacts.copper_axe": "Copper Axe",
   "item.eternalartifacts.copper_hoe": "Copper Hoe",
+  "item.eternalartifacts.copper_nugget": "Copper Nugget",
   "item.eternalartifacts.copper_pickaxe": "Copper Pickaxe",
   "item.eternalartifacts.copper_shovel": "Copper Shovel",
   "item.eternalartifacts.copper_sword": "Copper Sword",

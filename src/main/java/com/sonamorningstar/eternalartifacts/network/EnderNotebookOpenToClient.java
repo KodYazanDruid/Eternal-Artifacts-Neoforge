@@ -22,8 +22,8 @@ public record EnderNotebookOpenToClient(ItemStack book) implements CustomPacketP
     }
 
     @Override
-    public void write(FriendlyByteBuf pBuffer) {
-        pBuffer.writeItem(book);
+    public void write(FriendlyByteBuf buf) {
+        buf.writeItem(book);
     }
 
     @Override
@@ -39,5 +39,9 @@ public record EnderNotebookOpenToClient(ItemStack book) implements CustomPacketP
                 };
             });
         }
+    }
+
+    public enum ScreenEnums {
+
     }
 }
