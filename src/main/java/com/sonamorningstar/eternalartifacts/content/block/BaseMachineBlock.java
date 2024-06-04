@@ -69,10 +69,11 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
                     }
                     Containers.dropContents(level, pos.immutable(), container);
                 }
+                machine.invalidateCapabilities();
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
-        level.invalidateCapabilities(pos);
+        //level.invalidateCapabilities(pos);
     }
 
     @Nullable

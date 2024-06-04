@@ -27,7 +27,6 @@ repositories {
     maven {
         name "Modmaven"
         url "https://modmaven.dev/"
-        // For Gradle 5.1 and above, limit it to just AE2
         content {
             includeGroup 'appeng'
             includeGroup 'mekanism'
@@ -98,7 +97,7 @@ dependencies {
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
     implementation "appeng:appliedenergistics2-neoforge:${ae2_version}"
-    implementation "curse.maven:pipez-443900:5005762"
+    implementation "curse.maven:pipez-443900:5396282" //Pipez
 
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"

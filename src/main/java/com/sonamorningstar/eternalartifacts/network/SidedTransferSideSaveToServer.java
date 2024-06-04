@@ -47,6 +47,7 @@ public record SidedTransferSideSaveToServer(int index, SidedTransferBlockEntity.
                 Map<Integer, SidedTransferBlockEntity.TransferType> sideConfigs = sided.getSideConfigs();
                 sideConfigs.put(index, type);
                 sided.sendUpdate();
+                sided.invalidateCapabilities();
                 level.updateNeighborsAt(pos, entity.getBlockState().getBlock());
             }
         }));

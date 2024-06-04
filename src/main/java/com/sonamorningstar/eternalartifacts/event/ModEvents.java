@@ -1,8 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event;
 
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
@@ -40,7 +38,10 @@ public class ModEvents {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.LIQUID_MEAT_BUCKET.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.PINK_SLIME_BUCKET.get());
 
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> stack.getItem() instanceof BatteryItem bi ? bi.getEnergy() : null, ModItems.BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> {
+            BatteryItem battery = ((BatteryItem)stack.getItem());
+            return battery.getEnergy();
+        }, ModItems.BATTERY.get());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
 
@@ -61,11 +62,13 @@ public class ModEvents {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
+        //event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> be.energy);
 
     }
 
-    private static IItemHandler regSidedItemCaps(SidedTransferBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
+    private static IItemHandler regSidedItemCaps(SidedTransferBlockEntity<?> be, ModItemStorage inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
+            be.invalidateCapabilities();
             if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
             return new WrappedItemStorage(inventory,
                     i -> (outputSlots != null && outputSlots.contains(i)) &&
@@ -74,12 +77,12 @@ public class ModEvents {
                     (i, s) -> (outputSlots == null || !outputSlots.contains(i)) &&
                             SidedTransferBlockEntity.canPerformTransfers(be ,ctx, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT) &&
                             be.isItemsAllowed());
-        } else if(ctx == null) return inventory;
-        else return null;
+        } else return inventory;
     }
 
-    private static IFluidHandler regSidedFluidCaps(SidedTransferBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
+    private static IFluidHandler regSidedFluidCaps(SidedTransferBlockEntity<?> be, ModFluidStorage tank, Direction ctx) {
         if(ctx != null) {
+            be.invalidateCapabilities();
             if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
             return new WrappedFluidStorage(tank,
                     dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT) &&
@@ -87,19 +90,18 @@ public class ModEvents {
                     (dir, fs) -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT) &&
                             be.isFluidsAllowed(),
                     ctx);
-        } else if(ctx == null) return tank;
-        else return null;
+        } else return tank;
     }
 
-    private static IEnergyStorage regSidedEnergyCaps(SidedTransferBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
+    private static IEnergyStorage regSidedEnergyCaps(SidedTransferBlockEntity<?> be, ModEnergyStorage energy, Direction ctx) {
         if(ctx != null) {
+            be.invalidateCapabilities();
             if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE)) return null;
             return new WrappedEnergyStorage(energy,
                     dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PUSH, SidedTransferBlockEntity.TransferType.DEFAULT),
                     dir -> SidedTransferBlockEntity.canPerformTransfers(be, dir, SidedTransferBlockEntity.TransferType.PULL, SidedTransferBlockEntity.TransferType.DEFAULT),
                     ctx);
-        }else if(ctx == null) return energy;
-        else return null;
+        }else return energy;
     }
 
 

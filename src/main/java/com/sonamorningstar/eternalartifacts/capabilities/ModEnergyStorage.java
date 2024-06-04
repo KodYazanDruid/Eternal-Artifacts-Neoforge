@@ -4,7 +4,7 @@ import net.neoforged.neoforge.energy.EnergyStorage;
 
 public abstract class ModEnergyStorage extends EnergyStorage {
     public ModEnergyStorage(int capacity, int maxTransfer) {
-        super(capacity, maxTransfer);
+        this(capacity, maxTransfer, maxTransfer);
     }
 
     public ModEnergyStorage(int capacity, int maxReceive, int maxExtract){

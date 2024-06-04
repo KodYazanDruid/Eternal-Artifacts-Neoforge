@@ -42,6 +42,7 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
 
     @Override
     public ItemStack quickMoveStack(Player playerIn, int pIndex) {
+        if(beInventory == null) return ItemStack.EMPTY;
         Slot sourceSlot = slots.get(pIndex);
         if (sourceSlot == null || !sourceSlot.hasItem()) return ItemStack.EMPTY;
 

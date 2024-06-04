@@ -68,7 +68,7 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         generatePower();
-        distributePower();
+        //distributePower();
     }
 
     private void generatePower() {
@@ -82,7 +82,6 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
                 progress--;
                 energy.receiveEnergyForced(40, false);
             }
-            //setChanged();
         }
     }
 
@@ -95,7 +94,6 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
                 if(es != null && es.canReceive()) {
                     int received = es.receiveEnergy(Math.min(energy.getEnergyStored() , 5000), false);
                     energy.extractEnergy(received, false);
-                    //setChanged();
                 }
             }
         }

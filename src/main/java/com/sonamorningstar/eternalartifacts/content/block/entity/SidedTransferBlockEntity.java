@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T>{
+public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T>{
     public SidedTransferBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState, quadF);
     }
@@ -42,11 +42,6 @@ public class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends Mac
     @Getter
     @Setter
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
-
-    @Override
-    public void tick(Level lvl, BlockPos pos, BlockState st) {
-
-    }
 
     protected void performAutoInput(Level lvl, BlockPos pos, ModItemStorage inventory) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);

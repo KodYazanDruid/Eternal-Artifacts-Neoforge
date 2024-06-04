@@ -87,7 +87,7 @@ public class AbstractMachineScreen<T extends AbstractMachineMenu> extends Abstra
             for (int i = 0; i < 4; i++) {
                 int finalI = i;
                 if(i == 2 && !(menu.getBlockEntity() instanceof IHasInventory)) continue;
-                if(i == 3 && (!(menu.getBlockEntity() instanceof IHasFluidTank) || !(menu.getBlockEntity() instanceof IHasMultiFluidTank))) continue;
+                if(i == 3 && (!(menu.getBlockEntity() instanceof IHasFluidTank || menu.getBlockEntity() instanceof IHasMultiFluidTank))) continue;
                 autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonAutoSet(button, finalI)).size(9, 9).build());
                 addRenderableWidget(autoSetters.get(i));
             }
