@@ -24,6 +24,7 @@ public class ModTags {
         public static final TagKey<Item> SLIMEBALLS_PINK = forgeTag("slimeballs/pink");
         public static final TagKey<Item> TABLETS = modTag("tablets");
         public static final TagKey<Item> NUGGETS_COPPER = forgeTag("nuggets/copper");
+        public static final TagKey<Item> NUGGETS_EXPERIENCE = forgeTag("nuggets/experience");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }
@@ -33,6 +34,7 @@ public class ModTags {
         public static final TagKey<Fluid> EXPERIENCE = forgeTag("experience");
         public static final TagKey<Fluid> MEAT = forgeTag("meat");
         public static final TagKey<Fluid> PINK_SLIME = forgeTag("pink_slime");
+        public static final TagKey<Fluid> BLOOD = forgeTag("blood");
 
         private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }

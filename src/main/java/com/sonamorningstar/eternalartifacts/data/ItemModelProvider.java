@@ -68,6 +68,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.LUSH_GRUBBER);
         basicItem(ModItems.COPPER_TABLET.get());
         basicItem(ModItems.COPPER_NUGGET.get());
+        basicItem(ModItems.EXPERIENCE_BERRY.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -92,6 +93,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.COPPER_ORE_BERRY.getId().getPath(), modLoc("block/copper_oreberry_stage1"));
         withExistingParent(ModBlocks.IRON_ORE_BERRY.getId().getPath(), modLoc("block/iron_oreberry_stage1"));
         withExistingParent(ModBlocks.GOLD_ORE_BERRY.getId().getPath(), modLoc("block/gold_oreberry_stage1"));
+        withExistingParent(ModBlocks.EXPERIENCE_ORE_BERRY.getId().getPath(), modLoc("block/experience_oreberry_stage1"));
         withExistingParent(ModBlocks.BATTERY_BOX.getId().getPath(), modLoc("block/battery_box"));
         //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
@@ -108,6 +110,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         bucketItem(ModItems.NOUS_BUCKET, ModFluids.NOUS_SOURCE);
         bucketItem(ModItems.LIQUID_MEAT_BUCKET, ModFluids.LIQUID_MEAT_SOURCE);
         bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME_SOURCE);
+        bucketItem(ModItems.BLOOD_BUCKET, ModFluids.BLOOD_SOURCE);
     }
 
     private void handheld(DeferredItem<Item> deferred) {

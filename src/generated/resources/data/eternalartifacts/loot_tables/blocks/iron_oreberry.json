@@ -5,9 +5,23 @@
       "bonus_rolls": 0.0,
       "conditions": [
         {
-          "condition": "minecraft:survives_explosion"
+          "block": "eternalartifacts:iron_oreberry",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "age": "3"
+          }
         }
       ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "eternalartifacts:oreberries/iron"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",

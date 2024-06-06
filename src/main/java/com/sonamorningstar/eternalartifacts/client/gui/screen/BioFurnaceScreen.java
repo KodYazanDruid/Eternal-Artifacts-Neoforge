@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;

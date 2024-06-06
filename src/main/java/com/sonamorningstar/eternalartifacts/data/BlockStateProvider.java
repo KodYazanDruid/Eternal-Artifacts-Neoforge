@@ -78,18 +78,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
         machineBlock(ModBlocks.MEAT_PACKER, false);
         machineBlock(ModBlocks.MEAT_SHREDDER, false);
-
-        simpleBlock(ModBlocks.BATTERY_BOX.get(),
-                ConfiguredModel.builder().modelFile(
-                        models().cube(ModBlocks.BATTERY_BOX.getId().getPath(),
-                                modLoc("block/battery_box_bottom"),
-                                modLoc("block/battery_box_top"),
-                                modLoc("block/battery_box_side"),
-                                modLoc("block/battery_box_side"),
-                                modLoc("block/battery_box_side"),
-                                modLoc("block/battery_box_side")
-                        ).texture("particle", modLoc("block/battery_box_side"))
-                ).build());
+        machineBlock(ModBlocks.BATTERY_BOX, true);
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
@@ -106,20 +95,24 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.COPPER_ORE_BERRY);
         createOreBerries(ModBlocks.IRON_ORE_BERRY);
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
+        createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
 
     }
 
-    private void machineBlock(DeferredBlock<? extends Block> holder, boolean allFaces) {
+    private void machineBlock(DeferredBlock<? extends Block> holder, boolean unique) {
         String name = holder.getId().getPath();
+        String top = unique ? "block/"+name+"_top" : "block/machine_top";
+        String bottom = unique ?"block/"+name+"_bottom" : "block/machine_bottom";
+        String siding = unique ? "block/"+name+"_side" : "block/machine_side";
         directionBlock(holder.get(), (state, builder) ->
             builder.modelFile(models().cube(name,
-                modLoc("block/machine_bottom"),
-                modLoc("block/machine_top"),
+                modLoc(bottom),
+                modLoc(top),
                 modLoc("block/"+name+"_front"),
-                modLoc("block/machine_side"),
-                modLoc("block/machine_side"),
-                modLoc("block/machine_side"))
-            .texture("particle", modLoc("block/machine_side"))), allFaces ? BlockStateProperties.FACING : BlockStateProperties.HORIZONTAL_FACING);
+                modLoc(siding),
+                modLoc(siding),
+                modLoc(siding))
+            .texture("particle", modLoc(siding))), BlockStateProperties.HORIZONTAL_FACING);
         simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
     }
 

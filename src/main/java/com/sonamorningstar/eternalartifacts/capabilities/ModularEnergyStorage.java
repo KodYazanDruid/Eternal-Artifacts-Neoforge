@@ -1,0 +1,102 @@
+package com.sonamorningstar.eternalartifacts.capabilities;
+
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ModularEnergyStorage implements IEnergyStorage {
+
+    List<IEnergyStorage> energyHandlers = new ArrayList<>();
+
+    public ModularEnergyStorage(SimpleContainer inventory) {
+        for(ItemStack stack : inventory.getItems()) {
+            IEnergyStorage cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            if(cap != null) energyHandlers.add(cap);
+        }
+    }
+
+    private List<IEnergyStorage> energyItems = new ArrayList<>();
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        if (!canReceive()) return 0;
+
+        int energyReceived = 0;
+        for(IEnergyStorage handler : energyHandlers) {
+            energyReceived = handler.receiveEnergy(maxReceive, simulate);
+            if(energyReceived > 0 ) {
+                onEnergyChanged();
+                return energyReceived;
+            }
+        }
+
+        return energyReceived;
+    }
+
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        if (!canExtract()) return 0;
+
+        int energyExtracted = 0;
+        for(IEnergyStorage handler : energyHandlers) {
+            energyExtracted = handler.extractEnergy(maxExtract, simulate);
+            if(energyExtracted > 0) {
+                onEnergyChanged();
+                return energyExtracted;
+            }
+        }
+
+        return energyExtracted;
+    }
+
+    @Override
+    public int getEnergyStored() {
+        int totalEnergySize = 0;
+        for(IEnergyStorage handler : energyHandlers) {
+            totalEnergySize += handler.getEnergyStored();
+        }
+        return totalEnergySize;
+    }
+
+    @Override
+    public int getMaxEnergyStored() {
+        int totalEnergyStored = 0;
+        for(IEnergyStorage handler : energyHandlers) {
+            totalEnergyStored += handler.getMaxEnergyStored();
+        }
+        return totalEnergyStored;
+    }
+
+    @Override
+    public boolean canExtract() {
+        for(IEnergyStorage handler : energyHandlers) {
+            if(handler.canExtract()) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canReceive() {
+        for(IEnergyStorage handler : energyHandlers) {
+            if(handler.canReceive()) return true;
+        }
+        return false;
+    }
+
+    public void onEnergyChanged() {}
+
+    public void reloadEnergyHandlers(SimpleContainer container) {
+        List<IEnergyStorage> newEnergyHandlers = new ArrayList<>();
+        for(ItemStack stack : container.getItems()) {
+            IEnergyStorage cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+            if(cap != null) newEnergyHandlers.add(cap);
+        }
+        energyHandlers = newEnergyHandlers;
+    }
+
+
+}

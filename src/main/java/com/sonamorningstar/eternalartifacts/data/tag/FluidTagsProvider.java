@@ -20,5 +20,6 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
         tag(ModTags.Fluids.EXPERIENCE).add(ModFluids.NOUS_SOURCE.get());
         tag(ModTags.Fluids.MEAT).add(ModFluids.LIQUID_MEAT_SOURCE.get());
         tag(ModTags.Fluids.PINK_SLIME).add(ModFluids.PINK_SLIME_SOURCE.get());
+        tag(ModTags.Fluids.BLOOD).add(ModFluids.BLOOD_SOURCE.get());
     }
 }

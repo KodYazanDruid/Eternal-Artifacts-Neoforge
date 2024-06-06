@@ -22,7 +22,12 @@ import java.util.List;
 import java.util.OptionalInt;
 
 public abstract class AbstractMachineMenu extends AbstractContainerMenu {
+    @Getter
     protected final IItemHandler beInventory;
+    @Getter
+    protected final IEnergyStorage beEnergy;
+    @Getter
+    protected final IFluidHandler beTank;
     protected final Level level;
     @Getter
     protected final BlockEntity blockEntity;
@@ -33,7 +38,9 @@ public abstract class AbstractMachineMenu extends AbstractContainerMenu {
         super(pMenuType, pContainerId);
         this.level = inv.player.level();
         this.blockEntity = entity;
-        this.beInventory = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), null);
+        this.beInventory = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
+        this.beEnergy = level.getCapability(Capabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
+        this.beTank = level.getCapability(Capabilities.FluidHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
         this.data = data;
         addPlayerInventory(inv);
         addPlayerHotbar(inv);

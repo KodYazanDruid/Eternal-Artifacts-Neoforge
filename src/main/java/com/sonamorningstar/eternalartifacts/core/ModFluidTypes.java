@@ -38,6 +38,11 @@ public class ModFluidTypes {
             WATER_OVERLAY, 0xFFFFFFFF, new Vector3f(201 / 255f, 87 / 255f, 185 / 255f),
             FluidType.Properties.create().lightLevel(0).density(5000).viscosity(4500).rarity(Rarity.RARE)
             .sound(SoundActions.BUCKET_FILL, SoundEvents.BOTTLE_FILL).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BOTTLE_EMPTY)));
+    public static final DeferredHolder<FluidType, FluidType> BLOOD = FLUID_TYPES.register("blood", () -> new BaseFluidType(
+            new ResourceLocation(MODID,"block/blood_still"), new ResourceLocation(MODID,"block/blood_flow"),
+            WATER_OVERLAY, 0xFFFFFFFF, new Vector3f(186 / 255f, 26 / 255f, 16 / 255f),
+            FluidType.Properties.create().lightLevel(0).density(4000).viscosity(3500).rarity(Rarity.RARE)
+            .sound(SoundActions.BUCKET_FILL, SoundEvents.BOTTLE_FILL).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BOTTLE_EMPTY)));
 
 
 

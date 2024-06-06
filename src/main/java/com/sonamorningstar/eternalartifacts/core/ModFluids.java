@@ -20,6 +20,9 @@ public class ModFluids {
     public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> PINK_SLIME_SOURCE = FLUIDS.register("pink_slime", ()-> new BaseFlowingFluid.Source(ModFluids.PINK_SLIME_PROPERTIES));
     public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> PINK_SLIME_FLOWING = FLUIDS.register("pink_slime_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.PINK_SLIME_PROPERTIES));
 
+    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> BLOOD_SOURCE = FLUIDS.register("blood", ()-> new BaseFlowingFluid.Source(ModFluids.BLOOD_PROPERTIES));
+    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> BLOOD_FLOWING = FLUIDS.register("blood_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.BLOOD_PROPERTIES));
+
     private static final BaseFlowingFluid.Properties NOUS_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.NOUS::value, NOUS_SOURCE::value, NOUS_FLOWING::value)
             .bucket(ModItems.NOUS_BUCKET::value)
             .block(ModBlocks.NOUS_BLOCK)
@@ -31,5 +34,9 @@ public class ModFluids {
     private static final BaseFlowingFluid.Properties PINK_SLIME_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.PINK_SLIME::value, PINK_SLIME_SOURCE::value, PINK_SLIME_FLOWING::value)
             .bucket(ModItems.PINK_SLIME_BUCKET::value)
             .block(ModBlocks.PINK_SLIME_FLUID_BLOCK)
+            .tickRate(10).levelDecreasePerBlock(2);
+    private static final BaseFlowingFluid.Properties BLOOD_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.BLOOD::value, BLOOD_SOURCE::value, BLOOD_FLOWING::value)
+            .bucket(ModItems.BLOOD_BUCKET::value)
+            .block(ModBlocks.BLOOD_BLOCK)
             .tickRate(10).levelDecreasePerBlock(2);
 }

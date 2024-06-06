@@ -1,10 +1,13 @@
 package com.sonamorningstar.eternalartifacts.data.loot;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
+import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModLootTables;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -13,9 +16,11 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
@@ -57,10 +62,12 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.CITRUS_WOOD.get());
         dropSelf(ModBlocks.STRIPPED_CITRUS_WOOD.get());
         dropSelf(ModBlocks.CITRUS_PLANKS.get());
-        dropSelf(ModBlocks.COPPER_ORE_BERRY.get());
-        dropSelf(ModBlocks.IRON_ORE_BERRY.get());
-        dropSelf(ModBlocks.GOLD_ORE_BERRY.get());
         dropSelf(ModBlocks.BATTERY_BOX.get());
+
+        generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
+        generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
+        generateOreBerryTables(ModBlocks.GOLD_ORE_BERRY, ModLootTables.GOLD_OREBERRY_HARVEST);
+        generateOreBerryTables(ModBlocks.EXPERIENCE_ORE_BERRY, ModLootTables.EXPERIENCE_OREBERRY_HARVEST);
 
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);
@@ -94,6 +101,17 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         add(ModBlocks.ANCIENT_CROP.get(), createCropDrops(ModBlocks.ANCIENT_CROP.get(), ModItems.ANCIENT_FRUIT.get(),
                 ModItems.ANCIENT_SEED.get(), ancientCropCondition));
 
+    }
+
+    private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {
+        add(holder.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(holder.get())
+                            .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(OreBerryBlock.AGE, OreBerryBlock.MAX_AGE)))
+                    .add(LootTableReference.lootTableReference(berryLoc)))
+                .withPool(LootPool.lootPool()
+                    .add(LootItem.lootTableItem(holder)))
+        );
     }
 
     @Override

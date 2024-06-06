@@ -23,7 +23,7 @@ public class SoundDefinitionsProvider extends net.neoforged.neoforge.common.data
 
     @Override
     public void registerSounds() {
-        registerDefinition(ModSounds.HOLY_DAGGER_ACTIVATE, null);
+        registerDefinition(ModSounds.HOLY_DAGGER_ACTIVATE, "holy_dagger_activate");
         registerDefinition(ModSounds.DUCK_AMBIENT, "duck_idle_1", "duck_idle_2", "duck_idle_3", "duck_idle_4", "duck_idle_5");
         registerDefinition(ModSounds.DUCK_STEP, "duck_step_1", "duck_step_2", "duck_step_3", "duck_step_4", "duck_step_5", "duck_step_6");
 

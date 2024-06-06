@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.gui.GuiGraphics;
@@ -9,7 +11,7 @@ import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
-public class BookDuplicatorScreen extends AbstractMachineScreen<BookDuplicatorMenu> {
+public class BookDuplicatorScreen extends AbstractSidedMachineScreen<BookDuplicatorMenu> {
 
     public BookDuplicatorScreen(BookDuplicatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

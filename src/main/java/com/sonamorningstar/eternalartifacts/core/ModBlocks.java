@@ -88,6 +88,8 @@ public class ModBlocks {
             ()-> new LiquidBlock(ModFluids.LIQUID_MEAT_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BROWN)));
     public static final DeferredBlock<LiquidBlock> PINK_SLIME_FLUID_BLOCK = registerNoItem("pink_slime_fluid_block",
             ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
+    public static final DeferredBlock<LiquidBlock> BLOOD_BLOCK = registerNoItem("blood_block",
+            ()-> new LiquidBlock(ModFluids.BLOOD_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_RED)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
@@ -140,9 +142,10 @@ public class ModBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)
             ));
-    public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerWithItem("copper_oreberry", ()-> new OreBerryBlock(oreBerryProps, OreBerryBlock.BerryMaterial.COPPER));
-    public static final DeferredBlock<OreBerryBlock> IRON_ORE_BERRY = registerWithItem("iron_oreberry", ()-> new OreBerryBlock(oreBerryProps, OreBerryBlock.BerryMaterial.IRON));
-    public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerWithItem("gold_oreberry", ()-> new OreBerryBlock(oreBerryProps, OreBerryBlock.BerryMaterial.GOLD));
+    public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerWithItem("copper_oreberry", ()-> new OreBerryBlock(oreBerryProps, "copper"));
+    public static final DeferredBlock<OreBerryBlock> IRON_ORE_BERRY = registerWithItem("iron_oreberry", ()-> new OreBerryBlock(oreBerryProps, "iron"));
+    public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerWithItem("gold_oreberry", ()-> new OreBerryBlock(oreBerryProps, "gold"));
+    public static final DeferredBlock<OreBerryBlock> EXPERIENCE_ORE_BERRY = registerWithItem("experience_oreberry", ()-> new OreBerryBlock(oreBerryProps, "experience"));
 
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }
 

@@ -78,6 +78,7 @@ public class ModItems {
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
     public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
     public static final DeferredItem<Item> COPPER_NUGGET = register("copper_nugget");
+    public static final DeferredItem<Item> EXPERIENCE_BERRY = register("experience_berry", ExperienceBerryItem::new);
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -115,6 +116,8 @@ public class ModItems {
             p -> new BucketItem(ModFluids.LIQUID_MEAT_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
     public static final DeferredHolder<Item, BucketItem> PINK_SLIME_BUCKET = register("pink_slime_bucket",
             p -> new BucketItem(ModFluids.PINK_SLIME_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final DeferredHolder<Item, BucketItem> BLOOD_BUCKET = register("blood_bucket",
+            p -> new BucketItem(ModFluids.BLOOD_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

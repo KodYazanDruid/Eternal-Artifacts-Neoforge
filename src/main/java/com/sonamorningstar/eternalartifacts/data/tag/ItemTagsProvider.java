@@ -87,10 +87,13 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.COPPER_TABLET.get()
         );
         tag(Tags.Items.NUGGETS).add(
-                ModItems.COPPER_NUGGET.get()
+                ModItems.COPPER_NUGGET.get(),
+                ModItems.EXPERIENCE_BERRY.get()
         );
         tag(ModTags.Items.NUGGETS_COPPER).add(
                 ModItems.COPPER_NUGGET.get()
+        );tag(ModTags.Items.NUGGETS_EXPERIENCE).add(
+                ModItems.EXPERIENCE_BERRY.get()
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),

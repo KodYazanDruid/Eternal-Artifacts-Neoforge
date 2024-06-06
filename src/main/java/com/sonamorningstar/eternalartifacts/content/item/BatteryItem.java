@@ -1,11 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.capabilities.IHasEnergy;
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -16,18 +12,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BatteryItem extends Item implements IHasEnergy {
+public class BatteryItem extends Item {
     public BatteryItem(Properties pProperties) {
         super(pProperties);
     }
-
-    @Getter
-    public ModEnergyStorage energy = new ModEnergyStorage(10000, 500) {
-        @Override
-        public void onEnergyChanged() {
-
-        }
-    };
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {

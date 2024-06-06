@@ -74,6 +74,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.LUSH_GRUBBER.get(), "Lush Grubber");
                 add(ModItems.COPPER_TABLET.get(), "Copper Tablet");
                 add(ModItems.COPPER_NUGGET.get(), "Copper Nugget");
+                add(ModItems.BLOOD_BUCKET.get(), "Blood Bucket");
+                add(ModItems.EXPERIENCE_BERRY.get(), "Experience Berry");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -118,6 +120,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Iron Oreberry");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Gold Oreberry");
                 add(ModBlocks.BATTERY_BOX.get(), "Battery Box");
+                add(ModFluidTypes.BLOOD.get().getDescriptionId(), "Blood");
+                add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Experience Oreberry");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -210,6 +214,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.LUSH_GRUBBER.get(), "Bereketli Çapa");
                 add(ModItems.COPPER_TABLET.get(), "Bakır Plaka");
                 add(ModItems.COPPER_NUGGET.get(), "Bakır Parçası");
+                add(ModItems.BLOOD_BUCKET.get(), "Kan Kovası");
+                add(ModItems.EXPERIENCE_BERRY.get(), "Tecrübe Meyvesi");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -254,6 +260,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Demir Cevherçalısı");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Altın Cevherçalısı");
                 add(ModBlocks.BATTERY_BOX.get(), "Pil Kutusu");
+                add(ModFluidTypes.BLOOD.get().getDescriptionId(), "Kan");
+                add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Tecrübe Cevherçalısı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

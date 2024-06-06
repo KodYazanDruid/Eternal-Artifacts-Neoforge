@@ -3,9 +3,10 @@ package com.sonamorningstar.eternalartifacts.content.block;
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
-import lombok.Getter;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -30,11 +31,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.util.Lazy;
+
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class OreBerryBlock extends BushBlock {
     public static final int MAX_AGE = 3;
@@ -42,11 +48,14 @@ public class OreBerryBlock extends BushBlock {
     private static final VoxelShape AGE_0_SHAPE = BlockHelper.generateByArea(4, 4, 4, 6, 0, 6);
     private static final VoxelShape AGE_1_SHAPE = BlockHelper.generateByArea(10, 10, 10, 3, 0, 3);
 
-    private final BerryMaterial material;
-    public OreBerryBlock(Properties pProperties, BerryMaterial material) {
+    private final String material;
+    private final ResourceLocation table;
+    public OreBerryBlock(Properties pProperties, String material) {
         super(pProperties);
         this.material = material;
+        this.table = new ResourceLocation(MODID, "oreberries/" + material);
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
+
     }
 
     @Override
@@ -82,18 +91,40 @@ public class OreBerryBlock extends BushBlock {
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
             net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost(level, pos, state);
         }
+
+        if (level.isEmptyBlock(pos.above()) && (age == MAX_AGE || age == MAX_AGE - 1) && level.getRawBrightness(pos, 0) < 10 &&
+                net.neoforged.neoforge.common.CommonHooks.onCropsGrowPre(level, pos, state, true)) {
+            int i = 1;
+            while (level.getBlockState(pos.below(i)).is(this)) {
+                ++i;
+            }
+            if(i < 3){
+                level.setBlockAndUpdate(pos.above(), this.defaultBlockState());
+                net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost(level, pos.above(), this.defaultBlockState());
+            }
+        }
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int age = state.getValue(AGE);
         if(age == MAX_AGE) {
-            ItemStack harvested = material.getHarvestStack(player.getRandom());
-            popResourceFromFace(level, pos, hit.getDirection(), harvested);
-            level.playSound(null, pos, SoundEvents.CAT_AMBIENT, SoundSource.BLOCKS, 1, 0.8F + level.random.nextFloat() * 0.4F);
+
+            ObjectArrayList<ItemStack> loot = new ObjectArrayList<>();
+
+            if(level instanceof ServerLevel serverLevel){
+                LootTable lootTable = level.getServer().getLootData().getLootTable(table);
+                LootParams ctx = new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY);
+                loot = lootTable.getRandomItems(ctx);
+            }
+
+            for (ItemStack stack : loot) popResourceFromFace(level, pos, hit.getDirection(), stack);
+
+            level.playSound(null, pos, SoundEvents.CHAIN_STEP, SoundSource.BLOCKS, 1, 0.8F + level.random.nextFloat() * 0.4F);
             BlockState newState = state.setValue(AGE, 2);
             level.setBlock(pos, newState, 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(player, newState));
+
             return InteractionResult.sidedSuccess(level.isClientSide);
         }else return super.use(state, level, pos, player, hand, hit);
     }
@@ -129,25 +160,5 @@ public class OreBerryBlock extends BushBlock {
     @Override
     public boolean propagatesSkylightDown(BlockState p_309084_, BlockGetter p_309133_, BlockPos p_309097_) {
         return true;
-    }
-
-    public enum BerryMaterial{
-        COPPER(Lazy.of(ModItems.COPPER_NUGGET), UniformInt.of(1, 3)),
-        IRON(Lazy.of(()->Items.IRON_NUGGET), ConstantInt.of(1)),
-        GOLD(Lazy.of(()-> Items.GOLD_NUGGET), ConstantInt.of(1));
-
-        final Lazy<Item> harvest;
-        final IntProvider yield;
-
-        BerryMaterial(Lazy<Item> harvest, IntProvider yield) {
-            this.harvest = harvest;
-            this.yield = yield;
-        }
-
-        public Item getHarvest() { return harvest.get(); }
-
-        public ItemStack getHarvestStack(RandomSource random) { return new ItemStack(getHarvest(), getYield(random)); }
-
-        public int getYield(RandomSource random) { return this.yield.sample(random); }
     }
 }
