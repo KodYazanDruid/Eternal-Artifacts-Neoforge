@@ -17,6 +17,7 @@ public class ModLootTables {
     public static final ResourceLocation IRON_OREBERRY_HARVEST = registerOreBerries("iron");
     public static final ResourceLocation GOLD_OREBERRY_HARVEST = registerOreBerries("gold");
     public static final ResourceLocation EXPERIENCE_OREBERRY_HARVEST = registerOreBerries("experience");
+    public static final ResourceLocation MANGANESE_OREBERRY_HARVEST = registerOreBerries("manganese");
 
     private static ResourceLocation registerOreBerries(String material) {
         return register("oreberries/"+material);

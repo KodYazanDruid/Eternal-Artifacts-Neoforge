@@ -1,8 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
 import lombok.Getter;
@@ -43,7 +40,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
     @Setter
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
 
-    protected void performAutoInput(Level lvl, BlockPos pos, ModItemStorage inventory) {
+    protected void performAutoInput(Level lvl, BlockPos pos, IItemHandler inventory) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;
@@ -70,7 +67,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         }
     }
 
-    protected void performAutoOutput(Level lvl, BlockPos pos, ModItemStorage inventory, int... outputSlots) {
+    protected void performAutoOutput(Level lvl, BlockPos pos, IItemHandler inventory, int... outputSlots) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;
@@ -96,7 +93,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         }
     }
 
-    protected void performAutoInputFluids(Level lvl, BlockPos pos, ModFluidStorage tank) {
+    protected void performAutoInputFluids(Level lvl, BlockPos pos, IFluidHandler tank) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
         if(!isAllowedAuto || isDisabled) return;
@@ -116,7 +113,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         }
     }
 
-    protected void performAutoOutputFluids(Level lvl, BlockPos pos, ModFluidStorage tank) {
+    protected void performAutoOutputFluids(Level lvl, BlockPos pos, IFluidHandler tank) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
         if(!isAllowedAuto || isDisabled) return;
@@ -136,7 +133,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         }
     }
 
-    protected void performAutoInputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
+    protected void performAutoInputEnergy(Level lvl, BlockPos pos, IEnergyStorage energy) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         if(!isAllowedAuto) return;
         List<Direction> inputDirs = new ArrayList<>();
@@ -149,18 +146,17 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
             if(be != null) {
                 IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
                 if(target != null && target.canExtract()) {
-                    int received = target.extractEnergy(Math.min(energy.getEmptyCapacity(), energy.getMaxReceive()), true);
+                    int received = target.extractEnergy(Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), target.getEnergyStored()), true);
                     if(received > 0) {
-                        energy.receiveEnergyForced(received, false);
+                        energy.receiveEnergy(received, false);
                         target.extractEnergy(received, false);
-                        this.sendUpdate();
                     }
                 }
             }
         }
     }
 
-    protected void performAutoOutputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
+    protected void performAutoOutputEnergy(Level lvl, BlockPos pos, IEnergyStorage energy) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         if(!isAllowedAuto) return;
         List<Direction> outputDirs = new ArrayList<>();
@@ -173,11 +169,10 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
             if(be != null) {
                 IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
                 if(target != null && target.canReceive()) {
-                    int extracted = target.receiveEnergy(Math.min(energy.getEnergyStored(), energy.getMaxExtract()), true);
+                    int extracted = target.receiveEnergy(Math.min(energy.getEnergyStored(), target.getMaxEnergyStored() - target.getEnergyStored()), true);
                     if(extracted > 0) {
                         target.receiveEnergy(extracted, false);
-                        energy.extractEnergyForced(extracted, false);
-                        this.sendUpdate();
+                        energy.extractEnergy(extracted, false);
                     }
                 }
             }

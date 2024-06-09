@@ -62,9 +62,13 @@ public class ModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
 
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tanks, ctx));
+
+
     }
 
-    private static IItemHandler regSidedItemCaps(SidedTransferBlockEntity<?> be, ModItemStorage inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
+    private static IItemHandlerModifiable regSidedItemCaps(SidedTransferBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
             be.invalidateCapabilities();
             if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
@@ -78,7 +82,7 @@ public class ModEvents {
         } else return inventory;
     }
 
-    private static IFluidHandler regSidedFluidCaps(SidedTransferBlockEntity<?> be, ModFluidStorage tank, Direction ctx) {
+    private static IFluidHandler regSidedFluidCaps(SidedTransferBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
         if(ctx != null) {
             be.invalidateCapabilities();
             if(SidedTransferBlockEntity.canPerformTransfer(be, ctx, SidedTransferBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;

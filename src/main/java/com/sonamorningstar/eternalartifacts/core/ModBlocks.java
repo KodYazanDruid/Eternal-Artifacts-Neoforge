@@ -101,6 +101,8 @@ public class ModBlocks {
             ()-> new MeatShredderBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
+    public static final DeferredBlock<MobLiquifierBlock> MOB_LIQUIFIER = registerWithItem("mob_liquifier",
+            ()-> new MobLiquifierBlock(MACHINE_BLOCK.get().properties()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -142,10 +144,12 @@ public class ModBlocks {
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)
             ));
-    public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerWithItem("copper_oreberry", ()-> new OreBerryBlock(oreBerryProps, "copper"));
-    public static final DeferredBlock<OreBerryBlock> IRON_ORE_BERRY = registerWithItem("iron_oreberry", ()-> new OreBerryBlock(oreBerryProps, "iron"));
-    public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerWithItem("gold_oreberry", ()-> new OreBerryBlock(oreBerryProps, "gold"));
-    public static final DeferredBlock<OreBerryBlock> EXPERIENCE_ORE_BERRY = registerWithItem("experience_oreberry", ()-> new OreBerryBlock(oreBerryProps, "experience"));
+
+    public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerOreBerryBlock("copper");
+    public static final DeferredBlock<OreBerryBlock> IRON_ORE_BERRY = registerOreBerryBlock("iron");
+    public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerOreBerryBlock("gold");
+    public static final DeferredBlock<OreBerryBlock> EXPERIENCE_ORE_BERRY = registerOreBerryBlock("experience");
+    public static final DeferredBlock<OreBerryBlock> MANGANESE_ORE_BERRY = registerOreBerryBlock("manganese");
 
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }
 
@@ -159,6 +163,10 @@ public class ModBlocks {
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), props));
         return block;
+    }
+
+    private static DeferredBlock<OreBerryBlock> registerOreBerryBlock(String material) {
+        return registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(oreBerryProps, material));
     }
 
     private static Boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {return false;}

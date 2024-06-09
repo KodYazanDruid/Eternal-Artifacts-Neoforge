@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "eternalartifacts:steel_nugget"
+    },
+    "N": {
+      "tag": "forge:nuggets/steel"
+    }
+  },
+  "pattern": [
+    "NNN",
+    "NMN",
+    "NNN"
+  ],
+  "result": {
+    "item": "eternalartifacts:steel_ingot"
+  }
+}

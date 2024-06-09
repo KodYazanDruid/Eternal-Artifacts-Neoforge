@@ -1,0 +1,18 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity": "minecraft:blaze",
+  "resultFluidList": [
+    {
+      "Amount": 75,
+      "FluidName": "minecraft:lava"
+    },
+    {
+      "Amount": 35,
+      "FluidName": "eternalartifacts:pink_slime"
+    },
+    {
+      "Amount": 25,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

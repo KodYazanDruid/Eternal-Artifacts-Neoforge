@@ -13,17 +13,4 @@ public class FlightEffect extends MobEffect {
     public FlightEffect(MobEffectCategory pCategory, int pColor) {
         super(pCategory, pColor);
     }
-
-/*    @Override
-    public void applyEffectTick(LivingEntity living, int amp) {
-        if(living instanceof Player player && !player.mayFly()) {
-            Objects.requireNonNull(player.getAttribute(NeoForgeMod.CREATIVE_FLIGHT.value())).setBaseValue(1);
-            player.onUpdateAbilities();
-        }
-    }*/
-
-/*    @Override
-    public void removeAttributeModifiers(AttributeMap pAttributeMap) {
-        super.removeAttributeModifiers(pAttributeMap);
-    }*/
 }

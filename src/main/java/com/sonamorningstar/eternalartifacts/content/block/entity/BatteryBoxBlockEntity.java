@@ -37,7 +37,6 @@ public class BatteryBoxBlockEntity extends SidedTransferBlockEntity<BatteryBoxMe
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        //tag.put("Energy", energy.serializeNBT());
         tag.put("Inventory", inventory.serializeNBT());
     }
 
@@ -52,14 +51,13 @@ public class BatteryBoxBlockEntity extends SidedTransferBlockEntity<BatteryBoxMe
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        //energy.deserializeNBT(tag.get("Energy"));
         inventory.deserializeNBT(tag.getCompound("Inventory"));
     }
 
     @Override
     public void tick(Level lvl, BlockPos pos, BlockState st) {
-        //performAutoInputEnergy(lvl, pos, energy);
-        //performAutoOutputEnergy(lvl, pos, energy);
+        performAutoInputEnergy(lvl, pos, energy);
+        performAutoOutputEnergy(lvl, pos, energy);
     }
 
     private SimpleContainer simpleContainer(IItemHandler handler) {

@@ -1,0 +1,22 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity": "minecraft:chicken",
+  "resultFluidList": [
+    {
+      "Amount": 10,
+      "FluidName": "eternalartifacts:blood"
+    },
+    {
+      "Amount": 25,
+      "FluidName": "eternalartifacts:liquid_meat"
+    },
+    {
+      "Amount": 10,
+      "FluidName": "eternalartifacts:pink_slime"
+    },
+    {
+      "Amount": 15,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

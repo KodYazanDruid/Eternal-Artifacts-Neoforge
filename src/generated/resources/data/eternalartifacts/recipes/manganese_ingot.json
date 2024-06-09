@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "eternalartifacts:manganese_nugget"
+    },
+    "N": {
+      "tag": "forge:nuggets/manganese"
+    }
+  },
+  "pattern": [
+    "NNN",
+    "NMN",
+    "NNN"
+  ],
+  "result": {
+    "item": "eternalartifacts:manganese_ingot"
+  }
+}

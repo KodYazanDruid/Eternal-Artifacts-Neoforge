@@ -71,14 +71,24 @@ public class ModItems {
                     Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade"))).withStyle(ChatFormatting.GRAY),
                     ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.translatable(),
                     ModConstants.CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION.translatable(),
-                    List.of(new ResourceLocation("item/empty_slot_axe"),
-                            new ResourceLocation("item/empty_slot_pickaxe")),
+                    List.of(
+                            new ResourceLocation("item/empty_slot_sword"),
+                            new ResourceLocation("item/empty_slot_pickaxe"),
+                            new ResourceLocation("item/empty_slot_axe"),
+                            new ResourceLocation("item/empty_slot_shovel"),
+                            new ResourceLocation("item/empty_slot_hoe")
+                    ),
                     List.of(new ResourceLocation("item/empty_slot_ingot"))
             ));
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
     public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
     public static final DeferredItem<Item> COPPER_NUGGET = register("copper_nugget");
     public static final DeferredItem<Item> EXPERIENCE_BERRY = register("experience_berry", ExperienceBerryItem::new);
+    public static final DeferredItem<Item> MANGANESE_INGOT = register("manganese_ingot");
+    public static final DeferredItem<Item> MANGANESE_NUGGET = register("manganese_nugget");
+    public static final DeferredItem<Item> STEEL_INGOT = register("steel_ingot");
+    public static final DeferredItem<Item> STEEL_NUGGET = register("steel_nugget");
+    public static final DeferredItem<Item> PLASTIC_SHEET = register("plastic_sheet");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));

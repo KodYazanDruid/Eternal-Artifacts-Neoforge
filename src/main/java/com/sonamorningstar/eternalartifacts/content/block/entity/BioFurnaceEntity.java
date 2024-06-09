@@ -4,7 +4,6 @@ import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.core.ModTags;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
-public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> implements IHasEnergy, IHasInventory, IHasMultiFluidTank {
+public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> implements IHasEnergy, IHasInventory {
 
     @Getter
     public final ModItemStorage inventory = new ModItemStorage(1) {
@@ -31,20 +30,6 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
         @Override
         public boolean canReceive() { return false; }
     };
-    @Getter
-    public final MultiFluidTank tanks = new MultiFluidTank(
-            new ModFluidStorage(20000, fs -> fs.is(ModTags.Fluids.MEAT)) {
-                @Override
-                protected void onContentsChanged() {
-                    BioFurnaceEntity.this.sendUpdate();
-                }
-            },
-            new ModFluidStorage(2000) {
-                @Override
-                protected void onContentsChanged() {
-                    BioFurnaceEntity.this.sendUpdate();
-                }
-            });
 
     public BioFurnaceEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState, BioFurnaceMenu::new);
@@ -55,7 +40,6 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
         super.load(pTag);
         energy.deserializeNBT(pTag.get("Energy"));
         inventory.deserializeNBT(pTag.getCompound("Inventory"));
-        tanks.readFromNBT(pTag);
     }
 
     @Override
@@ -63,12 +47,11 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
         super.saveAdditional(pTag);
         pTag.put("Energy", energy.serializeNBT());
         pTag.put("Inventory", inventory.serializeNBT());
-        tanks.writeToNBT(pTag);
     }
 
     public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
         generatePower();
-        //distributePower();
+        distributePower();
     }
 
     private void generatePower() {

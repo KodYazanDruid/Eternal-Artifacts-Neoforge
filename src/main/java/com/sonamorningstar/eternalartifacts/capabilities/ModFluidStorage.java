@@ -67,5 +67,4 @@ public class ModFluidStorage extends FluidTank {
         }
         return stack;
     }
-
 }

@@ -33,7 +33,7 @@ public class EternalArtifacts {
      * TODO: Banana bread.
      * TODO: Geothermal Generator, Piezoelectric Plane
      * TODO: Modular Fluid Tank
-     * TODO: Manganese and stainless steel.
+     * TODO: A plant with infinite water supply
      * TODO: Configs.
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS

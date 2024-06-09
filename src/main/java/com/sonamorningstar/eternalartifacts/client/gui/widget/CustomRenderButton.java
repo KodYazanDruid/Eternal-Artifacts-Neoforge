@@ -38,7 +38,9 @@ public class CustomRenderButton extends Button {
         /*if(isHovered())*/ gui.fillGradient(getX(), getY(), getX()+getWidth(), getY()+getHeight(), 0xb6cdf2, 0x262d38);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        for(ResourceLocation texture : textures) gui.blit(texture, getX(), getY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());
+        if(textures != null &&textures.length > 0)
+            for(ResourceLocation texture : textures)
+                gui.blit(texture, getX(), getY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 

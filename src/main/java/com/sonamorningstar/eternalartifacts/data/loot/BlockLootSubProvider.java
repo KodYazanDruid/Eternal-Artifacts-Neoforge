@@ -63,11 +63,13 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.STRIPPED_CITRUS_WOOD.get());
         dropSelf(ModBlocks.CITRUS_PLANKS.get());
         dropSelf(ModBlocks.BATTERY_BOX.get());
+        dropSelf(ModBlocks.MOB_LIQUIFIER.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.GOLD_ORE_BERRY, ModLootTables.GOLD_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.EXPERIENCE_ORE_BERRY, ModLootTables.EXPERIENCE_OREBERRY_HARVEST);
+        generateOreBerryTables(ModBlocks.MANGANESE_ORE_BERRY, ModLootTables.MANGANESE_OREBERRY_HARVEST);
 
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);

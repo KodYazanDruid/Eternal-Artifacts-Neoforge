@@ -1,0 +1,7 @@
+{
+  "parent": "eternalartifacts:block/cube10",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "all": "eternalartifacts:block/manganese_oreberry"
+  }
+}

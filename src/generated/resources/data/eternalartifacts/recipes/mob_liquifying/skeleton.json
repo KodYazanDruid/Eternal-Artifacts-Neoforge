@@ -1,0 +1,18 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity": "minecraft:skeleton",
+  "resultFluidList": [
+    {
+      "Amount": 75,
+      "FluidName": "minecraft:milk"
+    },
+    {
+      "Amount": 5,
+      "FluidName": "eternalartifacts:pink_slime"
+    },
+    {
+      "Amount": 25,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

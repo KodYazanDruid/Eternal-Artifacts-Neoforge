@@ -25,18 +25,6 @@ public abstract class ModEnergyStorage extends EnergyStorage {
         return receiveEnergy;
     }
 
-    public int getEmptyCapacity() {
-        return getMaxEnergyStored() - getEnergyStored();
-    }
-
-    public int getMaxReceive() {
-        return maxReceive;
-    }
-
-    public int getMaxExtract() {
-        return maxExtract;
-    }
-
     public int extractEnergyForced(int maxExtract, boolean simulate) {
         int energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
         if (!simulate) {

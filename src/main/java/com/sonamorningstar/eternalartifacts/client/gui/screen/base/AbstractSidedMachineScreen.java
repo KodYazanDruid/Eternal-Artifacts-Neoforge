@@ -60,8 +60,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         }
         for (int i = 0; i < 4; i++) {
             int finalI = i;
-            if(i == 2 && menu.getBeInventory() == null) continue;
-            if(i == 3 && menu.getBeTank() == null) continue;
+            //if(i == 2 && menu.getBeInventory() == null) continue;
+            //if(i == 3 && menu.getBeTank() == null) continue;
             autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonAutoSet(button, finalI)).size(9, 9).build());
             addRenderableWidget(autoSetters.get(i));
         }
@@ -116,6 +116,14 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         Map<Integer, SidedTransferBlockEntity.RedstoneType> redstone = sided.getRedstoneConfigs();
         sideSetters.forEach(button -> button.visible = sidedTransferBarActive);
         autoSetters.forEach(button -> button.visible = sidedTransferBarActive);
+        for(int i = 0 ; i < autoSetters.size(); i++) {
+            if(i == 2) {
+                autoSetters.get(i).visible = sidedTransferBarActive && menu.getBeInventory() != null;
+            }
+            if(i == 3) {
+                autoSetters.get(i).visible = sidedTransferBarActive && menu.getBeTank() != null;
+            }
+        }
         redstoneSetters.forEach(button -> button.visible = sidedTransferBarActive);
         if(sidedTransferBarActive) {
             guiGraphics.blit(bars, sidedX, sidedY, 0, 84, 96, 32);
@@ -133,11 +141,13 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
             for(int i = 0; i < autoSetters.size(); i++) {
                 switch (i) {
                     case 0 -> {
+                        autoSetters.get(i).visible = true;
                         autoSetters.get(i).setPosition(sidedX + 37, sidedY + 7);
                         if(auto.get(i) != null && auto.get(i)) autoSetters.get(i).setTextures(auto_input_enabled);
                         else autoSetters.get(i).setTextures(auto_input);
                     }
                     case 1 -> {
+                        autoSetters.get(i).visible = true;
                         autoSetters.get(i).setPosition(sidedX + 37, sidedY + 17);
                         if(auto.get(i) != null && auto.get(i)) autoSetters.get(i).setTextures(auto_output_enabled);
                         else autoSetters.get(i).setTextures(auto_output);

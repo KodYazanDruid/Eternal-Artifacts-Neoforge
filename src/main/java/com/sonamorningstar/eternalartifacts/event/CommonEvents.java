@@ -30,6 +30,7 @@ import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
 import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -168,6 +169,12 @@ public class CommonEvents {
                 stepHeight.removeModifier(ComfyShoesItem.getStepHeight().getId());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void healEvent(LivingHealEvent event) {
+        LivingEntity entity = event.getEntity();
+        if(entity.hasEffect(ModEffects.MALADY.get())) event.setCanceled(true);
     }
 
 }

@@ -76,6 +76,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COPPER_NUGGET.get(), "Copper Nugget");
                 add(ModItems.BLOOD_BUCKET.get(), "Blood Bucket");
                 add(ModItems.EXPERIENCE_BERRY.get(), "Experience Berry");
+                add(ModItems.MANGANESE_INGOT.get(), "Manganese Ingot");
+                add(ModItems.MANGANESE_NUGGET.get(), "Manganese Nugget");
+                add(ModItems.STEEL_INGOT.get(), "Steel Ingot");
+                add(ModItems.STEEL_NUGGET.get(), "Steel Nugget");
+                add(ModItems.PLASTIC_SHEET.get(), "Plastic Sheet");
 
                 //Blocks
                 //add(ModBlocks.LUTFI.get(), "Lutfi");
@@ -122,6 +127,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BATTERY_BOX.get(), "Battery Box");
                 add(ModFluidTypes.BLOOD.get().getDescriptionId(), "Blood");
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Experience Oreberry");
+                add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganese Oreberry");
+                add(ModBlocks.MOB_LIQUIFIER.get(), "Mob Liquifier");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -131,6 +138,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
                 add(ModEffects.DIVINE_PROTECTION.get(), "Divine Protection");
+                add(ModEffects.MALADY.get(), "Malady");
 
                 //Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -156,6 +164,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Chlorophyte Upgrade");
                 add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Meat Packing");
                 add("emi.category."+MODID+".meat_shredding", "Meat Shredding");
+                add("emi.category."+MODID+".mob_liquifying", "Mob Liquifying");
                 add(ModConstants.GUI.withSuffix("energy"), "Energy");
                 add(ModConstants.GUI.withSuffix("fluid"), "Fluid");
 
@@ -195,14 +204,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.APPLE_PIE.get(), "Elmalı Turta");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Muz Kremalı Turta");
                 add(ModItems.CHLOROVEIN_PICKAXE.get(), "Klorodamar Kazma");
-                add(ModItems.ENDER_TABLET.get(), "Ender Plaka");
-                add(ModItems.STONE_TABLET.get(), "Taş Plaka");
+                add(ModItems.ENDER_TABLET.get(), "Ender Levha");
+                add(ModItems.STONE_TABLET.get(), "Taş Levha");
                 add(ModItems.COPPER_SWORD.get(), "Bakır Kılıç");
                 add(ModItems.COPPER_PICKAXE.get(), "Bakır Kazma");
                 add(ModItems.COPPER_AXE.get(), "Bakır Balta");
                 add(ModItems.COPPER_SHOVEL.get(), "Bakır Kürek");
                 add(ModItems.COPPER_HOE.get(), "Bakır Çapa");
-                add(ModItems.CHLOROPHYTE_TABLET.get(), "Klorofit Plaka");
+                add(ModItems.CHLOROPHYTE_TABLET.get(), "Klorofit Levha");
                 add(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.get(), "Demirci Şablonu");
                 add(ModItems.CHLOROPHYTE_INGOT.get(), "Klorofit Külçesi");
                 add(ModItems.DUCK_SPAWN_EGG.get(), "Ördek Çağırma Yumurtası");
@@ -212,10 +221,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SWORD_OF_THE_GREEN_EARTH.get(), "Yeşil Dünya'nın Kılıcı");
                 add(ModItems.NATURAL_SPADE.get(), "Doğal Kürek");
                 add(ModItems.LUSH_GRUBBER.get(), "Bereketli Çapa");
-                add(ModItems.COPPER_TABLET.get(), "Bakır Plaka");
+                add(ModItems.COPPER_TABLET.get(), "Bakır Levha");
                 add(ModItems.COPPER_NUGGET.get(), "Bakır Parçası");
                 add(ModItems.BLOOD_BUCKET.get(), "Kan Kovası");
                 add(ModItems.EXPERIENCE_BERRY.get(), "Tecrübe Meyvesi");
+                add(ModItems.MANGANESE_INGOT.get(), "Manganez Küçlesi");
+                add(ModItems.MANGANESE_NUGGET.get(), "Manganez Parçası");
+                add(ModItems.STEEL_INGOT.get(), "Çelik Külçesi");
+                add(ModItems.STEEL_NUGGET.get(), "Çelik Parçası");
+                add(ModItems.PLASTIC_SHEET.get(), "Plastik Tabaka");
 
                 //Bloklar
                 //add(ModBlocks.LUTFI.get(), "Lütfi");
@@ -262,6 +276,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BATTERY_BOX.get(), "Pil Kutusu");
                 add(ModFluidTypes.BLOOD.get().getDescriptionId(), "Kan");
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Tecrübe Cevherçalısı");
+                add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganez Cevherçalısı");
+                add(ModBlocks.MOB_LIQUIFIER.get(), "Yaratık Sıvılaştırıcı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -271,6 +287,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //Efektler
                 add(ModEffects.FLIGHT.get(), "Uçuş");
                 add(ModEffects.DIVINE_PROTECTION.get(), "Kutsal Koruma");
+                add(ModEffects.MALADY.get(), "İllet");
 
                 //Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
@@ -296,6 +313,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Klorofit Yükseltmesi");
                 add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Et Paketleme");
                 add("emi.category."+MODID+".meat_shredding", "Et Parçalama");
+                add("emi.category."+MODID+".mob_liquifying", "Yaratık Sıvılaştırma");
                 add(ModConstants.GUI.withSuffix("energy"), "Enerji");
                 add(ModConstants.GUI.withSuffix("fluid"), "Sıvı");
 

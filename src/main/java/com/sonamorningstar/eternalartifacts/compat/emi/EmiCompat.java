@@ -2,8 +2,10 @@ package com.sonamorningstar.eternalartifacts.compat.emi;
 
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatPackerCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatShredderCategory;
+import com.sonamorningstar.eternalartifacts.compat.emi.categories.MobLiquifierCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
@@ -33,9 +35,11 @@ public class EmiCompat implements EmiPlugin {
     public void register(EmiRegistry registry) {
         registry.addCategory(MeatPackerCategory.MEAT_PACKER_CATEGORY);
         registry.addCategory(MeatShredderCategory.MEAT_SHREDDER_CATEGORY);
+        registry.addCategory(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY);
 
         registry.addWorkstation(MeatPackerCategory.MEAT_PACKER_CATEGORY, EmiStack.of(ModBlocks.MEAT_PACKER));
         registry.addWorkstation(MeatShredderCategory.MEAT_SHREDDER_CATEGORY, EmiStack.of(ModBlocks.MEAT_SHREDDER));
+        registry.addWorkstation(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY, EmiStack.of(ModBlocks.MOB_LIQUIFIER));
 
         registry.addRecipe(new MeatPackerCategory());
 
@@ -43,6 +47,10 @@ public class EmiCompat implements EmiPlugin {
         for(MeatShredderRecipe recipe : manager.getAllRecipesFor(ModRecipes.MEAT_SHREDDING_TYPE.get()).stream().map(RecipeHolder::value).toList()) {
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem());
             registry.addRecipe(new MeatShredderCategory(recipe, new ResourceLocation(MODID, ("meat_shredding/"+id.toString().replace(":", "/")))));
+        }
+        for(MobLiquifierRecipe recipe : manager.getAllRecipesFor(ModRecipes.MOB_LIQUIFIER_TYPE.get()).stream().map(RecipeHolder::value).toList()) {
+            ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(recipe.getEntity());
+            registry.addRecipe(new MobLiquifierCategory(recipe, new ResourceLocation(MODID, ("mob_liquifying/"+id.toString().replace(":", "/")))));
         }
 
         List<Item> items = BuiltInRegistries.ITEM.getTag(ModTags.Items.GARDENING_POT_SUITABLE)

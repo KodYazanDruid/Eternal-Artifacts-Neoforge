@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-06T22:00:29.9318049	Loot Tables
+// 1.20.4	2024-06-07T23:46:30.1749259	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 e51e792e7824f51f301b4f1a6a9200e89727acad data/eternalartifacts/loot_tables/blocks/battery_box.json
@@ -22,8 +22,10 @@ f8e10b90921d802fc5dcb3112cb065842ad536c1 data/eternalartifacts/loot_tables/block
 1d4d22e7cf866d5a67b4dab7dfe1724dfbabdbe5 data/eternalartifacts/loot_tables/blocks/iron_oreberry.json
 aa1c0b1a5edffd2b76901862d04388f9b6b2cefe data/eternalartifacts/loot_tables/blocks/layered_prismarine.json
 7083b03ba6d338c8ea57d3f694a207337198a836 data/eternalartifacts/loot_tables/blocks/machine_block.json
+48d57a2dc1452fdae61c3f9b878d1add91f79e52 data/eternalartifacts/loot_tables/blocks/manganese_oreberry.json
 ff4634efc5abe0988d07834740af6481c2db8c4f data/eternalartifacts/loot_tables/blocks/meat_packer.json
 43c514335a874809d039595ef7067e149ecab9be data/eternalartifacts/loot_tables/blocks/meat_shredder.json
+e2cc4aeee7080e769e36e3d7e9ebc0ee5837f744 data/eternalartifacts/loot_tables/blocks/mob_liquifier.json
 0ce749e37b8304d21f61987db1ad74bfbcb7ebb5 data/eternalartifacts/loot_tables/blocks/paved_prismarine_bricks.json
 68cbd8c32f7be9bad5fa4e1de06852f7be205a3b data/eternalartifacts/loot_tables/blocks/pink_slime_block.json
 e097efa9397ef97b629a68c1f969714ec4032796 data/eternalartifacts/loot_tables/blocks/resonator.json
@@ -46,3 +48,4 @@ adc9376497f9c09e0788f0c1c265d8f48955d0cf data/eternalartifacts/loot_tables/entit
 e98bc9b9047c1b1029a4837a5d624b158988d683 data/eternalartifacts/loot_tables/oreberries/experience.json
 a7f73dc2fdd2f2bfa301fbfb4a3115fc16d10498 data/eternalartifacts/loot_tables/oreberries/gold.json
 3d5bf8ec76f9341fc9faa1f1aaf488358e7660d7 data/eternalartifacts/loot_tables/oreberries/iron.json
+0f409a9fb31e663d1a97cf619c259bb8ca3a5fec data/eternalartifacts/loot_tables/oreberries/manganese.json

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,11 @@ public class ModRecipes {
             RECIPE_SERIALIZERS.register("meat_shredding", MeatShredderRecipe.Serializer::new);
     public static final DeferredHolder<RecipeType<?>, RecipeType<MeatShredderRecipe>> MEAT_SHREDDING_TYPE =
             RECIPE_TYPES.register("meat_shredding", ()-> RecipeType.simple(new ResourceLocation(MODID, "meat_shredding")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<MobLiquifierRecipe>> MOB_LIQUIFIER_SERIALIZER =
+            RECIPE_SERIALIZERS.register("mob_liquifying", MobLiquifierRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeType<?>, RecipeType<MobLiquifierRecipe>> MOB_LIQUIFIER_TYPE =
+            RECIPE_TYPES.register("mob_liquifying", ()-> RecipeType.simple(new ResourceLocation(MODID, "mob_liquifying")));
 
 
 

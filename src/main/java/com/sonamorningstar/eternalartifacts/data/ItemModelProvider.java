@@ -69,6 +69,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.COPPER_TABLET.get());
         basicItem(ModItems.COPPER_NUGGET.get());
         basicItem(ModItems.EXPERIENCE_BERRY.get());
+        basicItem(ModItems.MANGANESE_INGOT.get());
+        basicItem(ModItems.MANGANESE_NUGGET.get());
+        basicItem(ModItems.STEEL_INGOT.get());
+        basicItem(ModItems.STEEL_NUGGET.get());
+        basicItem(ModItems.PLASTIC_SHEET.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -94,7 +99,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.IRON_ORE_BERRY.getId().getPath(), modLoc("block/iron_oreberry_stage1"));
         withExistingParent(ModBlocks.GOLD_ORE_BERRY.getId().getPath(), modLoc("block/gold_oreberry_stage1"));
         withExistingParent(ModBlocks.EXPERIENCE_ORE_BERRY.getId().getPath(), modLoc("block/experience_oreberry_stage1"));
+        withExistingParent(ModBlocks.MANGANESE_ORE_BERRY.getId().getPath(), modLoc("block/manganese_oreberry_stage1"));
         withExistingParent(ModBlocks.BATTERY_BOX.getId().getPath(), modLoc("block/battery_box"));
+        withExistingParent(ModBlocks.MOB_LIQUIFIER.getId().getPath(), modLoc("block/mob_liquifier"));
         //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))

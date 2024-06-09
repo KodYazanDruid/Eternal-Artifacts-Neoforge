@@ -1,25 +1,30 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModFluids;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.core.*;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.LavaFluid;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -33,6 +38,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     protected void buildRecipes(RecipeOutput recipeOutput) {
         SpecialRecipeBuilder.special(category -> new ShapedRetexturedRecipe(category, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE))
                 .save(recipeOutput, new ResourceLocation(MODID, "gardening_pot_recipe"));
+
         craftingRecipes(recipeOutput);
         smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.MEAT_INGOT, 0.35f);
@@ -61,6 +67,56 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
         createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
 
+        //Rework the recipe to accept entity tags aswell.
+        createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 40),
+                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 75),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 25),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 20)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.SHEEP, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 35),
+                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 50),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 20),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 20)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.PIG, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 30),
+                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 75),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 25),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 20)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.CHICKEN, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 10),
+                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 25),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 10),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 15)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.ZOMBIE, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 10),
+                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 20),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 10),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 25)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.SKELETON, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(NeoForgeMod.MILK, 75),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 5),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 25)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.BLAZE, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(Fluids.LAVA.getSource(), 75),
+                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 35),
+                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 25)
+        ));
+
+
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
@@ -69,11 +125,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('N', Items.GOLD_INGOT).define('F', ModItems.ANCIENT_FRUIT)
                 .unlockedBy("has_item", has(ModItems.ANCIENT_FRUIT))
                 .save(recipeOutput);
-        /*ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GARDENING_POT)
-                .pattern(" B ").pattern("TDT").pattern(" T ")
-                .define('B', Items.BONE_MEAL).define('T', Items.TERRACOTTA).define('D', Items.DIRT)
-                .unlockedBy("has_item", has(Items.TERRACOTTA))
-                .save(recipeOutput);*/
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .pattern("SSS").pattern("SSS").pattern("SSS")
                 .define('S', ModItems.SUGAR_CHARCOAL)
@@ -154,6 +205,43 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('N', ModTags.Items.NUGGETS_COPPER)
                 .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER))
                 .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STEEL_INGOT)
+                .pattern("NNN")
+                .pattern("NMN")
+                .pattern("NNN")
+                .define('N', ModTags.Items.NUGGETS_STEEL)
+                .define('M', ModItems.STEEL_NUGGET)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL))
+                .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MANGANESE_INGOT)
+                .pattern("NNN")
+                .pattern("NMN")
+                .pattern("NNN")
+                .define('N', ModTags.Items.NUGGETS_MANGANESE)
+                .define('M', ModItems.MANGANESE_NUGGET)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE))
+                .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BATTERY)
+                .pattern("CMC")
+                .pattern("PRP")
+                .pattern("PCP")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('M', ModTags.Items.INGOTS_MANGANESE)
+                .define('P', ModTags.Items.PLASTIC)
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy("has_item", has(ModTags.Items.PLASTIC))
+                .save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BATTERY_BOX)
+                .pattern("RCR")
+                .pattern("CMC")
+                .pattern("PPP")
+                .define('C', ModItems.COPPER_TABLET)
+                .define('M', ModBlocks.MACHINE_BLOCK)
+                .define('P', ModTags.Items.PLASTIC)
+                .define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy("has_item", has(ModBlocks.MACHINE_BLOCK))
+                .save(recipeOutput);
+
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -165,7 +253,15 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.COPPER_NUGGET, 9)
                 .requires(Items.COPPER_INGOT)
-                .unlockedBy("has_item", has(ModItems.COPPER_NUGGET))
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER))
+                .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STEEL_NUGGET, 9)
+                .requires(ModTags.Items.INGOTS_STEEL)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL))
+                .save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MANGANESE_NUGGET, 9)
+                .requires(ModTags.Items.INGOTS_MANGANESE)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE))
                 .save(recipeOutput);
     }
 
@@ -215,6 +311,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, int output) {
         SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+input.location().getPath()));
+    }
+
+    private void createMobLiquifyingRecipe(RecipeOutput recipeOutput, EntityType<?> entity, NonNullList<FluidStack> outputs) {
+        String path = BuiltInRegistries.ENTITY_TYPE.getKey(entity).getPath();
+        SpecialRecipeBuilder.special(category -> new MobLiquifierRecipe(entity, outputs))
+                .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+path));
     }
 
 }

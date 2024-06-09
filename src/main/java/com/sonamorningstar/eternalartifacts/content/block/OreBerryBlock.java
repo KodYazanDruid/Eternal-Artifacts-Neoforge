@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
@@ -11,15 +10,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.ConstantInt;
-import net.minecraft.util.valueproviders.IntProvider;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -55,7 +49,6 @@ public class OreBerryBlock extends BushBlock {
         this.material = material;
         this.table = new ResourceLocation(MODID, "oreberries/" + material);
         this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
-
     }
 
     @Override
@@ -103,22 +96,19 @@ public class OreBerryBlock extends BushBlock {
                 net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost(level, pos.above(), this.defaultBlockState());
             }
         }
+
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int age = state.getValue(AGE);
         if(age == MAX_AGE) {
-
-            ObjectArrayList<ItemStack> loot = new ObjectArrayList<>();
-
             if(level instanceof ServerLevel serverLevel){
                 LootTable lootTable = level.getServer().getLootData().getLootTable(table);
                 LootParams ctx = new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY);
-                loot = lootTable.getRandomItems(ctx);
+                ObjectArrayList<ItemStack> loot = lootTable.getRandomItems(ctx);
+                for (ItemStack stack : loot) popResourceFromFace(level, pos, hit.getDirection(), stack);
             }
-
-            for (ItemStack stack : loot) popResourceFromFace(level, pos, hit.getDirection(), stack);
 
             level.playSound(null, pos, SoundEvents.CHAIN_STEP, SoundSource.BLOCKS, 1, 0.8F + level.random.nextFloat() * 0.4F);
             BlockState newState = state.setValue(AGE, 2);

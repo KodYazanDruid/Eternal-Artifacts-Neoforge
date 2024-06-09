@@ -79,6 +79,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         machineBlock(ModBlocks.MEAT_PACKER, false);
         machineBlock(ModBlocks.MEAT_SHREDDER, false);
         machineBlock(ModBlocks.BATTERY_BOX, true);
+        machineBlock(ModBlocks.MOB_LIQUIFIER, false);
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
@@ -96,6 +97,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.IRON_ORE_BERRY);
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
+        createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
 
     }
 

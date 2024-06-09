@@ -23,6 +23,7 @@ public class ModLootSubProvider implements LootTableSubProvider {
         generateSimplePool(output, ModLootTables.IRON_OREBERRY_HARVEST, Items.IRON_NUGGET, ConstantValue.exactly(1));
         generateSimplePool(output, ModLootTables.GOLD_OREBERRY_HARVEST, Items.GOLD_NUGGET, ConstantValue.exactly(1));
         generateSimplePool(output, ModLootTables.EXPERIENCE_OREBERRY_HARVEST, ModItems.EXPERIENCE_BERRY, UniformGenerator.between(1, 2));
+        generateSimplePool(output, ModLootTables.MANGANESE_OREBERRY_HARVEST, ModItems.MANGANESE_NUGGET, ConstantValue.exactly(1));
 
     }
 

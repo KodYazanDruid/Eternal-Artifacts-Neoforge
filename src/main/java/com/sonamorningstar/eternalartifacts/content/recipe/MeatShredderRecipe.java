@@ -3,8 +3,10 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,16 +19,13 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class MeatShredderRecipe implements Recipe<SimpleContainer> {
     @Getter
     private final Ingredient input;
     @Getter
     private final FluidStack output;
 
-    public MeatShredderRecipe(Ingredient input, FluidStack output) {
-        this.input = input;
-        this.output = output;
-    }
 
     @Override
     public boolean matches(SimpleContainer container, Level level) {

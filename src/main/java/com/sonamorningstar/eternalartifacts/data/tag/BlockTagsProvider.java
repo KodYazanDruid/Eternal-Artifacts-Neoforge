@@ -20,7 +20,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        //tierAndTool(ModBlocks.LUTFI.get(), "diamond", "axe");
         tierAndTool(ModBlocks.ANVILINATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BOOK_DUPLICATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BIOFURNACE.get(), "stone", "pickaxe");
@@ -49,6 +48,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.MOB_LIQUIFIER.get(), "iron", "pickaxe");
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());

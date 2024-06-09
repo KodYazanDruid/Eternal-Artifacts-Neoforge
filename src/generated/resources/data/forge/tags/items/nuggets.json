@@ -1,6 +1,8 @@
 {
   "values": [
     "eternalartifacts:copper_nugget",
-    "eternalartifacts:experience_berry"
+    "eternalartifacts:experience_berry",
+    "eternalartifacts:manganese_nugget",
+    "eternalartifacts:steel_nugget"
   ]
 }

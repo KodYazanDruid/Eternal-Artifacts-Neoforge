@@ -35,13 +35,29 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.FRUITS_ORANGE).add(ModItems.ORANGE.get());
         tag(ModTags.Items.FRUITS_ANCIENT).add(ModItems.ANCIENT_FRUIT.get());
         tag(ModTags.Items.BANANA).add(ModItems.BANANA.get());
+
         tag(Tags.Items.INGOTS).add(
                 ModItems.RAW_MEAT_INGOT.get(),
                 ModItems.MEAT_INGOT.get(),
-                ModItems.CHLOROPHYTE_INGOT.get()
+                ModItems.CHLOROPHYTE_INGOT.get(),
+                ModItems.MANGANESE_INGOT.get(),
+                ModItems.STEEL_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
+        tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
+        tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
+        tag(Tags.Items.NUGGETS).add(
+                ModItems.COPPER_NUGGET.get(),
+                ModItems.EXPERIENCE_BERRY.get(),
+                ModItems.MANGANESE_NUGGET.get(),
+                ModItems.STEEL_NUGGET.get()
+        );
+        tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());
+        tag(ModTags.Items.NUGGETS_MANGANESE).add(ModItems.MANGANESE_NUGGET.get());
+        tag(ModTags.Items.NUGGETS_STEEL).add(ModItems.STEEL_NUGGET.get());
+
         tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
         tag(ItemTags.COALS).add(ModItems.SUGAR_CHARCOAL.get());
@@ -52,6 +68,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ItemTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
         tag(ItemTags.LOGS).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
         tag(ItemTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.asItem());
+        tag(ModTags.Items.PLASTIC).add(ModItems.PLASTIC_SHEET.get());
 
         tag(ItemTags.SWORDS).add(
                 ModItems.COPPER_SWORD.get(),
@@ -85,15 +102,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.ENDER_TABLET.get(),
                 ModItems.CHLOROPHYTE_TABLET.get(),
                 ModItems.COPPER_TABLET.get()
-        );
-        tag(Tags.Items.NUGGETS).add(
-                ModItems.COPPER_NUGGET.get(),
-                ModItems.EXPERIENCE_BERRY.get()
-        );
-        tag(ModTags.Items.NUGGETS_COPPER).add(
-                ModItems.COPPER_NUGGET.get()
-        );tag(ModTags.Items.NUGGETS_EXPERIENCE).add(
-                ModItems.EXPERIENCE_BERRY.get()
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),

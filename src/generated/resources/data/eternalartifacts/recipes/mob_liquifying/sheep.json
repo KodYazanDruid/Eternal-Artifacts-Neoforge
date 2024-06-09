@@ -1,0 +1,22 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity": "minecraft:sheep",
+  "resultFluidList": [
+    {
+      "Amount": 35,
+      "FluidName": "eternalartifacts:blood"
+    },
+    {
+      "Amount": 50,
+      "FluidName": "eternalartifacts:liquid_meat"
+    },
+    {
+      "Amount": 20,
+      "FluidName": "eternalartifacts:pink_slime"
+    },
+    {
+      "Amount": 20,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

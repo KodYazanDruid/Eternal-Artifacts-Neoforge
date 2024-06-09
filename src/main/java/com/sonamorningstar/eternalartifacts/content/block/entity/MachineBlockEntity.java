@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -27,6 +29,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
@@ -35,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickable {
     Lazy<BlockEntity> entity;
@@ -107,6 +111,24 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return quadF.apply(pContainerId, pPlayerInventory, this, data);
     }
 
+    protected ModFluidStorage createBasicTank(int cap) {
+        return new ModFluidStorage(cap) {
+            @Override
+            protected void onContentsChanged() {
+                MachineBlockEntity.this.sendUpdate();
+            }
+        };
+    }
+
+    protected ModFluidStorage createBasicTank(int cap, Predicate<FluidStack> validator) {
+        return new ModFluidStorage(cap, validator) {
+            @Override
+            protected void onContentsChanged() {
+                MachineBlockEntity.this.sendUpdate();
+            }
+        };
+    }
+
     protected void fillTankFromSlot(ModItemStorage inventory, ModFluidStorage tank, int fluidSlot) {
         ItemStack stack = inventory.getStackInSlot(fluidSlot);
         if(!stack.isEmpty() && tank.getFluidAmount() < tank.getCapacity()) {
@@ -154,6 +176,19 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
         for(R recipe : recipeList) {
             if(recipe.matches(container, level)) {
+                currentRecipe = recipe;
+                return;
+            }
+        }
+    }
+
+    //This is for one recipe type. Generics are useless i know. I need to change it later.
+    protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
+        if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return;
+        currentRecipe = null;
+        List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
+        for(R recipe : recipeList) {
+            if(((MobLiquifierRecipe) recipe).matches(type)) {
                 currentRecipe = recipe;
                 return;
             }
