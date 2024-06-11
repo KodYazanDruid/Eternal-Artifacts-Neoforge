@@ -34,6 +34,8 @@ public class EternalArtifacts {
      * TODO: Geothermal Generator, Piezoelectric Plane
      * TODO: Modular Fluid Tank
      * TODO: A plant with infinite water supply
+     * TODO: A fluid jar with 1000mb capacity
+     * TODO: ARDITE
      * TODO: Configs.
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
@@ -78,7 +80,6 @@ public class EternalArtifacts {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(Channel::onRegisterPayloadHandler);
-
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 

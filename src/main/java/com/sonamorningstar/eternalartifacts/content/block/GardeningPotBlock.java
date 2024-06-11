@@ -160,29 +160,6 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
         }
     }
 
-/*    @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            ItemStack texture = player.getItemInHand(hand);
-            if(entity instanceof IRetexturedBlockEntity retexturable
-                    && texture.getItem() instanceof BlockItem bi
-                    && texture.is(ModTags.Items.GARDENING_POT_SUITABLE)
-                    && !retexturable.getTexture().defaultBlockState().is(bi.getBlock())) {
-                if(!player.getAbilities().instabuild){
-                    ItemStack oldTexture = retexturable.getTexture().asItem().getDefaultInstance();
-                    ItemEntity oldTextureEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, oldTexture);
-                    if (oldTexture != null) level.addFreshEntity(oldTextureEntity);
-                    texture.shrink(1);
-                }
-                level.levelEvent(player, 2001, pos, getId(state));
-                retexturable.updateTexture(RetexturedHelper.getTextureName(bi.getBlock()));
-                entity.getBlockState().setValue(LIGHT_LEVEL, bi.getBlock().getLightEmission(state, level, pos));
-            } else return super.use(state, level, pos, player, hand, hit);
-        }
-        return InteractionResult.sidedSuccess(level.isClientSide());
-    }*/
-
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
         if(pos.above().equals(neighborPos) && levelAccessor instanceof ServerLevel level) {

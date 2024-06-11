@@ -101,7 +101,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.EXPERIENCE_ORE_BERRY.getId().getPath(), modLoc("block/experience_oreberry_stage1"));
         withExistingParent(ModBlocks.MANGANESE_ORE_BERRY.getId().getPath(), modLoc("block/manganese_oreberry_stage1"));
         withExistingParent(ModBlocks.BATTERY_BOX.getId().getPath(), modLoc("block/battery_box"));
-        withExistingParent(ModBlocks.MOB_LIQUIFIER.getId().getPath(), modLoc("block/mob_liquifier"));
+        withExistingParent(ModBlocks.JAR.getId().getPath(), modLoc("block/jar"));
         //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))
@@ -110,10 +110,6 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc("block/four_leaf_clover"));
 
-        /*withExistingParent(ModItems.NOUS_BUCKET.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
-                .customLoader(DynamicFluidContainerModelBuilder::begin)
-                .fluid(ModFluids.NOUS_SOURCE.get())
-                .applyTint(true);*/
         bucketItem(ModItems.NOUS_BUCKET, ModFluids.NOUS_SOURCE);
         bucketItem(ModItems.LIQUID_MEAT_BUCKET, ModFluids.LIQUID_MEAT_SOURCE);
         bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME_SOURCE);

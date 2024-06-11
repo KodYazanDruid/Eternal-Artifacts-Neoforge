@@ -11,7 +11,9 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public enum ModConstants {
     TRANSLATE_KEY_PREFIX("key."+MODID+".tooltip"),
+    TRANSLATE_BUTTON_PREFIX("key."+MODID+".button"),
     GUI("gui."+MODID),
+    WARPS("warps."+MODID),
     CHLOROPHYTE_UPGRADE_APPLIES_TO(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.applies_to"))),
     CHLOROPHYTE_UPGRADE_INGREDIENTS(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.ingredients"))),
     CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.base_slot_description"))),
@@ -33,6 +35,10 @@ public enum ModConstants {
     public String ofItem(DeferredItem<? extends Item> item) {
         String path = item.getId().getPath();
         return withSuffix(path);
+    }
+
+    public MutableComponent withSuffixTranslatable(String suffix) {
+        return Component.translatable(withSuffix(suffix));
     }
 
     public MutableComponent translatable() {

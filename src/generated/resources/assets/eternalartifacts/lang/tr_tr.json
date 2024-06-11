@@ -19,6 +19,8 @@
   "block.eternalartifacts.gravel_gold_ore": "Çakılda Altın Cevheri",
   "block.eternalartifacts.gravel_iron_ore": "Çakılda Demir Cevheri",
   "block.eternalartifacts.iron_oreberry": "Demir Cevherçalısı",
+  "block.eternalartifacts.jar": "Kavanoz",
+  "block.eternalartifacts.jar.filled": "%s Kavanozu",
   "block.eternalartifacts.layered_prismarine": "Katmanlı Prizmarin",
   "block.eternalartifacts.machine_block": "Makine Bloğu",
   "block.eternalartifacts.manganese_oreberry": "Manganez Cevherçalısı",
@@ -122,6 +124,7 @@
   "itemGroup.eternalartifacts": "Eternal Artifacts",
   "key.eternalartifacts.anvilinator.disabled_naming": "Adlandırma kapalı.",
   "key.eternalartifacts.anvilinator.enabled_naming": "Adlandırma açık.",
+  "key.eternalartifacts.button.addwarp": "Işınlama Ekle",
   "key.eternalartifacts.tooltip.comfy_shoes": "Giyildiğinde adım yüksekliği verir.",
   "key.eternalartifacts.tooltip.enchanted_golden_ancient_fruit": "İki dakikalığına uçuş ve gelişmiş hız, acele ve emilim verir.",
   "key.eternalartifacts.tooltip.encumbator.active": "Yerden eşya almak engellendi!",
@@ -134,5 +137,6 @@
   "key.eternalartifacts.tooltip.item_ench_text": "Her zaman %s'a sahip",
   "key.eternalartifacts.tooltip.magic_feather_active": "Büyülü tüy aktif!",
   "key.eternalartifacts.tooltip.magic_feather_not_active": "Büyülü tüy aktif değil.",
-  "upgrade.eternalartifacts.chlorophyte_upgrade": "Klorofit Yükseltmesi"
+  "upgrade.eternalartifacts.chlorophyte_upgrade": "Klorofit Yükseltmesi",
+  "warps.eternalartifacts": "Işınlanmalar:"
 }

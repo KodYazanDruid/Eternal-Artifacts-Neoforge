@@ -19,6 +19,8 @@
   "block.eternalartifacts.gravel_gold_ore": "Gravel Gold Ore",
   "block.eternalartifacts.gravel_iron_ore": "Gravel Iron Ore",
   "block.eternalartifacts.iron_oreberry": "Iron Oreberry",
+  "block.eternalartifacts.jar": "Jar",
+  "block.eternalartifacts.jar.filled": "%s Jar",
   "block.eternalartifacts.layered_prismarine": "Layered Prismarine",
   "block.eternalartifacts.machine_block": "Machine Block",
   "block.eternalartifacts.manganese_oreberry": "Manganese Oreberry",
@@ -122,6 +124,7 @@
   "itemGroup.eternalartifacts": "Eternal Artifacts",
   "key.eternalartifacts.anvilinator.disabled_naming": "Naming disabled.",
   "key.eternalartifacts.anvilinator.enabled_naming": "Naming enabled.",
+  "key.eternalartifacts.button.addwarp": "Add Warp",
   "key.eternalartifacts.tooltip.comfy_shoes": "Gives step height when worn.",
   "key.eternalartifacts.tooltip.enchanted_golden_ancient_fruit": "Gives two minues of flight and enhanced speed, haste and absorption.",
   "key.eternalartifacts.tooltip.encumbator.active": "Item pickup disabled!",
@@ -134,5 +137,6 @@
   "key.eternalartifacts.tooltip.item_ench_text": "Always has %s",
   "key.eternalartifacts.tooltip.magic_feather_active": "Magic feather is active!",
   "key.eternalartifacts.tooltip.magic_feather_not_active": "Magic feather is not active.",
-  "upgrade.eternalartifacts.chlorophyte_upgrade": "Chlorophyte Upgrade"
+  "upgrade.eternalartifacts.chlorophyte_upgrade": "Chlorophyte Upgrade",
+  "warps.eternalartifacts": "Warps:"
 }

@@ -73,7 +73,6 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
             }
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
-        //level.invalidateCapabilities(pos);
     }
 
     @Nullable

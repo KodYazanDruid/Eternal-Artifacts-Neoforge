@@ -88,6 +88,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
 
         simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
+        simpleBlock(ModBlocks.JAR.get(), new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper));
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);

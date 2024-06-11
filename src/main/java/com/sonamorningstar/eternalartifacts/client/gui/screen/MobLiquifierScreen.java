@@ -20,4 +20,9 @@ public class MobLiquifierScreen extends AbstractSidedMachineScreen<MobLiquifierM
         renderFluidBar(gui, x + 64, y + 20, 2);
         renderFluidBar(gui, x + 84, y + 20, 3);
     }
+
+    @Override
+    protected void renderLabels(GuiGraphics gui, int mx, int my) {
+        gui.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
+    }
 }

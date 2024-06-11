@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.model.ColoredBlockModel;
 import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.renderer.FancyChestRenderer;
+import com.sonamorningstar.eternalartifacts.client.renderer.JarRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
@@ -53,10 +54,23 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerColorHandlerItem(RegisterColorHandlersEvent.Item event) {
-        event.register((pStack, pTintIndex) -> {
+        /*event.register((pStack, pTintIndex) -> {
             if(pTintIndex == 1) return ((BaseFluidType) ModFluidTypes.NOUS.get()).getTintColor();
             else return -1;
         }, ModItems.NOUS_BUCKET.get());
+        event.register((pStack, pTintIndex) -> {
+            if(pTintIndex == 1) return ((BaseFluidType) ModFluidTypes.LIQUID_MEAT.get()).getTintColor();
+            else return -1;
+        }, ModItems.LIQUID_MEAT_BUCKET.get());
+        event.register((pStack, pTintIndex) -> {
+            if(pTintIndex == 1) return ((BaseFluidType) ModFluidTypes.PINK_SLIME.get()).getTintColor();
+            else return -1;
+        }, ModItems.PINK_SLIME_BUCKET.get());
+        event.register((pStack, pTintIndex) -> {
+            if(pTintIndex == 1) return ((BaseFluidType) ModFluidTypes.BLOOD.get()).getTintColor();
+            else return -1;
+        }, ModItems.BLOOD_BUCKET.get());*/
+
         event.register((stack, ti) ->{
             BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();
             return BlockColors.createDefault().getColor(blockstate, null, null, ti);
@@ -81,6 +95,11 @@ public class ClientModEvents {
         event.register(new ResourceLocation(MODID, "retextured"), RetexturedModel.LOADER);
     }
 
+    /*@SubscribeEvent
+    public static void registerAdditionalModel(ModelEvent.RegisterAdditional event) {
+        //event.register(new ResourceLocation(MODID, "block/jar"));
+    }*/
+
     @SubscribeEvent
     public static void fmlClient(FMLClientSetupEvent event) {
         event.enqueueWork( () ->
@@ -104,7 +123,7 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
-
+        event.registerBlockEntityRenderer(ModBlockEntities.JAR.get(), JarRenderer::new);
     }
 
     @SubscribeEvent

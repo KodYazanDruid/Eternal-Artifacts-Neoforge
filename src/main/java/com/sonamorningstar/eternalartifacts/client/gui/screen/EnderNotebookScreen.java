@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.EnderNotebookAddNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.EnderNotebookRemoveNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.EnderNotebookTeleportToServer;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.client.GameNarrator;
 import net.minecraft.client.gui.GuiGraphics;
@@ -58,8 +59,9 @@ public class EnderNotebookScreen extends Screen {
     protected void init() {
         x = (width - 192) / 2;
         y = (height - 256) / 2;
-        addWarp = addRenderableWidget(Button.builder(Component.translatable("button.addwarp"), this::onAddWarpPress).bounds(x + 7, y + 196, 98, 20).build());
-        name = new EditBox(minecraft.font, x + 107, y + 196, 82, 20, Component.empty());
+        addWarp = addRenderableWidget(Button.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("addwarp"), this::onAddWarpPress)
+                .bounds(x + 107, y + 196, 85, 20).build());
+        name = new EditBox(minecraft.font, x + 5, y + 196, 100, 20, Component.empty());
         name.setMaxLength(20);
         name.setCanLoseFocus(true);
         addRenderableWidget(this.name);
@@ -128,7 +130,7 @@ public class EnderNotebookScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         renderWarps(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.drawString(font, Component.literal("Warps:").append(String.valueOf(warps.size())).append("/8"), x + 130, y + 171, textColor);
+        guiGraphics.drawString(font, ModConstants.WARPS.translatable().append(String.valueOf(warps.size())).append("/8"), x + 13, y + 171, textColor);
     }
 
     @Override
@@ -152,10 +154,6 @@ public class EnderNotebookScreen extends Screen {
             gui.drawString(font, warp.getFirst().getFirst(), x + 16, y + 12 + (margin * i), textColor);
             gui.drawString(font, info, x + 16, y + 20 + (margin * i), textColor);
 
-            Pair<CustomRenderButton, CustomRenderButton> buttons = keyList.get(i).getFirst();
-
-            /*buttons.getFirst().render(gui, mouseX, mouseY, tick);
-            buttons.getSecond().render(gui, mouseX, mouseY, tick);*/
         }
     }
 

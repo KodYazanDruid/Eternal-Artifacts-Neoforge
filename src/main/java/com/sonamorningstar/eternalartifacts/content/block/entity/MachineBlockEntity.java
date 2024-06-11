@@ -111,24 +111,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return quadF.apply(pContainerId, pPlayerInventory, this, data);
     }
 
-    protected ModFluidStorage createBasicTank(int cap) {
-        return new ModFluidStorage(cap) {
-            @Override
-            protected void onContentsChanged() {
-                MachineBlockEntity.this.sendUpdate();
-            }
-        };
-    }
-
-    protected ModFluidStorage createBasicTank(int cap, Predicate<FluidStack> validator) {
-        return new ModFluidStorage(cap, validator) {
-            @Override
-            protected void onContentsChanged() {
-                MachineBlockEntity.this.sendUpdate();
-            }
-        };
-    }
-
     protected void fillTankFromSlot(ModItemStorage inventory, ModFluidStorage tank, int fluidSlot) {
         ItemStack stack = inventory.getStackInSlot(fluidSlot);
         if(!stack.isEmpty() && tank.getFluidAmount() < tank.getCapacity()) {

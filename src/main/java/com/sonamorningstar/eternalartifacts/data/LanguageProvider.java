@@ -83,7 +83,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PLASTIC_SHEET.get(), "Plastic Sheet");
 
                 //Blocks
-                //add(ModBlocks.LUTFI.get(), "Lutfi");
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
                 add(ModFluidTypes.NOUS.get().getDescriptionId(), "Nous");
                 add(ModFluidTypes.LIQUID_MEAT.get().getDescriptionId(), "Liquid Meat");
@@ -129,6 +128,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Experience Oreberry");
                 add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganese Oreberry");
                 add(ModBlocks.MOB_LIQUIFIER.get(), "Mob Liquifier");
+                add(ModBlocks.JAR.get(), "Jar");
+                add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Jar");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -167,6 +168,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("emi.category."+MODID+".mob_liquifying", "Mob Liquifying");
                 add(ModConstants.GUI.withSuffix("energy"), "Energy");
                 add(ModConstants.GUI.withSuffix("fluid"), "Fluid");
+                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("addwarp"), "Add Warp");
+                add(ModConstants.WARPS.getString(), "Warps:");
 
             }
             case "tr_tr" -> {
@@ -232,7 +235,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PLASTIC_SHEET.get(), "Plastik Tabaka");
 
                 //Bloklar
-                //add(ModBlocks.LUTFI.get(), "Lütfi");
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
                 add(ModFluidTypes.NOUS.get().getDescriptionId(), "İdrak");
                 add(ModFluidTypes.LIQUID_MEAT.get().getDescriptionId(), "Sıvı Et");
@@ -278,6 +280,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Tecrübe Cevherçalısı");
                 add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganez Cevherçalısı");
                 add(ModBlocks.MOB_LIQUIFIER.get(), "Yaratık Sıvılaştırıcı");
+                add(ModBlocks.JAR.get(), "Kavanoz");
+                add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -316,6 +320,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("emi.category."+MODID+".mob_liquifying", "Yaratık Sıvılaştırma");
                 add(ModConstants.GUI.withSuffix("energy"), "Enerji");
                 add(ModConstants.GUI.withSuffix("fluid"), "Sıvı");
+                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("addwarp"), "Işınlama Ekle");
+                add(ModConstants.WARPS.getString(), "Işınlanmalar:");
 
             }
         }

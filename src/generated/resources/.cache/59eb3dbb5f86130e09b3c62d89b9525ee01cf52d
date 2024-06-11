@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-07T23:46:30.1749259	Loot Tables
+// 1.20.4	2024-06-10T19:34:25.8566856	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 e51e792e7824f51f301b4f1a6a9200e89727acad data/eternalartifacts/loot_tables/blocks/battery_box.json
@@ -20,6 +20,7 @@ df6acb74ff9f44ec349b25aacecc5edf40e559e9 data/eternalartifacts/loot_tables/block
 72152eb7ec1cb8623073b023f8ae0968791ec592 data/eternalartifacts/loot_tables/blocks/gravel_gold_ore.json
 f8e10b90921d802fc5dcb3112cb065842ad536c1 data/eternalartifacts/loot_tables/blocks/gravel_iron_ore.json
 1d4d22e7cf866d5a67b4dab7dfe1724dfbabdbe5 data/eternalartifacts/loot_tables/blocks/iron_oreberry.json
+7720d7d703899aac282932ff448adfe560e78c4e data/eternalartifacts/loot_tables/blocks/jar.json
 aa1c0b1a5edffd2b76901862d04388f9b6b2cefe data/eternalartifacts/loot_tables/blocks/layered_prismarine.json
 7083b03ba6d338c8ea57d3f694a207337198a836 data/eternalartifacts/loot_tables/blocks/machine_block.json
 48d57a2dc1452fdae61c3f9b878d1add91f79e52 data/eternalartifacts/loot_tables/blocks/manganese_oreberry.json

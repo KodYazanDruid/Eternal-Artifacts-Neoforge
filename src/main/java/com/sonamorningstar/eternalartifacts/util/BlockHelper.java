@@ -13,10 +13,12 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.MangrovePropaguleBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nullable;
@@ -70,5 +72,10 @@ public class BlockHelper {
         drops.addAll(state.getDrops(lootparams$builder));
 
         return drops;
+    }
+
+    public static int getFluidTintColor(Fluid fluid) {
+        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluid);
+        return fluidTypeExtensions.getTintColor();
     }
 }

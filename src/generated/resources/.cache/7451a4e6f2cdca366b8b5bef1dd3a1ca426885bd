@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-07T23:46:30.1659278	Block States: eternalartifacts
+// 1.20.4	2024-06-10T14:27:56.8309616	Block States: eternalartifacts
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
 31ccf79f94568a40a5b2214ce81d9b952c686a5b assets/eternalartifacts/blockstates/anvilinator.json
 27383d677a2d896021262547bb9ca8c0f1c540e7 assets/eternalartifacts/blockstates/battery_box.json
@@ -20,6 +20,7 @@ a0913f199fb3673bbb36558a83f42a80b50b3635 assets/eternalartifacts/blockstates/gra
 14efb1f5c77b818c24b290c2452e6c738e4ffdb1 assets/eternalartifacts/blockstates/gravel_gold_ore.json
 dba5a07d43d1d713d16678adaacc499f3493464d assets/eternalartifacts/blockstates/gravel_iron_ore.json
 f625d7b373d1c67f50d8a4026c252c55808a2eee assets/eternalartifacts/blockstates/iron_oreberry.json
+3de4ec7bb0173a06a89df359e5932d0425d7200e assets/eternalartifacts/blockstates/jar.json
 9102ddf55f31f861e2e309959034cc35033bf2a5 assets/eternalartifacts/blockstates/layered_prismarine.json
 245a29b651ef782db011509234503d4ae811c5b6 assets/eternalartifacts/blockstates/machine_block.json
 bd456c3a5bda3ff2081b02ece494c4d6af1afd6e assets/eternalartifacts/blockstates/manganese_oreberry.json

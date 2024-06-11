@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -131,6 +132,7 @@ public class ModItems {
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
+    public static final DeferredItem<JarBlockItem> JAR = register("jar", ()-> new JarBlockItem(new Item.Properties()));
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));
