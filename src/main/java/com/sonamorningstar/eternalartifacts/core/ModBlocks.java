@@ -83,13 +83,15 @@ public class ModBlocks {
             ()-> new Block(Blocks.JUNGLE_PLANKS.properties()));
 
     public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous_block",
-            ()-> new LiquidBlock(ModFluids.NOUS_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
+            ()-> new LiquidBlock(ModFluids.NOUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
     public static final DeferredBlock<LiquidBlock> LIQUID_MEAT_BLOCK = registerNoItem("liquid_meat_block",
-            ()-> new LiquidBlock(ModFluids.LIQUID_MEAT_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BROWN)));
+            ()-> new LiquidBlock(ModFluids.LIQUID_MEAT, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BROWN)));
     public static final DeferredBlock<LiquidBlock> PINK_SLIME_FLUID_BLOCK = registerNoItem("pink_slime_fluid_block",
-            ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
+            ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
     public static final DeferredBlock<LiquidBlock> BLOOD_BLOCK = registerNoItem("blood_block",
-            ()-> new LiquidBlock(ModFluids.BLOOD_SOURCE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_RED)));
+            ()-> new LiquidBlock(ModFluids.BLOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_RED)));
+    public static final DeferredBlock<LiquidBlock> LIQUID_PLASTIC_BLOCK = registerNoItem("liquid_plastic_block",
+            ()-> new LiquidBlock(ModFluids.LIQUID_PLASTIC, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_WHITE)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));

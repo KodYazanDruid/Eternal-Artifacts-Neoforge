@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-10T21:59:58.1739422	Item Models: eternalartifacts
+// 1.20.4	2024-06-14T17:21:02.0527808	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -50,6 +50,7 @@ a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/hol
 4121e3001997cd4cc15a732175e5f853bcb65167 assets/eternalartifacts/models/item/jar.json
 f244cc9ae51e0947ad50cb4f4e7d4a5c36861a92 assets/eternalartifacts/models/item/lens.json
 622d062f81af2dec58f7896f954c6762d63d1be1 assets/eternalartifacts/models/item/liquid_meat_bucket.json
+d608f92e218c867ca956bd52da4235eba06b49c2 assets/eternalartifacts/models/item/liquid_plastic_bucket.json
 96ceecf7541e5c363e94df98ec3b72b6921fac2f assets/eternalartifacts/models/item/lush_grubber.json
 9664ad295d909582390420bb3d51770238f428ad assets/eternalartifacts/models/item/machine_block.json
 6afd025c41261b45f50dac602bcfc9762a50ff3c assets/eternalartifacts/models/item/magic_feather.json
@@ -78,3 +79,4 @@ c2ba6e613a9d34d8645d20445e90e19ada25b666 assets/eternalartifacts/models/item/ste
 6fd4201710cef1abf6ca4ea4729bfb5aab63a755 assets/eternalartifacts/models/item/stripped_citrus_wood.json
 ba733dcc4dedb590bfbd7153bcdec9552b070693 assets/eternalartifacts/models/item/sugar_charcoal.json
 d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/sword_of_the_green_earth.json
+a9146648aea7d322f14ca73f9e69bcf44f71dac1 assets/eternalartifacts/models/item/wrench.json

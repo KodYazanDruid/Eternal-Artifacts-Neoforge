@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-07T18:19:07.1661764	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2024-06-14T17:21:02.0397773	Tags for minecraft:item mod id eternalartifacts
 739b14f3f9fa7b447d8ac1989c2d47a24f23a539 data/eternalartifacts/tags/items/gardening_pot_suitable.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
 8aea35b9fb43e978f8582edfa4c0feec4018b3a3 data/forge/tags/items/feathers.json
@@ -16,10 +16,15 @@ ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.jso
 9f8737be4c7afb21a8efe8042bd46f129c400ecc data/forge/tags/items/nuggets/experience.json
 c3f9a87145bbbc37d14f6c773ae4678299c7baac data/forge/tags/items/nuggets/manganese.json
 dbcff27a2762da2d30570d3e4cdf9f134fd38c77 data/forge/tags/items/nuggets/steel.json
+ab4aeb82c21f03d5dca2e30af473360fc64eeab5 data/forge/tags/items/ores/coal.json
+23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/items/ores/copper.json
+f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/forge/tags/items/ores/gold.json
+2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/forge/tags/items/ores/iron.json
 bc5216995fbc1af0ccb662a4f8008aaed727fb70 data/forge/tags/items/plastic_sheets.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
+4c36db30a00d54d37767d1315c2d9e4edeec3c8a data/forge/tags/items/tools/wrench.json
 1247507c3b27d84e64eec122d4cc88ffb823a08e data/minecraft/tags/items/axes.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/minecraft/tags/items/coals.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/items/flowers.json

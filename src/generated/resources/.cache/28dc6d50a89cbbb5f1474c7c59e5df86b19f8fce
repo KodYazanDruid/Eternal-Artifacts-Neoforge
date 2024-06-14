@@ -1,4 +1,5 @@
-// 1.20.4	2024-06-07T23:46:30.181924	vanilla/Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-06-14T21:01:53.3848238	vanilla/Tags for minecraft:block mod id eternalartifacts
+f930f124a291381cc444d958245f10cc72677f0d data/forge/tags/blocks/mineable/wrench.json
 23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/blocks/ore_rates/dense.json
 9547ece2d8fffa9d9e3343738634d696dc233a7c data/forge/tags/blocks/ore_rates/singular.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/blocks/storage_blocks/coal.json

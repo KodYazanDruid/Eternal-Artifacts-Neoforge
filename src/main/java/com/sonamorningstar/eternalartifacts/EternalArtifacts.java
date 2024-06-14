@@ -34,8 +34,7 @@ public class EternalArtifacts {
      * TODO: Geothermal Generator, Piezoelectric Plane
      * TODO: Modular Fluid Tank
      * TODO: A plant with infinite water supply
-     * TODO: A fluid jar with 1000mb capacity
-     * TODO: ARDITE
+     * TODO: ARDITE ?
      * TODO: Configs.
      *
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
@@ -46,7 +45,7 @@ public class EternalArtifacts {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register(MODID+"_tab", () -> CreativeModeTab.builder()
             .title(Component.translatable("itemGroup." + MODID))
             .withTabsBefore(CreativeModeTabs.COMBAT)
             .icon(ModItems.ORANGE.get()::getDefaultInstance)

@@ -17,14 +17,11 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.LavaFluid;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -70,50 +67,50 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         //Rework the recipe to accept entity tags aswell.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
-                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 40),
-                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 75),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 25),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 20)
+                new FluidStack(ModFluids.BLOOD.get().getSource(), 40),
+                new FluidStack(ModFluids.LIQUID_MEAT.get().getSource(), 75),
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 25),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 20)
         ));
         createMobLiquifyingRecipe(recipeOutput, EntityType.SHEEP, NonNullList.of(
                 FluidStack.EMPTY,
-                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 35),
-                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 50),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 20),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 20)
+                new FluidStack(ModFluids.BLOOD.get().getSource(), 35),
+                new FluidStack(ModFluids.LIQUID_MEAT.get().getSource(), 50),
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 20),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 20)
         ));
         createMobLiquifyingRecipe(recipeOutput, EntityType.PIG, NonNullList.of(
                 FluidStack.EMPTY,
-                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 30),
-                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 75),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 25),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 20)
+                new FluidStack(ModFluids.BLOOD.get().getSource(), 30),
+                new FluidStack(ModFluids.LIQUID_MEAT.get().getSource(), 75),
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 25),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 20)
         ));
         createMobLiquifyingRecipe(recipeOutput, EntityType.CHICKEN, NonNullList.of(
                 FluidStack.EMPTY,
-                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 10),
-                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 25),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 10),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 15)
+                new FluidStack(ModFluids.BLOOD.get().getSource(), 10),
+                new FluidStack(ModFluids.LIQUID_MEAT.get().getSource(), 25),
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 10),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 15)
         ));
         createMobLiquifyingRecipe(recipeOutput, EntityType.ZOMBIE, NonNullList.of(
                 FluidStack.EMPTY,
-                new FluidStack(ModFluids.BLOOD_SOURCE.get().getSource(), 10),
-                new FluidStack(ModFluids.LIQUID_MEAT_SOURCE.get().getSource(), 20),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 10),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 25)
+                new FluidStack(ModFluids.BLOOD.get().getSource(), 10),
+                new FluidStack(ModFluids.LIQUID_MEAT.get().getSource(), 20),
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 10),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 25)
         ));
         createMobLiquifyingRecipe(recipeOutput, EntityType.SKELETON, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(NeoForgeMod.MILK, 75),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 5),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 25)
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 5),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 25)
         ));
         createMobLiquifyingRecipe(recipeOutput, EntityType.BLAZE, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(Fluids.LAVA.getSource(), 75),
-                new FluidStack(ModFluids.PINK_SLIME_SOURCE.get().getSource(), 35),
-                new FluidStack(ModFluids.NOUS_SOURCE.get().getSource(), 25)
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 35),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 25)
         ));
 
 
@@ -305,11 +302,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, int output) {
         String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
-        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, output)))
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT, output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+path));
     }
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, int output) {
-        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT_SOURCE, output)))
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT, output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+input.location().getPath()));
     }
 

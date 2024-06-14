@@ -58,6 +58,11 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.NUGGETS_MANGANESE).add(ModItems.MANGANESE_NUGGET.get());
         tag(ModTags.Items.NUGGETS_STEEL).add(ModItems.STEEL_NUGGET.get());
 
+        tag(Tags.Items.ORES_COAL).add(ModBlocks.GRAVEL_COAL_ORE.asItem());
+        tag(Tags.Items.ORES_COPPER).add(ModBlocks.GRAVEL_COPPER_ORE.asItem());
+        tag(Tags.Items.ORES_IRON).add(ModBlocks.GRAVEL_IRON_ORE.asItem());
+        tag(Tags.Items.ORES_GOLD).add(ModBlocks.GRAVEL_GOLD_ORE.asItem());
+
         tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
         tag(ItemTags.COALS).add(ModItems.SUGAR_CHARCOAL.get());
@@ -90,6 +95,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.COPPER_HOE.get(),
                 ModItems.LUSH_GRUBBER.get()
         );
+        tag(ModTags.Items.TOOLS_WRENCH).add(ModItems.WRENCH.get());
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,

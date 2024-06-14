@@ -74,6 +74,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.STEEL_INGOT.get());
         basicItem(ModItems.STEEL_NUGGET.get());
         basicItem(ModItems.PLASTIC_SHEET.get());
+        handheld(ModItems.WRENCH);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -110,10 +111,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc("block/four_leaf_clover"));
 
-        bucketItem(ModItems.NOUS_BUCKET, ModFluids.NOUS_SOURCE);
-        bucketItem(ModItems.LIQUID_MEAT_BUCKET, ModFluids.LIQUID_MEAT_SOURCE);
-        bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME_SOURCE);
-        bucketItem(ModItems.BLOOD_BUCKET, ModFluids.BLOOD_SOURCE);
+        bucketItem(ModItems.NOUS_BUCKET, ModFluids.NOUS);
+        bucketItem(ModItems.LIQUID_MEAT_BUCKET, ModFluids.LIQUID_MEAT);
+        bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME);
+        bucketItem(ModItems.BLOOD_BUCKET, ModFluids.BLOOD);
+        bucketItem(ModItems.LIQUID_PLASTIC_BUCKET, ModFluids.LIQUID_PLASTIC);
     }
 
     private void handheld(DeferredItem<Item> deferred) {

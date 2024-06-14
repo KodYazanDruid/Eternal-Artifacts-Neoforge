@@ -1,16 +1,23 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModTags {
     public static class Blocks {
+        public static final TagKey<Block> MINEABLE_WITH_WRENCH = forgeTag("mineable/wrench");
+        public static final TagKey<Block> NEEDS_COPPER_TOOL = modTag("needs_copper_tool");
+
+        private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
+        private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
     }
 
     public static class Items {
@@ -30,6 +37,7 @@ public class ModTags {
         public static final TagKey<Item> NUGGETS_MANGANESE= forgeTag("nuggets/manganese");
         public static final TagKey<Item> NUGGETS_STEEL = forgeTag("nuggets/steel");
         public static final TagKey<Item> PLASTIC = forgeTag("plastic_sheets");
+        public static final TagKey<Item> TOOLS_WRENCH = forgeTag("tools/wrench");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }
@@ -40,6 +48,7 @@ public class ModTags {
         public static final TagKey<Fluid> MEAT = forgeTag("meat");
         public static final TagKey<Fluid> PINK_SLIME = forgeTag("pink_slime");
         public static final TagKey<Fluid> BLOOD = forgeTag("blood");
+        public static final TagKey<Fluid> PLASTIC = forgeTag("plastic");
 
         private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }

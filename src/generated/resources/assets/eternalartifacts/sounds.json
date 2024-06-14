@@ -25,5 +25,11 @@
       "eternalartifacts:holy_dagger_activate"
     ],
     "subtitle": "eternalartifacts.subtitle.holy_dagger_activate"
+  },
+  "wrench": {
+    "sounds": [
+      "eternalartifacts:wrench"
+    ],
+    "subtitle": "eternalartifacts.subtitle.wrench"
   }
 }

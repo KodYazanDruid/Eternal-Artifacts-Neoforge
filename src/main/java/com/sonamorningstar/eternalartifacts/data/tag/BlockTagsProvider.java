@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -50,6 +51,18 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.MOB_LIQUIFIER.get(), "iron", "pickaxe");
 
+        tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
+                ModBlocks.MACHINE_BLOCK.get(),
+                ModBlocks.RESONATOR.get(),
+                ModBlocks.ANVILINATOR.get(),
+                ModBlocks.BOOK_DUPLICATOR.get(),
+                ModBlocks.MEAT_SHREDDER.get(),
+                ModBlocks.MEAT_PACKER.get(),
+                ModBlocks.MOB_LIQUIFIER.get(),
+                ModBlocks.BATTERY_BOX.get()
+        );
+        tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
+
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());
@@ -68,6 +81,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             case "wood" -> tag(Tags.Blocks.NEEDS_WOOD_TOOL).add(block);
             case "gold" -> tag(Tags.Blocks.NEEDS_GOLD_TOOL).add(block);
             case "stone" -> tag(BlockTags.NEEDS_STONE_TOOL).add(block);
+            case "copper" -> tag(ModTags.Blocks.NEEDS_COPPER_TOOL).add(block);
             case "iron" -> tag(BlockTags.NEEDS_IRON_TOOL).add(block);
             case "diamond" -> tag(BlockTags.NEEDS_DIAMOND_TOOL).add(block);
             case "netherite" -> tag(Tags.Blocks.NEEDS_NETHERITE_TOOL).add(block);
@@ -78,6 +92,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             case "axe" -> tag(BlockTags.MINEABLE_WITH_AXE).add(block);
             case "shovel" -> tag(BlockTags.MINEABLE_WITH_SHOVEL).add(block);
             case "hoe" -> tag(BlockTags.MINEABLE_WITH_HOE).add(block);
+            case "wrench" -> tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(block);
         }
     }
 

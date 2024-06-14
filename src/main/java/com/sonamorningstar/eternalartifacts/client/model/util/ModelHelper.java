@@ -32,7 +32,6 @@ public class ModelHelper {
     @Nullable
     public static <T extends BakedModel> T getBakedModel(BlockState state, Class<T> tClass) {
         Minecraft minecraft = Minecraft.getInstance();
-        if(minecraft == null) return null;
 
         BakedModel baked = minecraft.getModelManager().getBlockModelShaper().getBlockModel(state);
         if(baked instanceof MultiPartBakedModel) baked = ((MultiPartBakedModel)baked).selectors.get(0).getRight();
@@ -44,7 +43,6 @@ public class ModelHelper {
     @Nullable
     public static <T extends BakedModel> T getBakedModel(ItemLike item, Class<T> tClass) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft == null) return null;
         BakedModel baked = minecraft.getItemRenderer().getItemModelShaper().getItemModel(item.asItem());
         if (tClass.isInstance(baked)) return tClass.cast(baked);
         return null;

@@ -16,6 +16,8 @@ public class ModSounds {
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCK_AMBIENT = registerSoundEvent("duck_ambient");
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCK_STEP = registerSoundEvent("duck_step");
 
+    public static final DeferredHolder<SoundEvent, SoundEvent> WRENCH = registerSoundEvent("wrench");
+
     private static DeferredHolder<SoundEvent, SoundEvent> registerSoundEvent(String name) {
         return SOUNDS.register(name, ()-> SoundEvent.createVariableRangeEvent(new ResourceLocation(MODID, name)));
     }

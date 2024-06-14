@@ -81,6 +81,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.STEEL_INGOT.get(), "Steel Ingot");
                 add(ModItems.STEEL_NUGGET.get(), "Steel Nugget");
                 add(ModItems.PLASTIC_SHEET.get(), "Plastic Sheet");
+                add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Liquid Plastic Bucket");
+                add(ModItems.WRENCH.get(), "Wrench");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -130,6 +132,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MOB_LIQUIFIER.get(), "Mob Liquifier");
                 add(ModBlocks.JAR.get(), "Jar");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Jar");
+                add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Liquid Plastic");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -233,6 +236,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.STEEL_INGOT.get(), "Çelik Külçesi");
                 add(ModItems.STEEL_NUGGET.get(), "Çelik Parçası");
                 add(ModItems.PLASTIC_SHEET.get(), "Plastik Tabaka");
+                add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Sıvı Plastik Kovası");
+                add(ModItems.WRENCH.get(), "İngiliz Anahtarı");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -282,6 +287,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MOB_LIQUIFIER.get(), "Yaratık Sıvılaştırıcı");
                 add(ModBlocks.JAR.get(), "Kavanoz");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
+                add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Sıvı Plastik");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

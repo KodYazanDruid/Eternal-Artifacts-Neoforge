@@ -1,0 +1,13 @@
+{
+  "values": [
+    "eternalartifacts:machine_block",
+    "eternalartifacts:resonator",
+    "eternalartifacts:anvilinator",
+    "eternalartifacts:book_duplicator",
+    "eternalartifacts:meat_shredder",
+    "eternalartifacts:meat_packer",
+    "eternalartifacts:mob_liquifier",
+    "eternalartifacts:battery_box",
+    "#forge:storage_blocks"
+  ]
+}

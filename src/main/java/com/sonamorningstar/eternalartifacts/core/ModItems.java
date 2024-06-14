@@ -120,15 +120,18 @@ public class ModItems {
     public static final DeferredItem<Item> AXE_OF_REGROWTH = registerStacksToOne("axe_of_regrowth", AxeOfRegrowthItem::new);
     public static final DeferredItem<Item> NATURAL_SPADE = registerStacksToOne("natural_spade", NaturalSpadeItem::new);
     public static final DeferredItem<Item> LUSH_GRUBBER = registerStacksToOne("lush_grubber", LushGrubberItem::new);
+    public static final DeferredItem<Item> WRENCH = registerStacksToOne("wrench", WrenchItem::new);
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
-            p -> new BucketItem(ModFluids.NOUS_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+            p -> new BucketItem(ModFluids.NOUS::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
     public static final DeferredHolder<Item, BucketItem> LIQUID_MEAT_BUCKET = register("liquid_meat_bucket",
-            p -> new BucketItem(ModFluids.LIQUID_MEAT_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+            p -> new BucketItem(ModFluids.LIQUID_MEAT::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
     public static final DeferredHolder<Item, BucketItem> PINK_SLIME_BUCKET = register("pink_slime_bucket",
-            p -> new BucketItem(ModFluids.PINK_SLIME_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+            p -> new BucketItem(ModFluids.PINK_SLIME::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
     public static final DeferredHolder<Item, BucketItem> BLOOD_BUCKET = register("blood_bucket",
-            p -> new BucketItem(ModFluids.BLOOD_SOURCE::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+            p -> new BucketItem(ModFluids.BLOOD::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final DeferredHolder<Item, BucketItem> LIQUID_PLASTIC_BUCKET = register("liquid_plastic_bucket",
+            p -> new BucketItem(ModFluids.LIQUID_PLASTIC::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
