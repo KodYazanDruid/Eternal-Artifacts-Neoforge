@@ -65,6 +65,11 @@ public class JarBlock extends BaseEntityBlock {
         return true;
     }
 
+    @Override
+    public boolean useShapeForLightOcclusion(BlockState pState) {
+        return true;
+    }
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
