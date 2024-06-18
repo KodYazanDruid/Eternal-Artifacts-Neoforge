@@ -34,6 +34,7 @@ public class EternalArtifacts {
      * TODO: Geothermal Generator, Piezoelectric Plane
      * TODO: Modular Fluid Tank
      * TODO: A plant with infinite water supply
+     * TODO: Smart Piston (with sticky)
      * TODO: ARDITE ?
      * TODO: Configs.
      *

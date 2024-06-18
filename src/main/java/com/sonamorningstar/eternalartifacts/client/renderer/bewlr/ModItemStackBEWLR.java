@@ -2,12 +2,14 @@ package com.sonamorningstar.eternalartifacts.client.renderer.bewlr;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sonamorningstar.eternalartifacts.client.renderer.JarRenderer;
 import com.sonamorningstar.eternalartifacts.content.block.JarBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -34,7 +36,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             if(block instanceof JarBlock jarBlock) {
                 IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).get();
                 jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
-                minecraft.getBlockEntityRenderDispatcher().renderItem(jarBlockEntity, ps, buff, light, overlay);
+                JarRenderer.renderWhole(jarBlockEntity, ps, buff, JarRenderer.TEXTURE_JAR, light, overlay);
             }
         }
 

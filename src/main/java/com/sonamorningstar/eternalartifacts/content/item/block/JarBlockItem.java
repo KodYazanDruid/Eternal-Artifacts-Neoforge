@@ -83,7 +83,7 @@ public class JarBlockItem extends BlockItem {
         return BlockHelper.getFluidTintColor(getFluid(stack));
     }
 
-    /*@Override
+    @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
             @Override
@@ -91,5 +91,5 @@ public class JarBlockItem extends BlockItem {
                 return ModItemStackBEWLR.INSTANCE.get();
             }
         });
-    }*/
+    }
 }

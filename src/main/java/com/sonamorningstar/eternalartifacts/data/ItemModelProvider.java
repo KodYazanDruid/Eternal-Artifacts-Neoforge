@@ -102,7 +102,6 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.EXPERIENCE_ORE_BERRY.getId().getPath(), modLoc("block/experience_oreberry_stage1"));
         withExistingParent(ModBlocks.MANGANESE_ORE_BERRY.getId().getPath(), modLoc("block/manganese_oreberry_stage1"));
         withExistingParent(ModBlocks.BATTERY_BOX.getId().getPath(), modLoc("block/battery_box"));
-        withExistingParent(ModBlocks.JAR.getId().getPath(), modLoc("block/jar"));
         //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))

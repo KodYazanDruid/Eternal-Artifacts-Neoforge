@@ -1,13 +1,14 @@
 package com.sonamorningstar.eternalartifacts.client.model;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemOverrides;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
@@ -31,14 +32,24 @@ import java.util.function.Function;
 public class PiezoelectricSlabModel implements IUnbakedGeometry<PiezoelectricSlabModel> {
     public static IGeometryLoader<PiezoelectricSlabModel> LOADER = PiezoelectricSlabModel::deserialize;
 
-    private static PiezoelectricSlabModel deserialize(JsonObject jsonObject, JsonDeserializationContext context) {
+    enum Connectors {
+
+    }
+
+
+    private static PiezoelectricSlabModel deserialize(JsonObject json, JsonDeserializationContext context) {
+        /*List<JsonElement> blockStateProperties = json.get("state").getAsJsonArray().asList();
+        for(JsonElement element : blockStateProperties) {
+            element.
+        }*/
 
         return new PiezoelectricSlabModel();
     }
 
     @Override
     public BakedModel bake(IGeometryBakingContext context, ModelBaker baker, Function<Material, TextureAtlasSprite> spriteGetter, ModelState modelState, ItemOverrides overrides, ResourceLocation modelLocation) {
-        return null;
+
+        return new PiezoelectricSlabBakedModel(context);
     }
 
     @RequiredArgsConstructor
@@ -47,6 +58,7 @@ public class PiezoelectricSlabModel implements IUnbakedGeometry<PiezoelectricSla
 
         @Override
         public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, RandomSource rand, ModelData extraData, @Nullable RenderType renderType) {
+
             return null;
         }
 

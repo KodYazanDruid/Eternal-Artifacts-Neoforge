@@ -4,7 +4,12 @@ import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.model.ModelTemplates;
+import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,6 +22,7 @@ import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -25,8 +31,15 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 
 public class BlockStateProvider extends net.neoforged.neoforge.client.model.generators.BlockStateProvider {
+    private final PackOutput output;
     public BlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, MODID, exFileHelper);
+        this.output = output;
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+        return super.run(cache);
     }
 
     @Override
@@ -74,6 +87,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 ).texture("particle", modLoc("block/machine_side"))
             ).build());
 
+        simpleBlock(ModBlocks.JAR.get(), ConfiguredModel.builder().modelFile(new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper)).build());
+
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
         machineBlock(ModBlocks.MEAT_PACKER, false);
@@ -88,7 +103,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
 
         simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
-        simpleBlock(ModBlocks.JAR.get(), new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper));
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
@@ -99,7 +113,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
-
     }
 
     private void machineBlock(DeferredBlock<? extends Block> holder, boolean unique) {

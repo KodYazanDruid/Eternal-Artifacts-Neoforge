@@ -50,7 +50,6 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-//minecraft.accessTransformers.entry public net.minecraft.client.Minecraft textureManager # textureManager
 
 runs {
     configureEach {
@@ -95,9 +94,9 @@ dependencies {
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     // at runtime, use the full JEI jar for NeoForge
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
-    implementation "mcjty.theoneprobe:theoneprobe:${top_version}"
-    implementation "appeng:appliedenergistics2-neoforge:${ae2_version}"
-    implementation "curse.maven:pipez-443900:5396282" //Pipez
+    runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
+    runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
+    runtimeOnly "curse.maven:pipez-443900:5396282" //Pipez
 
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
