@@ -1,12 +1,10 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferMachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
@@ -42,7 +40,7 @@ public record SidedTransferAutoSaveToServer(int index, boolean auto, BlockPos po
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             Level level = player.level();
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof SidedTransferBlockEntity<?> sided) {
+            if(entity instanceof SidedTransferMachineBlockEntity<?> sided) {
                 Map<Integer, Boolean> autoConfigs = sided.getAutoConfigs();
                 autoConfigs.put(index, auto);
                 sided.sendUpdate();

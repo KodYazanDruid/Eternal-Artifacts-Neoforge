@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferAutoSaveToServer;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferRedstoneToServer;
@@ -22,7 +22,7 @@ import java.util.Map;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> extends AbstractMachineScreen<T> {
-    private final SidedTransferBlockEntity<?> sidedTransferBlockEntity = ((SidedTransferBlockEntity<?>) menu.getBlockEntity());
+    private final SidedTransferMachineBlockEntity<?> sidedTransferMachineBlockEntity = ((SidedTransferMachineBlockEntity<?>) menu.getBlockEntity());
 
     @Setter
     protected boolean redstoneControllable = true;
@@ -77,13 +77,13 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private void buttonSideSet(Button button, int index) {
         Channel.sendToServer(new SidedTransferSideSaveToServer(
                 index,
-                SidedTransferBlockEntity.TransferType.cycleNext(index, ((SidedTransferBlockEntity<?>) menu.getBlockEntity())),
+                SidedTransferMachineBlockEntity.TransferType.cycleNext(index, ((SidedTransferMachineBlockEntity<?>) menu.getBlockEntity())),
                 menu.getBlockEntity().getBlockPos()));
     }
 
     private void buttonAutoSet(Button button, int index) {
         BlockEntity be = menu.getBlockEntity();
-        if(be instanceof SidedTransferBlockEntity<?> sided) {
+        if(be instanceof SidedTransferMachineBlockEntity<?> sided) {
             boolean auto = sided.getAutoConfigs().get(index) != null && sided.getAutoConfigs().get(index);
             Channel.sendToServer(new SidedTransferAutoSaveToServer(index, !auto, sided.getBlockPos()));
         }
@@ -92,14 +92,14 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private void buttonRedstoneSet(Button button, int index) {
         Channel.sendToServer(new SidedTransferRedstoneToServer(
                 index,
-                SidedTransferBlockEntity.RedstoneType.cycleNext(index, ((SidedTransferBlockEntity<?>) menu.getBlockEntity())),
+                SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, ((SidedTransferMachineBlockEntity<?>) menu.getBlockEntity())),
                 menu.getBlockEntity().getBlockPos()));
     }
 
     @Override
     protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
-        renderSidedTransferTab(gui, sidedTransferBlockEntity);
+        renderSidedTransferTab(gui, sidedTransferMachineBlockEntity);
     }
 
     @Override
@@ -108,12 +108,12 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         sidedTransferBarActive = mx >= x+5 && mx <= x+101 && my >= y-29 && my <= y+3;
     }
 
-    protected void renderSidedTransferTab(GuiGraphics guiGraphics, SidedTransferBlockEntity<?> sided) {
+    protected void renderSidedTransferTab(GuiGraphics guiGraphics, SidedTransferMachineBlockEntity<?> sided) {
         int sidedX = x + 5;
         int sidedY = y - 29;
-        Map<Integer, SidedTransferBlockEntity.TransferType> side = sided.getSideConfigs();
+        Map<Integer, SidedTransferMachineBlockEntity.TransferType> side = sided.getSideConfigs();
         Map<Integer, Boolean> auto = sided.getAutoConfigs();
-        Map<Integer, SidedTransferBlockEntity.RedstoneType> redstone = sided.getRedstoneConfigs();
+        Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstone = sided.getRedstoneConfigs();
         sideSetters.forEach(button -> button.visible = sidedTransferBarActive);
         autoSetters.forEach(button -> button.visible = sidedTransferBarActive);
         for(int i = 0 ; i < autoSetters.size(); i++) {
@@ -180,18 +180,18 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         }
     }
 
-    private ResourceLocation getTextureForTransferType(SidedTransferBlockEntity.TransferType transferType) {
-        if(transferType == SidedTransferBlockEntity.TransferType.DEFAULT) return allow;
-        if(transferType == SidedTransferBlockEntity.TransferType.NONE) return deny;
-        if(transferType == SidedTransferBlockEntity.TransferType.PULL) return input;
-        if(transferType == SidedTransferBlockEntity.TransferType.PUSH) return output;
+    private ResourceLocation getTextureForTransferType(SidedTransferMachineBlockEntity.TransferType transferType) {
+        if(transferType == SidedTransferMachineBlockEntity.TransferType.DEFAULT) return allow;
+        if(transferType == SidedTransferMachineBlockEntity.TransferType.NONE) return deny;
+        if(transferType == SidedTransferMachineBlockEntity.TransferType.PULL) return input;
+        if(transferType == SidedTransferMachineBlockEntity.TransferType.PUSH) return output;
         return allow;
     }
 
-    private ResourceLocation getTextureForRedstoneType(SidedTransferBlockEntity.RedstoneType redstoneType) {
-        if(redstoneType == SidedTransferBlockEntity.RedstoneType.IGNORED) return redstone_ignored;
-        if(redstoneType == SidedTransferBlockEntity.RedstoneType.HIGH) return redstone_active;
-        if(redstoneType == SidedTransferBlockEntity.RedstoneType.LOW) return redstone_passive;
+    private ResourceLocation getTextureForRedstoneType(SidedTransferMachineBlockEntity.RedstoneType redstoneType) {
+        if(redstoneType == SidedTransferMachineBlockEntity.RedstoneType.IGNORED) return redstone_ignored;
+        if(redstoneType == SidedTransferMachineBlockEntity.RedstoneType.HIGH) return redstone_active;
+        if(redstoneType == SidedTransferMachineBlockEntity.RedstoneType.LOW) return redstone_passive;
         return redstone_ignored;
     }
 }

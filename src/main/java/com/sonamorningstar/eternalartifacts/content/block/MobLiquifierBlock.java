@@ -1,9 +1,9 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.MobLiquifierBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MobLiquifierMachineBlockEntity;
 
-public class MobLiquifierBlock extends BaseMachineBlock<MobLiquifierBlockEntity>{
+public class MobLiquifierBlock extends BaseMachineBlock<MobLiquifierMachineBlockEntity>{
     public MobLiquifierBlock(Properties pProperties) {
-        super(pProperties, MobLiquifierBlockEntity::new);
+        super(pProperties, MobLiquifierMachineBlockEntity::new);
     }
 }

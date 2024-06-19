@@ -22,8 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDuplicatorMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
-    public BookDuplicatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
+public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockEntity<BookDuplicatorMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
+    public BookDuplicatorMachineBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
     }
@@ -37,7 +37,7 @@ public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDupl
         @Override
         protected void onContentsChanged(int slot) {
             if(slot != 1) progress = 0;
-            BookDuplicatorBlockEntity.this.sendUpdate();
+            BookDuplicatorMachineBlockEntity.this.sendUpdate();
         }
 
         @Override
@@ -62,14 +62,14 @@ public class BookDuplicatorBlockEntity extends SidedTransferBlockEntity<BookDupl
     public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
         @Override
         public void onEnergyChanged() {
-            BookDuplicatorBlockEntity.this.sendUpdate();
+            BookDuplicatorMachineBlockEntity.this.sendUpdate();
         }
     };
     @Getter
     public ModFluidStorage tank = new ModFluidStorage(10000) {
         @Override
         protected void onContentsChanged() {
-            BookDuplicatorBlockEntity.this.sendUpdate();
+            BookDuplicatorMachineBlockEntity.this.sendUpdate();
         }
 
         @Override

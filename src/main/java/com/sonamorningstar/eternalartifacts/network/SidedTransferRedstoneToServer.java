@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferMachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -13,15 +13,15 @@ import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record SidedTransferRedstoneToServer(int index, SidedTransferBlockEntity.RedstoneType type, BlockPos pos) implements CustomPacketPayload {
+public record SidedTransferRedstoneToServer(int index, SidedTransferMachineBlockEntity.RedstoneType type, BlockPos pos) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "sidedtransferredstone");
 
     public static SidedTransferRedstoneToServer create(FriendlyByteBuf buf) {
-        return new SidedTransferRedstoneToServer(buf.readInt(), buf.readEnum(SidedTransferBlockEntity.RedstoneType.class), buf.readBlockPos());
+        return new SidedTransferRedstoneToServer(buf.readInt(), buf.readEnum(SidedTransferMachineBlockEntity.RedstoneType.class), buf.readBlockPos());
     }
 
-    public static SidedTransferRedstoneToServer create(int index, SidedTransferBlockEntity.RedstoneType type, BlockPos pos) {
+    public static SidedTransferRedstoneToServer create(int index, SidedTransferMachineBlockEntity.RedstoneType type, BlockPos pos) {
         return new SidedTransferRedstoneToServer(index, type, pos);
     }
 
@@ -41,8 +41,8 @@ public record SidedTransferRedstoneToServer(int index, SidedTransferBlockEntity.
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             Level level = player.level();
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof SidedTransferBlockEntity<?> sided) {
-                Map<Integer, SidedTransferBlockEntity.RedstoneType> redstoneConfigs = sided.getRedstoneConfigs();
+            if(entity instanceof SidedTransferMachineBlockEntity<?> sided) {
+                Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = sided.getRedstoneConfigs();
                 redstoneConfigs.put(index, type);
                 sided.sendUpdate();
                 level.updateNeighborsAt(pos, entity.getBlockState().getBlock());

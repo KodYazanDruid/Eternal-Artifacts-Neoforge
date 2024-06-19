@@ -29,8 +29,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T>{
-    public SidedTransferBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
+public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T>{
+    public SidedTransferMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState, quadF);
     }
     @Getter
@@ -228,16 +228,16 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         tag.put("RedstoneConfigs", redstoneConfigs);
     }
 
-    public static boolean canPerformTransfer(SidedTransferBlockEntity<?> be, Direction dir, TransferType wanted) {
+    public static boolean canPerformTransfer(SidedTransferMachineBlockEntity<?> be, Direction dir, TransferType wanted) {
         List<Direction> available = new ArrayList<>();
         for(int i = 0; i < 6; i++) {
-            SidedTransferBlockEntity.TransferType type = be.sideConfigs.get(i) == null ? SidedTransferBlockEntity.TransferType.DEFAULT : be.sideConfigs.get(i);
-            if(type == wanted) available.add(SidedTransferBlockEntity.resolveActualDir(be.getBlockState(), i));
+            SidedTransferMachineBlockEntity.TransferType type = be.sideConfigs.get(i) == null ? SidedTransferMachineBlockEntity.TransferType.DEFAULT : be.sideConfigs.get(i);
+            if(type == wanted) available.add(SidedTransferMachineBlockEntity.resolveActualDir(be.getBlockState(), i));
         }
         return available.contains(dir);
     }
 
-    public static boolean canPerformTransfers(SidedTransferBlockEntity<?> be, Direction dir, TransferType... wanted) {
+    public static boolean canPerformTransfers(SidedTransferMachineBlockEntity<?> be, Direction dir, TransferType... wanted) {
         for(TransferType type : wanted) {
             if(canPerformTransfer(be, dir, type)) return true;
         }
@@ -271,7 +271,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         PULL,
         PUSH;
 
-        public static TransferType cycleNext(int index, SidedTransferBlockEntity<?> entity) {
+        public static TransferType cycleNext(int index, SidedTransferMachineBlockEntity<?> entity) {
             TransferType type = entity.sideConfigs.get(index) == null ? DEFAULT : entity.sideConfigs.get(index);
             if(type == DEFAULT) return NONE;
             if(type == NONE) return PULL;
@@ -279,7 +279,7 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
             return DEFAULT;
         }
 
-        public static TransferType cyclePrev(int index, SidedTransferBlockEntity<?> entity) {
+        public static TransferType cyclePrev(int index, SidedTransferMachineBlockEntity<?> entity) {
             TransferType type = entity.sideConfigs.get(index) == null ? DEFAULT : entity.sideConfigs.get(index);
             if(type == DEFAULT) return PUSH;
             if(type == NONE) return DEFAULT;
@@ -293,14 +293,14 @@ public abstract class SidedTransferBlockEntity<T extends AbstractMachineMenu> ex
         HIGH,
         LOW;
 
-        public static RedstoneType cycleNext(int index, SidedTransferBlockEntity<?> entity) {
+        public static RedstoneType cycleNext(int index, SidedTransferMachineBlockEntity<?> entity) {
             RedstoneType type = entity.redstoneConfigs.get(index) == null ? IGNORED : entity.redstoneConfigs.get(index);
             if(type == IGNORED) return HIGH;
             if(type == HIGH) return LOW;
             return IGNORED;
         }
 
-        public static RedstoneType cyclePrev(int index, SidedTransferBlockEntity<?> entity) {
+        public static RedstoneType cyclePrev(int index, SidedTransferMachineBlockEntity<?> entity) {
             RedstoneType type = entity.redstoneConfigs.get(index) == null ? IGNORED : entity.redstoneConfigs.get(index);
             if(type == IGNORED) return LOW;
             if(type == HIGH) return IGNORED;

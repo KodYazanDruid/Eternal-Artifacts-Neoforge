@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-17T21:35:04.4250995	Item Models: eternalartifacts
+// 1.20.4	2024-06-20T01:39:09.3688099	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -33,6 +33,7 @@ c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duc
 917c9fb8d52a3487b58003fa6ac88c0d056be391 assets/eternalartifacts/models/item/encumbator.json
 78bc681824bce9b7f3f76f1c096673a70d98f0de assets/eternalartifacts/models/item/encumbator_active.json
 c90643f23e4462e731095ab5da3ec58e9c67289b assets/eternalartifacts/models/item/ender_notebook.json
+cacbc1204e0f048313f4821f660548aa6c1fa736 assets/eternalartifacts/models/item/ender_paper.json
 a0623a5915f2cd12361259e198947935b3335943 assets/eternalartifacts/models/item/ender_pouch.json
 886377bc2674537be2ca5d4c14dd015e1c75474d assets/eternalartifacts/models/item/ender_tablet.json
 571bbeea77d58fddf32fe5625aa5f4594461a7e4 assets/eternalartifacts/models/item/experience_berry.json

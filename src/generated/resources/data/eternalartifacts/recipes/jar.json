@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": {
+      "tag": "forge:glass_panes"
+    },
+    "W": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": [
+    " W ",
+    "P P",
+    " P "
+  ],
+  "result": {
+    "item": "eternalartifacts:jar"
+  }
+}

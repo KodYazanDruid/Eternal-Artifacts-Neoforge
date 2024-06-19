@@ -1,9 +1,9 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.MeatPackerBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MeatPackerMachineBlockEntity;
 
-public class MeatPackerBlock extends BaseMachineBlock<MeatPackerBlockEntity>{
+public class MeatPackerBlock extends BaseMachineBlock<MeatPackerMachineBlockEntity>{
     public MeatPackerBlock(Properties pProperties) {
-        super(pProperties, MeatPackerBlockEntity::new);
+        super(pProperties, MeatPackerMachineBlockEntity::new);
     }
 }

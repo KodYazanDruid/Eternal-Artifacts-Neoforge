@@ -1,33 +1,34 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
-import com.sonamorningstar.eternalartifacts.container.MeatShredderMenu;
-import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
+import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
-import com.sonamorningstar.eternalartifacts.core.ModRecipes;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
-
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class MeatShredderBlockEntity extends SidedTransferBlockEntity<MeatShredderMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
-    public MeatShredderBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.MEAT_SHREDDER.get(), pos, blockState, MeatShredderMenu::new);
+public class MeatPackerMachineBlockEntity extends SidedTransferMachineBlockEntity<MeatPackerMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
+    public MeatPackerMachineBlockEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntities.MEAT_PACKER.get(), pos, blockState, MeatPackerMenu::new);
     }
 
     @Getter
     public ModItemStorage inventory = new ModItemStorage(1) {
         @Override
         protected void onContentsChanged(int slot) {
-            progress = 0;
-            findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
-            MeatShredderBlockEntity.this.sendUpdate();
+            MeatPackerMachineBlockEntity.this.sendUpdate();
+        }
+
+        @Override
+        public boolean isItemValid(int slot, ItemStack stack) {
+            return false;
         }
     };
 
@@ -35,7 +36,7 @@ public class MeatShredderBlockEntity extends SidedTransferBlockEntity<MeatShredd
     public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
         @Override
         public void onEnergyChanged() {
-            MeatShredderBlockEntity.this.sendUpdate();
+            MeatPackerMachineBlockEntity.this.sendUpdate();
         }
     };
 
@@ -43,7 +44,7 @@ public class MeatShredderBlockEntity extends SidedTransferBlockEntity<MeatShredd
     public ModFluidStorage tank = new ModFluidStorage(10000) {
         @Override
         protected void onContentsChanged() {
-            MeatShredderBlockEntity.this.sendUpdate();
+            MeatPackerMachineBlockEntity.this.sendUpdate();
         }
 
         @Override
@@ -52,14 +53,11 @@ public class MeatShredderBlockEntity extends SidedTransferBlockEntity<MeatShredd
         }
 
         @Override
-        public int fill(FluidStack resource, FluidAction action) { return 0; }
-    };
+        public FluidStack drain(int maxDrain, FluidAction action) {
+            return FluidStack.EMPTY;
+        }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
-    }
+    };
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
@@ -77,19 +75,20 @@ public class MeatShredderBlockEntity extends SidedTransferBlockEntity<MeatShredd
         tank.readFromNBT(tag);
     }
 
+    //buggy
     @Override
     public void tick(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInput(lvl, pos, inventory);
-        performAutoOutputFluids(lvl, pos, tank);
-        if(currentRecipe instanceof MeatShredderRecipe msr) {
-            FluidStack fs = msr.getOutput();
-            progress(()-> {
-                int inserted = tank.fillForced(fs, IFluidHandler.FluidAction.SIMULATE);
-                return inserted < fs.getAmount();
-            }, () -> {
-                inventory.getStackInSlot(0).shrink(1);
-                tank.fillForced(fs, IFluidHandler.FluidAction.EXECUTE);
-            }, energy);
-        }
+        performAutoOutput(lvl, pos, inventory, 0);
+        performAutoInputFluids(lvl, pos, tank);
+        progress(()-> {
+            ItemStack remainder = inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), true);
+            FluidStack drained = tank.drainForced(250, IFluidHandler.FluidAction.SIMULATE);
+            return !remainder.isEmpty() || drained.getAmount() < 250;
+        }, ()-> {
+            tank.drainForced(250, IFluidHandler.FluidAction.EXECUTE);
+            inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), false);
+        }, energy);
+
     }
+
 }

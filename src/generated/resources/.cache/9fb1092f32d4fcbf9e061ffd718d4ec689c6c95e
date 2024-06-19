@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-09T16:20:14.116064	Recipes
+// 1.20.4	2024-06-18T23:54:32.1980617	Recipes
 1dc3ff242bda0de185641d64da91915dcbb5f074 data/eternalartifacts/advancements/recipes/building_blocks/pink_slime_block.json
 50deffa9c78012d384dfe5cdf31ba8044e3eca30 data/eternalartifacts/advancements/recipes/building_blocks/sugar_charcoal_block.json
 29d7c3559e0c6944e168d07b60754756f0dd152e data/eternalartifacts/advancements/recipes/food/campfire_cooking/cooked_duck_meat.json
@@ -20,6 +20,7 @@ d0bc2dcd5bebf5656b68c2bdb37cc42ff2567e75 data/eternalartifacts/advancements/reci
 4620373ca83d23d4fa7678fefec638f9e49984cf data/eternalartifacts/advancements/recipes/misc/copper_tablet.json
 7ebe6f1dd772779bcee4231dcdd5756cf85ed4db data/eternalartifacts/advancements/recipes/misc/ender_notebook.json
 6dd32bd1d5ed39906c02377b588968c7d867f717 data/eternalartifacts/advancements/recipes/misc/ender_tablet.json
+824ff6ec0a5398b1abb72c3f931cfd3bd1c9614c data/eternalartifacts/advancements/recipes/misc/jar.json
 d284c51b25602d62e2476f6f55e85100006dfad5 data/eternalartifacts/advancements/recipes/misc/manganese_ingot.json
 63148f5612744139312765a35537d469acedddb6 data/eternalartifacts/advancements/recipes/misc/manganese_nugget.json
 c3aabd56d46012d885e1996b2a4ce55ef2ab0a8f data/eternalartifacts/advancements/recipes/misc/smelting/coal.json
@@ -62,6 +63,7 @@ dab321709d1e921e0047ada3407a663b1ee18bc4 data/eternalartifacts/recipes/copper_sw
 636620b36f0936f35699739a67664daa01762d3f data/eternalartifacts/recipes/ender_tablet.json
 d8f8e879e34fbfcf2b52444be76c0a937c86fa45 data/eternalartifacts/recipes/gardening_pot_recipe.json
 32ab5ddf2c8f9d474c295ee0ef7619019f0a8c7e data/eternalartifacts/recipes/golden_ancient_fruit.json
+21ff1753a113da20b91bde5b4d719d9f1a5d68ce data/eternalartifacts/recipes/jar.json
 ebb033840ea554637575e25c33485f487581ff7a data/eternalartifacts/recipes/manganese_ingot.json
 8d1ca3b7957f50cdcb829178ad471939305e5a4c data/eternalartifacts/recipes/manganese_nugget.json
 88bbd0f35fff8b6ca799e7fc3f4d6954c5797d6a data/eternalartifacts/recipes/meat_shredding/beef.json
@@ -78,6 +80,7 @@ f78e765a921813eaf2622838beded2c05ce50a4e data/eternalartifacts/recipes/meat_shre
 4da1d715b8719aeb790d20d8e49fd092dc8f0b64 data/eternalartifacts/recipes/mob_liquifying/blaze.json
 f3f599030f58bb7b6ff862574b939819881ab8b0 data/eternalartifacts/recipes/mob_liquifying/chicken.json
 88712551c628ba88cb0113ce2bf09e6d8e41a79c data/eternalartifacts/recipes/mob_liquifying/cow.json
+aee5e655d9e6511b8db7535b92ab4ab56ae8bf38 data/eternalartifacts/recipes/mob_liquifying/enderman.json
 7708d706145c910d57c7af9ffe2c1f2efc89e2e9 data/eternalartifacts/recipes/mob_liquifying/pig.json
 9fbb3b2caf4764315bff346f4016adcf3bbd1fd9 data/eternalartifacts/recipes/mob_liquifying/sheep.json
 c6e708a04bd9ceb235e8b884bedcc624d02033a4 data/eternalartifacts/recipes/mob_liquifying/skeleton.json

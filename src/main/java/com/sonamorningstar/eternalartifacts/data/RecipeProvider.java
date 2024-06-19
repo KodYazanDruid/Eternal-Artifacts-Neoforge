@@ -9,6 +9,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -64,7 +65,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
         createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
 
-        //Rework the recipe to accept entity tags aswell.
+        //Rework the recipe to accept entity tags as well.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.BLOOD.get().getSource(), 40),
@@ -112,6 +113,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 35),
                 new FluidStack(ModFluids.NOUS.get().getSource(), 25)
         ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.ENDERMAN, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 50),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 35)
+        ));
 
 
     }
@@ -120,146 +126,95 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.GOLDEN_ANCIENT_FRUIT)
                 .pattern("NNN").pattern("NFN").pattern("NNN")
                 .define('N', Items.GOLD_INGOT).define('F', ModItems.ANCIENT_FRUIT)
-                .unlockedBy("has_item", has(ModItems.ANCIENT_FRUIT))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModItems.ANCIENT_FRUIT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .pattern("SSS").pattern("SSS").pattern("SSS")
                 .define('S', ModItems.SUGAR_CHARCOAL)
-                .unlockedBy("has_item", has(ModItems.SUGAR_CHARCOAL))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModItems.SUGAR_CHARCOAL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.PINK_SLIME_BLOCK)
                 .pattern("SSS").pattern("SSS").pattern("SSS")
                 .define('S', ModItems.PINK_SLIME)
-                .unlockedBy("has_item", has(ModItems.PINK_SLIME))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModItems.PINK_SLIME)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STONE_TABLET)
                 .pattern("SS").pattern("SS")
                 .define('S', Blocks.SMOOTH_STONE)
-                .unlockedBy("has_item", has(Blocks.SMOOTH_STONE))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(Blocks.SMOOTH_STONE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENDER_TABLET)
                 .pattern("ESE")
-                .define('S', ModItems.STONE_TABLET)
-                .define('E', Items.ENDER_PEARL)
-                .unlockedBy("has_item", has(ModItems.STONE_TABLET))
-                .save(recipeOutput);
+                .define('S', ModItems.STONE_TABLET).define('E', Items.ENDER_PEARL)
+                .unlockedBy("has_item", has(ModItems.STONE_TABLET)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_SWORD)
-                .pattern("I")
-                .pattern("I")
-                .pattern("S")
-                .define('I', Tags.Items.INGOTS_COPPER)
-                .define('S', Items.STICK)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
-                .save(recipeOutput);
+                .pattern("I").pattern("I").pattern("S")
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_PICKAXE)
-                .pattern("III")
-                .pattern(" S ")
-                .pattern(" S ")
-                .define('I', Tags.Items.INGOTS_COPPER)
-                .define('S', Items.STICK)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
-                .save(recipeOutput);
+                .pattern("III").pattern(" S ").pattern(" S ")
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_AXE)
-                .pattern("II")
-                .pattern("IS")
-                .pattern(" S")
-                .define('I', Tags.Items.INGOTS_COPPER)
-                .define('S', Items.STICK)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
-                .save(recipeOutput);
+                .pattern("II").pattern("IS").pattern(" S")
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_SHOVEL)
-                .pattern("I")
-                .pattern("S")
-                .pattern("S")
-                .define('I', Tags.Items.INGOTS_COPPER)
-                .define('S', Items.STICK)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
-                .save(recipeOutput);
+                .pattern("I").pattern("S").pattern("S")
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_HOE)
-                .pattern("II")
-                .pattern(" S")
-                .pattern(" S")
+                .pattern("II").pattern(" S").pattern(" S")
                 .define('I', Tags.Items.INGOTS_COPPER)
                 .define('S', Items.STICK)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CHLOROPHYTE_TABLET)
                 .pattern("ESE")
-                .define('S', ModItems.STONE_TABLET)
-                .define('E', ModItems.CHLOROPHYTE_INGOT)
-                .unlockedBy("has_item", has(ModItems.STONE_TABLET))
-                .save(recipeOutput);
+                .define('S', ModItems.STONE_TABLET).define('E', ModItems.CHLOROPHYTE_INGOT)
+                .unlockedBy("has_item", has(ModItems.STONE_TABLET)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.COPPER_TABLET)
                 .pattern("CBC")
-                .define('B', Items.COPPER_BLOCK)
-                .define('C', Items.COPPER_INGOT)
-                .unlockedBy("has_item", has(Items.COPPER_INGOT))
-                .save(recipeOutput);
+                .define('B', Items.COPPER_BLOCK).define('C', Items.COPPER_INGOT)
+                .unlockedBy("has_item", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.COPPER_INGOT)
-                .pattern("NNN")
-                .pattern("NNN")
-                .pattern("NNN")
+                .pattern("NNN").pattern("NNN").pattern("NNN")
                 .define('N', ModTags.Items.NUGGETS_COPPER)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STEEL_INGOT)
-                .pattern("NNN")
-                .pattern("NMN")
-                .pattern("NNN")
-                .define('N', ModTags.Items.NUGGETS_STEEL)
-                .define('M', ModItems.STEEL_NUGGET)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL))
-                .save(recipeOutput);
+                .pattern("NNN").pattern("NMN").pattern("NNN")
+                .define('N', ModTags.Items.NUGGETS_STEEL).define('M', ModItems.STEEL_NUGGET)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MANGANESE_INGOT)
-                .pattern("NNN")
-                .pattern("NMN")
-                .pattern("NNN")
-                .define('N', ModTags.Items.NUGGETS_MANGANESE)
-                .define('M', ModItems.MANGANESE_NUGGET)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE))
-                .save(recipeOutput);
+                .pattern("NNN").pattern("NMN").pattern("NNN")
+                .define('N', ModTags.Items.NUGGETS_MANGANESE).define('M', ModItems.MANGANESE_NUGGET)
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BATTERY)
-                .pattern("CMC")
-                .pattern("PRP")
-                .pattern("PCP")
-                .define('C', Tags.Items.INGOTS_COPPER)
-                .define('M', ModTags.Items.INGOTS_MANGANESE)
-                .define('P', ModTags.Items.PLASTIC)
-                .define('R', Tags.Items.DUSTS_REDSTONE)
-                .unlockedBy("has_item", has(ModTags.Items.PLASTIC))
-                .save(recipeOutput);
+                .pattern("CMC").pattern("PRP").pattern("PCP")
+                .define('C', Tags.Items.INGOTS_COPPER).define('M', ModTags.Items.INGOTS_MANGANESE)
+                .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BATTERY_BOX)
-                .pattern("RCR")
-                .pattern("CMC")
-                .pattern("PPP")
-                .define('C', ModItems.COPPER_TABLET)
-                .define('M', ModBlocks.MACHINE_BLOCK)
-                .define('P', ModTags.Items.PLASTIC)
-                .define('R', Tags.Items.DUSTS_REDSTONE)
-                .unlockedBy("has_item", has(ModBlocks.MACHINE_BLOCK))
-                .save(recipeOutput);
-
+                .pattern("RCR").pattern("CMC").pattern("PPP")
+                .define('C', ModItems.COPPER_TABLET).define('M', ModBlocks.MACHINE_BLOCK)
+                .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE).
+                unlockedBy("has_item", has(ModBlocks.MACHINE_BLOCK)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.JAR)
+                .pattern(" W ").pattern("P P").pattern(" P ")
+                .define('W', ItemTags.LOGS).define('P', Tags.Items.GLASS_PANES)
+                .unlockedBy("has_item", has(Tags.Items.GLASS_PANES)).save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
-                .unlockedBy("has_item", has(ModBlocks.SUGAR_CHARCOAL_BLOCK))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModBlocks.SUGAR_CHARCOAL_BLOCK)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENDER_NOTEBOOK)
                 .requires(Items.FEATHER).requires(ModItems.ENDER_TABLET).requires(Items.DIAMOND)
-                .unlockedBy("has_item", has(ModItems.ENDER_TABLET))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModItems.ENDER_TABLET)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.COPPER_NUGGET, 9)
                 .requires(Items.COPPER_INGOT)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STEEL_NUGGET, 9)
                 .requires(ModTags.Items.INGOTS_STEEL)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MANGANESE_NUGGET, 9)
                 .requires(ModTags.Items.INGOTS_MANGANESE)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE))
-                .save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE)).save(recipeOutput);
+
     }
 
     private void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {

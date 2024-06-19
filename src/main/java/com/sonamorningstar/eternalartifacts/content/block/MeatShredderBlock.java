@@ -1,10 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.MeatShredderBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MeatShredderMachineBlockEntity;
 
-public class MeatShredderBlock extends BaseMachineBlock<MeatShredderBlockEntity> {
+public class MeatShredderBlock extends BaseMachineBlock<MeatShredderMachineBlockEntity> {
     public MeatShredderBlock(Properties pProperties) {
-        super(pProperties, MeatShredderBlockEntity::new);
+        super(pProperties, MeatShredderMachineBlockEntity::new);
     }
 
 }

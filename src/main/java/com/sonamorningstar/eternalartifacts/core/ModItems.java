@@ -90,6 +90,7 @@ public class ModItems {
     public static final DeferredItem<Item> STEEL_INGOT = register("steel_ingot");
     public static final DeferredItem<Item> STEEL_NUGGET = register("steel_nugget");
     public static final DeferredItem<Item> PLASTIC_SHEET = register("plastic_sheet");
+    public static final DeferredItem<Item> ENDER_PAPER = register("ender_paper", EnderPaper::new);
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));

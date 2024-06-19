@@ -11,7 +11,6 @@ import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
@@ -23,13 +22,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.SignalGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +35,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
-import java.util.function.Predicate;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickable {
     Lazy<BlockEntity> entity;
@@ -46,7 +42,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected Recipe<SimpleContainer> currentRecipe = null;
     @Getter
     @Setter
-    protected Map<Integer, SidedTransferBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
+    protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         entity = Lazy.of(()->level.getBlockEntity(pos));
@@ -131,10 +127,10 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
 
     protected void progress(BooleanSupplier test, Runnable run, ModEnergyStorage energy) {
         if(!hasEnergy(consume, energy)) return;
-        SidedTransferBlockEntity.RedstoneType type = redstoneConfigs.get(0);
-        if(type == SidedTransferBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
-            type == SidedTransferBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
-            (type == SidedTransferBlockEntity.RedstoneType.IGNORED || type == null)){
+        SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
+        if(type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
+            type == SidedTransferMachineBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
+            (type == SidedTransferMachineBlockEntity.RedstoneType.IGNORED || type == null)){
             if (test.getAsBoolean()) {
                 progress = 0;
                 return;

@@ -1,0 +1,14 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity": "minecraft:enderman",
+  "resultFluidList": [
+    {
+      "Amount": 50,
+      "FluidName": "eternalartifacts:pink_slime"
+    },
+    {
+      "Amount": 35,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

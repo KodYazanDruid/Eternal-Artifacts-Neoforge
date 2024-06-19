@@ -12,15 +12,13 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class MultiFluidTank implements IFluidHandler {
     @Setter
-    private List<ModFluidStorage> tanks = new ArrayList<>();
+    private List<FluidTank> tanks = new ArrayList<>();
 
-    public MultiFluidTank(ModFluidStorage... tanks) {
+    public MultiFluidTank(FluidTank... tanks) {
             this.tanks.addAll(Arrays.asList(tanks));
     }
 
@@ -39,10 +37,10 @@ public class MultiFluidTank implements IFluidHandler {
 
     public CompoundTag writeToNBT(CompoundTag nbt) {
         ListTag tanksList = new ListTag();
-        for(ModFluidStorage tank : tanks) {
+        for(IFluidHandler tank : tanks) {
             CompoundTag entry = new CompoundTag();
-            entry.putString("FluidName", BuiltInRegistries.FLUID.getKey(tank.getFluid().getFluid()).toString());
-            entry.putInt("Amount", tank.getFluidAmount());
+            entry.putString("FluidName", BuiltInRegistries.FLUID.getKey(tank.getFluidInTank(0).getFluid()).toString());
+            entry.putInt("Amount", tank.getFluidInTank(0).getAmount());
             tanksList.add(entry);
         }
         if(nbt != null) nbt.put("Tanks", tanksList);
@@ -50,8 +48,14 @@ public class MultiFluidTank implements IFluidHandler {
         return nbt;
     }
 
-    public ModFluidStorage get(int tank) {
+    public IFluidHandler get(int tank) {
         return tanks.get(tank);
+    }
+
+    public int getEmptyTankCount() {
+        int counter = 0;
+        for(IFluidHandler tank : tanks) if(tank.getFluidInTank(0).isEmpty()) counter++;
+        return counter;
     }
 
     @Override
@@ -61,25 +65,31 @@ public class MultiFluidTank implements IFluidHandler {
 
     @Override
     public FluidStack getFluidInTank(int tank) {
-        return tanks.get(tank).getFluid();
-    }
+    return tanks.get(tank).getFluidInTank(0);
+}
 
     @Override
     public int getTankCapacity(int tank) {
-        return tanks.get(tank).getCapacity();
+        return tanks.get(tank).getTankCapacity(0);
     }
 
     @Override
     public boolean isFluidValid(int tank, FluidStack stack) {
-        return tanks.get(tank).isFluidValid(stack);
+        return tanks.get(tank).isFluidValid(0, stack);
     }
+
+    //TODO: Prioritize most filled tank first.
 
     @Override
     public int fill(FluidStack resource, FluidAction action) {
         int filled;
-        for(ModFluidStorage tank : tanks) {
-             filled = tank.fill(resource, action);
-            if(filled > 0) return filled;
+        //tanks.sort(new TankComparator());
+        for(IFluidHandler tank : tanks) {
+             filled = tank.fill(resource, FluidAction.SIMULATE);
+            if(filled > 0) {
+                filled = tank.fill(resource, action);
+                return filled;
+            }
         }
         return 0;
     }
@@ -87,9 +97,13 @@ public class MultiFluidTank implements IFluidHandler {
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
         FluidStack drained;
-        for(ModFluidStorage tank : tanks) {
-            drained = tank.drain(resource, action);
-            if(!drained.isEmpty()) return drained;
+        //tanks.sort(new TankComparator());
+        for(IFluidHandler tank : tanks) {
+            drained = tank.drain(resource, FluidAction.SIMULATE);
+            if(!drained.isEmpty()) {
+                drained = tank.drain(resource, action);
+                return drained;
+            }
         }
         return FluidStack.EMPTY;
     }
@@ -97,10 +111,23 @@ public class MultiFluidTank implements IFluidHandler {
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
         FluidStack drained;
-        for(ModFluidStorage tank : tanks) {
-            drained = tank.drain(maxDrain, action);
-            if(!drained.isEmpty()) return drained;
+        //tanks.sort(new TankComparator());
+        for(IFluidHandler tank : tanks) {
+            drained = tank.drain(maxDrain, FluidAction.SIMULATE);
+            if(!drained.isEmpty()) {
+                drained = tank.drain(maxDrain, action);
+                return drained;
+            }
         }
         return FluidStack.EMPTY;
+    }
+
+    private static class TankComparator implements Comparator<IFluidHandler> {
+        @Override
+        public int compare(IFluidHandler o1, IFluidHandler o2) {
+            int fluidAmount1 = o1.getFluidInTank(0).getAmount();
+            int fluidAmount2 = o2.getFluidInTank(0).getAmount();
+            return fluidAmount1 - fluidAmount2;
+        }
     }
 }

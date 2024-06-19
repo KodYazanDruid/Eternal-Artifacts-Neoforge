@@ -83,6 +83,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PLASTIC_SHEET.get(), "Plastic Sheet");
                 add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Liquid Plastic Bucket");
                 add(ModItems.WRENCH.get(), "Wrench");
+                add(ModItems.ENDER_PAPER.get(), "Ender Paper");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -238,6 +239,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PLASTIC_SHEET.get(), "Plastik Tabaka");
                 add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Sıvı Plastik Kovası");
                 add(ModItems.WRENCH.get(), "İngiliz Anahtarı");
+                add(ModItems.ENDER_PAPER.get(), "Ender Kağıdı");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");

@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 
-public class BatteryBoxBlockEntity extends SidedTransferBlockEntity<BatteryBoxMenu> implements IHasInventory {
+public class BatteryBoxBlockEntity extends SidedTransferMachineBlockEntity<BatteryBoxMenu> implements IHasInventory {
     public BatteryBoxBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.BATTERY_BOX.get(), pos, blockState, BatteryBoxMenu::new);
     }

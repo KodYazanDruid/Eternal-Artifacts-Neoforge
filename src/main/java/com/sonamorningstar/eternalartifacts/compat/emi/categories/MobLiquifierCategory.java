@@ -28,7 +28,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class MobLiquifierCategory extends BasicEmiRecipe {
     EntityType<?> entityType;
     LivingEntity living;
-    private static final ResourceLocation HEART = new ResourceLocation("textures/gui/sprites/hud/heart/full.png");
+    private static final ResourceLocation HEART = new ResourceLocation("textures/gui/sprites/hud/heart/half.png");
     private static final ResourceLocation HEART_CONTAINER = new ResourceLocation("textures/gui/sprites/hud/heart/container.png");
     private static final EmiTexture HEART_TEXTURE = new EmiTexture(HEART, 0, 0, 9, 9, 9, 9, 9 ,9);
     private static final EmiTexture HEART_CONTAINER_TEXTURE = new EmiTexture(HEART_CONTAINER, 0, 0, 9, 9, 9, 9, 9 ,9);

@@ -19,6 +19,7 @@ public class MobLiquifierScreen extends AbstractSidedMachineScreen<MobLiquifierM
         renderFluidBar(gui, x + 44, y + 20, 1);
         renderFluidBar(gui, x + 64, y + 20, 2);
         renderFluidBar(gui, x + 84, y + 20, 3);
+        renderProgressArrow(gui, x + 110, y + 35);
     }
 
     @Override
