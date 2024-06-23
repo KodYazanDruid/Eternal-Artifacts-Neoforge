@@ -1,9 +1,12 @@
-package com.sonamorningstar.eternalartifacts.content.block.entity;
+package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
 import lombok.Getter;
@@ -36,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
-public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickable {
+public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
     Lazy<BlockEntity> entity;
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF;
     protected Recipe<SimpleContainer> currentRecipe = null;

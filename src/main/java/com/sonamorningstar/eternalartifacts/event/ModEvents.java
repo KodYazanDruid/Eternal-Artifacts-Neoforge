@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
@@ -65,6 +65,9 @@ public class ModEvents {
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tanks, ctx));
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
 
 
     }

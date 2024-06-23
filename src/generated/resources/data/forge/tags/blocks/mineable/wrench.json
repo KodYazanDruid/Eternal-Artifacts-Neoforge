@@ -8,6 +8,7 @@
     "eternalartifacts:meat_packer",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:battery_box",
+    "eternalartifacts:fluid_combustion_dynamo",
     "#forge:storage_blocks"
   ]
 }

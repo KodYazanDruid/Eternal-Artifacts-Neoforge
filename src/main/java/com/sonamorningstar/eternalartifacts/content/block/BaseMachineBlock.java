@@ -2,8 +2,9 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ITickable;
-import com.sonamorningstar.eternalartifacts.content.block.entity.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
@@ -79,11 +80,15 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Override
     public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level level, BlockState pState, BlockEntityType<B> pBlockEntityType) {
         if (level.isClientSide) {
-            return null;
+            return (lvl, pos, st, be) -> {
+                if (be instanceof ITickableClient entity) {
+                    entity.tickClient(lvl, pos, st);
+                }
+            };
         } else {
             return (lvl, pos, st, be) -> {
-                if (be instanceof ITickable entity) {
-                    entity.tick(lvl, pos, st);
+                if (be instanceof ITickableServer entity) {
+                    entity.tickServer(lvl, pos, st);
                 }
             };
         }

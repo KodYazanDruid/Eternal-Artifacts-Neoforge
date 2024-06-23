@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.DefaultRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
 import net.minecraft.core.BlockPos;
@@ -16,7 +17,7 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import java.util.Collections;
 import java.util.List;
 
-public class GardeningPotEntity extends DefaultRetexturedBlockEntity{
+public class GardeningPotEntity extends DefaultRetexturedBlockEntity {
 
     public GardeningPotEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GARDENING_POT.get(), pPos, pBlockState);

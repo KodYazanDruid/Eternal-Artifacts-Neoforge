@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-10T19:34:25.8566856	Loot Tables
+// 1.20.4	2024-06-20T22:34:20.5312309	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 e51e792e7824f51f301b4f1a6a9200e89727acad data/eternalartifacts/loot_tables/blocks/battery_box.json
@@ -11,6 +11,7 @@ cbc47d6862614edb4d9e78554a77d15a0ccf875d data/eternalartifacts/loot_tables/block
 7bbea995f886e5bf45d835f986bd7df3aefd095f data/eternalartifacts/loot_tables/blocks/copper_oreberry.json
 d2558221a824af0d9c7cb4efbce9ec3b26f26c29 data/eternalartifacts/loot_tables/blocks/experience_oreberry.json
 323005a0f50f9eb7749fa98dd542be7032c56f17 data/eternalartifacts/loot_tables/blocks/fancy_chest.json
+13b793ca3785df0e58003d34afc1dfb7ffa54fb5 data/eternalartifacts/loot_tables/blocks/fluid_combustion_dynamo.json
 c1447597e3f4cff0cdd64963fd28122eea363d87 data/eternalartifacts/loot_tables/blocks/forsythia.json
 46352d2960ffae7373ef1f76927fd873a7f6ef86 data/eternalartifacts/loot_tables/blocks/four_leaf_clover.json
 17d46b00052e07090dc714a7fd2743706fc5768f data/eternalartifacts/loot_tables/blocks/gardening_pot.json

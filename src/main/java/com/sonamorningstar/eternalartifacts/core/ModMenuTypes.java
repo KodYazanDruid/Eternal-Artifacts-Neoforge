@@ -28,4 +28,6 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BatteryBoxMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MobLiquifierMenu>> MOB_LIQUIFIER = MENUS.register("mob_liquifier",
             ()-> IMenuTypeExtension.create(MobLiquifierMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<FluidCombustionMenu>> FLUID_COMBUSTION_MENU = MENUS.register("fluid_combustion_menu",
+            ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
 }

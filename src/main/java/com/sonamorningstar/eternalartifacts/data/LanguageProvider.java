@@ -134,6 +134,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.JAR.get(), "Jar");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Jar");
                 add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Liquid Plastic");
+                add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Fluid Combustion Dynamo");
+
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -290,6 +292,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.JAR.get(), "Kavanoz");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
                 add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Sıvı Plastik");
+                add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Sıvı Yanmalı Dinamo");
+
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

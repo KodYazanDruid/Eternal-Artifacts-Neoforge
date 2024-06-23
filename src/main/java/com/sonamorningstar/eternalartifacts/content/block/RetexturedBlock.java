@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.IRetexturedBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.util.BlockEntityHelper;
 import net.minecraft.core.BlockPos;

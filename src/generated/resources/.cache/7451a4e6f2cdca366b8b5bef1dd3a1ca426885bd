@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-18T00:31:46.4075846	Block States: eternalartifacts
+// 1.20.4	2024-06-20T22:34:20.5212314	Block States: eternalartifacts
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
 31ccf79f94568a40a5b2214ce81d9b952c686a5b assets/eternalartifacts/blockstates/anvilinator.json
 27383d677a2d896021262547bb9ca8c0f1c540e7 assets/eternalartifacts/blockstates/battery_box.json
@@ -11,6 +11,7 @@ c44de3f623a594196413e6a771647368865f30f2 assets/eternalartifacts/blockstates/cit
 dc93ac38ac404adb732c28d29bbba676bd21fb8d assets/eternalartifacts/blockstates/copper_oreberry.json
 d9b396132b338bd92e63c79d3bdcc64a3a701ccd assets/eternalartifacts/blockstates/experience_oreberry.json
 f0edb11e8b0efeac931a5975bea573ef44836a8d assets/eternalartifacts/blockstates/fancy_chest.json
+0c34f4aa4d8004954ddc0ec393a3b5d764bfb1ba assets/eternalartifacts/blockstates/fluid_combustion_dynamo.json
 efac6bcd3bd2fdfeb606163bcd08aa5a91ad1cbd assets/eternalartifacts/blockstates/forsythia.json
 71760b7e1a0cf8bc49227f40bb70503c0098bede assets/eternalartifacts/blockstates/four_leaf_clover.json
 5bbd5f1ad23af333ffd91c3b6cb97cc9274d3011 assets/eternalartifacts/blockstates/gardening_pot.json

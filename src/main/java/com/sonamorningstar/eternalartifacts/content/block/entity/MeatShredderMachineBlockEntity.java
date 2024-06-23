@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.MeatShredderMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
@@ -78,7 +79,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     }
 
     @Override
-    public void tick(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInput(lvl, pos, inventory);
         performAutoOutputFluids(lvl, pos, tank);
         if(currentRecipe instanceof MeatShredderRecipe msr) {

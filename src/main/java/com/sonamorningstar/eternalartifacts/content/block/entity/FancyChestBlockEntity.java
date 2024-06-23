@@ -1,11 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -20,7 +20,7 @@ import javax.annotation.Nonnull;
 
 import static com.sonamorningstar.eternalartifacts.util.RetexturedHelper.TEXTURE_TAG_KEY;
 
-public class FancyChestBlockEntity extends ChestBlockEntity implements IRetexturedBlockEntity{
+public class FancyChestBlockEntity extends ChestBlockEntity implements IRetexturedBlockEntity {
     @Nonnull
     @Getter
     private Block texture = Blocks.BAMBOO_PLANKS;

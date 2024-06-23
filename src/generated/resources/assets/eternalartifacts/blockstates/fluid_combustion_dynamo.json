@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "eternalartifacts:block/fluid_combustion_dynamo",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "eternalartifacts:block/fluid_combustion_dynamo",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/fluid_combustion_dynamo"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/fluid_combustion_dynamo",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "eternalartifacts:block/fluid_combustion_dynamo",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/fluid_combustion_dynamo",
+      "y": 270
+    }
+  }
+}

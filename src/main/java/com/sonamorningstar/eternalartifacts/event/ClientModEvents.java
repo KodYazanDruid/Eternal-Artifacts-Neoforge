@@ -3,14 +3,15 @@ package com.sonamorningstar.eternalartifacts.event;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.model.ColoredBlockModel;
+import com.sonamorningstar.eternalartifacts.client.model.FluidCombustionDynamoModel;
 import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
-import com.sonamorningstar.eternalartifacts.client.renderer.FancyChestRenderer;
-import com.sonamorningstar.eternalartifacts.client.renderer.JarRenderer;
+import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FancyChestRenderer;
+import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FluidCombustionRenderer;
+import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.JarRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.BiomeColors;
@@ -50,6 +51,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.MEAT_SHREDDER.get(), MeatShredderScreen::new);
         event.register(ModMenuTypes.BATTERY_BOX.get(), BatteryBoxScreen::new);
         event.register(ModMenuTypes.MOB_LIQUIFIER.get(), MobLiquifierScreen::new);
+        event.register(ModMenuTypes.FLUID_COMBUSTION_MENU.get(), FluidCombustionScreen::new);
     }
 
     @SubscribeEvent
@@ -119,12 +121,14 @@ public class ClientModEvents {
 
         event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.FLUID_COMBUSTION_LAYER, FluidCombustionDynamoModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.JAR.get(), JarRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), FluidCombustionRenderer::new);
     }
 
     @SubscribeEvent

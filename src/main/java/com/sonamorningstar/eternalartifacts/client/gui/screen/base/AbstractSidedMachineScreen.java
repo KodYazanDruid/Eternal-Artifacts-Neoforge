@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferAutoSaveToServer;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferRedstoneToServer;

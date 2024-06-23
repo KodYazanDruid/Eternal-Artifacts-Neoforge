@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
-import com.sonamorningstar.eternalartifacts.content.block.entity.IRetexturedBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModLoots;
 import net.minecraft.world.item.ItemStack;

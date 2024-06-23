@@ -136,7 +136,7 @@ public class ModItems {
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
-    public static final DeferredItem<JarBlockItem> JAR = register("jar", ()-> new JarBlockItem(new Item.Properties()));
+    public static final DeferredItem<JarBlockItem> JAR = register("jar", JarBlockItem::new);
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));

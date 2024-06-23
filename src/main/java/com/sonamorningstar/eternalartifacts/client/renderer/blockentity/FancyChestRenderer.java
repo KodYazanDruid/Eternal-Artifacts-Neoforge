@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.client.renderer;
+package com.sonamorningstar.eternalartifacts.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

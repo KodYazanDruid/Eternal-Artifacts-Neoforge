@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.block.entity;
+package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T>{
+public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T> {
     public SidedTransferMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState, quadF);
     }

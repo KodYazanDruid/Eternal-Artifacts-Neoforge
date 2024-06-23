@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.block.entity;
+package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import net.minecraft.core.BlockPos;

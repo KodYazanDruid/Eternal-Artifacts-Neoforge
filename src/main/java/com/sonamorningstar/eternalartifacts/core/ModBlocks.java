@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -15,9 +17,11 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -105,6 +109,7 @@ public class ModBlocks {
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MobLiquifierBlock> MOB_LIQUIFIER = registerWithItem("mob_liquifier",
             ()-> new MobLiquifierBlock(MACHINE_BLOCK.get().properties()));
+    public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerDynamo("fluid_combustion_dynamo");
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -171,6 +176,22 @@ public class ModBlocks {
 
     private static DeferredBlock<OreBerryBlock> registerOreBerryBlock(String material) {
         return registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(oreBerryProps, material));
+    }
+
+    private static DeferredBlock<FluidCombustionDynamoBlock> registerDynamo(String name) {
+        DeferredBlock<FluidCombustionDynamoBlock> dynamo = BLOCKS.register(name, ()-> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+        ModItems.ITEMS.register(name, ()-> new BlockItem(dynamo.get(), new Item.Properties()) {
+            @Override
+            public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+                consumer.accept(new IClientItemExtensions() {
+                    @Override
+                    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                        return ModItemStackBEWLR.INSTANCE.get();
+                    }
+                });
+            }
+        });
+        return dynamo;
     }
 
     private static Boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {return false;}

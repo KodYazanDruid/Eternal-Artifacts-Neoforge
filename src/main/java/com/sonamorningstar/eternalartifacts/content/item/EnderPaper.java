@@ -16,4 +16,6 @@ public class EnderPaper extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         return super.use(level, player, hand);
     }
+
+
 }

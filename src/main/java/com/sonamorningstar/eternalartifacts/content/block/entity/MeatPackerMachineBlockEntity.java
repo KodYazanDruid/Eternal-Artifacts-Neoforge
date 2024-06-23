@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -77,7 +78,7 @@ public class MeatPackerMachineBlockEntity extends SidedTransferMachineBlockEntit
 
     //buggy
     @Override
-    public void tick(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutput(lvl, pos, inventory, 0);
         performAutoInputFluids(lvl, pos, tank);
         progress(()-> {

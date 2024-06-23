@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.MobLiquifierMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
@@ -56,7 +57,7 @@ public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEnt
     }
 
     @Override
-    public void tick(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         //Living entities inside 3x3 above the machine.
         List<LivingEntity> livingList =
                 lvl.getEntitiesOfClass(LivingEntity.class, new AABB(pos.above(2)).inflate(1))

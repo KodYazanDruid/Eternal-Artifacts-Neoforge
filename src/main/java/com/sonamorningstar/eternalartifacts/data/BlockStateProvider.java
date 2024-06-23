@@ -98,6 +98,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
         directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
+        directionBlock(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), (state, builder) ->
+                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fluid_combustion_dynamo"), models().existingFileHelper)), BlockStateProperties.FACING);
 
         directionBlock(ModBlocks.FANCY_CHEST.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);

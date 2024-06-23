@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import lombok.Getter;
@@ -100,7 +101,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
         tank.readFromNBT(tag);
     }
 
-    public void tick(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         fillTankFromSlot(inventory, tank, 3);
         performAutoInputFluids(lvl, pos, tank);
         performAutoInput(lvl, pos, inventory);

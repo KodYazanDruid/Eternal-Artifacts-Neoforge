@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

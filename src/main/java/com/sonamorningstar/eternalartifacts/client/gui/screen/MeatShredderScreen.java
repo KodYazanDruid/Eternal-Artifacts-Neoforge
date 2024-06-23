@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.MeatShredderMenu;
 import net.minecraft.client.gui.GuiGraphics;

@@ -50,6 +50,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.MOB_LIQUIFIER.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -59,7 +60,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.MEAT_SHREDDER.get(),
                 ModBlocks.MEAT_PACKER.get(),
                 ModBlocks.MOB_LIQUIFIER.get(),
-                ModBlocks.BATTERY_BOX.get()
+                ModBlocks.BATTERY_BOX.get(),
+                ModBlocks.FLUID_COMBUSTION_DYNAMO.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
 

@@ -1,31 +1,19 @@
 package com.sonamorningstar.eternalartifacts.client;
 
-import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.IRetexturedBlockEntity;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.content.block.entity.GardeningPotEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
-import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.color.item.ItemColor;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
 import javax.annotation.Nullable;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class RetexturedColor
         implements BlockColor, ItemColor {

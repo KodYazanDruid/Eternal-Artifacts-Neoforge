@@ -31,11 +31,7 @@ public class ResonatorBlock extends BaseEntityBlock {
     private static final VoxelShape UP_AABB;
     private static final VoxelShape DOWN_AABB;
     private static final VoxelShape NORTH_AABB;
-    private static final VoxelShape EAST_AABB;
-    private static final VoxelShape WEST_AABB;
-    private static final VoxelShape SOUTH_AABB;
-
-    @Override
+    private static final VoxelShape EAST_AABB;    @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
         Direction direction = pState.getValue(BlockStateProperties.FACING);
         VoxelShape shape;
@@ -49,6 +45,10 @@ public class ResonatorBlock extends BaseEntityBlock {
         }
         return shape;
     }
+    private static final VoxelShape WEST_AABB;
+    private static final VoxelShape SOUTH_AABB;
+
+
 
     static {
         UP_AABB = BlockHelper.generateByArea(8, 4, 8, 4, 12, 4);

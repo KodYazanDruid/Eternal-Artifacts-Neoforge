@@ -65,6 +65,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.CITRUS_PLANKS.get());
         dropSelf(ModBlocks.BATTERY_BOX.get());
         dropSelf(ModBlocks.MOB_LIQUIFIER.get());
+        dropSelf(ModBlocks.FLUID_COMBUSTION_DYNAMO.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);

@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.block.entity;
+package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import net.minecraft.nbt.CompoundTag;

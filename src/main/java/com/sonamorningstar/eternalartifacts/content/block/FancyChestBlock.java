@@ -1,12 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.FancyChestBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.IRetexturedBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.util.BlockEntityHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,10 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 

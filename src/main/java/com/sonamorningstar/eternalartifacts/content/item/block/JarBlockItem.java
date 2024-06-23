@@ -1,11 +1,13 @@
 package com.sonamorningstar.eternalartifacts.content.item.block;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.bewlr.ModItemStackBEWLR;
+import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -16,7 +18,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import org.apache.commons.lang3.text.WordUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,6 +27,23 @@ import java.util.function.Consumer;
 public class JarBlockItem extends BlockItem {
     public JarBlockItem(Properties pProperties) {
         super(ModBlocks.JAR.get(), pProperties);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        //TODO: Fluid pick up logic.
+        /*ItemStack itemstack = player.getItemInHand(hand);
+        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, isEmpty(itemstack) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
+        if(hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos pos = hitResult.getBlockPos();
+            Direction direction = hitResult.getDirection();
+            BlockPos relativePos = pos.relative(direction);
+            if(isEmpty(itemstack)) {
+                BlockState state = level.getBlockState(pos);
+
+            }
+        }*/
+        return super.use(level, player, hand);
     }
 
     @Override
@@ -62,6 +80,10 @@ public class JarBlockItem extends BlockItem {
             String descriptionId = fluid.getFluidType().getDescriptionId();
             return Component.translatable(descriptionId).withColor(BlockHelper.getFluidTintColor(fluid));
         }
+    }
+
+    private boolean isEmpty(ItemStack stack) {
+        return getFluidStack(stack).isEmpty();
     }
 
     @Override

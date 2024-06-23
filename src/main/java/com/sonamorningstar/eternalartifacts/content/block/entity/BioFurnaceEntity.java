@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
@@ -49,7 +50,7 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> impleme
         pTag.put("Inventory", inventory.serializeNBT());
     }
 
-    public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
+    public void tickServer(Level pLevel, BlockPos pPos, BlockState pState) {
         generatePower();
         distributePower();
     }

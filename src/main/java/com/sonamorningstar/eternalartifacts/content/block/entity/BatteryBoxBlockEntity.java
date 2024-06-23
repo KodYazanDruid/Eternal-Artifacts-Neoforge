@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.BatteryBoxMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
@@ -55,7 +56,7 @@ public class BatteryBoxBlockEntity extends SidedTransferMachineBlockEntity<Batte
     }
 
     @Override
-    public void tick(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInputEnergy(lvl, pos, energy);
         performAutoOutputEnergy(lvl, pos, energy);
     }
