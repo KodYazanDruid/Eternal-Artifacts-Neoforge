@@ -6,6 +6,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -51,6 +52,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.MOB_LIQUIFIER.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.MANGANESE_ORE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -72,10 +76,34 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(BlockTags.COPPER_ORES).add(ModBlocks.GRAVEL_COPPER_ORE.get());
         tag(BlockTags.IRON_ORES).add(ModBlocks.GRAVEL_IRON_ORE.get());
         tag(BlockTags.GOLD_ORES).add(ModBlocks.GRAVEL_GOLD_ORE.get());
+        tag(ModTags.Blocks.ORES_MANGANESE).add(
+                ModBlocks.MANGANESE_ORE.get(),
+                ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
+        );
         tag(Tags.Blocks.ORE_RATES_DENSE).add(ModBlocks.GRAVEL_COPPER_ORE.get());
-        tag(Tags.Blocks.ORE_RATES_SINGULAR).add(ModBlocks.GRAVEL_COAL_ORE.get(), ModBlocks.GRAVEL_IRON_ORE.get(), ModBlocks.GRAVEL_GOLD_ORE.get());
+        tag(Tags.Blocks.ORE_RATES_SINGULAR).add(
+                ModBlocks.GRAVEL_COAL_ORE.get(),
+                ModBlocks.GRAVEL_IRON_ORE.get(),
+                ModBlocks.GRAVEL_GOLD_ORE.get(),
+                ModBlocks.MANGANESE_ORE.get(),
+                ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
+        );
+        tag(Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE).add(
+                ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
+        );
+        tag(Tags.Blocks.ORE_BEARING_GROUND_STONE).add(
+                ModBlocks.MANGANESE_ORE.get()
+        );
+        tag(Tags.Blocks.ORES).add(
+                ModBlocks.MANGANESE_ORE.get(),
+                ModBlocks.GRAVEL_COAL_ORE.get(),
+                ModBlocks.GRAVEL_COPPER_ORE.get(),
+                ModBlocks.GRAVEL_IRON_ORE.get(),
+                ModBlocks.GRAVEL_GOLD_ORE.get()
+        );
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());
+
     }
 
     private void tierAndTool(Block block, String tier, String tool) {

@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
-import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferAutoSaveToServer;
@@ -103,8 +103,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     }
 
     @Override
-    public void render(GuiGraphics gui, int mx, int my, float pPartialTick) {
-        super.render(gui, mx, my, pPartialTick);
+    public void render(GuiGraphics gui, int mx, int my, float partialTick) {
+        super.render(gui, mx, my, partialTick);
         sidedTransferBarActive = mx >= x+5 && mx <= x+101 && my >= y-29 && my <= y+3;
     }
 

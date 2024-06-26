@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
-import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
 import lombok.Getter;
 import lombok.Setter;

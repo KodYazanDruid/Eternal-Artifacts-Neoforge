@@ -1,0 +1,6 @@
+{
+  "type": "eternalartifacts:fluid_combusting",
+  "duration": 2500,
+  "fuel": "minecraft:lava",
+  "generation": 40
+}

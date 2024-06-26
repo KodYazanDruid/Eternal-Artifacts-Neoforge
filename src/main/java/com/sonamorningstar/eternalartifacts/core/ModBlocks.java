@@ -54,6 +54,12 @@ public class ModBlocks {
             () -> new FallingDropExperienceBlock(ConstantInt.of(0), Blocks.GRAVEL.properties()));
     public static final DeferredBlock<Block> CHLOROPHYTE_DEBRIS = registerWithItem("chlorophyte_debris",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.3F).sound(SoundType.MOSS)));
+    public static final DeferredBlock<Block> MANGANESE_ORE = registerWithItem("manganese_ore",
+            () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.IRON_ORE.properties()));
+    public static final DeferredBlock<Block> DEEPSLATE_MANGANESE_ORE = registerWithItem("deepslate_manganese_ore",
+            () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.DEEPSLATE_IRON_ORE.properties()));
+    public static final DeferredBlock<Block> RAW_MANGANESE_BLOCK = registerWithItem("raw_manganese_block",
+            () -> new Block(Blocks.RAW_IRON_BLOCK.properties()));
 
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));

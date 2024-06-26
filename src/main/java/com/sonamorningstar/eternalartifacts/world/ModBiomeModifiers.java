@@ -12,6 +12,7 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
@@ -26,6 +27,8 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_COPPER_ORE = registerKey("feature", "add_gravel_copper_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_IRON_ORE = registerKey("feature", "add_gravel_iron_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_GOLD_ORE = registerKey("feature", "add_gravel_gold_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_MEDIUM = registerKey("feature", "add_manganese_ore_medium");
+    public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_SMALL = registerKey("feature", "add_manganese_ore_small");
 
     public static final ResourceKey<BiomeModifier> SPAWN_DUCK = registerKey("spawn", "spawn_duck");
 
@@ -35,6 +38,7 @@ public class ModBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
+        HolderGetter<ConfiguredWorldCarver<?>> configuredCarver = context.lookup(Registries.CONFIGURED_CARVER);
         HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
 
         context.register(ADD_GRAVEL_COAL_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
@@ -53,6 +57,14 @@ public class ModBiomeModifiers {
                 biome.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_GRAVEL_GOLD_ORE)),
                 GenerationStep.Decoration.SURFACE_STRUCTURES));
+        context.register(ADD_MANGANESE_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MANGANESE_ORE_MIDDLE)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
+        context.register(ADD_MANGANESE_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MANGANESE_ORE_SMALL)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
 
         context.register(SPAWN_DUCK, new BiomeModifiers.AddSpawnsBiomeModifier(
                 biome.getOrThrow(BiomeTags.IS_FOREST),

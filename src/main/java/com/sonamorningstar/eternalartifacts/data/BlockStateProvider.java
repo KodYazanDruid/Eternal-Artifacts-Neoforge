@@ -67,6 +67,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         axisBlock(ModBlocks.STRIPPED_CITRUS_LOG.get(), modLoc("block/stripped_citrus_log"), modLoc("block/stripped_citrus_log_top"));
         axisBlock(ModBlocks.CITRUS_WOOD.get(), modLoc("block/citrus_log"), modLoc("block/citrus_log"));
         axisBlock(ModBlocks.STRIPPED_CITRUS_WOOD.get(), modLoc("block/stripped_citrus_log"), modLoc("block/stripped_citrus_log"));
+        simpleBlockWithItem(ModBlocks.MANGANESE_ORE.get());
+        simpleBlockWithItem(ModBlocks.DEEPSLATE_MANGANESE_ORE.get());
+        simpleBlockWithItem(ModBlocks.RAW_MANGANESE_BLOCK.get());
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

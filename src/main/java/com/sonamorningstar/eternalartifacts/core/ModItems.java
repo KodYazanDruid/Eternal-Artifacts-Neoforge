@@ -91,6 +91,7 @@ public class ModItems {
     public static final DeferredItem<Item> STEEL_NUGGET = register("steel_nugget");
     public static final DeferredItem<Item> PLASTIC_SHEET = register("plastic_sheet");
     public static final DeferredItem<Item> ENDER_PAPER = register("ender_paper", EnderPaper::new);
+    public static final DeferredItem<Item> RAW_MANGANESE = register("raw_manganese");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -122,6 +123,7 @@ public class ModItems {
     public static final DeferredItem<Item> NATURAL_SPADE = registerStacksToOne("natural_spade", NaturalSpadeItem::new);
     public static final DeferredItem<Item> LUSH_GRUBBER = registerStacksToOne("lush_grubber", LushGrubberItem::new);
     public static final DeferredItem<Item> WRENCH = registerStacksToOne("wrench", WrenchItem::new);
+    public static final DeferredItem<Item> KNAPSACK = registerStacksToOne("knapsack", KnapsackItem::new);
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));

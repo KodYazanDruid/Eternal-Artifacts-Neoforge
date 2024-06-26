@@ -4,11 +4,9 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.SlotAccess;
@@ -25,8 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class PortableCrafterItem extends ArtifactItem{
     public PortableCrafterItem(Properties pProperties) {
@@ -63,7 +59,7 @@ public class PortableCrafterItem extends ArtifactItem{
             }) {
                 @Override
                 public boolean stillValid(Player pPlayer) {
-                    return PlayerHelper.findInStack(pPlayer, PortableCrafterItem.this);
+                    return PlayerHelper.findItem(pPlayer, PortableCrafterItem.this);
                 }
             }, Component.translatable("container.crafting")));
             pplayer.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);

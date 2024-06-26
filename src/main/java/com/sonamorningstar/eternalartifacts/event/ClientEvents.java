@@ -3,10 +3,14 @@ package com.sonamorningstar.eternalartifacts.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -17,12 +21,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -70,6 +76,24 @@ public class ClientEvents {
                 }
                 pose.popPose();
             }
+        }
+    }
+
+    @SubscribeEvent
+    public static void mouseClickedPre(ScreenEvent.MouseButtonPressed.Pre event) {
+        Screen screen = event.getScreen();
+        if(screen instanceof KnapsackScreen ks) {
+            Slot slot = ks.getSlotUnderMouse();
+            if(slot != null && slot.getItem().is(ModItems.KNAPSACK)) event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void mouseScrollEvent(ScreenEvent.MouseScrolled.Pre event) {
+        Screen screen = event.getScreen();
+        if(screen instanceof KnapsackScreen ks) {
+            Slot slot = ks.getSlotUnderMouse();
+            if(slot != null && slot.getItem().is(ModItems.KNAPSACK)) event.setCanceled(true);
         }
     }
 

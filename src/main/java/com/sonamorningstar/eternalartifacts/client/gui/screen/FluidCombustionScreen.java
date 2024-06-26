@@ -18,7 +18,7 @@ public class FluidCombustionScreen extends AbstractMachineScreen<FluidCombustion
     }
 
     @Override
-    public void render(GuiGraphics gui, int mx, int my, float pPartialTick) {
-        super.render(gui, mx, my, pPartialTick);
+    public void render(GuiGraphics gui, int mx, int my, float partialTick) {
+        super.render(gui, mx, my, partialTick);
     }
 }

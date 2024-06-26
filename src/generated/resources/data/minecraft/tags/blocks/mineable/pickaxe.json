@@ -21,6 +21,9 @@
     "eternalartifacts:layered_prismarine",
     "eternalartifacts:battery_box",
     "eternalartifacts:mob_liquifier",
-    "eternalartifacts:fluid_combustion_dynamo"
+    "eternalartifacts:fluid_combustion_dynamo",
+    "eternalartifacts:manganese_ore",
+    "eternalartifacts:deepslate_manganese_ore",
+    "eternalartifacts:raw_manganese_block"
   ]
 }

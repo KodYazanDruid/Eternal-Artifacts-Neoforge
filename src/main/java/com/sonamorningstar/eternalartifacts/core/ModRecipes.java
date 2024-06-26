@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
@@ -28,6 +29,11 @@ public class ModRecipes {
             RECIPE_SERIALIZERS.register("mob_liquifying", MobLiquifierRecipe.Serializer::new);
     public static final DeferredHolder<RecipeType<?>, RecipeType<MobLiquifierRecipe>> MOB_LIQUIFIER_TYPE =
             RECIPE_TYPES.register("mob_liquifying", ()-> RecipeType.simple(new ResourceLocation(MODID, "mob_liquifying")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<FluidCombustionRecipe>> FLUID_COMBUSTING_SERIALIZER =
+            RECIPE_SERIALIZERS.register("fluid_combusting", FluidCombustionRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeType<?>, RecipeType<FluidCombustionRecipe>> FLUID_COMBUSTING_TYPE =
+            RECIPE_TYPES.register("fluid_combusting", ()-> RecipeType.simple(new ResourceLocation(MODID, "fluid_combusting")));
 
 
 

@@ -13,13 +13,24 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
+import java.util.Objects;
+
 //No it does not help you find a girlfriend.
 public class PlayerHelper {
-    public static boolean findInStack(Player player, Item item) {
+    public static boolean findItem(Player player, Item item) {
         IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
         if(playerItemCapability == null) return false;
         for (int i = 0; i < playerItemCapability.getSlots(); i++) {
             if(playerItemCapability.getStackInSlot(i).getItem() == item) return true;
+        }
+        return false;
+    }
+
+    public static boolean findStack(Player player, ItemStack stack) {
+        IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
+        if(playerItemCapability == null) return false;
+        for (int i = 0; i < playerItemCapability.getSlots(); i++) {
+            if(Objects.equals(playerItemCapability.getStackInSlot(i), stack)) return true;
         }
         return false;
     }

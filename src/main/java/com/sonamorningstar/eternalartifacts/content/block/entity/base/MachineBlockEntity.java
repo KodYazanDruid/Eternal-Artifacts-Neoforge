@@ -3,10 +3,8 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
 import lombok.Getter;
@@ -28,6 +26,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -80,7 +79,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     @Setter
     protected int maxProgress = 100;
     @Setter
-    protected int consume = 40;
+    protected int energyPerTick = 40;
 
     @Override
     protected boolean shouldSyncOnUpdate() {
@@ -129,7 +128,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected void progress(BooleanSupplier test, Runnable run, ModEnergyStorage energy) {
-        if(!hasEnergy(consume, energy)) return;
+        if(!hasEnergy(energyPerTick, energy)) return;
         SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
         if(type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
             type == SidedTransferMachineBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
@@ -138,7 +137,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                 progress = 0;
                 return;
             }
-            energy.extractEnergyForced(consume, false);
+            energy.extractEnergyForced(energyPerTick, false);
             progress++;
             if (progress >= maxProgress) {
                 run.run();
@@ -151,6 +150,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return energy.extractEnergyForced(amount, true) >= amount;
     }
 
+    //TODO: needs
     protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, SimpleContainer container) {
         if(currentRecipe != null && currentRecipe.matches(container, level)) return;
         currentRecipe = null;
@@ -163,13 +163,24 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    //This is for one recipe type. Generics are useless i know. I need to change it later.
     protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
         if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return;
         currentRecipe = null;
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
         for(R recipe : recipeList) {
             if(((MobLiquifierRecipe) recipe).matches(type)) {
+                currentRecipe = recipe;
+                return;
+            }
+        }
+    }
+
+    protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, Fluid fluid) {
+        if(currentRecipe != null && ((FluidCombustionRecipe) currentRecipe).matches(fluid)) return;
+        currentRecipe = null;
+        List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
+        for(R recipe : recipeList) {
+            if(((FluidCombustionRecipe) recipe).matches(fluid)) {
                 currentRecipe = recipe;
                 return;
             }

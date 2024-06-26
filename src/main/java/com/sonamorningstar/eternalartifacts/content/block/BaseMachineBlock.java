@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;

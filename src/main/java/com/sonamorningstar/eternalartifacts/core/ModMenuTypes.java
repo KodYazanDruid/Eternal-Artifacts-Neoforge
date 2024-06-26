@@ -30,4 +30,7 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(MobLiquifierMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<FluidCombustionMenu>> FLUID_COMBUSTION_MENU = MENUS.register("fluid_combustion_menu",
             ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
+
+    public static final DeferredHolder<MenuType<?>, MenuType<KnapsackMenu>> KNAPSACK = MENUS.register("knapsack",
+            ()-> new MenuType<>(KnapsackMenu::fromNetwork, FeatureFlags.REGISTRY.allFlags()));
 }

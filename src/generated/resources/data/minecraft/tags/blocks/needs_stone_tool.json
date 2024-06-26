@@ -5,6 +5,9 @@
     "eternalartifacts:gravel_copper_ore",
     "eternalartifacts:gravel_iron_ore",
     "eternalartifacts:sandy_tiled_stone_bricks",
-    "eternalartifacts:sandy_stone_bricks"
+    "eternalartifacts:sandy_stone_bricks",
+    "eternalartifacts:manganese_ore",
+    "eternalartifacts:deepslate_manganese_ore",
+    "eternalartifacts:raw_manganese_block"
   ]
 }

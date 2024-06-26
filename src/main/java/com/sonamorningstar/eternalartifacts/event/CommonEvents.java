@@ -58,7 +58,7 @@ public class CommonEvents {
             cooldowns.addCooldown(ModItems.MEDKIT.get(), 160);
 
             Item dagger = ModItems.HOLY_DAGGER.get();
-            if(PlayerHelper.findInStack(player, dagger)) {
+            if(PlayerHelper.findItem(player, dagger)) {
                 if(!cooldowns.isOnCooldown(dagger)){
                     float damage = event.getAmount();
                     float health = player.getHealth();
@@ -87,7 +87,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof Player player && PlayerHelper.findInStack(player, ModItems.FROG_LEGS.get()) && !player.isCrouching()) {
+        if(entity instanceof Player player && PlayerHelper.findItem(player, ModItems.FROG_LEGS.get()) && !player.isCrouching()) {
             player.hurtMarked = true;
             player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
         }
@@ -97,7 +97,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void fallEvent(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof Player player && PlayerHelper.findInStack(player, ModItems.FROG_LEGS.get())) {
+        if(entity instanceof Player player && PlayerHelper.findItem(player, ModItems.FROG_LEGS.get())) {
             event.setDistance(Math.max(event.getDistance() - 3, 0));
             event.setDamageMultiplier(0.5F);
         }

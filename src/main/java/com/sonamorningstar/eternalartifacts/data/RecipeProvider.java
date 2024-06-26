@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
@@ -18,15 +19,21 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
+import org.spongepowered.include.com.google.common.collect.ImmutableList;
+
+import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider implements IConditionBuilder {
+
+    private final List<ItemLike> MANGANESE_SMELTABLES = ImmutableList.of(ModBlocks.MANGANESE_ORE, ModBlocks.DEEPSLATE_MANGANESE_ORE, ModItems.RAW_MANGANESE);
 
     public RecipeProvider(PackOutput pOutput) {
         super(pOutput);
@@ -45,6 +52,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COPPER_ORE, Items.COPPER_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_IRON_ORE, Items.IRON_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
 
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
@@ -64,6 +72,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, Items.SALMON.getDefaultInstance(), 125);
         createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
         createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
+
+        createFluidCombustionRecioe(recipeOutput, Fluids.LAVA, 40, 2500);
 
         //Rework the recipe to accept entity tags as well.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
@@ -198,6 +208,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern(" W ").pattern("P P").pattern(" P ")
                 .define('W', ItemTags.LOGS).define('P', Tags.Items.GLASS_PANES)
                 .unlockedBy("has_item", has(Tags.Items.GLASS_PANES)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_MANGANESE_BLOCK)
+                .pattern("NNN").pattern("NNN").pattern("NNN")
+                .define('N', ModItems.RAW_MANGANESE)
+                .unlockedBy("has_item", has(ModItems.RAW_MANGANESE)).save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -214,37 +228,47 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MANGANESE_NUGGET, 9)
                 .requires(ModTags.Items.INGOTS_MANGANESE)
                 .unlockedBy("has_item", has(ModTags.Items.NUGGETS_MANGANESE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_MANGANESE, 9)
+                .requires(ModBlocks.RAW_MANGANESE_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.RAW_MANGANESE_BLOCK)).save(recipeOutput);
 
     }
 
     private void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
-        ResourceLocation id = BuiltInRegistries.ITEM.getKey(result.asItem());
+        ResourceLocation resultId = BuiltInRegistries.ITEM.getKey(result.asItem());
+        ResourceLocation inputId = BuiltInRegistries.ITEM.getKey(input.asItem());
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+id.getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+resultId.getPath()+"_from_"+inputId.getPath()));
     }
 
     private void createFoodCookingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
-        ResourceLocation id = BuiltInRegistries.ITEM.getKey(result.asItem());
+        ResourceLocation resultId = BuiltInRegistries.ITEM.getKey(result.asItem());
+        ResourceLocation inputId = BuiltInRegistries.ITEM.getKey(input.asItem());
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+id.getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+resultId.getPath()+"_from_"+inputId.getPath()));
         SimpleCookingRecipeBuilder.smoking(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 100)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smoking/"+id.getPath()));
+                .save(output, new ResourceLocation(MODID, "smoking/"+resultId.getPath()+"_from_"+inputId.getPath()));
         SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 600)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "campfire_cooking/"+id.getPath()));
+                .save(output, new ResourceLocation(MODID, "campfire_cooking/"+resultId.getPath()+"_from_"+inputId.getPath()));
+    }
+
+    private void createOreSmeltingRecipe(RecipeOutput output, List<ItemLike> ingredients, ItemLike result, float xp) {
+        for(ItemLike item : ingredients) createOreSmeltingRecipe(output, item, result, xp);
     }
 
     private void createOreSmeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
-        ResourceLocation id = BuiltInRegistries.ITEM.getKey(result.asItem());
+        ResourceLocation resultId = BuiltInRegistries.ITEM.getKey(result.asItem());
+        ResourceLocation inputId = BuiltInRegistries.ITEM.getKey(input.asItem());
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+id.getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+resultId.getPath()+"_from_"+inputId.getPath()));
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 100)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "blasting/"+id.getPath()));
+                .save(output, new ResourceLocation(MODID, "blasting/"+resultId.getPath()+"_from_"+inputId.getPath()));
     }
 
     private void chlorophyteSmithing(RecipeOutput recipeOutput, Item ingredientItem, RecipeCategory category, Item resultItem) {
@@ -269,6 +293,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         String path = BuiltInRegistries.ENTITY_TYPE.getKey(entity).getPath();
         SpecialRecipeBuilder.special(category -> new MobLiquifierRecipe(entity, outputs))
                 .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+path));
+    }
+
+    private void createFluidCombustionRecioe(RecipeOutput output, Fluid fluid, int generation, int duration) {
+        String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
+        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(fluid,generation, duration))
+                .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
     }
 
 }

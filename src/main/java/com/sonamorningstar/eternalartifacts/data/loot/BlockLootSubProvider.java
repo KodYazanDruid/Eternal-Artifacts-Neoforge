@@ -66,6 +66,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.BATTERY_BOX.get());
         dropSelf(ModBlocks.MOB_LIQUIFIER.get());
         dropSelf(ModBlocks.FLUID_COMBUSTION_DYNAMO.get());
+        dropSelf(ModBlocks.RAW_MANGANESE_BLOCK.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -77,6 +78,8 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);
         add(ModBlocks.GRAVEL_IRON_ORE.get(), block -> createOreDrop(block, Items.RAW_IRON));
         add(ModBlocks.GRAVEL_GOLD_ORE.get(), block -> createOreDrop(block, Items.RAW_GOLD));
+        add(ModBlocks.MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
+        add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
 
         add(ModBlocks.GARDENING_POT.get(), LootTable.lootTable()
             .withPool(

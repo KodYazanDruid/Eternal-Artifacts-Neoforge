@@ -53,6 +53,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.MANGANESE_NUGGET.get(),
                 ModItems.STEEL_NUGGET.get()
         );
+        tag(Tags.Items.RAW_MATERIALS).add(
+                ModItems.RAW_MANGANESE.get()
+        );
         tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
         tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());
         tag(ModTags.Items.NUGGETS_MANGANESE).add(ModItems.MANGANESE_NUGGET.get());

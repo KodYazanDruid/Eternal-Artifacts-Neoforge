@@ -10,7 +10,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -44,7 +43,7 @@ public abstract class BeaconEntityMixin {
 
     private static boolean findFeather(Player player, int ticks){
         MagicFeatherItem feather = (MagicFeatherItem) ModItems.MAGIC_FEATHER.get();
-        if(PlayerHelper.findInStack(player, feather)) {
+        if(PlayerHelper.findItem(player, feather)) {
             MagicFeatherItem.activeTicks = Pair.of(true, ticks);
             return true;
         }else {

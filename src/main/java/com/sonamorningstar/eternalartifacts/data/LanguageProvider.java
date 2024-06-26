@@ -84,6 +84,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Liquid Plastic Bucket");
                 add(ModItems.WRENCH.get(), "Wrench");
                 add(ModItems.ENDER_PAPER.get(), "Ender Paper");
+                add(ModItems.RAW_MANGANESE.get(), "Raw Manganese");
+                add(ModItems.KNAPSACK.get(), "Knapsack");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -135,7 +137,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Jar");
                 add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Liquid Plastic");
                 add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Fluid Combustion Dynamo");
-
+                add(ModBlocks.MANGANESE_ORE.get(), "Manganese Ore");
+                add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Deepslate Manganese Ore");
+                add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -242,6 +246,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Sıvı Plastik Kovası");
                 add(ModItems.WRENCH.get(), "İngiliz Anahtarı");
                 add(ModItems.ENDER_PAPER.get(), "Ender Kağıdı");
+                add(ModItems.RAW_MANGANESE.get(), "Ham Manganez");
+                add(ModItems.KNAPSACK.get(), "Sırt Çantası");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -293,6 +299,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
                 add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Sıvı Plastik");
                 add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Sıvı Yanmalı Dinamo");
+                add(ModBlocks.MANGANESE_ORE.get(), "Manganez Cevheri");
+                add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Kayrak Taşında Manganez Cevheri");
+                add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
 
 
                 //Varlıklar

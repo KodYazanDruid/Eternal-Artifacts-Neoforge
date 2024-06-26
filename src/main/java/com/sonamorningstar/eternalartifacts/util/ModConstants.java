@@ -13,6 +13,7 @@ public enum ModConstants {
     TRANSLATE_KEY_PREFIX("key."+MODID+".tooltip"),
     TRANSLATE_BUTTON_PREFIX("key."+MODID+".button"),
     GUI("gui."+MODID),
+    TITLE("title."+MODID),
     WARPS("warps."+MODID),
     CHLOROPHYTE_UPGRADE_APPLIES_TO(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.applies_to"))),
     CHLOROPHYTE_UPGRADE_INGREDIENTS(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.ingredients"))),

@@ -113,7 +113,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
         if (inputBook.getItem() == Items.ENCHANTED_BOOK &&
                 consumableBook.getItem() == Items.BOOK &&
                 output.isEmpty() &&
-                hasEnergy(consume, energy)) {
+                hasEnergy(energyPerTick, energy)) {
 
             Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(inputBook);
             //Book should have one enchantment.
@@ -153,7 +153,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
             progress = 0;
             return;
         }
-        energy.extractEnergyForced(consume, false);
+        energy.extractEnergyForced(energyPerTick, false);
         progress++;
         if (progress >= maxProgress) {
             consumableBook.shrink(1);

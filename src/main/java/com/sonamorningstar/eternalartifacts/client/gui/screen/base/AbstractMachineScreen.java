@@ -1,37 +1,25 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.sonamorningstar.eternalartifacts.container.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-
-import javax.annotation.Nonnull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> extends AbstractContainerScreen<T> {
+public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> extends AbstractModContainerScreen<T> {
     protected static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
-    @Nonnull
-    @Setter
-    protected static ResourceLocation texture = new ResourceLocation(MODID, "textures/gui/template.png");
-    protected int x;
-    protected int y;
     private final Map<String, Integer> energyLoc = new HashMap<>();
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
 
@@ -40,28 +28,11 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, texture);
-        this.x = (width - imageWidth) / 2;
-        this.y = (height - imageHeight) / 2;
-        gui.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
-        for(Slot slot : menu.slots) {
-            gui.blit(bars, x + slot.x-1, y + slot.y-1, 48, 37, 18, 18);
-        }
-
-    }
-
-    @Override
-    public void render(GuiGraphics gui, int mx, int my, float pPartialTick) {
+    public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         inventoryLabelX = 46;
-        renderBackground(gui, mx, my, pPartialTick);
-        super.render(gui, mx, my, pPartialTick);
-        renderTooltip(gui, mx, my);
+        super.render(gui, mx, my, partialTick);
         renderEnergyTooltip(gui, mx, my);
         renderFluidTooltip(gui, mx, my);
-
     }
 
     private void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {

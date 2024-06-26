@@ -76,6 +76,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.PLASTIC_SHEET.get());
         handheld(ModItems.WRENCH);
         basicItem(ModItems.ENDER_PAPER.get());
+        basicItem(ModItems.RAW_MANGANESE.get());
+        basicItem(ModItems.KNAPSACK.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

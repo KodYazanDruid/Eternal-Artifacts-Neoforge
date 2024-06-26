@@ -52,6 +52,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.BATTERY_BOX.get(), BatteryBoxScreen::new);
         event.register(ModMenuTypes.MOB_LIQUIFIER.get(), MobLiquifierScreen::new);
         event.register(ModMenuTypes.FLUID_COMBUSTION_MENU.get(), FluidCombustionScreen::new);
+        event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
     }
 
     @SubscribeEvent
