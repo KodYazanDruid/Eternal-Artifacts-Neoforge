@@ -19,16 +19,15 @@ public class ModularEnergyStorage implements IEnergyStorage {
         }
     }
 
-    private List<IEnergyStorage> energyItems = new ArrayList<>();
-
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         if (!canReceive()) return 0;
 
         int energyReceived = 0;
         for(IEnergyStorage handler : energyHandlers) {
-            energyReceived = handler.receiveEnergy(maxReceive, simulate);
+            energyReceived = handler.receiveEnergy(maxReceive, true);
             if(energyReceived > 0 ) {
+                energyReceived = handler.receiveEnergy(maxReceive, simulate);
                 onEnergyChanged();
                 return energyReceived;
             }
@@ -43,8 +42,9 @@ public class ModularEnergyStorage implements IEnergyStorage {
 
         int energyExtracted = 0;
         for(IEnergyStorage handler : energyHandlers) {
-            energyExtracted = handler.extractEnergy(maxExtract, simulate);
+            energyExtracted = handler.extractEnergy(maxExtract, true);
             if(energyExtracted > 0) {
+                energyExtracted = handler.extractEnergy(maxExtract, simulate);
                 onEnergyChanged();
                 return energyExtracted;
             }

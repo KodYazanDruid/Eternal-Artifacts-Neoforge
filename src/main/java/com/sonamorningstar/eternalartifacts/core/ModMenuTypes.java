@@ -28,8 +28,10 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BatteryBoxMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MobLiquifierMenu>> MOB_LIQUIFIER = MENUS.register("mob_liquifier",
             ()-> IMenuTypeExtension.create(MobLiquifierMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<FluidCombustionMenu>> FLUID_COMBUSTION_MENU = MENUS.register("fluid_combustion_menu",
+    public static final DeferredHolder<MenuType<?>, MenuType<FluidCombustionMenu>> FLUID_COMBUSTION_MENU = MENUS.register("fluid_combustion",
             ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
+            ()-> IMenuTypeExtension.create(NousTankMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<KnapsackMenu>> KNAPSACK = MENUS.register("knapsack",
             ()-> new MenuType<>(KnapsackMenu::fromNetwork, FeatureFlags.REGISTRY.allFlags()));

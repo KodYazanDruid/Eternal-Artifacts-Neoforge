@@ -26,6 +26,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(MobLiquifierMachineBlockEntity::new, ModBlocks.MOB_LIQUIFIER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamoBlockEntity>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
             BlockEntityType.Builder.of(FluidCombustionDynamoBlockEntity::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NousTankBlockEntity>> NOUS_TANK = BLOCK_ENTITIES.register("nous_tank", ()->
+            BlockEntityType.Builder.of(NousTankBlockEntity::new, ModBlocks.NOUS_TANK.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.renderer.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import com.sonamorningstar.eternalartifacts.client.renderer.util.RendererHelper;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
 import net.minecraft.client.Minecraft;
@@ -21,11 +22,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -59,7 +64,8 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity> {
 
     public static void renderWhole(JarBlockEntity jar, PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay) {
         renderJar(pose, buff, material, light, overlay);
-        renderFluid(jar, pose, buff, light, overlay);
+        RendererHelper.renderFluidCube(pose, buff, jar.tank, new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.all()),
+                light, overlay, 6, 9, 6, 5, 1, 5);
     }
 
     public static void renderJar(PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay) {
@@ -68,105 +74,5 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity> {
         modelPart.render(pose, consumer, light, overlay);
         pose.popPose();
     }
-
-    public static void renderFluid(JarBlockEntity jar, PoseStack pose, MultiBufferSource buff, int light, int overlay) {
-        FluidStack fluid = jar.tank.getFluid();
-        float fill = (float) jar.tank.getFluidAmount() / jar.tank.getCapacity();
-        //Level level = jar.getLevel();
-        if(fluid.isEmpty() /*|| level == null*/) return;
-
-        VertexConsumer vertexConsumer = buff.getBuffer(Sheets.translucentCullBlockSheet());
-        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluid.getFluid());
-        ResourceLocation still = fluidTypeExtensions.getStillTexture(fluid);
-
-        if(still != null){
-            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
-            int tintColor = fluidTypeExtensions.getTintColor(fluid);
-
-            float x0 = 5 / 16f;
-            float y0 = 1 / 16f;
-            float z0 = 5 / 16f;
-            float x1 = 11 / 16f;
-            float y1 = (1 + (9 * fill)) / 16;
-            float z1 = 11 / 16f;
-
-            float uTop0 = sprite.getU(x0);
-            float vTop0 = sprite.getV(z0);
-            float uTop1 = sprite.getU(x1);
-            float vTop1 = sprite.getV(z1);
-
-            float uSide0 = sprite.getU(x0);
-            float vSide0 = sprite.getV(y0);
-            float uSide1 = sprite.getU(x1);
-            float vSide1 = sprite.getV(y1);
-
-            //Draws top if not fully filled.
-            if(fill < 1){
-                drawQuad(
-                        vertexConsumer, pose,
-                        x0, y1, z0, x1, y1, z1,
-                        uTop0, vTop0, uTop1, vTop1,
-                        tintColor, light, overlay, /*level, jar.getBlockPos().above(),*/
-                        1, 1, 1 /*0, 1, 0*/, true
-                );
-            }
-
-            //Until I fix the lightning these normals will remain 1, 1, 1
-            //Draw sides
-            //North
-            drawQuad(vertexConsumer, pose, x0, y0, z0, x1, y1, z0, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().north(),*/1, 1, 1 /*0, -1, 0*/, true);
-            //East
-            drawQuad(vertexConsumer, pose, x1, y0, z0, x1, y1, z1, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().east(), */1, 1, 1 /*1, 0, 0*/, false);
-            //South
-            drawQuad(vertexConsumer, pose, x1, y0, z1, x0, y1, z1, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().south(),*/1, 1, 1 /*0, 0, 1*/, true);
-            //West
-            drawQuad(vertexConsumer, pose, x0, y0, z1, x0, y1, z0, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().west(), */1, 1, 1 /*-1, 0, 0*/, false);
-
-            //Draws bottom overlay,
-            pose.pushPose();
-            pose.mulPose(Axis.XP.rotationDegrees(180));
-            pose.translate(0, -2/16f, -1);
-            drawQuad(
-                    vertexConsumer, pose,
-                    x0, y0, z0, x1, y0, z1,
-                    uTop0, vTop0, uTop1, vTop1,
-                    tintColor, light, overlay, /*level, jar.getBlockPos().below(),*/
-                    1, 1, 1 /*0, -1, 0*/, true
-            );
-            pose.popPose();
-
-        }
-    }
-
-    private static void drawQuad(
-            VertexConsumer vertexConsumer,
-            PoseStack pose,
-            float x0, float y0, float z0,
-            float x1, float y1, float z1,
-            float u0, float v0,
-            float u1, float v1,
-            int tintColor, int light, int overlay, /*Level level, BlockPos pos,*/
-            float normalX, float normalY, float normalZ, boolean isNS){
-        /*int combined = level.getRawBrightness(pos, 0);
-        int lightMapU = combined >> 16 & 65535;
-        int lightMapV = combined & 65535;*/
-
-        if(isNS){
-            vertexConsumer.vertex(pose.last().pose(), x0, y0, z0).color(tintColor).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(pose.last().pose(), x0, y1, z1).color(tintColor).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(pose.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(pose.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        }else{
-            vertexConsumer.vertex(pose.last().pose(), x0, y0, z0).color(tintColor).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(pose.last().pose(), x1, y1, z0).color(tintColor).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(pose.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(pose.last().pose(), x0, y0, z1).color(tintColor).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        }
-
-        /*vertexConsumer.vertex(pose.last().pose(), x0, y0, z0).color(tintColor).uv(u0, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        vertexConsumer.vertex(pose.last().pose(), x0, y1, z1).color(tintColor).uv(u0, v1).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        vertexConsumer.vertex(pose.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        vertexConsumer.vertex(pose.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
- */   }
 
 }

@@ -55,6 +55,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.NOUS_TANK.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -65,7 +66,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.MEAT_PACKER.get(),
                 ModBlocks.MOB_LIQUIFIER.get(),
                 ModBlocks.BATTERY_BOX.get(),
-                ModBlocks.FLUID_COMBUSTION_DYNAMO.get()
+                ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
+                ModBlocks.NOUS_TANK.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
 

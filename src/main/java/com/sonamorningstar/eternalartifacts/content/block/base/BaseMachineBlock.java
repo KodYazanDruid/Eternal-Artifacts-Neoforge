@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.block;
+package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
@@ -44,17 +44,6 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
-    }
-
-    @Nullable
-    @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        return this.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, pContext.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(BlockStateProperties.HORIZONTAL_FACING);
     }
 
     @Override

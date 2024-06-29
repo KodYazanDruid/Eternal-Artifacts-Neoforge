@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "eternalartifacts:jar_keep"
+            }
+          ],
+          "name": "eternalartifacts:nous_tank"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eternalartifacts:blocks/nous_tank"
+}

@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.block;
+package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;

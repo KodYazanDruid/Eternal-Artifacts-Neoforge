@@ -5,7 +5,7 @@ import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModLootTables;
-import com.sonamorningstar.eternalartifacts.loot.function.JarKeepFluidFunction;
+import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
@@ -106,8 +106,18 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                         LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1.0F))
                                 .add(
-                                        LootItem.lootTableItem(ModItems.JAR.get())
-                                                .apply(JarKeepFluidFunction.builder())
+                                        LootItem.lootTableItem(ModItems.JAR)
+                                                .apply(KeepFluidFunction.builder())
+                                )
+                )
+        );
+        add(ModBlocks.NOUS_TANK.get(), LootTable.lootTable()
+                .withPool(
+                        LootPool.lootPool()
+                                .setRolls(ConstantValue.exactly(1.0F))
+                                .add(
+                                        LootItem.lootTableItem(ModBlocks.NOUS_TANK)
+                                                .apply(KeepFluidFunction.builder())
                                 )
                 )
         );

@@ -9,6 +9,7 @@
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:battery_box",
     "eternalartifacts:fluid_combustion_dynamo",
+    "eternalartifacts:nous_tank",
     "#forge:storage_blocks"
   ]
 }

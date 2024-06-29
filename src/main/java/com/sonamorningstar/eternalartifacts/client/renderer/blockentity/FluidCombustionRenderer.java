@@ -33,7 +33,6 @@ public class FluidCombustionRenderer implements BlockEntityRenderer<FluidCombust
         Direction facing = dynamo.hasLevel() ? dynamo.getBlockState().getValue(BlockStateProperties.FACING) : Direction.NORTH;
         Quaternionf faceRot = facing.getRotation();
         poseStack.pushPose();
-        float y = 4 + ((Mth.sin(tick * Mth.PI) + 1F) * 2);
         VertexConsumer consumer = TEXTURE_DYNAMO.buffer(buff, RenderType::entityCutout);
         poseStack.translate(0.5F, 0.5F, 0.5F);
         poseStack.mulPose(faceRot);

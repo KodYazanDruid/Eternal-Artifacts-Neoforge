@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
+import com.sonamorningstar.eternalartifacts.content.block.base.RetexturedBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.GardeningPotEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;

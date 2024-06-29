@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FancyChestRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FluidCombustionRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.JarRenderer;
+import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.NousTankRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
@@ -53,6 +54,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.MOB_LIQUIFIER.get(), MobLiquifierScreen::new);
         event.register(ModMenuTypes.FLUID_COMBUSTION_MENU.get(), FluidCombustionScreen::new);
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
+        event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
     }
 
     @SubscribeEvent
@@ -123,6 +125,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.FLUID_COMBUSTION_LAYER, FluidCombustionDynamoModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.NOUS_TANK_LAYER, NousTankRenderer::createSingleBodyLayer);
     }
 
     @SubscribeEvent
@@ -130,6 +133,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.JAR.get(), JarRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), FluidCombustionRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.NOUS_TANK.get(), NousTankRenderer::new);
     }
 
     @SubscribeEvent

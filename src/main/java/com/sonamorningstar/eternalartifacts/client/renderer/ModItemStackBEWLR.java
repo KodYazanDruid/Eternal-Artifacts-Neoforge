@@ -7,8 +7,10 @@ import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FluidCom
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.JarRenderer;
 import com.sonamorningstar.eternalartifacts.content.block.FluidCombustionDynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.JarBlock;
+import com.sonamorningstar.eternalartifacts.content.block.NousTankBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.client.Minecraft;
@@ -42,19 +44,23 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
 
     private final JarBlockEntity jarBlockEntity = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
     private final FluidCombustionDynamoBlockEntity fluidCombustionBlockEntity = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
+    private final NousTankBlockEntity nousTankBlockEntity = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
         Item item = stack.getItem();
         Minecraft minecraft = Minecraft.getInstance();
         if(item instanceof BlockItem blockItem) {
+            IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).orElse(null);
             Block block = blockItem.getBlock();
             if(block instanceof JarBlock jarBlock) {
-                IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).get();
-                jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
-                JarRenderer.renderWhole(jarBlockEntity, ps, buff, JarRenderer.TEXTURE_JAR, light, overlay);
+                if(fluidHandlerItem != null) jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
+                blockEntityRenderDispatcher.renderItem(jarBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof FluidCombustionDynamoBlock dynamo) {
                 blockEntityRenderDispatcher.renderItem(fluidCombustionBlockEntity, ps, buff, light, overlay);
+            }else if(block instanceof NousTankBlock nous) {
+                if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
+                blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
             }
         }
 

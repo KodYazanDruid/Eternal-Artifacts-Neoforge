@@ -25,7 +25,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private final SidedTransferMachineBlockEntity<?> sidedTransferMachineBlockEntity = ((SidedTransferMachineBlockEntity<?>) menu.getBlockEntity());
 
     @Setter
-    protected boolean redstoneControllable = true;
+    private boolean redstoneControllable = true;
     private boolean sidedTransferBarActive;
     private final List<CustomRenderButton> sideSetters = new ArrayList<>(6);
     private final List<CustomRenderButton> autoSetters = new ArrayList<>(4);

@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.Direction;
@@ -42,6 +43,7 @@ public class ModEvents {
 
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModItemEnergyStorage(10000, 250, stack), ModItems.BATTERY.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 64000), ModBlocks.NOUS_TANK.asItem());
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModItemItemStorage(stack, 27), ModItems.KNAPSACK.get());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
@@ -71,6 +73,7 @@ public class ModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
 
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
     }
 

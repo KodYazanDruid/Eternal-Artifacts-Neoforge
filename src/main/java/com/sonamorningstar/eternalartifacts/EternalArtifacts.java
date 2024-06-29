@@ -31,7 +31,7 @@ public class EternalArtifacts {
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
      * TODO: Banana bread.
-     * TODO: Geothermal Generator, Piezoelectric Plane
+     * TODO: Piezoelectric Plane
      * TODO: Modular Fluid Tank
      * TODO: A plant with infinite water supply
      * TODO: Smart Piston (with sticky)

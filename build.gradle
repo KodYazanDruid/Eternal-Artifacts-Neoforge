@@ -89,14 +89,15 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
-    // compile against the JEI API but do not include it at runtime
+
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-    // at runtime, use the full JEI jar for NeoForge
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+
     runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
     runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
-    runtimeOnly "curse.maven:pipez-443900:5396282" //Pipez
+    //runtimeOnly "curse.maven:pipez-443900:5396282" //Pipez
+    runtimeOnly "curse.maven:modern-dynamics-552758:5373764" //Modern Industrialization
 
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"

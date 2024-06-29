@@ -140,6 +140,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganese Ore");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Deepslate Manganese Ore");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
+                add(ModBlocks.NOUS_TANK.get(), "Nous Tank");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -302,6 +303,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganez Cevheri");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Kayrak Taşında Manganez Cevheri");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
+                add(ModBlocks.NOUS_TANK.get(), "İdrak Tankı");
 
 
                 //Varlıklar

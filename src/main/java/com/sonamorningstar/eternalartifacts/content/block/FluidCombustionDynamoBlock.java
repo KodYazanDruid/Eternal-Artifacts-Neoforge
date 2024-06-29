@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
+import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -15,7 +16,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustionDynamoBlockEntity>{
+public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustionDynamoBlockEntity> {
     public FluidCombustionDynamoBlock(Properties pProperties) {
         super(pProperties, FluidCombustionDynamoBlockEntity::new);
         registerDefaultState(defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH));

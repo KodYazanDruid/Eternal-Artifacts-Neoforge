@@ -147,6 +147,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
                 IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
                 if(target != null && target.canExtract()) {
                     int received = target.extractEnergy(Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), target.getEnergyStored()), true);
+                    //int received = energy.receiveEnergy(Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), target.getEnergyStored()), true);
                     if(received > 0) {
                         energy.receiveEnergy(received, false);
                         target.extractEnergy(received, false);
@@ -169,7 +170,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(be != null) {
                 IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
                 if(target != null && target.canReceive()) {
-                    int extracted = target.receiveEnergy(Math.min(energy.getEnergyStored(), target.getMaxEnergyStored() - target.getEnergyStored()), true);
+                    int extracted = energy.extractEnergy(Math.min(energy.getEnergyStored(), target.getMaxEnergyStored() - target.getEnergyStored()), true);
                     if(extracted > 0) {
                         target.receiveEnergy(extracted, false);
                         energy.extractEnergy(extracted, false);

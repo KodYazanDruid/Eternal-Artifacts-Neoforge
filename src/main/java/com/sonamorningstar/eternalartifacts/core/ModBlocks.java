@@ -115,7 +115,11 @@ public class ModBlocks {
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MobLiquifierBlock> MOB_LIQUIFIER = registerWithItem("mob_liquifier",
             ()-> new MobLiquifierBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerDynamo("fluid_combustion_dynamo");
+    //public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerDynamo("fluid_combustion_dynamo");
+    public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerWithBewlr("fluid_combustion_dynamo",
+            () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+    public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
+            () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -185,7 +189,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<FluidCombustionDynamoBlock> registerDynamo(String name) {
-        DeferredBlock<FluidCombustionDynamoBlock> dynamo = BLOCKS.register(name, ()-> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+        /*DeferredBlock<FluidCombustionDynamoBlock> dynamo = BLOCKS.register(name, ()-> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
         ModItems.ITEMS.register(name, ()-> new BlockItem(dynamo.get(), new Item.Properties()) {
             @Override
             public void initializeClient(Consumer<IClientItemExtensions> consumer) {
@@ -196,8 +200,24 @@ public class ModBlocks {
                     }
                 });
             }
+        });*/
+        return registerWithBewlr(name, () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+    }
+
+    private static <T extends Block> DeferredBlock<T> registerWithBewlr(String name, Supplier<T> sup) {
+        DeferredBlock<T> block = BLOCKS.register(name, sup);
+        ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()) {
+            @Override
+            public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+                consumer.accept(new IClientItemExtensions() {
+                    @Override
+                    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                        return ModItemStackBEWLR.INSTANCE.get();
+                    }
+                });
+            }
         });
-        return dynamo;
+        return block;
     }
 
     private static Boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {return false;}

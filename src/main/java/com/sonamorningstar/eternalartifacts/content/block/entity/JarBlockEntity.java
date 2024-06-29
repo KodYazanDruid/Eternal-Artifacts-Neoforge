@@ -1,17 +1,20 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.capabilities.IHasFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class JarBlockEntity extends ModBlockEntity {
+public class JarBlockEntity extends ModBlockEntity implements IHasFluidTank {
     public JarBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.JAR.get(), pPos, pBlockState);
     }
 
+    @Getter
     public ModFluidStorage tank = new ModFluidStorage(1000) {
         @Override
         protected void onContentsChanged() {
