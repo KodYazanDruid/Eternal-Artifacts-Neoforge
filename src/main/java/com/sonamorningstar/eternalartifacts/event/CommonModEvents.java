@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
@@ -25,6 +26,7 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.wrapper.ShulkerItemStackInvWrapper;
+import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -32,7 +34,7 @@ import java.util.List;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModEvents {
+public class CommonModEvents {
     @SubscribeEvent
     public static void registerCaps(RegisterCapabilitiesEvent event) {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.NOUS_BUCKET.get());
@@ -77,7 +79,8 @@ public class ModEvents {
 
     }
 
-    private static IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
+    @Contract("_, _, null, _ -> param2")
+    private static @org.jetbrains.annotations.Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
             be.invalidateCapabilities();
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
@@ -91,7 +94,8 @@ public class ModEvents {
         } else return inventory;
     }
 
-    private static IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
+    @Contract("_, _, null -> param2")
+    private static @org.jetbrains.annotations.Nullable IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
         if(ctx != null) {
             be.invalidateCapabilities();
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
@@ -104,7 +108,8 @@ public class ModEvents {
         } else return tank;
     }
 
-    private static IEnergyStorage regSidedEnergyCaps(SidedTransferMachineBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
+    @Contract("_, _, null -> param2")
+    private static @org.jetbrains.annotations.Nullable IEnergyStorage regSidedEnergyCaps(SidedTransferMachineBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
         if(ctx != null) {
             be.invalidateCapabilities();
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE)) return null;
@@ -120,6 +125,8 @@ public class ModEvents {
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(ModEntities.DEMON_EYE.get(), DemonEyeEntity.createAttributes().build());
         event.put(ModEntities.PINKY.get(), PinkyEntity.createAttributes().build());
+        event.put(ModEntities.MAGICAL_BOOK.get(), MagicalBookEntity.createAttributes().build());
+
         event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
     }
 

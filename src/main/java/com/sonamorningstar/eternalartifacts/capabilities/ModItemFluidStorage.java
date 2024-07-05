@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.capabilities;
 
+import com.sonamorningstar.eternalartifacts.content.item.block.base.ICapabilityListener;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -25,6 +26,7 @@ public class ModItemFluidStorage extends ModFluidStorage implements IFluidHandle
     protected void onContentsChanged() {
         CompoundTag tag = stack.getOrCreateTag().getCompound("Fluid");
         writeToNBT(tag);
+        if(stack.getItem() instanceof ICapabilityListener listener) listener.onChange(this.stack);
     }
 
     @Override

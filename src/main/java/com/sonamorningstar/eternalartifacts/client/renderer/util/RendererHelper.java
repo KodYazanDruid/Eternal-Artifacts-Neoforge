@@ -56,8 +56,8 @@ public class RendererHelper {
             float uSide1 = sprite.getU(x1);
             float vSide1 = sprite.getV(y1);
 
-            //Draws top if not fully filled.
-            if(fill < 1 && info.shouldRender(Direction.UP)){
+            //Draws top if not fully filled or force render is true.
+            if((fill < 1 || info.forceRenderUp) && info.shouldRender(Direction.UP)){
                 drawQuad(
                         vertexConsumer, poseStack,
                         x0, y1, z0, x1, y1, z1,
@@ -123,7 +123,7 @@ public class RendererHelper {
         vertexConsumer.vertex(pose.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
  */   }
 
-    public record FluidRenderCubeInfo(ArrayList<Direction> renderedFaces) {
+    public record FluidRenderCubeInfo(ArrayList<Direction> renderedFaces, boolean forceRenderUp) {
 
         public boolean shouldRender(Direction face) {
             return renderedFaces.contains(face);

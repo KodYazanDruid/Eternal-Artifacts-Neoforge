@@ -97,6 +97,8 @@ public class ModItems {
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
     public static final DeferredItem<Item> PINKY_SPAWN_EGG = register("pinky_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.PINKY, 0xE8B3E2, 0xC062B3, new Item.Properties()));
+    public static final DeferredItem<Item> MAGICAL_BOOK_SPAWN_EGG = register("magical_book_spawn_egg",
+            ()-> new DeferredSpawnEggItem(ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802, new Item.Properties()));
     public static final DeferredItem<Item> DUCK_SPAWN_EGG = register("duck_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DUCK, 0x126700, 0xF2691B, new Item.Properties()));
 

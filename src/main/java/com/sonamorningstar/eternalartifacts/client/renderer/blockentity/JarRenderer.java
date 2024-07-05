@@ -39,8 +39,12 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity> {
     public static final Material TEXTURE_JAR = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(MODID, "block/jar"));
 
     private static ModelPart modelPart;
+    private static ModelPart base;
+    private static ModelPart lid;
     public JarRenderer(BlockEntityRendererProvider.Context ctx) {
         modelPart = ctx.bakeLayer(ModModelLayers.JAR_LAYER);
+        base = modelPart.getChild("base");
+        lid = modelPart.getChild("lid");
     }
 
 
@@ -59,19 +63,20 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity> {
 
     @Override
     public void render(JarBlockEntity jar, float tick, PoseStack pose, MultiBufferSource buff, int light, int overlay) {
-        renderWhole(jar, pose, buff, TEXTURE_JAR, light, overlay);
+        renderWhole(jar, pose, buff, TEXTURE_JAR, light, overlay, jar.isOpen);
     }
 
-    public static void renderWhole(JarBlockEntity jar, PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay) {
-        renderJar(pose, buff, material, light, overlay);
-        RendererHelper.renderFluidCube(pose, buff, jar.tank, new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.all()),
+    public static void renderWhole(JarBlockEntity jar, PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay, boolean isOpen) {
+        renderJar(pose, buff, material, light, overlay, isOpen);
+        RendererHelper.renderFluidCube(pose, buff, jar.tank, new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.all(), isOpen),
                 light, overlay, 6, 9, 6, 5, 1, 5);
     }
 
-    public static void renderJar(PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay) {
+    public static void renderJar(PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay, boolean isOpen) {
         pose.pushPose();
         VertexConsumer consumer = material.buffer(buff, RenderType::entityCutout);
-        modelPart.render(pose, consumer, light, overlay);
+        base.render(pose, consumer, light, overlay);
+        if(!isOpen) lid.render(pose, consumer, light, overlay);
         pose.popPose();
     }
 

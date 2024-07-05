@@ -86,6 +86,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENDER_PAPER.get(), "Ender Paper");
                 add(ModItems.RAW_MANGANESE.get(), "Raw Manganese");
                 add(ModItems.KNAPSACK.get(), "Knapsack");
+                add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Magical Book Spawn Egg");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -146,6 +147,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
                 add(ModEntities.PINKY.get(), "Pinky");
                 add(ModEntities.DUCK.get(), "Duck");
+                add(ModEntities.MAGICAL_BOOK.get(), "Magical Book");
 
                 //Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -249,6 +251,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENDER_PAPER.get(), "Ender Kağıdı");
                 add(ModItems.RAW_MANGANESE.get(), "Ham Manganez");
                 add(ModItems.KNAPSACK.get(), "Sırt Çantası");
+                add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Büyülü Kitap Çağırma Yumurtası");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -310,6 +313,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
                 add(ModEntities.PINKY.get(), "Pembiş");
                 add(ModEntities.DUCK.get(), "Ördek");
+                add(ModEntities.MAGICAL_BOOK.get(), "Büyülü Kitap");
 
                 //Efektler
                 add(ModEffects.FLIGHT.get(), "Uçuş");

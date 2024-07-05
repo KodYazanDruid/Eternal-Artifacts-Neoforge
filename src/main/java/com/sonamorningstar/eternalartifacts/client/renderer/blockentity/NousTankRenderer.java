@@ -72,7 +72,7 @@ public class NousTankRenderer implements BlockEntityRenderer<NousTankBlockEntity
         VertexConsumer consumer = TEXTURE_TANK.buffer(buff, RenderType::entityCutout);
         modelPart.render(poseStack, consumer, light, overlay);
         RendererHelper.renderFluidCube(poseStack, buff, tank.tank,
-                new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.allExcept(Direction.DOWN)),
+                new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.allExcept(Direction.DOWN), false),
                 light, overlay, 10, 10, 10, 3, 2, 3);
         poseStack.popPose();
     }

@@ -2,9 +2,9 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.content.item.*;
-import com.sonamorningstar.eternalartifacts.core.ModEffects;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.core.ModSounds;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
+import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
@@ -14,6 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,9 +25,12 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.EffectCures;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEvent;
@@ -34,6 +39,7 @@ import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.List;
@@ -47,6 +53,34 @@ public class CommonEvents {
         if (event.getLeft().is(Items.APPLE)  && event.getRight().is(Items.ORANGE_DYE)) {
             event.setCost(5);
             event.setOutput(new ItemStack(ModItems.ORANGE.get()));
+        }
+    }
+
+    //TODO: Do the data pack thing.
+    @SubscribeEvent
+    public static void jarDrinkEvent(JarDrinkEvent event) {
+        FluidStack fluidStack = event.getFluidStack();
+        if(fluidStack.is(Tags.Fluids.MILK)) {
+            event.setDrinkingAmount(250);
+            event.setUseTime(40);
+            event.setAfterDrink((player, stack) -> player.removeEffectsCuredBy(EffectCures.MILK));
+        } else if(fluidStack.is(Fluids.LAVA)) {
+            event.setUseTime(80);
+            event.setAfterDrink((player, stack) -> player.setSecondsOnFire(10));
+        } else if(fluidStack.is(ModTags.Fluids.EXPERIENCE)) {
+            event.setUseTime(20);
+            int fluidAmount = fluidStack.getAmount();
+            int drankAmount = fluidAmount - (fluidAmount % 20);
+            if(drankAmount < 20) event.setCanceled(true);
+            event.setDrinkingAmount(drankAmount);
+            event.setAfterDrink((player, stack) -> {
+                player.giveExperiencePoints(drankAmount / 20);
+                player.level().playSound(
+                        null,
+                        player.getX(), player.getY(), player.getZ(),
+                        SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS,
+                        1.0F, 1.0F);
+            });
         }
     }
 

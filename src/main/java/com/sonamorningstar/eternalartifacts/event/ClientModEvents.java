@@ -115,6 +115,7 @@ public class ClientModEvents {
         EntityRenderers.register(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
         EntityRenderers.register(ModEntities.PINKY.get(), PinkyRenderer::new);
         EntityRenderers.register(ModEntities.DUCK.get(), DuckRenderer::new);
+        EntityRenderers.register(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
     }
 
     @SubscribeEvent

@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-27T17:44:07.406713	Loot Tables
+// 1.20.4	2024-06-29T17:29:12.2512765	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 e51e792e7824f51f301b4f1a6a9200e89727acad data/eternalartifacts/loot_tables/blocks/battery_box.json
@@ -49,6 +49,7 @@ c1bc5e28cf5db7bcd682ba3f629a120acfefc497 data/eternalartifacts/loot_tables/block
 4dc8e7bc72dfbc99f2e1e1703cfd2ef673108379 data/eternalartifacts/loot_tables/blocks/very_sandy_prismarine.json
 c0e3731ff79dbcd23191ed8563f789961ec2fb15 data/eternalartifacts/loot_tables/entities/demon_eye.json
 a4611bf5536257aea77d51c82bee632fe5a5953b data/eternalartifacts/loot_tables/entities/duck.json
+293be983c103d056b006c6eb21ce99c950f10707 data/eternalartifacts/loot_tables/entities/magical_book.json
 adc9376497f9c09e0788f0c1c265d8f48955d0cf data/eternalartifacts/loot_tables/entities/pinky.json
 0b2f1c388eb9a565ef359dd5c338a10f548f5233 data/eternalartifacts/loot_tables/oreberries/copper.json
 e98bc9b9047c1b1029a4837a5d624b158988d683 data/eternalartifacts/loot_tables/oreberries/experience.json

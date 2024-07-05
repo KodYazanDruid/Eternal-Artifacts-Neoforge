@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-25T19:59:22.4234134	Item Models: eternalartifacts
+// 1.20.4	2024-06-29T17:29:12.2602744	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -54,6 +54,7 @@ f244cc9ae51e0947ad50cb4f4e7d4a5c36861a92 assets/eternalartifacts/models/item/len
 d608f92e218c867ca956bd52da4235eba06b49c2 assets/eternalartifacts/models/item/liquid_plastic_bucket.json
 96ceecf7541e5c363e94df98ec3b72b6921fac2f assets/eternalartifacts/models/item/lush_grubber.json
 9664ad295d909582390420bb3d51770238f428ad assets/eternalartifacts/models/item/machine_block.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/magical_book_spawn_egg.json
 6afd025c41261b45f50dac602bcfc9762a50ff3c assets/eternalartifacts/models/item/magic_feather.json
 f6a9f17379e64bf048e8ffefbde4223c30c28a5a assets/eternalartifacts/models/item/manganese_ingot.json
 ada2695d85a8d6aacc3fa5c0de02db49b151ee30 assets/eternalartifacts/models/item/manganese_nugget.json

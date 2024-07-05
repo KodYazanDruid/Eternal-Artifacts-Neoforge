@@ -2,33 +2,26 @@ package com.sonamorningstar.eternalartifacts.client.renderer;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.client.model.FluidCombustionDynamoModel;
-import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FluidCombustionRenderer;
-import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.JarRenderer;
 import com.sonamorningstar.eternalartifacts.content.block.FluidCombustionDynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.JarBlock;
 import com.sonamorningstar.eternalartifacts.content.block.NousTankBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
+import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
@@ -55,6 +48,10 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             Block block = blockItem.getBlock();
             if(block instanceof JarBlock jarBlock) {
                 if(fluidHandlerItem != null) jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
+                CompoundTag tag = stack.getTag();
+                boolean isOpen = false;
+                if (tag != null) isOpen = tag.getBoolean(JarBlockItem.KEY_OPEN);
+                jarBlockEntity.isOpen = isOpen;
                 blockEntityRenderDispatcher.renderItem(jarBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof FluidCombustionDynamoBlock dynamo) {
                 blockEntityRenderDispatcher.renderItem(fluidCombustionBlockEntity, ps, buff, light, overlay);

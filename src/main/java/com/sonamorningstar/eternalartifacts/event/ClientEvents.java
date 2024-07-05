@@ -9,8 +9,12 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -94,6 +98,18 @@ public class ClientEvents {
         if(screen instanceof KnapsackScreen ks) {
             Slot slot = ks.getSlotUnderMouse();
             if(slot != null && slot.getItem().is(ModItems.KNAPSACK)) event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void screenRenderPostEvent(ScreenEvent.Init.Post event) {
+        Screen screen = event.getScreen();
+        if(screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
+            /*EffectRenderingInventoryScreen<?> renderedScreen = ((EffectRenderingInventoryScreen<?>) screen);
+            Minecraft minecraft = Minecraft.getInstance();
+            GuiGraphics gui = new GuiGraphics(minecraft, minecraft.renderBuffers().bufferSource());
+            renderedScreen.render(gui, ((int) minecraft.mouseHandler.xpos()), ((int) minecraft.mouseHandler.ypos()), minecraft.getPartialTick());*/
+
         }
     }
 

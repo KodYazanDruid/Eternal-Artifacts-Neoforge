@@ -115,7 +115,6 @@ public class ModBlocks {
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MobLiquifierBlock> MOB_LIQUIFIER = registerWithItem("mob_liquifier",
             ()-> new MobLiquifierBlock(MACHINE_BLOCK.get().properties()));
-    //public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerDynamo("fluid_combustion_dynamo");
     public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerWithBewlr("fluid_combustion_dynamo",
             () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
