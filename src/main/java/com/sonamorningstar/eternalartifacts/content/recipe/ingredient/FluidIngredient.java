@@ -66,7 +66,6 @@ public class FluidIngredient implements Predicate<FluidStack> {
                     return true;
                 }
             }
-
             return false;
         }
     }
@@ -77,13 +76,12 @@ public class FluidIngredient implements Predicate<FluidStack> {
 
     public void toNetwork(FriendlyByteBuf buff) {
         buff.writeCollection(Arrays.asList(this.getFluidStacks()), FriendlyByteBuf::writeFluidStack);
-
     }
 
     public static FluidIngredient fromNetwork(FriendlyByteBuf buff) {
-        int size = buff.readVarInt();
+        /*int size = buff.readVarInt();
         if (size == -1) return buff.readWithCodecTrusted(net.minecraft.nbt.NbtOps.INSTANCE, CODEC);
-        else return new FluidIngredient(Stream.generate(() -> new FluidIngredient.FluidValue(buff.readFluidStack())).limit(size));
+        else*/ return new FluidIngredient(Stream.generate(() -> new FluidIngredient.FluidValue(buff.readFluidStack())));
     }
 
     public static FluidIngredient fromJson(JsonElement element, boolean nonEmpty) {
@@ -139,8 +137,8 @@ public class FluidIngredient implements Predicate<FluidStack> {
     private static Codec<FluidIngredient> codec(boolean allowEmpty) {
         Codec<FluidIngredient.Value[]> codec = Codec.list(Value.CODEC)
                 .comapFlatMap(list ->
-                        !allowEmpty && list.size() < 1
-                        ? DataResult.error(()-> "Atleast one fluidstack must be defined.")
+                        !allowEmpty && list.isEmpty()
+                        ? DataResult.error(()-> "At least one fluidstack must be defined.")
                         : DataResult.success(list.toArray(new FluidIngredient.Value[0])),
                         List::of
                 );
@@ -150,13 +148,13 @@ public class FluidIngredient implements Predicate<FluidStack> {
                         fluidIngredient -> {
                             if (fluidIngredient.values.length == 1) return DataResult.success(Either.right(fluidIngredient.values[0]));
                             else return fluidIngredient.values.length == 0 && !allowEmpty
-                                ? DataResult.error(()-> "Atleast one fluidstack must be defined.")
+                                ? DataResult.error(()-> "At least one fluidstack must be defined.")
                                 : DataResult.success(Either.left(fluidIngredient.values));
                         }
                 );
     }
 
-    public static record FluidValue(FluidStack fluidStack, BiFunction<FluidStack, FluidStack, Boolean> comparator) implements FluidIngredient.Value{
+    public record FluidValue(FluidStack fluidStack, BiFunction<FluidStack, FluidStack, Boolean> comparator) implements FluidIngredient.Value{
         public FluidValue(FluidStack fluidStack) {
             this(fluidStack, FluidValue::areStacksEqual);
         }
@@ -180,7 +178,11 @@ public class FluidIngredient implements Predicate<FluidStack> {
         }
     }
 
-    public static record TagValue(TagKey<Fluid> tag) implements FluidIngredient.Value {
+    public record TagValue(TagKey<Fluid> tag) implements FluidIngredient.Value {
+
+        public TagValue(TagKey<Fluid> tag) {
+            this.tag = tag;
+        }
 
         static final Codec<TagValue> CODEC = RecordCodecBuilder.create( inst -> inst.group(
                 TagKey.codec(Registries.FLUID).fieldOf("tag").forGetter(tagValue -> tagValue.tag)
@@ -197,9 +199,6 @@ public class FluidIngredient implements Predicate<FluidStack> {
             List<FluidStack> list = new ArrayList<>();
             for(Holder<Fluid> holder : BuiltInRegistries.FLUID.getTagOrEmpty(this.tag)) {
                 list.add(new FluidStack(holder, 1000));
-            }
-            if(list.size() == 0) {
-                list.add(new FluidStack(Fluids.LAVA, 666));
             }
             return list;
         }

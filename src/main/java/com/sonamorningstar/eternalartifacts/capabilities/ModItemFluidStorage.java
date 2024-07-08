@@ -26,7 +26,7 @@ public class ModItemFluidStorage extends ModFluidStorage implements IFluidHandle
     protected void onContentsChanged() {
         CompoundTag tag = stack.getOrCreateTag().getCompound("Fluid");
         writeToNBT(tag);
-        if(stack.getItem() instanceof ICapabilityListener listener) listener.onChange(this.stack);
+        if(stack.getItem() instanceof ICapabilityListener listener) listener.onFluidContentChange(this.stack);
     }
 
     @Override

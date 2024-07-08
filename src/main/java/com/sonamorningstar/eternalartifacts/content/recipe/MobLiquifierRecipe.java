@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,13 +23,15 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class MobLiquifierRecipe implements Recipe<SimpleContainer> {
+    /*@Getter
+    private final EntityType<?> entity;*/
     @Getter
-    private final EntityType<?> entity;
+    private final EntityIngredient entity;
     @Getter
     private final NonNullList<FluidStack> resultFluidList;
 
     public boolean matches(EntityType<?> entity) {
-        return this.entity == entity;
+        return this.entity.test(entity);
     }
 
     /** @deprecated use {@link #matches(EntityType)} */
@@ -50,8 +53,9 @@ public class MobLiquifierRecipe implements Recipe<SimpleContainer> {
 
     public static class Serializer implements RecipeSerializer<MobLiquifierRecipe> {
         private static final Codec<MobLiquifierRecipe> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter(MobLiquifierRecipe::getEntity),
-                NonNullList.codecOf(FluidStack.CODEC).fieldOf("resultFluidList").forGetter(MobLiquifierRecipe::getResultFluidList)
+                //BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter(MobLiquifierRecipe::getEntity),
+                EntityIngredient.MOD_CODEC.fieldOf("entity_ingredient").forGetter(MobLiquifierRecipe::getEntity),
+                NonNullList.codecOf(FluidStack.CODEC).fieldOf("result_fluid_list").forGetter(MobLiquifierRecipe::getResultFluidList)
         ).apply(inst, MobLiquifierRecipe::new));
 
         @Override
@@ -61,14 +65,16 @@ public class MobLiquifierRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public MobLiquifierRecipe fromNetwork(FriendlyByteBuf buff) {
-            EntityType<?> entityType = buff.readById(BuiltInRegistries.ENTITY_TYPE::byId);
+            //EntityType<?> entityType = buff.readById(BuiltInRegistries.ENTITY_TYPE::byId);
+            EntityIngredient entity = EntityIngredient.fromNetwork(buff);
             NonNullList<FluidStack> resultFluidList = buff.readCollection(NonNullList::createWithCapacity, IFriendlyByteBufExtension::readFluidStack);
-            return new MobLiquifierRecipe(entityType, resultFluidList);
+            return new MobLiquifierRecipe(entity, resultFluidList);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buff, MobLiquifierRecipe recipe) {
-            buff.writeById(BuiltInRegistries.ENTITY_TYPE::getId, recipe.entity);
+            //buff.writeById(BuiltInRegistries.ENTITY_TYPE::getId, recipe.entity);
+            recipe.entity.toNetwork(buff);
             buff.writeCollection(recipe.resultFluidList, IFriendlyByteBufExtension::writeFluidStack);
         }
     }

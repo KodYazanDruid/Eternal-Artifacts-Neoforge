@@ -1,23 +1,23 @@
 {
   "type": "eternalartifacts:mob_liquifying",
   "entity_ingredient": {
-    "entity": "minecraft:sheep"
+    "entity": "eternalartifacts:duck"
   },
   "result_fluid_list": [
     {
-      "Amount": 35,
+      "Amount": 10,
       "FluidName": "eternalartifacts:blood"
     },
     {
-      "Amount": 50,
+      "Amount": 25,
       "FluidName": "eternalartifacts:liquid_meat"
     },
     {
-      "Amount": 20,
+      "Amount": 10,
       "FluidName": "eternalartifacts:pink_slime"
     },
     {
-      "Amount": 20,
+      "Amount": 15,
       "FluidName": "eternalartifacts:nous"
     }
   ]

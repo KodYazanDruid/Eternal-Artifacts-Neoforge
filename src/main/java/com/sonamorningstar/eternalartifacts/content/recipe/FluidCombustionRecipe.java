@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -16,19 +17,23 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
 
+    /*@Getter
+    private final Fluid fuel;*/
     @Getter
-    private final Fluid fuel;
+    private final FluidIngredient fuel;
     @Getter
     private final int generation;
     @Getter
     private final int duration;
 
     public boolean matches(Fluid fluid) {
-        return fluid.isSame(fuel);
+        //TODO: Temporary
+        return fuel.test(new FluidStack(fluid, 1000));
     }
 
     @Override
@@ -48,7 +53,8 @@ public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
 
     public static class Serializer implements RecipeSerializer<FluidCombustionRecipe> {
         private static final Codec<FluidCombustionRecipe> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                BuiltInRegistries.FLUID.byNameCodec().fieldOf("fuel").forGetter(r -> r.fuel),
+                //BuiltInRegistries.FLUID.byNameCodec().fieldOf("fuel").forGetter(r -> r.fuel),
+                FluidIngredient.CODEC.fieldOf("fuel").forGetter(r -> r.fuel),
                 Codec.INT.fieldOf("generation").forGetter(r -> r.generation),
                 Codec.INT.fieldOf("duration").forGetter(r -> r.duration)
         ).apply(inst, FluidCombustionRecipe::new));
@@ -60,7 +66,8 @@ public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public FluidCombustionRecipe fromNetwork(FriendlyByteBuf buff) {
-            Fluid fuel = buff.readById(BuiltInRegistries.FLUID::byId);
+            //Fluid fuel = buff.readById(BuiltInRegistries.FLUID::byId);
+            FluidIngredient fuel = FluidIngredient.fromNetwork(buff);
             int generation = buff.readVarInt();
             int duration = buff.readVarInt();
             return new FluidCombustionRecipe(fuel, generation, duration);
@@ -68,7 +75,8 @@ public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public void toNetwork(FriendlyByteBuf buff, FluidCombustionRecipe recipe) {
-            buff.writeById(BuiltInRegistries.FLUID::getId, recipe.fuel);
+            //buff.writeById(BuiltInRegistries.FLUID::getId, recipe.fuel);
+            recipe.fuel.toNetwork(buff);
             buff.writeVarInt(recipe.generation);
             buff.writeVarInt(recipe.duration);
         }

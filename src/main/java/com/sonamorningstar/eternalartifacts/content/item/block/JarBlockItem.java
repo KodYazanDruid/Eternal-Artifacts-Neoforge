@@ -4,22 +4,32 @@ import com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderB
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BucketPickup;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
@@ -33,19 +43,50 @@ public class JarBlockItem extends FluidHolderBlockItem {
     }
 
     @Override
-    public void onChange(ItemStack stack) {
+    public void onFluidContentChange(ItemStack stack) {
         event = null;
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        //TODO: Fluid pick up logic.
+    public InteractionResult useOn(UseOnContext ctx) {
+        Player player = ctx.getPlayer();
+        ItemStack itemstack = ctx.getItemInHand();
+        return player == null || isAbleToPick(itemstack) ? InteractionResult.PASS : super.useOn(ctx);
+    }
 
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, ClipContext.Fluid.ANY);
+        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, isAbleToPick(itemstack) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
         if(hitResult.getType() == HitResult.Type.MISS && player.isCrouching()) {
             toggleLid(itemstack);
             return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+        } else if(hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos blockpos = hitResult.getBlockPos();
+            Direction direction = hitResult.getDirection();
+            if(player.mayInteract(level, blockpos)) {
+                BlockState pickupFluid;
+                if(isEmpty(itemstack)) {
+                    pickupFluid = level.getBlockState(blockpos);
+                    if(pickupFluid.getBlock() instanceof BucketPickup bucketPickup) {
+                        player.awardStat(Stats.ITEM_USED.get(this));
+                        level.gameEvent(player, GameEvent.FLUID_PICKUP, blockpos);
+                        FluidActionResult result = FluidUtil.tryPickUpFluid(itemstack.copy(), player, level, blockpos, direction);
+                        if(result.isSuccess()) {
+                            ItemStack filledJar = result.result;
+                            int stackCount = itemstack.getCount();
+                            if(!player.getAbilities().instabuild){
+                                if (stackCount == 1) player.setItemInHand(hand, filledJar);
+                                else {
+                                    itemstack.shrink(1);
+                                    addOrDrop(player, filledJar);
+                                }
+                            }
+                            return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
+                        }
+                    }
+                }
+            }
         } else {
             event = new JarDrinkEvent(getFluidStack(itemstack), player);
             if(isOpen(itemstack)) {
@@ -67,7 +108,14 @@ public class JarBlockItem extends FluidHolderBlockItem {
         ItemStack drankJar = stack.copyWithCount(1);
 
         if (livingEntity instanceof Player player ) {
-            if(event != null) event.getAfterDrink().accept(player, stack);
+            if(event != null) {
+                event.getAfterDrink().accept(player, stack);
+                if(event.getAfterDrinkSound() != null) {
+                    level.playSound(null,
+                            player.getX(), player.getY(), player.getZ(),
+                            event.getAfterDrinkSound(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                }
+            }
             if(!player.getAbilities().instabuild) stack.shrink(1);
         }
 
@@ -89,6 +137,10 @@ public class JarBlockItem extends FluidHolderBlockItem {
         if (!player.getInventory().add(stack)) {
             player.drop(stack, false);
         }
+    }
+
+    private boolean isAbleToPick(ItemStack itemstack) {
+        return isOpen(itemstack) && isEmpty(itemstack);
     }
 
     @Override

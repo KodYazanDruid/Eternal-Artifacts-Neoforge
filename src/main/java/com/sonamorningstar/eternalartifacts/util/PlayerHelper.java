@@ -41,7 +41,7 @@ public class PlayerHelper {
         for(int i = 0; i < playerItemCapability.getSlots(); i++) {
             if(playerItemCapability.getStackInSlot(i).getItem() == item) {
                 ItemStack found = playerItemCapability.getStackInSlot(i);
-                CompoundTag foundTag = found.getTag();
+                CompoundTag foundTag = found.getOrCreateTag();
                 for(String key : foundTag.getAllKeys()) {
                     if(found.hasTag() && foundTag.contains(key) && foundTag.get(key).equals(tag.get(key))) {
                         return true;

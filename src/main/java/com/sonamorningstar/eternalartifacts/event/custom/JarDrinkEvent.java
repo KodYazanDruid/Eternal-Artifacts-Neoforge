@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.custom;
 
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -16,36 +17,32 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import java.util.function.BiConsumer;
 
 /**
- * JarDrinkEvent is called when player attemps to drink a fluid from the JarBlockItem. </r>
- * It is called from {@link JarBlockItem#use(Level, Player, InteractionHand)} ()}. <br>
+ * JarDrinkEvent is called when player attempts to drink a fluid from the JarBlockItem. </r>
+ * It is called from {@link JarBlockItem#use(Level, Player, InteractionHand)} (). <br>
  * If the event is cancelled, event will not run and no drinking action will play. </br>
  * If the event is not cancelled and the useTime is greater than 0 it will run the drinking action. </br>
- * If the event is not cancelled but useTime is 0, drinking action not going to play because it must be greater than 0 to run. </br>
+ * If the event is not cancelled but useTime and drinkingAmount are 0, drinking action not going to play because they must be greater than 0 to run. </br>
+ * BiConsumer afterDrink, is used for custom actions after drinking the fluid. </br>
  */
+@Getter
+@RequiredArgsConstructor
 public class JarDrinkEvent extends Event implements ICancellableEvent {
-    @Getter
     private final FluidStack fluidStack;
-    @Getter
     private final Player player;
     @Setter
-    @Getter
     private int useTime = 0;
     @Setter
-    @Getter
     private SoundEvent drinkingSound = SoundEvents.GENERIC_DRINK;
     @Setter
-    @Getter
     private SoundEvent eatingSound = SoundEvents.GENERIC_DRINK;
     @Setter
-    @Getter
     private BiConsumer<Player, ItemStack> afterDrink = (player, stack) -> {};
-    @Getter
+    @Setter
+    private SoundEvent afterDrinkSound = null;
     @Setter
     private int drinkingAmount = 1000;
 
-    public JarDrinkEvent(FluidStack fluidStack, Player player) {
-        this.fluidStack = fluidStack;
-        this.player = player;
+    public void setDefaultUseTime() {
+        this.useTime = 40;
     }
-
 }

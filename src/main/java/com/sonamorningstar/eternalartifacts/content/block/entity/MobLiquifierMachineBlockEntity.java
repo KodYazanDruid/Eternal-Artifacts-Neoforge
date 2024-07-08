@@ -64,7 +64,7 @@ public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEnt
                         .stream().filter(living -> {
                     EntityType<?> type = living.getType();
                     return !(EntityType.PLAYER == type || living.isDeadOrDying() || living.isBaby());
-                }).collect(Collectors.toList());
+                }).toList();
 
         if(livingList.isEmpty()) {
             progress = 0;
@@ -78,7 +78,7 @@ public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEnt
             findRecipe(ModRecipes.MOB_LIQUIFIER_TYPE.get(), living.getType());
             if(currentRecipe == null) continue;
             //Found entity to hurt.
-            if(((MobLiquifierRecipe) currentRecipe).getEntity() == living.getType()) {
+            if(((MobLiquifierRecipe) currentRecipe).getEntity().test(living.getType())) {
                 entityToHurt = living;
                 break;
             }

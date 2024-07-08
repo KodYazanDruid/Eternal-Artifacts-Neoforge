@@ -1,7 +1,9 @@
 {
   "type": "eternalartifacts:mob_liquifying",
-  "entity": "minecraft:pig",
-  "resultFluidList": [
+  "entity_ingredient": {
+    "entity": "minecraft:pig"
+  },
+  "result_fluid_list": [
     {
       "Amount": 30,
       "FluidName": "eternalartifacts:blood"

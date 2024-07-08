@@ -2,9 +2,9 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.content.item.*;
-import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
+import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
@@ -16,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -59,29 +60,34 @@ public class CommonEvents {
     //TODO: Do the data pack thing.
     @SubscribeEvent
     public static void jarDrinkEvent(JarDrinkEvent event) {
+        ModHooks.hookJarDrinkEvent(event);
         FluidStack fluidStack = event.getFluidStack();
         if(fluidStack.is(Tags.Fluids.MILK)) {
             event.setDrinkingAmount(250);
-            event.setUseTime(40);
+            event.setDefaultUseTime();
             event.setAfterDrink((player, stack) -> player.removeEffectsCuredBy(EffectCures.MILK));
-        } else if(fluidStack.is(Fluids.LAVA)) {
+        }
+        if(fluidStack.is(Fluids.LAVA)) {
             event.setUseTime(80);
             event.setAfterDrink((player, stack) -> player.setSecondsOnFire(10));
-        } else if(fluidStack.is(ModTags.Fluids.EXPERIENCE)) {
+        }
+        if(fluidStack.is(ModTags.Fluids.EXPERIENCE)) {
             event.setUseTime(20);
             int fluidAmount = fluidStack.getAmount();
             int drankAmount = fluidAmount - (fluidAmount % 20);
             if(drankAmount < 20) event.setCanceled(true);
             event.setDrinkingAmount(drankAmount);
-            event.setAfterDrink((player, stack) -> {
-                player.giveExperiencePoints(drankAmount / 20);
-                player.level().playSound(
-                        null,
-                        player.getX(), player.getY(), player.getZ(),
-                        SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS,
-                        1.0F, 1.0F);
+            event.setAfterDrink((player, itemStack) -> player.giveExperiencePoints(drankAmount / 20));
+            event.setAfterDrinkSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+        }
+        if(fluidStack.is(FluidTags.WATER)) {
+            event.setDefaultUseTime();
+            event.setAfterDrink((player, itemStack) -> {
+                if(player.isOnFire()) event.setAfterDrinkSound(SoundEvents.FIRE_EXTINGUISH);
+                player.setRemainingFireTicks(0);
             });
         }
+
     }
 
     @SubscribeEvent

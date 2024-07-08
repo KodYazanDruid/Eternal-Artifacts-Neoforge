@@ -4,6 +4,8 @@ import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -73,9 +75,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
         createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
 
-        createFluidCombustionRecioe(recipeOutput, Fluids.LAVA, 40, 2500);
+        createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 2500);
+        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 40, 2500);
 
-        //Rework the recipe to accept entity tags as well.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.BLOOD.get().getSource(), 40),
@@ -127,6 +129,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 50),
                 new FluidStack(ModFluids.NOUS.get().getSource(), 35)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, ModEntities.DUCK.get(), NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.BLOOD.get().getSource(), 10),
+                new FluidStack(ModFluids.LIQUID_MEAT.get().getSource(), 25),
+                new FluidStack(ModFluids.PINK_SLIME.get().getSource(), 10),
+                new FluidStack(ModFluids.NOUS.get().getSource(), 15)
         ));
 
 
@@ -291,14 +300,23 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     private void createMobLiquifyingRecipe(RecipeOutput recipeOutput, EntityType<?> entity, NonNullList<FluidStack> outputs) {
         String path = BuiltInRegistries.ENTITY_TYPE.getKey(entity).getPath();
-        SpecialRecipeBuilder.special(category -> new MobLiquifierRecipe(entity, outputs))
+        SpecialRecipeBuilder.special(category -> new MobLiquifierRecipe(EntityIngredient.of(entity), outputs))
                 .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+path));
     }
+    private void createMobLiquifyingRecipe(RecipeOutput recipeOutput, TagKey<EntityType<?>> entity, NonNullList<FluidStack> outputs) {
+        SpecialRecipeBuilder.special(category -> new MobLiquifierRecipe(EntityIngredient.of(entity), outputs))
+                .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+entity.location().getPath()));
+    }
 
-    private void createFluidCombustionRecioe(RecipeOutput output, Fluid fluid, int generation, int duration) {
+    private void createFluidCombustionRecipe(RecipeOutput output, Fluid fluid, int generation, int duration) {
         String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
-        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(fluid,generation, duration))
+        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(new FluidStack(fluid, 1000)), generation, duration))
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
+    }
+    private void createFluidCombustionRecipe(RecipeOutput output, TagKey<Fluid> fluid, int generation, int duration) {
+        //String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
+        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid), generation, duration))
+                .save(output, new ResourceLocation(MODID, "fluid_combusting/"+fluid.location().getPath()));
     }
 
 }

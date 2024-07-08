@@ -1,7 +1,9 @@
 {
   "type": "eternalartifacts:mob_liquifying",
-  "entity": "minecraft:zombie",
-  "resultFluidList": [
+  "entity_ingredient": {
+    "entity": "minecraft:zombie"
+  },
+  "result_fluid_list": [
     {
       "Amount": 10,
       "FluidName": "eternalartifacts:blood"

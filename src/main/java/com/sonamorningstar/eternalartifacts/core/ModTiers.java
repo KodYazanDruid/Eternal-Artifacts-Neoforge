@@ -1,7 +1,5 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;

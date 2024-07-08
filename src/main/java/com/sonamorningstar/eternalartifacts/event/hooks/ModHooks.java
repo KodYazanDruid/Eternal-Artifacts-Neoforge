@@ -1,20 +1,35 @@
 package com.sonamorningstar.eternalartifacts.event.hooks;
 
-import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
-import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.common.NeoForge;
+import lombok.NoArgsConstructor;
+import mekanism.common.tags.MekanismTags;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.fluids.FluidStack;
 
-public class ModHooks {
+import java.util.function.Predicate;
 
-/*    public static boolean onJarDrink(FluidIngredient fluidIngredient, ItemStack stack) {
-        JarDrinkEvent event = new JarDrinkEvent(fluidIngredient);
-        if(NeoForge.EVENT_BUS.post(event).isCanceled()) return false;
-        if(event.getFluidIngredient().isEmpty()) return true;
-        if(stack.getItem() instanceof JarBlockItem jar) {
-            jar.set
+@NoArgsConstructor
+public final class ModHooks {
+
+    static ModList modList = ModList.get();
+    static Predicate<String> check = modList == null ? id -> false : modList::isLoaded;
+
+    public static final String MEKANISM_ID = "mekanism";
+
+    public static boolean mekanismLoaded = check.test(MEKANISM_ID);
+
+    public static void hookJarDrinkEvent(JarDrinkEvent event) {
+        FluidStack fluidStack = event.getFluidStack();
+        if (mekanismLoaded) {
+            if(fluidStack.is(MekanismTags.Fluids.URANIUM_OXIDE)) {
+                event.setDefaultUseTime();
+                event.setAfterDrink((player, itemStack) -> {
+                    MobEffectInstance effect = new MobEffectInstance(MobEffects.POISON, 600, 4);
+                    player.addEffect(effect);
+                });
+            }
         }
-        return false;
-    }*/
+    }
 }
