@@ -87,6 +87,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.RAW_MANGANESE.get(), "Raw Manganese");
                 add(ModItems.KNAPSACK.get(), "Knapsack");
                 add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Magical Book Spawn Egg");
+                add(ModItems.BEER_BUCKET.get(), "Beer Bucket");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -142,6 +143,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Deepslate Manganese Ore");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
                 add(ModBlocks.NOUS_TANK.get(), "Nous Tank");
+                add(ModFluidTypes.BEER.get().getDescriptionId(), "Beer");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -252,6 +254,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.RAW_MANGANESE.get(), "Ham Manganez");
                 add(ModItems.KNAPSACK.get(), "Sırt Çantası");
                 add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Büyülü Kitap Çağırma Yumurtası");
+                add(ModItems.BEER_BUCKET.get(), "Bira Kovası");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -307,7 +310,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Kayrak Taşında Manganez Cevheri");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
                 add(ModBlocks.NOUS_TANK.get(), "İdrak Tankı");
-
+                add(ModFluidTypes.BEER.get().getDescriptionId(), "Bira");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

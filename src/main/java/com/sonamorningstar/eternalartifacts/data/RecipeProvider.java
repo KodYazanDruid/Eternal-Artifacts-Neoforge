@@ -75,8 +75,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
         createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
 
-        createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 2500);
-        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 40, 2500);
+        createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 100);
+        createFluidCombustionRecipe(recipeOutput, ModFluids.PINK_SLIME.get(), 80, 60);
+        //createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 40, 2500);
 
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,

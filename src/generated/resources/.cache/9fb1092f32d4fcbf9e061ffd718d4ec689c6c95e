@@ -1,4 +1,4 @@
-// 1.20.4	2024-07-06T21:06:52.9397723	Recipes
+// 1.20.4	2024-07-09T22:43:23.1123269	Recipes
 1dc3ff242bda0de185641d64da91915dcbb5f074 data/eternalartifacts/advancements/recipes/building_blocks/pink_slime_block.json
 50deffa9c78012d384dfe5cdf31ba8044e3eca30 data/eternalartifacts/advancements/recipes/building_blocks/sugar_charcoal_block.json
 05c3229640413c90419d125ba6573dc1d4293535 data/eternalartifacts/advancements/recipes/food/campfire_cooking/cooked_duck_meat_from_duck_meat.json
@@ -72,8 +72,8 @@ dab321709d1e921e0047ada3407a663b1ee18bc4 data/eternalartifacts/recipes/copper_sw
 7a76f61581c09b1526193e016abd15bd6397952a data/eternalartifacts/recipes/copper_tablet.json
 30cb21aa45d4b7420d2e3e3505c85a623fc8fa63 data/eternalartifacts/recipes/ender_notebook.json
 636620b36f0936f35699739a67664daa01762d3f data/eternalartifacts/recipes/ender_tablet.json
-22e81e537a6fc2e4380e49e96f848d949a20523e data/eternalartifacts/recipes/fluid_combusting/experience.json
-7f795413cac9af34baa788d197170f6d5e6c5a59 data/eternalartifacts/recipes/fluid_combusting/lava.json
+968ad715e36f3a4a1e6ddf51a2a451d952a88149 data/eternalartifacts/recipes/fluid_combusting/lava.json
+7f0a2ec95da75d13d2eaec22fe729e5c63e64ae7 data/eternalartifacts/recipes/fluid_combusting/pink_slime.json
 d8f8e879e34fbfcf2b52444be76c0a937c86fa45 data/eternalartifacts/recipes/gardening_pot_recipe.json
 32ab5ddf2c8f9d474c295ee0ef7619019f0a8c7e data/eternalartifacts/recipes/golden_ancient_fruit.json
 21ff1753a113da20b91bde5b4d719d9f1a5d68ce data/eternalartifacts/recipes/jar.json

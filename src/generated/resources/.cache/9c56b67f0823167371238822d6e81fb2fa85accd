@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-29T17:29:12.2602744	Item Models: eternalartifacts
+// 1.20.4	2024-07-13T00:13:01.6079699	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -7,6 +7,7 @@ b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/ban
 ed67fafb38c72f12af67434f3f9b4c42b336271d assets/eternalartifacts/models/item/banana_cream_pie.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 0cc868a9f308e87b07a6b548fe521193c957b6a7 assets/eternalartifacts/models/item/battery_box.json
+4db39dad240c4e589eecfffeb032ea9003733aba assets/eternalartifacts/models/item/beer_bucket.json
 1588e5b1ebc429bd4c22688d56627146e81456a9 assets/eternalartifacts/models/item/blood_bucket.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 66eec94e2e9ef972b02e8054ef7bccaa254aab86 assets/eternalartifacts/models/item/chlorophyte_ingot.json
@@ -29,7 +30,7 @@ e73d259d8334731e43892dcbcbe0a85f97b77e3a assets/eternalartifacts/models/item/cop
 c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duck_feather.json
 558a11394d26f4ac2ffe1f71505cf5d7f69bacff assets/eternalartifacts/models/item/duck_meat.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/duck_spawn_egg.json
-9448010b52f766ba963e7846446966ddc53e5dd7 assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
+b291c24fb337fa1f13c183c3a193cbaa1c9196dc assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
 917c9fb8d52a3487b58003fa6ac88c0d056be391 assets/eternalartifacts/models/item/encumbator.json
 78bc681824bce9b7f3f76f1c096673a70d98f0de assets/eternalartifacts/models/item/encumbator_active.json
 c90643f23e4462e731095ab5da3ec58e9c67289b assets/eternalartifacts/models/item/ender_notebook.json

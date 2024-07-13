@@ -12,6 +12,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -78,35 +79,33 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.ENDER_PAPER.get());
         basicItem(ModItems.RAW_MANGANESE.get());
         basicItem(ModItems.KNAPSACK.get());
+        spawnEggItem(ModItems.DEMON_EYE_SPAWN_EGG);
+        spawnEggItem(ModItems.PINKY_SPAWN_EGG);
+        spawnEggItem(ModItems.DUCK_SPAWN_EGG);
+        spawnEggItem(ModItems.MAGICAL_BOOK_SPAWN_EGG);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
         basicItem(modLoc("encumbator")).override().model(encumbator).predicate(modLoc("active"), 1.0F);
 
-        withExistingParent(ModItems.DEMON_EYE_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(ModItems.PINKY_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(ModItems.DUCK_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(ModItems.MAGICAL_BOOK_SPAWN_EGG.getId().getPath(), mcLoc("item/template_spawn_egg"));
-        withExistingParent(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.getId().getPath(), modLoc("item/golden_ancient_fruit"));
+        withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.ANCIENT_FRUIT);
 
-        //needs functions to write these
-        withExistingParent(ModBlocks.RESONATOR.getId().getPath(), modLoc("block/resonator"));
-        withExistingParent(ModBlocks.GARDENING_POT.getId().getPath(), modLoc("block/gardening_pot"));
-        withExistingParent(ModBlocks.FANCY_CHEST.getId().getPath(), modLoc("block/fancy_chest"));
-        withExistingParent(ModBlocks.PINK_SLIME_BLOCK.getId().getPath(), modLoc("block/pink_slime_block"));
-        withExistingParent(ModBlocks.ROSY_FROGLIGHT.getId().getPath(), modLoc("block/rosy_froglight"));
-        withExistingParent(ModBlocks.MACHINE_BLOCK.getId().getPath(), modLoc("block/machine_block"));
-        withExistingParent(ModBlocks.CITRUS_LOG.getId().getPath(), modLoc("block/citrus_log"));
-        withExistingParent(ModBlocks.STRIPPED_CITRUS_LOG.getId().getPath(), modLoc("block/stripped_citrus_log"));
-        withExistingParent(ModBlocks.CITRUS_WOOD.getId().getPath(), modLoc("block/citrus_wood"));
-        withExistingParent(ModBlocks.STRIPPED_CITRUS_WOOD.getId().getPath(), modLoc("block/stripped_citrus_wood"));
+        withParentBlock(ModBlocks.RESONATOR);
+        withParentBlock(ModBlocks.GARDENING_POT);
+        withParentBlock(ModBlocks.FANCY_CHEST);
+        withParentBlock(ModBlocks.PINK_SLIME_BLOCK);
+        withParentBlock(ModBlocks.ROSY_FROGLIGHT);
+        withParentBlock(ModBlocks.MACHINE_BLOCK);
+        withParentBlock(ModBlocks.CITRUS_LOG);
+        withParentBlock(ModBlocks.STRIPPED_CITRUS_LOG);
+        withParentBlock(ModBlocks.CITRUS_WOOD);
+        withParentBlock(ModBlocks.STRIPPED_CITRUS_WOOD);
         withExistingParent(ModBlocks.COPPER_ORE_BERRY.getId().getPath(), modLoc("block/copper_oreberry_stage1"));
         withExistingParent(ModBlocks.IRON_ORE_BERRY.getId().getPath(), modLoc("block/iron_oreberry_stage1"));
         withExistingParent(ModBlocks.GOLD_ORE_BERRY.getId().getPath(), modLoc("block/gold_oreberry_stage1"));
         withExistingParent(ModBlocks.EXPERIENCE_ORE_BERRY.getId().getPath(), modLoc("block/experience_oreberry_stage1"));
         withExistingParent(ModBlocks.MANGANESE_ORE_BERRY.getId().getPath(), modLoc("block/manganese_oreberry_stage1"));
-        withExistingParent(ModBlocks.BATTERY_BOX.getId().getPath(), modLoc("block/battery_box"));
-        //withExistingParent(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath(), modLoc("block/four_leaf_clover"));
+        withParentBlock(ModBlocks.BATTERY_BOX);
         getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
             .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc("block/forsythia_upper"));
@@ -119,6 +118,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME);
         bucketItem(ModItems.BLOOD_BUCKET, ModFluids.BLOOD);
         bucketItem(ModItems.LIQUID_PLASTIC_BUCKET, ModFluids.LIQUID_PLASTIC);
+        bucketItem(ModItems.BEER_BUCKET, ModFluids.BEER);
     }
 
     private void handheld(DeferredItem<Item> deferred) {
@@ -130,5 +130,20 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(source.get())
                 .applyTint(true);
+    }
+
+    private void withParentBlock(DeferredBlock<?> holder) {
+        String path = holder.getId().getPath();
+        withExistingParent(path, modLoc("block/"+path));
+    }
+
+    private void withParentItem(DeferredItem<?> holder, DeferredItem<?> parent) {
+        withExistingParent(holder.getId().getPath(), new ResourceLocation(parent.getId().getNamespace(),"item/"+parent.getId().getPath()));
+    }
+    private void withParentItemPath(DeferredItem<?> holder, String path) {
+        withExistingParent(holder.getId().getPath(), mcLoc("item/"+path));
+    }
+    private void spawnEggItem(DeferredItem<?> holder) {
+        withParentItemPath(holder, "template_spawn_egg");
     }
 }

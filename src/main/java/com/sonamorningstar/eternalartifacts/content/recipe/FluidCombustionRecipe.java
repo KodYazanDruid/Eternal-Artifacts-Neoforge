@@ -32,8 +32,7 @@ public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
     private final int duration;
 
     public boolean matches(Fluid fluid) {
-        //TODO: Temporary
-        return fuel.test(new FluidStack(fluid, 1000));
+        return fuel.testFluid(fluid);
     }
 
     @Override

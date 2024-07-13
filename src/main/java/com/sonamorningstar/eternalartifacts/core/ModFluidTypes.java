@@ -23,16 +23,17 @@ public class ModFluidTypes {
 
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, MODID);
 
-    public static final DeferredHolder<FluidType, FluidType> NOUS = register("nous", 7, 3000, 4500, Rarity.EPIC, new int[]{38, 178, 82});
-    public static final DeferredHolder<FluidType, FluidType> LIQUID_MEAT = register("liquid_meat", 0, 6000, 5000, Rarity.RARE, new int[]{23, 61, 49});
-    public static final DeferredHolder<FluidType, FluidType> PINK_SLIME = register("pink_slime", 0, 5000, 4500, Rarity.RARE, new int[]{201, 87, 185});
-    public static final DeferredHolder<FluidType, FluidType> BLOOD = register("blood", 0, 4000, 3500, Rarity.RARE, new int[]{186, 26, 16});
-    public static final DeferredHolder<FluidType, FluidType> LIQUID_PLASTIC = register("liquid_plastic", 0, 4500, 3000, Rarity.RARE, new int[]{232, 225, 213});
+    public static final DeferredHolder<FluidType, FluidType> NOUS = register("nous", 7, 3000, 4500, Rarity.EPIC, 38, 178, 82);
+    public static final DeferredHolder<FluidType, FluidType> LIQUID_MEAT = register("liquid_meat", 0, 6000, 5000, Rarity.RARE, 23, 61, 49);
+    public static final DeferredHolder<FluidType, FluidType> PINK_SLIME = register("pink_slime", 0, 5000, 4500, Rarity.RARE, 201, 87, 185);
+    public static final DeferredHolder<FluidType, FluidType> BLOOD = register("blood", 0, 4000, 3500, Rarity.RARE, 186, 26, 16);
+    public static final DeferredHolder<FluidType, FluidType> LIQUID_PLASTIC = register("liquid_plastic", 0, 4500, 3000, Rarity.RARE, 232, 225, 213);
+    public static final DeferredHolder<FluidType, FluidType> BEER = register("beer", 0, 1000, 1000, Rarity.COMMON, 153, 131, 36);
 
-    private static DeferredHolder<FluidType, FluidType> register(String name, int light, int density, int viscosity, Rarity rarity, int[] vec) {
+    private static DeferredHolder<FluidType, FluidType> register(String name, int light, int density, int viscosity, Rarity rarity, int fogX, int fogY, int fogZ) {
         return FLUID_TYPES.register(name, () -> new BaseFluidType(
                 new ResourceLocation(MODID,"block/"+name+"_still"), new ResourceLocation(MODID,"block/"+name+"_flow"),
-                WATER_OVERLAY, 0xFFFFFFFF, new Vector3f(vec[0] / 255f, vec[1] / 255f, vec[2] / 255f),
+                WATER_OVERLAY, 0xFFFFFFFF, new Vector3f(fogX / 255f, fogY / 255f, fogZ / 255f),
                 FluidType.Properties.create().lightLevel(light).density(density).viscosity(viscosity).rarity(rarity)
                 .sound(SoundActions.BUCKET_FILL, SoundEvents.BOTTLE_FILL).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BOTTLE_EMPTY)
         ));

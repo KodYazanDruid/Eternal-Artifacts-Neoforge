@@ -5,15 +5,16 @@ import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.container.FluidCombustionMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
+import com.sonamorningstar.eternalartifacts.util.dynamo.DynamoProcessCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 
@@ -23,7 +24,8 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     }
 
     private int tickCounter = 0;
-    private boolean isWorking = false;
+    public boolean isWorking = false;
+    private DynamoProcessCache cache;
 
     public ModEnergyStorage energy = new ModEnergyStorage(20000, 2500) {
         @Override
@@ -37,68 +39,72 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         protected void onContentsChanged() {
             FluidCombustionDynamoBlockEntity.this.sendUpdate();
             findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), tank.getFluid().getFluid());
+            if(currentRecipe != null && currentRecipe instanceof FluidCombustionRecipe fcr) {
+                setEnergyPerTick(fcr.getGeneration());
+                setMaxProgress(fcr.getDuration());
+            }
         }
     };
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
         tag.put("Energy", energy.serializeNBT());
+        tag.putBoolean("IsWorking", isWorking);
         tank.writeToNBT(tag);
+        if(cache != null) cache.writeToNbt(tag);
+        super.saveAdditional(tag);
     }
 
     @Override
     public void load(CompoundTag tag) {
-        super.load(tag);
         energy.deserializeNBT(tag.get("Energy"));
+        isWorking = tag.getBoolean("IsWorking");
         tank.readFromNBT(tag);
+        cache = DynamoProcessCache.readFromNbt(tag, energy, this).orElse(null);
+        super.load(tag);
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
         findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), tank.getFluid().getFluid());
+        if(currentRecipe != null && currentRecipe instanceof FluidCombustionRecipe fcr) {
+            setEnergyPerTick(fcr.getGeneration());
+            setMaxProgress(fcr.getDuration());
+        }
     }
 
     public float getAnimationLerp(float tick) {
-        return progress <= 0 ? 4.0F : Mth.lerp((1.0F - Mth.cos((tick + tickCounter) * 0.25F) ) / 2F, 4.0F, 9.0F);
+        return isWorking ? Mth.lerp((1.0F - Mth.cos((tick + tickCounter) * 0.25F) ) / 2F, 4.0F, 9.0F) : 4.0F;
     }
 
     @Override
     public void tickClient(Level lvl, BlockPos pos, BlockState st) {
-        if(progress > 0) tickCounter++;
+        if(isWorking) tickCounter++;
         else tickCounter = 0;
     }
 
-    //TODO: needs
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        if(currentRecipe instanceof FluidCombustionRecipe fcr) {
-            energyPerTick = fcr.getGeneration();
-            maxProgress = fcr.getDuration();
-            dynamoProgress(()-> {
-                tank.drainForced(1000, IFluidHandler.FluidAction.EXECUTE);
-            }, energy);
-        } else {
-            isWorking = false;
-            progress = 0;
-        }
-    }
-
-    protected void dynamoProgress(Runnable run, ModEnergyStorage energy) {
-        if(energy.getEnergyStored() + energyPerTick >= energy.getMaxEnergyStored()) return;
-        SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
-        if(type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
-                type == SidedTransferMachineBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
-                (type == SidedTransferMachineBlockEntity.RedstoneType.IGNORED || type == null)){
-            energy.receiveEnergyForced(energyPerTick, false);
-            progress++;
-            isWorking = true;
-            if (progress >= maxProgress) {
-                run.run();
-                progress = 0;
+        //TODO: Create parent DynamoBlockEntity class and move this to there.
+        if(cache != null) {
+            if(!cache.isDone()) {
+                cache.process();
+                FluidCombustionDynamoBlockEntity.this.sendUpdate();
+            } else if (cache.isDone()) {
+                cache = null;
+                FluidCombustionDynamoBlockEntity.this.sendUpdate();
+            }
+        }else {
+            if(currentRecipe instanceof  FluidCombustionRecipe) {
+                FluidStack drained = tank.drainForced(50, IFluidHandler.FluidAction.SIMULATE);
+                if(drained.getAmount() == 50) {
+                    tank.drainForced(50, IFluidHandler.FluidAction.EXECUTE);
+                    cache = new DynamoProcessCache(maxProgress, energy, energyPerTick, this);
+                }
             }
         }
+
     }
 
 }

@@ -37,7 +37,7 @@ public class EternalArtifacts {
      * TODO: Smart Piston (with sticky)
      * TODO: ARDITE ?
      * TODO: Configs.
-     *
+     * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *
     */

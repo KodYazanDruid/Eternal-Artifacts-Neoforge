@@ -70,6 +70,17 @@ public class FluidIngredient implements Predicate<FluidStack> {
         }
     }
 
+    public boolean testFluid(@Nullable Fluid other) {
+        if (other == null) return false;
+        else if (this.isEmpty()) return other.isSame(Fluids.EMPTY);
+        else {
+            for(FluidStack stack : this.getFluidStacks()) {
+                return stack.is(other);
+            }
+            return false;
+        }
+    }
+
     protected boolean areStacksEqual(FluidStack left, FluidStack right) {
         return left.is(right.getFluid());
     }

@@ -102,6 +102,8 @@ public class ModBlocks {
             ()-> new LiquidBlock(ModFluids.BLOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<LiquidBlock> LIQUID_PLASTIC_BLOCK = registerNoItem("liquid_plastic_block",
             ()-> new LiquidBlock(ModFluids.LIQUID_PLASTIC, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_WHITE)));
+    public static final DeferredBlock<LiquidBlock> BEER_BLOCK = registerNoItem("beer_block",
+            ()-> new LiquidBlock(ModFluids.BEER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_ORANGE)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));

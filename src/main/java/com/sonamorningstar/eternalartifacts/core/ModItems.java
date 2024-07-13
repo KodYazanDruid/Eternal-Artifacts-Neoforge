@@ -137,6 +137,8 @@ public class ModItems {
             p -> new BucketItem(ModFluids.BLOOD::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
     public static final DeferredHolder<Item, BucketItem> LIQUID_PLASTIC_BUCKET = register("liquid_plastic_bucket",
             p -> new BucketItem(ModFluids.LIQUID_PLASTIC::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final DeferredHolder<Item, BucketItem> BEER_BUCKET = register("beer_bucket",
+            p -> new BucketItem(ModFluids.BEER::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
