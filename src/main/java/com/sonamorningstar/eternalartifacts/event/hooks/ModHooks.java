@@ -1,35 +1,34 @@
 package com.sonamorningstar.eternalartifacts.event.hooks;
 
-import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
-import lombok.NoArgsConstructor;
-import mekanism.common.tags.MekanismTags;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
+import com.sonamorningstar.eternalartifacts.compat.mekanism.MekanismCompat;
+import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.function.Predicate;
 
-@NoArgsConstructor
 public final class ModHooks {
 
     static ModList modList = ModList.get();
     static Predicate<String> check = modList == null ? id -> false : modList::isLoaded;
 
     public static final String MEKANISM_ID = "mekanism";
+    public static final String MEKANISM_GENERATORS_ID = "mekanismgenerators";
 
-    public static boolean mekanismLoaded = check.test(MEKANISM_ID);
+    public final boolean mekanismLoaded;
+    public final boolean mekanismGeneratorsLoaded;
 
-    public static void hookJarDrinkEvent(JarDrinkEvent event) {
-        FluidStack fluidStack = event.getFluidStack();
+    public ModHooks() {
+        mekanismLoaded = check.test(MEKANISM_ID);
+        mekanismGeneratorsLoaded = check.test(MEKANISM_GENERATORS_ID);
+    }
+
+    public void construct(final IEventBus modEventBus) {
         if (mekanismLoaded) {
-            if(fluidStack.is(MekanismTags.Fluids.URANIUM_OXIDE)) {
-                event.setDefaultUseTime();
-                event.setAfterDrink((player, itemStack) -> {
-                    MobEffectInstance effect = new MobEffectInstance(MobEffects.POISON, 600, 4);
-                    player.addEffect(effect);
-                });
-            }
+            NeoForge.EVENT_BUS.addListener(MekanismCompat::drinkEventMekanism);
+        }
+        if(mekanismGeneratorsLoaded) {
+            NeoForge.EVENT_BUS.addListener(MekanismCompat::drinkEventMekanismGenerators);
         }
     }
 }

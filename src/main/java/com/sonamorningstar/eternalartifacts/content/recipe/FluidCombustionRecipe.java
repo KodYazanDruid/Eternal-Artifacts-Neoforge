@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -20,7 +21,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
+public class FluidCombustionRecipe implements Recipe<Container> {
 
     /*@Getter
     private final Fluid fuel;*/
@@ -36,11 +37,11 @@ public class FluidCombustionRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public boolean matches(SimpleContainer con, Level level) {
+    public boolean matches(Container con, Level level) {
         return false;
     }
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
+    public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override

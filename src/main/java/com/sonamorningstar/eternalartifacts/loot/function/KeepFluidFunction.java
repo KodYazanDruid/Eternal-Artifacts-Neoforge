@@ -23,7 +23,7 @@ import java.util.List;
 public class KeepFluidFunction extends LootItemConditionalFunction {
     public static final Codec<KeepFluidFunction> CODEC = RecordCodecBuilder.create(p -> commonFields(p).apply(p, KeepFluidFunction::new));
 
-    public static @NotNull Builder builder() {
+    public static @NotNull Builder<?> builder() {
         return simpleBuilder(KeepFluidFunction::new);
     }
 

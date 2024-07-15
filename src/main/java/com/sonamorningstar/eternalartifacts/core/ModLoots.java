@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.mojang.serialization.Codec;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddItemListModifier;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemModifier;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemWithChanceModifier;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.core.registries.Registries;
@@ -20,6 +22,8 @@ public class ModLoots {
     public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> RETEXTURED_FUNCTION = FUNCTIONS.register("retexture", ()-> new LootItemFunctionType(RetexturedLootFunction.CODEC));
     public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> KEEP_FLUID_FUNCTION = FUNCTIONS.register("jar_keep", ()-> new LootItemFunctionType(KeepFluidFunction.CODEC));
 
-    public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<? extends IGlobalLootModifier>> ADD_ITEM_SERIALIZER = GLOBAL_MODIFIER.register("add_item", AddItemListModifier.CODEC);
+    public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<? extends IGlobalLootModifier>> ADD_ITEM_LIST_SERIALIZER = GLOBAL_MODIFIER.register("add_item_list", AddItemListModifier.CODEC);
+    public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<? extends IGlobalLootModifier>> REPLACE_ITEM_SERIALIZER = GLOBAL_MODIFIER.register("replace_item", ReplaceItemModifier.CODEC);
+    public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<? extends IGlobalLootModifier>> REPLACE_ITEM_WITH_CHANCE_SERIALIZER = GLOBAL_MODIFIER.register("replace_item_with_chance", ReplaceItemWithChanceModifier.CODEC);
 
 }

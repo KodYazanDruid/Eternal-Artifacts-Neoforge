@@ -23,7 +23,7 @@ import java.util.Set;
 public class RetexturedLootFunction extends LootItemConditionalFunction {
     public static final Codec<RetexturedLootFunction> CODEC = RecordCodecBuilder.create(p -> commonFields(p).apply(p, RetexturedLootFunction::new));
 
-    public static @NotNull Builder builder() {
+    public static @NotNull Builder<?> builder() {
         return simpleBuilder(RetexturedLootFunction::new);
     }
 

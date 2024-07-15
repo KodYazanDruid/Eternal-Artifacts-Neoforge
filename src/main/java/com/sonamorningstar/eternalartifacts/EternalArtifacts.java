@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -45,22 +46,7 @@ public class EternalArtifacts {
     public static final String MODID = "eternalartifacts";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register(MODID+"_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup." + MODID))
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(ModItems.ORANGE.get()::getDefaultInstance)
-            .displayItems((parameters, output) -> {
-                for(DeferredHolder<Item, ? extends Item> item : ModItems.ITEMS.getEntries()) {
-                    if(item.get() instanceof RetexturedBlockItem pot) pot.fillItemCategory(output);
-                    else output.accept(item.get());
-                }
-                for(DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
-                    if(!(block.get() instanceof GardeningPotBlock) && !(block.get() instanceof LiquidBlock)) {
-                        output.accept(block.get());
-                    }
-                }
-            }).build());
+    public static final ModHooks hooks = new ModHooks();
 
     public EternalArtifacts(IEventBus modEventBus) {
         enableMilkFluid();
@@ -77,10 +63,12 @@ public class EternalArtifacts {
         ModEffects.EFFECTS.register(modEventBus);
         ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
-        CREATIVE_MODE_TABS.register(modEventBus);
+        ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(Channel::onRegisterPayloadHandler);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+
+        hooks.construct(modEventBus);
     }
 
 }

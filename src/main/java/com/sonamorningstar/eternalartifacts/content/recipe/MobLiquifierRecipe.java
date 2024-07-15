@@ -11,6 +11,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ import net.neoforged.neoforge.common.extensions.IFriendlyByteBufExtension;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class MobLiquifierRecipe implements Recipe<SimpleContainer> {
+public class MobLiquifierRecipe implements Recipe<Container> {
     /*@Getter
     private final EntityType<?> entity;*/
     @Getter
@@ -37,11 +38,11 @@ public class MobLiquifierRecipe implements Recipe<SimpleContainer> {
     /** @deprecated use {@link #matches(EntityType)} */
     @Deprecated
     @Override
-    public boolean matches(SimpleContainer con, Level level) {
+    public boolean matches(Container con, Level level) {
         return false;
     }
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
+    public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override

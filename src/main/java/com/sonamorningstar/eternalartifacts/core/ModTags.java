@@ -14,8 +14,9 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ModTags {
     public static class Blocks {
         public static final TagKey<Block> MINEABLE_WITH_WRENCH = forgeTag("mineable/wrench");
-        public static final TagKey<Block> NEEDS_COPPER_TOOL = modTag("needs_copper_tool");
+        public static final TagKey<Block> NEEDS_COPPER_TOOL = forgeTag("needs_copper_tool");
         public static final TagKey<Block> ORES_MANGANESE = forgeTag("ores/manganese");
+        public static final TagKey<Block> STORAGE_BLOCKS_CHARCOAL = forgeTag("storage_blocks/charcoal");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
@@ -39,6 +40,11 @@ public class ModTags {
         public static final TagKey<Item> NUGGETS_STEEL = forgeTag("nuggets/steel");
         public static final TagKey<Item> PLASTIC = forgeTag("plastic_sheets");
         public static final TagKey<Item> TOOLS_WRENCH = forgeTag("tools/wrench");
+        public static final TagKey<Item> DUSTS_COAL = forgeTag("dusts/coal");
+        public static final TagKey<Item> DUSTS_CHARCOAL = forgeTag("dusts/charcoal");
+        public static final TagKey<Item> DUSTS_SUGAR_CHARCOAL = forgeTag("dusts/sugar_charcoal");
+        public static final TagKey<Item> TOOLS_HAMMER = forgeTag("tools/hammer");
+        public static final TagKey<Item> CHARCOAL = forgeTag("charcoal");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

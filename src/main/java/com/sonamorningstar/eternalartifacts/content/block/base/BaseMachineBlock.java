@@ -50,7 +50,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
         if(state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof MachineBlockEntity machine) {
+            if(blockEntity instanceof MachineBlockEntity<?> machine) {
                 IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
                 if(inventory != null) {
                     SimpleContainer container = new SimpleContainer(inventory.getSlots());

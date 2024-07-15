@@ -60,6 +60,8 @@ public class ModBlocks {
             () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.DEEPSLATE_IRON_ORE.properties()));
     public static final DeferredBlock<Block> RAW_MANGANESE_BLOCK = registerWithItem("raw_manganese_block",
             () -> new Block(Blocks.RAW_IRON_BLOCK.properties()));
+    public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerWithItem("charcoal_block",
+            () -> new Block(Blocks.COAL_BLOCK.properties()));
 
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));

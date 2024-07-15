@@ -88,6 +88,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.KNAPSACK.get(), "Knapsack");
                 add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Magical Book Spawn Egg");
                 add(ModItems.BEER_BUCKET.get(), "Beer Bucket");
+                add(ModItems.COAL_DUST.get(), "Coal Dust");
+                add(ModItems.CHARCOAL_DUST.get(), "Charcoal Dust");
+                add(ModItems.SUGAR_CHARCOAL_DUST.get(), "Sugar Charcoal Dust");
+                add(ModItems.IRON_HAMMER.get(), "Iron Hammer");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -144,6 +148,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
                 add(ModBlocks.NOUS_TANK.get(), "Nous Tank");
                 add(ModFluidTypes.BEER.get().getDescriptionId(), "Beer");
+                add(ModBlocks.CHARCOAL_BLOCK.get(), "Charcoal Block");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -255,6 +260,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.KNAPSACK.get(), "Sırt Çantası");
                 add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Büyülü Kitap Çağırma Yumurtası");
                 add(ModItems.BEER_BUCKET.get(), "Bira Kovası");
+                add(ModItems.COAL_DUST.get(), "Kömür Tozu");
+                add(ModItems.CHARCOAL_DUST.get(), "Odun Kömürü Tozu");
+                add(ModItems.SUGAR_CHARCOAL_DUST.get(), "Şeker Odun Kömürü Tozu");
+                add(ModItems.IRON_HAMMER.get(), "Demir Balyoz");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -311,6 +320,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
                 add(ModBlocks.NOUS_TANK.get(), "İdrak Tankı");
                 add(ModFluidTypes.BEER.get().getDescriptionId(), "Bira");
+                add(ModBlocks.CHARCOAL_BLOCK.get(), "Odun Kömürü Bloğu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

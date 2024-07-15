@@ -55,7 +55,7 @@ runs {
     configureEach {
         systemProperty 'forge.logging.markers', 'REGISTRIES'
         systemProperty 'forge.logging.console.level', 'debug'
-        systemProperty 'mixin.debug.export', 'true'
+        //systemProperty 'mixin.debug.export', 'true'
         modSource project.sourceSets.main
     }
     client {
@@ -89,7 +89,7 @@ dependencies {
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 
     runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
-    compileOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
+    runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
 
     //runtimeOnly "curse.maven:pipez-443900:5396282" //Pipez
     implementation "curse.maven:modern-dynamics-552758:5373764" //Modern Industrialization

@@ -1,0 +1,21 @@
+{
+  "type": "eternalartifacts:replace_item",
+  "conditions": [
+    {
+      "block": "minecraft:coal_block",
+      "condition": "minecraft:block_state_property"
+    },
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "tag": "forge:tools/hammer"
+      }
+    }
+  ],
+  "item": "eternalartifacts:coal_dust",
+  "numberProvider": {
+    "type": "minecraft:uniform",
+    "max": 6.0,
+    "min": 3.0
+  }
+}

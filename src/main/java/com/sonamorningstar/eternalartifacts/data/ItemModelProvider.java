@@ -83,6 +83,10 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         spawnEggItem(ModItems.PINKY_SPAWN_EGG);
         spawnEggItem(ModItems.DUCK_SPAWN_EGG);
         spawnEggItem(ModItems.MAGICAL_BOOK_SPAWN_EGG);
+        basicItem(ModItems.COAL_DUST.get());
+        basicItem(ModItems.CHARCOAL_DUST.get());
+        basicItem(ModItems.SUGAR_CHARCOAL_DUST.get());
+        handheld(ModItems.IRON_HAMMER);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

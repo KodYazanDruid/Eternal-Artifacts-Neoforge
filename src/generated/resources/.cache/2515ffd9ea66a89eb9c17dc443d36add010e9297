@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-27T17:44:07.4097123	Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-07-13T21:40:22.7498514	Tags for minecraft:block mod id eternalartifacts
 66a2d84c3f53b061ab82c986fe7939caf5cf6877 data/forge/tags/blocks/mineable/wrench.json
 164fe7cd3fdff92a1dd8747091e75f8864d636e0 data/forge/tags/blocks/ores.json
 73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/blocks/ores/manganese.json
@@ -6,6 +6,8 @@
 6fceb8ecf5c33f88f7f496fe610cf0c815f0c9fe data/forge/tags/blocks/ore_bearing_ground/stone.json
 23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/blocks/ore_rates/dense.json
 98092ba817068436919201312e4e85efb755c874 data/forge/tags/blocks/ore_rates/singular.json
+53f2dd0063d57d31f2d857859131730e8540e546 data/forge/tags/blocks/storage_blocks.json
+665b341ffca8fe440ccbf3b797328b258dfd2ce9 data/forge/tags/blocks/storage_blocks/charcoal.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/blocks/storage_blocks/coal.json
 570859f6f31298505c124817b821bfa6593366a4 data/minecraft/tags/blocks/bamboo_plantable_on.json
 ab4aeb82c21f03d5dca2e30af473360fc64eeab5 data/minecraft/tags/blocks/coal_ores.json
@@ -14,7 +16,7 @@ f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/minecraft/tags/blocks/gold_ores.js
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/minecraft/tags/blocks/iron_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
-82c0765e661ba3c222539972abe43dacd33566ea data/minecraft/tags/blocks/mineable/pickaxe.json
+ad8a500edbfbf999b3c4a68bb0a1f46f56870b3f data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
 6c63c76a55277db4bfcdfe1d50e7bd787ce4532e data/minecraft/tags/blocks/needs_iron_tool.json
 81523256a091955aa0010544e24ea4bb822b9a1d data/minecraft/tags/blocks/needs_stone_tool.json

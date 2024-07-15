@@ -3,13 +3,16 @@
   "category": "misc",
   "key": {
     "N": {
+      "item": "eternalartifacts:copper_nugget"
+    },
+    "T": {
       "tag": "forge:nuggets/copper"
     }
   },
   "pattern": [
-    "NNN",
-    "NNN",
-    "NNN"
+    "TTT",
+    "TNT",
+    "TTT"
   ],
   "result": {
     "item": "minecraft:copper_ingot"

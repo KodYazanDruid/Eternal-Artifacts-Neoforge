@@ -60,7 +60,6 @@ public class CommonEvents {
     //TODO: Do the data pack thing.
     @SubscribeEvent
     public static void jarDrinkEvent(JarDrinkEvent event) {
-        ModHooks.hookJarDrinkEvent(event);
         FluidStack fluidStack = event.getFluidStack();
         if(fluidStack.is(Tags.Fluids.MILK)) {
             event.setDrinkingAmount(250);

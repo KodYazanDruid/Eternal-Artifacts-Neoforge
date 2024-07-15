@@ -56,6 +56,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.NOUS_TANK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.CHARCOAL_BLOCK.get(), "", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -102,6 +103,17 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.GRAVEL_COPPER_ORE.get(),
                 ModBlocks.GRAVEL_IRON_ORE.get(),
                 ModBlocks.GRAVEL_GOLD_ORE.get()
+        );
+        tag(Tags.Blocks.STORAGE_BLOCKS).add(
+                ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
+                ModBlocks.CHARCOAL_BLOCK.get()
+        );
+        tag(Tags.Blocks.STORAGE_BLOCKS).addTag(
+                ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL
+        );
+        tag(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL).add(
+                ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
+                ModBlocks.CHARCOAL_BLOCK.get()
         );
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());

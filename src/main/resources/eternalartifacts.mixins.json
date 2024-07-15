@@ -4,7 +4,8 @@
   "package": "com.sonamorningstar.eternalartifacts.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "BeaconEntityMixin"
+    "BeaconEntityMixin",
+    "ItemEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

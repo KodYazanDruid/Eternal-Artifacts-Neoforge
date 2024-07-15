@@ -1,5 +1,5 @@
 {
-  "type": "eternalartifacts:add_item",
+  "type": "eternalartifacts:add_item_list",
   "conditions": [
     {
       "block": "minecraft:acacia_leaves",
@@ -10,7 +10,10 @@
       "condition": "minecraft:random_chance"
     }
   ],
-  "item": [
-    "eternalartifacts:orange"
+  "itemstack": [
+    {
+      "Count": 1,
+      "id": "eternalartifacts:orange"
+    }
   ]
 }

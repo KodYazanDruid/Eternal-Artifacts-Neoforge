@@ -5,8 +5,10 @@ import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModLootTables;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
@@ -17,10 +19,15 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
+import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -81,46 +88,10 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         add(ModBlocks.MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
 
-        add(ModBlocks.GARDENING_POT.get(), LootTable.lootTable()
-            .withPool(
-                LootPool.lootPool()
-                    .setRolls(ConstantValue.exactly(1.0F))
-                    .add(
-                        LootItem.lootTableItem(ModItems.GARDENING_POT.get())
-                            .apply(RetexturedLootFunction.builder())
-                    )
-            )
-        );
-        add(ModBlocks.FANCY_CHEST.get(), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(ModItems.FANCY_CHEST.get())
-                                                .apply(RetexturedLootFunction.builder())
-                                )
-                )
-        );
-        add(ModBlocks.JAR.get(), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(ModItems.JAR)
-                                                .apply(KeepFluidFunction.builder())
-                                )
-                )
-        );
-        add(ModBlocks.NOUS_TANK.get(), LootTable.lootTable()
-                .withPool(
-                        LootPool.lootPool()
-                                .setRolls(ConstantValue.exactly(1.0F))
-                                .add(
-                                        LootItem.lootTableItem(ModBlocks.NOUS_TANK)
-                                                .apply(KeepFluidFunction.builder())
-                                )
-                )
-        );
+        dropSelfWithFunction(ModBlocks.GARDENING_POT, RetexturedLootFunction.builder());
+        dropSelfWithFunction(ModBlocks.FANCY_CHEST, RetexturedLootFunction.builder());
+        dropSelfWithFunction(ModBlocks.JAR, KeepFluidFunction.builder());
+        dropSelfWithFunction(ModBlocks.NOUS_TANK, KeepFluidFunction.builder());
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())
@@ -128,6 +99,30 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         add(ModBlocks.ANCIENT_CROP.get(), createCropDrops(ModBlocks.ANCIENT_CROP.get(), ModItems.ANCIENT_FRUIT.get(),
                 ModItems.ANCIENT_SEED.get(), ancientCropCondition));
 
+        add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)))
+                        .add(LootItem.lootTableItem(ModItems.SUGAR_CHARCOAL_DUST))
+                        .setRolls(UniformGenerator.between(3.0F, 6.0F))
+                )
+                .withPool(LootPool.lootPool()
+                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).invert())
+                        .add(LootItem.lootTableItem(ModBlocks.SUGAR_CHARCOAL_BLOCK))
+                        .setRolls(ConstantValue.exactly(1.0F))
+                )
+        );
+        add(ModBlocks.CHARCOAL_BLOCK.get(), LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)))
+                        .add(LootItem.lootTableItem(ModItems.CHARCOAL_DUST))
+                        .setRolls(UniformGenerator.between(3.0F, 6.0F))
+                )
+                .withPool(LootPool.lootPool()
+                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).invert())
+                        .add(LootItem.lootTableItem(ModBlocks.CHARCOAL_BLOCK))
+                        .setRolls(ConstantValue.exactly(1.0F))
+                )
+        );
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {
@@ -139,6 +134,20 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                 .withPool(LootPool.lootPool()
                     .add(LootItem.lootTableItem(holder)))
         );
+    }
+
+    private void addLootPool(DeferredBlock<?> holder, LootPoolEntryContainer.Builder<?> builder) {
+        add(holder.get(), LootTable.lootTable()
+            .withPool(
+                LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1.0F))
+                    .add(builder)
+            )
+        );
+    }
+
+    private void dropSelfWithFunction(DeferredBlock<?> holder, LootItemConditionalFunction.Builder<?> builder) {
+        addLootPool(holder, LootItem.lootTableItem(holder).apply(builder));
     }
 
     @Override

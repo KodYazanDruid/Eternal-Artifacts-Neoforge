@@ -12,6 +12,7 @@ import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
@@ -41,7 +42,7 @@ import java.util.function.BooleanSupplier;
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
     Lazy<BlockEntity> entity;
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF;
-    protected Recipe<SimpleContainer> currentRecipe = null;
+    protected Recipe<Container> currentRecipe = null;
     @Getter
     @Setter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
@@ -151,19 +152,20 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     //TODO: needs
-    protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, SimpleContainer container) {
-        if(currentRecipe != null && currentRecipe.matches(container, level)) return;
+    protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, C container) {
+        if(currentRecipe != null && currentRecipe.matches(container, level)) return null;
         currentRecipe = null;
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
         for(R recipe : recipeList) {
             if(recipe.matches(container, level)) {
-                currentRecipe = recipe;
-                return;
+                //currentRecipe = recipe;
+                return recipe;
             }
         }
+        return null;
     }
 
-    protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
+    protected <R extends Recipe<Container>> void findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
         if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return;
         currentRecipe = null;
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
@@ -175,7 +177,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    protected <R extends Recipe<SimpleContainer>> void findRecipe(RecipeType<R> recipeType, Fluid fluid) {
+    protected <R extends Recipe<Container>> void findRecipe(RecipeType<R> recipeType, Fluid fluid) {
         if(currentRecipe != null && ((FluidCombustionRecipe) currentRecipe).matches(fluid)) return;
         currentRecipe = null;
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();

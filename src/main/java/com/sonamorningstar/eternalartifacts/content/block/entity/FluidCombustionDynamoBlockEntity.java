@@ -49,7 +49,6 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     @Override
     protected void saveAdditional(CompoundTag tag) {
         tag.put("Energy", energy.serializeNBT());
-        tag.putBoolean("IsWorking", isWorking);
         tank.writeToNBT(tag);
         if(cache != null) cache.writeToNbt(tag);
         super.saveAdditional(tag);
@@ -74,6 +73,12 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         }
     }
 
+    @Override
+    protected void saveSynced(CompoundTag tag) {
+        super.saveSynced(tag);
+        tag.putBoolean("IsWorking", isWorking);
+    }
+
     public float getAnimationLerp(float tick) {
         return isWorking ? Mth.lerp((1.0F - Mth.cos((tick + tickCounter) * 0.25F) ) / 2F, 4.0F, 9.0F) : 4.0F;
     }
@@ -90,9 +95,9 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         if(cache != null) {
             if(!cache.isDone()) {
                 cache.process();
-                FluidCombustionDynamoBlockEntity.this.sendUpdate();
             } else if (cache.isDone()) {
                 cache = null;
+                isWorking = false;
                 FluidCombustionDynamoBlockEntity.this.sendUpdate();
             }
         }else {

@@ -1,4 +1,5 @@
-// 1.20.4	2024-04-28T17:16:35.348157	Global Loot Modifiers : eternalartifacts
-da698f3f6aa0d5be09c762ff222c6bc7a301da1f data/eternalartifacts/loot_modifiers/ancient_seeds_from_sniffer_digging.json
-2035020e3141f8eb4c4b837db0bdb07541963aba data/eternalartifacts/loot_modifiers/orange_from_acacia_leaves.json
-5b04bd29a045a1d9e8894173a39dc7947143c102 data/neoforge/loot_modifiers/global_loot_modifiers.json
+// 1.20.4	2024-07-13T22:09:08.4671522	Global Loot Modifiers : eternalartifacts
+5982312b9d94f340d514c94fd8b9d862702714f9 data/eternalartifacts/loot_modifiers/ancient_seeds_from_sniffer_digging.json
+2d2308448e8cb4e8b8971d0dd312c42fb5bbaeb0 data/eternalartifacts/loot_modifiers/coal_dust_from_coal_block.json
+26dfd041193f0d289b059ac48cd48946103ca0e0 data/eternalartifacts/loot_modifiers/orange_from_acacia_leaves.json
+7a5c94235a9155efcc297d9d9e1b8a0f1a599f0b data/neoforge/loot_modifiers/global_loot_modifiers.json

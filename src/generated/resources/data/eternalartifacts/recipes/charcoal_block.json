@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": {
+      "item": "minecraft:charcoal"
+    },
+    "T": {
+      "tag": "forge:charcoal"
+    }
+  },
+  "pattern": [
+    "TTT",
+    "TNT",
+    "TTT"
+  ],
+  "result": {
+    "item": "eternalartifacts:charcoal_block"
+  }
+}

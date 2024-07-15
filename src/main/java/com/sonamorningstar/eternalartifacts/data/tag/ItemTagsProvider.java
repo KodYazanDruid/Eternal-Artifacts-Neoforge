@@ -53,6 +53,17 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.MANGANESE_NUGGET.get(),
                 ModItems.STEEL_NUGGET.get()
         );
+        tag(Tags.Items.DUSTS).add(
+                ModItems.COAL_DUST.get(),
+                ModItems.CHARCOAL_DUST.get(),
+                ModItems.SUGAR_CHARCOAL_DUST.get()
+        );
+        tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
+        tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
+        tag(ModTags.Items.DUSTS_SUGAR_CHARCOAL).add(ModItems.SUGAR_CHARCOAL_DUST.get());
+        tag(ModTags.Items.CHARCOAL).add(
+                ModItems.SUGAR_CHARCOAL.get()
+        );
         tag(Tags.Items.RAW_MATERIALS).add(
                 ModItems.RAW_MANGANESE.get()
         );
@@ -99,6 +110,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.LUSH_GRUBBER.get()
         );
         tag(ModTags.Items.TOOLS_WRENCH).add(ModItems.WRENCH.get());
+        tag(ModTags.Items.TOOLS_HAMMER).add(ModItems.IRON_HAMMER.get());
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,

@@ -92,6 +92,9 @@ public class ModItems {
     public static final DeferredItem<Item> PLASTIC_SHEET = register("plastic_sheet");
     public static final DeferredItem<Item> ENDER_PAPER = register("ender_paper", EnderPaper::new);
     public static final DeferredItem<Item> RAW_MANGANESE = register("raw_manganese");
+    public static final DeferredItem<Item> COAL_DUST = register("coal_dust");
+    public static final DeferredItem<Item> CHARCOAL_DUST = register("charcoal_dust");
+    public static final DeferredItem<Item> SUGAR_CHARCOAL_DUST = register("sugar_charcoal_dust");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -114,11 +117,11 @@ public class ModItems {
     public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
 
     //Tools.
-    public static final DeferredItem<Item> COPPER_SWORD = register("copper_sword", ()-> new SwordItem(ModTiers.COPPER, 3, -2.4f, new Item.Properties()));
-    public static final DeferredItem<Item> COPPER_PICKAXE = register("copper_pickaxe", ()-> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, new Item.Properties()));
-    public static final DeferredItem<Item> COPPER_AXE = register("copper_axe", ()-> new AxeItem(ModTiers.COPPER, 7, -3.2f, new Item.Properties()));
-    public static final DeferredItem<Item> COPPER_SHOVEL = register("copper_shovel", ()-> new ShovelItem(ModTiers.COPPER, 1.5F, -3.0f, new Item.Properties()));
-    public static final DeferredItem<Item> COPPER_HOE = register("copper_hoe", ()-> new HoeItem(ModTiers.COPPER, -1, -2.0f, new Item.Properties()));
+    public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
+    public static final DeferredItem<Item> COPPER_PICKAXE = registerStacksToOne("copper_pickaxe", p -> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, p));
+    public static final DeferredItem<Item> COPPER_AXE = registerStacksToOne("copper_axe", p -> new AxeItem(ModTiers.COPPER, 7, -3.2f, p));
+    public static final DeferredItem<Item> COPPER_SHOVEL = registerStacksToOne("copper_shovel", p -> new ShovelItem(ModTiers.COPPER, 1.5F, -3.0f, p));
+    public static final DeferredItem<Item> COPPER_HOE = registerStacksToOne("copper_hoe", p -> new HoeItem(ModTiers.COPPER, -1, -2.0f, p));
     public static final DeferredItem<Item> SWORD_OF_THE_GREEN_EARTH = registerStacksToOne("sword_of_the_green_earth", SwordOfTheGreenEarthItem::new);
     public static final DeferredItem<Item> CHLOROVEIN_PICKAXE = registerStacksToOne("chlorovein_pickaxe", ChloroveinPickaxeItem::new);
     public static final DeferredItem<Item> AXE_OF_REGROWTH = registerStacksToOne("axe_of_regrowth", AxeOfRegrowthItem::new);
@@ -126,6 +129,7 @@ public class ModItems {
     public static final DeferredItem<Item> LUSH_GRUBBER = registerStacksToOne("lush_grubber", LushGrubberItem::new);
     public static final DeferredItem<Item> WRENCH = registerStacksToOne("wrench", WrenchItem::new);
     public static final DeferredItem<Item> KNAPSACK = registerStacksToOne("knapsack", KnapsackItem::new);
+    public static final DeferredItem<Item> IRON_HAMMER = registerStacksToOne("iron_hammer", p -> new HammerItem(Tiers.IRON, p));
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));

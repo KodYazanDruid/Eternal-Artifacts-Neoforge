@@ -193,8 +193,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('B', Items.COPPER_BLOCK).define('C', Items.COPPER_INGOT)
                 .unlockedBy("has_item", has(Items.COPPER_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Items.COPPER_INGOT)
-                .pattern("NNN").pattern("NNN").pattern("NNN")
-                .define('N', ModTags.Items.NUGGETS_COPPER)
+                .pattern("TTT").pattern("TNT").pattern("TTT")
+                .define('T', ModTags.Items.NUGGETS_COPPER)
+                .define('N', ModItems.COPPER_NUGGET)
                 .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STEEL_INGOT)
                 .pattern("NNN").pattern("NMN").pattern("NNN")
@@ -222,6 +223,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("NNN").pattern("NNN").pattern("NNN")
                 .define('N', ModItems.RAW_MANGANESE)
                 .unlockedBy("has_item", has(ModItems.RAW_MANGANESE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHARCOAL_BLOCK)
+                .pattern("TTT").pattern("TNT").pattern("TTT")
+                .define('T', ModTags.Items.CHARCOAL)
+                .define('N', Items.CHARCOAL)
+                .unlockedBy("has_item", has(Items.CHARCOAL)).save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -241,6 +247,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_MANGANESE, 9)
                 .requires(ModBlocks.RAW_MANGANESE_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.RAW_MANGANESE_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL, 9)
+                .requires(ModBlocks.CHARCOAL_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput);
 
     }
 

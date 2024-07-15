@@ -11,23 +11,27 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEntity<MeatShredderMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public MeatShredderMachineBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MEAT_SHREDDER.get(), pos, blockState, MeatShredderMenu::new);
     }
 
+    MeatShredderRecipe currRecipe;
+
     @Getter
     public ModItemStorage inventory = new ModItemStorage(1) {
         @Override
         protected void onContentsChanged(int slot) {
             progress = 0;
-            findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
+            currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
             MeatShredderMachineBlockEntity.this.sendUpdate();
         }
     };
@@ -59,7 +63,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     @Override
     public void onLoad() {
         super.onLoad();
-        findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
+        currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
     }
 
     @Override
@@ -82,8 +86,8 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInput(lvl, pos, inventory);
         performAutoOutputFluids(lvl, pos, tank);
-        if(currentRecipe instanceof MeatShredderRecipe msr) {
-            FluidStack fs = msr.getOutput();
+        if(currRecipe != null) {
+            FluidStack fs = currRecipe.getOutput();
             progress(()-> {
                 int inserted = tank.fillForced(fs, IFluidHandler.FluidAction.SIMULATE);
                 return inserted < fs.getAmount();

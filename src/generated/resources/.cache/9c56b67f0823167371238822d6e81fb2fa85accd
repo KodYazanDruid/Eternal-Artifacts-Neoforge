@@ -1,4 +1,4 @@
-// 1.20.4	2024-07-13T00:13:01.6079699	Item Models: eternalartifacts
+// 1.20.4	2024-07-13T16:17:09.2620882	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -10,12 +10,14 @@ eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/bat
 4db39dad240c4e589eecfffeb032ea9003733aba assets/eternalartifacts/models/item/beer_bucket.json
 1588e5b1ebc429bd4c22688d56627146e81456a9 assets/eternalartifacts/models/item/blood_bucket.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
+6d52c2a913b67814033c91dc8ce2c6443b549d12 assets/eternalartifacts/models/item/charcoal_dust.json
 66eec94e2e9ef972b02e8054ef7bccaa254aab86 assets/eternalartifacts/models/item/chlorophyte_ingot.json
 c28a6e21fcb0b4beeb03ff435bade36ed0b86462 assets/eternalartifacts/models/item/chlorophyte_tablet.json
 cdc897d603b343e881b0dabb96a42c3ab5da8aab assets/eternalartifacts/models/item/chlorophyte_upgrade_smithing_template.json
 3e1e9359c90a259be8d047ec9cb010a08ebd4287 assets/eternalartifacts/models/item/chlorovein_pickaxe.json
 213dcf7827e236cb15fefbff88d70870df196f4c assets/eternalartifacts/models/item/citrus_log.json
 9b0e5afdc813cd0f1169ada59b0a6a9fad2bb221 assets/eternalartifacts/models/item/citrus_wood.json
+731a88b67cfec3e767410bddd323fbf328d75c20 assets/eternalartifacts/models/item/coal_dust.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json
 c4b6d532ce2e21a9a09107482c4b2398be18c975 assets/eternalartifacts/models/item/cooked_duck_meat.json
 c78b55733b75ccccae2e361537d3e3ed38d29842 assets/eternalartifacts/models/item/copper_axe.json
@@ -48,6 +50,7 @@ aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/gol
 df2644d1984cf0b62f3bdc77fde033a2e0818907 assets/eternalartifacts/models/item/gold_oreberry.json
 20d21c39c19c51e80328abe3103e4c9229641fee assets/eternalartifacts/models/item/gold_ring.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
+975f2c4f0f505df7ea49e0b501ae85271d0787d4 assets/eternalartifacts/models/item/iron_hammer.json
 22d616680d46d49c8e5d3928a400d64a51d3d028 assets/eternalartifacts/models/item/iron_oreberry.json
 17706b97425221c1e07f00cb5e6e88ced1f84039 assets/eternalartifacts/models/item/knapsack.json
 f244cc9ae51e0947ad50cb4f4e7d4a5c36861a92 assets/eternalartifacts/models/item/lens.json
@@ -82,5 +85,6 @@ c2ba6e613a9d34d8645d20445e90e19ada25b666 assets/eternalartifacts/models/item/ste
 8af0d4aeb109ca7dbb15c3535149f47ff0115319 assets/eternalartifacts/models/item/stripped_citrus_log.json
 6fd4201710cef1abf6ca4ea4729bfb5aab63a755 assets/eternalartifacts/models/item/stripped_citrus_wood.json
 ba733dcc4dedb590bfbd7153bcdec9552b070693 assets/eternalartifacts/models/item/sugar_charcoal.json
+09cf58c9bbc6c758c38171a9da3b25db0d61fae8 assets/eternalartifacts/models/item/sugar_charcoal_dust.json
 d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/sword_of_the_green_earth.json
 a9146648aea7d322f14ca73f9e69bcf44f71dac1 assets/eternalartifacts/models/item/wrench.json
