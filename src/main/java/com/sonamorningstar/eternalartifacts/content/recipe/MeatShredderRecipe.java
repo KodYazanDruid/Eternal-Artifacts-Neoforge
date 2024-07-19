@@ -26,7 +26,6 @@ public class MeatShredderRecipe implements Recipe<SimpleContainer> {
     @Getter
     private final FluidStack output;
 
-
     @Override
     public boolean matches(SimpleContainer container, Level level) {
         NonNullList<ItemStack> stacks = container.getItems();

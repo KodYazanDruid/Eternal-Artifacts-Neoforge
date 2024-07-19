@@ -97,4 +97,5 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
             }, energy);
         }
     }
+
 }

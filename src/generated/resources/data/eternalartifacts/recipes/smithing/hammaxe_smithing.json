@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "eternalartifacts:chlorophyte_ingot"
+  },
+  "base": {
+    "item": "eternalartifacts:copper_hammer"
+  },
+  "result": {
+    "item": "eternalartifacts:hammaxe"
+  },
+  "template": {
+    "item": "eternalartifacts:chlorophyte_upgrade_smithing_template"
+  }
+}

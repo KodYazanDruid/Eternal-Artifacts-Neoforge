@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.content.recipe.custom.SteelCraftingInWorld;
 import com.sonamorningstar.eternalartifacts.core.ModSounds;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;

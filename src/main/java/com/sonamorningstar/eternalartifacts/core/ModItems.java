@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -95,6 +96,9 @@ public class ModItems {
     public static final DeferredItem<Item> COAL_DUST = register("coal_dust");
     public static final DeferredItem<Item> CHARCOAL_DUST = register("charcoal_dust");
     public static final DeferredItem<Item> SUGAR_CHARCOAL_DUST = register("sugar_charcoal_dust");
+    public static final DeferredItem<Item> CLAY_DUST = register("clay_dust");
+    public static final DeferredItem<Item> ARDITE_INGOT = register("ardite_ingot");
+    public static final DeferredItem<Item> RAW_ARDITE = register("raw_ardite");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -129,7 +133,14 @@ public class ModItems {
     public static final DeferredItem<Item> LUSH_GRUBBER = registerStacksToOne("lush_grubber", LushGrubberItem::new);
     public static final DeferredItem<Item> WRENCH = registerStacksToOne("wrench", WrenchItem::new);
     public static final DeferredItem<Item> KNAPSACK = registerStacksToOne("knapsack", KnapsackItem::new);
+    public static final DeferredItem<Item> WOODEN_HAMMER = registerStacksToOne("wooden_hammer", p -> new HammerItem(Tiers.WOOD, p));
+    public static final DeferredItem<Item> STONE_HAMMER = registerStacksToOne("stone_hammer", p -> new HammerItem(Tiers.STONE, p));
+    public static final DeferredItem<Item> COPPER_HAMMER = registerStacksToOne("copper_hammer", p -> new HammerItem(ModTiers.COPPER, p));
     public static final DeferredItem<Item> IRON_HAMMER = registerStacksToOne("iron_hammer", p -> new HammerItem(Tiers.IRON, p));
+    public static final DeferredItem<Item> GOLDEN_HAMMER = registerStacksToOne("golden_hammer", p -> new HammerItem(Tiers.GOLD, p));
+    public static final DeferredItem<Item> DIAMOND_HAMMER = registerStacksToOne("diamond_hammer", p -> new HammerItem(Tiers.DIAMOND, p));
+    public static final DeferredItem<Item> NETHERITE_HAMMER = registerStacksToOne("netherite_hammer", p -> new HammerItem(Tiers.NETHERITE, p.fireResistant()));
+    public static final DeferredItem<Item> HAMMAXE = registerStacksToOne("hammaxe", HammaxeItem::new);
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));

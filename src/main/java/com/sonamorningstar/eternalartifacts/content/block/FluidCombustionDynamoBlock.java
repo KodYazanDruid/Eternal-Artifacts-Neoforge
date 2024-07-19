@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,6 +34,12 @@ public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustion
     private static final VoxelShape EAST_AABB;
     private static final VoxelShape WEST_AABB;
     private static final VoxelShape SOUTH_AABB;
+    private static final VoxelShape UP_COIL_AABB;
+    private static final VoxelShape DOWN_COIL_AABB;
+    private static final VoxelShape NORTH_COIL_AABB;
+    private static final VoxelShape EAST_COIL_AABB;
+    private static final VoxelShape WEST_COIL_AABB;
+    private static final VoxelShape SOUTH_COIL_AABB;
 
     static {
         UP_AABB = BlockHelper.generateByArea(16, 8, 16, 0, 0, 0);
@@ -41,6 +48,12 @@ public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustion
         EAST_AABB = BlockHelper.generateByArea(8, 16, 16, 0, 0, 0);
         WEST_AABB = BlockHelper.generateByArea(8, 16, 16, 8, 0, 0);
         SOUTH_AABB = BlockHelper.generateByArea(16, 16, 8, 0, 0, 0);
+        UP_COIL_AABB = BlockHelper.generateByArea(6, 8, 6, 5, 8, 5);
+        DOWN_COIL_AABB = BlockHelper.generateByArea(6, 8, 6, 5, 0, 5);
+        NORTH_COIL_AABB = BlockHelper.generateByArea(6, 6, 8, 5, 5,0);
+        EAST_COIL_AABB = BlockHelper.generateByArea(8, 6, 6, 8, 5, 5);
+        WEST_COIL_AABB = BlockHelper.generateByArea(8, 6, 6, 0, 5, 5);
+        SOUTH_COIL_AABB = BlockHelper.generateByArea(6, 6, 8, 5, 5, 8);
     }
 
     @Override
@@ -48,12 +61,12 @@ public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustion
         Direction direction = pState.getValue(BlockStateProperties.FACING);
         VoxelShape shape;
         switch (direction) {
-            case UP -> shape = UP_AABB;
-            case DOWN -> shape = DOWN_AABB;
-            case EAST -> shape = EAST_AABB;
-            case WEST -> shape = WEST_AABB;
-            case SOUTH -> shape = SOUTH_AABB;
-            default -> shape = NORTH_AABB;
+            case UP -> shape = Shapes.or(UP_AABB, UP_COIL_AABB);
+            case DOWN -> shape =Shapes.or(DOWN_AABB, DOWN_COIL_AABB);
+            case EAST -> shape = Shapes.or(EAST_AABB, EAST_COIL_AABB);
+            case WEST -> shape = Shapes.or(WEST_AABB, WEST_COIL_AABB);
+            case SOUTH -> shape = Shapes.or(SOUTH_AABB, SOUTH_COIL_AABB);
+            default -> shape = Shapes.or(NORTH_AABB, NORTH_COIL_AABB);
         }
         return shape;
     }

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "eternalartifacts:ardite_ore"
+  },
+  "result": "eternalartifacts:ardite_ingot"
+}

@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

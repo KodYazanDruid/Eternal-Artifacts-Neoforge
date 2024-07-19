@@ -91,7 +91,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COAL_DUST.get(), "Coal Dust");
                 add(ModItems.CHARCOAL_DUST.get(), "Charcoal Dust");
                 add(ModItems.SUGAR_CHARCOAL_DUST.get(), "Sugar Charcoal Dust");
+                add(ModItems.WOODEN_HAMMER.get(), "Wooden Hammer");
+                add(ModItems.STONE_HAMMER.get(), "Stone Hammer");
+                add(ModItems.COPPER_HAMMER.get(), "Copper Hammer");
                 add(ModItems.IRON_HAMMER.get(), "Iron Hammer");
+                add(ModItems.GOLDEN_HAMMER.get(), "Golden Hammer");
+                add(ModItems.DIAMOND_HAMMER.get(), "Diamond Hammer");
+                add(ModItems.NETHERITE_HAMMER.get(), "Netherite Hammer");
+                add(ModItems.HAMMAXE.get(), "Hammaxe");
+                add(ModItems.CLAY_DUST.get(), "Clay Dust");
+                add(ModItems.ARDITE_INGOT.get(), "Ardite Ingot");
+                add(ModItems.RAW_ARDITE.get(), "Raw Ardite");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -149,6 +159,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.NOUS_TANK.get(), "Nous Tank");
                 add(ModFluidTypes.BEER.get().getDescriptionId(), "Beer");
                 add(ModBlocks.CHARCOAL_BLOCK.get(), "Charcoal Block");
+                add(ModBlocks.ARDITE_ORE.get(), "Ardite Ore");
+                add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Raw Ardite Block");
+                add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Block");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -263,7 +276,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COAL_DUST.get(), "Kömür Tozu");
                 add(ModItems.CHARCOAL_DUST.get(), "Odun Kömürü Tozu");
                 add(ModItems.SUGAR_CHARCOAL_DUST.get(), "Şeker Odun Kömürü Tozu");
+                add(ModItems.WOODEN_HAMMER.get(), "Tahta Balyoz");
+                add(ModItems.STONE_HAMMER.get(), "Taş Balyoz");
+                add(ModItems.COPPER_HAMMER.get(), "Bakır Balyoz");
                 add(ModItems.IRON_HAMMER.get(), "Demir Balyoz");
+                add(ModItems.GOLDEN_HAMMER.get(), "Altın Balyoz");
+                add(ModItems.DIAMOND_HAMMER.get(), "Elmas Balyoz");
+                add(ModItems.NETHERITE_HAMMER.get(), "Netherit Balyoz");
+                add(ModItems.HAMMAXE.get(), "Balyozta");
+                add(ModItems.CLAY_DUST.get(), "Kil Tozu");
+                add(ModItems.ARDITE_INGOT.get(), "Ardite Külçesi");
+                add(ModItems.RAW_ARDITE.get(), "Ham Ardite");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -321,6 +344,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.NOUS_TANK.get(), "İdrak Tankı");
                 add(ModFluidTypes.BEER.get().getDescriptionId(), "Bira");
                 add(ModBlocks.CHARCOAL_BLOCK.get(), "Odun Kömürü Bloğu");
+                add(ModBlocks.ARDITE_ORE.get(), "Ardite Cevheri");
+                add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Ham Ardite Bloğu");
+                add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Bloğu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

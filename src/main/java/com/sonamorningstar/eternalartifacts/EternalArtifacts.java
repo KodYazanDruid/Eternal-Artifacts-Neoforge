@@ -1,23 +1,14 @@
 package com.sonamorningstar.eternalartifacts;
 
 import com.mojang.logging.LogUtils;
-import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
 
 import static net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid;
@@ -38,6 +29,7 @@ public class EternalArtifacts {
      * TODO: Smart Piston (with sticky)
      * TODO: ARDITE ?
      * TODO: Configs.
+     * TODO: Scrap boxes and similar loot thingies.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *
@@ -58,6 +50,7 @@ public class EternalArtifacts {
         ModFluidTypes.FLUID_TYPES.register(modEventBus);
         ModLoots.FUNCTIONS.register(modEventBus);
         ModLoots.GLOBAL_MODIFIER.register(modEventBus);
+        ModLoots.CONDITIONS.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);

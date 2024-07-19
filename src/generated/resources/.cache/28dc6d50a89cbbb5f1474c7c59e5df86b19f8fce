@@ -1,14 +1,15 @@
-// 1.20.4	2024-07-13T21:40:22.7548511	vanilla/Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-07-16T17:43:40.4987226	vanilla/Tags for minecraft:block mod id eternalartifacts
+f3e660e89a1134f382a8b3f42bce0dc91d88fe6d data/eternalartifacts/tags/blocks/mineable/wrench.json
 66a2d84c3f53b061ab82c986fe7939caf5cf6877 data/forge/tags/blocks/mineable/wrench.json
-164fe7cd3fdff92a1dd8747091e75f8864d636e0 data/forge/tags/blocks/ores.json
+6e955beae490aa633e2a0c3c4171c29860662334 data/forge/tags/blocks/ores.json
 73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/blocks/ores/manganese.json
 642e5cabb06508478a570530145ab49006b60db4 data/forge/tags/blocks/ore_bearing_ground/deepslate.json
+4bcaad8ed5c633d8ef1864b7dc58a2437a95fe0e data/forge/tags/blocks/ore_bearing_ground/netherrack.json
 6fceb8ecf5c33f88f7f496fe610cf0c815f0c9fe data/forge/tags/blocks/ore_bearing_ground/stone.json
 23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/blocks/ore_rates/dense.json
-98092ba817068436919201312e4e85efb755c874 data/forge/tags/blocks/ore_rates/singular.json
-53f2dd0063d57d31f2d857859131730e8540e546 data/forge/tags/blocks/storage_blocks.json
-665b341ffca8fe440ccbf3b797328b258dfd2ce9 data/forge/tags/blocks/storage_blocks/charcoal.json
-23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/blocks/storage_blocks/coal.json
+9e1ab6d4fb999f7a357e62feb6402e2e43dd9d0b data/forge/tags/blocks/ore_rates/singular.json
+079bf0c6ba3e5dcf8b853f8ed009f04061c8bb21 data/forge/tags/blocks/storage_blocks.json
+5e229e96ae235221d115bf29aeca051900be7ad6 data/forge/tags/blocks/storage_blocks/charcoal.json
 570859f6f31298505c124817b821bfa6593366a4 data/minecraft/tags/blocks/bamboo_plantable_on.json
 ab4aeb82c21f03d5dca2e30af473360fc64eeab5 data/minecraft/tags/blocks/coal_ores.json
 23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/minecraft/tags/blocks/copper_ores.json
@@ -16,9 +17,9 @@ f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/minecraft/tags/blocks/gold_ores.js
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/minecraft/tags/blocks/iron_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
-ad8a500edbfbf999b3c4a68bb0a1f46f56870b3f data/minecraft/tags/blocks/mineable/pickaxe.json
+e558b3e11bf99e0c2ed084c2a81054e53d5f7158 data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
-6c63c76a55277db4bfcdfe1d50e7bd787ce4532e data/minecraft/tags/blocks/needs_iron_tool.json
+631cb257afeb673075ac4449757e963931dc69b0 data/minecraft/tags/blocks/needs_iron_tool.json
 81523256a091955aa0010544e24ea4bb822b9a1d data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/blocks/small_flowers.json

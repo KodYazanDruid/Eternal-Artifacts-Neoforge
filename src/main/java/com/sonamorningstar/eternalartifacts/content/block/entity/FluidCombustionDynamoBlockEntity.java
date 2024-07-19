@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.container.FluidCombustionMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.util.dynamo.DynamoProcessCache;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -26,11 +28,17 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     private int tickCounter = 0;
     public boolean isWorking = false;
     private DynamoProcessCache cache;
+    private FluidCombustionRecipe currRecipe;
 
     public ModEnergyStorage energy = new ModEnergyStorage(20000, 2500) {
         @Override
         public void onEnergyChanged() {
             FluidCombustionDynamoBlockEntity.this.sendUpdate();
+        }
+
+        @Override
+        public boolean canReceive() {
+            return false;
         }
     };
 
@@ -38,10 +46,10 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         @Override
         protected void onContentsChanged() {
             FluidCombustionDynamoBlockEntity.this.sendUpdate();
-            findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), tank.getFluid().getFluid());
-            if(currentRecipe != null && currentRecipe instanceof FluidCombustionRecipe fcr) {
-                setEnergyPerTick(fcr.getGeneration());
-                setMaxProgress(fcr.getDuration());
+            currentRecipe = findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid()));
+            if(currRecipe != null) {
+                setEnergyPerTick(currRecipe.getGeneration());
+                setMaxProgress(currRecipe.getDuration());
             }
         }
     };
@@ -66,10 +74,10 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     @Override
     public void onLoad() {
         super.onLoad();
-        findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), tank.getFluid().getFluid());
-        if(currentRecipe != null && currentRecipe instanceof FluidCombustionRecipe fcr) {
-            setEnergyPerTick(fcr.getGeneration());
-            setMaxProgress(fcr.getDuration());
+        currRecipe = findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid()));
+        if(currRecipe != null) {
+            setEnergyPerTick(currRecipe.getGeneration());
+            setMaxProgress(currRecipe.getDuration());
         }
     }
 
@@ -91,6 +99,8 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        if(energy.getEnergyStored() > 0) outputEnergyToDir(lvl, pos, getBlockState().getValue(BlockStateProperties.FACING), energy);
+
         //TODO: Create parent DynamoBlockEntity class and move this to there.
         if(cache != null) {
             if(!cache.isDone()) {
@@ -101,7 +111,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
                 FluidCombustionDynamoBlockEntity.this.sendUpdate();
             }
         }else {
-            if(currentRecipe instanceof  FluidCombustionRecipe) {
+            if(currRecipe != null) {
                 FluidStack drained = tank.drainForced(50, IFluidHandler.FluidAction.SIMULATE);
                 if(drained.getAmount() == 50) {
                     tank.drainForced(50, IFluidHandler.FluidAction.EXECUTE);

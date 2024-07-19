@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.item;
+package com.sonamorningstar.eternalartifacts.content.item.base;
 
 import net.minecraft.world.entity.player.Player;
 

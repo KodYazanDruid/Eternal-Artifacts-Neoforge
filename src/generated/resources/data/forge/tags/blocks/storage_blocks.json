@@ -1,7 +1,7 @@
 {
   "values": [
     "eternalartifacts:sugar_charcoal_block",
-    "eternalartifacts:charcoal_block",
+    "eternalartifacts:ardite_block",
     "#forge:storage_blocks/charcoal"
   ]
 }

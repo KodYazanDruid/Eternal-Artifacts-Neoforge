@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "eternalartifacts:ardite_ingot"
+    },
+    "N": {
+      "tag": "forge:ingots/ardite"
+    }
+  },
+  "pattern": [
+    "NNN",
+    "NMN",
+    "NNN"
+  ],
+  "result": {
+    "item": "eternalartifacts:ardite_block"
+  }
+}

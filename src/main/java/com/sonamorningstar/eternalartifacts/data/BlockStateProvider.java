@@ -71,6 +71,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.DEEPSLATE_MANGANESE_ORE.get());
         simpleBlockWithItem(ModBlocks.RAW_MANGANESE_BLOCK.get());
         simpleBlockWithItem(ModBlocks.CHARCOAL_BLOCK.get());
+        simpleBlockWithItem(ModBlocks.ARDITE_ORE.get());
+        simpleBlockWithItem(ModBlocks.RAW_ARDITE_BLOCK.get());
+        simpleBlockWithItem(ModBlocks.ARDITE_BLOCK.get());
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

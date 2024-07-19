@@ -1,5 +1,12 @@
 {
   "values": [
-    "eternalartifacts:iron_hammer"
+    "eternalartifacts:wooden_hammer",
+    "eternalartifacts:stone_hammer",
+    "eternalartifacts:copper_hammer",
+    "eternalartifacts:iron_hammer",
+    "eternalartifacts:golden_hammer",
+    "eternalartifacts:diamond_hammer",
+    "eternalartifacts:netherite_hammer",
+    "eternalartifacts:hammaxe"
   ]
 }

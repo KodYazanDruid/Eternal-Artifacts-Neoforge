@@ -1,5 +1,7 @@
-// 1.20.4	2024-07-13T22:09:08.4671522	Global Loot Modifiers : eternalartifacts
+// 1.20.4	2024-07-16T00:36:17.7213107	Global Loot Modifiers : eternalartifacts
 5982312b9d94f340d514c94fd8b9d862702714f9 data/eternalartifacts/loot_modifiers/ancient_seeds_from_sniffer_digging.json
-2d2308448e8cb4e8b8971d0dd312c42fb5bbaeb0 data/eternalartifacts/loot_modifiers/coal_dust_from_coal_block.json
+3a0abd028e3f02b3f8b186eed334996e1a804e5e data/eternalartifacts/loot_modifiers/charcoal_dust_from_charcoal_blocks.json
+f2dff11e11ce2800ba83d74fec94709fc9b531e7 data/eternalartifacts/loot_modifiers/clay_dust_from_clay.json
+bae4cff7bcc4cc12c4a9e8bc0c1df18d6402e208 data/eternalartifacts/loot_modifiers/coal_dust_from_coal_blocks.json
 26dfd041193f0d289b059ac48cd48946103ca0e0 data/eternalartifacts/loot_modifiers/orange_from_acacia_leaves.json
-7a5c94235a9155efcc297d9d9e1b8a0f1a599f0b data/neoforge/loot_modifiers/global_loot_modifiers.json
+b37ecfb3903a77bccbb345e6133de3bda5aa2cc8 data/neoforge/loot_modifiers/global_loot_modifiers.json

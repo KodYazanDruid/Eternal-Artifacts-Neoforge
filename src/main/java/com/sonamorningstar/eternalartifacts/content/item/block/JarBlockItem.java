@@ -51,13 +51,13 @@ public class JarBlockItem extends FluidHolderBlockItem {
     public InteractionResult useOn(UseOnContext ctx) {
         Player player = ctx.getPlayer();
         ItemStack itemstack = ctx.getItemInHand();
-        return player == null || isAbleToPick(itemstack) ? InteractionResult.PASS : super.useOn(ctx);
+        return player == null || canPickupFluid(itemstack) ? InteractionResult.PASS : super.useOn(ctx);
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
-        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, isAbleToPick(itemstack) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
+        BlockHitResult hitResult = getPlayerPOVHitResult(level, player, canPickupFluid(itemstack) ? ClipContext.Fluid.SOURCE_ONLY : ClipContext.Fluid.NONE);
         if(hitResult.getType() == HitResult.Type.MISS && player.isCrouching()) {
             toggleLid(itemstack);
             return InteractionResultHolder.sidedSuccess(itemstack, level.isClientSide());
@@ -88,10 +88,12 @@ public class JarBlockItem extends FluidHolderBlockItem {
                 }
             }
         } else {
-            event = new JarDrinkEvent(getFluidStack(itemstack), player);
+            FluidStack fluidStack = getFluidStack(itemstack);
+            event = new JarDrinkEvent(fluidStack, player);
             if(isOpen(itemstack)) {
                 if(NeoForge.EVENT_BUS.post(event).isCanceled()) return super.use(level, player, hand);
-                else if(event.getUseTime() > 0 && event.getDrinkingAmount() > 0) return ItemUtils.startUsingInstantly(level, player, hand);
+                else if(event.getUseTime() > 0 &&
+                        fluidStack.getAmount() >= event.getDrinkingAmount()) return ItemUtils.startUsingInstantly(level, player, hand);
             }
         }
         return super.use(level, player, hand);
@@ -139,7 +141,7 @@ public class JarBlockItem extends FluidHolderBlockItem {
         }
     }
 
-    private boolean isAbleToPick(ItemStack itemstack) {
+    private boolean canPickupFluid(ItemStack itemstack) {
         return isOpen(itemstack) && isEmpty(itemstack);
     }
 

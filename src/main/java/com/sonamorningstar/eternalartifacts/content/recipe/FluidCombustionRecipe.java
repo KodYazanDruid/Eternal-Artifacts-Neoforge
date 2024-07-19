@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
@@ -21,10 +22,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class FluidCombustionRecipe implements Recipe<Container> {
+public class FluidCombustionRecipe implements Recipe<SimpleFluidContainer> {
 
-    /*@Getter
-    private final Fluid fuel;*/
     @Getter
     private final FluidIngredient fuel;
     @Getter
@@ -32,16 +31,15 @@ public class FluidCombustionRecipe implements Recipe<Container> {
     @Getter
     private final int duration;
 
-    public boolean matches(Fluid fluid) {
-        return fuel.testFluid(fluid);
-    }
-
     @Override
-    public boolean matches(Container con, Level level) {
+    public boolean matches(SimpleFluidContainer con, Level level) {
+        for(FluidStack stack : con.getFluidStacks()) {
+            if(fuel.test(stack)) return true;
+        }
         return false;
     }
     @Override
-    public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
+    public ItemStack assemble(SimpleFluidContainer pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override

@@ -12,6 +12,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.conditions.IConditionBuilder;
@@ -36,6 +38,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider implements IConditionBuilder {
 
     private final List<ItemLike> MANGANESE_SMELTABLES = ImmutableList.of(ModBlocks.MANGANESE_ORE, ModBlocks.DEEPSLATE_MANGANESE_ORE, ModItems.RAW_MANGANESE);
+    private final List<ItemLike> ARDITE_SMELTABLES = ImmutableList.of(ModBlocks.ARDITE_ORE, ModItems.RAW_ARDITE);
 
     public RecipeProvider(PackOutput pOutput) {
         super(pOutput);
@@ -55,6 +58,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_IRON_ORE, Items.IRON_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
         createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
+        createOreSmeltingRecipe(recipeOutput, ARDITE_SMELTABLES, ModItems.ARDITE_INGOT, 1.0f);
 
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
@@ -62,6 +66,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_AXE.get(), RecipeCategory.TOOLS, ModItems.AXE_OF_REGROWTH.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SHOVEL.get(), RecipeCategory.TOOLS, ModItems.NATURAL_SPADE.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HOE.get(), RecipeCategory.TOOLS, ModItems.LUSH_GRUBBER.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_HAMMER.get(), RecipeCategory.TOOLS, ModItems.HAMMAXE.get());
+        netheriteSmithing(recipeOutput, ModItems.DIAMOND_HAMMER.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_HAMMER.get());
 
         createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, 250);
         createMeatShredderRecipe(recipeOutput, Items.BEEF.getDefaultInstance(), 250);
@@ -228,6 +234,21 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('T', ModTags.Items.CHARCOAL)
                 .define('N', Items.CHARCOAL)
                 .unlockedBy("has_item", has(Items.CHARCOAL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_ARDITE_BLOCK)
+                .pattern("NNN").pattern("NNN").pattern("NNN")
+                .define('N', ModItems.RAW_ARDITE)
+                .unlockedBy("has_item", has(ModItems.RAW_ARDITE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ARDITE_BLOCK)
+                .pattern("NNN").pattern("NMN").pattern("NNN")
+                .define('N', ModTags.Items.INGOTS_ARDITE)
+                .define('M', ModItems.ARDITE_INGOT)
+                .unlockedBy("has_item", has(ModTags.Items.INGOTS_ARDITE)).save(recipeOutput);
+        createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
+        createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Items.COBBLESTONE, Items.SMOOTH_STONE);
+        createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
+        createHammerRecipe(recipeOutput, ModItems.IRON_HAMMER, Tags.Items.INGOTS_IRON, Tags.Items.STORAGE_BLOCKS_IRON);
+        createHammerRecipe(recipeOutput, ModItems.GOLDEN_HAMMER, Tags.Items.INGOTS_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
+        createHammerRecipe(recipeOutput, ModItems.DIAMOND_HAMMER, Tags.Items.GEMS_DIAMOND, Tags.Items.STORAGE_BLOCKS_DIAMOND);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -250,6 +271,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL, 9)
                 .requires(ModBlocks.CHARCOAL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_ARDITE, 9)
+                .requires(ModBlocks.RAW_ARDITE_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.RAW_ARDITE_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ARDITE_INGOT, 9)
+                .requires(ModBlocks.ARDITE_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.ARDITE_BLOCK)).save(recipeOutput);
 
     }
 
@@ -296,6 +323,23 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 )
                 .unlocks("has_item", has(ModItems.CHLOROPHYTE_INGOT))
                 .save(recipeOutput, new ResourceLocation(MODID, "smithing/"+getItemName(resultItem)+"_smithing"));
+    }
+
+    private void createHammerRecipe(RecipeOutput output, ItemLike result, ItemLike firstIng, ItemLike secondIng) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("FFF").pattern("FSF").pattern(" R ")
+                .define('F', firstIng)
+                .define('S', secondIng)
+                .define('R', Items.STICK)
+                .unlockedBy("has_item", has(firstIng)).save(output);
+    }
+    private void createHammerRecipe(RecipeOutput output, ItemLike result, TagKey<Item> firstIng, TagKey<Item> secondIng) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("FFF").pattern("FSF").pattern(" R ")
+                .define('F', firstIng)
+                .define('S', secondIng)
+                .define('R', Items.STICK)
+                .unlockedBy("has_item", has(firstIng)).save(output);
     }
 
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, int output) {

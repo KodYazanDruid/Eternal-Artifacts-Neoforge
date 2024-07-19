@@ -41,12 +41,14 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.MEAT_INGOT.get(),
                 ModItems.CHLOROPHYTE_INGOT.get(),
                 ModItems.MANGANESE_INGOT.get(),
-                ModItems.STEEL_INGOT.get()
+                ModItems.STEEL_INGOT.get(),
+                ModItems.ARDITE_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
         tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
+        tag(ModTags.Items.INGOTS_ARDITE).add(ModItems.ARDITE_INGOT.get());
         tag(Tags.Items.NUGGETS).add(
                 ModItems.COPPER_NUGGET.get(),
                 ModItems.EXPERIENCE_BERRY.get(),
@@ -65,7 +67,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.SUGAR_CHARCOAL.get()
         );
         tag(Tags.Items.RAW_MATERIALS).add(
-                ModItems.RAW_MANGANESE.get()
+                ModItems.RAW_MANGANESE.get(),
+                ModItems.RAW_ARDITE.get()
         );
         tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
         tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());
@@ -110,7 +113,16 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.LUSH_GRUBBER.get()
         );
         tag(ModTags.Items.TOOLS_WRENCH).add(ModItems.WRENCH.get());
-        tag(ModTags.Items.TOOLS_HAMMER).add(ModItems.IRON_HAMMER.get());
+        tag(ModTags.Items.TOOLS_HAMMER).add(
+                ModItems.WOODEN_HAMMER.get(),
+                ModItems.STONE_HAMMER.get(),
+                ModItems.COPPER_HAMMER.get(),
+                ModItems.IRON_HAMMER.get(),
+                ModItems.GOLDEN_HAMMER.get(),
+                ModItems.DIAMOND_HAMMER.get(),
+                ModItems.NETHERITE_HAMMER.get(),
+                ModItems.HAMMAXE.get()
+        );
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,

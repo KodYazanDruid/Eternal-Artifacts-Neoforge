@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.MobLiquifierMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;

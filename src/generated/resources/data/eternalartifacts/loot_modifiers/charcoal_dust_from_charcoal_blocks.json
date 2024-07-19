@@ -2,8 +2,8 @@
   "type": "eternalartifacts:replace_item",
   "conditions": [
     {
-      "block": "minecraft:coal_block",
-      "condition": "minecraft:block_state_property"
+      "condition": "eternalartifacts:block_tag_condition",
+      "tag": "forge:storage_blocks/charcoal"
     },
     {
       "condition": "minecraft:match_tool",
@@ -12,7 +12,7 @@
       }
     }
   ],
-  "item": "eternalartifacts:coal_dust",
+  "item": "eternalartifacts:charcoal_dust",
   "numberProvider": {
     "type": "minecraft:uniform",
     "max": 6.0,

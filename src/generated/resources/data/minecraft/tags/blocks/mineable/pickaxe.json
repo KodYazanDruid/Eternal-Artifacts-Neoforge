@@ -26,6 +26,9 @@
     "eternalartifacts:deepslate_manganese_ore",
     "eternalartifacts:raw_manganese_block",
     "eternalartifacts:nous_tank",
-    "eternalartifacts:charcoal_block"
+    "eternalartifacts:charcoal_block",
+    "eternalartifacts:ardite_ore",
+    "eternalartifacts:raw_ardite_block",
+    "eternalartifacts:ardite_block"
   ]
 }

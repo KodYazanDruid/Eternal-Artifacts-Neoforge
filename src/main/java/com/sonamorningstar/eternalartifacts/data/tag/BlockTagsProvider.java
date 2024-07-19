@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
+import com.google.common.collect.Lists;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.HolderLookup;
@@ -57,6 +58,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.NOUS_TANK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.CHARCOAL_BLOCK.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.ARDITE_ORE.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.RAW_ARDITE_BLOCK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.ARDITE_BLOCK.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -71,9 +75,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.NOUS_TANK.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
+        tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
-        tag(Tags.Blocks.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());
         tag(BlockTags.COAL_ORES).add(ModBlocks.GRAVEL_COAL_ORE.get());
         tag(BlockTags.COPPER_ORES).add(ModBlocks.GRAVEL_COPPER_ORE.get());
@@ -89,7 +93,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.GRAVEL_IRON_ORE.get(),
                 ModBlocks.GRAVEL_GOLD_ORE.get(),
                 ModBlocks.MANGANESE_ORE.get(),
-                ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
+                ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
+                ModBlocks.ARDITE_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE).add(
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
@@ -97,22 +102,25 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(Tags.Blocks.ORE_BEARING_GROUND_STONE).add(
                 ModBlocks.MANGANESE_ORE.get()
         );
+        tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
+                ModBlocks.ARDITE_ORE.get()
+        );
         tag(Tags.Blocks.ORES).add(
                 ModBlocks.MANGANESE_ORE.get(),
                 ModBlocks.GRAVEL_COAL_ORE.get(),
                 ModBlocks.GRAVEL_COPPER_ORE.get(),
                 ModBlocks.GRAVEL_IRON_ORE.get(),
-                ModBlocks.GRAVEL_GOLD_ORE.get()
+                ModBlocks.GRAVEL_GOLD_ORE.get(),
+                ModBlocks.ARDITE_ORE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
-                ModBlocks.CHARCOAL_BLOCK.get()
+                ModBlocks.ARDITE_BLOCK.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).addTag(
                 ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL
         );
         tag(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL).add(
-                ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
                 ModBlocks.CHARCOAL_BLOCK.get()
         );
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());

@@ -9,7 +9,7 @@ import com.sonamorningstar.eternalartifacts.client.model.util.DynamicBakedWrappe
 import com.sonamorningstar.eternalartifacts.client.model.util.GeometryContextWrapper;
 import com.sonamorningstar.eternalartifacts.client.model.util.ModelHelper;
 import com.sonamorningstar.eternalartifacts.client.model.util.ModelTextureIteratable;
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

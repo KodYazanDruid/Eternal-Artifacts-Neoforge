@@ -86,7 +86,17 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.COAL_DUST.get());
         basicItem(ModItems.CHARCOAL_DUST.get());
         basicItem(ModItems.SUGAR_CHARCOAL_DUST.get());
+        handheld(ModItems.WOODEN_HAMMER);
+        handheld(ModItems.STONE_HAMMER);
+        handheld(ModItems.COPPER_HAMMER);
         handheld(ModItems.IRON_HAMMER);
+        handheld(ModItems.GOLDEN_HAMMER);
+        handheld(ModItems.DIAMOND_HAMMER);
+        handheld(ModItems.NETHERITE_HAMMER);
+        handheld(ModItems.HAMMAXE);
+        basicItem(ModItems.CLAY_DUST.get());
+        basicItem(ModItems.RAW_ARDITE.get());
+        basicItem(ModItems.ARDITE_INGOT.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

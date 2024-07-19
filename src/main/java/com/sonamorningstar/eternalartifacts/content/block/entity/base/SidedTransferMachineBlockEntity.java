@@ -11,7 +11,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,8 +20,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +38,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
     @Setter
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
 
-    protected void performAutoInput(Level lvl, BlockPos pos, IItemHandler inventory) {
+    protected void performAutoInput(Level lvl, BlockPos pos, IItemHandlerModifiable inventory) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;
@@ -50,24 +48,11 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PULL || type == TransferType.DEFAULT) inputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : inputDirs) {
-            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-            if(be != null) {
-                IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-                if(sourceInv != null) {
-                    for(int i = 0; i < sourceInv.getSlots(); i++) {
-                        if(sourceInv.getStackInSlot(i).isEmpty()) continue;
-                        ItemStack inserted = ItemHandlerHelper.insertItemStacked(inventory, sourceInv.getStackInSlot(i), true);
-                        if(inserted.isEmpty()) {
-                            ItemHandlerHelper.insertItemStacked(inventory, sourceInv.getStackInSlot(i).copyWithCount(sourceInv.getStackInSlot(i).getCount()), false);
-                            sourceInv.extractItem(i, sourceInv.getStackInSlot(i).getCount(), false);
-                        }
-                    }
-                }
-            }
+            insertItemFromDir(lvl, pos, dir, inventory);
         }
     }
 
-    protected void performAutoOutput(Level lvl, BlockPos pos, IItemHandler inventory, int... outputSlots) {
+    protected void performAutoOutput(Level lvl, BlockPos pos, IItemHandlerModifiable inventory, int... outputSlots) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;
@@ -77,19 +62,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PUSH || type == TransferType.DEFAULT) outputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : outputDirs) {
-            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-            if(be != null) {
-                IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-                if(targetInv != null) {
-                    for(int output : outputSlots) {
-                        ItemStack inserted = ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), true);
-                        if(inserted.isEmpty()) {
-                            ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), false);
-                            inventory.extractItem(output, inventory.getStackInSlot(output).getCount(), false);
-                        }
-                    }
-                }
-            }
+            outputItemToDir(lvl, pos, dir, inventory, outputSlots);
         }
     }
 
@@ -103,13 +76,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PULL || type == TransferType.DEFAULT) inputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : inputDirs) {
-            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-            if(be != null) {
-                IFluidHandler sourceTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-                if(sourceTank != null) {
-                    FluidUtil.tryFluidTransfer(tank, sourceTank, 1000, true);
-                }
-            }
+            inputFluidFromDir(lvl, pos, dir, tank);
         }
     }
 
@@ -123,13 +90,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PUSH || type == TransferType.DEFAULT) outputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : outputDirs) {
-            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-            if(be != null) {
-                IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-                if(targetTank != null) {
-                    FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
-                }
-            }
+            outputFluidToDir(lvl, pos, dir, tank);
         }
     }
 
@@ -147,7 +108,6 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
                 IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
                 if(target != null && target.canExtract()) {
                     int received = target.extractEnergy(Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), target.getEnergyStored()), true);
-                    //int received = energy.receiveEnergy(Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), target.getEnergyStored()), true);
                     if(received > 0) {
                         energy.receiveEnergy(received, false);
                         target.extractEnergy(received, false);
@@ -166,17 +126,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PUSH || type == TransferType.DEFAULT) outputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : outputDirs) {
-            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-            if(be != null) {
-                IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-                if(target != null && target.canReceive()) {
-                    int extracted = energy.extractEnergy(Math.min(energy.getEnergyStored(), target.getMaxEnergyStored() - target.getEnergyStored()), true);
-                    if(extracted > 0) {
-                        target.receiveEnergy(extracted, false);
-                        energy.extractEnergy(extracted, false);
-                    }
-                }
-            }
+            outputEnergyToDir(lvl, pos, dir, energy);
         }
     }
 

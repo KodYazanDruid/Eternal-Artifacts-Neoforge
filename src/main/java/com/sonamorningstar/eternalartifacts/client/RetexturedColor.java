@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColor;
 import net.minecraft.client.color.item.ItemColor;

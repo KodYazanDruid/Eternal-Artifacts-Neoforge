@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item.block;
 
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;

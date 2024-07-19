@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.item;
+package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import lombok.Getter;

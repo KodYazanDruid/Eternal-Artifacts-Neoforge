@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item.block;
 
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -17,8 +17,6 @@ import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class GardeningPotBlockItem extends RetexturedBlockItem {
     public GardeningPotBlockItem(TagKey<Item> itemTagKey, Properties builder) {

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "tag": "forge:storage_blocks/iron"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FSF",
+    " R "
+  ],
+  "result": {
+    "item": "eternalartifacts:iron_hammer"
+  }
+}

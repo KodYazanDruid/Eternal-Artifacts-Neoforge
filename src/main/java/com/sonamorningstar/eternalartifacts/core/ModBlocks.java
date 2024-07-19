@@ -10,6 +10,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
@@ -62,6 +63,12 @@ public class ModBlocks {
             () -> new Block(Blocks.RAW_IRON_BLOCK.properties()));
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerWithItem("charcoal_block",
             () -> new Block(Blocks.COAL_BLOCK.properties()));
+    public static final DeferredBlock<Block> ARDITE_ORE = registerWithItem("ardite_ore",
+            () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.NETHER_GOLD_ORE.properties().mapColor(DyeColor.ORANGE)));
+    public static final DeferredBlock<Block> RAW_ARDITE_BLOCK = registerWithItem("raw_ardite_block",
+            () -> new Block(Blocks.RAW_GOLD_BLOCK.properties().mapColor(MapColor.TERRACOTTA_ORANGE)));
+    public static final DeferredBlock<Block> ARDITE_BLOCK = registerWithItem("ardite_block",
+            () -> new Block(Blocks.GOLD_BLOCK.properties().mapColor(MapColor.COLOR_ORANGE)));
 
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));

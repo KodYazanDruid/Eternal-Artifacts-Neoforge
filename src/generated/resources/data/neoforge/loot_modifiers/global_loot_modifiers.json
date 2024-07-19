@@ -1,7 +1,9 @@
 {
   "entries": [
+    "eternalartifacts:clay_dust_from_clay",
+    "eternalartifacts:charcoal_dust_from_charcoal_blocks",
     "eternalartifacts:ancient_seeds_from_sniffer_digging",
-    "eternalartifacts:coal_dust_from_coal_block",
+    "eternalartifacts:coal_dust_from_coal_blocks",
     "eternalartifacts:orange_from_acacia_leaves"
   ],
   "replace": false

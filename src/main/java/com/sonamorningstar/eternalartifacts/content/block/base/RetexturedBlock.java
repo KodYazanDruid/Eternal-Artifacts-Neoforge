@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.item.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.util.BlockEntityHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;

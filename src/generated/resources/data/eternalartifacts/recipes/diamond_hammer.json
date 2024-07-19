@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "forge:gems/diamond"
+    },
+    "R": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "tag": "forge:storage_blocks/diamond"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FSF",
+    " R "
+  ],
+  "result": {
+    "item": "eternalartifacts:diamond_hammer"
+  }
+}

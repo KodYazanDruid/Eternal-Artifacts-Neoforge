@@ -10,6 +10,9 @@
     "eternalartifacts:battery_box",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:fluid_combustion_dynamo",
-    "eternalartifacts:nous_tank"
+    "eternalartifacts:nous_tank",
+    "eternalartifacts:ardite_ore",
+    "eternalartifacts:raw_ardite_block",
+    "eternalartifacts:ardite_block"
   ]
 }

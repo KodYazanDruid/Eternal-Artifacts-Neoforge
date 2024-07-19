@@ -1,20 +1,20 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.util.QuadFunction;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,14 +24,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -40,15 +44,13 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
-    Lazy<BlockEntity> entity;
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF;
-    protected Recipe<Container> currentRecipe = null;
+    protected Recipe<?> currentRecipe = null;
     @Getter
     @Setter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
-        entity = Lazy.of(()->level.getBlockEntity(pos));
         this.quadF = quadF;
         data = new ContainerData() {
             @Override
@@ -101,7 +103,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable(entity.get().getBlockState().getBlock().getDescriptionId());
+        return Component.translatable(this.getBlockState().getBlock().getDescriptionId());
     }
 
     @Nullable
@@ -129,7 +131,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected void progress(BooleanSupplier test, Runnable run, ModEnergyStorage energy) {
-        if(!hasEnergy(energyPerTick, energy)) return;
+        if(!hasEnergy(energyPerTick, energy) || level == null) return;
         SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
         if(type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
             type == SidedTransferMachineBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
@@ -151,42 +153,100 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return energy.extractEnergyForced(amount, true) >= amount;
     }
 
-    //TODO: needs
+    protected void insertItemFromDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory) {
+        BlockEntity targetBe = lvl.getBlockEntity(pos.relative(dir));
+        if(targetBe != null) {
+            IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
+            if(sourceInv != null) {
+                for(int i = 0; i < sourceInv.getSlots(); i++) {
+                    if(sourceInv.getStackInSlot(i).isEmpty()) continue;
+                    ItemStack inserted = ItemHandlerHelper.insertItemStacked(inventory, sourceInv.getStackInSlot(i), true);
+                    if(inserted.isEmpty()) {
+                        ItemHandlerHelper.insertItemStacked(inventory, sourceInv.getStackInSlot(i).copyWithCount(sourceInv.getStackInSlot(i).getCount()), false);
+                        sourceInv.extractItem(i, sourceInv.getStackInSlot(i).getCount(), false);
+                    }
+                }
+            }
+        }
+    }
+
+    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory, int... outputSlots) {
+        BlockEntity targetBe = lvl.getBlockEntity(pos.relative(dir));
+        if(targetBe != null) {
+            IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
+            if(targetInv != null) {
+                for(int output : outputSlots) {
+                    try {
+                        ItemStack inserted = ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), true);
+                        if(inserted.isEmpty()) {
+                            ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), false);
+                            inventory.extractItem(output, inventory.getStackInSlot(output).getCount(), false);
+                        }
+                    }catch (ArrayIndexOutOfBoundsException e) {
+                        EternalArtifacts.LOGGER.error("Output slot "+output+" is out of bounds in "+targetInv.getSlots()+" sized inventory");
+                    }
+                }
+            }
+        }
+    }
+
+    protected void inputFluidFromDir(Level lvl, BlockPos pos, Direction dir, IFluidHandler tank) {
+        transferFluidToBE(lvl, pos, dir, tank, true);
+    }
+
+    protected void outputFluidToDir(Level lvl, BlockPos pos, Direction dir, IFluidHandler tank) {
+        transferFluidToBE(lvl, pos, dir, tank, false);
+    }
+
+    protected void transferFluidToBE(Level lvl, BlockPos pos, Direction dir, IFluidHandler tank, boolean isReverse) {
+        BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
+        if(be != null) {
+            IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
+            if(targetTank != null) {
+                if(isReverse) FluidUtil.tryFluidTransfer(tank, targetTank, 1000, true);
+                else FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
+            }
+        }
+    }
+
+    protected void outputEnergyToDir(Level lvl, BlockPos pos, Direction dir, IEnergyStorage energy) {
+        BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
+        if(be != null) {
+            IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
+            if(target != null && target.canReceive()) {
+                int extracted = energy.extractEnergy(Math.min(energy.getEnergyStored(), target.getMaxEnergyStored() - target.getEnergyStored()), true);
+                if(extracted > 0) {
+                    target.receiveEnergy(extracted, false);
+                    energy.extractEnergy(extracted, false);
+                }
+            }
+        }
+    }
+
     protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, C container) {
-        if(currentRecipe != null && currentRecipe.matches(container, level)) return null;
-        currentRecipe = null;
+        if(level == null) return null;
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
         for(R recipe : recipeList) {
             if(recipe.matches(container, level)) {
-                //currentRecipe = recipe;
+                currentRecipe = recipe;
                 return recipe;
             }
         }
         return null;
     }
 
-    protected <R extends Recipe<Container>> void findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
-        if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return;
+    protected <R extends Recipe<Container>> @Nullable R findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
+        if(level == null) return null;
+        if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return null;
         currentRecipe = null;
         List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
         for(R recipe : recipeList) {
             if(((MobLiquifierRecipe) recipe).matches(type)) {
                 currentRecipe = recipe;
-                return;
+                return recipe;
             }
         }
-    }
-
-    protected <R extends Recipe<Container>> void findRecipe(RecipeType<R> recipeType, Fluid fluid) {
-        if(currentRecipe != null && ((FluidCombustionRecipe) currentRecipe).matches(fluid)) return;
-        currentRecipe = null;
-        List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
-        for(R recipe : recipeList) {
-            if(((FluidCombustionRecipe) recipe).matches(fluid)) {
-                currentRecipe = recipe;
-                return;
-            }
-        }
+        return null;
     }
 
 }
