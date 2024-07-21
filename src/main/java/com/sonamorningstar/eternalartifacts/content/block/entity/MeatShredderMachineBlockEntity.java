@@ -31,8 +31,8 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
         @Override
         protected void onContentsChanged(int slot) {
             progress = 0;
-            currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
             MeatShredderMachineBlockEntity.this.sendUpdate();
+            currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
         }
     };
 
@@ -92,7 +92,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
                 int inserted = tank.fillForced(fs, IFluidHandler.FluidAction.SIMULATE);
                 return inserted < fs.getAmount();
             }, () -> {
-                inventory.getStackInSlot(0).shrink(1);
+                inventory.extractItem(0, 1, false);
                 tank.fillForced(fs, IFluidHandler.FluidAction.EXECUTE);
             }, energy);
         }

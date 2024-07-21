@@ -1,6 +1,7 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "minecraft:block/cube_all",
   "textures": {
+    "all": "eternalartifacts:block/citrus_log",
     "end": "eternalartifacts:block/citrus_log_top",
     "side": "eternalartifacts:block/citrus_log"
   }

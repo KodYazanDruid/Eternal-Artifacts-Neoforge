@@ -12,9 +12,10 @@ public class FluidCombustionScreen extends AbstractMachineScreen<FluidCombustion
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
+    protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
+        super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
+        renderBurn(gui, x+81, y+55, mx, my);
     }
 
     @Override

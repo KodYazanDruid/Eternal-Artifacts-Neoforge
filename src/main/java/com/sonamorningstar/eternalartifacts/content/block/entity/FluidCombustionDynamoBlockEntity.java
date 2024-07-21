@@ -46,7 +46,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         @Override
         protected void onContentsChanged() {
             FluidCombustionDynamoBlockEntity.this.sendUpdate();
-            currentRecipe = findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid()));
+            currRecipe = findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid()));
             if(currRecipe != null) {
                 setEnergyPerTick(currRecipe.getGeneration());
                 setMaxProgress(currRecipe.getDuration());
@@ -66,6 +66,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     public void load(CompoundTag tag) {
         energy.deserializeNBT(tag.get("Energy"));
         isWorking = tag.getBoolean("IsWorking");
+        //tickCounter = tag.getInt("AnimationTick");
         tank.readFromNBT(tag);
         cache = DynamoProcessCache.readFromNbt(tag, energy, this).orElse(null);
         super.load(tag);
@@ -85,6 +86,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     protected void saveSynced(CompoundTag tag) {
         super.saveSynced(tag);
         tag.putBoolean("IsWorking", isWorking);
+        //tag.putInt("AnimationTick", tickCounter);
     }
 
     public float getAnimationLerp(float tick) {
@@ -105,8 +107,10 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         if(cache != null) {
             if(!cache.isDone()) {
                 cache.process();
+                progress++;
             } else if (cache.isDone()) {
                 cache = null;
+                progress = 0;
                 isWorking = false;
                 FluidCombustionDynamoBlockEntity.this.sendUpdate();
             }

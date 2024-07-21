@@ -77,8 +77,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private void buttonSideSet(Button button, int index) {
         Channel.sendToServer(new SidedTransferSideSaveToServer(
                 index,
-                SidedTransferMachineBlockEntity.TransferType.cycleNext(index, ((SidedTransferMachineBlockEntity<?>) menu.getBlockEntity())),
-                menu.getBlockEntity().getBlockPos()));
+                SidedTransferMachineBlockEntity.TransferType.cycleNext(index, sidedTransferMachineBlockEntity),
+                sidedTransferMachineBlockEntity.getBlockPos()));
     }
 
     private void buttonAutoSet(Button button, int index) {
@@ -92,8 +92,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private void buttonRedstoneSet(Button button, int index) {
         Channel.sendToServer(new SidedTransferRedstoneToServer(
                 index,
-                SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, ((SidedTransferMachineBlockEntity<?>) menu.getBlockEntity())),
-                menu.getBlockEntity().getBlockPos()));
+                SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, sidedTransferMachineBlockEntity),
+                sidedTransferMachineBlockEntity.getBlockPos()));
     }
 
     @Override

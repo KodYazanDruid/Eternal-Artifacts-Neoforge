@@ -1,4 +1,4 @@
-// 1.20.4	2024-07-16T18:18:47.5323507	Item Models: eternalartifacts
+// 1.20.4	2024-07-19T10:49:25.7984413	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -36,7 +36,7 @@ e73d259d8334731e43892dcbcbe0a85f97b77e3a assets/eternalartifacts/models/item/cop
 c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duck_feather.json
 558a11394d26f4ac2ffe1f71505cf5d7f69bacff assets/eternalartifacts/models/item/duck_meat.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/duck_spawn_egg.json
-b291c24fb337fa1f13c183c3a193cbaa1c9196dc assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
+9448010b52f766ba963e7846446966ddc53e5dd7 assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
 917c9fb8d52a3487b58003fa6ac88c0d056be391 assets/eternalartifacts/models/item/encumbator.json
 78bc681824bce9b7f3f76f1c096673a70d98f0de assets/eternalartifacts/models/item/encumbator_active.json
 c90643f23e4462e731095ab5da3ec58e9c67289b assets/eternalartifacts/models/item/ender_notebook.json

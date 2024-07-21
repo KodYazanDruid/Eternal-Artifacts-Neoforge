@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -54,6 +55,14 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
                         mx, my);
             }
         });
+    }
+    private void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
+        if(mx >= x && mx <= x + xLen &&
+                my >= y && my <= y + yLen) {
+            gui.renderTooltip(font,
+                    Component.translatable(ModConstants.GUI.withSuffix(key)).append(": ").append(String.valueOf(menu.data.get(0))),
+                    mx, my);
+        }
     }
 
     protected void renderDefaultEnergyAndFluidBar(GuiGraphics gui) {
@@ -117,14 +126,16 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         guiGraphics.blit(bars, x, y, 30, 0, 18, 56);
     }
 
-    protected void renderBurn(GuiGraphics guiGraphics, int x, int y) {
+    protected void renderBurn(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x + 1, y + 1, 48, 10, 13, 13);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y + 14 - menu.getScaledProgress(14), 48,  37 - menu.getScaledProgress(14), 14, menu.getScaledProgress(14));
+        renderProgressTooltip(guiGraphics, x + 1, y + 1, 13, 13, mx, my, "burn_time");
     }
 
-    protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
+    protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
+        renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, "progress");
     }
 
     protected void renderLArraow(GuiGraphics guiGraphics, int x, int y) {

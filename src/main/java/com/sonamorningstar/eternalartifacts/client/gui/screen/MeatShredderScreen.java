@@ -12,10 +12,10 @@ public class MeatShredderScreen extends AbstractSidedMachineScreen<MeatShredderM
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
+    protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
+        super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyBar(gui);
         renderFluidBar(gui, x + 144, y + 20);
-        renderProgressArrow(gui, x + 110, y + 35);
+        renderProgressArrow(gui, x + 110, y + 35, mx, my);
     }
 }

@@ -126,6 +126,8 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                         .setRolls(ConstantValue.exactly(1.0F))
                 )
         );
+
+        add(ModBlocks.PLASTIC_CAULDRON.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.CAULDRON))));
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {

@@ -3,8 +3,10 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,6 +29,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import static net.minecraft.world.level.block.Blocks.CAULDRON;
 
 public class ModBlocks {
     static final BlockBehaviour.Properties oreBerryProps = BlockBehaviour.Properties.of()
@@ -133,7 +137,6 @@ public class ModBlocks {
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
-
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
             ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties(), 128));
 
@@ -142,11 +145,13 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SUGAR_CHARCOAL_BLOCK = registerWithItem("sugar_charcoal_block",
             ()-> new Block(Blocks.COAL_BLOCK.properties()));
 
+    public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron",
+            ()-> new LayeredCauldronBlock(Biome.Precipitation.NONE, FluidHolderBlockItem.ModCauldronInteraction.PLASTIC, BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
+
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot",
             ()-> new GardeningPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().randomTicks()));
     public static final DeferredBlock<JarBlock> JAR = registerNoItem("jar",
             ()-> new JarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
-
     public static final DeferredBlock<FancyChestBlock> FANCY_CHEST = registerNoItem("fancy_chest",
             ()-> new FancyChestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)));
 
@@ -199,18 +204,6 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<FluidCombustionDynamoBlock> registerDynamo(String name) {
-        /*DeferredBlock<FluidCombustionDynamoBlock> dynamo = BLOCKS.register(name, ()-> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
-        ModItems.ITEMS.register(name, ()-> new BlockItem(dynamo.get(), new Item.Properties()) {
-            @Override
-            public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-                consumer.accept(new IClientItemExtensions() {
-                    @Override
-                    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                        return ModItemStackBEWLR.INSTANCE.get();
-                    }
-                });
-            }
-        });*/
         return registerWithBewlr(name, () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
     }
 

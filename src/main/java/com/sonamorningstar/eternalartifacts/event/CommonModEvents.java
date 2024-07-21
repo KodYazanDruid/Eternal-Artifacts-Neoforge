@@ -6,31 +6,39 @@ import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
-import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModEntities;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem;
+import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.Direction;
+import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import static com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem.ModCauldronDrainInteraction.PLASTIC;
+import static com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem.ModCauldronInteraction.EMPTY;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonModEvents {
@@ -133,6 +141,30 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(ModEntities.DUCK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+    }
+
+    @SubscribeEvent
+    public static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
+        event.register(ModBlocks.PLASTIC_CAULDRON.get(), ModFluids.LIQUID_PLASTIC.get().getSource(), FluidType.BUCKET_VOLUME, null);
+    }
+
+    @SubscribeEvent
+    public static void fmlCommonSetupEvent(FMLCommonSetupEvent event) {
+        event.enqueueWork(()-> {
+            registerCauldronContextsForItemFluidHandlers(ModItems.JAR);
+        });
+    }
+
+    private static void registerCauldronContextsForItemFluidHandlers(DeferredItem<?>... holders) {
+        for(DeferredItem<?> holder : holders) {
+            Item item = holder.get();
+            CauldronInteraction.EMPTY.map().put(item, FluidHolderBlockItem.ModCauldronInteraction.EMPTY);
+            CauldronInteraction.WATER.map().put(item, FluidHolderBlockItem.ModCauldronDrainInteraction.WATER);
+            CauldronInteraction.LAVA.map().put(item, FluidHolderBlockItem.ModCauldronDrainInteraction.LAVA);
+            FluidHolderBlockItem.ModCauldronInteraction.PLASTIC.map().put(item, PLASTIC);
+        }
+        FluidHolderBlockItem.ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, PLASTIC);
+        CauldronInteraction.EMPTY.map().put(ModItems.LIQUID_PLASTIC_BUCKET.get(), EMPTY);
     }
 
 }

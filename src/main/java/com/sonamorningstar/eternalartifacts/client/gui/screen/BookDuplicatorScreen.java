@@ -18,10 +18,10 @@ public class BookDuplicatorScreen extends AbstractSidedMachineScreen<BookDuplica
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
+    protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
+        super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
-        renderProgressArrow(gui, x + 104, y + 49);
+        renderProgressArrow(gui, x + 104, y + 49, mx, my);
         renderLArraow(gui, x + 43, y + 45);
         IItemHandler inventory = menu.getBlockEntity().getLevel().getCapability(Capabilities.ItemHandler.BLOCK, menu.getBlockEntity().getBlockPos(), null);
 

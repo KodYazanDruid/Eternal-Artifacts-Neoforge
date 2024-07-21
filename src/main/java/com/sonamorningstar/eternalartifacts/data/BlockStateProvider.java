@@ -7,7 +7,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
+import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
@@ -95,7 +95,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
             ).build());
 
         simpleBlock(ModBlocks.JAR.get(), ConfiguredModel.builder().modelFile(new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper)).build());
-        //simpleBlock(ModBlocks.NOUS_TANK.get(), ConfiguredModel.builder().modelFile(new ModelFile.ExistingModelFile(modLoc("block/nous_tank"), models().existingFileHelper)).build());
 
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
@@ -125,6 +124,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
+
+        simpleBlockWithItem(ModBlocks.PLASTIC_CAULDRON.get(), cubeAll(ModBlocks.CITRUS_LOG.get()));
     }
 
     private void machineBlock(DeferredBlock<? extends Block> holder, boolean unique) {

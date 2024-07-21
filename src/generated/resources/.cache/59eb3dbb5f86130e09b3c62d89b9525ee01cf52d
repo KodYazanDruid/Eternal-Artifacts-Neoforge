@@ -1,4 +1,4 @@
-// 1.20.4	2024-07-16T17:43:40.4867207	Loot Tables
+// 1.20.4	2024-07-19T18:43:42.8022261	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 c2b957a37df519265b42bb1ea66625aff3ffc16a data/eternalartifacts/loot_tables/blocks/ardite_block.json
@@ -36,6 +36,7 @@ e2cc4aeee7080e769e36e3d7e9ebc0ee5837f744 data/eternalartifacts/loot_tables/block
 1bab093f87d4fe09be24e2e9500c379234f75b29 data/eternalartifacts/loot_tables/blocks/nous_tank.json
 0ce749e37b8304d21f61987db1ad74bfbcb7ebb5 data/eternalartifacts/loot_tables/blocks/paved_prismarine_bricks.json
 68cbd8c32f7be9bad5fa4e1de06852f7be205a3b data/eternalartifacts/loot_tables/blocks/pink_slime_block.json
+ed47b338e8970e9fb16409a232397d7ec2712d79 data/eternalartifacts/loot_tables/blocks/plastic_cauldron.json
 ea04c6bebe2e6e42e9cee39b5e6ad007c51ff7cf data/eternalartifacts/loot_tables/blocks/raw_ardite_block.json
 b5a1d4d659076217e0bbe4ab5dedfa74339f2e02 data/eternalartifacts/loot_tables/blocks/raw_manganese_block.json
 e097efa9397ef97b629a68c1f969714ec4032796 data/eternalartifacts/loot_tables/blocks/resonator.json

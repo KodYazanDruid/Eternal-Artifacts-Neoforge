@@ -27,15 +27,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Setter
+@Getter
 public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineMenu> extends MachineBlockEntity<T> {
     public SidedTransferMachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState, quadF);
     }
-    @Getter
-    @Setter
     private Map<Integer, TransferType> sideConfigs = new HashMap<>(6);
-    @Getter
-    @Setter
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
 
     protected void performAutoInput(Level lvl, BlockPos pos, IItemHandlerModifiable inventory) {

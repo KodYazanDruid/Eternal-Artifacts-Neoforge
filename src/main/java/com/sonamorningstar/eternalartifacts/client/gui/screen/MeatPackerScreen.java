@@ -12,9 +12,9 @@ public class MeatPackerScreen extends AbstractSidedMachineScreen<MeatPackerMenu>
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
-        super.renderBg(gui, partialTick, mouseX, mouseY);
+    protected void renderBg(GuiGraphics gui, float partialTick, int mx, int my) {
+        super.renderBg(gui, partialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
-        renderProgressArrow(gui, x + 50, y + 35);
+        renderProgressArrow(gui, x + 50, y + 35, mx, my);
     }
 }

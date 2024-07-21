@@ -203,6 +203,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid"), "Fluid");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("addwarp"), "Add Warp");
                 add(ModConstants.WARPS.getString(), "Warps:");
+                add(ModConstants.GUI.withSuffix("progress"), "Progress");
+                add(ModConstants.GUI.withSuffix("burn_time"), "Burn Time");
 
             }
             case "tr_tr" -> {
@@ -388,6 +390,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid"), "Sıvı");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("addwarp"), "Işınlama Ekle");
                 add(ModConstants.WARPS.getString(), "Işınlanmalar:");
+                add(ModConstants.GUI.withSuffix("progress"), "İlerleme");
+                add(ModConstants.GUI.withSuffix("burn_time"), "Yanma Zamanı");
 
             }
         }

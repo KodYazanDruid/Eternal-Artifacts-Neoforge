@@ -12,14 +12,14 @@ public class MobLiquifierScreen extends AbstractSidedMachineScreen<MobLiquifierM
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
+    protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
+        super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyBar(gui);
         renderFluidBar(gui, x + 24, y + 20, 0);
         renderFluidBar(gui, x + 44, y + 20, 1);
         renderFluidBar(gui, x + 64, y + 20, 2);
         renderFluidBar(gui, x + 84, y + 20, 3);
-        renderProgressArrow(gui, x + 110, y + 35);
+        renderProgressArrow(gui, x + 110, y + 35, mx, my);
     }
 
     @Override
