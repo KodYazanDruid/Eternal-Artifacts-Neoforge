@@ -1,12 +1,13 @@
 package com.sonamorningstar.eternalartifacts.event;
 
+import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
+import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
-import com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -14,7 +15,6 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -37,8 +37,6 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-import static com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem.ModCauldronDrainInteraction.PLASTIC;
-import static com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem.ModCauldronInteraction.EMPTY;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonModEvents {
@@ -51,10 +49,10 @@ public class CommonModEvents {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.LIQUID_PLASTIC_BUCKET.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.BEER_BUCKET.get());
 
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModItemEnergyStorage(10000, 250, stack), ModItems.BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModItemEnergyStorage(32000, 2500, stack), ModItems.BATTERY.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 64000), ModBlocks.NOUS_TANK.asItem());
-        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModItemItemStorage(stack, 27), ModItems.KNAPSACK.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModItemItemStorage(stack, 36), ModItems.KNAPSACK.get());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
@@ -84,6 +82,8 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
+
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
 
     }
 
@@ -158,13 +158,14 @@ public class CommonModEvents {
     private static void registerCauldronContextsForItemFluidHandlers(DeferredItem<?>... holders) {
         for(DeferredItem<?> holder : holders) {
             Item item = holder.get();
-            CauldronInteraction.EMPTY.map().put(item, FluidHolderBlockItem.ModCauldronInteraction.EMPTY);
-            CauldronInteraction.WATER.map().put(item, FluidHolderBlockItem.ModCauldronDrainInteraction.WATER);
-            CauldronInteraction.LAVA.map().put(item, FluidHolderBlockItem.ModCauldronDrainInteraction.LAVA);
-            FluidHolderBlockItem.ModCauldronInteraction.PLASTIC.map().put(item, PLASTIC);
+            CauldronInteraction.EMPTY.map().put(item, ModCauldronInteraction.EMPTY);
+            CauldronInteraction.WATER.map().put(item, ModCauldronDrainInteraction.WATER);
+            CauldronInteraction.LAVA.map().put(item, ModCauldronDrainInteraction.LAVA);
+            ModCauldronInteraction.PLASTIC.map().put(item, ModCauldronDrainInteraction.PLASTIC);
         }
-        FluidHolderBlockItem.ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, PLASTIC);
-        CauldronInteraction.EMPTY.map().put(ModItems.LIQUID_PLASTIC_BUCKET.get(), EMPTY);
+        ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, ModCauldronDrainInteraction.PLASTIC);
+        CauldronInteraction.EMPTY.map().put(ModItems.LIQUID_PLASTIC_BUCKET.get(), ModCauldronInteraction.EMPTY);
+        ModCauldronInteraction.PLASTIC.map().put(Items.BLUE_DYE, ModCauldronInteraction.DYE_PLASTIC);
     }
 
 }

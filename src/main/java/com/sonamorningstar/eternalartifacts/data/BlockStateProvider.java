@@ -94,7 +94,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 ).texture("particle", modLoc("block/machine_side"))
             ).build());
 
-        simpleBlock(ModBlocks.JAR.get(), ConfiguredModel.builder().modelFile(new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper)).build());
+        //simpleBlock(ModBlocks.JAR.get(), ConfiguredModel.builder().modelFile(new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper)).build());
 
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
@@ -110,10 +110,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
         directionBlock(ModBlocks.FANCY_CHEST.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
-        directionBlock(ModBlocks.NOUS_TANK.get(), (state, builder) ->
+        /*directionBlock(ModBlocks.NOUS_TANK.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/nous_tank"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
-
-        simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
+*/        simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
@@ -125,13 +124,12 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
 
-        simpleBlockWithItem(ModBlocks.PLASTIC_CAULDRON.get(), cubeAll(ModBlocks.CITRUS_LOG.get()));
     }
 
     private void machineBlock(DeferredBlock<? extends Block> holder, boolean unique) {
         String name = holder.getId().getPath();
         String top = unique ? "block/"+name+"_top" : "block/machine_top";
-        String bottom = unique ?"block/"+name+"_bottom" : "block/machine_bottom";
+        String bottom = unique ? "block/"+name+"_bottom" : "block/machine_bottom";
         String siding = unique ? "block/"+name+"_side" : "block/machine_side";
         directionBlock(holder.get(), (state, builder) ->
             builder.modelFile(models().cube(name,

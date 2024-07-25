@@ -1,12 +1,12 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatPackerCategory;
-import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatShredderCategory;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -162,6 +162,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ARDITE_ORE.get(), "Ardite Ore");
                 add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Raw Ardite Block");
                 add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Block");
+                add(ModBlocks.PLASTIC_CAULDRON.get(), "Cauldron");
+                add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Cauldron");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -349,6 +351,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ARDITE_ORE.get(), "Ardite Cevheri");
                 add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Ham Ardite Bloğu");
                 add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Bloğu");
+                add(ModBlocks.PLASTIC_CAULDRON.get(), "Kazan");
+                add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Kazan");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

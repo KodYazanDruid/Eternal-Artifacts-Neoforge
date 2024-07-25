@@ -13,6 +13,7 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -30,6 +31,7 @@ public class ModDataGeneration {
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider = dataGenerator.getVanillaPack(true).addProvider(factory -> new BlockTagsProvider(packOutput, lookupProvider, existingFileHelper)).contentsGetter();
 
+        dataGenerator.addProvider(event.includeClient(), new ModelProvider(packOutput));
         dataGenerator.addProvider(event.includeClient(), new BlockStateProvider(packOutput, existingFileHelper));
         dataGenerator.addProvider(event.includeClient(), new ItemModelProvider(packOutput, existingFileHelper));
         dataGenerator.addProvider(event.includeClient(), new LanguageProvider(packOutput, "en_us"));

@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -76,6 +77,8 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.RAW_MANGANESE_BLOCK.get());
         dropSelf(ModBlocks.RAW_ARDITE_BLOCK.get());
         dropSelf(ModBlocks.ARDITE_BLOCK.get());
+        dropOther(ModBlocks.PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
+        dropOther(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -127,7 +130,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                 )
         );
 
-        add(ModBlocks.PLASTIC_CAULDRON.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.CAULDRON))));
+        //add(ModBlocks.PLASTIC_CAULDRON.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.CAULDRON))));
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {

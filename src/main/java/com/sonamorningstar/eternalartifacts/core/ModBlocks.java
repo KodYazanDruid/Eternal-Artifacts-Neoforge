@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
@@ -105,17 +106,17 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CITRUS_PLANKS = registerWithItem("citrus_planks",
             ()-> new Block(Blocks.JUNGLE_PLANKS.properties()));
 
-    public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous_block",
+    public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous",
             ()-> new LiquidBlock(ModFluids.NOUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
-    public static final DeferredBlock<LiquidBlock> LIQUID_MEAT_BLOCK = registerNoItem("liquid_meat_block",
+    public static final DeferredBlock<LiquidBlock> LIQUID_MEAT_BLOCK = registerNoItem("liquid_meat",
             ()-> new LiquidBlock(ModFluids.LIQUID_MEAT, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BROWN)));
-    public static final DeferredBlock<LiquidBlock> PINK_SLIME_FLUID_BLOCK = registerNoItem("pink_slime_fluid_block",
+    public static final DeferredBlock<LiquidBlock> PINK_SLIME_FLUID_BLOCK = registerNoItem("pink_slime",
             ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
-    public static final DeferredBlock<LiquidBlock> BLOOD_BLOCK = registerNoItem("blood_block",
+    public static final DeferredBlock<LiquidBlock> BLOOD_BLOCK = registerNoItem("blood",
             ()-> new LiquidBlock(ModFluids.BLOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_RED)));
-    public static final DeferredBlock<LiquidBlock> LIQUID_PLASTIC_BLOCK = registerNoItem("liquid_plastic_block",
+    public static final DeferredBlock<LiquidBlock> LIQUID_PLASTIC_BLOCK = registerNoItem("liquid_plastic",
             ()-> new LiquidBlock(ModFluids.LIQUID_PLASTIC, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<LiquidBlock> BEER_BLOCK = registerNoItem("beer_block",
+    public static final DeferredBlock<LiquidBlock> BEER_BLOCK = registerNoItem("beer",
             ()-> new LiquidBlock(ModFluids.BEER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_ORANGE)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
@@ -146,7 +147,9 @@ public class ModBlocks {
             ()-> new Block(Blocks.COAL_BLOCK.properties()));
 
     public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron",
-            ()-> new LayeredCauldronBlock(Biome.Precipitation.NONE, FluidHolderBlockItem.ModCauldronInteraction.PLASTIC, BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
+            ()-> new LayeredCauldronBlock(Biome.Precipitation.NONE, ModCauldronInteraction.PLASTIC, BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
+    public static final DeferredBlock<Block> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
+            ()-> new BluePlasticCauldronBlock(BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot",
             ()-> new GardeningPotBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().randomTicks()));

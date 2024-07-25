@@ -18,7 +18,7 @@ public class NousTankBlockEntity extends SidedTransferMachineBlockEntity<NousTan
     }
 
     @Getter
-    public ModFluidStorage tank = new ModFluidStorage(64000, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
+    public ModFluidStorage tank = new ModFluidStorage(Integer.MAX_VALUE, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
         @Override
         protected void onContentsChanged() {
             NousTankBlockEntity.this.requestModelDataUpdate();

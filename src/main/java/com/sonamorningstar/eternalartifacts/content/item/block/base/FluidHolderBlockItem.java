@@ -30,6 +30,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
@@ -110,112 +111,5 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
                 return ModItemStackBEWLR.INSTANCE.get();
             }
         });
-    }
-
-    public abstract static class ModCauldronInteraction implements CauldronInteraction {
-        public static CauldronInteraction.InteractionMap PLASTIC = CauldronInteraction.newInteractionMap("plastic");
-
-        public static final ModCauldronInteraction EMPTY = new ModCauldronInteraction() {
-            @Nullable
-            private BlockState getState(FluidStack stack) {
-                if(stack.is(Fluids.WATER)) {
-                    return Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, 3);
-                } else if(stack.is(Fluids.LAVA)) {
-                    return Blocks.LAVA_CAULDRON.defaultBlockState();
-                } else if(stack.is(ModFluids.LIQUID_PLASTIC.get().getSource())) {
-                    return ModBlocks.PLASTIC_CAULDRON.get().defaultBlockState();
-                }
-                return null;
-            }
-
-            //Fills the cauldron empties the bucket.
-            @Override
-            public InteractionResult interact(BlockState state, Level level, BlockPos pos,
-                                              Player player, InteractionHand hand, ItemStack stack) {
-                IFluidHandlerItem fluidHandlerItem = stack.getCapability(Capabilities.FluidHandler.ITEM);
-                if (fluidHandlerItem != null) {
-                    FluidStack fluidStack = fluidHandlerItem.getFluidInTank(0);
-                    BlockState newState = getState(fluidStack);
-                    if(newState != null) {
-                        if(fluidHandlerItem.drain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.SIMULATE).getAmount() >= FluidType.BUCKET_VOLUME) {
-                            if(!level.isClientSide()) {
-                                if(!player.getAbilities().instabuild) {
-                                    fluidHandlerItem.drain(FluidType.BUCKET_VOLUME, IFluidHandler.FluidAction.EXECUTE);
-                                }
-                                fillTheCauldron(player, level, stack, fluidStack, pos, newState);
-                            }
-                            return InteractionResult.sidedSuccess(level.isClientSide);
-                        }
-                    }
-                }
-                return InteractionResult.PASS;
-            }
-        };
-
-        protected void fillTheCauldron(Player player, Level level, ItemStack stack, FluidStack fluidStack, BlockPos pos, BlockState newState) {
-            player.awardStat(Stats.FILL_CAULDRON);
-            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-            level.setBlockAndUpdate(pos, newState);
-            SoundEvent emptySound = fluidStack.getFluidType().getSound(player, level, pos, SoundActions.BUCKET_EMPTY);
-            if (emptySound != null) level.playSound(null, pos, emptySound, SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.gameEvent(null, GameEvent.FLUID_PLACE, pos);
-        }
-    }
-
-    public static class ModCauldronDrainInteraction extends ModCauldronInteraction {
-        private final Fluid type;
-        private ModCauldronDrainInteraction(Fluid type) {
-            this.type = type;
-        }
-
-        public static final ModCauldronDrainInteraction WATER = createLayered(Fluids.WATER);
-        public static final ModCauldronDrainInteraction PLASTIC = createBasic(ModFluids.LIQUID_PLASTIC.get().getSource());
-        public static final ModCauldronDrainInteraction LAVA = createBasic(Fluids.LAVA);
-
-        //Fills the bucket. Empties the cauldron.
-        @Override
-        public InteractionResult interact(BlockState state, Level level, BlockPos pos, Player player,
-                                          InteractionHand hand, ItemStack stack) {
-            IFluidHandlerItem fluidHandlerItem = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            FluidStack fluidStack = new FluidStack(type, FluidType.BUCKET_VOLUME);
-            if(fluidHandlerItem != null) {
-                int remainder = fluidHandlerItem.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
-                if(remainder > 0) {
-                    if(!level.isClientSide()) {
-                        if(!player.getAbilities().instabuild) {
-                            fluidHandlerItem.fill(new FluidStack(type, remainder), IFluidHandler.FluidAction.EXECUTE);
-                            //FluidUtil.tryFluidTransfer(fluidHandlerItem, );
-                        }
-                        emptyTheCauldron(player, level, stack, fluidStack, pos, Blocks.CAULDRON.defaultBlockState());
-                    }
-                    return InteractionResult.sidedSuccess(level.isClientSide);
-                }
-            }
-            return InteractionResult.PASS;
-        }
-
-        protected void emptyTheCauldron(Player player, Level level, ItemStack stack, FluidStack fluidStack, BlockPos pos, BlockState newState) {
-            player.awardStat(Stats.USE_CAULDRON);
-            player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
-            level.setBlockAndUpdate(pos, newState);
-            SoundEvent fillSound = fluidStack.getFluidType().getSound(player, level, pos, SoundActions.BUCKET_FILL);
-            if (fillSound != null) level.playSound(null, pos, fillSound, SoundSource.BLOCKS, 1.0F, 1.0F);
-            level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
-        }
-
-        private static ModCauldronDrainInteraction createBasic(Fluid fluid) {
-            return new ModCauldronDrainInteraction(fluid);
-        }
-
-        private static ModCauldronDrainInteraction createLayered(Fluid fluid) {
-            return new ModCauldronDrainInteraction(fluid) {
-                @Override
-                public InteractionResult interact(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-                    if (state.getValue(LayeredCauldronBlock.LEVEL) == 3) return super.interact(state, level, pos, player, hand, stack);
-                    return InteractionResult.PASS;
-                }
-            };
-        }
-
     }
 }

@@ -39,6 +39,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(GardeningPotEntity::new, ModBlocks.GARDENING_POT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<JarBlockEntity>> JAR = BLOCK_ENTITIES.register("jar", () ->
             BlockEntityType.Builder.of(JarBlockEntity::new, ModBlocks.JAR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BluePlasticCauldronBlockEntity>> BLUE_PLASTIC_CAULDRON = BLOCK_ENTITIES.register("blue_plastic_cauldron", () ->
+            BlockEntityType.Builder.of(BluePlasticCauldronBlockEntity::new, ModBlocks.BLUE_PLASTIC_CAULDRON.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FancyChestBlockEntity>> FANCY_CHEST = BLOCK_ENTITIES.register("fancy_chest", () ->
             BlockEntityType.Builder.of(FancyChestBlockEntity::new, ModBlocks.FANCY_CHEST.get()).build(null));
