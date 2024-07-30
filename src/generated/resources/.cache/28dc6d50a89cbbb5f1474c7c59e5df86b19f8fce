@@ -1,5 +1,5 @@
-// 1.20.4	2024-07-16T17:43:40.4987226	vanilla/Tags for minecraft:block mod id eternalartifacts
-f3e660e89a1134f382a8b3f42bce0dc91d88fe6d data/eternalartifacts/tags/blocks/mineable/wrench.json
+// 1.20.4	2024-07-27T20:19:54.8127314	vanilla/Tags for minecraft:block mod id eternalartifacts
+f3e660e89a1134f382a8b3f42bce0dc91d88fe6d data/eternalartifacts/tags/blocks/mineable/hammaxe.json
 66a2d84c3f53b061ab82c986fe7939caf5cf6877 data/forge/tags/blocks/mineable/wrench.json
 6e955beae490aa633e2a0c3c4171c29860662334 data/forge/tags/blocks/ores.json
 73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/blocks/ores/manganese.json
@@ -17,7 +17,7 @@ f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/minecraft/tags/blocks/gold_ores.js
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/minecraft/tags/blocks/iron_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
-e558b3e11bf99e0c2ed084c2a81054e53d5f7158 data/minecraft/tags/blocks/mineable/pickaxe.json
+93bcba2c1be24e71adf4452d0ed6a56f8e0893b5 data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
 631cb257afeb673075ac4449757e963931dc69b0 data/minecraft/tags/blocks/needs_iron_tool.json
 81523256a091955aa0010544e24ea4bb822b9a1d data/minecraft/tags/blocks/needs_stone_tool.json

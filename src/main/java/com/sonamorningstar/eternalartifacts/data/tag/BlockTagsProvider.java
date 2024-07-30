@@ -61,6 +61,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.ARDITE_ORE.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.RAW_ARDITE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.ARDITE_BLOCK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.SNOW_BRICKS.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.ICE_BRICKS.get(), "", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),

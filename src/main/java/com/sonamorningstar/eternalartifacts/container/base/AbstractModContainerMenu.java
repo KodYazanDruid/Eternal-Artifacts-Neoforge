@@ -17,11 +17,12 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         super(pMenuType, pContainerId);
     }
 
-    protected void addPlayerInventory(Inventory inventory) {
-        for(int i = 0; i < 3; i++) {
-            for (int l = 0; l < 9; ++l) {
-                addSlot(new Slot(inventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
-            }
+    protected void addPlayerInventoryAndHotbar(Inventory inventory, int xOff, int yOff) {
+        for(int i = 0; i < inventory.items.size(); i++) {
+            int x = i % 9;
+            int y = i / 9;
+            if (i >= 9) addSlot(new Slot(inventory, i, xOff + x * 18, yOff + y * 18));
+            else addSlot(new Slot(inventory, i, xOff + x * 18, yOff + 76 + y * 18));
         }
     }
 

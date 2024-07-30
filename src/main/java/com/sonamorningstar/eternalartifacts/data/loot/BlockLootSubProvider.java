@@ -79,6 +79,8 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropSelf(ModBlocks.ARDITE_BLOCK.get());
         dropOther(ModBlocks.PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
         dropOther(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
+        dropSelf(ModBlocks.SNOW_BRICKS.get());
+        dropSelf(ModBlocks.ICE_BRICKS.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);

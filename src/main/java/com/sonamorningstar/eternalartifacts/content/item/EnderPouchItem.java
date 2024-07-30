@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class EnderPouchItem extends ArtifactItem  implements IOpenMenus {
+public class EnderPouchItem extends ArtifactItem implements IOpenMenus {
     public EnderPouchItem(Properties pProperties) {
         super(pProperties);
     }

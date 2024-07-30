@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import lombok.Getter;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -14,12 +11,10 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalInt;
 
 public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     @Getter
@@ -42,8 +37,8 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         this.beEnergy = level.getCapability(Capabilities.EnergyStorage.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
         this.beTank = level.getCapability(Capabilities.FluidHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
         this.data = data;
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
+        addPlayerInventoryAndHotbar(inv, 8, 66);
+        //addPlayerHotbar(inv);
         addDataSlots(data);
     }
 

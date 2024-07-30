@@ -164,6 +164,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Block");
                 add(ModBlocks.PLASTIC_CAULDRON.get(), "Cauldron");
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Cauldron");
+                add(ModBlocks.SNOW_BRICKS.get(), "Snow Bricks");
+                add(ModBlocks.ICE_BRICKS.get(), "Ice Bricks");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -353,6 +355,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Bloğu");
                 add(ModBlocks.PLASTIC_CAULDRON.get(), "Kazan");
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Kazan");
+                add(ModBlocks.SNOW_BRICKS.get(), "Kar Tuğlası");
+                add(ModBlocks.ICE_BRICKS.get(), "Buz Tuğlası");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.capabilities.ModItemItemStorage;
 import com.sonamorningstar.eternalartifacts.container.KnapsackMenu;
+import com.sonamorningstar.eternalartifacts.content.item.base.IOpenMenus;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -10,11 +12,20 @@ import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
-public class KnapsackItem extends Item {
+public class KnapsackItem extends Item implements IOpenMenus {
     public KnapsackItem(Properties pProperties) {
         super(pProperties);
+    }
+
+    public ModItemItemStorage createCapability(ItemStack stack) {
+        int effLvl = stack.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+        int size = (1 + effLvl) * 9;
+        //int size = 36;
+        return new ModItemItemStorage(stack, size);
     }
 
     @Override
@@ -22,7 +33,7 @@ public class KnapsackItem extends Item {
         if(action == ClickAction.SECONDARY && slot.allowModification(player) && other.isEmpty()){
             if(!player.level().isClientSide()) openMenu(player, stack);
             return true;
-        }else {
+        } else {
             return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
         }
     }
@@ -33,9 +44,14 @@ public class KnapsackItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player player, InteractionHand pUsedHand) {
-        ItemStack stack = player.getItemInHand(pUsedHand);
-        if(pLevel.isClientSide()) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return Enchantments.BLOCK_EFFICIENCY == enchantment;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if(level.isClientSide()) {
             return InteractionResultHolder.success(stack);
         }else{
             openMenu(player, stack);

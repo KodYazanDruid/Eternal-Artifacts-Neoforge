@@ -1,9 +1,11 @@
 package com.sonamorningstar.eternalartifacts.container;
 
+import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -18,14 +20,15 @@ public class KnapsackMenu extends AbstractModContainerMenu {
     public KnapsackMenu(int containerId, Inventory inv, ItemStack stack) {
         super(ModMenuTypes.KNAPSACK.get(), containerId);
         this.stack = stack;
-        addPlayerInventory(inv);
-        addPlayerHotbar(inv);
         IItemHandler ih = stack.getCapability(Capabilities.ItemHandler.ITEM);
+        int column = Config.KNAPSACK_SLOT_IN_ROW.get();
+        int playerInvPadding = Math.max(0, column - 9) * 9;
         //TODO: Move this to helper method to use somewhere else.
         if(ih != null) {
+            addPlayerInventoryAndHotbar(inv, 8 + playerInvPadding, (Mth.ceil((float) ih.getSlots() / column) * 18) + 12);
             for (int i = 0; i < ih.getSlots(); i++) {
-                int x = i % 9;
-                int y = i / 9;
+                int x = i % column;
+                int y = i / column;
                 addSlot(new SlotItemHandler(ih, i, 8 + x * 18, 18 + y * 18));
             }
         }
@@ -36,18 +39,19 @@ public class KnapsackMenu extends AbstractModContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(pIndex);
+        Slot slot = this.slots.get(index);
+        //System.out.println("Slot index: "+index);
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             //Clicked from player inventory
-            if (pIndex < 36) {
-                if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
-                    return ItemStack.EMPTY;
-                }
-            //Clicked from opened container
+            if (index < 36) {
+                 if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
+                     return ItemStack.EMPTY;
+                 }
+                //Clicked from opened container
             } else if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {
                 return ItemStack.EMPTY;
             }
@@ -58,7 +62,6 @@ public class KnapsackMenu extends AbstractModContainerMenu {
                 slot.setChanged();
             }
         }
-
         return itemstack;
     }
 

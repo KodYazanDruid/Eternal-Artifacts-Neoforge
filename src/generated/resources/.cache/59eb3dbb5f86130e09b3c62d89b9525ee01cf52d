@@ -1,4 +1,4 @@
-// 1.20.4	2024-07-23T22:45:13.2064134	Loot Tables
+// 1.20.4	2024-07-27T20:19:54.8037297	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 c2b957a37df519265b42bb1ea66625aff3ffc16a data/eternalartifacts/loot_tables/blocks/ardite_block.json
@@ -25,6 +25,7 @@ c1447597e3f4cff0cdd64963fd28122eea363d87 data/eternalartifacts/loot_tables/block
 df6acb74ff9f44ec349b25aacecc5edf40e559e9 data/eternalartifacts/loot_tables/blocks/gravel_copper_ore.json
 72152eb7ec1cb8623073b023f8ae0968791ec592 data/eternalartifacts/loot_tables/blocks/gravel_gold_ore.json
 f8e10b90921d802fc5dcb3112cb065842ad536c1 data/eternalartifacts/loot_tables/blocks/gravel_iron_ore.json
+8b23b0816a30503c76483b81d32d231561841099 data/eternalartifacts/loot_tables/blocks/ice_bricks.json
 1d4d22e7cf866d5a67b4dab7dfe1724dfbabdbe5 data/eternalartifacts/loot_tables/blocks/iron_oreberry.json
 7720d7d703899aac282932ff448adfe560e78c4e data/eternalartifacts/loot_tables/blocks/jar.json
 aa1c0b1a5edffd2b76901862d04388f9b6b2cefe data/eternalartifacts/loot_tables/blocks/layered_prismarine.json
@@ -48,6 +49,7 @@ b686ed87f1ee8bc993b0915508faab7ec6b07113 data/eternalartifacts/loot_tables/block
 c65c797452b495809bdf5b41bb611b7c87e865b6 data/eternalartifacts/loot_tables/blocks/sandy_prismarine_bricks.json
 8db9218e28d384200124270dc55e8030b5b860ea data/eternalartifacts/loot_tables/blocks/sandy_stone_bricks.json
 dd29dd415f32b17e7bb174e525f10b3ad21e4c4f data/eternalartifacts/loot_tables/blocks/sandy_tiled_stone_bricks.json
+2d3448b17d4ea0ac42eb08576062e93d6cd62af4 data/eternalartifacts/loot_tables/blocks/snow_bricks.json
 b32df60ac22ceac897f8b11c45e6a5bb42a8b3fc data/eternalartifacts/loot_tables/blocks/stripped_citrus_log.json
 145407764456d011ae939ab17360018386db053d data/eternalartifacts/loot_tables/blocks/stripped_citrus_wood.json
 6df76de6b7b63e1bff3a5e785da7c50eb647c982 data/eternalartifacts/loot_tables/blocks/sugar_charcoal_block.json

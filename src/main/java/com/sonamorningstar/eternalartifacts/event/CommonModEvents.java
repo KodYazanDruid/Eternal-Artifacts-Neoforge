@@ -8,19 +8,25 @@ import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
+import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
@@ -52,7 +58,12 @@ public class CommonModEvents {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModItemEnergyStorage(32000, 2500, stack), ModItems.BATTERY.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
-        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModItemItemStorage(stack, 36), ModItems.KNAPSACK.get());
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> {
+            if (stack.getItem() instanceof KnapsackItem knapsack) {
+                return knapsack.createCapability(stack);
+            }
+            return null;
+        }, ModItems.KNAPSACK.get());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
@@ -85,6 +96,10 @@ public class CommonModEvents {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
 
+    }
+
+    private static Lazy<Integer> getEnchLevelLazy(ItemStack stack, Enchantment ench) {
+        return Lazy.of(()-> stack.getEnchantmentLevel(ench));
     }
 
     @Contract("_, _, null, _ -> param2")

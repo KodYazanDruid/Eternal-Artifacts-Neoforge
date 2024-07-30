@@ -57,6 +57,7 @@ public class EternalArtifacts {
         ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
+        ModPaintings.PAINTINGS.register(modEventBus);
 
         modEventBus.addListener(Channel::onRegisterPayloadHandler);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);

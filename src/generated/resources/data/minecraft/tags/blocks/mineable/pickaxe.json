@@ -29,6 +29,8 @@
     "eternalartifacts:charcoal_block",
     "eternalartifacts:ardite_ore",
     "eternalartifacts:raw_ardite_block",
-    "eternalartifacts:ardite_block"
+    "eternalartifacts:ardite_block",
+    "eternalartifacts:snow_bricks",
+    "eternalartifacts:ice_bricks"
   ]
 }

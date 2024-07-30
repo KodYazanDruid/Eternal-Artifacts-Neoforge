@@ -17,7 +17,7 @@ public class ModTags {
         public static final TagKey<Block> NEEDS_COPPER_TOOL = forgeTag("needs_copper_tool");
         public static final TagKey<Block> ORES_MANGANESE = forgeTag("ores/manganese");
         public static final TagKey<Block> STORAGE_BLOCKS_CHARCOAL = forgeTag("storage_blocks/charcoal");
-        public static final TagKey<Block> MINEABLE_WITH_HAMMAXE = modTag("mineable/wrench");
+        public static final TagKey<Block> MINEABLE_WITH_HAMMAXE = modTag("mineable/hammaxe");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }

@@ -4,10 +4,9 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
-import com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
@@ -105,6 +104,31 @@ public class ModBlocks {
             ()-> new RotatedPillarBlock(Blocks.JUNGLE_WOOD.properties()));
     public static final DeferredBlock<Block> CITRUS_PLANKS = registerWithItem("citrus_planks",
             ()-> new Block(Blocks.JUNGLE_PLANKS.properties()));
+    public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks",
+            ()-> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.SNOW)
+                    .requiresCorrectToolForDrops()
+                    .strength(0.9F)
+                    .explosionResistance(2.0F)
+                    .sound(SoundType.SNOW)
+            ));
+    public static final DeferredBlock<Block> ICE_BRICKS = registerWithItem("ice_bricks",
+            ()-> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.ICE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.2F)
+                    .explosionResistance(2.5F)
+                    .sound(SoundType.GLASS)
+                    .friction(0.98F)
+                    .noOcclusion()
+                    .isValidSpawn((state, getter, pos, type) -> type == EntityType.POLAR_BEAR)
+                    .isRedstoneConductor(ModBlocks::never)
+            ) {
+                @Override
+                public boolean skipRendering(BlockState state, BlockState adjacent, Direction dir) {
+                    return adjacent.is(state.getBlock()) || super.skipRendering(state, adjacent, dir);
+                }
+            });
 
     public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous",
             ()-> new LiquidBlock(ModFluids.NOUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));

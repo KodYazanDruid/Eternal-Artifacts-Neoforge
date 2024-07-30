@@ -74,6 +74,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.ARDITE_ORE.get());
         simpleBlockWithItem(ModBlocks.RAW_ARDITE_BLOCK.get());
         simpleBlockWithItem(ModBlocks.ARDITE_BLOCK.get());
+        simpleBlockWithItem(ModBlocks.SNOW_BRICKS.get());
+        simpleBlockWithItemWithRenderType(ModBlocks.ICE_BRICKS.get(), "translucent");
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -222,6 +224,12 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
     private void simpleBlockWithItem(Block block) {
         ModelFile model = cubeAll(block);
+        simpleBlock(block, model);
+        simpleBlockItem(block, model);
+    }
+
+    private void simpleBlockWithItemWithRenderType(Block block, String renderType) {
+        ModelFile model = models().cubeAll(BuiltInRegistries.BLOCK.getKey(block).getPath(), blockTexture(block)).renderType(renderType);
         simpleBlock(block, model);
         simpleBlockItem(block, model);
     }
