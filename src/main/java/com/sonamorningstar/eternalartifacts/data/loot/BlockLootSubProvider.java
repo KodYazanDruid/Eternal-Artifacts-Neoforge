@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModLootTables;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidFunction;
+import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
@@ -28,7 +28,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -81,6 +80,11 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropOther(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
         dropSelf(ModBlocks.SNOW_BRICKS.get());
         dropSelf(ModBlocks.ICE_BRICKS.get());
+        /*dropSelf(ModBlocks.COPPER_DRUM.get());
+        dropSelf(ModBlocks.IRON_DRUM.get());
+        dropSelf(ModBlocks.GOLD_DRUM.get());
+        dropSelf(ModBlocks.DIAMOND_DRUM.get());
+        dropSelf(ModBlocks.NETHERITE_DRUM.get());*/
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -98,8 +102,14 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
 
         dropSelfWithFunction(ModBlocks.GARDENING_POT, RetexturedLootFunction.builder());
         dropSelfWithFunction(ModBlocks.FANCY_CHEST, RetexturedLootFunction.builder());
-        dropSelfWithFunction(ModBlocks.JAR, KeepFluidFunction.builder());
-        dropSelfWithFunction(ModBlocks.NOUS_TANK, KeepFluidFunction.builder());
+        dropSelfWithFunction(ModBlocks.JAR, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.NOUS_TANK, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.COPPER_DRUM, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.IRON_DRUM, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.GOLD_DRUM, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.DIAMOND_DRUM, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.NETHERITE_DRUM, KeepFluidsFunction.builder());
+        dropSelf(ModBlocks.OIL_REFINERY.get());
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())

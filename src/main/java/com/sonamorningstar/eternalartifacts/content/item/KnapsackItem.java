@@ -1,8 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemItemStorage;
 import com.sonamorningstar.eternalartifacts.container.KnapsackMenu;
-import com.sonamorningstar.eternalartifacts.content.item.base.IOpenMenus;
+import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -10,22 +10,12 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
-public class KnapsackItem extends Item implements IOpenMenus {
+public class KnapsackItem extends VolumeHolderItem {
     public KnapsackItem(Properties pProperties) {
         super(pProperties);
-    }
-
-    public ModItemItemStorage createCapability(ItemStack stack) {
-        int effLvl = stack.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-        int size = (1 + effLvl) * 9;
-        //int size = 36;
-        return new ModItemItemStorage(stack, size);
     }
 
     @Override
@@ -44,11 +34,6 @@ public class KnapsackItem extends Item implements IOpenMenus {
     }
 
     @Override
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return Enchantments.BLOCK_EFFICIENCY == enchantment;
-    }
-
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         if(level.isClientSide()) {
@@ -60,7 +45,7 @@ public class KnapsackItem extends Item implements IOpenMenus {
     }
 
     private void openMenu(Player player, ItemStack stack) {
-        player.openMenu(new SimpleMenuProvider((id, inv, p) -> new KnapsackMenu(id, inv, stack), stack.getHoverName()));
+        player.openMenu(new SimpleMenuProvider((id, inv, p) -> new KnapsackMenu(id, inv, stack), stack.getHoverName()), buff -> buff.writeItem(stack));
     }
 
 }

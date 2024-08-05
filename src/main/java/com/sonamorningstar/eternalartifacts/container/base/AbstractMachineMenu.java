@@ -29,8 +29,8 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     protected final List<Integer> outputSlots = new ArrayList<>();
     public final ContainerData data;
 
-    public AbstractMachineMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(pMenuType, pContainerId);
+    public AbstractMachineMenu(@Nullable MenuType<?> menuType, int id, Inventory inv, BlockEntity entity, ContainerData data) {
+        super(menuType, id);
         this.level = inv.player.level();
         this.blockEntity = entity;
         this.beInventory = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
@@ -38,7 +38,6 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         this.beTank = level.getCapability(Capabilities.FluidHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
         this.data = data;
         addPlayerInventoryAndHotbar(inv, 8, 66);
-        //addPlayerHotbar(inv);
         addDataSlots(data);
     }
 
@@ -52,7 +51,7 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
              //Clicked from player inventory
              if (index < 36) {
                  for(int i = index; i < this.slots.size(); i++) {
-                     if(outputSlots.contains(i)) return ItemStack.EMPTY;
+                     if(outputSlots.contains(i - 36)) return ItemStack.EMPTY;
                      else if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
                          return ItemStack.EMPTY;
                      }

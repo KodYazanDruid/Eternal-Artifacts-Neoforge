@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.EnderNotebookOpenToClient;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EnderNotebookItem extends ArtifactItem{
+public class EnderNotebookItem extends VolumeHolderItem {
     public EnderNotebookItem(Properties properties) {
         super(properties);
     }

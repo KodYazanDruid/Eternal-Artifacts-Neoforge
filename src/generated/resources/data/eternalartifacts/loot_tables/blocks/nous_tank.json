@@ -8,7 +8,7 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "eternalartifacts:jar_keep"
+              "function": "eternalartifacts:keep_fluids"
             }
           ],
           "name": "eternalartifacts:nous_tank"

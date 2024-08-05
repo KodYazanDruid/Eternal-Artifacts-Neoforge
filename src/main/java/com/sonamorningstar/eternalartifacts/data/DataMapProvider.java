@@ -18,6 +18,8 @@ public class DataMapProvider extends net.neoforged.neoforge.common.data.DataMapP
     protected void gather() {
         builder(NeoForgeDataMaps.FURNACE_FUELS)
             .add(ModItems.SUGAR_CHARCOAL.getId(), new FurnaceFuel(400), false)
-            .add(ModBlocks.SUGAR_CHARCOAL_BLOCK.getId(), new FurnaceFuel(4000), false);
+            .add(ModBlocks.SUGAR_CHARCOAL_BLOCK.getId(), new FurnaceFuel(4000), false)
+            .add(ModItems.TAR_BALL.getId(), new FurnaceFuel(1600), false)
+            .add(ModItems.BITUMEN.getId(), new FurnaceFuel(1600), false);
     }
 }

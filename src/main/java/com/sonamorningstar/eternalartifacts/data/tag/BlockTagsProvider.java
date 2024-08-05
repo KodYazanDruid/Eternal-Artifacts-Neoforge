@@ -63,6 +63,12 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.ARDITE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SNOW_BRICKS.get(), "", "pickaxe");
         tierAndTool(ModBlocks.ICE_BRICKS.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.OIL_REFINERY.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.COPPER_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.IRON_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.GOLD_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.DIAMOND_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.NETHERITE_DRUM.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -74,7 +80,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.MOB_LIQUIFIER.get(),
                 ModBlocks.BATTERY_BOX.get(),
                 ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                ModBlocks.NOUS_TANK.get()
+                ModBlocks.NOUS_TANK.get(),
+                ModBlocks.OIL_REFINERY.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);

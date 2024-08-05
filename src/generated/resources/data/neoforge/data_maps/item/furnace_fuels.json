@@ -1,10 +1,16 @@
 {
   "values": {
+    "eternalartifacts:bitumen": {
+      "burn_time": 1600
+    },
     "eternalartifacts:sugar_charcoal": {
       "burn_time": 400
     },
     "eternalartifacts:sugar_charcoal_block": {
       "burn_time": 4000
+    },
+    "eternalartifacts:tar_ball": {
+      "burn_time": 1600
     }
   }
 }

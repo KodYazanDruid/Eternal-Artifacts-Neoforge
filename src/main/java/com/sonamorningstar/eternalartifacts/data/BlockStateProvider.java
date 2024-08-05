@@ -5,11 +5,7 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.models.blockstates.*;
-import net.minecraft.data.models.model.ModelTemplates;
-import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -96,8 +92,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 ).texture("particle", modLoc("block/machine_side"))
             ).build());
 
-        //simpleBlock(ModBlocks.JAR.get(), ConfiguredModel.builder().modelFile(new ModelFile.ExistingModelFile(modLoc("block/jar"), models().existingFileHelper)).build());
-
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
         machineBlock(ModBlocks.MEAT_PACKER, false);
@@ -105,16 +99,14 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         machineBlock(ModBlocks.BATTERY_BOX, true);
         machineBlock(ModBlocks.MOB_LIQUIFIER, false);
 
-        directionBlock(ModBlocks.RESONATOR.get(), (state, builder) ->
-                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/resonator"), models().existingFileHelper)),BlockStateProperties.FACING);
-        directionBlock(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), (state, builder) ->
-                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fluid_combustion_dynamo"), models().existingFileHelper)), BlockStateProperties.FACING);
-
-        directionBlock(ModBlocks.FANCY_CHEST.get(), (state, builder) ->
-                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/fancy_chest"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
-        /*directionBlock(ModBlocks.NOUS_TANK.get(), (state, builder) ->
-                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/nous_tank"), models().existingFileHelper)),BlockStateProperties.HORIZONTAL_FACING);
-*/        simpleBlock(ModBlocks.GARDENING_POT.get(), new ModelFile.ExistingModelFile(modLoc("block/gardening_pot"), models().existingFileHelper));
+        createStateForModelWithProperty(ModBlocks.RESONATOR, BlockStateProperties.FACING);
+        createStateForModelWithProperty(ModBlocks.FANCY_CHEST, BlockStateProperties.HORIZONTAL_FACING);
+        createStateForModel(ModBlocks.GARDENING_POT);
+        createDrums(ModBlocks.COPPER_DRUM, Blocks.COPPER_BLOCK);
+        createDrums(ModBlocks.IRON_DRUM, Blocks.IRON_BLOCK);
+        createDrums(ModBlocks.GOLD_DRUM, Blocks.GOLD_BLOCK);
+        createDrums(ModBlocks.DIAMOND_DRUM, Blocks.DIAMOND_BLOCK);
+        createDrums(ModBlocks.NETHERITE_DRUM, Blocks.NETHERITE_BLOCK);
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
@@ -125,7 +117,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
-
     }
 
     private void machineBlock(DeferredBlock<? extends Block> holder, boolean unique) {
@@ -220,6 +211,28 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
             }
             return ConfiguredModel.builder().modelFile(model).build();
         });
+    }
+
+    private void createDrums(DeferredBlock<?> deferred, Block particle) {
+        VariantBlockStateBuilder cdVariant = getVariantBuilder(deferred.get());
+        cdVariant.forAllStates(state -> {
+           String path = deferred.getId().getPath();
+           ResourceLocation particleRL = BuiltInRegistries.BLOCK.getKey(particle);
+           ModelFile model = models().withExistingParent(path, new ResourceLocation(MODID, "block/base_drum"))
+                   .texture("0", "block/"+path).texture("particle", particleRL.getNamespace()+":block/"+particleRL.getPath());
+           return ConfiguredModel.builder().modelFile(model).build();
+        });
+    }
+
+    private void createStateForModel(DeferredBlock<?> holder) {
+        String path = holder.getId().getPath();
+        simpleBlock(holder.get(), new ModelFile.ExistingModelFile(modLoc("block/"+path), models().existingFileHelper));
+    }
+
+    private void createStateForModelWithProperty(DeferredBlock<?> holder, Property<Direction> property) {
+        String path = holder.getId().getPath();
+        directionBlock(holder.get(), (state, builder) ->
+                builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/"+path), models().existingFileHelper)), property);
     }
 
     private void simpleBlockWithItem(Block block) {

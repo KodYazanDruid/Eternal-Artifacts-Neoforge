@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
+import com.sonamorningstar.eternalartifacts.content.block.base.FluidTankEntityBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -30,7 +31,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
-public class JarBlock extends BaseEntityBlock {
+public class JarBlock extends FluidTankEntityBlock {
     public JarBlock(Properties pProperties) {
         super(pProperties);
     }
@@ -83,32 +84,5 @@ public class JarBlock extends BaseEntityBlock {
             if(fluidHandler != null && FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) return InteractionResult.sidedSuccess(level.isClientSide());
         }
         return InteractionResult.PASS;
-    }
-
-    @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();
-        FluidStack fluidStack = fhi.getFluidInTank(0);
-        IFluidHandler fh = FluidUtil.getFluidHandler(level, pos, null).get();
-        fh.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-    }
-
-    //It may seem stupid but it works.
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        Block block = state.getBlock();
-        Level actualLevel = level.getBlockEntity(pos).getLevel();
-        FluidStack fs = FluidStack.EMPTY;
-        if(actualLevel != null) {
-            IFluidHandler fluidHandler = actualLevel.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
-            if(fluidHandler != null) {
-                fs = fluidHandler.getFluidInTank(0);
-            }
-        }
-        ItemStack stack = new ItemStack(block);
-        IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();
-        fhi.fill(fs, IFluidHandler.FluidAction.EXECUTE);
-        return stack;
     }
 }

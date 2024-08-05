@@ -1,0 +1,7 @@
+{
+  "parent": "eternalartifacts:block/base_drum",
+  "textures": {
+    "0": "eternalartifacts:block/gold_drum",
+    "particle": "minecraft:block/gold_block"
+  }
+}

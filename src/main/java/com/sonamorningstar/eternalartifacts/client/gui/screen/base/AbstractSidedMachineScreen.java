@@ -46,8 +46,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private static final ResourceLocation redstone_passive = new ResourceLocation(MODID,"textures/gui/sprites/redstone_passive.png");
     private static final ResourceLocation redstone_ignored = new ResourceLocation(MODID,"textures/gui/sprites/redstone_ignored.png");
 
-    public AbstractSidedMachineScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public AbstractSidedMachineScreen(T menu, Inventory playerInventory, Component title) {
+        super(menu, playerInventory, title);
     }
 
     @Override
@@ -97,8 +97,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     }
 
     @Override
-    protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
+    protected void renderBg(GuiGraphics gui, float tick, int mx, int my) {
+        super.renderBg(gui, tick, mx, my);
         renderSidedTransferTab(gui, sidedTransferMachineBlockEntity);
     }
 

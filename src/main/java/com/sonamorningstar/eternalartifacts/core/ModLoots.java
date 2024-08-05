@@ -5,11 +5,10 @@ import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTag
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddItemListModifier;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemModifier;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemWithChanceModifier;
-import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidFunction;
+import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemConditionType;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -24,7 +23,7 @@ public class ModLoots {
     public static final DeferredRegister<LootItemConditionType> CONDITIONS = DeferredRegister.create(Registries.LOOT_CONDITION_TYPE, MODID);
 
     public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> RETEXTURED_FUNCTION = FUNCTIONS.register("retexture", ()-> new LootItemFunctionType(RetexturedLootFunction.CODEC));
-    public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> KEEP_FLUID_FUNCTION = FUNCTIONS.register("jar_keep", ()-> new LootItemFunctionType(KeepFluidFunction.CODEC));
+    public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> KEEP_FLUIDS_FUNCTION = FUNCTIONS.register("keep_fluids", ()-> new LootItemFunctionType(KeepFluidsFunction.CODEC));
 
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<? extends IGlobalLootModifier>> ADD_ITEM_LIST_SERIALIZER = GLOBAL_MODIFIER.register("add_item_list", AddItemListModifier.CODEC);
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<? extends IGlobalLootModifier>> REPLACE_ITEM_SERIALIZER = GLOBAL_MODIFIER.register("replace_item", ReplaceItemModifier.CODEC);

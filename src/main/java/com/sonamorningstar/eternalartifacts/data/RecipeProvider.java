@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.*;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -82,8 +79,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
 
         createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 100);
-        createFluidCombustionRecipe(recipeOutput, ModFluids.PINK_SLIME.get(), 80, 60);
-        //createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 40, 2500);
+        createFluidCombustionRecipe(recipeOutput, ModFluids.CRUDE_OIL.get(), 50, 80);
+
+        createOilRefineryRecipe(recipeOutput, ModFluids.CRUDE_OIL.get(),
+                new FluidStack(Fluids.LAVA, 20), new FluidStack(ModFluids.BEER.get(), 30),
+                NonNullList.of(ItemStack.EMPTY, ModItems.TAR_BALL.toStack(), ModItems.BITUMEN.toStack()),
+                NonNullList.of(1.0F, 0.4F, 0.25F)
+        );
 
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
@@ -249,6 +251,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createHammerRecipe(recipeOutput, ModItems.IRON_HAMMER, Tags.Items.INGOTS_IRON, Tags.Items.STORAGE_BLOCKS_IRON);
         createHammerRecipe(recipeOutput, ModItems.GOLDEN_HAMMER, Tags.Items.INGOTS_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
         createHammerRecipe(recipeOutput, ModItems.DIAMOND_HAMMER, Tags.Items.GEMS_DIAMOND, Tags.Items.STORAGE_BLOCKS_DIAMOND);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.ICE_BRICKS)
+                .pattern("II").pattern("II")
+                .define('I', Blocks.ICE)
+                .unlockedBy("has_item", has(Blocks.ICE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.SNOW_BRICKS)
+                .pattern("SS").pattern("SS")
+                .define('S', Blocks.SNOW_BLOCK)
+                .unlockedBy("has_item", has(Blocks.SNOW_BLOCK)).save(recipeOutput);;
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
@@ -371,6 +381,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         //String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
         SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid), generation, duration))
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+fluid.location().getPath()));
+    }
+
+    private void createOilRefineryRecipe(RecipeOutput output, Fluid fluid, FluidStack firstOutput, FluidStack secondaryOutput, NonNullList<ItemStack> itemOutputs, NonNullList<Float> chances) {
+        String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
+        SpecialRecipeBuilder.special(category -> new OilRefineryRecipe(FluidIngredient.of(new FluidStack(fluid, 50)), firstOutput, secondaryOutput, itemOutputs, chances))
+                .save(output, new ResourceLocation(MODID, "oil_refining/"+path));
     }
 
 }

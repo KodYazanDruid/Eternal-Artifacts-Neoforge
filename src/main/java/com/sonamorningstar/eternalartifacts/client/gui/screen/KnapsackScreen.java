@@ -15,8 +15,7 @@ public class KnapsackScreen extends AbstractModContainerScreen<KnapsackMenu> {
         int knapsackSize = menu.slots.size() - 36;
         int rowSize = 4;
         rowSize += Mth.ceil((float) knapsackSize / column);
-        this.imageHeight = (rowSize * 18) + 40;
-        this.imageWidth = (Math.max(column, 9) * 18) + 14;
+        setImageSize((Math.max(column, 9) * 18) + 14, (rowSize * 18) + 40);
         this.inventoryLabelY = this.imageHeight - 92;
     }
 }

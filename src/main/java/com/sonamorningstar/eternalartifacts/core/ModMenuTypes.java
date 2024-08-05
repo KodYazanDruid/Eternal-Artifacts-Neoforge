@@ -32,7 +32,9 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
             ()-> IMenuTypeExtension.create(NousTankMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<OilRefineryMenu>> OIL_REFINERY = MENUS.register("oil_refinery",
+            ()-> IMenuTypeExtension.create(OilRefineryMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<KnapsackMenu>> KNAPSACK = MENUS.register("knapsack",
-            ()-> new MenuType<>(KnapsackMenu::fromNetwork, FeatureFlags.REGISTRY.allFlags()));
+            ()-> IMenuTypeExtension.create(KnapsackMenu::fromNetwork));
 }

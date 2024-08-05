@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.recipe.base.AbstractFluidRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
@@ -22,13 +24,12 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.extensions.IFriendlyByteBufExtension;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+@Getter
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class MobLiquifierRecipe implements Recipe<Container> {
+public class MobLiquifierRecipe extends AbstractFluidRecipe {
     /*@Getter
     private final EntityType<?> entity;*/
-    @Getter
     private final EntityIngredient entity;
-    @Getter
     private final NonNullList<FluidStack> resultFluidList;
 
     public boolean matches(EntityType<?> entity) {
@@ -38,15 +39,10 @@ public class MobLiquifierRecipe implements Recipe<Container> {
     /** @deprecated use {@link #matches(EntityType)} */
     @Deprecated
     @Override
-    public boolean matches(Container con, Level level) {
+    public boolean matches(SimpleFluidContainer pContainer, Level pLevel) {
         return false;
     }
-    @Override
-    public ItemStack assemble(Container pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY; }
-    @Override
-    public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
-    @Override
-    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {return ItemStack.EMPTY;}
+
     @Override
     public RecipeSerializer<?> getSerializer() {return ModRecipes.MOB_LIQUIFIER_SERIALIZER.get();}
     @Override

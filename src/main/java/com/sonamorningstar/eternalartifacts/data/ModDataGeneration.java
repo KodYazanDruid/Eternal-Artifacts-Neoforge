@@ -10,7 +10,6 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
@@ -34,6 +33,7 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeClient(), new LanguageProvider(packOutput, "en_us"));
         dataGenerator.addProvider(event.includeClient(), new LanguageProvider(packOutput, "tr_tr"));
         dataGenerator.addProvider(event.includeClient(), new SoundDefinitionsProvider(packOutput, existingFileHelper));
+        dataGenerator.addProvider(event.includeClient(), new BlockModelProvider(packOutput, existingFileHelper));
 
         dataGenerator.addProvider(event.includeServer(), new ItemTagsProvider(packOutput, lookupProvider, blockTagProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new BlockTagsProvider(packOutput, lookupProvider, existingFileHelper));

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.event;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
+import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
@@ -36,6 +37,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Contract;
 
@@ -54,16 +56,24 @@ public class CommonModEvents {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.BLOOD_BUCKET.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.LIQUID_PLASTIC_BUCKET.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.BEER_BUCKET.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.CRUDE_OIL_BUCKET.get());
 
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new ModItemEnergyStorage(32000, 2500, stack), ModItems.BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> {
+            int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
+            int capacity = (volumeLevel + 1) * 50000;
+            int transfer = (volumeLevel + 1) * 2500;
+            return new ModItemEnergyStorage(capacity, transfer, stack);
+        }, ModItems.BATTERY.get());
+
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
-        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> {
-            if (stack.getItem() instanceof KnapsackItem knapsack) {
-                return knapsack.createCapability(stack);
-            }
-            return null;
-        }, ModItems.KNAPSACK.get());
+        registerDrum(event, ModBlocks.COPPER_DRUM);
+        registerDrum(event, ModBlocks.IRON_DRUM);
+        registerDrum(event, ModBlocks.GOLD_DRUM);
+        registerDrum(event, ModBlocks.DIAMOND_DRUM);
+        registerDrum(event, ModBlocks.NETHERITE_DRUM);
+
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModScaleableItemItemStorage(stack, ModEnchantments.VOLUME.get(), 9), ModItems.KNAPSACK.get());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
@@ -86,8 +96,12 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tanks, ctx));
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(0, 1, 2)));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> regSidedFluidCaps(be, be.tanks, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
@@ -96,10 +110,8 @@ public class CommonModEvents {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
 
-    }
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DRUM.get(), (be, ctx) -> be.tank);
 
-    private static Lazy<Integer> getEnchLevelLazy(ItemStack stack, Enchantment ench) {
-        return Lazy.of(()-> stack.getEnchantmentLevel(ench));
     }
 
     @Contract("_, _, null, _ -> param2")
@@ -143,6 +155,9 @@ public class CommonModEvents {
         }else return energy;
     }
 
+    private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, holder.get().getCapacity()), holder.asItem());
+    }
 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {

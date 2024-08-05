@@ -10,6 +10,7 @@
     "eternalartifacts:battery_box",
     "eternalartifacts:fluid_combustion_dynamo",
     "eternalartifacts:nous_tank",
+    "eternalartifacts:oil_refinery",
     "#forge:storage_blocks"
   ]
 }

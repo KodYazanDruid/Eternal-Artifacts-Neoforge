@@ -1,11 +1,11 @@
 {
   "type": "eternalartifacts:fluid_combusting",
-  "duration": 60,
+  "duration": 80,
   "fuel": {
     "fluid": {
       "Amount": 1000,
-      "FluidName": "eternalartifacts:pink_slime"
+      "FluidName": "eternalartifacts:crude_oil"
     }
   },
-  "generation": 80
+  "generation": 50
 }

@@ -5,9 +5,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.content.block.FluidCombustionDynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.JarBlock;
 import com.sonamorningstar.eternalartifacts.content.block.NousTankBlock;
+import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.client.Minecraft;
@@ -38,6 +40,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final JarBlockEntity jarBlockEntity = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
     private final FluidCombustionDynamoBlockEntity fluidCombustionBlockEntity = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
     private final NousTankBlockEntity nousTankBlockEntity = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
+    private final OilRefineryBlockEntity oilRefineryBlockEntity = new OilRefineryBlockEntity(BlockPos.ZERO, ModBlocks.OIL_REFINERY.get().defaultBlockState());
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
@@ -58,6 +61,13 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             }else if(block instanceof NousTankBlock nous) {
                 if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
                 blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
+            }else if(block instanceof OilRefineryBlock refinery) {
+                if(fluidHandlerItem != null) {
+                    /*oilRefineryBlockEntity.tanks.get(0).setFluid(fluidHandlerItem.getFluidInTank(0));
+                    oilRefineryBlockEntity.tanks.get(1).setFluid(fluidHandlerItem.getFluidInTank(1));
+                    oilRefineryBlockEntity.tanks.get(2).setFluid(fluidHandlerItem.getFluidInTank(2));*/
+                }
+                blockEntityRenderDispatcher.renderItem(oilRefineryBlockEntity, ps, buff, light, overlay);
             }
         }
 

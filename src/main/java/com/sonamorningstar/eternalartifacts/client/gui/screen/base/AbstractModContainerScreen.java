@@ -17,7 +17,6 @@ import javax.annotation.Nonnull;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
-
     //Margin: 5px
     //Corner: 5px * 5px
     //Sides: 5px * -px
@@ -33,6 +32,11 @@ public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu
 
     public AbstractModContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+    }
+
+    protected void setImageSize(int width, int height) {
+        this.imageWidth = width;
+        this.imageHeight = height;
     }
 
     @Override
@@ -116,7 +120,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu
         if(iterationX <= 0 && iterationY <= 0) gui.blit(texture, x + 5, y + 5, 5, 5, remainingX, remainingY);
 
         if (iterationX > 0 && iterationY <= 0) {
-            for (int i = 0; i < iterationX; i++) gui.blit(texture, x + 5 + (iterationX * i), y + 5, 5, 5, 166, remainingY);
+            for (int i = 0; i < iterationX; i++) gui.blit(texture, x + 5 + (166 * i), y + 5, 5, 5, 166, remainingY);
             if (remainingX > 0) gui.blit(texture, x + 5 + (166 * iterationX), y + 5, 5, 5, remainingX, remainingY);
         }
 
@@ -145,7 +149,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu
             if (remainingX > 0 && remainingY > 0) {
                 gui.blit(texture, x + 5 + (166 * iterationX), y + 5 + (156 * iterationY), 5, 5, remainingX, remainingY);
             }
-
         }
     }
 

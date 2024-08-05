@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BatteryItem extends Item {
+public class BatteryItem extends VolumeHolderItem {
     public BatteryItem(Properties pProperties) {
         super(pProperties);
     }

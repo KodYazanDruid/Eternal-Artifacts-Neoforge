@@ -12,4 +12,5 @@ public class ModModelLayers {
     public static final ModelLayerLocation JAR_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "jar_layer"), "main");
     public static final ModelLayerLocation FLUID_COMBUSTION_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "fluid_combustion_layer"), "main");
     public static final ModelLayerLocation NOUS_TANK_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "nous_tank_layer"), "main");
+    public static final ModelLayerLocation OIL_REFINERY_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "oil_refinery_layer"), "main");
 }

@@ -36,8 +36,8 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -182,8 +182,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                             ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), false);
                             inventory.extractItem(output, inventory.getStackInSlot(output).getCount(), false);
                         }
-                    }catch (ArrayIndexOutOfBoundsException e) {
-                        EternalArtifacts.LOGGER.error("Output slot "+output+" is out of bounds in "+targetInv.getSlots()+" sized inventory");
+                    }catch (IndexOutOfBoundsException e) {
+                        EternalArtifacts.LOGGER.error("Output slot {} is out of bounds in {} sized inventory", output, targetInv.getSlots());
                     }
                 }
             }
@@ -235,7 +235,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return null;
     }
 
-    protected <R extends Recipe<Container>> @Nullable R findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
+    protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
         if(level == null) return null;
         if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return null;
         currentRecipe = null;

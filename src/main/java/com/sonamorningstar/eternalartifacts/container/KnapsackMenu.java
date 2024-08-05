@@ -5,7 +5,10 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerM
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -34,8 +37,8 @@ public class KnapsackMenu extends AbstractModContainerMenu {
         }
     }
 
-    public static KnapsackMenu fromNetwork(int id, Inventory inv) {
-        return new KnapsackMenu(id, inv, ModItems.KNAPSACK.toStack());
+    public static KnapsackMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf extraData) {
+        return new KnapsackMenu(id, inv, extraData.readItem());
     }
 
     @Override

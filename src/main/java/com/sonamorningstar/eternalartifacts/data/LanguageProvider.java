@@ -102,6 +102,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CLAY_DUST.get(), "Clay Dust");
                 add(ModItems.ARDITE_INGOT.get(), "Ardite Ingot");
                 add(ModItems.RAW_ARDITE.get(), "Raw Ardite");
+                add(ModItems.CRUDE_OIL_BUCKET.get(), "Crude Oil Bucket");
+                add(ModItems.TAR_BALL.get(), "Tar Ball");
+                add(ModItems.BITUMEN.get(), "Bitumen");
+                add(ModItems.PINK_SLIME_INGOT.get(), "Pink Slime Ingot");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -166,6 +170,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Cauldron");
                 add(ModBlocks.SNOW_BRICKS.get(), "Snow Bricks");
                 add(ModBlocks.ICE_BRICKS.get(), "Ice Bricks");
+                add(ModFluidTypes.CRUDE_OIL.get().getDescriptionId(), "Crude Oil");
+                add(ModBlocks.OIL_REFINERY.get(), "Oil Refinery");
+                add(ModBlocks.COPPER_DRUM.get(), "Copper Drum");
+                add(ModBlocks.IRON_DRUM.get(), "Iron Drum");
+                add(ModBlocks.GOLD_DRUM.get(), "Gold Drum");
+                add(ModBlocks.DIAMOND_DRUM.get(), "Diamond Drum");
+                add(ModBlocks.NETHERITE_DRUM.get(), "Netherite Drum");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -209,6 +220,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.WARPS.getString(), "Warps:");
                 add(ModConstants.GUI.withSuffix("progress"), "Progress");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Burn Time");
+                add(ModEnchantments.VOLUME.get(), "Volume");
 
             }
             case "tr_tr" -> {
@@ -293,6 +305,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CLAY_DUST.get(), "Kil Tozu");
                 add(ModItems.ARDITE_INGOT.get(), "Ardite Külçesi");
                 add(ModItems.RAW_ARDITE.get(), "Ham Ardite");
+                add(ModItems.CRUDE_OIL_BUCKET.get(), "Ham Petrol Kovası");
+                add(ModItems.TAR_BALL.get(), "Katran Topu");
+                add(ModItems.BITUMEN.get(), "Zift");
+                add(ModItems.PINK_SLIME_INGOT.get(), "Pembe Balçık Külçesi");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -357,6 +373,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Kazan");
                 add(ModBlocks.SNOW_BRICKS.get(), "Kar Tuğlası");
                 add(ModBlocks.ICE_BRICKS.get(), "Buz Tuğlası");
+                add(ModFluidTypes.CRUDE_OIL.get().getDescriptionId(), "Ham Petrol");
+                add(ModBlocks.OIL_REFINERY.get(), "Petrol Rafineri");
+                add(ModBlocks.COPPER_DRUM.get(), "Bakır Varil");
+                add(ModBlocks.IRON_DRUM.get(), "Demir Varil");
+                add(ModBlocks.GOLD_DRUM.get(), "Altın Varil");
+                add(ModBlocks.DIAMOND_DRUM.get(), "Elmas Varil");
+                add(ModBlocks.NETHERITE_DRUM.get(), "Netherit Varil");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -400,6 +423,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.WARPS.getString(), "Işınlanmalar:");
                 add(ModConstants.GUI.withSuffix("progress"), "İlerleme");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Yanma Zamanı");
+                add(ModEnchantments.VOLUME.get(), "Hacim");
 
             }
         }

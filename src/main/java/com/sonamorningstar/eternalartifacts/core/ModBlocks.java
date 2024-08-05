@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
+import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
@@ -25,6 +27,7 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -142,6 +145,8 @@ public class ModBlocks {
             ()-> new LiquidBlock(ModFluids.LIQUID_PLASTIC, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_WHITE)));
     public static final DeferredBlock<LiquidBlock> BEER_BLOCK = registerNoItem("beer",
             ()-> new LiquidBlock(ModFluids.BEER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_ORANGE)));
+    public static final DeferredBlock<LiquidBlock> CRUDE_OIL_BLOCK = registerNoItem("crude_oil",
+            ()-> new LiquidBlock(ModFluids.CRUDE_OIL, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
@@ -159,11 +164,19 @@ public class ModBlocks {
             () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
+    public static final DeferredBlock<OilRefineryBlock> OIL_REFINERY = registerWithBewlr("oil_refinery",
+            () -> new OilRefineryBlock(MACHINE_BLOCK.get().properties().noOcclusion()));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
             ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties(), 128));
+
+    public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
+    public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
+    public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 256000);
+    public static final DeferredBlock<DrumBlock> DIAMOND_DRUM = registerDrum("diamond_drum", Blocks.DIAMOND_BLOCK.properties(), 1024000);
+    public static final DeferredBlock<DrumBlock> NETHERITE_DRUM = registerDrum("netherite_drum", Blocks.NETHERITE_BLOCK.properties(), 2048000, new Item.Properties().fireResistant());
 
     public static final DeferredBlock<PinkSlimeBlock> PINK_SLIME_BLOCK = registerWithItem("pink_slime_block",
             ()-> new PinkSlimeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK)));
@@ -226,12 +239,29 @@ public class ModBlocks {
         return block;
     }
 
+    private static <T extends Block, E extends BlockItem> DeferredBlock<T> registerWithItem(String name, Supplier<T> blockSup, Class<E> itemClass, Item.Properties itemProps) {
+        DeferredBlock<T> block = BLOCKS.register(name, blockSup);
+        ModItems.ITEMS.register(name, ()-> {
+            try {
+                return itemClass.getDeclaredConstructor(Block.class, Item.Properties.class).newInstance(block.get(), itemProps);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
+                     NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return block;
+    }
+
     private static DeferredBlock<OreBerryBlock> registerOreBerryBlock(String material) {
         return registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(oreBerryProps, material));
     }
 
     private static DeferredBlock<FluidCombustionDynamoBlock> registerDynamo(String name) {
         return registerWithBewlr(name, () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+    }
+
+    private static DeferredBlock<DrumBlock> registerDrum(String name, BlockBehaviour.Properties material, int cap, Item.Properties... itemProps) {
+        return registerWithItem(name, ()-> new DrumBlock(material, cap), DrumBlockItem.class, itemProps.length > 0 ? itemProps[0] : new Item.Properties());
     }
 
     private static <T extends Block> DeferredBlock<T> registerWithBewlr(String name, Supplier<T> sup) {

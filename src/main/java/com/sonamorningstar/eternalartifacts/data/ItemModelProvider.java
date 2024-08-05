@@ -97,6 +97,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.CLAY_DUST.get());
         basicItem(ModItems.RAW_ARDITE.get());
         basicItem(ModItems.ARDITE_INGOT.get());
+        basicItem(ModItems.TAR_BALL.get());
+        basicItem(ModItems.BITUMEN.get());
+        basicItem(ModItems.PINK_SLIME_INGOT.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -114,6 +117,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.STRIPPED_CITRUS_LOG);
         withParentBlock(ModBlocks.CITRUS_WOOD);
         withParentBlock(ModBlocks.STRIPPED_CITRUS_WOOD);
+        withParentBlock(ModBlocks.COPPER_DRUM);
+        withParentBlock(ModBlocks.IRON_DRUM);
+        withParentBlock(ModBlocks.GOLD_DRUM);
+        withParentBlock(ModBlocks.DIAMOND_DRUM);
+        withParentBlock(ModBlocks.NETHERITE_DRUM);
         withExistingParent(ModBlocks.COPPER_ORE_BERRY.getId().getPath(), modLoc("block/copper_oreberry_stage1"));
         withExistingParent(ModBlocks.IRON_ORE_BERRY.getId().getPath(), modLoc("block/iron_oreberry_stage1"));
         withExistingParent(ModBlocks.GOLD_ORE_BERRY.getId().getPath(), modLoc("block/gold_oreberry_stage1"));
@@ -133,6 +141,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         bucketItem(ModItems.BLOOD_BUCKET, ModFluids.BLOOD);
         bucketItem(ModItems.LIQUID_PLASTIC_BUCKET, ModFluids.LIQUID_PLASTIC);
         bucketItem(ModItems.BEER_BUCKET, ModFluids.BEER);
+        bucketItem(ModItems.CRUDE_OIL_BUCKET, ModFluids.CRUDE_OIL);
     }
 
     private void handheld(DeferredItem<Item> deferred) {

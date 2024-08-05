@@ -22,5 +22,6 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
         tag(ModTags.Fluids.PINK_SLIME).add(ModFluids.PINK_SLIME.get());
         tag(ModTags.Fluids.BLOOD).add(ModFluids.BLOOD.get());
         tag(ModTags.Fluids.PLASTIC).add(ModFluids.LIQUID_PLASTIC.get());
+        tag(ModTags.Fluids.CRUDE_OIL).add(ModFluids.CRUDE_OIL.get());
     }
 }

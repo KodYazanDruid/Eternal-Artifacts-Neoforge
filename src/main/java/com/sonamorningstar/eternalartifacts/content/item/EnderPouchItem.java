@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.content.item.base.IOpenMenus;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class EnderPouchItem extends ArtifactItem implements IOpenMenus {
+public class EnderPouchItem extends ArtifactItem {
     public EnderPouchItem(Properties pProperties) {
         super(pProperties);
     }

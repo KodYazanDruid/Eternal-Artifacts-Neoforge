@@ -14,7 +14,9 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -99,6 +101,9 @@ public class ModItems {
     public static final DeferredItem<Item> CLAY_DUST = register("clay_dust");
     public static final DeferredItem<Item> ARDITE_INGOT = register("ardite_ingot");
     public static final DeferredItem<Item> RAW_ARDITE = register("raw_ardite");
+    public static final DeferredItem<Item> TAR_BALL = register("tar_ball");
+    public static final DeferredItem<Item> BITUMEN = register("bitumen");
+    public static final DeferredItem<Item> PINK_SLIME_INGOT = register("pink_slime_ingot");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
@@ -154,6 +159,17 @@ public class ModItems {
             p -> new BucketItem(ModFluids.LIQUID_PLASTIC::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
     public static final DeferredHolder<Item, BucketItem> BEER_BUCKET = register("beer_bucket",
             p -> new BucketItem(ModFluids.BEER::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+    public static final DeferredHolder<Item, BucketItem> CRUDE_OIL_BUCKET = register("crude_oil_bucket",
+            p -> new BucketItem(ModFluids.CRUDE_OIL::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+
+    /*public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = registerBucket("nous_bucket", ModFluids.NOUS);
+    public static final DeferredHolder<Item, BucketItem> LIQUID_MEAT_BUCKET = registerBucket("liquid_meat_bucket", ModFluids.LIQUID_MEAT);
+    public static final DeferredHolder<Item, BucketItem> PINK_SLIME_BUCKET = registerBucket("pink_slime_bucket", ModFluids.PINK_SLIME);
+    public static final DeferredHolder<Item, BucketItem> BLOOD_BUCKET = registerBucket("blood_bucket", ModFluids.BLOOD);
+    public static final DeferredHolder<Item, BucketItem> LIQUID_PLASTIC_BUCKET = registerBucket("liquid_plastic_bucket", ModFluids.LIQUID_PLASTIC);
+    public static final DeferredHolder<Item, BucketItem> BEER_BUCKET = registerBucket("beer_bucket", ModFluids.BEER);
+    public static final DeferredHolder<Item, BucketItem> CRUDE_OIL_BUCKET = registerBucket("crude_oil_bucket", ModFluids.CRUDE_OIL);*/
+
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
@@ -175,15 +191,20 @@ public class ModItems {
         return register(name, ()-> func.apply(new Item.Properties()));
     }
 
+    private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func, Item.Properties props) {
+        return props == null ? register(name, func) : ITEMS.register(name, ()-> func.apply(props));
+    }
+
     private static DeferredItem<Item> registerStacksToOne(String name) {
-        return register(name, ()-> new Item(new Item.Properties().stacksTo(1)));
+        return registerStacksToOne(name, Item::new);
     }
 
     private static <T extends Item> DeferredItem<T> registerStacksToOne(String name, Function<Item.Properties, T> func) {
         return register(name, ()-> func.apply(new Item.Properties().stacksTo(1)));
     }
 
-    private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func, Item.Properties props) {
-        return props == null ? register(name, func) : ITEMS.register(name, ()-> func.apply(props));
-    }
+    /*private static DeferredItem<BucketItem> registerBucket(String name, DeferredHolder<Fluid, BaseFlowingFluid.Source> holder) {
+        //return register(name, p -> new BucketItem(holder::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));
+        return registerStacksToOne(name, p -> new BucketItem(holder::value, p.craftRemainder(Items.BUCKET)));
+    }*/
 }

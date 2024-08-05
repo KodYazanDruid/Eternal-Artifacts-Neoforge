@@ -12,8 +12,7 @@ public class ModItemItemStorage extends ModItemStorage {
         this.size = size;
         CompoundTag tag = stack.getOrCreateTag().getCompound("Inventory");
         int nbtSize = tag.getInt("Size");
-        //if (nbtSize > 0)
-        tag.putInt("Size", size);
+        if (nbtSize > 0) tag.putInt("Size", size);
         deserializeNBT(tag);
     }
 
@@ -21,8 +20,7 @@ public class ModItemItemStorage extends ModItemStorage {
     protected void onContentsChanged(int slot) {
         CompoundTag tag = serializeNBT();
         int nbtSize = tag.getInt("Size");
-        //if (nbtSize > 0)
-        tag.putInt("Size", size);
+        if (nbtSize > 0) tag.putInt("Size", size);
         stack.getOrCreateTag().put("Inventory", tag);
 
     }

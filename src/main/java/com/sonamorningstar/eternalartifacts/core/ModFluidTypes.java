@@ -29,6 +29,7 @@ public class ModFluidTypes {
     public static final DeferredHolder<FluidType, FluidType> BLOOD = register("blood", 0, 4000, 3500, Rarity.RARE, 186, 26, 16);
     public static final DeferredHolder<FluidType, FluidType> LIQUID_PLASTIC = register("liquid_plastic", 0, 4500, 3000, Rarity.RARE, 232, 225, 213);
     public static final DeferredHolder<FluidType, FluidType> BEER = register("beer", 0, 1000, 1000, Rarity.COMMON, 153, 131, 36);
+    public static final DeferredHolder<FluidType, FluidType> CRUDE_OIL = register("crude_oil", 0, 3500, 3500, Rarity.UNCOMMON, 23, 21, 22);
 
     private static DeferredHolder<FluidType, FluidType> register(String name, int light, int density, int viscosity, Rarity rarity, int fogX, int fogY, int fogZ) {
         return FLUID_TYPES.register(name, () -> new BaseFluidType(

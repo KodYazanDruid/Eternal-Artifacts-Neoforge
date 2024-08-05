@@ -1,0 +1,7 @@
+{
+  "parent": "eternalartifacts:block/base_drum",
+  "textures": {
+    "0": "eternalartifacts:block/copper_drum",
+    "particle": "minecraft:block/copper_block"
+  }
+}

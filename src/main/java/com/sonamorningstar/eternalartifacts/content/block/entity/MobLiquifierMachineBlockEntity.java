@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.MobLiquifierMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -20,7 +19,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEntity<MobLiquifierMenu> {
     public MobLiquifierMachineBlockEntity(BlockPos blockPos, BlockState blockState) {

@@ -6,7 +6,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -17,8 +16,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class ModBlockEntity extends BlockEntity {
-    public ModBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {
-        super(pType, pPos, pBlockState);
+    public ModBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     protected boolean shouldSyncOnUpdate() {
@@ -52,8 +51,8 @@ public class ModBlockEntity extends BlockEntity {
         if(level != null && !isRemoved() && level.hasChunkAt(worldPosition)) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
-    protected ModFluidStorage createBasicTank(int cap) {
-        return new ModFluidStorage(cap) {
+    protected ModFluidStorage createBasicTank(int size) {
+        return new ModFluidStorage(size) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
@@ -61,11 +60,16 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
 
-    protected ModFluidStorage createBasicTank(int cap, Predicate<FluidStack> validator) {
-        return new ModFluidStorage(cap, validator) {
+    protected ModFluidStorage createBasicTank(int size, Predicate<FluidStack> validator, boolean canDrain) {
+        return new ModFluidStorage(size, validator) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
+            }
+
+            @Override
+            public FluidStack drain(int maxDrain, FluidAction action) {
+                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
             }
         };
     }

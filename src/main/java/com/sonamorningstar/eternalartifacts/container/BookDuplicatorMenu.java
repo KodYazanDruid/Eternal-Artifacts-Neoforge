@@ -17,7 +17,6 @@ public class BookDuplicatorMenu extends AbstractMachineMenu {
 
     public BookDuplicatorMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.BOOK_DUPLICATOR.get(), pContainerId, inv, entity, data);
-
         if(beInventory != null) {
             addSlot(new SlotItemHandler(beInventory, 0, 80, 48));
             addSlot(new SlotItemHandler(beInventory, 1, 134, 48));
@@ -25,7 +24,5 @@ public class BookDuplicatorMenu extends AbstractMachineMenu {
             addSlot(new SlotItemHandler(beInventory, 3, 44, 26));
         }
         outputSlots.add(1);
-
     }
-
 }

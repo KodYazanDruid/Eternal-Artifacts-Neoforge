@@ -34,6 +34,9 @@ public class ModFluids {
     public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> BEER = FLUIDS.register("beer", ()-> new BaseFlowingFluid.Source(ModFluids.BEER_PROPERTIES));
     public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> BEER_FLOWING = FLUIDS.register("beer_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.BEER_PROPERTIES));
 
+    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> CRUDE_OIL = FLUIDS.register("crude_oil", ()-> new BaseFlowingFluid.Source(ModFluids.CRUDE_OIL_PROPERTIES));
+    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> CRUDE_OIL_FLOWING = FLUIDS.register("crude_oil_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.CRUDE_OIL_PROPERTIES));
+
 
     private static final BaseFlowingFluid.Properties NOUS_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.NOUS::value, NOUS::value, NOUS_FLOWING::value)
             .bucket(ModItems.NOUS_BUCKET::value)
@@ -50,7 +53,7 @@ public class ModFluids {
     private static final BaseFlowingFluid.Properties BLOOD_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.BLOOD::value, BLOOD::value, BLOOD_FLOWING::value)
             .bucket(ModItems.BLOOD_BUCKET::value)
             .block(ModBlocks.BLOOD_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(2);
+            .tickRate(10).levelDecreasePerBlock(1);
     private static final BaseFlowingFluid.Properties LIQUID_PLASTIC_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.LIQUID_PLASTIC::value, LIQUID_PLASTIC::value, LIQUID_PLASTIC_FLOWING::value)
             .bucket(ModItems.LIQUID_PLASTIC_BUCKET::value)
             .block(ModBlocks.LIQUID_PLASTIC_BLOCK)
@@ -58,7 +61,11 @@ public class ModFluids {
     private static final BaseFlowingFluid.Properties BEER_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.BEER::value, BEER::value, BEER_FLOWING::value)
             .bucket(ModItems.BEER_BUCKET::value)
             .block(ModBlocks.BEER_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(2);
+            .tickRate(10).levelDecreasePerBlock(1);
+    private static final BaseFlowingFluid.Properties CRUDE_OIL_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.CRUDE_OIL::value, CRUDE_OIL::value, CRUDE_OIL_FLOWING::value)
+            .bucket(ModItems.CRUDE_OIL_BUCKET::value)
+            .block(ModBlocks.CRUDE_OIL_BLOCK)
+            .tickRate(10).levelDecreasePerBlock(1);
 
     //Hmmm
     private static BaseFlowingFluid.Source createSource(BaseFlowingFluid.Properties props) {

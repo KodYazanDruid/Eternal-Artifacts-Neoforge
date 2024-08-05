@@ -1,5 +1,6 @@
-package com.sonamorningstar.eternalartifacts.util;
+package com.sonamorningstar.eternalartifacts.caches;
 
+import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;

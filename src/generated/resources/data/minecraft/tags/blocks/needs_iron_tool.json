@@ -13,6 +13,12 @@
     "eternalartifacts:nous_tank",
     "eternalartifacts:ardite_ore",
     "eternalartifacts:raw_ardite_block",
-    "eternalartifacts:ardite_block"
+    "eternalartifacts:ardite_block",
+    "eternalartifacts:oil_refinery",
+    "eternalartifacts:copper_drum",
+    "eternalartifacts:iron_drum",
+    "eternalartifacts:gold_drum",
+    "eternalartifacts:diamond_drum",
+    "eternalartifacts:netherite_drum"
   ]
 }

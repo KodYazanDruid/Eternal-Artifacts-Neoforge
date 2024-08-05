@@ -1,9 +1,8 @@
-package com.sonamorningstar.eternalartifacts.util.dynamo;
+package com.sonamorningstar.eternalartifacts.caches;
 
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Optional;
@@ -27,11 +26,6 @@ public class DynamoProcessCache {
         if(inserted == generation) {
             duration--;
             energy.receiveEnergyForced(generation, false);
-            dynamo.isWorking = true;
-            dynamo.sendUpdate();
-        } else {
-            dynamo.isWorking = false;
-            dynamo.sendUpdate();
         }
     }
 

@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -34,6 +31,11 @@ public class ModRecipes {
             RECIPE_SERIALIZERS.register("fluid_combusting", FluidCombustionRecipe.Serializer::new);
     public static final DeferredHolder<RecipeType<?>, RecipeType<FluidCombustionRecipe>> FLUID_COMBUSTING_TYPE =
             RECIPE_TYPES.register("fluid_combusting", ()-> RecipeType.simple(new ResourceLocation(MODID, "fluid_combusting")));
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<OilRefineryRecipe>> OIL_REFINERY_SERIALIZER =
+            RECIPE_SERIALIZERS.register("oil_refining", OilRefineryRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeType<?>, RecipeType<OilRefineryRecipe>> OIL_REFINERY_TYPE =
+            RECIPE_TYPES.register("oil_refining", ()-> RecipeType.simple(new ResourceLocation(MODID, "oil_refining")));
 
 
 

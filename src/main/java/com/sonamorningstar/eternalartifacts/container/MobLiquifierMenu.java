@@ -14,6 +14,5 @@ public class MobLiquifierMenu extends AbstractMachineMenu {
     }
     public MobLiquifierMenu( int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.MOB_LIQUIFIER.get(), pContainerId, inv, entity, data);
-
     }
 }

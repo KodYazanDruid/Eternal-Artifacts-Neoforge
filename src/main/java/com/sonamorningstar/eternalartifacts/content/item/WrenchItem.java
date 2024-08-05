@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 public class WrenchItem extends DiggerItem {
     public WrenchItem(Properties props) {super(2F, -2F, Tiers.IRON, ModTags.Blocks.MINEABLE_WITH_WRENCH, props); }
@@ -32,10 +33,8 @@ public class WrenchItem extends DiggerItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack offHandStack = player.getItemInHand(InteractionHand.OFF_HAND);
-        CompoundTag tag = offHandStack.getOrCreateTag();
-        int effLvl = offHandStack.getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-        player.sendSystemMessage(Component.literal(level.isClientSide +" :"+tag.getAsString()));
-        player.sendSystemMessage(Component.literal(level.isClientSide +" :"+effLvl));
+        IFluidHandlerItem fluidHandlerItem = offHandStack.getCapability(Capabilities.FluidHandler.ITEM);
+        player.sendSystemMessage(Component.literal(String.valueOf(fluidHandlerItem == null)));
 
         return super.use(level, player, hand);
     }

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.MeatShredderMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -25,6 +26,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     }
 
     MeatShredderRecipe currRecipe;
+    RecipeCache<MeatShredderRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
 
     @Getter
     public ModItemStorage inventory = new ModItemStorage(1) {
@@ -33,6 +35,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
             progress = 0;
             MeatShredderMachineBlockEntity.this.sendUpdate();
             currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
+            recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
         }
     };
 
@@ -64,6 +67,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     public void onLoad() {
         super.onLoad();
         currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
+        recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 
     @Override
@@ -86,8 +90,10 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInput(lvl, pos, inventory);
         performAutoOutputFluids(lvl, pos, tank);
-        if(currRecipe != null) {
-            FluidStack fs = currRecipe.getOutput();
+        //if(currRecipe != null) {
+        if(recipeCache.getRecipe() != null) {
+            //FluidStack fs = currRecipe.getOutput();
+            FluidStack fs = recipeCache.getRecipe().getOutput();
             progress(()-> {
                 int inserted = tank.fillForced(fs, IFluidHandler.FluidAction.SIMULATE);
                 return inserted < fs.getAmount();
