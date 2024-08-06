@@ -56,9 +56,6 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
                          return ItemStack.EMPTY;
                      }
                  }
-                 /*if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
-                     return ItemStack.EMPTY;
-                 }*/
                  //Clicked from opened container
              } else if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {
                  return ItemStack.EMPTY;

@@ -1,0 +1,17 @@
+{
+  "type": "eternalartifacts:glasscutter",
+  "conditions": [
+    {
+      "condition": "eternalartifacts:block_tag_condition",
+      "tag": "eternalartifacts:mineable/glasscutter"
+    },
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": [
+          "eternalartifacts:glasscutter"
+        ]
+      }
+    }
+  ]
+}

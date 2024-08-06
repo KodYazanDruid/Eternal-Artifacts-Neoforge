@@ -7,16 +7,19 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferAutoSaveToServer;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferRedstoneToServer;
 import com.sonamorningstar.eternalartifacts.network.SidedTransferSideSaveToServer;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -60,8 +63,6 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         }
         for (int i = 0; i < 4; i++) {
             int finalI = i;
-            //if(i == 2 && menu.getBeInventory() == null) continue;
-            //if(i == 3 && menu.getBeTank() == null) continue;
             autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonAutoSet(button, finalI)).size(9, 9).build());
             addRenderableWidget(autoSetters.get(i));
         }
@@ -106,6 +107,74 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
         sidedTransferBarActive = mx >= x+5 && mx <= x+101 && my >= y-29 && my <= y+3;
+        renderButtonTooltips(gui, mx, my);
+    }
+
+    protected void renderButtonTooltips(GuiGraphics guiGraphics, int mx, int my) {
+        for (int i = 0; i < sideSetters.size(); i++) {
+            if (sideSetters.get(i).visible) {
+                Map<Integer, SidedTransferMachineBlockEntity.TransferType> side = sidedTransferMachineBlockEntity.getSideConfigs();
+                CustomRenderButton button = sideSetters.get(i);
+                String direction = "";
+                switch (i) {
+                    case 0 -> direction = "up";
+                    case 1 -> direction = "left";
+                    case 2 -> direction = "front";
+                    case 3 -> direction = "right";
+                    case 4 -> direction = "down";
+                    case 5 -> direction = "back";
+                }
+                if(isCursorInBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight(), mx, my)) {
+                    guiGraphics.renderTooltip(font,
+                        ModConstants.GUI.withSuffixTranslatable(direction)
+                            .append(": ").append(ModConstants.GUI.withSuffixTranslatable(ensureType(side.get(i)))),
+                        mx, my);
+                }
+            }
+        }
+        for (int i = 0; i < autoSetters.size(); i++) {
+            if (autoSetters.get(i).visible) {
+                Map<Integer, Boolean> auto = sidedTransferMachineBlockEntity.getAutoConfigs();
+                CustomRenderButton button = autoSetters.get(i);
+                boolean value = auto.get(i) != null && auto.get(i);
+                boolean isAuto = i == 0 || i == 1;
+                String type = "";
+                switch (i) {
+                    case 0 -> type = "auto_input";
+                    case 1 -> type = "auto_output";
+                    case 2 -> type = "item_transportation";
+                    case 3 -> type = "fluid_transportation";
+                }
+                if(isCursorInBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight(), mx, my)){
+                    guiGraphics.renderTooltip(font,
+                        ModConstants.GUI.withSuffixTranslatable(type)
+                            .append(": ").append(ModConstants.GUI.withSuffixTranslatable(isAuto ? value ? "enabled" : "disabled" : value ? "disabled" : "enabled")),
+                        mx, my);
+                }
+            }
+        }
+        for (int i = 0; i < redstoneSetters.size(); i++) {
+            if (redstoneSetters.get(i).visible) {
+                Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstone = sidedTransferMachineBlockEntity.getRedstoneConfigs();
+                CustomRenderButton button = redstoneSetters.get(i);
+                if(isCursorInBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight(), mx, my)){
+                    guiGraphics.renderTooltip(font,
+                            ModConstants.GUI.withSuffixTranslatable("redstone")
+                                    .append(": ").append(getComponentForRedstone(redstone.get(i))),
+                            mx, my);
+                }
+            }
+        }
+    }
+
+    private String ensureType(SidedTransferMachineBlockEntity.TransferType type) {
+        return type == null ? "default" : type.toString().toLowerCase(Locale.ENGLISH);
+    }
+
+    private MutableComponent getComponentForRedstone(SidedTransferMachineBlockEntity.RedstoneType type) {
+        if (type == SidedTransferMachineBlockEntity.RedstoneType.LOW) return ModConstants.GUI.withSuffixTranslatable("redstone_passive");
+        if (type == SidedTransferMachineBlockEntity.RedstoneType.HIGH) return ModConstants.GUI.withSuffixTranslatable("redstone_active");
+        return ModConstants.GUI.withSuffixTranslatable("redstone_default");
     }
 
     protected void renderSidedTransferTab(GuiGraphics guiGraphics, SidedTransferMachineBlockEntity<?> sided) {
@@ -181,7 +250,6 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     }
 
     private ResourceLocation getTextureForTransferType(SidedTransferMachineBlockEntity.TransferType transferType) {
-        if(transferType == SidedTransferMachineBlockEntity.TransferType.DEFAULT) return allow;
         if(transferType == SidedTransferMachineBlockEntity.TransferType.NONE) return deny;
         if(transferType == SidedTransferMachineBlockEntity.TransferType.PULL) return input;
         if(transferType == SidedTransferMachineBlockEntity.TransferType.PUSH) return output;

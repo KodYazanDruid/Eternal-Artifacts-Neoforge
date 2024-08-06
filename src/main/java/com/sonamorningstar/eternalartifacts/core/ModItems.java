@@ -14,9 +14,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -146,6 +144,7 @@ public class ModItems {
     public static final DeferredItem<Item> DIAMOND_HAMMER = registerStacksToOne("diamond_hammer", p -> new HammerItem(Tiers.DIAMOND, p));
     public static final DeferredItem<Item> NETHERITE_HAMMER = registerStacksToOne("netherite_hammer", p -> new HammerItem(Tiers.NETHERITE, p.fireResistant()));
     public static final DeferredItem<Item> HAMMAXE = registerStacksToOne("hammaxe", HammaxeItem::new);
+    public static final DeferredItem<Item> GLASSCUTTER = registerStacksToOne("glasscutter", GlasscutterItem::new);
 
     public static final DeferredHolder<Item, BucketItem> NOUS_BUCKET = register("nous_bucket",
             p -> new BucketItem(ModFluids.NOUS::value, p.stacksTo(1).craftRemainder(Items.BUCKET)));

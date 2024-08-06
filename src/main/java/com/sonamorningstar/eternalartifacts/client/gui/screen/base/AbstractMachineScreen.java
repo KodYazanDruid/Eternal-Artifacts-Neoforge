@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -37,8 +36,15 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     }
 
     private void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
-        if(!energyLoc.isEmpty() && mx >= energyLoc.get("x") && mx <= energyLoc.get("x") + energyLoc.get("width") &&
+        /*if(!energyLoc.isEmpty() && mx >= energyLoc.get("x") && mx <= energyLoc.get("x") + energyLoc.get("width") &&
                 my >= energyLoc.get("y") && my <= energyLoc.get("y") + energyLoc.get("height") && menu.getBeEnergy() != null) {
+            gui.renderTooltip(font,
+                    Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
+                            .append(String.valueOf(menu.getBeEnergy().getEnergyStored())).append("/").append(String.valueOf(menu.getBeEnergy().getMaxEnergyStored())),
+                    mx, my);
+        }*/
+        if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my) &&
+                menu.getBeEnergy() != null) {
             gui.renderTooltip(font,
                     Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
                             .append(String.valueOf(menu.getBeEnergy().getEnergyStored())).append("/").append(String.valueOf(menu.getBeEnergy().getMaxEnergyStored())),
@@ -46,9 +52,18 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         }
     }
     private void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
-        fluidLocs.forEach( (tank, fluidLoc) -> {
+        /*fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && mx >= fluidLoc.get("x") && mx <= fluidLoc.get("x") + fluidLoc.get("width") &&
                     my >= fluidLoc.get("y") && my <= fluidLoc.get("y") + fluidLoc.get("height") && menu.getBeTank() != null) {
+                gui.renderTooltip(font,
+                        Component.translatable(ModConstants.GUI.withSuffix("fluid")).append(": ").append(menu.getBeTank().getFluidInTank(tank).getDisplayName()).append(" ")
+                                .append(String.valueOf(menu.getBeTank().getFluidInTank(tank).getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))),
+                        mx, my);
+            }
+        });*/
+        fluidLocs.forEach( (tank, fluidLoc) -> {
+            if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my) &&
+                    menu.getBeTank() != null) {
                 gui.renderTooltip(font,
                         Component.translatable(ModConstants.GUI.withSuffix("fluid")).append(": ").append(menu.getBeTank().getFluidInTank(tank).getDisplayName()).append(" ")
                                 .append(String.valueOf(menu.getBeTank().getFluidInTank(tank).getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))),
@@ -57,12 +72,16 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         });
     }
     private void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
-        if(mx >= x && mx <= x + xLen &&
-                my >= y && my <= y + yLen) {
+        if(isCursorInBounds(x, y, xLen, yLen, mx, my)) {
             gui.renderTooltip(font,
                     Component.translatable(ModConstants.GUI.withSuffix(key)).append(": ").append(String.valueOf(menu.data.get(0))),
                     mx, my);
         }
+    }
+
+    protected boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, int mx, int my) {
+        return mx >= startX && mx <= startX + lengthX &&
+                my >= startY && my <= startY + lengthY;
     }
 
     protected void renderDefaultEnergyAndFluidBar(GuiGraphics gui) {

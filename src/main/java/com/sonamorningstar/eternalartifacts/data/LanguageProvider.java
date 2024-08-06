@@ -106,6 +106,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.TAR_BALL.get(), "Tar Ball");
                 add(ModItems.BITUMEN.get(), "Bitumen");
                 add(ModItems.PINK_SLIME_INGOT.get(), "Pink Slime Ingot");
+                add(ModItems.GLASSCUTTER.get(), "Glasscutter");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -221,6 +222,26 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("progress"), "Progress");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Burn Time");
                 add(ModEnchantments.VOLUME.get(), "Volume");
+                add(ModConstants.GUI.withSuffix("up"), "Up");
+                add(ModConstants.GUI.withSuffix("left"), "Left");
+                add(ModConstants.GUI.withSuffix("front"), "Front");
+                add(ModConstants.GUI.withSuffix("right"), "Right");
+                add(ModConstants.GUI.withSuffix("down"), "Down");
+                add(ModConstants.GUI.withSuffix("back"), "Back");
+                add(ModConstants.GUI.withSuffix("enabled"), "Enabled");
+                add(ModConstants.GUI.withSuffix("disabled"), "Disabled");
+                add(ModConstants.GUI.withSuffix("redstone"), "Redstone");
+                add(ModConstants.GUI.withSuffix("redstone_default"), "Redstone doesn't affects for working");
+                add(ModConstants.GUI.withSuffix("redstone_active"), "Requires redstone to work");
+                add(ModConstants.GUI.withSuffix("redstone_passive"), "Redstone prevents it from working");
+                add(ModConstants.GUI.withSuffix("default"), "Default");
+                add(ModConstants.GUI.withSuffix("none"), "None");
+                add(ModConstants.GUI.withSuffix("pull"), "Pull");
+                add(ModConstants.GUI.withSuffix("push"), "Push");
+                add(ModConstants.GUI.withSuffix("auto_input"), "Auto-Input");
+                add(ModConstants.GUI.withSuffix("auto_output"), "Auto-Output");
+                add(ModConstants.GUI.withSuffix("item_transportation"), "Item Transportation");
+                add(ModConstants.GUI.withSuffix("fluid_transportation"), "Fluid Transportation");
 
             }
             case "tr_tr" -> {
@@ -309,6 +330,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.TAR_BALL.get(), "Katran Topu");
                 add(ModItems.BITUMEN.get(), "Zift");
                 add(ModItems.PINK_SLIME_INGOT.get(), "Pembe Balçık Külçesi");
+                add(ModItems.GLASSCUTTER.get(), "Cam Kesici");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -424,6 +446,27 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("progress"), "İlerleme");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Yanma Zamanı");
                 add(ModEnchantments.VOLUME.get(), "Hacim");
+                add(ModConstants.GUI.withSuffix("up"), "Yukarı");
+                add(ModConstants.GUI.withSuffix("left"), "Sol");
+                add(ModConstants.GUI.withSuffix("front"), "Ön");
+                add(ModConstants.GUI.withSuffix("right"), "Sağ");
+                add(ModConstants.GUI.withSuffix("down"), "Aşağı");
+                add(ModConstants.GUI.withSuffix("back"), "Arka");
+                add(ModConstants.GUI.withSuffix("enabled"), "Etkin");
+                add(ModConstants.GUI.withSuffix("disabled"), "Devre Dışı");
+                add(ModConstants.GUI.withSuffix("redstone"), "Redstone");
+                add(ModConstants.GUI.withSuffix("redstone_default"), "Redstone'a karşı pasif.");
+                add(ModConstants.GUI.withSuffix("redstone_active"), "Çalışması için redstone sinyali gerekiyor.");
+                add(ModConstants.GUI.withSuffix("redstone_passive"), "Redstone sinyali çalışmasını engelliyor.");
+                add(ModConstants.GUI.withSuffix("default"), "Varsayılan");
+                add(ModConstants.GUI.withSuffix("none"), "Hiçbiri");
+                add(ModConstants.GUI.withSuffix("pull"), "Çek");
+                add(ModConstants.GUI.withSuffix("push"), "İt");
+                add(ModConstants.GUI.withSuffix("auto_input"), "Oto-Giriş");
+                add(ModConstants.GUI.withSuffix("auto_output"), "Oto-Çıkış");
+                add(ModConstants.GUI.withSuffix("item_transportation"), "Eşya Transferi");
+                add(ModConstants.GUI.withSuffix("fluid_transportation"), "Sıvı Transferi");
+
 
             }
         }

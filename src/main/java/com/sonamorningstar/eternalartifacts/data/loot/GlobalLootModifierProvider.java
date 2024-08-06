@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTagCondition;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddItemListModifier;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.GlasscutterModifier;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemModifier;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemWithChanceModifier;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -37,6 +38,12 @@ public class GlobalLootModifierProvider extends net.neoforged.neoforge.common.da
                         LootItemRandomChanceCondition.randomChance(0.05f).build()
                 }, List.of(ModItems.ORANGE.get().getDefaultInstance()))
         );
+        add("banana_from_jungle_leaves", new AddItemListModifier(
+                new LootItemCondition[]{
+                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.JUNGLE_LEAVES).build(),
+                        LootItemRandomChanceCondition.randomChance(0.05f).build()
+                }, List.of(ModItems.BANANA.get().getDefaultInstance()))
+        );
 
         add("ancient_seeds_from_sniffer_digging", new ReplaceItemWithChanceModifier(
                 new LootItemCondition[]{
@@ -61,6 +68,12 @@ public class GlobalLootModifierProvider extends net.neoforged.neoforge.common.da
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build(),
                 }, ModItems.CLAY_DUST.get(), UniformGenerator.between(2.0F, 4.0F))
         );
+        add("glasscutter", new GlasscutterModifier(
+                new LootItemCondition[] {
+                        LootItemBlockTagCondition.builder(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).build(),
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModItems.GLASSCUTTER.get())).build()
+                }
+        ));
 
     }
 }

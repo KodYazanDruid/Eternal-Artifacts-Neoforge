@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-05T16:41:10.6459199	Item Models: eternalartifacts
+// 1.20.4	2024-08-06T14:42:26.6077475	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -54,6 +54,7 @@ c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/for
 8dbc4a5b8db74c606be2099f6043700716fd7bfd assets/eternalartifacts/models/item/four_leaf_clover.json
 5b5b72db5847d5995c7212078a95b198a9a89493 assets/eternalartifacts/models/item/frog_legs.json
 7d0e656ecf2f61bedbab2793001bae737289d13b assets/eternalartifacts/models/item/gardening_pot.json
+17437f1f8ff3e02b5f59e262eeb91a7f6e671a3e assets/eternalartifacts/models/item/glasscutter.json
 aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/golden_ancient_fruit.json
 db3a3dd7934801c74cef3b2261d40a0d14d9a5ff assets/eternalartifacts/models/item/golden_hammer.json
 f205ffc0053ae6f777a86c20272de724bdb8d54b assets/eternalartifacts/models/item/gold_drum.json

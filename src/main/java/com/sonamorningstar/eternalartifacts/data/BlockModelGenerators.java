@@ -41,9 +41,14 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createBluePlasticCauldron(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), new ResourceLocation(MODID, "block/blue_plastic"));
 
         blockEntityModels(ModBlocks.JAR.get(), Blocks.GLASS).create(ModBlocks.JAR.get());
-        blockEntityModels(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), ModBlocks.MACHINE_BLOCK.get()).create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get());
         blockEntityModels(ModBlocks.NOUS_TANK.get(), Blocks.GLASS).create(ModBlocks.NOUS_TANK.get());
         blockEntityModels(ModBlocks.OIL_REFINERY.get(), Blocks.GLASS).create(ModBlocks.OIL_REFINERY.get());
+
+        stateOutput.accept(
+                createSimpleBlock(
+                        ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
+                        ModelTemplates.PARTICLE_ONLY.create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), TextureMapping.particle(new ResourceLocation(MODID, "block/machine_side")), modelOutput)
+                ));
     }
 
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {

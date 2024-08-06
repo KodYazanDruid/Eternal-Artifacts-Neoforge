@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -64,11 +65,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.SNOW_BRICKS.get(), "", "pickaxe");
         tierAndTool(ModBlocks.ICE_BRICKS.get(), "", "pickaxe");
         tierAndTool(ModBlocks.OIL_REFINERY.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.COPPER_DRUM.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.IRON_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.COPPER_DRUM.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.IRON_DRUM.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.GOLD_DRUM.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.DIAMOND_DRUM.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.NETHERITE_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.NETHERITE_DRUM.get(), "diamond", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -85,6 +86,10 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);
+        tag(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).addTags(Tags.Blocks.GLASS, Tags.Blocks.GLASS_PANES);
+        tag(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).add(
+                Blocks.GLOWSTONE, Blocks.SEA_LANTERN
+        );
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());
