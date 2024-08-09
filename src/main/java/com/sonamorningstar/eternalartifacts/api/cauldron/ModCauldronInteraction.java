@@ -83,7 +83,7 @@ public abstract class ModCauldronInteraction implements CauldronInteraction {
             return Blocks.WATER_CAULDRON.defaultBlockState().setValue(LayeredCauldronBlock.LEVEL, LayeredCauldronBlock.MAX_FILL_LEVEL);
         } else if(stack.is(Fluids.LAVA)) {
             return Blocks.LAVA_CAULDRON.defaultBlockState();
-        } else if(stack.is(ModFluids.LIQUID_PLASTIC.get().getSource())) {
+        } else if(stack.is(ModFluids.LIQUID_PLASTIC.getFluid())) {
             return ModBlocks.PLASTIC_CAULDRON.get().defaultBlockState();
         }
         return null;

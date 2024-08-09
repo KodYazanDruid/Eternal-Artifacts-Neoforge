@@ -47,7 +47,6 @@ public class EternalArtifacts {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModMenuTypes.MENUS.register(modEventBus);
         ModFluids.FLUIDS.register(modEventBus);
-        ModFluidTypes.FLUID_TYPES.register(modEventBus);
         ModLoots.FUNCTIONS.register(modEventBus);
         ModLoots.GLOBAL_MODIFIER.register(modEventBus);
         ModLoots.CONDITIONS.register(modEventBus);

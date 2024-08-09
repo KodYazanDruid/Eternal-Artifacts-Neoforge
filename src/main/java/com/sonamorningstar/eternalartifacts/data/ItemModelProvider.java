@@ -1,12 +1,15 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
@@ -136,13 +139,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc("block/four_leaf_clover"));
 
-        bucketItem(ModItems.NOUS_BUCKET, ModFluids.NOUS);
-        bucketItem(ModItems.LIQUID_MEAT_BUCKET, ModFluids.LIQUID_MEAT);
-        bucketItem(ModItems.PINK_SLIME_BUCKET, ModFluids.PINK_SLIME);
-        bucketItem(ModItems.BLOOD_BUCKET, ModFluids.BLOOD);
-        bucketItem(ModItems.LIQUID_PLASTIC_BUCKET, ModFluids.LIQUID_PLASTIC);
-        bucketItem(ModItems.BEER_BUCKET, ModFluids.BEER);
-        bucketItem(ModItems.CRUDE_OIL_BUCKET, ModFluids.CRUDE_OIL);
+        ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
     }
 
     private void handheld(DeferredItem<Item> deferred) {
@@ -153,6 +150,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(bucket.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(source.get())
+                .applyTint(true);
+    }
+    private void bucketItem(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> holder) {
+        withExistingParent(holder.getBucketItemHolder().getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
+                .customLoader(DynamicFluidContainerModelBuilder::begin)
+                .fluid(holder.getFluid())
                 .applyTint(true);
     }
 

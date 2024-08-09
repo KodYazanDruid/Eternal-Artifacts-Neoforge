@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.data;
 import com.google.gson.JsonElement;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -35,7 +36,7 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         stateOutput.accept(createSimpleBlock(ModBlocks.PLASTIC_CAULDRON.get(),
             ModelTemplates.CAULDRON_FULL
                 .create(ModBlocks.PLASTIC_CAULDRON.get(),
-                        TextureMapping.cauldron(TextureMapping.getBlockTexture(ModBlocks.LIQUID_PLASTIC_BLOCK.get(), "_still")), modelOutput)
+                        TextureMapping.cauldron(TextureMapping.getBlockTexture(ModFluids.LIQUID_PLASTIC.getFluidBlock(), "_still")), modelOutput)
         ));
 
         createBluePlasticCauldron(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), new ResourceLocation(MODID, "block/blue_plastic"));

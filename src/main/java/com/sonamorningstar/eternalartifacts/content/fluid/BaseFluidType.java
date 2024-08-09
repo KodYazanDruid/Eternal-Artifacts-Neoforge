@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.fluid;
 
 import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Getter;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
@@ -18,10 +19,11 @@ import java.util.function.Consumer;
  * Basic implementation of {@link FluidType} that supports specifying still and flowing textures in the constructor.
  *
  * @author Choonster (<a href="https://github.com/Choonster-Minecraft-Mods/TestMod3/blob/1.19.x/LICENSE.txt">MIT License</a>)
- *
+ *</br>
  * Change by: Kaupenjoe
  * Added overlayTexture and tintColor as well. Also converts tint color into fog color
  */
+@Getter
 public class BaseFluidType extends FluidType {
     private final ResourceLocation stillTexture;
     private final ResourceLocation flowingTexture;
@@ -37,26 +39,6 @@ public class BaseFluidType extends FluidType {
         this.overlayTexture = overlayTexture;
         this.tintColor = tintColor;
         this.fogColor = fogColor;
-    }
-
-    public ResourceLocation getStillTexture() {
-        return stillTexture;
-    }
-
-    public ResourceLocation getFlowingTexture() {
-        return flowingTexture;
-    }
-
-    public int getTintColor() {
-        return tintColor;
-    }
-
-    public ResourceLocation getOverlayTexture() {
-        return overlayTexture;
-    }
-
-    public Vector3f getFogColor() {
-        return fogColor;
     }
 
     @Override

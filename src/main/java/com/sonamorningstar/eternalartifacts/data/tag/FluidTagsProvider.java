@@ -17,11 +17,11 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-        tag(ModTags.Fluids.EXPERIENCE).add(ModFluids.NOUS.get());
-        tag(ModTags.Fluids.MEAT).add(ModFluids.LIQUID_MEAT.get());
-        tag(ModTags.Fluids.PINK_SLIME).add(ModFluids.PINK_SLIME.get());
-        tag(ModTags.Fluids.BLOOD).add(ModFluids.BLOOD.get());
-        tag(ModTags.Fluids.PLASTIC).add(ModFluids.LIQUID_PLASTIC.get());
-        tag(ModTags.Fluids.CRUDE_OIL).add(ModFluids.CRUDE_OIL.get());
+        tag(ModTags.Fluids.EXPERIENCE).add(ModFluids.NOUS.getFluid());
+        tag(ModTags.Fluids.MEAT).add(ModFluids.LIQUID_MEAT.getFluid());
+        tag(ModTags.Fluids.PINK_SLIME).add(ModFluids.PINK_SLIME.getFluid());
+        tag(ModTags.Fluids.BLOOD).add(ModFluids.BLOOD.getFluid());
+        tag(ModTags.Fluids.PLASTIC).add(ModFluids.LIQUID_PLASTIC.getFluid());
+        tag(ModTags.Fluids.CRUDE_OIL).add(ModFluids.CRUDE_OIL.getFluid());
     }
 }

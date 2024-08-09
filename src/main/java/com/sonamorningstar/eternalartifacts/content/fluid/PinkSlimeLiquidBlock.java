@@ -20,7 +20,7 @@ public class PinkSlimeLiquidBlock extends LiquidBlock {
 
     @Override
     public boolean isRandomlyTicking(BlockState state) {
-        return state.getFluidState().isSourceOfType(ModFluids.PINK_SLIME.get());
+        return state.getFluidState().isSourceOfType(ModFluids.PINK_SLIME.getFluid());
     }
 
     @Override

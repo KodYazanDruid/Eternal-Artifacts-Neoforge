@@ -29,7 +29,7 @@ public class ModCauldronDrainInteraction extends ModCauldronInteraction {
     }
 
     public static final ModCauldronDrainInteraction WATER = createLayered(Fluids.WATER);
-    public static final ModCauldronDrainInteraction PLASTIC = createBasic(ModFluids.LIQUID_PLASTIC.get().getSource());
+    public static final ModCauldronDrainInteraction PLASTIC = createBasic(ModFluids.LIQUID_PLASTIC.getFluid());
     public static final ModCauldronDrainInteraction LAVA = createBasic(Fluids.LAVA);
 
     //Fills the bucket. Empties the cauldron.

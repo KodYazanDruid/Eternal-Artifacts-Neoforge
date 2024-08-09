@@ -1,90 +1,45 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import net.minecraft.core.registries.Registries;
+import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
+import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
+import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredRegister;
 import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.fluids.FluidType;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModFluids {
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, MODID);
+    public static final FluidDeferredRegister FLUIDS = new FluidDeferredRegister(MODID);
 
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> NOUS = FLUIDS.register("nous", ()-> new BaseFlowingFluid.Source(ModFluids.NOUS_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> NOUS_FLOWING = FLUIDS.register("nous_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.NOUS_PROPERTIES));
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> NOUS = FLUIDS.register(
+            "nous", 7, 3000, 4500, Rarity.EPIC, 38, 178, 82, MapColor.COLOR_LIGHT_GREEN, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> LIQUID_MEAT = FLUIDS.register(
+            "liquid_meat", 0, 6000, 5000, Rarity.RARE, 23, 61, 49, MapColor.COLOR_BROWN, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> PINK_SLIME = FLUIDS.register(
+            "pink_slime", 0, 5000, 4500, Rarity.RARE, 201, 87, 185, MapColor.COLOR_PINK, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> BLOOD = FLUIDS.register(
+            "blood", 0, 4000, 3500, Rarity.RARE, 186, 26, 16, MapColor.COLOR_RED, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> LIQUID_PLASTIC = FLUIDS.register(
+            "liquid_plastic", 0, 4500, 3000, Rarity.RARE, 232, 225, 213, MapColor.TERRACOTTA_WHITE, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> BEER = FLUIDS.register(
+            "beer", 0, 1000, 1000, Rarity.COMMON, 153, 131, 36, MapColor.TERRACOTTA_ORANGE, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> CRUDE_OIL = FLUIDS.register(
+            "crude_oil", 0, 3500, 3500, Rarity.UNCOMMON, 23, 21, 22, MapColor.COLOR_BLACK, false
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> GASOLINE = FLUIDS.register(
+            "gasoline", 0, 2000, 4000, Rarity.RARE, 51, 88, 77, MapColor.TERRACOTTA_YELLOW, true, 0xF5C92D
+    );
+    public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> DIESEL = FLUIDS.register(
+            "diesel", 0, 2000, 4000, Rarity.RARE, 22, 54, 58, MapColor.TERRACOTTA_BROWN, true, 0xFDA50A
+    );
 
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> LIQUID_MEAT = FLUIDS.register("liquid_meat", ()-> new BaseFlowingFluid.Source(ModFluids.LIQUID_MEAT_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> LIQUID_MEAT_FLOWING = FLUIDS.register("liquid_meat_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.LIQUID_MEAT_PROPERTIES));
-
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> PINK_SLIME = FLUIDS.register("pink_slime", ()-> new BaseFlowingFluid.Source(ModFluids.PINK_SLIME_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> PINK_SLIME_FLOWING = FLUIDS.register("pink_slime_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.PINK_SLIME_PROPERTIES));
-
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> BLOOD = FLUIDS.register("blood", ()-> new BaseFlowingFluid.Source(ModFluids.BLOOD_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> BLOOD_FLOWING = FLUIDS.register("blood_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.BLOOD_PROPERTIES));
-
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> LIQUID_PLASTIC = FLUIDS.register("liquid_plastic", ()-> new BaseFlowingFluid.Source(ModFluids.LIQUID_PLASTIC_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> LIQUID_PLASTIC_FLOWING = FLUIDS.register("liquid_plastic_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.LIQUID_PLASTIC_PROPERTIES));
-
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> BEER = FLUIDS.register("beer", ()-> new BaseFlowingFluid.Source(ModFluids.BEER_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> BEER_FLOWING = FLUIDS.register("beer_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.BEER_PROPERTIES));
-
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Source> CRUDE_OIL = FLUIDS.register("crude_oil", ()-> new BaseFlowingFluid.Source(ModFluids.CRUDE_OIL_PROPERTIES));
-    public static final DeferredHolder<Fluid, BaseFlowingFluid.Flowing> CRUDE_OIL_FLOWING = FLUIDS.register("crude_oil_flow", ()-> new BaseFlowingFluid.Flowing(ModFluids.CRUDE_OIL_PROPERTIES));
-
-
-    private static final BaseFlowingFluid.Properties NOUS_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.NOUS::value, NOUS::value, NOUS_FLOWING::value)
-            .bucket(ModItems.NOUS_BUCKET::value)
-            .block(ModBlocks.NOUS_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(2);
-    private static final BaseFlowingFluid.Properties LIQUID_MEAT_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.LIQUID_MEAT::value, LIQUID_MEAT::value, LIQUID_MEAT_FLOWING::value)
-            .bucket(ModItems.LIQUID_MEAT_BUCKET::value)
-            .block(ModBlocks.LIQUID_MEAT_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(2);
-    private static final BaseFlowingFluid.Properties PINK_SLIME_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.PINK_SLIME::value, PINK_SLIME::value, PINK_SLIME_FLOWING::value)
-            .bucket(ModItems.PINK_SLIME_BUCKET::value)
-            .block(ModBlocks.PINK_SLIME_FLUID_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(2);
-    private static final BaseFlowingFluid.Properties BLOOD_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.BLOOD::value, BLOOD::value, BLOOD_FLOWING::value)
-            .bucket(ModItems.BLOOD_BUCKET::value)
-            .block(ModBlocks.BLOOD_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(1);
-    private static final BaseFlowingFluid.Properties LIQUID_PLASTIC_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.LIQUID_PLASTIC::value, LIQUID_PLASTIC::value, LIQUID_PLASTIC_FLOWING::value)
-            .bucket(ModItems.LIQUID_PLASTIC_BUCKET::value)
-            .block(ModBlocks.LIQUID_PLASTIC_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(2);
-    private static final BaseFlowingFluid.Properties BEER_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.BEER::value, BEER::value, BEER_FLOWING::value)
-            .bucket(ModItems.BEER_BUCKET::value)
-            .block(ModBlocks.BEER_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(1);
-    private static final BaseFlowingFluid.Properties CRUDE_OIL_PROPERTIES = new BaseFlowingFluid.Properties(ModFluidTypes.CRUDE_OIL::value, CRUDE_OIL::value, CRUDE_OIL_FLOWING::value)
-            .bucket(ModItems.CRUDE_OIL_BUCKET::value)
-            .block(ModBlocks.CRUDE_OIL_BLOCK)
-            .tickRate(10).levelDecreasePerBlock(1);
-
-    //Hmmm
-    private static BaseFlowingFluid.Source createSource(BaseFlowingFluid.Properties props) {
-        return new BaseFlowingFluid.Source(props);
-    }
-
-    private static BaseFlowingFluid.Flowing createFlowing(BaseFlowingFluid.Properties props) {
-        return new BaseFlowingFluid.Flowing(props);
-    }
-
-    private static BaseFlowingFluid.Properties createProps(
-            DeferredHolder<FluidType, FluidType> fluidType,
-            DeferredHolder<Fluid, BaseFlowingFluid.Source> source,
-            DeferredHolder<Fluid, BaseFlowingFluid.Flowing> flowing,
-            DeferredItem<BucketItem> bucket,
-            DeferredBlock<LiquidBlock> block, int tickRate, int decrease) {
-        return new BaseFlowingFluid.Properties(fluidType::value, source::value, flowing::value)
-                .bucket(bucket::value)
-                .block(block)
-                .tickRate(tickRate).levelDecreasePerBlock(decrease);
-    }
 }

@@ -23,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -63,6 +64,9 @@ public class ClientModEvents {
         }, ModBlocks.FOUR_LEAF_CLOVER.asItem());
         event.register(new RetexturedColor(), ModItems.GARDENING_POT.get());
         event.register(new RetexturedColor(), ModItems.FANCY_CHEST.get());
+        ModFluids.FLUIDS.getEntries().forEach(holder -> {
+            if (ModFluids.FLUIDS.isGeneric(holder)) event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
+        });
     }
 
     @SubscribeEvent

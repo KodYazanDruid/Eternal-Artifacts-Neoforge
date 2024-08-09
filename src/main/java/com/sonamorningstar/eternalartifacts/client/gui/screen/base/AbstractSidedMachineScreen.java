@@ -77,9 +77,10 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
 
     private void buttonSideSet(Button button, int index) {
         Channel.sendToServer(new SidedTransferSideSaveToServer(
-                index,
-                SidedTransferMachineBlockEntity.TransferType.cycleNext(index, sidedTransferMachineBlockEntity),
-                sidedTransferMachineBlockEntity.getBlockPos()));
+            index,
+            SidedTransferMachineBlockEntity.TransferType.cycleNext(index, sidedTransferMachineBlockEntity),
+            sidedTransferMachineBlockEntity.getBlockPos()
+        ));
     }
 
     private void buttonAutoSet(Button button, int index) {
@@ -92,9 +93,10 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
 
     private void buttonRedstoneSet(Button button, int index) {
         Channel.sendToServer(new SidedTransferRedstoneToServer(
-                index,
-                SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, sidedTransferMachineBlockEntity),
-                sidedTransferMachineBlockEntity.getBlockPos()));
+            index,
+            SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, sidedTransferMachineBlockEntity),
+            sidedTransferMachineBlockEntity.getBlockPos()
+        ));
     }
 
     @Override
@@ -106,7 +108,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
-        sidedTransferBarActive = mx >= x+5 && mx <= x+101 && my >= y-29 && my <= y+3;
+        sidedTransferBarActive = isCursorInBounds(x + 5, y - 29, 94, 32, mx, my);
         renderButtonTooltips(gui, mx, my);
     }
 

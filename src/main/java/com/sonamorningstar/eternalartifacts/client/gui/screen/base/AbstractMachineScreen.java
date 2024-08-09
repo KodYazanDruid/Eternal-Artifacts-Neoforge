@@ -36,13 +36,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     }
 
     private void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
-        /*if(!energyLoc.isEmpty() && mx >= energyLoc.get("x") && mx <= energyLoc.get("x") + energyLoc.get("width") &&
-                my >= energyLoc.get("y") && my <= energyLoc.get("y") + energyLoc.get("height") && menu.getBeEnergy() != null) {
-            gui.renderTooltip(font,
-                    Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
-                            .append(String.valueOf(menu.getBeEnergy().getEnergyStored())).append("/").append(String.valueOf(menu.getBeEnergy().getMaxEnergyStored())),
-                    mx, my);
-        }*/
         if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my) &&
                 menu.getBeEnergy() != null) {
             gui.renderTooltip(font,
@@ -52,15 +45,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         }
     }
     private void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
-        /*fluidLocs.forEach( (tank, fluidLoc) -> {
-            if (!fluidLoc.isEmpty() && mx >= fluidLoc.get("x") && mx <= fluidLoc.get("x") + fluidLoc.get("width") &&
-                    my >= fluidLoc.get("y") && my <= fluidLoc.get("y") + fluidLoc.get("height") && menu.getBeTank() != null) {
-                gui.renderTooltip(font,
-                        Component.translatable(ModConstants.GUI.withSuffix("fluid")).append(": ").append(menu.getBeTank().getFluidInTank(tank).getDisplayName()).append(" ")
-                                .append(String.valueOf(menu.getBeTank().getFluidInTank(tank).getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))),
-                        mx, my);
-            }
-        });*/
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my) &&
                     menu.getBeTank() != null) {

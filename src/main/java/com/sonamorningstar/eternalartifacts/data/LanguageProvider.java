@@ -23,7 +23,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
             case "en_us" -> {
                 //Items
                 add(ModItems.ORANGE.get(), "Orange");
-                add(ModItems.NOUS_BUCKET.get(), "Nous Bucket");
+                add(ModFluids.NOUS.getBucketItem(), "Nous Bucket");
                 add(ModItems.BATTERY.get(), "Battery");
                 add(ModItems.CAPACITOR.get(), "Capacitor");
                 add(ModItems.LENS.get(), "Lens");
@@ -49,8 +49,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COMFY_SHOES.get(), "Comfy Shoes");
                 add(ModItems.SUGAR_CHARCOAL.get(), "Sugar Charcoal");
                 add(ModItems.BANANA.get(), "Banana");
-                add(ModItems.LIQUID_MEAT_BUCKET.get(), "Liquid Meat Bucket");
-                add(ModItems.PINK_SLIME_BUCKET.get(), "Pink Slime Bucket");
+                add(ModFluids.LIQUID_MEAT.getBucketItem(), "Liquid Meat Bucket");
+                add(ModFluids.PINK_SLIME.getBucketItem(), "Pink Slime Bucket");
                 add(ModItems.ENDER_NOTEBOOK.get(), "Ender Notebook");
                 add(ModItems.APPLE_PIE.get(), "Apple Pie");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Banana Cream Pie");
@@ -74,20 +74,20 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.LUSH_GRUBBER.get(), "Lush Grubber");
                 add(ModItems.COPPER_TABLET.get(), "Copper Tablet");
                 add(ModItems.COPPER_NUGGET.get(), "Copper Nugget");
-                add(ModItems.BLOOD_BUCKET.get(), "Blood Bucket");
+                add(ModFluids.BLOOD.getBucketItem(), "Blood Bucket");
                 add(ModItems.EXPERIENCE_BERRY.get(), "Experience Berry");
                 add(ModItems.MANGANESE_INGOT.get(), "Manganese Ingot");
                 add(ModItems.MANGANESE_NUGGET.get(), "Manganese Nugget");
                 add(ModItems.STEEL_INGOT.get(), "Steel Ingot");
                 add(ModItems.STEEL_NUGGET.get(), "Steel Nugget");
                 add(ModItems.PLASTIC_SHEET.get(), "Plastic Sheet");
-                add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Liquid Plastic Bucket");
+                add(ModFluids.LIQUID_PLASTIC.getBucketItem(), "Liquid Plastic Bucket");
                 add(ModItems.WRENCH.get(), "Wrench");
                 add(ModItems.ENDER_PAPER.get(), "Ender Paper");
                 add(ModItems.RAW_MANGANESE.get(), "Raw Manganese");
                 add(ModItems.KNAPSACK.get(), "Knapsack");
                 add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Magical Book Spawn Egg");
-                add(ModItems.BEER_BUCKET.get(), "Beer Bucket");
+                add(ModFluids.BEER.getBucketItem(), "Beer Bucket");
                 add(ModItems.COAL_DUST.get(), "Coal Dust");
                 add(ModItems.CHARCOAL_DUST.get(), "Charcoal Dust");
                 add(ModItems.SUGAR_CHARCOAL_DUST.get(), "Sugar Charcoal Dust");
@@ -102,17 +102,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CLAY_DUST.get(), "Clay Dust");
                 add(ModItems.ARDITE_INGOT.get(), "Ardite Ingot");
                 add(ModItems.RAW_ARDITE.get(), "Raw Ardite");
-                add(ModItems.CRUDE_OIL_BUCKET.get(), "Crude Oil Bucket");
+                add(ModFluids.CRUDE_OIL.getBucketItem(), "Crude Oil Bucket");
                 add(ModItems.TAR_BALL.get(), "Tar Ball");
                 add(ModItems.BITUMEN.get(), "Bitumen");
                 add(ModItems.PINK_SLIME_INGOT.get(), "Pink Slime Ingot");
                 add(ModItems.GLASSCUTTER.get(), "Glasscutter");
+                add(ModFluids.GASOLINE.getBucketItem(), "Gasoline Bucket");
+                add(ModFluids.DIESEL.getBucketItem(), "Diesel Bucket");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
-                add(ModFluidTypes.NOUS.get().getDescriptionId(), "Nous");
-                add(ModFluidTypes.LIQUID_MEAT.get().getDescriptionId(), "Liquid Meat");
-                add(ModFluidTypes.PINK_SLIME.get().getDescriptionId(), "Pink Slime");
+                add(ModFluids.NOUS.getTranslationKey(), "Nous");
+                add(ModFluids.LIQUID_MEAT.getTranslationKey(), "Liquid Meat");
+                add(ModFluids.PINK_SLIME.getTranslationKey(), "Pink Slime");
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
                 add(ModBlocks.RESONATOR.get(), "Resonator");
                 add(ModBlocks.GARDENING_POT.get(), "Gardening Pot");
@@ -150,19 +152,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Iron Oreberry");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Gold Oreberry");
                 add(ModBlocks.BATTERY_BOX.get(), "Battery Box");
-                add(ModFluidTypes.BLOOD.get().getDescriptionId(), "Blood");
+                add(ModFluids.BLOOD.getTranslationKey(), "Blood");
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Experience Oreberry");
                 add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganese Oreberry");
                 add(ModBlocks.MOB_LIQUIFIER.get(), "Mob Liquifier");
                 add(ModBlocks.JAR.get(), "Jar");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Jar");
-                add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Liquid Plastic");
+                add(ModFluids.LIQUID_PLASTIC.getTranslationKey(), "Liquid Plastic");
                 add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Fluid Combustion Dynamo");
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganese Ore");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Deepslate Manganese Ore");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
                 add(ModBlocks.NOUS_TANK.get(), "Nous Tank");
-                add(ModFluidTypes.BEER.get().getDescriptionId(), "Beer");
+                add(ModFluids.BEER.getTranslationKey(), "Beer");
                 add(ModBlocks.CHARCOAL_BLOCK.get(), "Charcoal Block");
                 add(ModBlocks.ARDITE_ORE.get(), "Ardite Ore");
                 add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Raw Ardite Block");
@@ -171,13 +173,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Cauldron");
                 add(ModBlocks.SNOW_BRICKS.get(), "Snow Bricks");
                 add(ModBlocks.ICE_BRICKS.get(), "Ice Bricks");
-                add(ModFluidTypes.CRUDE_OIL.get().getDescriptionId(), "Crude Oil");
+                add(ModFluids.CRUDE_OIL.getTranslationKey(), "Crude Oil");
                 add(ModBlocks.OIL_REFINERY.get(), "Oil Refinery");
                 add(ModBlocks.COPPER_DRUM.get(), "Copper Drum");
                 add(ModBlocks.IRON_DRUM.get(), "Iron Drum");
                 add(ModBlocks.GOLD_DRUM.get(), "Gold Drum");
                 add(ModBlocks.DIAMOND_DRUM.get(), "Diamond Drum");
                 add(ModBlocks.NETHERITE_DRUM.get(), "Netherite Drum");
+                add(ModFluids.GASOLINE.getTranslationKey(), "Gasoline");
+                add(ModFluids.DIESEL.getTranslationKey(), "Diesel");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -247,7 +251,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
             case "tr_tr" -> {
                 //Eşyalar
                 add(ModItems.ORANGE.get(), "Portakal");
-                add(ModItems.NOUS_BUCKET.get(), "İdrak Kovası");
+                add(ModFluids.NOUS.getBucketItem(), "İdrak Kovası");
                 add(ModItems.BATTERY.get(), "Pil");
                 add(ModItems.CAPACITOR.get(), "Kondansatör");
                 add(ModItems.LENS.get(), "Lens");
@@ -273,8 +277,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COMFY_SHOES.get(), "Rahat Ayakkabılar");
                 add(ModItems.SUGAR_CHARCOAL.get(), "Şeker Odun Kömürü");
                 add(ModItems.BANANA.get(), "Muz");
-                add(ModItems.LIQUID_MEAT_BUCKET.get(), "Sıvı Et Kovası");
-                add(ModItems.PINK_SLIME_BUCKET.get(), "Pembe Balçık Kovası");
+                add(ModFluids.LIQUID_MEAT.getBucketItem(), "Sıvı Et Kovası");
+                add(ModFluids.PINK_SLIME.getBucketItem(), "Pembe Balçık Kovası");
                 add(ModItems.ENDER_NOTEBOOK.get(), "Ender Defteri");
                 add(ModItems.APPLE_PIE.get(), "Elmalı Turta");
                 add(ModItems.BANANA_CREAM_PIE.get(), "Muz Kremalı Turta");
@@ -298,20 +302,20 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.LUSH_GRUBBER.get(), "Bereketli Çapa");
                 add(ModItems.COPPER_TABLET.get(), "Bakır Levha");
                 add(ModItems.COPPER_NUGGET.get(), "Bakır Parçası");
-                add(ModItems.BLOOD_BUCKET.get(), "Kan Kovası");
+                add(ModFluids.BLOOD.getBucketItem(), "Kan Kovası");
                 add(ModItems.EXPERIENCE_BERRY.get(), "Tecrübe Meyvesi");
                 add(ModItems.MANGANESE_INGOT.get(), "Manganez Küçlesi");
                 add(ModItems.MANGANESE_NUGGET.get(), "Manganez Parçası");
                 add(ModItems.STEEL_INGOT.get(), "Çelik Külçesi");
                 add(ModItems.STEEL_NUGGET.get(), "Çelik Parçası");
                 add(ModItems.PLASTIC_SHEET.get(), "Plastik Tabaka");
-                add(ModItems.LIQUID_PLASTIC_BUCKET.get(), "Sıvı Plastik Kovası");
+                add(ModFluids.LIQUID_PLASTIC.getBucketItem(), "Sıvı Plastik Kovası");
                 add(ModItems.WRENCH.get(), "İngiliz Anahtarı");
                 add(ModItems.ENDER_PAPER.get(), "Ender Kağıdı");
                 add(ModItems.RAW_MANGANESE.get(), "Ham Manganez");
                 add(ModItems.KNAPSACK.get(), "Sırt Çantası");
                 add(ModItems.MAGICAL_BOOK_SPAWN_EGG.get(), "Büyülü Kitap Çağırma Yumurtası");
-                add(ModItems.BEER_BUCKET.get(), "Bira Kovası");
+                add(ModFluids.BEER.getBucketItem(), "Bira Kovası");
                 add(ModItems.COAL_DUST.get(), "Kömür Tozu");
                 add(ModItems.CHARCOAL_DUST.get(), "Odun Kömürü Tozu");
                 add(ModItems.SUGAR_CHARCOAL_DUST.get(), "Şeker Odun Kömürü Tozu");
@@ -326,17 +330,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CLAY_DUST.get(), "Kil Tozu");
                 add(ModItems.ARDITE_INGOT.get(), "Ardite Külçesi");
                 add(ModItems.RAW_ARDITE.get(), "Ham Ardite");
-                add(ModItems.CRUDE_OIL_BUCKET.get(), "Ham Petrol Kovası");
+                add(ModFluids.CRUDE_OIL.getBucketItem(), "Ham Petrol Kovası");
                 add(ModItems.TAR_BALL.get(), "Katran Topu");
                 add(ModItems.BITUMEN.get(), "Zift");
                 add(ModItems.PINK_SLIME_INGOT.get(), "Pembe Balçık Külçesi");
                 add(ModItems.GLASSCUTTER.get(), "Cam Kesici");
+                add(ModFluids.GASOLINE.getBucketItem(), "Benzin Kovası");
+                add(ModFluids.DIESEL.getBucketItem(), "Dizel Kovası");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
-                add(ModFluidTypes.NOUS.get().getDescriptionId(), "İdrak");
-                add(ModFluidTypes.LIQUID_MEAT.get().getDescriptionId(), "Sıvı Et");
-                add(ModFluidTypes.PINK_SLIME.get().getDescriptionId(), "Pembe Balçık");
+                add(ModFluids.NOUS.getTranslationKey(), "İdrak");
+                add(ModFluids.LIQUID_MEAT.getTranslationKey(), "Sıvı Et");
+                add(ModFluids.PINK_SLIME.getTranslationKey(), "Pembe Balçık");
                 add(ModBlocks.BIOFURNACE.get(), "BiyoFırın");
                 add(ModBlocks.RESONATOR.get(), "Yankılayıcı");
                 add(ModBlocks.GARDENING_POT.get(), "Bahçe Saksısı");
@@ -374,19 +380,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Demir Cevherçalısı");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Altın Cevherçalısı");
                 add(ModBlocks.BATTERY_BOX.get(), "Pil Kutusu");
-                add(ModFluidTypes.BLOOD.get().getDescriptionId(), "Kan");
+                add(ModFluids.BLOOD.getTranslationKey(), "Kan");
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Tecrübe Cevherçalısı");
                 add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganez Cevherçalısı");
                 add(ModBlocks.MOB_LIQUIFIER.get(), "Yaratık Sıvılaştırıcı");
                 add(ModBlocks.JAR.get(), "Kavanoz");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
-                add(ModFluidTypes.LIQUID_PLASTIC.get().getDescriptionId(), "Sıvı Plastik");
+                add(ModFluids.LIQUID_PLASTIC.getTranslationKey(), "Sıvı Plastik");
                 add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Sıvı Yanmalı Dinamo");
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganez Cevheri");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Kayrak Taşında Manganez Cevheri");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
                 add(ModBlocks.NOUS_TANK.get(), "İdrak Tankı");
-                add(ModFluidTypes.BEER.get().getDescriptionId(), "Bira");
+                add(ModFluids.BEER.getTranslationKey(), "Bira");
                 add(ModBlocks.CHARCOAL_BLOCK.get(), "Odun Kömürü Bloğu");
                 add(ModBlocks.ARDITE_ORE.get(), "Ardite Cevheri");
                 add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Ham Ardite Bloğu");
@@ -395,13 +401,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Kazan");
                 add(ModBlocks.SNOW_BRICKS.get(), "Kar Tuğlası");
                 add(ModBlocks.ICE_BRICKS.get(), "Buz Tuğlası");
-                add(ModFluidTypes.CRUDE_OIL.get().getDescriptionId(), "Ham Petrol");
+                add(ModFluids.CRUDE_OIL.getTranslationKey(), "Ham Petrol");
                 add(ModBlocks.OIL_REFINERY.get(), "Petrol Rafineri");
                 add(ModBlocks.COPPER_DRUM.get(), "Bakır Varil");
                 add(ModBlocks.IRON_DRUM.get(), "Demir Varil");
                 add(ModBlocks.GOLD_DRUM.get(), "Altın Varil");
                 add(ModBlocks.DIAMOND_DRUM.get(), "Elmas Varil");
                 add(ModBlocks.NETHERITE_DRUM.get(), "Netherit Varil");
+                add(ModFluids.GASOLINE.getTranslationKey(), "Benzin");
+                add(ModFluids.DIESEL.getTranslationKey(), "Dizel");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

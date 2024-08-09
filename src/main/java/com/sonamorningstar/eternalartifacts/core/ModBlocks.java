@@ -133,21 +133,6 @@ public class ModBlocks {
                 }
             });
 
-    public static final DeferredBlock<LiquidBlock> NOUS_BLOCK = registerNoItem("nous",
-            ()-> new LiquidBlock(ModFluids.NOUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_LIGHT_GREEN)));
-    public static final DeferredBlock<LiquidBlock> LIQUID_MEAT_BLOCK = registerNoItem("liquid_meat",
-            ()-> new LiquidBlock(ModFluids.LIQUID_MEAT, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BROWN)));
-    public static final DeferredBlock<LiquidBlock> PINK_SLIME_FLUID_BLOCK = registerNoItem("pink_slime",
-            ()-> new PinkSlimeLiquidBlock(ModFluids.PINK_SLIME, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_PINK)));
-    public static final DeferredBlock<LiquidBlock> BLOOD_BLOCK = registerNoItem("blood",
-            ()-> new LiquidBlock(ModFluids.BLOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_RED)));
-    public static final DeferredBlock<LiquidBlock> LIQUID_PLASTIC_BLOCK = registerNoItem("liquid_plastic",
-            ()-> new LiquidBlock(ModFluids.LIQUID_PLASTIC, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_WHITE)));
-    public static final DeferredBlock<LiquidBlock> BEER_BLOCK = registerNoItem("beer",
-            ()-> new LiquidBlock(ModFluids.BEER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<LiquidBlock> CRUDE_OIL_BLOCK = registerNoItem("crude_oil",
-            ()-> new LiquidBlock(ModFluids.CRUDE_OIL, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(MapColor.COLOR_BLACK)));
-
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",

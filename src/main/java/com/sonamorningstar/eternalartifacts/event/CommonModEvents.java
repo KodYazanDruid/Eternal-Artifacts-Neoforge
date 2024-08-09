@@ -9,25 +9,19 @@ import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
-import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
@@ -50,13 +44,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class CommonModEvents {
     @SubscribeEvent
     public static void registerCaps(RegisterCapabilitiesEvent event) {
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.NOUS_BUCKET.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.LIQUID_MEAT_BUCKET.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.PINK_SLIME_BUCKET.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.BLOOD_BUCKET.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.LIQUID_PLASTIC_BUCKET.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.BEER_BUCKET.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), ModItems.CRUDE_OIL_BUCKET.get());
+        ModFluids.FLUIDS.forEachBucketEntry(holder -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), holder.get()));
 
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> {
             int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
@@ -175,7 +163,7 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
-        event.register(ModBlocks.PLASTIC_CAULDRON.get(), ModFluids.LIQUID_PLASTIC.get().getSource(), FluidType.BUCKET_VOLUME, null);
+        event.register(ModBlocks.PLASTIC_CAULDRON.get(), ModFluids.LIQUID_PLASTIC.getFluid(), FluidType.BUCKET_VOLUME, null);
     }
 
     @SubscribeEvent
@@ -194,7 +182,7 @@ public class CommonModEvents {
             ModCauldronInteraction.PLASTIC.map().put(item, ModCauldronDrainInteraction.PLASTIC);
         }
         ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, ModCauldronDrainInteraction.PLASTIC);
-        CauldronInteraction.EMPTY.map().put(ModItems.LIQUID_PLASTIC_BUCKET.get(), ModCauldronInteraction.EMPTY);
+        CauldronInteraction.EMPTY.map().put(ModFluids.LIQUID_PLASTIC.getBucketItem(), ModCauldronInteraction.EMPTY);
         ModCauldronInteraction.PLASTIC.map().put(Items.BLUE_DYE, ModCauldronInteraction.DYE_PLASTIC);
     }
 
