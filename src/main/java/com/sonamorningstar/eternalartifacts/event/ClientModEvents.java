@@ -77,9 +77,6 @@ public class ClientModEvents {
             level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos)
                     : GrassColor.getDefaultColor()
         , ModBlocks.FOUR_LEAF_CLOVER.get());
-        /*ModFluids.FLUIDS.getEntries().forEach(holder ->
-            event.register((state, level, pos, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getFluidBlock())
-        );*/
     }
 
     @SubscribeEvent

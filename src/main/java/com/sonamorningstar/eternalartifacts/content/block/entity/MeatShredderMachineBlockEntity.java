@@ -25,7 +25,6 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
         super(ModBlockEntities.MEAT_SHREDDER.get(), pos, blockState, MeatShredderMenu::new);
     }
 
-    MeatShredderRecipe currRecipe;
     RecipeCache<MeatShredderRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
 
     @Getter
@@ -34,39 +33,18 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
         protected void onContentsChanged(int slot) {
             progress = 0;
             MeatShredderMachineBlockEntity.this.sendUpdate();
-            currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
             recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
         }
     };
-
     @Getter
-    public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
-        @Override
-        public void onEnergyChanged() {
-            MeatShredderMachineBlockEntity.this.sendUpdate();
-        }
-    };
-
+    public ModEnergyStorage energy = createDefaultEnergy();
     @Getter
-    public ModFluidStorage tank = new ModFluidStorage(10000) {
-        @Override
-        protected void onContentsChanged() {
-            MeatShredderMachineBlockEntity.this.sendUpdate();
-        }
+    public ModFluidStorage tank = createBasicTank(10000, fs -> fs.is(ModTags.Fluids.MEAT), true, false);
 
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return stack.is(ModTags.Fluids.MEAT);
-        }
-
-        @Override
-        public int fill(FluidStack resource, FluidAction action) { return 0; }
-    };
 
     @Override
     public void onLoad() {
         super.onLoad();
-        currRecipe = findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)));
         recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 

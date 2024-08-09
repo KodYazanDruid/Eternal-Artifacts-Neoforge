@@ -1,13 +1,62 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import net.minecraft.nbt.ListTag;
+import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 public class ItemHelper {
 
-    /*public static int getTagEnchantmentLevel(ItemStack stack, Enchantment enchantment) {
-        ListTag listTag = stack.getEnchantmentTags();
+    /**
+     * I modified some methods in {@link net.neoforged.neoforge.items.ItemHandlerHelper}
+     * to make work with {@link com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage}
+     * easier.
+     */
+    public static ItemStack insertItemForced(ModItemStorage destination, ItemStack stack, boolean simulate) {
+        if (destination == null || stack.isEmpty())
+            return stack;
 
-    }*/
+        for (int i = 0; i < destination.getSlots(); i++) {
+            stack = destination.insertItemForced(i, stack, simulate);
+            if (stack.isEmpty()) return ItemStack.EMPTY;
+        }
+
+        return stack;
+    }
+
+    public static ItemStack insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate) {
+        if (inventory == null || stack.isEmpty())
+            return stack;
+
+        // not stackable -> just insert into a new slot
+        if (!stack.isStackable()) {
+            return insertItemForced(inventory, stack, simulate);
+        }
+
+        int sizeInventory = inventory.getSlots();
+
+        // go through the inventory and try to fill up already existing items
+        for (int i = 0; i < sizeInventory; i++) {
+            ItemStack slot = inventory.getStackInSlot(i);
+            if (ItemHandlerHelper.canItemStacksStackRelaxed(slot, stack)) {
+                stack = inventory.insertItemForced(i, stack, simulate);
+                if (stack.isEmpty()) {
+                    break;
+                }
+            }
+        }
+        // insert remainder into empty slots
+        if (!stack.isEmpty()) {
+            // find empty slot
+            for (int i = 0; i < sizeInventory; i++) {
+                if (inventory.getStackInSlot(i).isEmpty()) {
+                    stack = inventory.insertItemForced(i, stack, simulate);
+                    if (stack.isEmpty()) {
+                        break;
+                    }
+                }
+            }
+        }
+        return stack;
+    }
+
 }

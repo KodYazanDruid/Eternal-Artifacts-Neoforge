@@ -62,7 +62,7 @@ public class FluidDeferredRegister{
                         .sound(SoundActions.BUCKET_FILL, SoundEvents.BOTTLE_FILL).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BOTTLE_EMPTY))
         );
 
-        ResourceLocation baseKey = new ResourceLocation(this.fluidRegister.getNamespace(), name);
+        ResourceLocation baseKey = new ResourceLocation(fluidRegister.getNamespace(), name);
         BaseFlowingFluid.Properties fluidProperties = new BaseFlowingFluid.Properties(fluidType, DeferredHolder.create(Registries.FLUID, baseKey), DeferredHolder.create(Registries.FLUID, baseKey.withSuffix("_flow")))
                 .bucket(DeferredHolder.create(Registries.ITEM, baseKey.withSuffix("_bucket")))
                 .block(DeferredHolder.create(Registries.BLOCK, baseKey));

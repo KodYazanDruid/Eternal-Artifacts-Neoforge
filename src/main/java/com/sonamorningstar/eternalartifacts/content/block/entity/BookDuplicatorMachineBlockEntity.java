@@ -23,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@Getter
 public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockEntity<BookDuplicatorMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public BookDuplicatorMachineBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
@@ -33,7 +34,6 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
     // 1 -> output
     // 2 -> book/writable book slot
     // 3 -> fluid filler
-    @Getter
     public ModItemStorage inventory = new ModItemStorage(4) {
         @Override
         protected void onContentsChanged(int slot) {
@@ -59,31 +59,8 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
             }
         }
     };
-    @Getter
-    public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
-        @Override
-        public void onEnergyChanged() {
-            BookDuplicatorMachineBlockEntity.this.sendUpdate();
-        }
-    };
-    @Getter
-    public ModFluidStorage tank = new ModFluidStorage(10000) {
-        @Override
-        protected void onContentsChanged() {
-            BookDuplicatorMachineBlockEntity.this.sendUpdate();
-        }
-
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return stack.is(ModTags.Fluids.EXPERIENCE);
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, FluidAction action) {
-            return FluidStack.EMPTY;
-        }
-
-    };
+    public ModEnergyStorage energy = createDefaultEnergy();
+    public ModFluidStorage tank = createBasicTank(10000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true);
 
     @Override
     protected void saveAdditional(CompoundTag tag) {

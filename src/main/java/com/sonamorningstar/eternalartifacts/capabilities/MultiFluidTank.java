@@ -14,15 +14,16 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import java.util.*;
 
-public class MultiFluidTank implements IFluidHandler {
-    @Setter
-    private List<FluidTank> tanks = new ArrayList<>();
+@Setter
+public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
+    private List<T> tanks = new ArrayList<>();
 
-    public MultiFluidTank(FluidTank... tanks) {
+    @SafeVarargs
+    public MultiFluidTank(T... tanks) {
             this.tanks.addAll(Arrays.asList(tanks));
     }
 
-    public MultiFluidTank readFromNBT(CompoundTag nbt) {
+    public MultiFluidTank<?> readFromNBT(CompoundTag nbt) {
         ListTag tanksList = nbt.getList("Tanks", 10);
         for(int i = 0; i < tanksList.size() ; i++) {
             CompoundTag entry = tanksList.getCompound(i);
@@ -37,7 +38,7 @@ public class MultiFluidTank implements IFluidHandler {
 
     public CompoundTag writeToNBT(CompoundTag nbt) {
         ListTag tanksList = new ListTag();
-        for(FluidTank tank : tanks) {
+        for(T tank : tanks) {
             CompoundTag entry = new CompoundTag();
             entry.putString("FluidName", BuiltInRegistries.FLUID.getKey(tank.getFluidInTank(0).getFluid()).toString());
             entry.putInt("Amount", tank.getFluidInTank(0).getAmount());
@@ -48,13 +49,13 @@ public class MultiFluidTank implements IFluidHandler {
         return nbt;
     }
 
-    public FluidTank get(int tank) {
+    public T get(int tank) {
         return tanks.get(tank);
     }
 
     public int getEmptyTankCount() {
         int counter = 0;
-        for(FluidTank tank : tanks) if(tank.getFluidInTank(0).isEmpty()) counter++;
+        for(T tank : tanks) if(tank.getFluidInTank(0).isEmpty()) counter++;
         return counter;
     }
 
@@ -82,7 +83,7 @@ public class MultiFluidTank implements IFluidHandler {
     @Override
     public int fill(FluidStack resource, FluidAction action) {
         int filled;
-        for(FluidTank tank : tanks) {
+        for(T tank : tanks) {
              filled = tank.fill(resource, FluidAction.SIMULATE);
             if(filled > 0) {
                 filled = tank.fill(resource, action);
@@ -95,7 +96,7 @@ public class MultiFluidTank implements IFluidHandler {
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
         FluidStack drained;
-        for(FluidTank tank : tanks) {
+        for(T tank : tanks) {
             drained = tank.drain(resource, FluidAction.SIMULATE);
             if(!drained.isEmpty()) {
                 drained = tank.drain(resource, action);
@@ -108,7 +109,7 @@ public class MultiFluidTank implements IFluidHandler {
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
         FluidStack drained;
-        for(FluidTank tank : tanks) {
+        for(T tank : tanks) {
             drained = tank.drain(maxDrain, FluidAction.SIMULATE);
             if(!drained.isEmpty()) {
                 drained = tank.drain(maxDrain, action);

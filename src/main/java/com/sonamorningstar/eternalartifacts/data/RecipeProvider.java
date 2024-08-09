@@ -80,12 +80,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 100);
         createFluidCombustionRecipe(recipeOutput, ModFluids.CRUDE_OIL.getFluid(), 50, 80);
-
-        createOilRefineryRecipe(recipeOutput, ModFluids.CRUDE_OIL.getFluid(),
-                new FluidStack(Fluids.LAVA, 20), new FluidStack(ModFluids.BEER.getFluid(), 30),
-                NonNullList.of(ItemStack.EMPTY, ModItems.TAR_BALL.toStack(), ModItems.BITUMEN.toStack()),
-                NonNullList.of(1.0F, 0.4F, 0.25F)
-        );
+        createFluidCombustionRecipe(recipeOutput, ModFluids.GASOLINE.getFluid(), 270, 300);
+        createFluidCombustionRecipe(recipeOutput, ModFluids.DIESEL.getFluid(), 250, 360);
 
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
@@ -382,11 +378,4 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid), generation, duration))
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+fluid.location().getPath()));
     }
-
-    private void createOilRefineryRecipe(RecipeOutput output, Fluid fluid, FluidStack firstOutput, FluidStack secondaryOutput, NonNullList<ItemStack> itemOutputs, NonNullList<Float> chances) {
-        String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
-        SpecialRecipeBuilder.special(category -> new OilRefineryRecipe(FluidIngredient.of(new FluidStack(fluid, 50)), firstOutput, secondaryOutput, itemOutputs, chances))
-                .save(output, new ResourceLocation(MODID, "oil_refining/"+path));
-    }
-
 }

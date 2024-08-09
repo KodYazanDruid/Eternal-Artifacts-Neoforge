@@ -32,12 +32,6 @@ public class ModRecipes {
     public static final DeferredHolder<RecipeType<?>, RecipeType<FluidCombustionRecipe>> FLUID_COMBUSTING_TYPE =
             RECIPE_TYPES.register("fluid_combusting", ()-> RecipeType.simple(new ResourceLocation(MODID, "fluid_combusting")));
 
-    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<OilRefineryRecipe>> OIL_REFINERY_SERIALIZER =
-            RECIPE_SERIALIZERS.register("oil_refining", OilRefineryRecipe.Serializer::new);
-    public static final DeferredHolder<RecipeType<?>, RecipeType<OilRefineryRecipe>> OIL_REFINERY_TYPE =
-            RECIPE_TYPES.register("oil_refining", ()-> RecipeType.simple(new ResourceLocation(MODID, "oil_refining")));
-
-
 
 
 }

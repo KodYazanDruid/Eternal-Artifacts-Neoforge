@@ -30,6 +30,7 @@ public class EternalArtifacts {
      * TODO: ARDITE ?
      * TODO: Configs.
      * TODO: Scrap boxes and similar loot thingies.
+     * TODO: Add error tab to machines for why machine isn't working.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *

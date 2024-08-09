@@ -15,50 +15,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
+@Getter
 public class MeatPackerMachineBlockEntity extends SidedTransferMachineBlockEntity<MeatPackerMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public MeatPackerMachineBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.MEAT_PACKER.get(), pos, blockState, MeatPackerMenu::new);
     }
 
-    @Getter
-    public ModItemStorage inventory = new ModItemStorage(1) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            MeatPackerMachineBlockEntity.this.sendUpdate();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            return false;
-        }
-    };
-
-    @Getter
-    public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
-        @Override
-        public void onEnergyChanged() {
-            MeatPackerMachineBlockEntity.this.sendUpdate();
-        }
-    };
-
-    @Getter
-    public ModFluidStorage tank = new ModFluidStorage(10000) {
-        @Override
-        protected void onContentsChanged() {
-            MeatPackerMachineBlockEntity.this.sendUpdate();
-        }
-
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return stack.is(ModTags.Fluids.MEAT);
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, FluidAction action) {
-            return FluidStack.EMPTY;
-        }
-
-    };
+    public ModItemStorage inventory = createBasicInventory(1, false);
+    public ModEnergyStorage energy = createDefaultEnergy();
+    public ModFluidStorage tank = createBasicTank(10000, fs -> fs.is(ModTags.Fluids.MEAT), true, true);
 
     @Override
     protected void saveAdditional(CompoundTag tag) {

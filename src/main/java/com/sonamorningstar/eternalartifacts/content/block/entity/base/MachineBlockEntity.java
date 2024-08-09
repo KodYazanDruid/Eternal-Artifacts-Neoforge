@@ -223,18 +223,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, C container) {
-        if(level == null) return null;
-        List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
-        for(R recipe : recipeList) {
-            if(recipe.matches(container, level)) {
-                currentRecipe = recipe;
-                return recipe;
-            }
-        }
-        return null;
-    }
-
     protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
         if(level == null) return null;
         if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return null;

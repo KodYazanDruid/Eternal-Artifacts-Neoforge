@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-03T20:35:58.056487	Recipes
+// 1.20.4	2024-08-09T21:47:16.1860512	Recipes
 1dc3ff242bda0de185641d64da91915dcbb5f074 data/eternalartifacts/advancements/recipes/building_blocks/pink_slime_block.json
 50deffa9c78012d384dfe5cdf31ba8044e3eca30 data/eternalartifacts/advancements/recipes/building_blocks/sugar_charcoal_block.json
 4c33f0f96b88c93d2dbf72ea7810664a7399846f data/eternalartifacts/advancements/recipes/decorations/ice_bricks.json
@@ -98,6 +98,8 @@ dab321709d1e921e0047ada3407a663b1ee18bc4 data/eternalartifacts/recipes/copper_sw
 30cb21aa45d4b7420d2e3e3505c85a623fc8fa63 data/eternalartifacts/recipes/ender_notebook.json
 636620b36f0936f35699739a67664daa01762d3f data/eternalartifacts/recipes/ender_tablet.json
 836747095e91884e572c9e3cb466aa7bd6695050 data/eternalartifacts/recipes/fluid_combusting/crude_oil.json
+bd44a760b7548e539807aae5454ba0f061cc9849 data/eternalartifacts/recipes/fluid_combusting/diesel.json
+5638054f9480cd4f7597b1a83e7cab0a1e8b7fc5 data/eternalartifacts/recipes/fluid_combusting/gasoline.json
 968ad715e36f3a4a1e6ddf51a2a451d952a88149 data/eternalartifacts/recipes/fluid_combusting/lava.json
 d8f8e879e34fbfcf2b52444be76c0a937c86fa45 data/eternalartifacts/recipes/gardening_pot_recipe.json
 32ab5ddf2c8f9d474c295ee0ef7619019f0a8c7e data/eternalartifacts/recipes/golden_ancient_fruit.json
@@ -127,7 +129,6 @@ fae39db19ddd51a69a00339b3a5dad8ea6da35a7 data/eternalartifacts/recipes/mob_liqui
 2e47ec8e98ecd8ae8aadb010cc9522fd5d5278d0 data/eternalartifacts/recipes/mob_liquifying/sheep.json
 7378777315e016a175b49ae47beb48397923179e data/eternalartifacts/recipes/mob_liquifying/skeleton.json
 eafd75faf6d0c7f971a0f8f2898083bcfb6e3d52 data/eternalartifacts/recipes/mob_liquifying/zombie.json
-0a6cc78015429755709e7ec96091c1887ce221bd data/eternalartifacts/recipes/oil_refining/crude_oil.json
 052627b320d04ee205d5851571251b3688451aeb data/eternalartifacts/recipes/pink_slime_block.json
 6a05cfc31f8b663b64e412f1042f8228bc49bddc data/eternalartifacts/recipes/raw_ardite.json
 0521804f8995ad0fad6e532f55e9e4e3d4c4296d data/eternalartifacts/recipes/raw_ardite_block.json

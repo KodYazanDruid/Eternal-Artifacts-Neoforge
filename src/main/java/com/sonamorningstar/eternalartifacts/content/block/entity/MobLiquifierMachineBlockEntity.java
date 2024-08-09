@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.MobLiquifierMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -25,21 +26,13 @@ public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEnt
         super(ModBlockEntities.MOB_LIQUIFIER.get(), blockPos, blockState, MobLiquifierMenu::new);
     }
 
-    public MultiFluidTank tanks = new MultiFluidTank(
+    public MultiFluidTank<ModFluidStorage> tanks = new MultiFluidTank<>(
             createBasicTank(8000),
             createBasicTank(8000),
             createBasicTank(8000),
             createBasicTank(8000)
     );
-
-    public ModEnergyStorage energy = new ModEnergyStorage(50000, 2500) {
-        @Override
-        public void onEnergyChanged() {
-            MobLiquifierMachineBlockEntity.this.sendUpdate();
-        }
-        @Override
-        public boolean canExtract() { return false; }
-    };
+    public ModEnergyStorage energy = createDefaultEnergy();
 
     @Override
     public void load(CompoundTag pTag) {

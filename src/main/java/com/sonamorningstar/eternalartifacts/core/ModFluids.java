@@ -36,10 +36,10 @@ public class ModFluids {
             "crude_oil", 0, 3500, 3500, Rarity.UNCOMMON, 23, 21, 22, MapColor.COLOR_BLACK, false
     );
     public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> GASOLINE = FLUIDS.register(
-            "gasoline", 0, 2000, 4000, Rarity.RARE, 51, 88, 77, MapColor.TERRACOTTA_YELLOW, true, 0xF5C92D
+            "gasoline", 0, 2000, 4000, Rarity.RARE, 51, 88, 77, MapColor.TERRACOTTA_YELLOW, true, 0xFFF5C92D
     );
     public static final FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> DIESEL = FLUIDS.register(
-            "diesel", 0, 2000, 4000, Rarity.RARE, 22, 54, 58, MapColor.TERRACOTTA_BROWN, true, 0xFDA50A
+            "diesel", 0, 2000, 4000, Rarity.RARE, 22, 54, 58, MapColor.TERRACOTTA_BROWN, true, 0xFFFDA50A
     );
 
 }

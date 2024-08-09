@@ -23,5 +23,7 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
         tag(ModTags.Fluids.BLOOD).add(ModFluids.BLOOD.getFluid());
         tag(ModTags.Fluids.PLASTIC).add(ModFluids.LIQUID_PLASTIC.getFluid());
         tag(ModTags.Fluids.CRUDE_OIL).add(ModFluids.CRUDE_OIL.getFluid());
+        tag(ModTags.Fluids.GASOLINE).add(ModFluids.GASOLINE.getFluid());
+        tag(ModTags.Fluids.DIESEL).add(ModFluids.DIESEL.getFluid());
     }
 }

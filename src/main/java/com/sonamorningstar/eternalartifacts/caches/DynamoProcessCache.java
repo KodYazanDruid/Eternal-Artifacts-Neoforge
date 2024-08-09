@@ -12,13 +12,11 @@ public class DynamoProcessCache {
     private int duration;
     private final ModEnergyStorage energy;
     private final int generation;
-    private final FluidCombustionDynamoBlockEntity dynamo;
 
-    public DynamoProcessCache(int duration, ModEnergyStorage energy, int generation, FluidCombustionDynamoBlockEntity dynamo) {
+    public DynamoProcessCache(int duration, ModEnergyStorage energy, int generation) {
         this.duration = duration;
         this.energy = energy;
         this.generation = generation;
-        this.dynamo = dynamo;
     }
 
     public void process() {
@@ -45,7 +43,7 @@ public class DynamoProcessCache {
         if(!dynamoCache.isEmpty()) {
             int duration = dynamoCache.getInt("Duration");
             int generation = dynamoCache.getInt("Generation");
-            return Optional.of(new DynamoProcessCache(duration, energy, generation, dynamo));
+            return Optional.of(new DynamoProcessCache(duration, energy, generation));
         }
         return Optional.empty();
     }

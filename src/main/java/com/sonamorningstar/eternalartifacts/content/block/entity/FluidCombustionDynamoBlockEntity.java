@@ -123,11 +123,10 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
                 FluidStack drained = tank.drainForced(50, IFluidHandler.FluidAction.SIMULATE);
                 if(drained.getAmount() == 50) {
                     tank.drainForced(50, IFluidHandler.FluidAction.EXECUTE);
-                    cache = new DynamoProcessCache(maxProgress, energy, energyPerTick, this);
+                    cache = new DynamoProcessCache(maxProgress, energy, energyPerTick);
                 }
             }
         }
-
     }
 
 }
