@@ -31,6 +31,7 @@ public class EternalArtifacts {
      * TODO: Configs.
      * TODO: Scrap boxes and similar loot thingies.
      * TODO: Add error tab to machines for why machine isn't working.
+     * TODO: Add smart jukebox.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *

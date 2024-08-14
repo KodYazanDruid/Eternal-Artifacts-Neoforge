@@ -44,14 +44,15 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
-    QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF;
+    QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
+    @Deprecated
     protected Recipe<?> currentRecipe = null;
     @Getter
     @Setter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
-        this.quadF = quadF;
+        this.menuConstructor = quadF;
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -109,7 +110,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return quadF.apply(pContainerId, pPlayerInventory, this, data);
+        return menuConstructor.apply(pContainerId, pPlayerInventory, this, data);
     }
 
     protected void fillTankFromSlot(ModItemStorage inventory, ModFluidStorage tank, int fluidSlot) {

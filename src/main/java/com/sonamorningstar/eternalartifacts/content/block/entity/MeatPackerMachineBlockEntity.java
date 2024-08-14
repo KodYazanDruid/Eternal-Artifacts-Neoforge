@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -41,20 +42,21 @@ public class MeatPackerMachineBlockEntity extends SidedTransferMachineBlockEntit
         tank.readFromNBT(tag);
     }
 
-    //buggy
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutput(lvl, pos, inventory, 0);
         performAutoInputFluids(lvl, pos, tank);
-        progress(()-> {
-            ItemStack remainder = inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), true);
-            FluidStack drained = tank.drainForced(250, IFluidHandler.FluidAction.SIMULATE);
-            return !remainder.isEmpty() || drained.getAmount() < 250;
-        }, ()-> {
+
+        MachineProcessCondition condition = new MachineProcessCondition()
+                .initInventory(inventory)
+                .initOutputSlots(0)
+                .tryInsertForced(ModItems.RAW_MEAT_INGOT.toStack())
+                .initInputTanks(tank)
+                .tryExtractForced(250);
+        progress(condition::getResult, ()-> {
             tank.drainForced(250, IFluidHandler.FluidAction.EXECUTE);
             inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), false);
         }, energy);
-
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.capabilities;
 
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -52,6 +53,8 @@ public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
     public T get(int tank) {
         return tanks.get(tank);
     }
+
+    public List<T> getTanksAsList() { return tanks; }
 
     public int getEmptyTankCount() {
         int counter = 0;

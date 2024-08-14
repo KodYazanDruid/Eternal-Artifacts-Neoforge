@@ -132,6 +132,8 @@ public class ModBlocks {
                     return adjacent.is(state.getBlock()) || super.skipRendering(state, adjacent, dir);
                 }
             });
+    public static final DeferredBlock<Block> ASPHALT_BLOCK = registerWithItem("asphalt_block",
+            ()-> new AsphaltBlock(Blocks.DEEPSLATE.properties()));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
@@ -155,7 +157,7 @@ public class ModBlocks {
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
-            ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties(), 128));
+            ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties().forceSolidOn(), 128));
 
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
@@ -202,6 +204,13 @@ public class ModBlocks {
                     .sound(SoundType.GRASS)
                     .offsetType(BlockBehaviour.OffsetType.XZ)
                     .pushReaction(PushReaction.DESTROY)
+            ));
+    public static final DeferredBlock<PunjiBlock> PUNJI_STICKS = registerWithItem("punji_sticks",
+            ()-> new PunjiBlock(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .sound(SoundType.BAMBOO)
+                    .noOcclusion()
+                    .strength(0.3F)
             ));
 
     public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerOreBerryBlock("copper");

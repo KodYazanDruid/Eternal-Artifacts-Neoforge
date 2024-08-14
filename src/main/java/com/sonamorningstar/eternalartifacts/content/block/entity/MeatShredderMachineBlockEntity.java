@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.container.MeatShredderMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -12,13 +12,11 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEntity<MeatShredderMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
     public MeatShredderMachineBlockEntity(BlockPos pos, BlockState blockState) {

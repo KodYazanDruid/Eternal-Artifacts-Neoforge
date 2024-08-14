@@ -116,7 +116,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
             compoundtag.putInt("generation", WrittenBookItem.getGeneration(inputBook) + 1);
             copy.setTag(compoundtag);
             net.neoforged.neoforge.attachment.AttachmentUtils.copyStackAttachments(inputBook, copy);
-            progress(()->tank.getFluidAmount() < 500, ()->{
+            progress(()-> tank.getFluidAmount() < 500, ()->{
                 consumableBook.shrink(1);
                 tank.drainForced(500, IFluidHandler.FluidAction.EXECUTE);
                 inventory.setStackInSlot(1, copy);

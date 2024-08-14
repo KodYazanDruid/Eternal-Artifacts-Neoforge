@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import com.sonamorningstar.eternalartifacts.caches.OreCache;
-import com.sonamorningstar.eternalartifacts.caches.TreeCache;
+import com.sonamorningstar.eternalartifacts.api.caches.OreCache;
+import com.sonamorningstar.eternalartifacts.api.caches.TreeCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;

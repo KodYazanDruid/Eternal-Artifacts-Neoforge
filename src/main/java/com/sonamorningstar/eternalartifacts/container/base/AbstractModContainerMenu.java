@@ -25,20 +25,4 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
             else addSlot(new Slot(inventory, i, xOff + x * 18, yOff + 76 + y * 18));
         }
     }
-
-    protected void addPlayerHotbar(Inventory inventory) {
-        for(int i = 0; i < 9; i++) {
-            addSlot(new Slot(inventory, i, 8 + i * 18, 142));
-        }
-    }
-
-    public static OptionalInt openContainer(ServerPlayer player, BlockPos pos) {
-        final BlockEntity blockEntity = player.level().getBlockEntity(pos);
-
-        if (!(blockEntity instanceof MenuProvider prov))
-            return OptionalInt.empty();
-
-        return player.openMenu(prov, pos);
-    }
-
 }

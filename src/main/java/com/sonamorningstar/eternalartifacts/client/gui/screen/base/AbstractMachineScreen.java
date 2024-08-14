@@ -58,7 +58,8 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     private void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
         if(isCursorInBounds(x, y, xLen, yLen, mx, my)) {
             gui.renderTooltip(font,
-                    Component.translatable(ModConstants.GUI.withSuffix(key)).append(": ").append(String.valueOf(menu.data.get(0))),
+                    Component.translatable(ModConstants.GUI.withSuffix(key)).append(": ")
+                            .append(String.valueOf(menu.data.get(0))).append("/").append(String.valueOf(menu.data.get(1))),
                     mx, my);
         }
     }

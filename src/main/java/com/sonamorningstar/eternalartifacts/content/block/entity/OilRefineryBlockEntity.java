@@ -32,7 +32,7 @@ public class OilRefineryBlockEntity extends SidedTransferMachineBlockEntity<OilR
             createBasicTank(16000, Predicates.alwaysFalse(), true, false)
     );
 
-    public ModEnergyStorage energy = createBasicEnergy(50000, 5000);
+    public ModEnergyStorage energy = createDefaultEnergy();
     public ModItemStorage inventory = createBasicInventory(3, false);
 
     @Override
@@ -63,8 +63,16 @@ public class OilRefineryBlockEntity extends SidedTransferMachineBlockEntity<OilR
         FluidStack gasoline = ModFluids.GASOLINE.getFluidStack(25);
         Pair<ItemStack, Float> tar = Pair.of(ModItems.TAR_BALL.toStack(), 0.15F);
         Pair<ItemStack, Float> bitument = Pair.of(ModItems.BITUMEN.toStack(), 0.1F);
+
+        /*MachineProcessCondition condition = new MachineProcessCondition()
+                .initInventory(inventory)
+                .initOutputSlots(0, 1, 2)
+                .tryInsertForced(tar.getFirst(), bitument.getFirst())
+                .initOutputTanks(tanks.getTanksAsList())
+                .tryInsertForced(diesel)
+                .tryInsertForced(gasoline);*/
+
         progress(()-> {
-            //TODO: Might need a helper method.
             FluidStack oilExtracted = tanks.get(0).drainForced(50, IFluidHandler.FluidAction.SIMULATE);
             int dieselInserted = tanks.get(1).fillForced(diesel, IFluidHandler.FluidAction.SIMULATE);
             int gasolineInserted = tanks.get(2).fillForced(gasoline, IFluidHandler.FluidAction.SIMULATE);

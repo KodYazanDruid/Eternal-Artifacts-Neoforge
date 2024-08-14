@@ -72,6 +72,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.ARDITE_BLOCK.get());
         simpleBlockWithItem(ModBlocks.SNOW_BRICKS.get());
         simpleBlockWithItemWithRenderType(ModBlocks.ICE_BRICKS.get(), "translucent");
+        simpleBlockWithItem(ModBlocks.ASPHALT_BLOCK.get());
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

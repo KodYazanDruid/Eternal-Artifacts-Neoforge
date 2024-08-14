@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.renderer.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FancyChestBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
+import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;

@@ -70,6 +70,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GOLD_DRUM.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.DIAMOND_DRUM.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.NETHERITE_DRUM.get(), "diamond", "pickaxe");
+        tierAndTool(ModBlocks.ASPHALT_BLOCK.get(), "stone", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),

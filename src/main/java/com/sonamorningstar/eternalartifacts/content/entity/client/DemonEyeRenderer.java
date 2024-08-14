@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.entity.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
+import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;

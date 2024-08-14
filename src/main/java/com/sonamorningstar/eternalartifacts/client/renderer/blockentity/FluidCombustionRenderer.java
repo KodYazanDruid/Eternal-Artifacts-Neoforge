@@ -4,13 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.client.model.FluidCombustionDynamoModel;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
-import net.minecraft.client.Minecraft;
+import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -38,9 +36,7 @@ public class FluidCombustionRenderer implements BlockEntityRenderer<FluidCombust
         poseStack.translate(0.5F, 0.5F, 0.5F);
         poseStack.mulPose(faceRot);
         poseStack.translate(-0.5F, -0.5F, -0.5F);
-
         model.setupAnim(dynamo, tick);
-
         model.renderToBuffer(poseStack, consumer, light, overlay, 1, 1, 1, 1);
         poseStack.popPose();
     }

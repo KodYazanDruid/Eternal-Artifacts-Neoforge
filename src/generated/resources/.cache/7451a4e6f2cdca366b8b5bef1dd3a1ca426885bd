@@ -1,8 +1,9 @@
-// 1.20.4	2024-08-05T16:41:10.6369203	Block States: eternalartifacts
+// 1.20.4	2024-08-12T23:27:06.8037171	Block States: eternalartifacts
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
 31ccf79f94568a40a5b2214ce81d9b952c686a5b assets/eternalartifacts/blockstates/anvilinator.json
 a38a7f43fa00ec7992fd95f525e0198ad518312d assets/eternalartifacts/blockstates/ardite_block.json
 576794c1dc558f14f2cacf78235eba647f19aa37 assets/eternalartifacts/blockstates/ardite_ore.json
+7611e6b972cdf964640c23d31a8b705346dd0dd6 assets/eternalartifacts/blockstates/asphalt_block.json
 27383d677a2d896021262547bb9ca8c0f1c540e7 assets/eternalartifacts/blockstates/battery_box.json
 d358a8c69d5821dccf9fe8b8ac51476ace8108a1 assets/eternalartifacts/blockstates/biofurnace.json
 9b9e52ed1a492b4c995bf9775dce98a093469f1b assets/eternalartifacts/blockstates/book_duplicator.json
@@ -66,6 +67,7 @@ b24d735eae293baeb94bf4c26457818c5686f23c assets/eternalartifacts/models/block/an
 4f9319fa38529c80de5d036ccf2358c3ecff96b9 assets/eternalartifacts/models/block/anvilinator.json
 247202d9f1bf4fcc22903a579c468d55d6747d13 assets/eternalartifacts/models/block/ardite_block.json
 8306b6949856b50501331ad7ab9eb6b45d0de752 assets/eternalartifacts/models/block/ardite_ore.json
+9d580c0264bec5326bef0f10a4b3bd40a7f257ac assets/eternalartifacts/models/block/asphalt_block.json
 18e0be299a3083576010c5442a00310a23b95c9c assets/eternalartifacts/models/block/battery_box.json
 f602f14b30b3bf353cf9885210bdcb56818f541d assets/eternalartifacts/models/block/biofurnace.json
 eda9c84c62ce4e5b8ad1e51f15086932d6c83162 assets/eternalartifacts/models/block/book_duplicator.json
@@ -139,6 +141,7 @@ b38f7f38fc96a13d3adfb94b79f3792737cd6415 assets/eternalartifacts/models/block/ve
 12ba5c35746cc2cbcedb4638dfa2384e7f147009 assets/eternalartifacts/models/item/anvilinator.json
 7357f8fcbd781eb7fbf510d60237635a57d64150 assets/eternalartifacts/models/item/ardite_block.json
 1fcc26f6ed634ef1e4e95515dd43cfbb22cb78c5 assets/eternalartifacts/models/item/ardite_ore.json
+477632d17b97fa19411b5db7ab2d42099ab40560 assets/eternalartifacts/models/item/asphalt_block.json
 0cc868a9f308e87b07a6b548fe521193c957b6a7 assets/eternalartifacts/models/item/battery_box.json
 10a8aab1f7a9bb2f22126335fd548250359d5213 assets/eternalartifacts/models/item/biofurnace.json
 6c6e6bc40f3a6d64989c101404960392f9485459 assets/eternalartifacts/models/item/book_duplicator.json

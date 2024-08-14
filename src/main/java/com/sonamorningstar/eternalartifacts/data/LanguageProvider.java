@@ -182,6 +182,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.NETHERITE_DRUM.get(), "Netherite Drum");
                 add(ModFluids.GASOLINE.getTranslationKey(), "Gasoline");
                 add(ModFluids.DIESEL.getTranslationKey(), "Diesel");
+                add(ModBlocks.PUNJI_STICKS.get(), "Punji Sticks");
+                add(ModBlocks.ASPHALT_BLOCK.get(), "Asphalt Block");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -410,6 +412,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.NETHERITE_DRUM.get(), "Netherit Varil");
                 add(ModFluids.GASOLINE.getTranslationKey(), "Benzin");
                 add(ModFluids.DIESEL.getTranslationKey(), "Dizel");
+                add(ModBlocks.PUNJI_STICKS.get(), "Punji Kazığı");
+                add(ModBlocks.ASPHALT_BLOCK.get(), "Asfalt Bloğu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

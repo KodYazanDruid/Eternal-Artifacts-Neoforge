@@ -83,24 +83,23 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
 
-    protected ModEnergyStorage createBasicEnergy(int size, int transfer) {
-        return createBasicEnergy(size, transfer, transfer);
+    protected ModEnergyStorage createDefaultEnergy() {
+        return createBasicEnergy(50000, 2500, true, false);
     }
-    protected ModEnergyStorage createBasicEnergy(int size, int maxReceive, int maxExtract) {
+    protected ModEnergyStorage createBasicEnergy(int size, int transfer, boolean canReceive, boolean canExtract) {
+        return createBasicEnergy(size, transfer, transfer, canReceive, canExtract);
+    }
+    protected ModEnergyStorage createBasicEnergy(int size, int maxReceive, int maxExtract, boolean canReceive, boolean canExtract) {
         return new ModEnergyStorage(size, maxReceive, maxExtract) {
             @Override
             public void onEnergyChanged() {
                 sendUpdate();
             }
-
             @Override
-            public boolean canExtract() {
-                return false;
-            }
+            public boolean canReceive() {return canReceive;}
+            @Override
+            public boolean canExtract() {return canExtract;}
         };
-    }
-    protected ModEnergyStorage createDefaultEnergy() {
-        return createBasicEnergy(50000, 2500);
     }
 
     protected ModItemStorage createBasicInventory(int size) {

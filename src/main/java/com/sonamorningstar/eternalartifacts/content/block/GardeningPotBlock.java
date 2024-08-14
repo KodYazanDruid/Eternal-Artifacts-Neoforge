@@ -261,8 +261,8 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     }
 
     @Override
-    public FluidState getFluidState(BlockState p_221523_) {
-        return p_221523_.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(p_221523_);
+    public FluidState getFluidState(BlockState state) {
+        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override

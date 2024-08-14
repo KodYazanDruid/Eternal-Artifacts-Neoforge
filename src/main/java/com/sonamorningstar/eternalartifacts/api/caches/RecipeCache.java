@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.caches;
+package com.sonamorningstar.eternalartifacts.api.caches;
 
 import lombok.Getter;
 import net.minecraft.world.Container;

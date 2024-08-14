@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.data.loot;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
+import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModLootTables;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -23,6 +25,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
@@ -33,6 +36,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubProvider {
 
@@ -80,11 +84,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
         dropOther(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
         dropSelf(ModBlocks.SNOW_BRICKS.get());
         dropSelf(ModBlocks.ICE_BRICKS.get());
-        /*dropSelf(ModBlocks.COPPER_DRUM.get());
-        dropSelf(ModBlocks.IRON_DRUM.get());
-        dropSelf(ModBlocks.GOLD_DRUM.get());
-        dropSelf(ModBlocks.DIAMOND_DRUM.get());
-        dropSelf(ModBlocks.NETHERITE_DRUM.get());*/
+        dropSelf(ModBlocks.ASPHALT_BLOCK.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -142,7 +142,28 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
                 )
         );
 
-        //add(ModBlocks.PLASTIC_CAULDRON.get(), LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(Items.CAULDRON))));
+        add(ModBlocks.PUNJI_STICKS.get(), LootTable.lootTable()
+            .withPool(
+                LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1.0F))
+                    .add(applyExplosionDecay(
+                        ModBlocks.PUNJI_STICKS.get(),
+                        LootItem.lootTableItem(ModBlocks.PUNJI_STICKS.get())
+                            .apply(
+                                IntStream.rangeClosed(1, 5).boxed().toList(),
+                                count -> SetItemCountFunction.setCount(ConstantValue.exactly((float) count))
+                                    .when(
+                                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(ModBlocks.PUNJI_STICKS.get())
+                                            .setProperties(
+                                                StatePropertiesPredicate.Builder.properties().hasProperty(PunjiBlock.STICKS, count)
+                                            )
+                                    )
+                            )
+                        )
+                    )
+            )
+        );
+
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {

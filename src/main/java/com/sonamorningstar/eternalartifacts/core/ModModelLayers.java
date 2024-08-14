@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.content.entity.client;
+package com.sonamorningstar.eternalartifacts.core;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;

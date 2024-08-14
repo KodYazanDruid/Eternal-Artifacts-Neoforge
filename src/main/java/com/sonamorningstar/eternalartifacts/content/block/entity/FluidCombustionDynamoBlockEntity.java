@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.container.FluidCombustionMenu;
@@ -10,7 +10,7 @@ import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
-import com.sonamorningstar.eternalartifacts.caches.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -30,17 +30,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     private DynamoProcessCache cache;
     private final RecipeCache<FluidCombustionRecipe, SimpleFluidContainer> recipeCache = new RecipeCache<>();
 
-    public ModEnergyStorage energy = new ModEnergyStorage(20000, 2500) {
-        @Override
-        public void onEnergyChanged() {
-            FluidCombustionDynamoBlockEntity.this.sendUpdate();
-        }
-
-        @Override
-        public boolean canReceive() {
-            return false;
-        }
-    };
+    public ModEnergyStorage energy = createBasicEnergy(50000, 2500, false, true);
 
     public ModFluidStorage tank = new ModFluidStorage(16000) {
         @Override
@@ -107,9 +97,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         if(cache != null) {
             if(!cache.isDone()) {
                 cache.process();
-                progress++;
-                isWorking = true;
-                sendUpdate();
+                progress = cache.getDuration();
             } else if (cache.isDone()) {
                 cache = null;
                 progress = 0;
@@ -123,7 +111,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
                 FluidStack drained = tank.drainForced(50, IFluidHandler.FluidAction.SIMULATE);
                 if(drained.getAmount() == 50) {
                     tank.drainForced(50, IFluidHandler.FluidAction.EXECUTE);
-                    cache = new DynamoProcessCache(maxProgress, energy, energyPerTick);
+                    cache = new DynamoProcessCache(maxProgress, energy, energyPerTick, this);
                 }
             }
         }

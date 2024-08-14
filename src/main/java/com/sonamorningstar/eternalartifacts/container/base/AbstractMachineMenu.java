@@ -1,6 +1,10 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -15,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.OptionalInt;
 
 public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     @Getter
@@ -105,4 +110,15 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     public boolean isWorking() {
         return data.get(0) > 0;
     }
+
+    public static OptionalInt openContainer(ServerPlayer player, BlockPos pos) {
+        final BlockEntity blockEntity = player.level().getBlockEntity(pos);
+
+        if (!(blockEntity instanceof MenuProvider prov))
+            return OptionalInt.empty();
+
+        return player.openMenu(prov, pos);
+    }
+
+
 }

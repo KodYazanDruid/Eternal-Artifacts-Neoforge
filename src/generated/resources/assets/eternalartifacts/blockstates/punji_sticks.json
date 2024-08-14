@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "sticks=1": {
+      "model": "eternalartifacts:block/punji_sticks_one"
+    },
+    "sticks=2": {
+      "model": "eternalartifacts:block/punji_sticks_two"
+    },
+    "sticks=3": {
+      "model": "eternalartifacts:block/punji_sticks_three"
+    },
+    "sticks=4": {
+      "model": "eternalartifacts:block/punji_sticks_four"
+    },
+    "sticks=5": {
+      "model": "eternalartifacts:block/punji_sticks_five"
+    }
+  }
+}

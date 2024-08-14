@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.caches;
+package com.sonamorningstar.eternalartifacts.api.caches;
 
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;

@@ -2,8 +2,10 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.google.gson.JsonElement;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
+import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
+import com.sonamorningstar.eternalartifacts.core.ModModelTemplates;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -44,6 +46,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         blockEntityModels(ModBlocks.JAR.get(), Blocks.GLASS).create(ModBlocks.JAR.get());
         blockEntityModels(ModBlocks.NOUS_TANK.get(), Blocks.GLASS).create(ModBlocks.NOUS_TANK.get());
         blockEntityModels(ModBlocks.OIL_REFINERY.get(), Blocks.GLASS).create(ModBlocks.OIL_REFINERY.get());
+
+        createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 
         stateOutput.accept(
                 createSimpleBlock(
@@ -106,6 +110,19 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
     }
 
+    private void createPunjiStick(Block block) {
+        createSimpleFlatItemModel(block.asItem());
+        ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_one");
+        stateOutput.accept(MultiVariantGenerator.multiVariant(block).with(
+            PropertyDispatch.property(PunjiBlock.STICKS)
+                .select(1, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_one")))
+                .select(2, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_two")))
+                .select(3, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_three")))
+                .select(4, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_four")))
+                .select(5, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_five")))
+        ));
+    }
+
     private static MultiVariantGenerator createSimpleBlock(Block block, ResourceLocation modelLoc) {
         return MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, modelLoc));
     }
@@ -116,6 +133,10 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
     private void createNonTemplateModelBlock(Block pBlock, Block pModelBlock) {
         stateOutput.accept(createSimpleBlock(pBlock, ModelLocationUtils.getModelLocation(pModelBlock)));
+    }
+
+    void createSimpleFlatItemModel(Item item) {
+        ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), modelOutput);
     }
 
     private net.minecraft.data.models.BlockModelGenerators.BlockEntityModelGenerator blockEntityModels(ResourceLocation pEntityBlockModelLocation, Block pParticleBlock) {

@@ -49,6 +49,7 @@ public class ModelProvider extends net.minecraft.data.models.ModelProvider {
         };
         Consumer<Item> consumer1 = set::add;
         new BlockModelGenerators(consumer, biconsumer, consumer1).run();
+        new ItemModelGenerators(biconsumer).run();
         return CompletableFuture.allOf(
                 this.saveCollection(output, map, block -> this.blockStatePathProvider.json(block.builtInRegistryHolder().key().location())),
                 this.saveCollection(output, map1, this.modelPathProvider::json)

@@ -1,30 +1,33 @@
-package com.sonamorningstar.eternalartifacts.caches;
+package com.sonamorningstar.eternalartifacts.api.caches;
 
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.Optional;
 
+@AllArgsConstructor
 public class DynamoProcessCache {
     @Getter
     private int duration;
     private final ModEnergyStorage energy;
     private final int generation;
-
-    public DynamoProcessCache(int duration, ModEnergyStorage energy, int generation) {
-        this.duration = duration;
-        this.energy = energy;
-        this.generation = generation;
-    }
+    private final FluidCombustionDynamoBlockEntity dynamo;
 
     public void process() {
         int inserted = energy.receiveEnergyForced(generation, true);
         if(inserted == generation) {
             duration--;
             energy.receiveEnergyForced(generation, false);
+            dynamo.isWorking = true;
+            dynamo.sendUpdate();
+        } else {
+            dynamo.isWorking = false;
+            dynamo.sendUpdate();
         }
+
     }
 
     public boolean isDone() {
@@ -43,7 +46,7 @@ public class DynamoProcessCache {
         if(!dynamoCache.isEmpty()) {
             int duration = dynamoCache.getInt("Duration");
             int generation = dynamoCache.getInt("Generation");
-            return Optional.of(new DynamoProcessCache(duration, energy, generation));
+            return Optional.of(new DynamoProcessCache(duration, energy, generation, dynamo));
         }
         return Optional.empty();
     }

@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.client.renderer.util.RendererHelper;
 import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.client.ModModelLayers;
+import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
