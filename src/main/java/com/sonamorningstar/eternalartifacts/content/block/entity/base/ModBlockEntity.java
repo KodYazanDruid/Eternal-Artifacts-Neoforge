@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -55,6 +56,7 @@ public class ModBlockEntity extends BlockEntity {
         if(level != null && !isRemoved() && level.hasChunkAt(worldPosition)) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
+    protected ModFluidStorage createDefaultTank() {return createBasicTank(16000);}
     protected ModFluidStorage createBasicTank(int size) {
         return new ModFluidStorage(size) {
             @Override
@@ -63,19 +65,16 @@ public class ModBlockEntity extends BlockEntity {
             }
         };
     }
-
     protected ModFluidStorage createBasicTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill) {
         return new ModFluidStorage(size, validator) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
             }
-
             @Override
             public FluidStack drain(int maxDrain, FluidAction action) {
                 return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
             }
-
             @Override
             public int fill(FluidStack resource, FluidAction action) {
                 return canFill ? super.fill(resource, action) : 0;
@@ -83,9 +82,7 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
 
-    protected ModEnergyStorage createDefaultEnergy() {
-        return createBasicEnergy(50000, 2500, true, false);
-    }
+    protected ModEnergyStorage createDefaultEnergy() {return createBasicEnergy(50000, 2500, true, false);}
     protected ModEnergyStorage createBasicEnergy(int size, int transfer, boolean canReceive, boolean canExtract) {
         return createBasicEnergy(size, transfer, transfer, canReceive, canExtract);
     }
@@ -102,9 +99,7 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
 
-    protected ModItemStorage createBasicInventory(int size) {
-        return createBasicInventory(size, true);
-    }
+    protected ModItemStorage createBasicInventory(int size) {return createBasicInventory(size, true);}
     protected ModItemStorage createBasicInventory(int size, boolean canInsert) {
         return new ModItemStorage(size) {
             @Override
@@ -116,6 +111,15 @@ public class ModBlockEntity extends BlockEntity {
             public boolean isItemValid(int slot, ItemStack stack) {
                 return canInsert;
             }
+        };
+    }
+    protected ModItemStorage createBasicInventory(int size, Integer... outputSlots) {
+        return new ModItemStorage(size) {
+            @Override
+            protected void onContentsChanged(int slot) {sendUpdate();}
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {return !Arrays.stream(outputSlots).toList().contains(slot);}
         };
     }
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid) {

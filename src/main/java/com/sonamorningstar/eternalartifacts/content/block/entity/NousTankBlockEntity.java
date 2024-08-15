@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.IHasFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.container.NousTankMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -12,30 +11,16 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class NousTankBlockEntity extends SidedTransferMachineBlockEntity<NousTankMenu>  implements IHasFluidTank {
+public class NousTankBlockEntity extends SidedTransferMachineBlockEntity<NousTankMenu> {
     public NousTankBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.NOUS_TANK.get(), pos, blockState, NousTankMenu::new);
-    }
-
-    @Getter
-    public ModFluidStorage tank = new ModFluidStorage(Integer.MAX_VALUE, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
-        @Override
-        protected void onContentsChanged() {
-            NousTankBlockEntity.this.requestModelDataUpdate();
-            NousTankBlockEntity.this.sendUpdate();
-        }
-    };
-
-    @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        tank.readFromNBT(pTag);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        tank.writeToNBT(pTag);
+        setTank(new ModFluidStorage(Integer.MAX_VALUE, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
+            @Override
+            protected void onContentsChanged() {
+                NousTankBlockEntity.this.requestModelDataUpdate();
+                NousTankBlockEntity.this.sendUpdate();
+            }
+        });
     }
 
     @Override

@@ -86,11 +86,11 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tanks, ctx));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MOB_LIQUIFIER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(0, 1, 2)));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> regSidedFluidCaps(be, be.tanks, ctx));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.OIL_REFINERY.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);

@@ -6,7 +6,6 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -184,6 +183,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.DIESEL.getTranslationKey(), "Diesel");
                 add(ModBlocks.PUNJI_STICKS.get(), "Punji Sticks");
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asphalt Block");
+                add(ModMachines.FLUID_INFUSER.getBlockTranslationKey(), "Fluid Infuser");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -414,6 +414,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.DIESEL.getTranslationKey(), "Dizel");
                 add(ModBlocks.PUNJI_STICKS.get(), "Punji Kazığı");
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asfalt Bloğu");
+                add(ModMachines.FLUID_INFUSER.getBlockTranslationKey(), "Sıvı İnfüzörü");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

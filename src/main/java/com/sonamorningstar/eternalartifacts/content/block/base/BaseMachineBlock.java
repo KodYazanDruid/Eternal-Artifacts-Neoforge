@@ -23,13 +23,11 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.BiFunction;
-
 public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntityBlock {
-    private final BiFunction<BlockPos, BlockState, T> fun;
-    protected BaseMachineBlock(Properties pProperties, BiFunction<BlockPos, BlockState, T> fun) {
+    private final BlockEntityType.BlockEntitySupplier<T> supplier;
+    protected BaseMachineBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> fun) {
         super(pProperties);
-        this.fun = fun;
+        this.supplier = fun;
     }
 
     @Override
@@ -97,6 +95,6 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return fun.apply(pPos, pState);
+        return supplier.create(pPos, pState);
     }
 }

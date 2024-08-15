@@ -4,11 +4,13 @@ import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -140,6 +142,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .texture("layer0", modLoc("block/four_leaf_clover"));
 
         ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
+        ModMachines.MACHINES.getMachines().forEach(holder -> withParentBlock(holder.getBlockHolder()));
     }
 
     private void handheld(DeferredItem<Item> deferred) {
@@ -159,7 +162,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .applyTint(true);
     }
 
-    private void withParentBlock(DeferredBlock<?> holder) {
+    private void withParentBlock(DeferredHolder<Block, ? extends Block> holder) {
         String path = holder.getId().getPath();
         withExistingParent(path, modLoc("block/"+path));
     }

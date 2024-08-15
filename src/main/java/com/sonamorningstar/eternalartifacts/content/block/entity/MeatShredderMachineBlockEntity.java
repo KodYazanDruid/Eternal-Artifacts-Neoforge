@@ -18,26 +18,22 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEntity<MeatShredderMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
-    public MeatShredderMachineBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.MEAT_SHREDDER.get(), pos, blockState, MeatShredderMenu::new);
-    }
-
+public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEntity<MeatShredderMenu>  {
     RecipeCache<MeatShredderRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
 
-    @Getter
-    public ModItemStorage inventory = new ModItemStorage(1) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            progress = 0;
-            MeatShredderMachineBlockEntity.this.sendUpdate();
-            recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
-        }
-    };
-    @Getter
-    public ModEnergyStorage energy = createDefaultEnergy();
-    @Getter
-    public ModFluidStorage tank = createBasicTank(10000, fs -> fs.is(ModTags.Fluids.MEAT), true, false);
+    public MeatShredderMachineBlockEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntities.MEAT_SHREDDER.get(), pos, blockState, MeatShredderMenu::new);
+        setInventory(new ModItemStorage(1) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                progress = 0;
+                MeatShredderMachineBlockEntity.this.sendUpdate();
+                recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
+            }
+        });
+        setEnergy(createDefaultEnergy());
+        setTank(createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, false));
+    }
 
 
     @Override
@@ -47,28 +43,10 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("Inventory", inventory.serializeNBT());
-        tag.put("Energy", energy.serializeNBT());
-        tank.writeToNBT(tag);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        inventory.deserializeNBT(tag.getCompound("Inventory"));
-        energy.deserializeNBT(tag.get("Energy"));
-        tank.readFromNBT(tag);
-    }
-
-    @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInput(lvl, pos, inventory);
         performAutoOutputFluids(lvl, pos, tank);
-        //if(currRecipe != null) {
         if(recipeCache.getRecipe() != null) {
-            //FluidStack fs = currRecipe.getOutput();
             FluidStack fs = recipeCache.getRecipe().getOutput();
             progress(()-> {
                 int inserted = tank.fillForced(fs, IFluidHandler.FluidAction.SIMULATE);

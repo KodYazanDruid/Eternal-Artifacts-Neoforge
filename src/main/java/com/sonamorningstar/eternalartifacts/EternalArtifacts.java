@@ -9,6 +9,8 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import org.slf4j.Logger;
 
 import static net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid;
@@ -44,6 +46,7 @@ public class EternalArtifacts {
 
     public EternalArtifacts(IEventBus modEventBus) {
         enableMilkFluid();
+        ModMachines.MACHINES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -61,6 +64,8 @@ public class EternalArtifacts {
         ModPaintings.PAINTINGS.register(modEventBus);
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
 
+        modEventBus.addListener(RegisterMenuScreensEvent.class, ModMachines.MACHINES::registerScreens);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(Channel::onRegisterPayloadHandler);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 

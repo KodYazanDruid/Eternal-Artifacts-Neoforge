@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.sonamorningstar.eternalartifacts.data.loot.GlobalLootModifierProvider;
-import com.sonamorningstar.eternalartifacts.data.loot.LootTableProvider;
+import com.sonamorningstar.eternalartifacts.data.loot.ModGlobalLootModifierProvider;
+import com.sonamorningstar.eternalartifacts.data.loot.ModLootTableProvider;
 import com.sonamorningstar.eternalartifacts.data.tag.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -39,8 +39,8 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeServer(), new BlockTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new FluidTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new EntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
-        dataGenerator.addProvider(event.includeServer(), new LootTableProvider(packOutput));
-        dataGenerator.addProvider(event.includeServer(), new GlobalLootModifierProvider(packOutput));
+        dataGenerator.addProvider(event.includeServer(), new ModLootTableProvider(packOutput));
+        dataGenerator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(), new RecipeProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(), new DataMapProvider(packOutput, lookupProvider));
         dataGenerator.addProvider(event.includeServer(), new PaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));

@@ -226,7 +226,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         super.load(pTag);
         ENERGY_HANDLER.deserializeNBT(pTag.get("Energy"));
         ITEM_HANDLER.deserializeNBT(pTag.getCompound("Inventory"));
-        FLUID_TANK.readFromNBT(pTag);
+        FLUID_TANK.deserializeNBT(pTag);
         progress = pTag.getInt("anvilator_progress");
         enableNaming = pTag.getBoolean("enable_naming");
         name = pTag.getString("name");
@@ -237,7 +237,8 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         super.saveAdditional(pTag);
         pTag.put("Energy", ENERGY_HANDLER.serializeNBT());
         pTag.put("Inventory", ITEM_HANDLER.serializeNBT());
-        FLUID_TANK.writeToNBT(pTag);
+        //FLUID_TANK.serializeNBT(pTag);
+        pTag.put("Fluid", FLUID_TANK.serializeNBT());
         pTag.putInt("anvilator_progress", progress);
         pTag.putBoolean("enable_naming", enableNaming);
         pTag.putString("name", name);
@@ -250,10 +251,10 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
 
         //Taking fluid from the bucket.
         ItemStack stack = ITEM_HANDLER.getStackInSlot(FLUID_SLOT);
-        if(!stack.isEmpty() && FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity()) {
+        if(!stack.isEmpty() && FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity(0)) {
             IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            if(itemHandler != null && FLUID_TANK.isFluidValid(itemHandler.getFluidInTank(0)) && FLUID_TANK.getFluid().getFluid() == itemHandler.getFluidInTank(0).getFluid()) {
-                int amountToDrain = FLUID_TANK.getCapacity() - FLUID_TANK.getFluidAmount();
+            if(itemHandler != null && FLUID_TANK.isFluidValid(itemHandler.getFluidInTank(0)) && FLUID_TANK.getFluid(0).getFluid() == itemHandler.getFluidInTank(0).getFluid()) {
+                int amountToDrain = FLUID_TANK.getCapacity(0) - FLUID_TANK.getFluidAmount();
                 int amount = itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.SIMULATE).getAmount();
                 if (amount > 0) {
                     FLUID_TANK.fill(itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
@@ -394,7 +395,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     public FluidStack getFluidStack() {
-        return FLUID_TANK.getFluid();
+        return FLUID_TANK.getFluid(0);
     }
 
     public IFluidHandler getFluidHandler() {

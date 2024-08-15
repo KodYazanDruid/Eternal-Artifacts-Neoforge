@@ -38,6 +38,7 @@
     "eternalartifacts:gold_drum",
     "eternalartifacts:diamond_drum",
     "eternalartifacts:netherite_drum",
-    "eternalartifacts:asphalt_block"
+    "eternalartifacts:asphalt_block",
+    "eternalartifacts:fluid_infuser"
   ]
 }

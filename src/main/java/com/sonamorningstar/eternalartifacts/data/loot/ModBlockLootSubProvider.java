@@ -3,10 +3,7 @@ package com.sonamorningstar.eternalartifacts.data.loot;
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.core.ModLootTables;
-import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -17,7 +14,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
-import net.minecraft.world.level.block.PinkPetalsBlock;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -34,13 +30,14 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubProvider {
+public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubProvider {
 
-    public BlockLootSubProvider() {
+    public ModBlockLootSubProvider() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
 
@@ -164,6 +161,7 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
             )
         );
 
+        ModMachines.MACHINES.getMachines().forEach(holder -> dropSelf(holder.getBlock()));
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {
@@ -193,9 +191,11 @@ public class BlockLootSubProvider extends net.minecraft.data.loot.BlockLootSubPr
 
     @Override
     protected Iterable<Block> getKnownBlocks() {
-        return ModBlocks.BLOCKS.getEntries()
+        List<Block> knownBlocks = ModBlocks.BLOCKS.getEntries()
                 .stream().map(DeferredHolder::value)
                 .collect(Collectors.toList());
+        knownBlocks.addAll(ModMachines.MACHINES.getBlockHolders().stream().map(DeferredHolder::get).toList());
+        return knownBlocks;
     }
 
 }

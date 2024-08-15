@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.data.tag;
 
 import com.google.common.collect.Lists;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -140,6 +141,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());
+
+        ModMachines.MACHINES.getMachines().forEach(holder -> {
+            tierAndTool(holder.getBlock(), "iron", "pickaxe");
+            tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(holder.getBlock());
+        });
 
     }
 

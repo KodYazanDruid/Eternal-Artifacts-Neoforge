@@ -50,7 +50,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).orElse(null);
             Block block = blockItem.getBlock();
             if(block instanceof JarBlock jarBlock) {
-                if(fluidHandlerItem != null) jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
+                if(fluidHandlerItem != null) jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 CompoundTag tag = stack.getTag();
                 boolean isOpen = false;
                 if (tag != null) isOpen = tag.getBoolean(JarBlockItem.KEY_OPEN);
@@ -59,7 +59,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             }else if(block instanceof FluidCombustionDynamoBlock dynamo) {
                 blockEntityRenderDispatcher.renderItem(fluidCombustionBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof NousTankBlock nous) {
-                if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0));
+                if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock refinery) {
                 if(fluidHandlerItem != null) {

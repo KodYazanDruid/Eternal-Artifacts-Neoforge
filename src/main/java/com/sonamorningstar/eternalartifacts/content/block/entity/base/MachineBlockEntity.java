@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
@@ -47,6 +48,14 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
     @Deprecated
     protected Recipe<?> currentRecipe = null;
+
+    @Setter
+    public ModItemStorage inventory;
+    @Setter
+    public AbstractFluidTank tank;
+    @Setter
+    public ModEnergyStorage energy;
+
     @Getter
     @Setter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
@@ -62,7 +71,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                     default -> throw new IllegalStateException("Unexpected value: " + index);
                 };
             }
-
             @Override
             public void set(int index, int value) {
                 switch (index) {
@@ -70,7 +78,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                     case 1 -> maxProgress = value;
                 }
             }
-
             @Override
             public int getCount() {
                 return 2;
@@ -94,12 +101,18 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putInt("progress", progress);
+        if(energy != null) tag.put("Energy", energy.serializeNBT());
+        if(inventory != null) tag.put("Inventory", inventory.serializeNBT());
+        if(tank != null) tag.put("Fluid", tank.serializeNBT());
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         progress = tag.getInt("progress");
+        if(energy != null) energy.deserializeNBT(tag.get("Energy"));
+        if(inventory != null) inventory.deserializeNBT(tag.getCompound("Inventory"));
+        if(tank != null) tank.deserializeNBT(tag.getCompound("Fluid"));
     }
 
     @Override
@@ -113,13 +126,18 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return menuConstructor.apply(pContainerId, pPlayerInventory, this, data);
     }
 
-    protected void fillTankFromSlot(ModItemStorage inventory, ModFluidStorage tank, int fluidSlot) {
+    protected void initializeDefaultEnergyAndTank() {
+        this.energy = createDefaultEnergy();
+        this.tank = createDefaultTank();
+    }
+
+    protected void fillTankFromSlot(ModItemStorage inventory, AbstractFluidTank tank, int fluidSlot) {
         ItemStack stack = inventory.getStackInSlot(fluidSlot);
-        if(!stack.isEmpty() && tank.getFluidAmount() < tank.getCapacity()) {
+        if(!stack.isEmpty() && tank.getFluidAmount(0) < tank.getCapacity(0)) {
             IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            if(itemHandler != null && tank.isFluidValid(itemHandler.getFluidInTank(0)) &&
-                    (tank.getFluid().getFluid() == itemHandler.getFluidInTank(0).getFluid() || tank.getFluid().isEmpty())) {
-                int amountToDrain = tank.getCapacity() - tank.getFluidAmount();
+            if(itemHandler != null && tank.isFluidValid(0, itemHandler.getFluidInTank(0)) &&
+                    (tank.getFluid(0).getFluid() == itemHandler.getFluidInTank(0).getFluid() || tank.getFluid(0).isEmpty())) {
+                int amountToDrain = tank.getCapacity(0) - tank.getFluidAmount(0);
                 int amount = itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.SIMULATE).getAmount();
                 if (amount > 0) {
                     tank.fill(itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
@@ -171,7 +189,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory, int... outputSlots) {
+    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory, Integer... outputSlots) {
         BlockEntity targetBe = lvl.getBlockEntity(pos.relative(dir));
         if(targetBe != null) {
             IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
@@ -224,6 +242,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
+    @Deprecated
     protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
         if(level == null) return null;
         if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return null;

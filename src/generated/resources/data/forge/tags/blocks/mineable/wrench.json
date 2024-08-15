@@ -11,6 +11,7 @@
     "eternalartifacts:fluid_combustion_dynamo",
     "eternalartifacts:nous_tank",
     "eternalartifacts:oil_refinery",
+    "eternalartifacts:fluid_infuser",
     "#forge:storage_blocks"
   ]
 }

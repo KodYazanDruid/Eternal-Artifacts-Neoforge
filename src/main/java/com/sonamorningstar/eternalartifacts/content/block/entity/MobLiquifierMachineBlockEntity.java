@@ -1,7 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.MobLiquifierMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -9,7 +7,6 @@ import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,28 +21,13 @@ import java.util.List;
 public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEntity<MobLiquifierMenu> {
     public MobLiquifierMachineBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.MOB_LIQUIFIER.get(), blockPos, blockState, MobLiquifierMenu::new);
-    }
-
-    public MultiFluidTank<ModFluidStorage> tanks = new MultiFluidTank<>(
-            createBasicTank(8000),
-            createBasicTank(8000),
-            createBasicTank(8000),
-            createBasicTank(8000)
-    );
-    public ModEnergyStorage energy = createDefaultEnergy();
-
-    @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        energy.deserializeNBT(pTag.get("Energy"));
-        tanks.readFromNBT(pTag);
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        pTag.put("Energy", energy.serializeNBT());
-        tanks.writeToNBT(pTag);
+        setEnergy(createDefaultEnergy());
+        setTank(new MultiFluidTank<>(
+                createBasicTank(8000),
+                createBasicTank(8000),
+                createBasicTank(8000),
+                createBasicTank(8000)
+        ));
     }
 
     @Override
@@ -82,14 +64,14 @@ public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEnt
             progress(()-> {
                 //if(tanks.getEmptyTankCount() < outputs.size()) return true;
                 for(FluidStack stack : outputs) {
-                    int inserted = tanks.fill(stack, IFluidHandler.FluidAction.SIMULATE);
+                    int inserted = tank.fill(stack, IFluidHandler.FluidAction.SIMULATE);
                     if(inserted < stack.getAmount()) return true;
                 }
                 return false;
             }, ()-> {
                 finalEntityToHurt.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 200));
                 finalEntityToHurt.hurt(lvl.damageSources().cramming(), 1);
-                for(FluidStack stack : outputs) tanks.fill(stack, IFluidHandler.FluidAction.EXECUTE);
+                for(FluidStack stack : outputs) tank.fill(stack, IFluidHandler.FluidAction.EXECUTE);
             }, energy);
         }
 

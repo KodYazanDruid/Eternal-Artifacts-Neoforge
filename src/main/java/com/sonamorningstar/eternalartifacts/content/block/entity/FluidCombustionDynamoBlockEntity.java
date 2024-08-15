@@ -23,6 +23,14 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCombustionMenu> implements ITickableClient {
     public FluidCombustionDynamoBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), pos, blockState, FluidCombustionMenu::new);
+        setEnergy(createBasicEnergy(50000, 2500, false, true));
+        setTank(new ModFluidStorage(16000) {
+            @Override
+            protected void onContentsChanged() {
+                FluidCombustionDynamoBlockEntity.this.sendUpdate();
+                findRecipeAndSet();
+            }
+        });
     }
 
     private int tickCounter = 0;
@@ -30,31 +38,16 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     private DynamoProcessCache cache;
     private final RecipeCache<FluidCombustionRecipe, SimpleFluidContainer> recipeCache = new RecipeCache<>();
 
-    public ModEnergyStorage energy = createBasicEnergy(50000, 2500, false, true);
-
-    public ModFluidStorage tank = new ModFluidStorage(16000) {
-        @Override
-        protected void onContentsChanged() {
-            FluidCombustionDynamoBlockEntity.this.sendUpdate();
-            findRecipeAndSet();
-        }
-    };
-
     @Override
     protected void saveAdditional(CompoundTag tag) {
-        tag.put("Energy", energy.serializeNBT());
-        tank.writeToNBT(tag);
         if(cache != null) cache.writeToNbt(tag);
         super.saveAdditional(tag);
     }
 
     @Override
     public void load(CompoundTag tag) {
-        energy.deserializeNBT(tag.get("Energy"));
         isWorking = tag.getBoolean("IsWorking");
-        tank.readFromNBT(tag);
         cache = DynamoProcessCache.readFromNbt(tag, energy, this).orElse(null);
-        //tickCounter = tag.getInt("AnimationTick");
         super.load(tag);
     }
 
@@ -65,7 +58,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     }
 
     private void findRecipeAndSet() {
-        recipeCache.findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid()), level);
+        recipeCache.findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid(0)), level);
         if(recipeCache.getRecipe() != null) {
             setEnergyPerTick(recipeCache.getRecipe().getGeneration());
             setMaxProgress(recipeCache.getRecipe().getDuration());
@@ -76,7 +69,6 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     protected void saveSynced(CompoundTag tag) {
         super.saveSynced(tag);
         tag.putBoolean("IsWorking", isWorking);
-        //tag.putInt("AnimationTick", tickCounter);
     }
 
     public float getAnimationLerp(float tick) {

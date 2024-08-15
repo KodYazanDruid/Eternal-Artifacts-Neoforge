@@ -20,8 +20,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.stream.Stream;
 
-public class EntityLootSubProvider extends net.minecraft.data.loot.EntityLootSubProvider {
-    public EntityLootSubProvider() {
+public class ModEntityLootSubProvider extends net.minecraft.data.loot.EntityLootSubProvider {
+    public ModEntityLootSubProvider() {
         super(FeatureFlags.REGISTRY.allFlags());
     }
 

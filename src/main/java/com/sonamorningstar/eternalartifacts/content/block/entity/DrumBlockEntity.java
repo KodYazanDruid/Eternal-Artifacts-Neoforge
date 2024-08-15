@@ -16,14 +16,17 @@ public class DrumBlockEntity extends ModBlockEntity {
     }
 
     @Override
+    protected boolean shouldSyncOnUpdate() { return true; }
+
+    @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        tank.readFromNBT(tag);
+        tank.deserializeNBT(tag.getCompound("Fluid"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tank.writeToNBT(tag);
+        tag.put("Fluid", tank.serializeNBT());
     }
 }

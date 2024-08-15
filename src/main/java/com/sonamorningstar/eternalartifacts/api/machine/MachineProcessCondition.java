@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.api.machine;
 
+import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
@@ -10,14 +11,13 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BooleanSupplier;
 
 public class MachineProcessCondition {
     private ModItemStorage inventory;
     private int[] outputSlots = new int[]{};
-    private final List<ModFluidStorage> outputTanks = new ArrayList<>();
-    private final List<ModFluidStorage> inputTanks = new ArrayList<>();
+    private final List<AbstractFluidTank> outputTanks = new ArrayList<>();
+    private final List<AbstractFluidTank> inputTanks = new ArrayList<>();
     private BooleanSupplier supplier;
 
     //region Initializing Handlers
@@ -29,19 +29,19 @@ public class MachineProcessCondition {
         this.outputSlots = slots;
         return this;
     }
-    public MachineProcessCondition initInputTanks(ModFluidStorage... tanks) {
+    public MachineProcessCondition initInputTanks(AbstractFluidTank... tanks) {
         this.inputTanks.addAll(List.of(tanks));
         return this;
     }
-    public MachineProcessCondition initInputTanks(List<ModFluidStorage> tanks) {
+    public MachineProcessCondition initInputTanks(List<AbstractFluidTank> tanks) {
         this.inputTanks.addAll(tanks);
         return this;
     }
-    public MachineProcessCondition initOutputTanks(ModFluidStorage... tanks) {
+    public MachineProcessCondition initOutputTanks(AbstractFluidTank... tanks) {
         this.outputTanks.addAll(List.of(tanks));
         return this;
     }
-    public MachineProcessCondition initOutputTanks(List<ModFluidStorage> tanks) {
+    public MachineProcessCondition initOutputTanks(List<AbstractFluidTank> tanks) {
         this.outputTanks.addAll(tanks);
         return this;
     }
@@ -71,7 +71,7 @@ public class MachineProcessCondition {
     public MachineProcessCondition tryInsertForced(FluidStack stack) {
         if(outputTanks.isEmpty()) supplier = preventWorking();
         if(supplier == null || !supplier.getAsBoolean()) {
-            for (ModFluidStorage tank : outputTanks) {
+            for (AbstractFluidTank tank : outputTanks) {
                 int remainder = tank.fillForced(stack, IFluidHandler.FluidAction.SIMULATE);
                 if (remainder > 0) {
                     supplier = preventWorking();
@@ -84,7 +84,7 @@ public class MachineProcessCondition {
     public MachineProcessCondition tryExtractForced(FluidStack stack) {
         if(inputTanks.isEmpty()) supplier = preventWorking();
         if(supplier == null || !supplier.getAsBoolean()) {
-            for (ModFluidStorage tank : inputTanks) {
+            for (AbstractFluidTank tank : inputTanks) {
                 FluidStack drained = tank.drainForced(stack, IFluidHandler.FluidAction.SIMULATE);
                 if(drained.isEmpty()) {
                     supplier = preventWorking();
@@ -97,7 +97,7 @@ public class MachineProcessCondition {
     public MachineProcessCondition tryExtractForced(int fluidAmount) {
         if(inputTanks.isEmpty()) supplier = preventWorking();
         if(supplier == null || !supplier.getAsBoolean()) {
-            for(ModFluidStorage tank : inputTanks) {
+            for(AbstractFluidTank tank : inputTanks) {
                 FluidStack drained = tank.drainForced(fluidAmount, IFluidHandler.FluidAction.SIMULATE);
                 if (drained.getAmount() < fluidAmount) {
                     supplier = preventWorking();

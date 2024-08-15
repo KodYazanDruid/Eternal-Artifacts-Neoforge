@@ -24,58 +24,38 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 @Getter
-public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockEntity<BookDuplicatorMenu> implements IHasInventory, IHasFluidTank, IHasEnergy {
+public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockEntity<BookDuplicatorMenu> {
     public BookDuplicatorMachineBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
-    }
-
-    // 0 -> input
-    // 1 -> output
-    // 2 -> book/writable book slot
-    // 3 -> fluid filler
-    public ModItemStorage inventory = new ModItemStorage(4) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            if(slot != 1) progress = 0;
-            BookDuplicatorMachineBlockEntity.this.sendUpdate();
-        }
-
-        @Override
-        public boolean isItemValid(int slot, ItemStack stack) {
-            switch (slot) {
-                case 0 -> {return stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK);}
-                case 1 -> {return false;}
-                case 2 -> {return stack.is(Items.BOOK) || stack.is(Items.WRITABLE_BOOK);}
-                case 3 -> {
-                    IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack).orElse(null);
-                    if(fh == null) return false;
-                    else {
-                        FluidStack fluidStack = fh.getFluidInTank(0);
-                        return !fluidStack.isEmpty() && fh.isFluidValid(0, fluidStack);
-                    }
-                }
-                default -> {return super.isItemValid(slot, stack);}
+        setEnergy(createDefaultEnergy());
+        setTank(createBasicTank(10000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true));
+        setInventory(new ModItemStorage(4) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                if(slot != 1) progress = 0;
+                BookDuplicatorMachineBlockEntity.this.sendUpdate();
             }
-        }
-    };
-    public ModEnergyStorage energy = createDefaultEnergy();
-    public ModFluidStorage tank = createBasicTank(10000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true);
 
-    @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.put("Inventory", inventory.serializeNBT());
-        tag.put("Energy", energy.serializeNBT());
-        tank.writeToNBT(tag);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        inventory.deserializeNBT(tag.getCompound("Inventory"));
-        energy.deserializeNBT(tag.get("Energy"));
-        tank.readFromNBT(tag);
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                switch (slot) {
+                    case 0 -> {return stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK);}
+                    case 1 -> {return false;}
+                    case 2 -> {return stack.is(Items.BOOK) || stack.is(Items.WRITABLE_BOOK);}
+                    case 3 -> {
+                        IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack).orElse(null);
+                        if(fh == null) return false;
+                        else {
+                            FluidStack fluidStack = fh.getFluidInTank(0);
+                            return !fluidStack.isEmpty() && fh.isFluidValid(0, fluidStack);
+                        }
+                    }
+                    default -> {return super.isItemValid(slot, stack);}
+                }
+            }
+        });
+        outputSlots.add(1);
     }
 
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
@@ -116,7 +96,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
             compoundtag.putInt("generation", WrittenBookItem.getGeneration(inputBook) + 1);
             copy.setTag(compoundtag);
             net.neoforged.neoforge.attachment.AttachmentUtils.copyStackAttachments(inputBook, copy);
-            progress(()-> tank.getFluidAmount() < 500, ()->{
+            progress(()-> tank.getFluidAmount(0) < 500, ()->{
                 consumableBook.shrink(1);
                 tank.drainForced(500, IFluidHandler.FluidAction.EXECUTE);
                 inventory.setStackInSlot(1, copy);
@@ -126,7 +106,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
     }
 
     private void progressAndCraft(ItemStack result, @Nullable ItemStack consumableBook, int nousCost) {
-        if(nousCost > tank.getFluidAmount()) {
+        if(nousCost > tank.getFluidAmount(0)) {
             progress = 0;
             return;
         }

@@ -16,6 +16,7 @@
     "eternalartifacts:ardite_block",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:gold_drum",
-    "eternalartifacts:diamond_drum"
+    "eternalartifacts:diamond_drum",
+    "eternalartifacts:fluid_infuser"
   ]
 }

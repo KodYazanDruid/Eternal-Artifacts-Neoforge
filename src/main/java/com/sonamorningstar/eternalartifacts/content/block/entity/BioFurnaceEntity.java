@@ -1,14 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.container.BioFurnaceMenu;
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,38 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
-public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> implements IHasEnergy, IHasInventory {
-
-    @Getter
-    public final ModItemStorage inventory = new ModItemStorage(1) {
-        @Override
-        protected void onContentsChanged(int slot) { BioFurnaceEntity.this.sendUpdate(); }
-    };
-    @Getter
-    public final ModEnergyStorage energy = new ModEnergyStorage(100000, 40, 5000) {
-        @Override
-        public void onEnergyChanged() { BioFurnaceEntity.this.sendUpdate(); }
-
-        @Override
-        public boolean canReceive() { return false; }
-    };
+public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> {
 
     public BioFurnaceEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState, BioFurnaceMenu::new);
-    }
-
-    @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        energy.deserializeNBT(pTag.get("Energy"));
-        inventory.deserializeNBT(pTag.getCompound("Inventory"));
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        pTag.put("Energy", energy.serializeNBT());
-        pTag.put("Inventory", inventory.serializeNBT());
+        setInventory(createBasicInventory(1));
+        setEnergy(createDefaultEnergy());
     }
 
     public void tickServer(Level pLevel, BlockPos pPos, BlockState pState) {

@@ -10,7 +10,6 @@ import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemWithCh
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
@@ -25,8 +24,8 @@ import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class GlobalLootModifierProvider extends net.neoforged.neoforge.common.data.GlobalLootModifierProvider {
-    public GlobalLootModifierProvider(PackOutput output) {
+public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common.data.GlobalLootModifierProvider {
+    public ModGlobalLootModifierProvider(PackOutput output) {
         super(output, MODID);
     }
 

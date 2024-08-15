@@ -19,13 +19,13 @@ public class ModItemFluidStorage extends ModFluidStorage implements IFluidHandle
         super(capacity, validator);
         this.stack = stack;
         CompoundTag tag = stack.getOrCreateTag().getCompound("Fluid");
-        readFromNBT(tag);
+        deserializeNBT(tag);
     }
 
     @Override
     protected void onContentsChanged() {
-        CompoundTag tag = stack.getOrCreateTag().getCompound("Fluid");
-        writeToNBT(tag);
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.put("Fluid", serializeNBT());
         if(stack.getItem() instanceof ICapabilityListener listener) listener.onFluidContentChange(this.stack);
     }
 

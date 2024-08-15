@@ -1,9 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.base;
 
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -11,10 +13,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
 
-public class MachineFourWayBlock<T extends MachineBlockEntity<?>> extends BaseMachineBlock<T> {
+public class MachineFourWayBlock<T extends MachineBlockEntity<? extends AbstractMachineMenu>> extends BaseMachineBlock<T> {
 
-    public MachineFourWayBlock(Properties pProperties, BiFunction<BlockPos, BlockState, T> fun) {
-        super(pProperties, fun);
+    public MachineFourWayBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> supplier) {
+        super(pProperties, supplier);
     }
 
     @Nullable

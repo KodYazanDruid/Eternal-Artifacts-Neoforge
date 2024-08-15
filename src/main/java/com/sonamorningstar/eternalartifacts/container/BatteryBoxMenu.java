@@ -25,7 +25,4 @@ public class BatteryBoxMenu extends AbstractMachineMenu {
         }
 
     }
-
-
-
 }

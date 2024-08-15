@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
@@ -17,6 +18,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.function.BiConsumer;
@@ -118,9 +120,11 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
+
+        ModMachines.MACHINES.getMachines().forEach(holder -> machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture()));
     }
 
-    private void machineBlock(DeferredBlock<? extends Block> holder, boolean unique) {
+    private void machineBlock(DeferredHolder<Block, ? extends Block> holder, boolean unique) {
         String name = holder.getId().getPath();
         String top = unique ? "block/"+name+"_top" : "block/machine_top";
         String bottom = unique ? "block/"+name+"_bottom" : "block/machine_bottom";

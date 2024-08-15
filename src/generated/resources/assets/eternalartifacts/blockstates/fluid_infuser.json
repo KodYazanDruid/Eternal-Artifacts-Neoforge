@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/fluid_infuser",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/fluid_infuser"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/fluid_infuser",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/fluid_infuser",
+      "y": 270
+    }
+  }
+}

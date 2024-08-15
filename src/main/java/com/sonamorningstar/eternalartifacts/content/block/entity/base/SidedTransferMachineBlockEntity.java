@@ -36,6 +36,8 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
     private Map<Integer, TransferType> sideConfigs = new HashMap<>(6);
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
 
+    public List<Integer> outputSlots = new ArrayList<>();
+
     protected void performAutoInput(Level lvl, BlockPos pos, IItemHandlerModifiable inventory) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
@@ -50,7 +52,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoOutput(Level lvl, BlockPos pos, IItemHandlerModifiable inventory, int... outputSlots) {
+    protected void performAutoOutput(Level lvl, BlockPos pos, IItemHandlerModifiable inventory, Integer... outputSlots) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;

@@ -1,22 +1,18 @@
 package com.sonamorningstar.eternalartifacts.capabilities;
 
-import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 import java.util.*;
 
 @Setter
-public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
+public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTank {
     private List<T> tanks = new ArrayList<>();
 
     @SafeVarargs
@@ -24,7 +20,7 @@ public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
             this.tanks.addAll(Arrays.asList(tanks));
     }
 
-    public MultiFluidTank<?> readFromNBT(CompoundTag nbt) {
+    public void deserializeNBT(CompoundTag nbt) {
         ListTag tanksList = nbt.getList("Tanks", 10);
         for(int i = 0; i < tanksList.size() ; i++) {
             CompoundTag entry = tanksList.getCompound(i);
@@ -32,12 +28,22 @@ public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
             FluidStack stack;
             if(fluid == Fluids.EMPTY) stack = FluidStack.EMPTY;
             else stack = new FluidStack(fluid, entry.getInt("Amount"));
-            tanks.get(i).setFluid(stack);
+            tanks.get(i).setFluid(stack, i);
         }
-        return this;
     }
 
-    public CompoundTag writeToNBT(CompoundTag nbt) {
+    @Override
+    public int getCapacity(int tank) {
+        return getTankCapacity(0);
+    }
+
+    @Override
+    public int getFluidAmount(int tank) {
+        return getFluidInTank(0).getAmount();
+    }
+
+    public CompoundTag serializeNBT() {
+        CompoundTag nbt = new CompoundTag();
         ListTag tanksList = new ListTag();
         for(T tank : tanks) {
             CompoundTag entry = new CompoundTag();
@@ -45,8 +51,7 @@ public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
             entry.putInt("Amount", tank.getFluidInTank(0).getAmount());
             tanksList.add(entry);
         }
-        if(nbt != null) nbt.put("Tanks", tanksList);
-
+        nbt.put("Tanks", tanksList);
         return nbt;
     }
 
@@ -83,6 +88,7 @@ public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
     }
 
     //TODO: Prioritize most filled tank first.
+    //region Transfer Methods
     @Override
     public int fill(FluidStack resource, FluidAction action) {
         int filled;
@@ -121,5 +127,56 @@ public class MultiFluidTank<T extends FluidTank> implements IFluidHandler {
         }
         return FluidStack.EMPTY;
     }
+    //endregion
 
+    //region Transfer stuff forced
+    @Override
+    public FluidStack drainForced(int i, FluidAction fluidAction) {
+        FluidStack drained;
+        for(T tank : tanks) {
+            drained = tank.drainForced(i, FluidAction.SIMULATE);
+            if(!drained.isEmpty()) {
+                drained = tank.drainForced(i, fluidAction);
+                return drained;
+            }
+        }
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public FluidStack drainForced(FluidStack stack, FluidAction fluidAction) {
+        FluidStack drained;
+        for(T tank : tanks) {
+            drained = tank.drainForced(stack, FluidAction.SIMULATE);
+            if(!drained.isEmpty()) {
+                drained = tank.drainForced(stack, fluidAction);
+                return drained;
+            }
+        }
+        return FluidStack.EMPTY;
+    }
+
+    @Override
+    public int fillForced(FluidStack stack, FluidAction fluidAction) {
+        int filled;
+        for(T tank : tanks) {
+            filled = tank.fillForced(stack, FluidAction.SIMULATE);
+            if(filled > 0) {
+                filled = tank.fillForced(stack, fluidAction);
+                return filled;
+            }
+        }
+        return 0;
+    }
+    //endregion
+
+    @Override
+    public void setFluid(FluidStack stack, int tank) {
+        tanks.get(tank).setFluid(stack, tank);
+    }
+
+    @Override
+    public FluidStack getFluid(int tank) {
+        return null;
+    }
 }
