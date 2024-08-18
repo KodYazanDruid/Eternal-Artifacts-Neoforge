@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -42,8 +43,8 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, S extends Abst
         return getBlock().getDescriptionId();
     }
 
-    public String getItemTranslationKey() {
-        return getItem().getDescriptionId();
+    public ResourceLocation getBlockId() {
+        return getBlockHolder().getId();
     }
 
     public void registerScreen(RegisterMenuScreensEvent event) {

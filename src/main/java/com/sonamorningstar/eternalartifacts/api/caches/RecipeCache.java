@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 public class RecipeCache<R extends Recipe<C>, C extends Container> {
 
-    private R recipe;
+    private R recipe = null;
 
     public void findRecipe(RecipeType<R> recipeType, C container, Level level) {
         if(level == null) return;

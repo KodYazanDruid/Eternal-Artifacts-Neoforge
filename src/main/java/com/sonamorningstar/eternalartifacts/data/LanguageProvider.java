@@ -183,7 +183,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.DIESEL.getTranslationKey(), "Diesel");
                 add(ModBlocks.PUNJI_STICKS.get(), "Punji Sticks");
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asphalt Block");
-                add(ModMachines.FLUID_INFUSER.getBlockTranslationKey(), "Fluid Infuser");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -248,8 +247,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("auto_output"), "Auto-Output");
                 add(ModConstants.GUI.withSuffix("item_transportation"), "Item Transportation");
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Fluid Transportation");
+                add(ModConstants.GUI.withSuffix("heat"), "Heat");
 
+                ModMachines.MACHINES.getMachines().forEach(holder -> {
+                    String displayName = holder.getBlockId().getPath().replace('_', ' ');
+                    String[] pathWords = displayName.split("\\s");
+                    StringBuilder prettyPath = new StringBuilder();
+                    for(String word : pathWords) prettyPath.append(Character.toTitleCase(word.charAt(0))).append(word.substring(1)).append(" ");
+                    add(holder.getBlockTranslationKey(), prettyPath.toString().trim());
+                });
             }
+
             case "tr_tr" -> {
                 //Eşyalar
                 add(ModItems.ORANGE.get(), "Portakal");
@@ -415,6 +423,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.PUNJI_STICKS.get(), "Punji Kazığı");
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asfalt Bloğu");
                 add(ModMachines.FLUID_INFUSER.getBlockTranslationKey(), "Sıvı İnfüzörü");
+                add(ModMachines.INDUCTION_FURNACE.getBlockTranslationKey(), "İndüksiyon İzabe Tesisi");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -479,7 +488,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("auto_output"), "Oto-Çıkış");
                 add(ModConstants.GUI.withSuffix("item_transportation"), "Eşya Transferi");
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Sıvı Transferi");
-
+                add(ModConstants.GUI.withSuffix("heat"), "Isı");
 
             }
         }

@@ -4,6 +4,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
+import java.util.function.Consumer;
+
 public class ModItemStorage extends ItemStackHandler {
 
     public ModItemStorage(int size) {
@@ -45,6 +47,10 @@ public class ModItemStorage extends ItemStackHandler {
         }
 
         return reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - limit) : ItemStack.EMPTY;
+    }
+
+    public void forEach(Consumer<Integer> consumer) {
+        for(int i = 0; i < getSlots(); i++) consumer.accept(i);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -33,9 +35,11 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     protected final BlockEntity blockEntity;
     protected final List<Integer> outputSlots = new ArrayList<>();
     public final ContainerData data;
+    public final MenuType<?> menuType;
 
     public AbstractMachineMenu(@Nullable MenuType<?> menuType, int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(menuType, id);
+        this.menuType = menuType;
         this.level = inv.player.level();
         this.blockEntity = entity;
         this.beInventory = level.getCapability(Capabilities.ItemHandler.BLOCK, blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity, null);
@@ -44,6 +48,7 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         this.data = data;
         addPlayerInventoryAndHotbar(inv, 8, 66);
         addDataSlots(data);
+        if (blockEntity instanceof SidedTransferMachineBlockEntity<?> sided) outputSlots.addAll(sided.outputSlots);
     }
 
     @Override

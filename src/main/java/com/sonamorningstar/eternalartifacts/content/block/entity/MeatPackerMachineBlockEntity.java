@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.machine.MachineProcessCondition;
+import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.container.MeatPackerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
@@ -19,19 +19,20 @@ public class MeatPackerMachineBlockEntity extends SidedTransferMachineBlockEntit
         setInventory(createBasicInventory(1, false));
         setEnergy(createDefaultEnergy());
         setTank(createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, true));
+        outputSlots.add(0);
     }
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoOutput(lvl, pos, inventory, 0);
+        performAutoOutput(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
         performAutoInputFluids(lvl, pos, tank);
 
-        MachineProcessCondition condition = new MachineProcessCondition()
+        ProcessCondition condition = new ProcessCondition()
                 .initInventory(inventory)
-                .initOutputSlots(0)
+                .initOutputSlots(outputSlots)
                 .tryInsertForced(ModItems.RAW_MEAT_INGOT.toStack())
-                .initInputTanks(tank)
-                .tryExtractForced(250);
+                .initInputTank(tank)
+                .tryExtractFluidForced(250);
 
         progress(condition::getResult, ()-> {
             tank.drainForced(250, IFluidHandler.FluidAction.EXECUTE);

@@ -42,7 +42,7 @@ public class OilRefineryBlockEntity extends SidedTransferMachineBlockEntity<OilR
         Pair<ItemStack, Float> tar = Pair.of(ModItems.TAR_BALL.toStack(), 0.15F);
         Pair<ItemStack, Float> bitument = Pair.of(ModItems.BITUMEN.toStack(), 0.1F);
 
-        /*MachineProcessCondition condition = new MachineProcessCondition()
+        /*ProcessCondition condition = new ProcessCondition()
                 .initInventory(inventory)
                 .initOutputSlots(0, 1, 2)
                 .tryInsertForced(tar.getFirst(), bitument.getFirst())

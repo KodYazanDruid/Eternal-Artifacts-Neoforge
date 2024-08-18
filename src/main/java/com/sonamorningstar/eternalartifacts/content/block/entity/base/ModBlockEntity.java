@@ -99,7 +99,6 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
 
-    protected ModItemStorage createBasicInventory(int size) {return createBasicInventory(size, true);}
     protected ModItemStorage createBasicInventory(int size, boolean canInsert) {
         return new ModItemStorage(size) {
             @Override

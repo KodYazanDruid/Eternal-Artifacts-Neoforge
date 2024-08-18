@@ -1,10 +1,13 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ItemHelper {
@@ -25,18 +28,22 @@ public class ItemHelper {
 
         return stack;
     }
-    public static ItemStack insertItemForced(ModItemStorage destination, ItemStack stack, boolean simulate, int... slots) {
+    public static Pair<ItemStack, List<Integer>> insertItemForced(ModItemStorage destination, ItemStack stack, boolean simulate, Integer... slots) {
+        List<Integer> insertedSlots = new ArrayList<>();
         if (destination == null || stack.isEmpty())
-            return stack;
+            return Pair.of(stack, Collections.emptyList());
 
         for (int i = 0; i < destination.getSlots(); i++) {
-            if(Arrays.stream(slots).boxed().toList().contains(i)){
+            if(Arrays.stream(slots).toList().contains(i)){
                 stack = destination.insertItemForced(i, stack, simulate);
-                if (stack.isEmpty()) return ItemStack.EMPTY;
+                if (stack.isEmpty()) {
+                    insertedSlots.add(i);
+                    return Pair.of(ItemStack.EMPTY, insertedSlots);
+                }
             }
         }
 
-        return stack;
+        return Pair.of(stack, insertedSlots);
     }
 
     public static ItemStack insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate) {
@@ -74,10 +81,11 @@ public class ItemHelper {
         }
         return stack;
     }
-    public static ItemStack insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate, int... slots) {
-        List<Integer> slotsList = Arrays.stream(slots).boxed().toList();
+    public static Pair<ItemStack, List<Integer>> insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate, Integer... slots) {
+        List<Integer> slotsList = Arrays.stream(slots).toList();
+        List<Integer> insertedSlots = new ArrayList<>();
         if (inventory == null || stack.isEmpty())
-            return stack;
+            return Pair.of(stack, Collections.emptyList());
 
         if (!stack.isStackable()) {
             return insertItemForced(inventory, stack, simulate, slots);
@@ -91,6 +99,7 @@ public class ItemHelper {
                 if (ItemHandlerHelper.canItemStacksStackRelaxed(slot, stack)) {
                     stack = inventory.insertItemForced(i, stack, simulate);
                     if (stack.isEmpty()) {
+                        insertedSlots.add(i);
                         break;
                     }
                 }
@@ -101,12 +110,13 @@ public class ItemHelper {
                 if (inventory.getStackInSlot(i).isEmpty() && slotsList.contains(i)) {
                     stack = inventory.insertItemForced(i, stack, simulate);
                     if (stack.isEmpty()) {
+                        insertedSlots.add(i);
                         break;
                     }
                 }
             }
         }
-        return stack;
+        return Pair.of(stack, insertedSlots);
     }
 
 }

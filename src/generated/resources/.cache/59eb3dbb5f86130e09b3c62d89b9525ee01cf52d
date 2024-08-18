@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-14T20:16:50.8546829	Loot Tables
+// 1.20.4	2024-08-16T20:51:57.3016792	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 c2b957a37df519265b42bb1ea66625aff3ffc16a data/eternalartifacts/loot_tables/blocks/ardite_block.json
@@ -31,6 +31,7 @@ df6acb74ff9f44ec349b25aacecc5edf40e559e9 data/eternalartifacts/loot_tables/block
 72152eb7ec1cb8623073b023f8ae0968791ec592 data/eternalartifacts/loot_tables/blocks/gravel_gold_ore.json
 f8e10b90921d802fc5dcb3112cb065842ad536c1 data/eternalartifacts/loot_tables/blocks/gravel_iron_ore.json
 8b23b0816a30503c76483b81d32d231561841099 data/eternalartifacts/loot_tables/blocks/ice_bricks.json
+4d4a4a7926ff9b4be345f0b0d357833b72ed20a5 data/eternalartifacts/loot_tables/blocks/induction_furnace.json
 f78a32d9195f78e77d32478ddc1bfa030eac5f4e data/eternalartifacts/loot_tables/blocks/iron_drum.json
 1d4d22e7cf866d5a67b4dab7dfe1724dfbabdbe5 data/eternalartifacts/loot_tables/blocks/iron_oreberry.json
 26aa59b7f932bcfdccdb6a564894698ba9ef4426 data/eternalartifacts/loot_tables/blocks/jar.json

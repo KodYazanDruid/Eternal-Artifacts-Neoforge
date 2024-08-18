@@ -17,6 +17,7 @@
     "eternalartifacts:oil_refinery",
     "eternalartifacts:gold_drum",
     "eternalartifacts:diamond_drum",
-    "eternalartifacts:fluid_infuser"
+    "eternalartifacts:fluid_infuser",
+    "eternalartifacts:induction_furnace"
   ]
 }

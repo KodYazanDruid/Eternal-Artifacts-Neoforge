@@ -178,11 +178,16 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
             if(sourceInv != null) {
                 for(int i = 0; i < sourceInv.getSlots(); i++) {
-                    if(sourceInv.getStackInSlot(i).isEmpty()) continue;
-                    ItemStack inserted = ItemHandlerHelper.insertItemStacked(inventory, sourceInv.getStackInSlot(i), true);
-                    if(inserted.isEmpty()) {
-                        ItemHandlerHelper.insertItemStacked(inventory, sourceInv.getStackInSlot(i).copyWithCount(sourceInv.getStackInSlot(i).getCount()), false);
-                        sourceInv.extractItem(i, sourceInv.getStackInSlot(i).getCount(), false);
+                    ItemStack stack = sourceInv.getStackInSlot(i);
+                    if(stack.isEmpty()) continue;
+                    ItemStack remainder = ItemHandlerHelper.insertItemStacked(inventory, stack, true);
+                    if(remainder.isEmpty()) {
+                        ItemHandlerHelper.insertItemStacked(inventory, stack.copyWithCount(stack.getCount()), false);
+                        sourceInv.extractItem(i, stack.getCount(), false);
+                    }else {
+                        int transferred = stack.getCount() - remainder.getCount();
+                        ItemHandlerHelper.insertItemStacked(inventory, stack.copyWithCount(transferred), false);
+                        stack.shrink(transferred);
                     }
                 }
             }
@@ -196,10 +201,15 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             if(targetInv != null) {
                 for(int output : outputSlots) {
                     try {
-                        ItemStack inserted = ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), true);
-                        if(inserted.isEmpty()) {
-                            ItemHandlerHelper.insertItemStacked(targetInv, inventory.getStackInSlot(output), false);
-                            inventory.extractItem(output, inventory.getStackInSlot(output).getCount(), false);
+                        ItemStack stack = inventory.getStackInSlot(output);
+                        ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInv, stack, true);
+                        if(remainder.isEmpty()) {
+                            ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(stack.getCount()), false);
+                            inventory.extractItem(output, stack.getCount(), false);
+                        }else {
+                            int transferred = stack.getCount() - remainder.getCount();
+                            ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(transferred), false);
+                            stack.shrink(transferred);
                         }
                     }catch (IndexOutOfBoundsException e) {
                         EternalArtifacts.LOGGER.error("Output slot {} is out of bounds in {} sized inventory", output, targetInv.getSlots());

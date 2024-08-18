@@ -34,6 +34,7 @@ public class EternalArtifacts {
      * TODO: Scrap boxes and similar loot thingies.
      * TODO: Add error tab to machines for why machine isn't working.
      * TODO: Add smart jukebox.
+     * TODO: MOAR yandere-coding in induction furnace BE code. YIPPIE.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *
