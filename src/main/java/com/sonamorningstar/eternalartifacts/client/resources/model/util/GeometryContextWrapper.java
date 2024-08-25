@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.client.model.util;
+package com.sonamorningstar.eternalartifacts.client.resources.model.util;
 
 import com.mojang.math.Transformation;
 import net.minecraft.client.renderer.block.model.ItemTransforms;

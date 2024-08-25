@@ -33,7 +33,6 @@ public class EternalArtifacts {
      * TODO: Configs.
      * TODO: Scrap boxes and similar loot thingies.
      * TODO: Add error tab to machines for why machine isn't working.
-     * TODO: Add smart jukebox.
      * TODO: MOAR yandere-coding in induction furnace BE code. YIPPIE.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
@@ -59,8 +58,7 @@ public class EternalArtifacts {
         ModSounds.SOUNDS.register(modEventBus);
         ModEntities.ENTITY_TYPES.register(modEventBus);
         ModEffects.EFFECTS.register(modEventBus);
-        ModRecipes.RECIPE_TYPES.register(modEventBus);
-        ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
+        ModRecipes.RECIPES.register(modEventBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModPaintings.PAINTINGS.register(modEventBus);
         ModEnchantments.ENCHANTMENTS.register(modEventBus);

@@ -22,6 +22,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     protected static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
     private final Map<String, Integer> energyLoc = new HashMap<>();
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
+    protected static final int labelColor = 4210752;
 
     public AbstractMachineScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);

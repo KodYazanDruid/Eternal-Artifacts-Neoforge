@@ -2,17 +2,23 @@ package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.function.Supplier;
 
-public class CustomRenderButton extends Button {
+public class CustomRenderButton extends AbstractButton {
     private ResourceLocation[] textures;
+    protected static final CustomRenderButton.CreateNarration DEFAULT_NARRATION = Supplier::get;
+    protected final CustomRenderButton.OnPress onPress;
+    protected final CustomRenderButton.CreateNarration createNarration;
 
     public static CustomRenderButton.Builder builder(Component pMessage, CustomRenderButton.OnPress pOnPress, ResourceLocation... textures) {
         return new CustomRenderButton.Builder(pMessage, pOnPress, textures);
@@ -27,10 +33,15 @@ public class CustomRenderButton extends Button {
         setTooltip(builder.tooltip);
     }
 
-    private CustomRenderButton(int pX, int pY, int pWidth, int pHeight, Component pMessage, OnPress pOnPress, CreateNarration pCreateNarration, ResourceLocation... textures) {
-        super(pX, pY, pWidth, pHeight, pMessage, pOnPress, pCreateNarration);
+    private CustomRenderButton(int pX, int pY, int pWidth, int pHeight, Component pMessage, CustomRenderButton.OnPress pOnPress, CreateNarration pCreateNarration, ResourceLocation... textures) {
+        super(pX, pY, pWidth, pHeight, pMessage);
+        this.onPress = pOnPress;
+        this.createNarration = pCreateNarration;
         this.textures = textures;
     }
+
+    @Override
+    public void onPress() {}
 
     @Override
     protected void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
@@ -46,6 +57,23 @@ public class CustomRenderButton extends Button {
 
     public void setTextures(ResourceLocation... textures) {
         this.textures = textures;
+    }
+
+    @Override
+    public void onClick(double mouseX, double mouseY, int button) {
+        super.onClick(mouseX, mouseY, button);
+        this.onPress.onPress(this, button);
+    }
+
+
+    @Override
+    protected boolean isValidClickButton(int button) {
+        return button == 0 || button == 1 || button == 2;
+    }
+
+    @Override
+    protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -110,5 +138,15 @@ public class CustomRenderButton extends Button {
         public CustomRenderButton build(java.util.function.Function<CustomRenderButton.Builder, CustomRenderButton> builder) {
             return builder.apply(this);
         }
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public interface CreateNarration {
+        MutableComponent createNarrationMessage(Supplier<MutableComponent> pMessageSupplier);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public interface OnPress {
+        void onPress(CustomRenderButton button, int key);
     }
 }

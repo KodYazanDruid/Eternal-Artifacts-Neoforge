@@ -5,6 +5,9 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractFluidTank implements IFluidHandler, INBTSerializable<CompoundTag> {
 
     public abstract void setFluid(FluidStack stack, int tank);
@@ -21,4 +24,12 @@ public abstract class AbstractFluidTank implements IFluidHandler, INBTSerializab
     public abstract int getFluidAmount(int tank);
 
     public abstract AbstractFluidTank get(int i);
+
+    public List<FluidStack> toList() {
+        List<FluidStack> fluids = new ArrayList<>();
+        for(int i = 0; i < this.getTanks(); i++) {
+            fluids.add(getFluidInTank(i));
+        }
+        return fluids;
+    }
 }

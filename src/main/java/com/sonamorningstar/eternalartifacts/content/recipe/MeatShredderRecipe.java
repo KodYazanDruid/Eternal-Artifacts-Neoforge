@@ -40,11 +40,10 @@ public class MeatShredderRecipe implements Recipe<SimpleContainer> {
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {return ItemStack.EMPTY;}
     @Override
-    public RecipeType<?> getType() {return ModRecipes.MEAT_SHREDDING_TYPE.get();}
+    public RecipeType<?> getType() {return ModRecipes.MEAT_SHREDDING.getType();}
     @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.MEAT_SHREDDING_SERIALIZER.get();
-    }
+    public RecipeSerializer<?> getSerializer() {return ModRecipes.MEAT_SHREDDING.getSerializer();}
+
 
     public static class Serializer implements RecipeSerializer<MeatShredderRecipe> {
         private static final Codec<MeatShredderRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(

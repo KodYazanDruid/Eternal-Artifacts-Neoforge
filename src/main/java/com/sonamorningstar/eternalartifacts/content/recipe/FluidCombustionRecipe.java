@@ -32,9 +32,9 @@ public class FluidCombustionRecipe extends AbstractFluidRecipe {
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer() {return ModRecipes.FLUID_COMBUSTING_SERIALIZER.get();}
+    public RecipeSerializer<?> getSerializer() {return ModRecipes.FLUID_COMBUSTING.getSerializer();}
     @Override
-    public RecipeType<?> getType() {return ModRecipes.FLUID_COMBUSTING_TYPE.get();}
+    public RecipeType<?> getType() {return ModRecipes.FLUID_COMBUSTING.getType();}
 
     public static class Serializer implements RecipeSerializer<FluidCombustionRecipe> {
         private static final Codec<FluidCombustionRecipe> CODEC = RecordCodecBuilder.create(inst -> inst.group(

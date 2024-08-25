@@ -1,8 +1,6 @@
-package com.sonamorningstar.eternalartifacts.client.model;
+package com.sonamorningstar.eternalartifacts.client.resources.model;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.vertex.PoseStack;
 import lombok.RequiredArgsConstructor;

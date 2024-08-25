@@ -33,21 +33,21 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private final List<CustomRenderButton> sideSetters = new ArrayList<>(6);
     private final List<CustomRenderButton> autoSetters = new ArrayList<>(4);
     private final List<CustomRenderButton> redstoneSetters = new ArrayList<>(1);
-    private static final ResourceLocation allow = new ResourceLocation(MODID,"textures/gui/sprites/allow.png");
-    private static final ResourceLocation deny = new ResourceLocation(MODID,"textures/gui/sprites/deny.png");
-    private static final ResourceLocation input = new ResourceLocation(MODID,"textures/gui/sprites/input.png");
-    private static final ResourceLocation output = new ResourceLocation(MODID,"textures/gui/sprites/output.png");
-    private static final ResourceLocation auto_input = new ResourceLocation(MODID,"textures/gui/sprites/auto_input.png");
-    private static final ResourceLocation auto_output = new ResourceLocation(MODID,"textures/gui/sprites/auto_output.png");
-    private static final ResourceLocation auto_input_enabled = new ResourceLocation(MODID,"textures/gui/sprites/auto_input_enabled.png");
-    private static final ResourceLocation auto_output_enabled = new ResourceLocation(MODID,"textures/gui/sprites/auto_output_enabled.png");
-    private static final ResourceLocation item_transfer = new ResourceLocation(MODID,"textures/gui/sprites/item_transfer.png");
-    private static final ResourceLocation fluid_transfer = new ResourceLocation(MODID,"textures/gui/sprites/fluid_transfer.png");
-    private static final ResourceLocation item_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/item_transfer_disabled.png");
-    private static final ResourceLocation fluid_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/fluid_transfer_disabled.png");
-    private static final ResourceLocation redstone_active = new ResourceLocation(MODID,"textures/gui/sprites/redstone_active.png");
-    private static final ResourceLocation redstone_passive = new ResourceLocation(MODID,"textures/gui/sprites/redstone_passive.png");
-    private static final ResourceLocation redstone_ignored = new ResourceLocation(MODID,"textures/gui/sprites/redstone_ignored.png");
+    private static final ResourceLocation allow = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/allow.png");
+    private static final ResourceLocation deny = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/deny.png");
+    private static final ResourceLocation input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/input.png");
+    private static final ResourceLocation output = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/output.png");
+    private static final ResourceLocation auto_input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_input.png");
+    private static final ResourceLocation auto_output = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_output.png");
+    private static final ResourceLocation auto_input_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_input_enabled.png");
+    private static final ResourceLocation auto_output_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_output_enabled.png");
+    private static final ResourceLocation item_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/item_transfer.png");
+    private static final ResourceLocation fluid_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_transfer.png");
+    private static final ResourceLocation item_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/item_transfer_disabled.png");
+    private static final ResourceLocation fluid_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_transfer_disabled.png");
+    private static final ResourceLocation redstone_active = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_active.png");
+    private static final ResourceLocation redstone_passive = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_passive.png");
+    private static final ResourceLocation redstone_ignored = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_ignored.png");
 
     public AbstractSidedMachineScreen(T menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -58,45 +58,46 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         super.init();
         for (int i = 0; i < 6; i++) {
             int finalI = i;
-            sideSetters.add(CustomRenderButton.builder(Component.empty(), button -> buttonSideSet(button, finalI), allow).size(9, 9).build());
+            sideSetters.add(CustomRenderButton.builder(Component.empty(), (button, key) -> buttonSideSet(button, key, finalI), allow).size(9, 9).build());
             addRenderableWidget(sideSetters.get(i));
         }
         for (int i = 0; i < 4; i++) {
             int finalI = i;
-            autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonAutoSet(button, finalI)).size(9, 9).build());
+            autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), (button, key) -> buttonAutoSet(button, key, finalI)).size(9, 9).build());
             addRenderableWidget(autoSetters.get(i));
         }
         if(redstoneControllable){
             for (int i = 0; i < 1; i++) {
                 int finalI = i;
-                redstoneSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), button -> buttonRedstoneSet(button, finalI)).size(9, 9).build());
+                redstoneSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), (button, key) -> buttonRedstoneSet(button, key, finalI)).size(9, 9).build());
                 addRenderableWidget(redstoneSetters.get(i));
             }
         }
     }
 
-    private void buttonSideSet(Button button, int index) {
-        Channel.sendToServer(new SidedTransferSideSaveToServer(
-            index,
-            SidedTransferMachineBlockEntity.TransferType.cycleNext(index, sidedTransferMachineBlockEntity),
-            sidedTransferMachineBlockEntity.getBlockPos()
-        ));
-    }
-
-    private void buttonAutoSet(Button button, int index) {
-        BlockEntity be = menu.getBlockEntity();
-        if(be instanceof SidedTransferMachineBlockEntity<?> sided) {
-            boolean auto = sided.getAutoConfigs().get(index) != null && sided.getAutoConfigs().get(index);
-            Channel.sendToServer(new SidedTransferAutoSaveToServer(index, !auto, sided.getBlockPos()));
+    private void buttonSideSet(CustomRenderButton button, int key, int index) {
+        SidedTransferMachineBlockEntity.TransferType type;
+        switch (key) {
+            case 1 -> type = SidedTransferMachineBlockEntity.TransferType.cyclePrev(index, sidedTransferMachineBlockEntity);
+            case 2 -> type = SidedTransferMachineBlockEntity.TransferType.DEFAULT;
+            default -> type = SidedTransferMachineBlockEntity.TransferType.cycleNext(index, sidedTransferMachineBlockEntity);
         }
+        Channel.sendToServer(new SidedTransferSideSaveToServer(index, type, sidedTransferMachineBlockEntity.getBlockPos()));
     }
 
-    private void buttonRedstoneSet(Button button, int index) {
-        Channel.sendToServer(new SidedTransferRedstoneToServer(
-            index,
-            SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, sidedTransferMachineBlockEntity),
-            sidedTransferMachineBlockEntity.getBlockPos()
-        ));
+    private void buttonAutoSet(CustomRenderButton button, int key, int index) {
+        boolean auto = sidedTransferMachineBlockEntity.getAutoConfigs().get(index) != null && sidedTransferMachineBlockEntity.getAutoConfigs().get(index);
+        Channel.sendToServer(new SidedTransferAutoSaveToServer(index, !auto, sidedTransferMachineBlockEntity.getBlockPos()));
+    }
+
+    private void buttonRedstoneSet(CustomRenderButton button, int key, int index) {
+        SidedTransferMachineBlockEntity.RedstoneType type;
+        switch (key) {
+            case 1 -> type = SidedTransferMachineBlockEntity.RedstoneType.cyclePrev(index, sidedTransferMachineBlockEntity);
+            case 2 -> type = SidedTransferMachineBlockEntity.RedstoneType.IGNORED;
+            default -> type = SidedTransferMachineBlockEntity.RedstoneType.cycleNext(index, sidedTransferMachineBlockEntity);
+        }
+        Channel.sendToServer(new SidedTransferRedstoneToServer(index, type, sidedTransferMachineBlockEntity.getBlockPos()));
     }
 
     @Override

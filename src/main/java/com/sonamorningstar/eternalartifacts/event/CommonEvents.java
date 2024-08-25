@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.event;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
@@ -93,6 +94,15 @@ public class CommonEvents {
             event.setAfterDrink(((player, itemStack) -> player.heal(4.0F)));
         }
 
+    }
+
+    @SubscribeEvent
+    public static void drumInteractEvent(DrumInteractEvent event) {
+        FluidStack stack = event.getContent();
+        if (stack.is(ModFluids.GASOLINE.getFluid()) && stack.getAmount() >= 1000) {
+            event.setFuseTime(40);
+            event.setRadius(20.0F);
+        }
     }
 
     @SubscribeEvent

@@ -52,8 +52,14 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, S extends Abst
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), (be, ctx) -> be instanceof SidedTransferMachineBlockEntity<?> sided ? CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots) : be.inventory);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, getBlockEntity(), (be, ctx) -> be instanceof SidedTransferMachineBlockEntity<?> sided ? CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx) : be.tank);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
+            if (be instanceof SidedTransferMachineBlockEntity<?> sided) return CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots);
+            else return be.inventory;
+        });
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
+            if (be instanceof SidedTransferMachineBlockEntity<?> sided) return CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx);
+            else return be.tank;
+        });
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), (be, ctx) -> be.energy);
     }
 }

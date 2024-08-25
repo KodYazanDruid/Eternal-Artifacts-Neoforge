@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:coal"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:coal_dust"
+  }
+}

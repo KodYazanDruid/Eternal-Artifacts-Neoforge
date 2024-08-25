@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlo
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
-import com.sonamorningstar.eternalartifacts.core.ModModelTemplates;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -123,27 +122,7 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         ));
     }
 
-    private static MultiVariantGenerator createSimpleBlock(Block block, ResourceLocation modelLoc) {
-        return MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, modelLoc));
-    }
-
-    private void createNonTemplateModelBlock(Block pBlock) {
-        createNonTemplateModelBlock(pBlock, pBlock);
-    }
-
-    private void createNonTemplateModelBlock(Block pBlock, Block pModelBlock) {
-        stateOutput.accept(createSimpleBlock(pBlock, ModelLocationUtils.getModelLocation(pModelBlock)));
-    }
-
     void createSimpleFlatItemModel(Item item) {
         ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), modelOutput);
-    }
-
-    private net.minecraft.data.models.BlockModelGenerators.BlockEntityModelGenerator blockEntityModels(ResourceLocation pEntityBlockModelLocation, Block pParticleBlock) {
-        return new net.minecraft.data.models.BlockModelGenerators.BlockEntityModelGenerator(pEntityBlockModelLocation, pParticleBlock);
-    }
-
-    private net.minecraft.data.models.BlockModelGenerators.BlockEntityModelGenerator blockEntityModels(Block pEntityBlockBaseModel, Block pParticleBlock) {
-        return new net.minecraft.data.models.BlockModelGenerators.BlockEntityModelGenerator(ModelLocationUtils.getModelLocation(pEntityBlockBaseModel), pParticleBlock);
     }
 }

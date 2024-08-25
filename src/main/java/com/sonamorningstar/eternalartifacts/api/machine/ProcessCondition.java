@@ -1,29 +1,25 @@
 package com.sonamorningstar.eternalartifacts.api.machine;
 
-import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.util.ItemHelper;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public class ProcessCondition {
     private ModItemStorage inventory;
     private List<Integer> outputSlots = new ArrayList<>();
-    private final List<Integer> flaggedSlots = new ArrayList<>();
-    private final List<ItemStack> queuedStacks = new ArrayList<>();
+    private List<ItemStack> queuedItemStacks = new ArrayList<>();
+    private List<FluidStack> queuedFluidStacks = new ArrayList<>();
     private AbstractFluidTank inputTank;
     private AbstractFluidTank outputTank;
-    private final List<RecipeCache<?, ?>> recipeCacheList = new ArrayList<>();
+    private List<AbstractFluidTank> outputTanks = new ArrayList<>();
     private BooleanSupplier supplier;
 
     //region Initializing Handlers
@@ -41,51 +37,55 @@ public class ProcessCondition {
     }
     public ProcessCondition initOutputTank(AbstractFluidTank tank) {
         this.outputTank = tank;
+        this.outputTanks.add(tank);
+        return this;
+    }
+    public ProcessCondition queueItemStack(ItemStack stack) {
+        this.queuedItemStacks.add(stack);
+        return this;
+    }
+    public ProcessCondition queueFluidStack(FluidStack stack) {
+        this.queuedFluidStacks.add(stack);
         return this;
     }
     //endregion
 
-    public ProcessCondition initRecipe(RecipeCache<?, ?> recipeCache) {
-        this.recipeCacheList.add(recipeCache);
-        return this;
-    }
-    public RecipeCache<?, ?> validCache() {
-        for (RecipeCache<?, ?> recipeCache : recipeCacheList) {
-            if (recipeCache.getRecipe() != null) return recipeCache;
-        }
-        return null;
-    }
-
-    public ProcessCondition queueInsertion(ItemStack... queuedStack) {
-        queuedStacks.addAll(Arrays.stream(queuedStack).toList());
-        return this;
-    }
-
     //region Transfer Logics.
     public ProcessCondition tryInsertForced(ItemStack... stacks) {
         if(supplier == null || !supplier.getAsBoolean()) {
-            outputSlots.removeAll(flaggedSlots);
-            for(ItemStack stack : stacks) {
-                Pair<ItemStack, List<Integer>> remainder = ItemHelper.insertItemStackedForced(inventory, stack, true, outputSlots.toArray(Integer[]::new));
-                if (remainder.getSecond() == null) {
+            SimpleContainer container = new SimpleContainer(outputSlots.size());
+            for (int i = 0; i < outputSlots.size(); i++) container.setItem(i, inventory.getStackInSlot(outputSlots.get(i)).copy());
+            for (ItemStack stack : stacks) {
+                ItemStack remainder = container.addItem(stack);
+                if (!remainder.isEmpty()) {
                     supplier = preventWorking();
                     return this;
                 }
-                if (remainder.getFirst().isEmpty() && Collections.disjoint(remainder.getSecond(), flaggedSlots)) {
-                    supplier = noCondition();
-                    if (remainder.getSecond() != null) flaggedSlots.addAll(remainder.getSecond());
-                } else supplier = preventWorking();
+                supplier = () -> !remainder.isEmpty();
             }
         }
         return this;
     }
     public ProcessCondition tryInsertForced(ItemStack stack, int slot) {
-        if(!outputSlots.contains(slot) || flaggedSlots.contains(slot)) supplier = preventWorking();
+        if(!outputSlots.contains(slot)) supplier = preventWorking();
         if(supplier == null || !supplier.getAsBoolean()) {
             ItemStack remainder = inventory.insertItemForced(slot, stack, true);
-            if (remainder.isEmpty()) {
-                supplier = noCondition();
-                flaggedSlots.add(slot);
+            supplier = () -> !remainder.isEmpty();
+        }
+        return this;
+    }
+
+    public ProcessCondition commitQueuedItemStacks() {
+        if(supplier == null || !supplier.getAsBoolean()) {
+            SimpleContainer container = new SimpleContainer(outputSlots.size());
+            for (int i = 0; i < outputSlots.size(); i++) container.setItem(i, inventory.getStackInSlot(outputSlots.get(i)).copy());
+            for (ItemStack stack : queuedItemStacks) {
+                ItemStack remainder = container.addItem(stack);
+                if (!remainder.isEmpty()) {
+                    supplier = preventWorking();
+                    return this;
+                }
+                supplier = () -> !remainder.isEmpty();
             }
         }
         return this;
@@ -113,9 +113,38 @@ public class ProcessCondition {
     }
     public ProcessCondition tryInsertForced(FluidStack stack) {
         if(supplier == null || !supplier.getAsBoolean()) {
-            int remainder = outputTank.fillForced(stack, IFluidHandler.FluidAction.SIMULATE);
-            if (remainder > 0) supplier = preventWorking();
+            int inserted = outputTank.fillForced(stack, IFluidHandler.FluidAction.SIMULATE);
+            if (inserted != stack.getAmount()) supplier = preventWorking();
             else supplier = noCondition();
+        }
+        return this;
+
+        /*if(supplier == null || !supplier.getAsBoolean()) {
+            SimpleFluidContainer container = new SimpleFluidContainer(outputTanks.size());
+            for (int i = 0; i < outputTanks.size(); i++) container.setFluidStack(i, outputTanks.get(i).getFluidInTank(0));
+            for (FluidStack stack : stacks) {
+                FluidStack inserted = container.addFluid(stack);
+                if (inserted.isEmpty()) {
+                    supplier = preventWorking();
+                    return this;
+                }
+                supplier = inserted::isEmpty;
+            }
+        }
+        return this;*/
+    }
+    public ProcessCondition commitQueuedFluidStacks() {
+        if(supplier == null || !supplier.getAsBoolean()) {
+            SimpleFluidContainer container = new SimpleFluidContainer(outputTanks.size());
+            for (int i = 0; i < outputTanks.size(); i++) container.setFluidStack(i, outputTanks.get(i).getFluidInTank(0));
+            for (FluidStack stack : queuedFluidStacks) {
+                FluidStack inserted = container.addFluid(stack);
+                if (inserted.isEmpty()) {
+                    supplier = preventWorking();
+                    return this;
+                }
+                supplier = inserted::isEmpty;
+            }
         }
         return this;
     }
@@ -141,19 +170,7 @@ public class ProcessCondition {
     public static BooleanSupplier preventWorking() { return () -> true; }
 
     public boolean getResult() {
-        boolean noRecipes = false;
-        if (!recipeCacheList.isEmpty()) noRecipes = validCache() == null;
-/*        if (!queuedStacks.isEmpty()) {
-            for (ItemStack queuedStack : queuedStacks) {
-                outputSlots.removeAll(flaggedSlots);
-                Pair<ItemStack, List<Integer>> remainder = ItemHelper.insertItemStackedForced(inventory, queuedStack, true, outputSlots.toArray(Integer[]::new));
-                if (remainder.getFirst().isEmpty() && remainder.getSecond() != null && !remainder.getSecond().isEmpty()) {
-                    supplier = noCondition();
-                    flaggedSlots.addAll(remainder.getSecond());
-                } else supplier = preventWorking();
-            }
-        }*/
-        return supplier == null || supplier.getAsBoolean() || noRecipes;
+        return supplier == null || supplier.getAsBoolean();
     }
 
 }

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/melting_crucible",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/melting_crucible"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/melting_crucible",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/melting_crucible",
+      "y": 270
+    }
+  }
+}

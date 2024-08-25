@@ -28,7 +28,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
             protected void onContentsChanged(int slot) {
                 progress = 0;
                 MeatShredderMachineBlockEntity.this.sendUpdate();
-                recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
+                recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
             }
         });
         setEnergy(createDefaultEnergy());
@@ -39,7 +39,7 @@ public class MeatShredderMachineBlockEntity extends SidedTransferMachineBlockEnt
     @Override
     public void onLoad() {
         super.onLoad();
-        recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING_TYPE.get(), new SimpleContainer(inventory.getStackInSlot(0)), level);
+        recipeCache.findRecipe(ModRecipes.MEAT_SHREDDING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 
     @Override

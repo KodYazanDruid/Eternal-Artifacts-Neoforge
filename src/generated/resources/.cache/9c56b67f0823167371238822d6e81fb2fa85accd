@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-16T20:51:57.3056791	Item Models: eternalartifacts
+// 1.20.4	2024-08-23T23:01:01.5169637	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -66,6 +66,7 @@ df2644d1984cf0b62f3bdc77fde033a2e0818907 assets/eternalartifacts/models/item/gol
 17cea3c921ca033b040efdb8c0d358402f8ec92f assets/eternalartifacts/models/item/hammaxe.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
 d660795854e4bf04885248e050254bfd59bc1cfb assets/eternalartifacts/models/item/induction_furnace.json
+c26763eab56edf48666cc6a8eee96773867b4c6a assets/eternalartifacts/models/item/industrial_macerator.json
 db1884568509aa8f4eb08063f93fb00cce6f6bd6 assets/eternalartifacts/models/item/iron_drum.json
 975f2c4f0f505df7ea49e0b501ae85271d0787d4 assets/eternalartifacts/models/item/iron_hammer.json
 22d616680d46d49c8e5d3928a400d64a51d3d028 assets/eternalartifacts/models/item/iron_oreberry.json
@@ -82,6 +83,7 @@ ada2695d85a8d6aacc3fa5c0de02db49b151ee30 assets/eternalartifacts/models/item/man
 0d7c7e42ea921ed3c52ebf35bbbb4ab145fe3485 assets/eternalartifacts/models/item/manganese_oreberry.json
 db4c87dbd56c73964e1d7bbdda87976add57067c assets/eternalartifacts/models/item/meat_ingot.json
 e27a29410dee3d2b3bcee6f52a1cd980728b1076 assets/eternalartifacts/models/item/medkit.json
+eac553947dded131497aea667f841552a8f08c69 assets/eternalartifacts/models/item/melting_crucible.json
 81c9e09f20bcba45f4e17bfcf9ce4d3d4b38b846 assets/eternalartifacts/models/item/natural_spade.json
 245adcf57e86b7ee4cf06f90f25baac1895c2061 assets/eternalartifacts/models/item/netherite_drum.json
 39d02e2ae8dcc20063278cab7f10c433f9572980 assets/eternalartifacts/models/item/netherite_hammer.json

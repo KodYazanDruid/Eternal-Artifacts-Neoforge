@@ -44,11 +44,11 @@ public class EmiCompat implements EmiPlugin {
         registry.addRecipe(new MeatPackerCategory());
 
         RecipeManager manager = registry.getRecipeManager();
-        for(MeatShredderRecipe recipe : manager.getAllRecipesFor(ModRecipes.MEAT_SHREDDING_TYPE.get()).stream().map(RecipeHolder::value).toList()) {
+        for(MeatShredderRecipe recipe : manager.getAllRecipesFor(ModRecipes.MEAT_SHREDDING.getType()).stream().map(RecipeHolder::value).toList()) {
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem());
             registry.addRecipe(new MeatShredderCategory(recipe, new ResourceLocation(MODID, ("meat_shredding/"+id.toString().replace(":", "/")))));
         }
-        for(MobLiquifierRecipe recipe : manager.getAllRecipesFor(ModRecipes.MOB_LIQUIFIER_TYPE.get()).stream().map(RecipeHolder::value).toList()) {
+        for(MobLiquifierRecipe recipe : manager.getAllRecipesFor(ModRecipes.MOB_LIQUIFYING.getType()).stream().map(RecipeHolder::value).toList()) {
             ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(recipe.getEntity().getEntityTypes()[0]);
             registry.addRecipe(new MobLiquifierCategory(recipe, new ResourceLocation(MODID, ("mob_liquifying/"+id.toString().replace(":", "/")))));
         }

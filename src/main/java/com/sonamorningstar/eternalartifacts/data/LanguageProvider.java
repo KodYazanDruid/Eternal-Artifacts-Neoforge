@@ -189,6 +189,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.PINKY.get(), "Pinky");
                 add(ModEntities.DUCK.get(), "Duck");
                 add(ModEntities.MAGICAL_BOOK.get(), "Magical Book");
+                add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Primed %s");
 
                 //Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -424,12 +425,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asfalt Bloğu");
                 add(ModMachines.FLUID_INFUSER.getBlockTranslationKey(), "Sıvı İnfüzörü");
                 add(ModMachines.INDUCTION_FURNACE.getBlockTranslationKey(), "İndüksiyon İzabe Tesisi");
+                add(ModMachines.INDUSTRIAL_MACERATOR.getBlockTranslationKey(), "Endüstriyel Öğütücü");
+                //add(ModMachines.SMART_JUKEBOX.getBlockTranslationKey(), "Akıllı Müzik Kutusu");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
                 add(ModEntities.PINKY.get(), "Pembiş");
                 add(ModEntities.DUCK.get(), "Ördek");
                 add(ModEntities.MAGICAL_BOOK.get(), "Büyülü Kitap");
+                add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Ateşlenmiş %s");
 
                 //Efektler
                 add(ModEffects.FLIGHT.get(), "Uçuş");

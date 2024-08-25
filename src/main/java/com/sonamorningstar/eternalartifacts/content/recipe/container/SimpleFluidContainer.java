@@ -69,6 +69,69 @@ public class SimpleFluidContainer implements Container {
         return FluidStack.EMPTY;
     }
 
+    public void setFluidStack(int index, FluidStack stack) {
+        if (isInBounds(index)) {
+            this.fluidStacks.set(index, stack);
+            this.setChanged();
+        }
+    }
+
+    public FluidStack addFluid(FluidStack stack) {
+        if (stack.isEmpty()) {
+            return FluidStack.EMPTY;
+        } else {
+            FluidStack fluidStack = stack.copy();
+            this.moveFluidToOccupiedSlotsWithSameType(fluidStack);
+            if (fluidStack.isEmpty()) {
+                return FluidStack.EMPTY;
+            } else {
+                this.moveFluidToEmptySlots(fluidStack);
+                return fluidStack.isEmpty() ? FluidStack.EMPTY : fluidStack;
+            }
+        }
+    }
+
+    private void moveFluidToEmptySlots(FluidStack stack) {
+        for(int i = 0; i < this.size; ++i) {
+            FluidStack fluidStack = this.getFluidstack(i);
+            if (fluidStack.isEmpty()) {
+                this.setFluidStack(i, stack.copy());
+                stack.setAmount(0);
+                return;
+            }
+        }
+    }
+
+    private void moveFluidToOccupiedSlotsWithSameType(FluidStack fluidStack) {
+        for(int i = 0; i < this.size; ++i) {
+            FluidStack stackInCon = this.getFluidstack(i);
+            if (FluidStack.areFluidStackTagsEqual(stackInCon, fluidStack)) {
+                this.moveFluidsBetweenStacks(fluidStack, stackInCon);
+                if (fluidStack.isEmpty()) {
+                    return;
+                }
+            }
+        }
+    }
+
+    private void moveFluidsBetweenStacks(FluidStack stack, FluidStack other) {
+        /*int i = Math.min(this.getMaxStackSize(), other.getMaxStackSize());
+        int j = Math.min(stack.getAmount(), i - other.getAmount());
+        if (j > 0) {
+            other.grow(j);
+            stack.shrink(j);
+            this.setChanged();
+        }*/
+        int i = stack.getAmount();
+        //other.grow(i);
+        if (other.isEmpty()) {
+            other = new FluidStack(stack.getFluid(), i);
+        } else other.grow(i);
+        stack.shrink(i);
+        if (stack.getAmount() <= 0) stack = FluidStack.EMPTY;
+        this.setChanged();
+    }
+
     @Override
     public int getContainerSize() {
         return this.size;

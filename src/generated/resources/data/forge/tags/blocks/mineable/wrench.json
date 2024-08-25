@@ -13,6 +13,8 @@
     "eternalartifacts:oil_refinery",
     "#forge:storage_blocks",
     "eternalartifacts:fluid_infuser",
-    "eternalartifacts:induction_furnace"
+    "eternalartifacts:induction_furnace",
+    "eternalartifacts:industrial_macerator",
+    "eternalartifacts:melting_crucible"
   ]
 }

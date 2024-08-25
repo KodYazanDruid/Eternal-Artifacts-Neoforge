@@ -2,9 +2,9 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
-import com.sonamorningstar.eternalartifacts.client.model.ColoredBlockModel;
-import com.sonamorningstar.eternalartifacts.client.model.FluidCombustionDynamoModel;
-import com.sonamorningstar.eternalartifacts.client.model.RetexturedModel;
+import com.sonamorningstar.eternalartifacts.client.resources.model.ColoredBlockModel;
+import com.sonamorningstar.eternalartifacts.client.resources.model.FluidCombustionDynamoModel;
+import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.TntRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -95,6 +96,7 @@ public class ClientModEvents {
         EntityRenderers.register(ModEntities.PINKY.get(), PinkyRenderer::new);
         EntityRenderers.register(ModEntities.DUCK.get(), DuckRenderer::new);
         EntityRenderers.register(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
+        EntityRenderers.register(ModEntities.PRIMED_BLOCK.get(), TntRenderer::new);
     }
 
     @SubscribeEvent

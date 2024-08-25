@@ -76,19 +76,19 @@ public class EnderNotebookScreen extends Screen {
         }
     }
 
-    private void onRemoveWarpPress(Button button, int index) {
+    private void onRemoveWarpPress(CustomRenderButton button, int key, int index) {
         warps.remove(index);
         keyList.remove(index);
         Channel.sendToServer(new EnderNotebookRemoveNbtToServer(index, bookAccess.getNotebook()));
         rebuildWidgets();
     }
 
-    private void onTeleportWarpPress(Button button, int index) {
+    private void onTeleportWarpPress(CustomRenderButton button, int key, int index) {
         Pair<Pair<String, ResourceKey<Level>>, BlockPos> warp = warps.get(index);
         Channel.sendToServer(new EnderNotebookTeleportToServer(warp.getFirst().getSecond(), warp.getSecond()));
     }
 
-    private void generateButtonsInit(int i, List<Pair<Pair<CustomRenderButton, CustomRenderButton>, Pair<Pair<String, ResourceKey<Level>>, BlockPos>>> keyList, Function<Button, ?> func) {
+    private void generateButtonsInit(int i, List<Pair<Pair<CustomRenderButton, CustomRenderButton>, Pair<Pair<String, ResourceKey<Level>>, BlockPos>>> keyList, Function<CustomRenderButton, ?> func) {
         Pair<CustomRenderButton, CustomRenderButton> buttonPair = generateButtonPair(i);
         keyList.add(i, Pair.of(buttonPair, Pair.of(Pair.of(warps.get(i).getFirst().getFirst(), warps.get(i).getFirst().getSecond()), warps.get(i).getSecond())));
         func.apply(buttonPair.getFirst());
@@ -108,10 +108,10 @@ public class EnderNotebookScreen extends Screen {
     }
 
     private Pair<CustomRenderButton, CustomRenderButton> generateButtonPair(int i) {
-        CustomRenderButton delete = CustomRenderButton.builder(Component.empty(), button -> onRemoveWarpPress(button, i),
+        CustomRenderButton delete = CustomRenderButton.builder(Component.empty(), (button, key) -> onRemoveWarpPress(button, key, i),
                         new ResourceLocation(MODID, "textures/gui/sprites/blank_red.png"), new ResourceLocation(MODID, "textures/gui/sprites/trash_can.png"))
                 .bounds(x + 160, y + 11 + (margin * i), 18, 18).build();
-        CustomRenderButton teleport = CustomRenderButton.builder(Component.empty(), button -> onTeleportWarpPress(button, i),
+        CustomRenderButton teleport = CustomRenderButton.builder(Component.empty(), (button, key) -> onTeleportWarpPress(button, key, i),
                         new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png"))
                 .bounds(x + 13, y + 11 + (margin * i), 147, 18).build();
         teleport.setAlpha(0.5f);

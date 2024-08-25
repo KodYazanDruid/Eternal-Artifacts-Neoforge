@@ -29,12 +29,10 @@ public class EntityIngredient implements Predicate<EntityType<?>> {
     @Nullable
     private EntityType<?>[] entityTypes;
     @Nullable private Boolean areAllEntitiesNull;
-    public static final Codec<EntityIngredient> MOD_CODEC ;
-    public static final Codec<EntityIngredient> MOD_CODEC_NONEMPTY;
-    //public static final Codec<EntityIngredient> CODEC;
-    //public static final Codec<EntityIngredient> CODEC_NONEMPTY;
-    public static final Codec<List<EntityIngredient>> LIST_CODEC;
-    public static final Codec<List<EntityIngredient>> LIST_CODEC_NONEMPTY;
+    public static final Codec<EntityIngredient> CODEC = codec(true);
+    public static final Codec<EntityIngredient> CODEC_NONEMPTY = codec(false);
+    public static final Codec<List<EntityIngredient>> LIST_CODEC = CODEC.listOf();
+    public static final Codec<List<EntityIngredient>> LIST_CODEC_NONEMPTY = CODEC_NONEMPTY.listOf();
 
     protected EntityIngredient(Stream<? extends EntityIngredient.Value> values) {
         this.values = values.toArray(EntityIngredient.Value[]::new);
@@ -80,7 +78,7 @@ public class EntityIngredient implements Predicate<EntityType<?>> {
     }
 
     public static EntityIngredient fromJson(JsonElement element, boolean nonEmpty) {
-        Codec<EntityIngredient> codec = nonEmpty ? MOD_CODEC : MOD_CODEC_NONEMPTY;
+        Codec<EntityIngredient> codec = nonEmpty ? CODEC : CODEC_NONEMPTY;
         return net.minecraft.Util.getOrThrow(codec.parse(com.mojang.serialization.JsonOps.INSTANCE, element), IllegalStateException::new);
     }
 
@@ -149,22 +147,13 @@ public class EntityIngredient implements Predicate<EntityType<?>> {
                 );
     }
 
-    static {
-        /*CODEC =
-        CODEC_NONEMPTY = */
-        MOD_CODEC = codec(true);
-        MOD_CODEC_NONEMPTY = codec(false);
-        LIST_CODEC = MOD_CODEC.listOf();
-        LIST_CODEC_NONEMPTY = MOD_CODEC_NONEMPTY.listOf();
-    }
-
     public record EntityValue(EntityType<?> entityType, BiFunction<EntityType<?>, EntityType<?>, Boolean> comparator) implements Value {
         public EntityValue(EntityType<?> entityType) {
             this(entityType, EntityValue::areEntitiesEqual);
         }
 
         static final Codec<EntityValue> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("entity").forGetter(entityValue -> entityValue.entityType)
+                BuiltInRegistries.ENTITY_TYPE.byNameCodec().fieldOf("id").forGetter(entityValue -> entityValue.entityType)
         ).apply(inst, EntityValue::new));
 
         @Override
@@ -200,6 +189,9 @@ public class EntityIngredient implements Predicate<EntityType<?>> {
             List<EntityType<?>> list = new ArrayList<>();
             for(Holder<EntityType<?>> holder : BuiltInRegistries.ENTITY_TYPE.getTagOrEmpty(this.tag)) {
                 list.add(holder.value());
+            }
+            if (list.isEmpty()) {
+                list.add(EntityType.PIG);
             }
             return list;
         }

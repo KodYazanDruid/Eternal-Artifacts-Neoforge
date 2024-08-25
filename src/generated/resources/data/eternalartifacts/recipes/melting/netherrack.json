@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:melting",
+  "input": {
+    "item": "minecraft:netherrack"
+  },
+  "output": {
+    "Amount": 1000,
+    "FluidName": "minecraft:lava"
+  }
+}

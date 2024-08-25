@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.container.FluidInfuserMenu;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -29,7 +30,7 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     private int heatKeepCost = 10;
     //private boolean isWorking = false;
     public InductionFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, InductionFurnaceMenu::new);
+        super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new InductionFurnaceMenu(ModMachines.INDUCTION_FURNACE.getMenu(), a, b, c, d));
         outputSlots.add(2);
         outputSlots.add(3);
         setEnergy(createDefaultEnergy());
@@ -122,18 +123,17 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         performAutoInput(lvl, pos, inventory);
         performAutoOutput(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
 
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initOutputSlots(outputSlots)
-                .initRecipe(smeltingCache0)
-                .initRecipe(smeltingCache1)
-                .initRecipe(blastingCache0)
-                .initRecipe(blastingCache1)
-                .initRecipe(smokingCache0)
-                .initRecipe(smokingCache1);
-
         Recipe<?> recipe0 = getValidRecipe(0);
         Recipe<?> recipe1 = getValidRecipe(1);
+
+        if (recipe0 == null && recipe1 == null) {
+            progress = 0;
+            return;
+        }
+
+        ProcessCondition condition = new ProcessCondition()
+                .initInventory(inventory)
+                .initOutputSlots(outputSlots);
 
         if (recipe0 != null) condition.tryInsertForced(recipe0.getResultItem(lvl.registryAccess()));
         if (recipe1 != null) condition.tryInsertForced(recipe1.getResultItem(lvl.registryAccess()));
@@ -143,24 +143,32 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         AtomicBoolean shouldHeat = new AtomicBoolean(false);
         if (!result) shouldHeat.set(true);
         progress(()-> result, () ->  {
-            if (recipe0 != null) ItemHelper.insertItemStackedForced(inventory, recipe0.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new));
-            if (recipe1 != null) ItemHelper.insertItemStackedForced(inventory, recipe1.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new));
-            if (recipe0 != null) inventory.extractItem(0, 1, false);
-            if (recipe1 != null) inventory.extractItem(1, 1, false);
+            ItemStack remainder0 = ItemStack.EMPTY;
+            ItemStack remainder1 = ItemStack.EMPTY;
+            if (recipe0 != null) {
+                remainder0 = ItemHelper.insertItemStackedForced(inventory, recipe0.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
+            }
+            if (recipe1 != null) {
+                remainder1 = ItemHelper.insertItemStackedForced(inventory, recipe1.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
+            }
+            if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
+            if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
         }, energy);
 
         boolean isThereACoil = isThereACoil(pos);
-        if (energy.getEnergyStored() >= heatKeepCost && shouldHeat.get()) {
+        boolean isEnergyEnough = isEnergyEnough();
+        if (isEnergyEnough && shouldHeat.get()) {
             energy.extractEnergyForced(heatKeepCost, false);
             if (heat < MAX_HEAT) {
                 heat++;
                 sendUpdate();
             }
-        } else if (heat > 0 && (!isThereACoil || energy.getEnergyStored() < heatKeepCost)) {
+        }
+        if (!shouldHeat.get() && heat > 0 && (!isThereACoil || !isEnergyEnough)) {
             heat--;
             sendUpdate();
         }
-        if (isThereACoil && energy.getEnergyStored() >= heatKeepCost && !shouldHeat.get() && heat > 0)
+        if (isThereACoil && isEnergyEnough && !shouldHeat.get() && heat > 0)
             energy.extractEnergyForced(heatKeepCost, false);
     }
 
@@ -174,6 +182,8 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         }
         return false;
     }
+
+    private boolean isEnergyEnough() {return energy.getEnergyStored() >= heatKeepCost;}
 
     private Recipe<?> getValidRecipe(int slot) {
         switch (slot) {

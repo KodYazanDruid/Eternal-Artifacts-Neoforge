@@ -18,6 +18,8 @@
     "eternalartifacts:gold_drum",
     "eternalartifacts:diamond_drum",
     "eternalartifacts:fluid_infuser",
-    "eternalartifacts:induction_furnace"
+    "eternalartifacts:induction_furnace",
+    "eternalartifacts:industrial_macerator",
+    "eternalartifacts:melting_crucible"
   ]
 }

@@ -2,10 +2,8 @@
   "type": "eternalartifacts:fluid_combusting",
   "duration": 80,
   "fuel": {
-    "fluid": {
-      "Amount": 1000,
-      "FluidName": "eternalartifacts:crude_oil"
-    }
+    "amount": 1000,
+    "tag": "forge:crude_oil"
   },
   "generation": 50
 }

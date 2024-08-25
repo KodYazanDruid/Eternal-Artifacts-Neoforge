@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.sonamorningstar.eternalartifacts.client.model.FluidCombustionDynamoModel;
+import com.sonamorningstar.eternalartifacts.client.resources.model.FluidCombustionDynamoModel;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;

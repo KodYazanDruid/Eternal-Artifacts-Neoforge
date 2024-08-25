@@ -90,9 +90,8 @@ public class FluidIngredient implements Predicate<FluidStack> {
     }
 
     public static FluidIngredient fromNetwork(FriendlyByteBuf buff) {
-        /*int size = buff.readVarInt();
-        if (size == -1) return buff.readWithCodecTrusted(net.minecraft.nbt.NbtOps.INSTANCE, CODEC);
-        else*/ return new FluidIngredient(Stream.generate(() -> new FluidIngredient.FluidValue(buff.readFluidStack())));
+        int size = buff.readVarInt();
+        return new FluidIngredient(Stream.generate(() -> new FluidIngredient.FluidValue(buff.readFluidStack())).limit(size));
     }
 
     public static FluidIngredient fromJson(JsonElement element, boolean nonEmpty) {
@@ -141,8 +140,8 @@ public class FluidIngredient implements Predicate<FluidStack> {
         return fromValues(stacks.filter(p_43944_ -> !p_43944_.isEmpty()).map(FluidIngredient.FluidValue::new));
     }
 
-    public static FluidIngredient of(TagKey<Fluid> tag) {
-        return fromValues(Stream.of(new FluidIngredient.TagValue(tag)));
+    public static FluidIngredient of(TagKey<Fluid> tag, int amount) {
+        return fromValues(Stream.of(new FluidIngredient.TagValue(tag, amount)));
     }
 
     private static Codec<FluidIngredient> codec(boolean allowEmpty) {
@@ -171,8 +170,9 @@ public class FluidIngredient implements Predicate<FluidStack> {
         }
 
         static final Codec<FluidValue> CODEC = RecordCodecBuilder.create( inst -> inst.group(
-                FluidStack.CODEC.fieldOf("fluid").forGetter(fluidValue -> fluidValue.fluidStack)
-        ).apply(inst, FluidIngredient.FluidValue::new));
+                BuiltInRegistries.FLUID.byNameCodec().fieldOf("id").forGetter(fluidValue -> fluidValue.fluidStack.getFluid()),
+                Codec.INT.fieldOf("amount").forGetter(fluidValue -> fluidValue.fluidStack.getAmount())
+        ).apply(inst, (fluid, amount) -> new FluidValue(new FluidStack(fluid, amount))));
 
         @Override
         public boolean equals(Object other) {
@@ -189,27 +189,26 @@ public class FluidIngredient implements Predicate<FluidStack> {
         }
     }
 
-    public record TagValue(TagKey<Fluid> tag) implements FluidIngredient.Value {
-
-        public TagValue(TagKey<Fluid> tag) {
-            this.tag = tag;
-        }
+    public record TagValue(TagKey<Fluid> tag, int amount) implements FluidIngredient.Value {
 
         static final Codec<TagValue> CODEC = RecordCodecBuilder.create( inst -> inst.group(
-                TagKey.codec(Registries.FLUID).fieldOf("tag").forGetter(tagValue -> tagValue.tag)
+                TagKey.codec(Registries.FLUID).fieldOf("tag").forGetter(tagValue -> tagValue.tag),
+                Codec.INT.fieldOf("amount").forGetter(tagValue -> tagValue.amount)
         ).apply(inst, FluidIngredient.TagValue::new));
 
         @Override
         public boolean equals(Object other) {
-            return other instanceof TagValue tagValue && tagValue.tag.location().equals(this.tag.location());
+            return other instanceof TagValue tagValue && tagValue.tag.location().equals(this.tag.location()) && tagValue.amount == this.amount;
         }
-
 
         @Override
         public Collection<FluidStack> getFluids() {
             List<FluidStack> list = new ArrayList<>();
             for(Holder<Fluid> holder : BuiltInRegistries.FLUID.getTagOrEmpty(this.tag)) {
-                list.add(new FluidStack(holder, 1000));
+                list.add(new FluidStack(holder, amount));
+            }
+            if (list.isEmpty()) {
+                list.add(new FluidStack(Fluids.LAVA, 1));
             }
             return list;
         }

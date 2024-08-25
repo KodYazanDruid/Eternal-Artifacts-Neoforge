@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:melting",
+  "input": {
+    "item": "minecraft:ice"
+  },
+  "output": {
+    "Amount": 1000,
+    "FluidName": "minecraft:water"
+  }
+}

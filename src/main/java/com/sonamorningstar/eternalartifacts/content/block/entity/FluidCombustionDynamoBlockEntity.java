@@ -58,7 +58,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     }
 
     private void findRecipeAndSet() {
-        recipeCache.findRecipe(ModRecipes.FLUID_COMBUSTING_TYPE.get(), new SimpleFluidContainer(tank.getFluid(0)), level);
+        recipeCache.findRecipe(ModRecipes.FLUID_COMBUSTING.getType(), new SimpleFluidContainer(tank.getFluid(0)), level);
         if(recipeCache.getRecipe() != null) {
             setEnergyPerTick(recipeCache.getRecipe().getGeneration());
             setMaxProgress(recipeCache.getRecipe().getDuration());

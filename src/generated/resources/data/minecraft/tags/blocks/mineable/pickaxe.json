@@ -40,6 +40,8 @@
     "eternalartifacts:netherite_drum",
     "eternalartifacts:asphalt_block",
     "eternalartifacts:fluid_infuser",
-    "eternalartifacts:induction_furnace"
+    "eternalartifacts:induction_furnace",
+    "eternalartifacts:industrial_macerator",
+    "eternalartifacts:melting_crucible"
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:clay_ball"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:clay_dust"
+  }
+}

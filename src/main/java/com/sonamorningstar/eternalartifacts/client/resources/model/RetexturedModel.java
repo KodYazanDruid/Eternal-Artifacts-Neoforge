@@ -1,14 +1,14 @@
-package com.sonamorningstar.eternalartifacts.client.model;
+package com.sonamorningstar.eternalartifacts.client.resources.model;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.google.gson.*;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.client.model.util.DynamicBakedWrapper;
-import com.sonamorningstar.eternalartifacts.client.model.util.GeometryContextWrapper;
-import com.sonamorningstar.eternalartifacts.client.model.util.ModelHelper;
-import com.sonamorningstar.eternalartifacts.client.model.util.ModelTextureIteratable;
+import com.sonamorningstar.eternalartifacts.client.resources.model.util.DynamicBakedWrapper;
+import com.sonamorningstar.eternalartifacts.client.resources.model.util.GeometryContextWrapper;
+import com.sonamorningstar.eternalartifacts.client.resources.model.util.ModelHelper;
+import com.sonamorningstar.eternalartifacts.client.resources.model.util.ModelTextureIteratable;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import lombok.AccessLevel;

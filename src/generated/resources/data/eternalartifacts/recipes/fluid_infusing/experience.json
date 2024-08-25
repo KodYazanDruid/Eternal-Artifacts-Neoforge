@@ -1,0 +1,14 @@
+{
+  "type": "eternalartifacts:fluid_infusing",
+  "input": {
+    "item": "minecraft:glass_bottle"
+  },
+  "inputFluid": {
+    "amount": 250,
+    "tag": "forge:experience"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:experience_bottle"
+  }
+}

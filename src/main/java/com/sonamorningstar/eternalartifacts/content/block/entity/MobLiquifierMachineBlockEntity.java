@@ -49,7 +49,7 @@ public class MobLiquifierMachineBlockEntity extends SidedTransferMachineBlockEnt
         LivingEntity entityToHurt = null;
         //Finding entity to hurt that fits recipe.
         for(LivingEntity living : livingList) {
-            findRecipe(ModRecipes.MOB_LIQUIFIER_TYPE.get(), living.getType());
+            findRecipe(ModRecipes.MOB_LIQUIFYING.getType(), living.getType());
             if(currentRecipe == null) continue;
             //Found entity to hurt.
             if(((MobLiquifierRecipe) currentRecipe).getEntity().test(living.getType())) {

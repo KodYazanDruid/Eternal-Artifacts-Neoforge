@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:glowstone"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:glowstone_dust"
+  }
+}

@@ -1,7 +1,7 @@
-package com.sonamorningstar.eternalartifacts.client.model.util;
+package com.sonamorningstar.eternalartifacts.client.resources.model.util;
 
 import com.mojang.datafixers.util.Either;
-import com.sonamorningstar.eternalartifacts.client.model.SimpleBlockModel;
+import com.sonamorningstar.eternalartifacts.client.resources.model.SimpleBlockModel;
 import lombok.AllArgsConstructor;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.client.resources.model.Material;

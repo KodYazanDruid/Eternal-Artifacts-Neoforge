@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.client.model.util;
+package com.sonamorningstar.eternalartifacts.client.resources.model.util;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;

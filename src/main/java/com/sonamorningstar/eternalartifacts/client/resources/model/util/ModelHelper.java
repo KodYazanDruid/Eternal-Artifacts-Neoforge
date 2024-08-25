@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.client.model.util;
+package com.sonamorningstar.eternalartifacts.client.resources.model.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

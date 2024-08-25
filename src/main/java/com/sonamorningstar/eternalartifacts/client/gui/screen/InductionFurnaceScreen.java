@@ -24,6 +24,6 @@ public class InductionFurnaceScreen extends AbstractSidedMachineScreen<Induction
     private void renderHeat(GuiGraphics gui, int x, int y) {
         double heat = ((InductionFurnaceBlockEntity) menu.getBlockEntity()).getHeatPercentage();
         gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("heat").append(": ")
-                .append(String.format("%.2f", heat)).append("%") , x, y, 4210752, false);
+                .append(String.format("%.2f", heat)).append("%") , x, y, labelColor, false);
     }
 }
