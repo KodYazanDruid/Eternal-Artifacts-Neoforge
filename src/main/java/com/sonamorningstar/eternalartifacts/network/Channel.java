@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.network;
 
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
@@ -42,6 +43,9 @@ public class Channel {
         registrar.play(SidedTransferRedstoneToServer.ID,
                 SidedTransferRedstoneToServer::create,
                 handler -> handler.server(SidedTransferRedstoneToServer::handle));
+        registrar.play(ShootSkullsToServer.ID,
+                ShootSkullsToServer::create,
+                handler -> handler.server(ShootSkullsToServer::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {

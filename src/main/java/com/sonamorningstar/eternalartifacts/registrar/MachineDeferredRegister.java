@@ -1,18 +1,11 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.IndustrialMaceratorBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.MenuConstructor;
-import com.sonamorningstar.eternalartifacts.util.QuadFunction;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
@@ -29,9 +22,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.network.IContainerFactory;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -46,7 +37,7 @@ public class MachineDeferredRegister {
     private final DeferredRegister<BlockEntityType<?>> blockEntityRegister;
     private final DeferredRegister.Blocks blockRegister;
     private final DeferredRegister.Items itemRegister;
-    private final List<MachineDeferredHolder<? extends AbstractMachineMenu, ? extends AbstractMachineScreen<? extends AbstractMachineMenu>, ? extends MachineBlockEntity<? extends AbstractMachineMenu>, ? extends BaseMachineBlock<? extends MachineBlockEntity<? extends AbstractMachineMenu>>, ? extends BlockItem>> machines = new ArrayList<>();
+    private final List<MachineDeferredHolder<? extends AbstractMachineMenu, ? extends MachineBlockEntity<? extends AbstractMachineMenu>, ? extends BaseMachineBlock<? extends MachineBlockEntity<? extends AbstractMachineMenu>>, ? extends BlockItem>> machines = new ArrayList<>();
 
     private final BlockBehaviour.Properties defaultProperties = BlockBehaviour.Properties.of()
             .mapColor(MapColor.METAL)
@@ -70,20 +61,20 @@ public class MachineDeferredRegister {
 
     }
     public
-    <M extends AbstractMachineMenu, S extends AbstractMachineScreen<M>,  BE extends MachineBlockEntity<M>>
-    MachineDeferredHolder<M, S, BE, MachineFourWayBlock<BE>, BlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, MenuScreens.ScreenConstructor<M, S> screen, BlockEntityType.BlockEntitySupplier<BE> blockEntity) {
-        return register(name, menu, screen, blockEntity,false);
+    <M extends AbstractMachineMenu,  BE extends MachineBlockEntity<M>>
+    MachineDeferredHolder<M, BE, MachineFourWayBlock<BE>, BlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity) {
+        return register(name, menu, blockEntity,false);
     }
 
     public
-    <M extends AbstractMachineMenu, S extends AbstractMachineScreen<M>,  BE extends MachineBlockEntity<M>>
-    MachineDeferredHolder<M, S, BE, MachineFourWayBlock<BE>, BlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, MenuScreens.ScreenConstructor<M, S> screen, BlockEntityType.BlockEntitySupplier<BE> blockEntity, boolean hasUniqueTexture) {
-        return register(name, menu, screen, blockEntity, MachineFourWayBlock::new, BlockItem::new, hasUniqueTexture);
+    <M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>>
+    MachineDeferredHolder<M, BE, MachineFourWayBlock<BE>, BlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity, boolean hasUniqueTexture) {
+        return register(name, menu, blockEntity, MachineFourWayBlock::new, BlockItem::new, hasUniqueTexture);
     }
 
     public
-    <M extends AbstractMachineMenu, S extends AbstractMachineScreen<M>,  BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem>
-    MachineDeferredHolder<M, S, BE, MB, BI> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, MenuScreens.ScreenConstructor<M, S> screen, BlockEntityType.BlockEntitySupplier<BE> blockEntity, BiFunction<BlockBehaviour.Properties, BlockEntityType.BlockEntitySupplier<BE>, MB> block, BiFunction<Block, Item.Properties, BI> item, boolean hasUniqueTexture) {
+    <M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem>
+    MachineDeferredHolder<M, BE, MB, BI> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity, BiFunction<BlockBehaviour.Properties, BlockEntityType.BlockEntitySupplier<BE>, MB> block, BiFunction<Block, Item.Properties, BI> item, boolean hasUniqueTexture) {
 
         ResourceLocation baseKey = new ResourceLocation(menuRegister.getNamespace(), name);
         DeferredHolder<MenuType<?>, MenuType<M>> menuType = DeferredHolder.create(Registries.MENU, baseKey);
@@ -95,20 +86,16 @@ public class MachineDeferredRegister {
         DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntityHolder = blockEntityRegister.register(name, ()->
                 BlockEntityType.Builder.of(blockEntity, blockHolder.get()).build(null));
 
-        MachineDeferredHolder<M, S, BE, MB, BI> holder = new MachineDeferredHolder<>(menuHolder, blockEntityHolder, blockHolder, itemHolder, screen, hasUniqueTexture);
+        MachineDeferredHolder<M, BE, MB, BI> holder = new MachineDeferredHolder<>(menuHolder, blockEntityHolder, blockHolder, itemHolder, hasUniqueTexture);
         machines.add(holder);
         return holder;
-    }
-
-    public void registerScreens(RegisterMenuScreensEvent event) {
-        machines.forEach(holder -> holder.registerScreen(event));
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
         machines.forEach(holder -> holder.registerCapabilities(event));
     }
 
-    public List<MachineDeferredHolder<? extends AbstractMachineMenu, ? extends AbstractMachineScreen<? extends AbstractMachineMenu>, ? extends MachineBlockEntity<? extends AbstractMachineMenu>, ? extends BaseMachineBlock<? extends MachineBlockEntity<? extends AbstractMachineMenu>>, ? extends BlockItem>> getMachines() {
+    public List<MachineDeferredHolder<? extends AbstractMachineMenu, ? extends MachineBlockEntity<? extends AbstractMachineMenu>, ? extends BaseMachineBlock<? extends MachineBlockEntity<? extends AbstractMachineMenu>>, ? extends BlockItem>> getMachines() {
         return Collections.unmodifiableList(this.machines);
     }
 

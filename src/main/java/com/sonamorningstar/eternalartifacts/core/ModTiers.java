@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
@@ -9,7 +10,8 @@ import java.util.function.Supplier;
 
 public enum ModTiers implements Tier {
     CHLOROPHYTE(3, 1749, 10.0F, 3.0F, 20, ()-> Ingredient.of(ModItems.CHLOROPHYTE_INGOT.get())),
-    COPPER(1, 192, 5.0F, 1.5F, 17, () -> Ingredient.of(Tags.Items.INGOTS_COPPER));
+    COPPER(1, 192, 5.0F, 1.5F, 17, () -> Ingredient.of(Tags.Items.INGOTS_COPPER)),
+    WITHER(3, 1352, 7.0F, 5.0F, 15, () -> Ingredient.of(Items.WITHER_SKELETON_SKULL));
 
     private final int level;
     private final int uses;

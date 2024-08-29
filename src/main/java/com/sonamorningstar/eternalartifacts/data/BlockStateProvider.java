@@ -97,7 +97,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
-        machineBlock(ModBlocks.MEAT_PACKER, false);
         machineBlock(ModBlocks.MEAT_SHREDDER, false);
         machineBlock(ModBlocks.BATTERY_BOX, true);
         machineBlock(ModBlocks.MOB_LIQUIFIER, false);

@@ -24,14 +24,9 @@ public class IndustrialMaceratorBlockEntity extends GenericMachineBlockEntity {
 
     private final RecipeCache<MaceratingRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
 
-    private void findRecipe() {
-        this.recipeCache.findRecipe(ModRecipes.MACERATING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
-    }
-
     @Override
-    public void onLoad() {
-        super.onLoad();
-        findRecipe();
+    protected void findRecipe() {
+        this.recipeCache.findRecipe(ModRecipes.MACERATING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 
     @Override

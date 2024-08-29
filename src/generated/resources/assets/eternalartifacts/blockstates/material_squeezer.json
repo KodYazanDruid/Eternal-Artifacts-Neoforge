@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/material_squeezer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/material_squeezer"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/material_squeezer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/material_squeezer",
+      "y": 270
+    }
+  }
+}

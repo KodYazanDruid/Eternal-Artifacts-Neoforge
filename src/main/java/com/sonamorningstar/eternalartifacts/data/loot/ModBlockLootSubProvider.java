@@ -53,7 +53,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         add(ModBlocks.FORSYTHIA.get(), createSinglePropConditionTable(ModBlocks.FORSYTHIA.get(), DoublePlantBlock.HALF, DoubleBlockHalf.LOWER));
         dropSelf(ModBlocks.FOUR_LEAF_CLOVER.get());
-        dropSelf(ModBlocks.MEAT_PACKER.get());
         dropSelf(ModBlocks.CHLOROPHYTE_DEBRIS.get());
         dropSelf(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
         dropSelf(ModBlocks.SANDY_STONE_BRICKS.get());

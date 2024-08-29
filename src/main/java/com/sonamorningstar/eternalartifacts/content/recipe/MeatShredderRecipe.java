@@ -19,11 +19,10 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+@Getter
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class MeatShredderRecipe implements Recipe<SimpleContainer> {
-    @Getter
     private final Ingredient input;
-    @Getter
     private final FluidStack output;
 
     @Override

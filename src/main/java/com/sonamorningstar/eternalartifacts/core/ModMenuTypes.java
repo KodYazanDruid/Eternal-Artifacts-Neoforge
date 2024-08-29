@@ -2,8 +2,6 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.container.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -20,8 +18,6 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BioFurnaceMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<BookDuplicatorMenu>> BOOK_DUPLICATOR = MENUS.register("book_duplicator",
             ()-> IMenuTypeExtension.create(BookDuplicatorMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<MeatPackerMenu>> MEAT_PACKER = MENUS.register("meat_packer",
-            ()-> IMenuTypeExtension.create(MeatPackerMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MeatShredderMenu>> MEAT_SHREDDER = MENUS.register("meat_shredder",
             ()-> IMenuTypeExtension.create(MeatShredderMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<BatteryBoxMenu>> BATTERY_BOX = MENUS.register("battery_box",

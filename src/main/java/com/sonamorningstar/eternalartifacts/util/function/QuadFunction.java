@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.util;
+package com.sonamorningstar.eternalartifacts.util.function;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

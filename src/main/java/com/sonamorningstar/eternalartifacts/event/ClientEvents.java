@@ -2,31 +2,23 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -34,6 +26,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -111,6 +104,13 @@ public class ClientEvents {
             renderedScreen.render(gui, ((int) minecraft.mouseHandler.xpos()), ((int) minecraft.mouseHandler.ypos()), minecraft.getPartialTick());*/
 
         }
+    }
+
+    @SubscribeEvent
+    public static void leftClickEvent(PlayerInteractEvent.LeftClickEmpty event) {
+        ItemStack stack = event.getItemStack();
+        Player player = event.getEntity();
+        if (stack.is(ModItems.WITHERING_SWORD) && !player.getCooldowns().isOnCooldown(stack.getItem())) Channel.sendToServer(new ShootSkullsToServer(stack, event.getHand()));
     }
 
 

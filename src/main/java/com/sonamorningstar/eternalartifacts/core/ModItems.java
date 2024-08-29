@@ -145,6 +145,7 @@ public class ModItems {
     public static final DeferredItem<Item> NETHERITE_HAMMER = registerStacksToOne("netherite_hammer", p -> new HammerItem(Tiers.NETHERITE, p.fireResistant()));
     public static final DeferredItem<Item> HAMMAXE = registerStacksToOne("hammaxe", HammaxeItem::new);
     public static final DeferredItem<Item> GLASSCUTTER = registerStacksToOne("glasscutter", GlasscutterItem::new);
+    public static final DeferredItem<Item> WITHERING_SWORD = register("withering_sword", WitheringSword::new);
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

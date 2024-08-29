@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Tooltip;

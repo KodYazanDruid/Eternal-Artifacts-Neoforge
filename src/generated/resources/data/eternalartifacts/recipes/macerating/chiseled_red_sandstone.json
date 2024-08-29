@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:chiseled_red_sandstone"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:red_sand"
+  }
+}

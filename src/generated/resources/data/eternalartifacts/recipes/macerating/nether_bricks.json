@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:nether_bricks"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:nether_brick"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:sugar_cane"
+  },
+  "output": {
+    "Count": 3,
+    "id": "minecraft:sugar"
+  }
+}

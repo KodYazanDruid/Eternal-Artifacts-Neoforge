@@ -16,22 +16,22 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record EnderNotebookAddNbtToServer(Pair<String, ResourceKey<Level>> pair, BlockPos position, ItemStack book) implements CustomPacketPayload {
+public record EnderNotebookAddNbtToServer(String name, ResourceKey<Level> dimension, BlockPos position, ItemStack book) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "endernotebook_nbt_add");
 
     public static EnderNotebookAddNbtToServer create(FriendlyByteBuf buf) {
-        return new EnderNotebookAddNbtToServer(Pair.of(buf.readUtf(), buf.readResourceKey(Registries.DIMENSION)), buf.readBlockPos(), buf.readItem());
+        return new EnderNotebookAddNbtToServer(buf.readUtf(), buf.readResourceKey(Registries.DIMENSION), buf.readBlockPos(), buf.readItem());
     }
 
-    public static EnderNotebookAddNbtToServer create(Pair<String, ResourceKey<Level>> pair, BlockPos position, ItemStack book) {
-        return new EnderNotebookAddNbtToServer(pair, position, book);
+    public static EnderNotebookAddNbtToServer create(String name, ResourceKey<Level> dimension, BlockPos position, ItemStack book) {
+        return new EnderNotebookAddNbtToServer(name, dimension, position, book);
     }
 
     @Override
     public void write(FriendlyByteBuf pBuffer) {
-        pBuffer.writeUtf(pair().getFirst());
-        pBuffer.writeResourceKey(pair.getSecond());
+        pBuffer.writeUtf(name);
+        pBuffer.writeResourceKey(dimension);
         pBuffer.writeBlockPos(position);
         pBuffer.writeItem(book);
     }
@@ -47,8 +47,8 @@ public record EnderNotebookAddNbtToServer(Pair<String, ResourceKey<Level>> pair,
                 ListTag listTag =  book.getTag() != null ? book.getTag().getList("Warps", 10) : new ListTag();
 
                 CompoundTag singleWarp = new CompoundTag();
-                singleWarp.putString("Name", pair.getFirst());
-                singleWarp.putString("Dimension", pair.getSecond().location().toString());
+                singleWarp.putString("Name", name);
+                singleWarp.putString("Dimension", dimension.location().toString());
                 singleWarp.putInt("X", position.getX());
                 singleWarp.putInt("Y", position.getY());
                 singleWarp.putInt("Z", position.getZ());

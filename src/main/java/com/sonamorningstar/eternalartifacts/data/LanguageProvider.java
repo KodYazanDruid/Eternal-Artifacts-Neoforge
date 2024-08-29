@@ -108,6 +108,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GLASSCUTTER.get(), "Glasscutter");
                 add(ModFluids.GASOLINE.getBucketItem(), "Gasoline Bucket");
                 add(ModFluids.DIESEL.getBucketItem(), "Diesel Bucket");
+                add(ModItems.WITHERING_SWORD.get(), "Withering Sword");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -129,7 +130,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Gravel Copper Ore");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Gravel Iron Ore");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Gravel Gold Ore");
-                add(ModBlocks.MEAT_PACKER.get(), "Meat Packer");
+                //add(ModBlocks.MEAT_PACKER.get(), "Meat Packer");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Chlorophyte Debris");
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Sandy Tiled Stone Bricks");
                 add(ModBlocks.SANDY_STONE_BRICKS.get(), "Sandy Stone Bricks");
@@ -249,6 +250,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("item_transportation"), "Item Transportation");
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Fluid Transportation");
                 add(ModConstants.GUI.withSuffix("heat"), "Heat");
+                add(ModConstants.GUI.withSuffix("dynamo_produce_rate"), "Generating");
 
                 ModMachines.MACHINES.getMachines().forEach(holder -> {
                     String displayName = holder.getBlockId().getPath().replace('_', ' ');
@@ -348,6 +350,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GLASSCUTTER.get(), "Cam Kesici");
                 add(ModFluids.GASOLINE.getBucketItem(), "Benzin Kovası");
                 add(ModFluids.DIESEL.getBucketItem(), "Dizel Kovası");
+                add(ModItems.WITHERING_SWORD.get(), "Çürütücü Kılıç");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -369,7 +372,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Çakılda Bakır Cevheri");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Çakılda Demir Cevheri");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
-                add(ModBlocks.MEAT_PACKER.get(), "Et Paketleyici");
+                add(ModMachines.MEAT_PACKER.getBlockTranslationKey(), "Et Paketleyici");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Klorofit Kalıntısı");
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Kumlu Döşeme Taş Tuğlası");
                 add(ModBlocks.SANDY_STONE_BRICKS.get(), "Kumlu Taş Tuğlası");
@@ -426,7 +429,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.FLUID_INFUSER.getBlockTranslationKey(), "Sıvı İnfüzörü");
                 add(ModMachines.INDUCTION_FURNACE.getBlockTranslationKey(), "İndüksiyon İzabe Tesisi");
                 add(ModMachines.INDUSTRIAL_MACERATOR.getBlockTranslationKey(), "Endüstriyel Öğütücü");
-                //add(ModMachines.SMART_JUKEBOX.getBlockTranslationKey(), "Akıllı Müzik Kutusu");
+                add(ModMachines.MELTING_CRUCIBLE.getBlockTranslationKey(), "Eritici Kazan");
+                add(ModMachines.MATERIAL_SQUEEZER.getBlockTranslationKey(), "Materyal Sıkıcı");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -493,6 +497,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("item_transportation"), "Eşya Transferi");
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Sıvı Transferi");
                 add(ModConstants.GUI.withSuffix("heat"), "Isı");
+                add(ModConstants.GUI.withSuffix("dynamo_produce_rate"), "Üretilen");
 
             }
         }

@@ -16,21 +16,16 @@ public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
     public MeltingCrucibleBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.MELTING_CRUCIBLE.getBlockEntity(), pos, blockState, ModMachines.MELTING_CRUCIBLE.getMenu());
         initializeDefaultEnergyAndTank();
-        setEnergy(createDefaultEnergy());
         setTank(createBasicTank(16000, true, false));
         setInventory(createBasicInventory(1, true, i -> findRecipe()));
+        screenInfo.attachTankToLeft(0);
     }
 
     private final RecipeCache<MeltingRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
 
-    private void findRecipe() {
-        this.recipeCache.findRecipe(ModRecipes.MELTING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
-    }
-
     @Override
-    public void onLoad() {
-        super.onLoad();
-        findRecipe();
+    protected void findRecipe() {
+        this.recipeCache.findRecipe(ModRecipes.MELTING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 
     @Override

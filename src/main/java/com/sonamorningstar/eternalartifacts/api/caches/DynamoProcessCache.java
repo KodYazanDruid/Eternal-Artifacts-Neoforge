@@ -13,6 +13,7 @@ public class DynamoProcessCache {
     @Getter
     private int duration;
     private final ModEnergyStorage energy;
+    @Getter
     private final int generation;
     private final FluidCombustionDynamoBlockEntity dynamo;
 

@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.EnderNotebookScreen;
-import net.minecraft.client.Minecraft;
+import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -35,13 +34,9 @@ public record EnderNotebookOpenToClient(ItemStack book) implements CustomPacketP
         if(ctx.flow().isClientbound()){
             ctx.workHandler().execute(() -> {
                 if (ctx.player().isPresent()) {
-                    Minecraft.getInstance().setScreen(new EnderNotebookScreen(new EnderNotebookScreen.EnderNotebookAccess(book)));
+                    ClientProxy.openEnderNotebook(book);
                 };
             });
         }
-    }
-
-    public enum ScreenEnums {
-
     }
 }

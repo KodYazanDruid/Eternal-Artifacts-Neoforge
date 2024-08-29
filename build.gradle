@@ -76,7 +76,13 @@ runs {
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
+
+test {
+    useJUnitPlatform()
+}
 
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
@@ -98,6 +104,10 @@ dependencies {
     implementation "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
     implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
+    testImplementation(platform("org.junit:junit-bom:${junit_version}"))
+    testCompileOnly "org.junit.jupiter:junit-jupiter-api"
+    testCompileOnly "org.junit.jupiter:junit-jupiter-params"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
 }
 
 tasks.withType(ProcessResources).configureEach {

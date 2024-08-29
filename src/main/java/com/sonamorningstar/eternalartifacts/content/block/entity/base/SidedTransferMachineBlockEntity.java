@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.util.QuadFunction;
+import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 

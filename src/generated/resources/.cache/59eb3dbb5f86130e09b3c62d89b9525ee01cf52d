@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-23T23:01:01.5129647	Loot Tables
+// 1.20.4	2024-08-27T14:26:18.4018711	Loot Tables
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 c2b957a37df519265b42bb1ea66625aff3ffc16a data/eternalartifacts/loot_tables/blocks/ardite_block.json
@@ -40,6 +40,7 @@ aa1c0b1a5edffd2b76901862d04388f9b6b2cefe data/eternalartifacts/loot_tables/block
 7083b03ba6d338c8ea57d3f694a207337198a836 data/eternalartifacts/loot_tables/blocks/machine_block.json
 9aa6bec51d6f13d2cc99bdea00559005452c61c6 data/eternalartifacts/loot_tables/blocks/manganese_ore.json
 48d57a2dc1452fdae61c3f9b878d1add91f79e52 data/eternalartifacts/loot_tables/blocks/manganese_oreberry.json
+c17c6ac7376d4ce38e7f9a698946b265d05815d9 data/eternalartifacts/loot_tables/blocks/material_squeezer.json
 ff4634efc5abe0988d07834740af6481c2db8c4f data/eternalartifacts/loot_tables/blocks/meat_packer.json
 43c514335a874809d039595ef7067e149ecab9be data/eternalartifacts/loot_tables/blocks/meat_shredder.json
 0a362ece1d8e0da316e4d18808f7538823310e38 data/eternalartifacts/loot_tables/blocks/melting_crucible.json

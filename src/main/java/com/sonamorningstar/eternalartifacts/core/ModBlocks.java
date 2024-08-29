@@ -12,17 +12,17 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -139,8 +139,6 @@ public class ModBlocks {
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",
             ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<MeatPackerBlock> MEAT_PACKER = registerWithItem("meat_packer",
-            ()-> new MeatPackerBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<MeatShredderBlock> MEAT_SHREDDER = registerWithItem("meat_shredder",
             ()-> new MeatShredderBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
@@ -171,7 +169,12 @@ public class ModBlocks {
             ()-> new Block(Blocks.COAL_BLOCK.properties()));
 
     public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron",
-            ()-> new LayeredCauldronBlock(Biome.Precipitation.NONE, ModCauldronInteraction.PLASTIC, BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
+            ()-> new LayeredCauldronBlock(Biome.Precipitation.NONE, ModCauldronInteraction.PLASTIC, BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)) {
+                @Override
+                public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+                    return Items.CAULDRON.getDefaultInstance();
+                }
+            });
     public static final DeferredBlock<Block> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
             ()-> new BluePlasticCauldronBlock(BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
 

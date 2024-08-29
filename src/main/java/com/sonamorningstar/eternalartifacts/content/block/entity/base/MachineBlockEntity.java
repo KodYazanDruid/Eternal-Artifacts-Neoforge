@@ -3,11 +3,10 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
-import com.sonamorningstar.eternalartifacts.util.QuadFunction;
+import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -113,6 +112,12 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         if(energy != null) energy.deserializeNBT(tag.get("Energy"));
         if(inventory != null) inventory.deserializeNBT(tag.getCompound("Inventory"));
         if(tank != null) tank.deserializeNBT(tag.getCompound("Fluid"));
+    }
+
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        findRecipe();
     }
 
     @Override

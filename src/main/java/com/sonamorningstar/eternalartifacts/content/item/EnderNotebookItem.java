@@ -21,7 +21,6 @@ public class EnderNotebookItem extends VolumeHolderItem {
         ItemStack itemstack = player.getItemInHand(hand);
         if(player instanceof ServerPlayer serverPlayer) {
             Channel.sendToPlayer(new EnderNotebookOpenToClient(itemstack), serverPlayer);
-            //serverPlayer.openMenu()
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));

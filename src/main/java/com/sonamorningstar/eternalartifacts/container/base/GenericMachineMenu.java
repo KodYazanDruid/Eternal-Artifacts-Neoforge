@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
+import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
@@ -7,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class GenericMachineMenu extends AbstractMachineMenu{
+public class GenericMachineMenu extends AbstractMachineMenu {
     public int arrowX;
     public int arrowY = 41;
     public int slotArrowPadding = 3;
@@ -17,6 +18,7 @@ public class GenericMachineMenu extends AbstractMachineMenu{
         if (beEnergy != null) marginX += 18;
         if (beTank != null) marginX += 18;
         this.arrowX = marginX + 56;
+        this.arrowX += ((GenericMachineBlockEntity) this.getBlockEntity()).getScreenInfo().getArrowXOffset();
         int y = 40;
         if (beInventory != null) {
             int inputIndex = getBeInventory().getSlots() - outputSlots.size();

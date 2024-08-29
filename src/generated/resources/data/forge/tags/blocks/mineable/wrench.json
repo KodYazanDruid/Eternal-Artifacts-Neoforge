@@ -5,16 +5,17 @@
     "eternalartifacts:anvilinator",
     "eternalartifacts:book_duplicator",
     "eternalartifacts:meat_shredder",
-    "eternalartifacts:meat_packer",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:battery_box",
     "eternalartifacts:fluid_combustion_dynamo",
     "eternalartifacts:nous_tank",
     "eternalartifacts:oil_refinery",
     "#forge:storage_blocks",
+    "eternalartifacts:meat_packer",
     "eternalartifacts:fluid_infuser",
     "eternalartifacts:induction_furnace",
     "eternalartifacts:industrial_macerator",
-    "eternalartifacts:melting_crucible"
+    "eternalartifacts:melting_crucible",
+    "eternalartifacts:material_squeezer"
   ]
 }

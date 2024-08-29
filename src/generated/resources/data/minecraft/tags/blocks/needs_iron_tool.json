@@ -5,7 +5,6 @@
     "eternalartifacts:resonator",
     "eternalartifacts:machine_block",
     "eternalartifacts:gravel_gold_ore",
-    "eternalartifacts:meat_packer",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:battery_box",
     "eternalartifacts:mob_liquifier",
@@ -17,9 +16,11 @@
     "eternalartifacts:oil_refinery",
     "eternalartifacts:gold_drum",
     "eternalartifacts:diamond_drum",
+    "eternalartifacts:meat_packer",
     "eternalartifacts:fluid_infuser",
     "eternalartifacts:induction_furnace",
     "eternalartifacts:industrial_macerator",
-    "eternalartifacts:melting_crucible"
+    "eternalartifacts:melting_crucible",
+    "eternalartifacts:material_squeezer"
   ]
 }

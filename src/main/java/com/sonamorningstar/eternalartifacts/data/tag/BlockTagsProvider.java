@@ -21,6 +21,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         super(output, lookupProvider, MODID, existingFileHelper);
     }
 
+    @SuppressWarnings(value = "unchecked")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tierAndTool(ModBlocks.ANVILINATOR.get(), "iron", "pickaxe");
@@ -34,7 +35,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GRAVEL_COPPER_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.GRAVEL_IRON_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.GRAVEL_GOLD_ORE.get(), "iron", "shovel");
-        tierAndTool(ModBlocks.MEAT_PACKER.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SANDY_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MEAT_SHREDDER.get(), "iron", "pickaxe");
@@ -77,7 +77,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.ANVILINATOR.get(),
                 ModBlocks.BOOK_DUPLICATOR.get(),
                 ModBlocks.MEAT_SHREDDER.get(),
-                ModBlocks.MEAT_PACKER.get(),
                 ModBlocks.MOB_LIQUIFIER.get(),
                 ModBlocks.BATTERY_BOX.get(),
                 ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),

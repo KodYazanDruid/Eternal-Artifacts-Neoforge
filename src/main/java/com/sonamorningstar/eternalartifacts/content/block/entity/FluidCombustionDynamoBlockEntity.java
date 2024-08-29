@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluid
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -35,6 +36,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
 
     private int tickCounter = 0;
     public boolean isWorking = false;
+    @Getter
     private DynamoProcessCache cache;
     private final RecipeCache<FluidCombustionRecipe, SimpleFluidContainer> recipeCache = new RecipeCache<>();
 

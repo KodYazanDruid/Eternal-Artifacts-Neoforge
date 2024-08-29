@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -74,6 +76,11 @@ public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustion
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        Vec3 clickLocation = ctx.getClickLocation();
+        int margin = 5;
+        float pixelLen = 1 / 16.0F;
+        
+        Direction direction;
         return defaultBlockState().setValue(BlockStateProperties.FACING, ctx.getClickedFace());
     }
 

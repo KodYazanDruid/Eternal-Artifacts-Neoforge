@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -16,9 +17,9 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class MeatPackerCategory extends BasicEmiRecipe {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "fake_recipe/meat_packer");
-    public static final EmiRecipeCategory MEAT_PACKER_CATEGORY = new EmiRecipeCategory(ID, EmiStack.of(ModBlocks.MEAT_PACKER));
+    public static final EmiRecipeCategory MEAT_PACKER_CATEGORY = new EmiRecipeCategory(ID, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
     public MeatPackerCategory() {
-        super(MEAT_PACKER_CATEGORY, MEAT_PACKER_CATEGORY.id, 112, 18);
+        super(MEAT_PACKER_CATEGORY, MEAT_PACKER_CATEGORY.id, 72, 18);
     }
 
     @Override

@@ -31,6 +31,8 @@ public class ModBlockEntity extends BlockEntity {
         return false;
     }
 
+    protected void findRecipe() {};
+
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -68,6 +70,15 @@ public class ModBlockEntity extends BlockEntity {
             }
         };
     }
+    protected ModFluidStorage createRecipeFinderTank(int size) {
+        return new ModFluidStorage(size) {
+            @Override
+            protected void onContentsChanged() {
+                findRecipe();
+                sendUpdate();
+            }
+        };
+    }
     protected ModFluidStorage createBasicTank(int size, boolean canDrain, boolean canFill, Runnable... run) {
         return new ModFluidStorage(size) {
             @Override
@@ -85,12 +96,46 @@ public class ModBlockEntity extends BlockEntity {
             }
         };
     }
+    protected ModFluidStorage createRecipeFinderTank(int size, boolean canDrain, boolean canFill) {
+        return new ModFluidStorage(size) {
+            @Override
+            protected void onContentsChanged() {
+                findRecipe();
+                sendUpdate();
+            }
+            @Override
+            public FluidStack drain(int maxDrain, FluidAction action) {
+                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
+            }
+            @Override
+            public int fill(FluidStack resource, FluidAction action) {
+                return canFill ? super.fill(resource, action) : 0;
+            }
+        };
+    }
     protected ModFluidStorage createBasicTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill, Runnable... run) {
         return new ModFluidStorage(size, validator) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
                 for (Runnable runnable : run) runnable.run();
+            }
+            @Override
+            public FluidStack drain(int maxDrain, FluidAction action) {
+                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
+            }
+            @Override
+            public int fill(FluidStack resource, FluidAction action) {
+                return canFill ? super.fill(resource, action) : 0;
+            }
+        };
+    }
+    protected ModFluidStorage createRecipeFinderTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill) {
+        return new ModFluidStorage(size, validator) {
+            @Override
+            protected void onContentsChanged() {
+                findRecipe();
+                sendUpdate();
             }
             @Override
             public FluidStack drain(int maxDrain, FluidAction action) {
@@ -148,10 +193,36 @@ public class ModBlockEntity extends BlockEntity {
             public boolean isItemValid(int slot, ItemStack stack) {return !outputSlots.contains(slot);}
         };
     }
+    protected final ModItemStorage createRecipeFinderInventory(int size, List<Integer> outputSlots) {
+        return new ModItemStorage(size) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                if (!outputSlots.contains(slot)) findRecipe();
+                sendUpdate();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {return !outputSlots.contains(slot);}
+        };
+    }
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
+                sendUpdate();
+            }
+
+            @Override
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return isValid.test(slot, stack);
+            }
+        };
+    }
+    protected ModItemStorage createRecipeFinderInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
+        return new ModItemStorage(size) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                findRecipe();
                 sendUpdate();
             }
 

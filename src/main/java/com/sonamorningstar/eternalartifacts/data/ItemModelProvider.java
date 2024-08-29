@@ -106,6 +106,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.BITUMEN.get());
         basicItem(ModItems.PINK_SLIME_INGOT.get());
         handheld(ModItems.GLASSCUTTER);
+        handheld(ModItems.WITHERING_SWORD);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

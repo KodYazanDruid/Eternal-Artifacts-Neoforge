@@ -23,5 +23,6 @@ public class ModRecipes {
     public static final RecipeDeferredHolder<ItemFluidContainer, FluidInfuserRecipe> FLUID_INFUSING = RECIPES.register("fluid_infusing", FluidInfuserRecipe.Serializer::new);
     public static final RecipeDeferredHolder<SimpleContainer, MeltingRecipe> MELTING = RECIPES.register("melting", MeltingRecipe.Serializer::new);
     public static final RecipeDeferredHolder<SimpleContainer, MaceratingRecipe> MACERATING = RECIPES.register("macerating", MaceratingRecipe.Serializer::new);
+    public static final RecipeDeferredHolder<SimpleContainer, SqueezingRecipe> SQUEEZING = RECIPES.register("squeezing", SqueezingRecipe.Serializer::new);
 
 }

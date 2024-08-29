@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
@@ -8,7 +7,6 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTrans
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -17,16 +15,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @RequiredArgsConstructor
-public class MachineDeferredHolder<M extends AbstractMachineMenu, S extends AbstractMachineScreen<M>,  BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem> {
+public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem> {
     private final DeferredHolder<MenuType<?>, MenuType<M>> menu;
     private final DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntity;
     private final DeferredHolder<Block, MB> block;
     private final DeferredHolder<Item, BI> item;
-    private final MenuScreens.ScreenConstructor<M, S> screenConstructor;
     @Getter
     private final boolean hasUniqueTexture;
 
@@ -45,10 +41,6 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, S extends Abst
 
     public ResourceLocation getBlockId() {
         return getBlockHolder().getId();
-    }
-
-    public void registerScreen(RegisterMenuScreensEvent event) {
-        event.register(menu.get(), screenConstructor);
     }
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {

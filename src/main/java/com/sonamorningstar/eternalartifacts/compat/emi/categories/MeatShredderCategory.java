@@ -14,7 +14,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class MeatShredderCategory extends BasicEmiRecipe {
     public static final EmiRecipeCategory MEAT_SHREDDER_CATEGORY = new EmiRecipeCategory(new ResourceLocation(MODID, "meat_shredding"), EmiStack.of(ModBlocks.MEAT_SHREDDER));
     public MeatShredderCategory(MeatShredderRecipe recipe, ResourceLocation id) {
-        super(MEAT_SHREDDER_CATEGORY, id, 112, 18);
+        super(MEAT_SHREDDER_CATEGORY, id, 72, 18);
         inputs.add(EmiIngredient.of(recipe.getInput()));
         outputs.add(EmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount()));
     }
@@ -24,6 +24,5 @@ public class MeatShredderCategory extends BasicEmiRecipe {
         widgets.addSlot(inputs.get(0), 0, 0);
         widgets.addFillingArrow(49, 0, 10000);
         widgets.addSlot(outputs.get(0).setAmount(outputs.get(0).getAmount()), 94, 0).recipeContext(this);
-
     }
 }

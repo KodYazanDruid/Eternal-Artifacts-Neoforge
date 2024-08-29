@@ -1,0 +1,14 @@
+{
+  "type": "eternalartifacts:squeezing",
+  "input": {
+    "item": "minecraft:cactus"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:green_dye"
+  },
+  "outputFluid": {
+    "Amount": 125,
+    "FluidName": "minecraft:water"
+  }
+}

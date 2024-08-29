@@ -83,9 +83,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);
 
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Ingredient.of(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
+        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Ingredient.of(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
 
         createMeltingRecipe(recipeOutput, Items.NETHERRACK.getDefaultInstance(), new FluidStack(Fluids.LAVA, 1000));
         createMeltingRecipe(recipeOutput, Items.ICE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
+        createMeltingRecipe(recipeOutput, ModItems.PINK_SLIME.toStack(), new FluidStack(ModFluids.PINK_SLIME.getFluid(), 250));
 
         createMaceratingRecipe(recipeOutput, Items.CLAY.getDefaultInstance(), new ItemStack(ModItems.CLAY_DUST.get(), 4));
         createMaceratingRecipe(recipeOutput, Items.CLAY_BALL.getDefaultInstance(), ModItems.CLAY_DUST.toStack());
@@ -93,6 +95,28 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, Items.CHARCOAL.getDefaultInstance(), ModItems.CHARCOAL_DUST.toStack());
         createMaceratingRecipe(recipeOutput, Items.GLOWSTONE.getDefaultInstance(), new ItemStack(Items.GLOWSTONE_DUST, 4));
         createMaceratingRecipe(recipeOutput, ModItems.SUGAR_CHARCOAL.get().getDefaultInstance(), ModItems.SUGAR_CHARCOAL_DUST.toStack());
+        createMaceratingRecipe(recipeOutput, Items.COBBLESTONE.getDefaultInstance(), Items.GRAVEL.getDefaultInstance());
+        createMaceratingRecipe(recipeOutput, Items.GRAVEL.getDefaultInstance(), Items.SAND.getDefaultInstance());
+        createMaceratingRecipe(recipeOutput, Items.SANDSTONE.getDefaultInstance(), new ItemStack(Items.SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.CUT_SANDSTONE.getDefaultInstance(), new ItemStack(Items.SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.CHISELED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.SMOOTH_SANDSTONE.getDefaultInstance(), new ItemStack(Items.SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.RED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.RED_SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.CUT_RED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.RED_SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.CHISELED_RED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.RED_SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.SMOOTH_RED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.RED_SAND, 4));
+        createMaceratingRecipe(recipeOutput, Items.NETHER_BRICKS.getDefaultInstance(), new ItemStack(Items.NETHER_BRICK, 4));
+        createMaceratingRecipe(recipeOutput, Items.BONE.getDefaultInstance(), new ItemStack(Items.BONE_MEAL, 5));
+        createMaceratingRecipe(recipeOutput, Items.BLAZE_ROD.getDefaultInstance(), new ItemStack(Items.BLAZE_POWDER, 4));
+        createMaceratingRecipe(recipeOutput, Items.QUARTZ_BLOCK.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
+        createMaceratingRecipe(recipeOutput, Items.QUARTZ_BRICKS.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
+        createMaceratingRecipe(recipeOutput, Items.QUARTZ_PILLAR.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
+        createMaceratingRecipe(recipeOutput, Items.SMOOTH_QUARTZ.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
+        createMaceratingRecipe(recipeOutput, Items.SUGAR_CANE.getDefaultInstance(), new ItemStack(Items.SUGAR, 3));
+        createMaceratingRecipe(recipeOutput, Items.BEETROOT.getDefaultInstance(), new ItemStack(Items.SUGAR, 2));
+
+        createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
+        createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), Items.GREEN_DYE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
 
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
@@ -417,6 +441,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     private void createMaceratingRecipe(RecipeOutput output, TagKey<Item> input, ItemStack result){
         SpecialRecipeBuilder.special(category -> new MaceratingRecipe(Ingredient.of(input), result))
                 .save(output, new ResourceLocation(MODID, "macerating/"+input.location().getPath()));
+    }
+
+    private void createSqueezingRecipe(RecipeOutput output, ItemStack input, ItemStack result, FluidStack resultFluid){
+        String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new SqueezingRecipe(Ingredient.of(input), result, resultFluid))
+                .save(output, new ResourceLocation(MODID, "squeezing/"+path));
+    }
+    private void createSqueezingRecipe(RecipeOutput output, TagKey<Item> input, ItemStack result, FluidStack resultFluid){
+        SpecialRecipeBuilder.special(category -> new SqueezingRecipe(Ingredient.of(input), result, resultFluid))
+                .save(output, new ResourceLocation(MODID, "squeezing/"+input.location().getPath()));
     }
 
 }

@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:gravel"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:sand"
+  }
+}

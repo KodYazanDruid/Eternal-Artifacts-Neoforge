@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-23T23:01:01.5169637	Item Models: eternalartifacts
+// 1.20.4	2024-08-27T18:12:25.5048324	Item Models: eternalartifacts
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -81,7 +81,9 @@ d608f92e218c867ca956bd52da4235eba06b49c2 assets/eternalartifacts/models/item/liq
 f6a9f17379e64bf048e8ffefbde4223c30c28a5a assets/eternalartifacts/models/item/manganese_ingot.json
 ada2695d85a8d6aacc3fa5c0de02db49b151ee30 assets/eternalartifacts/models/item/manganese_nugget.json
 0d7c7e42ea921ed3c52ebf35bbbb4ab145fe3485 assets/eternalartifacts/models/item/manganese_oreberry.json
+ba45015e7dc9ae4818265b534eea5a35b592f993 assets/eternalartifacts/models/item/material_squeezer.json
 db4c87dbd56c73964e1d7bbdda87976add57067c assets/eternalartifacts/models/item/meat_ingot.json
+7a50e7be3962d1f20a7d6ad3968e1acfeebd77e1 assets/eternalartifacts/models/item/meat_packer.json
 e27a29410dee3d2b3bcee6f52a1cd980728b1076 assets/eternalartifacts/models/item/medkit.json
 eac553947dded131497aea667f841552a8f08c69 assets/eternalartifacts/models/item/melting_crucible.json
 81c9e09f20bcba45f4e17bfcf9ce4d3d4b38b846 assets/eternalartifacts/models/item/natural_spade.json
@@ -112,5 +114,6 @@ ba733dcc4dedb590bfbd7153bcdec9552b070693 assets/eternalartifacts/models/item/sug
 09cf58c9bbc6c758c38171a9da3b25db0d61fae8 assets/eternalartifacts/models/item/sugar_charcoal_dust.json
 d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/sword_of_the_green_earth.json
 2b895ccad63794c5e49b10dfd58c6e99a05f6b3e assets/eternalartifacts/models/item/tar_ball.json
+cc8abe6c0bc099bb8b46cbb52306bc83c959fd5c assets/eternalartifacts/models/item/withering_sword.json
 5273157c9d8533d4f449f6e89c37a45e8364e596 assets/eternalartifacts/models/item/wooden_hammer.json
 a9146648aea7d322f14ca73f9e69bcf44f71dac1 assets/eternalartifacts/models/item/wrench.json

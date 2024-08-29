@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.container.FluidInfuserMenu;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;

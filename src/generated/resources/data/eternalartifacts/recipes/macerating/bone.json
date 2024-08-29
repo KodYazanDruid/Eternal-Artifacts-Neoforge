@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:bone"
+  },
+  "output": {
+    "Count": 5,
+    "id": "minecraft:bone_meal"
+  }
+}

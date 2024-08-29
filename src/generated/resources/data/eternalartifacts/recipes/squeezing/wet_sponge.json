@@ -1,0 +1,14 @@
+{
+  "type": "eternalartifacts:squeezing",
+  "input": {
+    "item": "minecraft:wet_sponge"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:sponge"
+  },
+  "outputFluid": {
+    "Amount": 1000,
+    "FluidName": "minecraft:water"
+  }
+}

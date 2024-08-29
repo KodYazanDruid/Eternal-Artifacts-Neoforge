@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:smooth_quartz"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:quartz"
+  }
+}

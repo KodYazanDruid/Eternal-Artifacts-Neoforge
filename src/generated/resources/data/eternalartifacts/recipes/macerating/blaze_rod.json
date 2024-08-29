@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:blaze_rod"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:blaze_powder"
+  }
+}

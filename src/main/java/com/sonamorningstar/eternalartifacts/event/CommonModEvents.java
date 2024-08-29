@@ -74,10 +74,6 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(0)));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_PACKER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
-
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.MEAT_SHREDDER.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));

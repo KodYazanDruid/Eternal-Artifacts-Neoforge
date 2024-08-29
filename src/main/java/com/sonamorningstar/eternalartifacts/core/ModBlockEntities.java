@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -17,8 +16,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(AnvilinatorBlockEntity::new, ModBlocks.ANVILINATOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BookDuplicatorMachineBlockEntity>> BOOK_DUPLICATOR = BLOCK_ENTITIES.register("book_duplicator", ()->
             BlockEntityType.Builder.of(BookDuplicatorMachineBlockEntity::new, ModBlocks.BOOK_DUPLICATOR.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeatPackerMachineBlockEntity>> MEAT_PACKER = BLOCK_ENTITIES.register("meat_packer", ()->
-            BlockEntityType.Builder.of(MeatPackerMachineBlockEntity::new, ModBlocks.MEAT_PACKER.get()).build(null));
+    /*public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeatPackerBlockEntity>> MEAT_PACKER = BLOCK_ENTITIES.register("meat_packer", ()->
+            BlockEntityType.Builder.of(MeatPackerBlockEntity::new, ModBlocks.MEAT_PACKER.get()).build(null));*/
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeatShredderMachineBlockEntity>> MEAT_SHREDDER = BLOCK_ENTITIES.register("meat_shredder", ()->
             BlockEntityType.Builder.of(MeatShredderMachineBlockEntity::new, ModBlocks.MEAT_SHREDDER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBoxBlockEntity>> BATTERY_BOX = BLOCK_ENTITIES.register("battery_box", ()->
