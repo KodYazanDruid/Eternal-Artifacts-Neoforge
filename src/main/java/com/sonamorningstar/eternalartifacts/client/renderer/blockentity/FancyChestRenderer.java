@@ -68,7 +68,7 @@ public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEn
 
         matrixStackIn.popPose();
 /*
-        RetexturedModel.Baked model = ModelHelper.getBakedModel(blockEntity.getBlockState(), RetexturedModel.Baked.class);
+        RetexturedModel.CableBakedModel model = ModelHelper.getBakedModel(blockEntity.getBlockState(), RetexturedModel.CableBakedModel.class);
         matrixStackIn.pushPose();
         Material material = getRenderMaterial(blockEntity);
         VertexConsumer vertexbuilder = material.buffer(bufferIn, RenderType::entityCutout);

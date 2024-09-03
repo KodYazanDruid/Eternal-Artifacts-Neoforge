@@ -21,7 +21,7 @@ public class ModMachines {
     public static final MachineDeferredHolder<GenericMachineMenu, FluidInfuserBlockEntity, MachineFourWayBlock<FluidInfuserBlockEntity>, BlockItem>
             FLUID_INFUSER = registerGeneric("fluid_infuser", FluidInfuserBlockEntity::new);
     public static final MachineDeferredHolder<InductionFurnaceMenu, InductionFurnaceBlockEntity, MachineFourWayBlock<InductionFurnaceBlockEntity>, BlockItem>
-            INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnaceBlockEntity::new);
+            INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnaceBlockEntity::new, false);
     public static final MachineDeferredHolder<GenericMachineMenu, IndustrialMaceratorBlockEntity, MachineFourWayBlock<IndustrialMaceratorBlockEntity>, BlockItem>
             INDUSTRIAL_MACERATOR = registerGeneric("industrial_macerator", IndustrialMaceratorBlockEntity::new);
     public static final MachineDeferredHolder<GenericMachineMenu, MeltingCrucibleBlockEntity, MachineFourWayBlock<MeltingCrucibleBlockEntity>, BlockItem>
@@ -30,6 +30,6 @@ public class ModMachines {
             MATERIAL_SQUEEZER = registerGeneric("material_squeezer", MaterialSqueezerBlockEntity::new);
 
     private static <T extends GenericMachineBlockEntity> MachineDeferredHolder<GenericMachineMenu, T, MachineFourWayBlock<T>, BlockItem> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp) {
-        return MACHINES.register(name, GenericMachineMenu::new, supp);
+        return MACHINES.registerGeneric(name, supp,false);
     }
 }

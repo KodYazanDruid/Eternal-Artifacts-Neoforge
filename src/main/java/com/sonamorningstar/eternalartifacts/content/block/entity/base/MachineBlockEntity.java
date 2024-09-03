@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
+import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
@@ -154,7 +155,11 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    protected void progress(BooleanSupplier test, Runnable run, ModEnergyStorage energy) {
+    protected void progress(BooleanSupplier test, Runnable result, ModEnergyStorage energy) {
+        progress(test, Runnables.doNothing(), result, energy);
+    }
+
+    protected void progress(BooleanSupplier test, Runnable running, Runnable result, ModEnergyStorage energy) {
         if(!hasEnergy(energyPerTick, energy) || level == null) return;
         SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
         if(type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
@@ -166,8 +171,9 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             }
             energy.extractEnergyForced(energyPerTick, false);
             progress++;
+            running.run();
             if (progress >= maxProgress) {
-                run.run();
+                result.run();
                 progress = 0;
             }
         }

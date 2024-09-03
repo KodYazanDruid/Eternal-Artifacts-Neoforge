@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-27T22:40:31.4069538	Recipes
+// 1.20.4	2024-08-31T22:07:27.6938871	Recipes
 1dc3ff242bda0de185641d64da91915dcbb5f074 data/eternalartifacts/advancements/recipes/building_blocks/pink_slime_block.json
 50deffa9c78012d384dfe5cdf31ba8044e3eca30 data/eternalartifacts/advancements/recipes/building_blocks/sugar_charcoal_block.json
 4c33f0f96b88c93d2dbf72ea7810664a7399846f data/eternalartifacts/advancements/recipes/decorations/ice_bricks.json
@@ -28,6 +28,7 @@ adc0ac41ae45f472d56ba3c00b2ac47da23643ca data/eternalartifacts/advancements/reci
 f81e7816b0ce51b590c833e95318f7776bb0fd52 data/eternalartifacts/advancements/recipes/misc/chlorophyte_upgrade_smithing_template.json
 d0bc2dcd5bebf5656b68c2bdb37cc42ff2567e75 data/eternalartifacts/advancements/recipes/misc/copper_nugget.json
 4620373ca83d23d4fa7678fefec638f9e49984cf data/eternalartifacts/advancements/recipes/misc/copper_tablet.json
+ef540b5289fb375d08dacd450d741701cb2bc135 data/eternalartifacts/advancements/recipes/misc/demonic_tablet.json
 7ebe6f1dd772779bcee4231dcdd5756cf85ed4db data/eternalartifacts/advancements/recipes/misc/ender_notebook.json
 6dd32bd1d5ed39906c02377b588968c7d867f717 data/eternalartifacts/advancements/recipes/misc/ender_tablet.json
 824ff6ec0a5398b1abb72c3f931cfd3bd1c9614c data/eternalartifacts/advancements/recipes/misc/jar.json
@@ -94,6 +95,7 @@ d4d2b956cacae7bdd371b6694cf97eb3f54d68fb data/eternalartifacts/recipes/copper_pi
 a7aafdd0142999f1d10e8dc76dcea5de95dd7e2c data/eternalartifacts/recipes/copper_shovel.json
 dab321709d1e921e0047ada3407a663b1ee18bc4 data/eternalartifacts/recipes/copper_sword.json
 7a76f61581c09b1526193e016abd15bd6397952a data/eternalartifacts/recipes/copper_tablet.json
+dd31353aefa7328ed9ad2f1afdbba269f580ebe4 data/eternalartifacts/recipes/demonic_tablet.json
 1c1998ecdb85ec41ec4491a983d13d6eb4c30bde data/eternalartifacts/recipes/diamond_hammer.json
 30cb21aa45d4b7420d2e3e3505c85a623fc8fa63 data/eternalartifacts/recipes/ender_notebook.json
 636620b36f0936f35699739a67664daa01762d3f data/eternalartifacts/recipes/ender_tablet.json

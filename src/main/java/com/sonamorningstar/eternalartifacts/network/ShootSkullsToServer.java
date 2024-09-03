@@ -34,7 +34,7 @@ public record ShootSkullsToServer(ItemStack stack, InteractionHand hand) impleme
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             if (player.level().isLoaded(player.blockPosition())) {
                 BlockHitResult result = RayTraceHelper.retrace(player, ClipContext.Fluid.NONE);
-                if (result.getType() == HitResult.Type.MISS){
+                if (result.getType() == HitResult.Type.MISS || result.getType() == HitResult.Type.ENTITY){
                     Vec3 loc = result.getLocation();
                     WitheringSword.shootSkull(player.level(), player, loc.x, loc.y, loc.z, stack, hand);
                 }

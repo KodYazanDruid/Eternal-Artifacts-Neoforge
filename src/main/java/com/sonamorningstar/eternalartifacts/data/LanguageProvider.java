@@ -109,6 +109,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.GASOLINE.getBucketItem(), "Gasoline Bucket");
                 add(ModFluids.DIESEL.getBucketItem(), "Diesel Bucket");
                 add(ModItems.WITHERING_SWORD.get(), "Withering Sword");
+                add(ModItems.FEEDING_CANISTER.get(), "Feeding Canister");
+                add(ModItems.DEMON_INGOT.get(), "Demon Ingot");
+                add(ModItems.DEMONIC_TABLET.get(), "Demonic Tablet");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -351,6 +354,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.GASOLINE.getBucketItem(), "Benzin Kovası");
                 add(ModFluids.DIESEL.getBucketItem(), "Dizel Kovası");
                 add(ModItems.WITHERING_SWORD.get(), "Çürütücü Kılıç");
+                add(ModItems.FEEDING_CANISTER.get(), "Besleme Kabı");
+                add(ModItems.DEMON_INGOT.get(), "Şeytan Külçesi");
+                add(ModItems.DEMONIC_TABLET.get(), "Şeytani Levha");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");

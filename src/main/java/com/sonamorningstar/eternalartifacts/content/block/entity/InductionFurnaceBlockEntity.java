@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
+import com.sonamorningstar.eternalartifacts.capabilities.HeatStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
@@ -23,9 +24,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity<InductionFurnaceMenu> {
-    private int heat = 0;
-    @Setter
-    private int MAX_HEAT = 20000;
     private int heatKeepCost = 10;
     //private boolean isWorking = false;
     public InductionFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
@@ -66,27 +64,33 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         });
     }
 
+    public HeatStorage heat = new HeatStorage(20000) {
+        @Override
+        public void onChange() {
+            super.onChange();
+            sendUpdate();
+        }
+    };
+
     @Override
     protected void saveSynced(CompoundTag tag) {
         super.saveSynced(tag);
-        tag.putInt("Heat", heat);
+        tag.put("HeatValue", heat.serializeNBT());
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        heat = tag.getInt("Heat");
+        heat.deserializeNBT(tag.getCompound("HeatValue"));
         setMaxProgressForHeat();
     }
 
-    public double getHeatPercentage() {
-        return heat * 100D / MAX_HEAT;
-    }
+    public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
 
     @Override
     public void onLoad() {
         super.onLoad();
-        //setMaxProgressForHeat();
+        setMaxProgressForHeat();
         //Find recipes for both slots on load.
         blastingCache0.findRecipe(RecipeType.BLASTING, new SimpleContainer(inventory.getStackInSlot(0)), level);
         if (blastingCache0.getRecipe() == null) {
@@ -127,7 +131,7 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
         if (recipe0 == null && recipe1 == null) {
             progress = 0;
-            return;
+            //return;
         }
 
         ProcessCondition condition = new ProcessCondition()
@@ -139,9 +143,16 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
         boolean result = condition.getResult();
         setMaxProgressForHeat();
-        AtomicBoolean shouldHeat = new AtomicBoolean(false);
-        if (!result) shouldHeat.set(true);
-        progress(()-> result, () ->  {
+
+        AtomicBoolean shouldHeat = new AtomicBoolean();
+        shouldHeat.set(false);
+        progress(
+                //Condition for machine to run
+                ()-> result,
+                //This executes while machine running.
+                () -> shouldHeat.set(true),
+                //This executes when progress reaches max progress.
+                () ->  {
             ItemStack remainder0 = ItemStack.EMPTY;
             ItemStack remainder1 = ItemStack.EMPTY;
             if (recipe0 != null) {
@@ -155,20 +166,19 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         }, energy);
 
         boolean isThereACoil = isThereACoil(pos);
-        boolean isEnergyEnough = isEnergyEnough();
-        if (isEnergyEnough && shouldHeat.get()) {
-            energy.extractEnergyForced(heatKeepCost, false);
-            if (heat < MAX_HEAT) {
-                heat++;
-                sendUpdate();
+        boolean isEnergyEnough = energy.getEnergyStored() >= heatKeepCost;
+
+        if(isEnergyEnough) {
+            if (shouldHeat.get()) {
+                heat.heat(1, false);
+                energy.extractEnergyForced(heatKeepCost, false);
+            } else {
+                if (isThereACoil) energy.extractEnergyForced(heatKeepCost, false);
+                else heat.cool(1, false);
             }
+        }else {
+            if (heat.getHeat() > 0) heat.cool(1, false);
         }
-        if (!shouldHeat.get() && heat > 0 && (!isThereACoil || !isEnergyEnough)) {
-            heat--;
-            sendUpdate();
-        }
-        if (isThereACoil && isEnergyEnough && !shouldHeat.get() && heat > 0)
-            energy.extractEnergyForced(heatKeepCost, false);
     }
 
     private boolean isThereACoil(BlockPos pos) {
@@ -181,8 +191,6 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         }
         return false;
     }
-
-    private boolean isEnergyEnough() {return energy.getEnergyStored() >= heatKeepCost;}
 
     private Recipe<?> getValidRecipe(int slot) {
         switch (slot) {

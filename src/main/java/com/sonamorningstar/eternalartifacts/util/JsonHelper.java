@@ -15,7 +15,7 @@ public class JsonHelper {
     private JsonHelper(){}
 
     public static <T> List<T> parseList(JsonArray array, String name, BiFunction<JsonElement,String,T> mapper) {
-        if (array.size() == 0) {
+        if (array.isEmpty()) {
             throw new JsonSyntaxException(name + " must have at least 1 element");
         }
         // build the list

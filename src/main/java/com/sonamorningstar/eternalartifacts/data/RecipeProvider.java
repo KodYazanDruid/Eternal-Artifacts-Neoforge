@@ -287,7 +287,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.SNOW_BRICKS)
                 .pattern("SS").pattern("SS")
                 .define('S', Blocks.SNOW_BLOCK)
-                .unlockedBy("has_item", has(Blocks.SNOW_BLOCK)).save(recipeOutput);;
+                .unlockedBy("has_item", has(Blocks.SNOW_BLOCK)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.DEMONIC_TABLET)
+                .pattern(" D ")
+                .pattern("DSD")
+                .pattern(" D ")
+                .define('S', ModItems.STONE_TABLET).define('D', ModItems.DEMON_INGOT)
+                .unlockedBy("has_item", has(ModItems.DEMON_INGOT)).save(recipeOutput);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)

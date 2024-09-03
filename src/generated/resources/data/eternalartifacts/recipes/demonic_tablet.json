@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "eternalartifacts:demon_ingot"
+    },
+    "S": {
+      "item": "eternalartifacts:stone_tablet"
+    }
+  },
+  "pattern": [
+    " D ",
+    "DSD",
+    " D "
+  ],
+  "result": {
+    "item": "eternalartifacts:demonic_tablet"
+  }
+}

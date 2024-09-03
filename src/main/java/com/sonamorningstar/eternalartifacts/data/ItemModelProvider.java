@@ -17,7 +17,6 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -107,6 +106,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.PINK_SLIME_INGOT.get());
         handheld(ModItems.GLASSCUTTER);
         handheld(ModItems.WITHERING_SWORD);
+        basicItem(ModItems.FEEDING_CANISTER.get());
+        basicItem(ModItems.DEMON_INGOT.get());
+        basicItem(ModItems.DEMONIC_TABLET.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

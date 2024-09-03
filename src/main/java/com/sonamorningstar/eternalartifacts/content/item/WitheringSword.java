@@ -39,15 +39,19 @@ public class WitheringSword extends SwordItem {
     public static void shootSkull(Level level, LivingEntity shooter, double x, double y, double z, ItemStack sword, InteractionHand hand) {
         level.levelEvent(null, 1024, shooter.getOnPos(), 0);
         double d0 = shooter.getX();
-        double d1 = shooter.getEyeY() - 0.3D;
+        double d1 = shooter.getEyeY();
         double d2 = shooter.getZ();
         double d3 = x - d0;
         double d4 = y - d1;
         double d5 = z - d2;
-        WitherSkull skull = new WitherSkull(level, shooter, d3, d4, d5);
+        WitherSkull skull = new WitherSkull(level, shooter, d3, d4, d5)/* {
+            @Override
+            protected float getInertia() {return 1.0F;}
+            @Override
+            protected float getLiquidInertia() {return 0.9F;}
+        }*/;
         skull.setDangerous(true);
         skull.setPosRaw(d0, d1, d2);
-        //skull.setDeltaMovement(skull.getDeltaMovement().scale(10.0F));
         level.addFreshEntity(skull);
         sword.hurtAndBreak(1, shooter, owner -> owner.broadcastBreakEvent(hand));
         if (shooter instanceof Player player) {

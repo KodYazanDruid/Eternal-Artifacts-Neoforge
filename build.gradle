@@ -42,6 +42,9 @@ repositories {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
     }
+    maven {
+        url "https://maven.ryanliptak.com/"
+    }
 }
 
 base {
@@ -96,6 +99,9 @@ dependencies {
 
     runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
     runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
+
+    compileOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}:api"
+    runtimeOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}"
 
     //runtimeOnly "curse.maven:pipez-443900:5396282" //Pipez
     implementation "curse.maven:modern-dynamics-552758:5373764" //Modern Industrialization

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
+import com.sonamorningstar.eternalartifacts.content.block.base.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -152,6 +153,9 @@ public class ModBlocks {
     public static final DeferredBlock<OilRefineryBlock> OIL_REFINERY = registerWithBewlr("oil_refinery",
             () -> new OilRefineryBlock(MACHINE_BLOCK.get().properties().noOcclusion()));
 
+    public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
+            ()-> new CableBlock(Blocks.LANTERN.properties().lightLevel(st -> 0).pushReaction(PushReaction.IGNORE)));
+
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
@@ -241,8 +245,8 @@ public class ModBlocks {
         ModItems.ITEMS.register(name, ()-> {
             try {
                 return itemClass.getDeclaredConstructor(Block.class, Item.Properties.class).newInstance(block.get(), itemProps);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException |
-                     NoSuchMethodException e) {
+            } catch (InstantiationException | IllegalAccessException |
+                     InvocationTargetException | NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         });
