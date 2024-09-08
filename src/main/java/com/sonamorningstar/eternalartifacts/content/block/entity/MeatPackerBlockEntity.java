@@ -14,7 +14,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 @Getter
 public class MeatPackerBlockEntity extends GenericMachineBlockEntity {
     public MeatPackerBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModMachines.MEAT_PACKER.getBlockEntity(), pos, blockState, ModMachines.MEAT_PACKER.getMenu());
+        super(ModMachines.MEAT_PACKER, pos, blockState);
         setInventory(createBasicInventory(1, false));
         setEnergy(createDefaultEnergy());
         setTank(createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, true));

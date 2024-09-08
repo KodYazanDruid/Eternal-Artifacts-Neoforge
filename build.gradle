@@ -30,6 +30,7 @@ repositories {
         content {
             includeGroup 'appeng'
             includeGroup 'mekanism'
+            includeGroup 'me'
         }
     }
     maven {
@@ -58,7 +59,7 @@ runs {
     configureEach {
         systemProperty 'forge.logging.markers', 'REGISTRIES'
         systemProperty 'forge.logging.console.level', 'debug'
-        systemProperty 'mixin.debug.export', 'true'
+        //systemProperty 'mixin.debug.export', 'true'
         modSource project.sourceSets.main
     }
     client {
@@ -103,12 +104,13 @@ dependencies {
     compileOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}:api"
     runtimeOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}"
 
-    //runtimeOnly "curse.maven:pipez-443900:5396282" //Pipez
     implementation "curse.maven:modern-dynamics-552758:5373764" //Modern Industrialization
     implementation "mekanism:Mekanism:${mekanism_version}"// Mekanism
     implementation "mekanism:Mekanism:${mekanism_version}:additions"// Mekanism: Additions
     implementation "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
     implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
+
+    //runtimeOnly "me.desht.pneumaticcraft:pneumaticcraft-repressurized:${pnc_version}"
 
     testImplementation(platform("org.junit:junit-bom:${junit_version}"))
     testCompileOnly "org.junit.jupiter:junit-jupiter-api"

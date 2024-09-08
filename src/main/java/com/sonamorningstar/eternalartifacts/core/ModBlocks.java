@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
+import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.base.CableBlock;
@@ -140,18 +141,12 @@ public class ModBlocks {
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",
             ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<MeatShredderBlock> MEAT_SHREDDER = registerWithItem("meat_shredder",
-            ()-> new MeatShredderBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<MobLiquifierBlock> MOB_LIQUIFIER = registerWithItem("mob_liquifier",
-            ()-> new MobLiquifierBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerWithBewlr("fluid_combustion_dynamo",
             () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
-    public static final DeferredBlock<OilRefineryBlock> OIL_REFINERY = registerWithBewlr("oil_refinery",
-            () -> new OilRefineryBlock(MACHINE_BLOCK.get().properties().noOcclusion()));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
             ()-> new CableBlock(Blocks.LANTERN.properties().lightLevel(st -> 0).pushReaction(PushReaction.IGNORE)));
@@ -163,7 +158,9 @@ public class ModBlocks {
 
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
-    public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 256000);
+    public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 128000);
+    //public static final DeferredBlock<DrumBlock> DEMONIC_DRUM = registerDrum("demonic_drum", Blocks.GOLD_BLOCK.properties(), 256000);
+    //public static final DeferredBlock<DrumBlock> STEEL_DRUM = registerDrum("steel_drum", Blocks.GOLD_BLOCK.properties(), 512000);
     public static final DeferredBlock<DrumBlock> DIAMOND_DRUM = registerDrum("diamond_drum", Blocks.DIAMOND_BLOCK.properties(), 1024000);
     public static final DeferredBlock<DrumBlock> NETHERITE_DRUM = registerDrum("netherite_drum", Blocks.NETHERITE_BLOCK.properties(), 2048000, new Item.Properties().fireResistant());
 
@@ -269,14 +266,7 @@ public class ModBlocks {
         DeferredBlock<T> block = BLOCKS.register(name, sup);
         ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()) {
             @Override
-            public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-                consumer.accept(new IClientItemExtensions() {
-                    @Override
-                    public BlockEntityWithoutLevelRenderer getCustomRenderer() {
-                        return ModItemStackBEWLR.INSTANCE.get();
-                    }
-                });
-            }
+            public void initializeClient(Consumer<IClientItemExtensions> consumer) {consumer.accept(new BEWLRProps());}
         });
         return block;
     }

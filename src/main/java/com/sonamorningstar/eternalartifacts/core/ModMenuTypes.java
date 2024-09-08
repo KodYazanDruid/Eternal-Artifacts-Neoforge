@@ -18,18 +18,12 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BioFurnaceMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<BookDuplicatorMenu>> BOOK_DUPLICATOR = MENUS.register("book_duplicator",
             ()-> IMenuTypeExtension.create(BookDuplicatorMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<MeatShredderMenu>> MEAT_SHREDDER = MENUS.register("meat_shredder",
-            ()-> IMenuTypeExtension.create(MeatShredderMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<BatteryBoxMenu>> BATTERY_BOX = MENUS.register("battery_box",
             ()-> IMenuTypeExtension.create(BatteryBoxMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<MobLiquifierMenu>> MOB_LIQUIFIER = MENUS.register("mob_liquifier",
-            ()-> IMenuTypeExtension.create(MobLiquifierMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<FluidCombustionMenu>> FLUID_COMBUSTION_MENU = MENUS.register("fluid_combustion",
             ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
             ()-> IMenuTypeExtension.create(NousTankMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<OilRefineryMenu>> OIL_REFINERY = MENUS.register("oil_refinery",
-            ()-> IMenuTypeExtension.create(OilRefineryMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<KnapsackMenu>> KNAPSACK = MENUS.register("knapsack",
             ()-> IMenuTypeExtension.create(KnapsackMenu::fromNetwork));

@@ -27,6 +27,8 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Mac
     private final boolean hasUniqueTexture;
     @Getter
     private final boolean isGeneric;
+    @Getter
+    private final boolean hasCustomRender;
 
     public DeferredHolder<MenuType<?>, MenuType<M>> getMenuHolder() {return this.menu;}
     public MenuType<M> getMenu() {return getMenuHolder().get();}

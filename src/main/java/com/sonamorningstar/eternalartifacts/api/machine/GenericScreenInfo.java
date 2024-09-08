@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlo
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import net.minecraft.network.chat.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,22 +19,49 @@ public class GenericScreenInfo {
 
     private int arrowXOffset = 0;
     private int arrowYOffset = 0;
-
     private int imageWidth = 176;
     private int imageHeight = 166;
+    private int arrowX = 0;
+    private int arrowY = 0;
+
+    private boolean shouldBindSlots = true;
+    private boolean overrideArrowPos = false;
+    private boolean shouldDrawArrow = true;
+    private boolean shouldDrawMachineTitle = true;
+    private boolean shouldDrawInventoryTitle = true;
 
     private final Map<AbstractFluidTank, Pair<Integer, Integer>> tankPositions = new HashMap<>();
+    private final Map<Integer, Pair<Integer, Integer>> slotPositions = new HashMap<>();
+    private final Map<Component, ComponentInfo> components = new HashMap<>();
+
+    public static final int defaultTankX = 24;
+    public static final int defaultTankY = 20;
 
     public void setTankPosition(int x, int y, int tankNo) {
         AbstractFluidTank tank = machine.tank.get(tankNo);
         tankPositions.put(tank, Pair.of(x, y));
     }
+    public void setArrowPos(int x, int y) {
+        setArrowX(x);
+        setArrowY(y);
+    }
 
-    public void attachTankToLeft( int tankNo) {
+    public void attachTankToLeft(int tankNo) {
         attachTankToLeft(tankNo, 20);
     }
-    public void attachTankToLeft( int tankNo, int y) {
+    public void attachTankToLeft(int tankNo, int y) {
         AbstractFluidTank tank = machine.tank.get(tankNo);
         tankPositions.put(tank, Pair.of(imageWidth - 24, y));
+    }
+
+    public void setSlotPosition(int x, int y, int slot) {
+        slotPositions.put(slot, Pair.of(x, y));
+    }
+
+    public void addComponent(Component component, int x, int y) {
+        addComponent(component, x, y, 4210752, false);
+    }
+    public void addComponent(Component component, int x, int y, int color, boolean dropShadow) {
+        components.put(component, new ComponentInfo(x, y, color, dropShadow));
     }
 }

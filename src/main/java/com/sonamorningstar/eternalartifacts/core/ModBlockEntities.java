@@ -17,18 +17,12 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(AnvilinatorBlockEntity::new, ModBlocks.ANVILINATOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BookDuplicatorMachineBlockEntity>> BOOK_DUPLICATOR = BLOCK_ENTITIES.register("book_duplicator", ()->
             BlockEntityType.Builder.of(BookDuplicatorMachineBlockEntity::new, ModBlocks.BOOK_DUPLICATOR.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MeatShredderMachineBlockEntity>> MEAT_SHREDDER = BLOCK_ENTITIES.register("meat_shredder", ()->
-            BlockEntityType.Builder.of(MeatShredderMachineBlockEntity::new, ModBlocks.MEAT_SHREDDER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBoxBlockEntity>> BATTERY_BOX = BLOCK_ENTITIES.register("battery_box", ()->
             BlockEntityType.Builder.of(BatteryBoxBlockEntity::new, ModBlocks.BATTERY_BOX.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MobLiquifierMachineBlockEntity>> MOB_LIQUIFIER = BLOCK_ENTITIES.register("mob_liquifier", ()->
-            BlockEntityType.Builder.of(MobLiquifierMachineBlockEntity::new, ModBlocks.MOB_LIQUIFIER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamoBlockEntity>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
             BlockEntityType.Builder.of(FluidCombustionDynamoBlockEntity::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NousTankBlockEntity>> NOUS_TANK = BLOCK_ENTITIES.register("nous_tank", ()->
             BlockEntityType.Builder.of(NousTankBlockEntity::new, ModBlocks.NOUS_TANK.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<OilRefineryBlockEntity>> OIL_REFINERY = BLOCK_ENTITIES.register("oil_refinery", ()->
-            BlockEntityType.Builder.of(OilRefineryBlockEntity::new, ModBlocks.OIL_REFINERY.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));

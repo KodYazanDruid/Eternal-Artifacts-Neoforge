@@ -1,13 +1,16 @@
 package com.sonamorningstar.eternalartifacts.api.machine;
 
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;
@@ -19,7 +22,6 @@ public class ProcessCondition {
     private List<FluidStack> queuedFluidStacks = new ArrayList<>();
     private AbstractFluidTank inputTank;
     private AbstractFluidTank outputTank;
-    private List<AbstractFluidTank> outputTanks = new ArrayList<>();
     private BooleanSupplier supplier;
 
     //region Initializing Handlers
@@ -37,7 +39,6 @@ public class ProcessCondition {
     }
     public ProcessCondition initOutputTank(AbstractFluidTank tank) {
         this.outputTank = tank;
-        this.outputTanks.add(tank);
         return this;
     }
     public ProcessCondition queueItemStack(ItemStack stack) {
@@ -79,8 +80,12 @@ public class ProcessCondition {
         if(supplier == null || !supplier.getAsBoolean()) {
             SimpleContainer container = new SimpleContainer(outputSlots.size());
             for (int i = 0; i < outputSlots.size(); i++) container.setItem(i, inventory.getStackInSlot(outputSlots.get(i)).copy());
-            for (ItemStack stack : queuedItemStacks) {
-                ItemStack remainder = container.addItem(stack);
+            for (int i = 0; i < queuedItemStacks.size(); i++) {
+                if (i >= container.getContainerSize()) {
+                    supplier = preventWorking();
+                    return this;
+                }
+                ItemStack remainder = container.addItem(queuedItemStacks.get(i));
                 if (!remainder.isEmpty()) {
                     supplier = preventWorking();
                     return this;
@@ -118,32 +123,27 @@ public class ProcessCondition {
             else supplier = noCondition();
         }
         return this;
-
-        /*if(supplier == null || !supplier.getAsBoolean()) {
-            SimpleFluidContainer container = new SimpleFluidContainer(outputTanks.size());
-            for (int i = 0; i < outputTanks.size(); i++) container.setFluidStack(i, outputTanks.get(i).getFluidInTank(0));
-            for (FluidStack stack : stacks) {
-                FluidStack inserted = container.addFluid(stack);
-                if (inserted.isEmpty()) {
-                    supplier = preventWorking();
-                    return this;
-                }
-                supplier = inserted::isEmpty;
-            }
-        }
-        return this;*/
     }
     public ProcessCondition commitQueuedFluidStacks() {
         if(supplier == null || !supplier.getAsBoolean()) {
-            SimpleFluidContainer container = new SimpleFluidContainer(outputTanks.size());
-            for (int i = 0; i < outputTanks.size(); i++) container.setFluidStack(i, outputTanks.get(i).getFluidInTank(0));
-            for (FluidStack stack : queuedFluidStacks) {
-                FluidStack inserted = container.addFluid(stack);
-                if (inserted.isEmpty()) {
+            SimpleFluidContainer container = new SimpleFluidContainer(outputTank.getTanks());
+            container.setFixedSize(true);
+            for(int i = 0; i < outputTank.getTanks(); i++) {
+                container.setFluidStack(i, outputTank.getFluid(i).copy());
+                container.setCapacity(outputTank.getFluid(i).getFluid(), outputTank.getTankCapacity(i));
+            }
+            for(int i = 0; i < queuedFluidStacks.size(); i++) {
+                if (i >= container.getContainerSize()) {
                     supplier = preventWorking();
                     return this;
                 }
-                supplier = inserted::isEmpty;
+                FluidStack queuedStack = queuedFluidStacks.get(i);
+                FluidStack remainder = container.addFluid(queuedStack);
+                if (!remainder.isEmpty()) {
+                    supplier = preventWorking();
+                    return this;
+                }
+                supplier = () -> !remainder.isEmpty();
             }
         }
         return this;

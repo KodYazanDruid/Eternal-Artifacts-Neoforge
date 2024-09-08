@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -23,9 +24,11 @@ public class WrenchItem extends DiggerItem {
         if(state.is(ModTags.Blocks.MINEABLE_WITH_WRENCH)) level.playSound(null, pos, ModSounds.WRENCH.get(), SoundSource.BLOCKS, 1, 1);
         return super.mineBlock(stack, level, state, pos, living);
     }
+
     //Testing and debugging stuff.
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+
 
         return super.use(level, player, hand);
     }
@@ -35,6 +38,8 @@ public class WrenchItem extends DiggerItem {
         BlockPos pos = ctx.getClickedPos();
         Level level = ctx.getLevel();
         BlockState state = level.getBlockState(pos);
+
+        System.out.println(state.getBlock() instanceof OilRefineryBlock<?>);
 
         return super.useOn(ctx);
     }

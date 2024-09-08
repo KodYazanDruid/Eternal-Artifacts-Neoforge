@@ -8,19 +8,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 
 public class MaceratingRecipe extends BasicItemToItemRecipe {
 
     public MaceratingRecipe(Ingredient input, ItemStack output) {
-        super(input, output);
+        super(ModRecipes.MACERATING, input, output);
     }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {return ModRecipes.MACERATING.getSerializer();}
-
-    @Override
-    public RecipeType<?> getType() {return ModRecipes.MACERATING.getType();}
 
     public static class Serializer implements RecipeSerializer<MaceratingRecipe> {
         private final Codec<MaceratingRecipe> CODEC = RecordCodecBuilder.create(inst ->  inst.group(

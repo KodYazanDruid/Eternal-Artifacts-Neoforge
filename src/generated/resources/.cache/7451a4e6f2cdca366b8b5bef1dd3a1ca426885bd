@@ -1,4 +1,5 @@
-// 1.20.4	2024-08-27T14:26:18.387873	Block States: eternalartifacts
+// 1.20.4	2024-09-03T14:58:49.020101	Block States: eternalartifacts
+053efb4f980c56896c644a5cccb1c98017ba22b4 assets/eternalartifacts/blockstates/alloy_smelter.json
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
 31ccf79f94568a40a5b2214ce81d9b952c686a5b assets/eternalartifacts/blockstates/anvilinator.json
 a38a7f43fa00ec7992fd95f525e0198ad518312d assets/eternalartifacts/blockstates/ardite_block.json
@@ -61,6 +62,7 @@ f9825724d03d480cce9f01e5f52c958c9782d8ef assets/eternalartifacts/blockstates/str
 12650d215ea9a2cfdef7f618585a050b6518192d assets/eternalartifacts/blockstates/sugar_charcoal_block.json
 9d1eec8e85797e4661a894b14583f4a7bd43ea05 assets/eternalartifacts/blockstates/very_sandy_dark_prismarine.json
 06f810cb03259392b94b54b67e190976266b230a assets/eternalartifacts/blockstates/very_sandy_prismarine.json
+4c8de016f89c8251a00590a04ffd3711f70bd039 assets/eternalartifacts/models/block/alloy_smelter.json
 8afd436d309fb9e820cd932d41aaa7cfb88b6240 assets/eternalartifacts/models/block/ancient_crop_0.json
 6f13ce39f8d7b6deed387c30603892fd07744c65 assets/eternalartifacts/models/block/ancient_crop_1.json
 717271c2126d8a006b362c5f87ca08e8d4bf680b assets/eternalartifacts/models/block/ancient_crop_2.json
@@ -148,6 +150,7 @@ a96624eb89fe66de8a48d9d9544c638fe75563f2 assets/eternalartifacts/models/block/st
 a8fb43c66668aeeb30890cff736066d3ad48b5fe assets/eternalartifacts/models/block/sugar_charcoal_block.json
 a735baa1e772bbd1bb203d23a86a67d039f2a1ec assets/eternalartifacts/models/block/very_sandy_dark_prismarine.json
 b38f7f38fc96a13d3adfb94b79f3792737cd6415 assets/eternalartifacts/models/block/very_sandy_prismarine.json
+559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 12ba5c35746cc2cbcedb4638dfa2384e7f147009 assets/eternalartifacts/models/item/anvilinator.json
 7357f8fcbd781eb7fbf510d60237635a57d64150 assets/eternalartifacts/models/item/ardite_block.json
 1fcc26f6ed634ef1e4e95515dd43cfbb22cb78c5 assets/eternalartifacts/models/item/ardite_ore.json

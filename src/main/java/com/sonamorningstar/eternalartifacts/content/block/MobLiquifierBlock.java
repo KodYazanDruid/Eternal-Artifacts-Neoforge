@@ -1,10 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.MobLiquifierMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MobLiquifierBlockEntity;
 
-public class MobLiquifierBlock extends MachineFourWayBlock<MobLiquifierMachineBlockEntity> {
+public class MobLiquifierBlock extends MachineFourWayBlock<MobLiquifierBlockEntity> {
     public MobLiquifierBlock(Properties pProperties) {
-        super(pProperties, MobLiquifierMachineBlockEntity::new);
+        super(pProperties, MobLiquifierBlockEntity::new);
     }
 }

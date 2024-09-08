@@ -16,6 +16,7 @@ public class ModScreens {
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         ModMachines.MACHINES.getGenericMachines().forEach(machine -> event.register(machine.getMenu(), GenericSidedMachineScreen::new));
 
+        event.register(ModMachines.OIL_REFINERY.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.INDUCTION_FURNACE.getMenu(), InductionFurnaceScreen::new);
     }
 }

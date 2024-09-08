@@ -1,0 +1,15 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    {
+      "tag": "forge:ingots/gold"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:demon_ingot"
+  }
+}

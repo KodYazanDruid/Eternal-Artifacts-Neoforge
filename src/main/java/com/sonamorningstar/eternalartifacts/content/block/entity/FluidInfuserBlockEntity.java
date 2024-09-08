@@ -15,7 +15,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
     public FluidInfuserBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModMachines.FLUID_INFUSER.getBlockEntity(), pos, blockState, ModMachines.FLUID_INFUSER.getMenu());
+        super(ModMachines.FLUID_INFUSER, pos, blockState);
         outputSlots.add(1);
         setEnergy(createDefaultEnergy());
         setTank(createBasicTank(16000, this::findRecipe));

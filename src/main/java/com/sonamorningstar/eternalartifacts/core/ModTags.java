@@ -19,6 +19,7 @@ public class ModTags {
         public static final TagKey<Block> STORAGE_BLOCKS_CHARCOAL = forgeTag("storage_blocks/charcoal");
         public static final TagKey<Block> MINEABLE_WITH_HAMMAXE = modTag("mineable/hammaxe");
         public static final TagKey<Block> MINEABLE_WITH_GLASSCUTTER = modTag("mineable/glasscutter");
+        public static final TagKey<Block> MINEABLE_WITH_GRAFTER = modTag("mineable/grafter");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }

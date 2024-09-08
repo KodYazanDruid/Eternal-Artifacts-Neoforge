@@ -97,9 +97,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
 
         machineBlock(ModBlocks.ANVILINATOR, false);
         machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
-        machineBlock(ModBlocks.MEAT_SHREDDER, false);
         machineBlock(ModBlocks.BATTERY_BOX, true);
-        machineBlock(ModBlocks.MOB_LIQUIFIER, false);
 
         createStateForModelWithProperty(ModBlocks.RESONATOR, BlockStateProperties.FACING);
         createStateForModelWithProperty(ModBlocks.FANCY_CHEST, BlockStateProperties.HORIZONTAL_FACING);
@@ -120,7 +118,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
 
-        ModMachines.MACHINES.getMachines().forEach(holder -> machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture()));
+        ModMachines.MACHINES.getMachines().forEach(holder -> {
+            if(!holder.isHasCustomRender()) machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture());
+        });
     }
 
     private void machineBlock(DeferredHolder<Block, ? extends Block> holder, boolean unique) {

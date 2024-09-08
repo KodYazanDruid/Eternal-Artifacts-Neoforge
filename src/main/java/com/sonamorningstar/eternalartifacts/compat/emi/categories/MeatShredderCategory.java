@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -12,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class MeatShredderCategory extends BasicEmiRecipe {
-    public static final EmiRecipeCategory MEAT_SHREDDER_CATEGORY = new EmiRecipeCategory(new ResourceLocation(MODID, "meat_shredding"), EmiStack.of(ModBlocks.MEAT_SHREDDER));
+    public static final EmiRecipeCategory MEAT_SHREDDER_CATEGORY = new EmiRecipeCategory(new ResourceLocation(MODID, "meat_shredding"), EmiStack.of(ModMachines.MEAT_SHREDDER.getItem()));
     public MeatShredderCategory(MeatShredderRecipe recipe, ResourceLocation id) {
         super(MEAT_SHREDDER_CATEGORY, id, 72, 18);
         inputs.add(EmiIngredient.of(recipe.getInput()));

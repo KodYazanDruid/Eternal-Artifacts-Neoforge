@@ -109,6 +109,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.FEEDING_CANISTER.get());
         basicItem(ModItems.DEMON_INGOT.get());
         basicItem(ModItems.DEMONIC_TABLET.get());
+        handheld(ModItems.GRAFTER);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -145,7 +146,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .texture("layer0", modLoc("block/four_leaf_clover"));
 
         ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
-        ModMachines.MACHINES.getMachines().forEach(holder -> withParentBlock(holder.getBlockHolder()));
+        ModMachines.MACHINES.getMachines().forEach(holder -> {
+            if(!holder.isHasCustomRender()) withParentBlock(holder.getBlockHolder());
+        });
     }
 
     private void handheld(DeferredItem<Item> deferred) {

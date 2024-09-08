@@ -1,4 +1,5 @@
 {
+  "block.eternalartifacts.alloy_smelter": "Alloy Smelter",
   "block.eternalartifacts.anvilinator": "Anvilinator",
   "block.eternalartifacts.ardite_block": "Ardite Block",
   "block.eternalartifacts.ardite_ore": "Ardite Ore",
@@ -168,6 +169,7 @@
   "item.eternalartifacts.gold_ring": "Gold Ring",
   "item.eternalartifacts.golden_ancient_fruit": "Golden Ancient Fruit",
   "item.eternalartifacts.golden_hammer": "Golden Hammer",
+  "item.eternalartifacts.grafter": "Grafter",
   "item.eternalartifacts.hammaxe": "Hammaxe",
   "item.eternalartifacts.holy_dagger": "Holy Dagger",
   "item.eternalartifacts.iron_hammer": "Iron Hammer",

@@ -2,7 +2,8 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.sonamorningstar.eternalartifacts.content.recipe.base.AbstractFluidRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.base.NoResultItemRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
@@ -20,18 +21,17 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class MobLiquifierRecipe extends AbstractFluidRecipe {
+public class MobLiquifierRecipe extends NoResultItemRecipe<SimpleEntityContainer> {
     private final EntityIngredient entity;
     private final NonNullList<FluidStack> resultFluidList;
 
-    public boolean matches(EntityType<?> entity) {
-        return this.entity.test(entity);
-    }
-
-    /** @deprecated use {@link #matches(EntityType)} */
-    @Deprecated
     @Override
-    public boolean matches(SimpleFluidContainer pContainer, Level pLevel) {
+    public boolean matches(SimpleEntityContainer con, Level level) {
+        for(int i = 0; i < con.getContainerSize(); i++) {
+            if (con.getEntityType(i) != null && entity.test(con.getEntityType(i))) {
+                return true;
+            }
+        }
         return false;
     }
 

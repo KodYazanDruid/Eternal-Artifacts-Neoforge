@@ -74,7 +74,7 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
 
     @Override
     public FluidStack getFluidInTank(int tank) {
-    return tanks.get(tank).getFluidInTank(0);
+    return tanks.get(tank).getFluid(tank);
 }
 
     @Override
@@ -177,6 +177,6 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
 
     @Override
     public FluidStack getFluid(int tank) {
-        return null;
+        return getFluidInTank(tank);
     }
 }

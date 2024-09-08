@@ -2,11 +2,14 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.google.gson.JsonElement;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModModelTemplates;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 import java.util.function.BiConsumer;
@@ -25,10 +28,10 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         createBEWLRTransforms(ModBlocks.JAR);
         createBEWLRTransforms(ModBlocks.NOUS_TANK);
         createBEWLRTransforms(ModBlocks.FLUID_COMBUSTION_DYNAMO);
-        createBEWLRTransforms(ModBlocks.OIL_REFINERY);
+        createBEWLRTransforms(ModMachines.OIL_REFINERY.getBlockHolder());
     }
 
-    private void createBEWLRTransforms(DeferredBlock<?> holder) {
-        ModModelTemplates.ENTITY_RENDER_TRANSFORMS.create(ModelLocationUtils.getModelLocation(holder.asItem()), TextureMapping.defaultTexture(holder.get()), output);
+    private void createBEWLRTransforms(DeferredHolder<Block, ? extends Block> holder) {
+        ModModelTemplates.ENTITY_RENDER_TRANSFORMS.create(ModelLocationUtils.getModelLocation(holder.get().asItem()), TextureMapping.defaultTexture(holder.get()), output);
     }
 }

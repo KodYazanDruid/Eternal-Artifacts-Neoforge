@@ -1,4 +1,5 @@
-// 1.20.4	2024-08-27T14:26:18.4018711	Loot Tables
+// 1.20.4	2024-09-03T14:58:49.0261008	Loot Tables
+a50ef6533c773bcb5946c86a3ca5eb5aed8b850f data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
 c2b957a37df519265b42bb1ea66625aff3ffc16a data/eternalartifacts/loot_tables/blocks/ardite_block.json
@@ -13,6 +14,7 @@ f0d2c56310760e4ae49c0810b3f6f40ef0944c91 data/eternalartifacts/loot_tables/block
 fd21e762f96ac2132e1d9abb547a3ad534c5f4b1 data/eternalartifacts/loot_tables/blocks/citrus_log.json
 cbc47d6862614edb4d9e78554a77d15a0ccf875d data/eternalartifacts/loot_tables/blocks/citrus_planks.json
 03a1a4a2d71525c5b12568da9cdd4e43998368e0 data/eternalartifacts/loot_tables/blocks/citrus_wood.json
+5e9a6373b928d1918cf3aaba6c068a346fd14d90 data/eternalartifacts/loot_tables/blocks/copper_cable.json
 22df2f6d940531740f340904b2baa586ab9f907e data/eternalartifacts/loot_tables/blocks/copper_drum.json
 7bbea995f886e5bf45d835f986bd7df3aefd095f data/eternalartifacts/loot_tables/blocks/copper_oreberry.json
 36b93c29e60730e91048865cb63c2c3a34fe3fc8 data/eternalartifacts/loot_tables/blocks/deepslate_manganese_ore.json

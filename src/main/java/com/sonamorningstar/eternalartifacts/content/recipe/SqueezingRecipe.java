@@ -9,7 +9,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 @Getter
@@ -17,18 +16,8 @@ public class SqueezingRecipe extends BasicItemToItemRecipe {
     private final FluidStack outputFluid;
 
     public SqueezingRecipe(Ingredient input, ItemStack output, FluidStack outputFluid) {
-        super(input, output);
+        super(ModRecipes.SQUEEZING, input, output);
         this.outputFluid = outputFluid;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.SQUEEZING.getSerializer();
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return ModRecipes.SQUEEZING.getType();
     }
 
     public static class Serializer implements RecipeSerializer<SqueezingRecipe> {

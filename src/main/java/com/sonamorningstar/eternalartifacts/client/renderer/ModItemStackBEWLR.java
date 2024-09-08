@@ -12,6 +12,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEn
 import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -40,7 +41,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final JarBlockEntity jarBlockEntity = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
     private final FluidCombustionDynamoBlockEntity fluidCombustionBlockEntity = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
     private final NousTankBlockEntity nousTankBlockEntity = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
-    private final OilRefineryBlockEntity oilRefineryBlockEntity = new OilRefineryBlockEntity(BlockPos.ZERO, ModBlocks.OIL_REFINERY.get().defaultBlockState());
+    private final OilRefineryBlockEntity oilRefineryBlockEntity = new OilRefineryBlockEntity(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
@@ -49,19 +50,19 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
         if(item instanceof BlockItem blockItem) {
             IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).orElse(null);
             Block block = blockItem.getBlock();
-            if(block instanceof JarBlock jarBlock) {
+            if(block instanceof JarBlock) {
                 if(fluidHandlerItem != null) jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 CompoundTag tag = stack.getTag();
                 boolean isOpen = false;
                 if (tag != null) isOpen = tag.getBoolean(JarBlockItem.KEY_OPEN);
                 jarBlockEntity.isOpen = isOpen;
                 blockEntityRenderDispatcher.renderItem(jarBlockEntity, ps, buff, light, overlay);
-            }else if(block instanceof FluidCombustionDynamoBlock dynamo) {
+            }else if(block instanceof FluidCombustionDynamoBlock) {
                 blockEntityRenderDispatcher.renderItem(fluidCombustionBlockEntity, ps, buff, light, overlay);
-            }else if(block instanceof NousTankBlock nous) {
+            }else if(block instanceof NousTankBlock) {
                 if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
-            }else if(block instanceof OilRefineryBlock refinery) {
+            }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
                 if(fluidHandlerItem != null) {
                     /*oilRefineryBlockEntity.tanks.get(0).setFluid(fluidHandlerItem.getFluidInTank(0));
                     oilRefineryBlockEntity.tanks.get(1).setFluid(fluidHandlerItem.getFluidInTank(1));

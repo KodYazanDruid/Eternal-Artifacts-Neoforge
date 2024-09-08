@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
+import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
@@ -65,7 +66,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoInputFluids(Level lvl, BlockPos pos, IFluidHandler tank) {
+    protected void performAutoInputFluids(Level lvl, BlockPos pos, AbstractFluidTank tank) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
         if(!isAllowedAuto || isDisabled) return;
@@ -79,7 +80,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoOutputFluids(Level lvl, BlockPos pos, IFluidHandler tank) {
+    protected void performAutoOutputFluids(Level lvl, BlockPos pos, AbstractFluidTank tank) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
         if(!isAllowedAuto || isDisabled) return;

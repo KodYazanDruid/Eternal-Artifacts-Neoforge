@@ -118,6 +118,17 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
         createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), Items.GREEN_DYE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
 
+        createAlloyingRecipe(recipeOutput, List.of(
+                Ingredient.of(Tags.Items.INGOTS_GOLD),
+                Ingredient.of(Items.REDSTONE)),
+                ModItems.DEMON_INGOT.toStack());
+
+        createAlloyingRecipe(recipeOutput, List.of(
+                Ingredient.of(ModItems.DEMON_INGOT),
+                Ingredient.of(Items.GLOWSTONE_DUST),
+                Ingredient.of(ModItems.PLANT_MATTER)),
+                ModItems.CHLOROPHYTE_INGOT.toStack());
+
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.BLOOD.getFluid(), 40),
@@ -458,5 +469,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         SpecialRecipeBuilder.special(category -> new SqueezingRecipe(Ingredient.of(input), result, resultFluid))
                 .save(output, new ResourceLocation(MODID, "squeezing/"+input.location().getPath()));
     }
+
+    private void createAlloyingRecipe(RecipeOutput output, List<Ingredient> inputs, ItemStack result){
+        String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new AlloyingRecipe(inputs, result))
+                .save(output, new ResourceLocation(MODID, "alloying/"+path));
+    }
+
 
 }

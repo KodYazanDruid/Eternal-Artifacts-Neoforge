@@ -3,10 +3,12 @@ package com.sonamorningstar.eternalartifacts.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
+import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FluidCombustionRenderer;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
+import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -16,6 +18,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -24,6 +27,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -113,6 +117,27 @@ public class ClientEvents {
         if (stack.is(ModItems.WITHERING_SWORD) && !player.getCooldowns().isOnCooldown(stack.getItem())) Channel.sendToServer(new ShootSkullsToServer(stack, event.getHand()));
     }
 
+/*    @SubscribeEvent
+    public static void bomba(RenderPlayerEvent.Pre event) {
+        event.setCanceled(true);
+        PoseStack pose = event.getPoseStack();
+        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(ModItems.RAW_MEAT_INGOT.toStack(), null, null, 0);
+        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+        Player player = event.getEntity();
+
+        for (Direction dir : DIRS) {
+            Minecraft.getInstance().getItemRenderer().renderQuadList(
+                    pose,
+                    buffer.getBuffer(Sheets.translucentCullBlockSheet()),
+                    model.getQuads(null, dir, living.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
+                    ItemStack.EMPTY,
+                    0xF000F0,
+                    OverlayTexture.NO_OVERLAY
+            );
+        }
+
+
+    }*/
 
 
 }

@@ -72,15 +72,12 @@ public class ModItems {
                     Component.translatable(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade"))).withStyle(ChatFormatting.GRAY),
                     ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.translatable(),
                     ModConstants.CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION.translatable(),
-                    List.of(
-                            new ResourceLocation("item/empty_slot_sword"),
+                    List.of(new ResourceLocation("item/empty_slot_sword"),
                             new ResourceLocation("item/empty_slot_pickaxe"),
                             new ResourceLocation("item/empty_slot_axe"),
                             new ResourceLocation("item/empty_slot_shovel"),
-                            new ResourceLocation("item/empty_slot_hoe")
-                    ),
-                    List.of(new ResourceLocation("item/empty_slot_ingot"))
-            ));
+                            new ResourceLocation("item/empty_slot_hoe")),
+                    List.of(new ResourceLocation("item/empty_slot_ingot"))));
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
     public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
     public static final DeferredItem<Item> COPPER_NUGGET = register("copper_nugget");
@@ -148,6 +145,7 @@ public class ModItems {
     public static final DeferredItem<Item> GLASSCUTTER = registerStacksToOne("glasscutter", GlasscutterItem::new);
     public static final DeferredItem<Item> WITHERING_SWORD = register("withering_sword", WitheringSword::new);
     public static final DeferredItem<Item> FEEDING_CANISTER = registerStacksToOne("feeding_canister", FeedingCanister::new);
+    public static final DeferredItem<Item> GRAFTER = registerStacksToOne("grafter", GrafterItem::new);
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

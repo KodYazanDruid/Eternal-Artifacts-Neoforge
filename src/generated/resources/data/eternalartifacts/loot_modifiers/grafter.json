@@ -1,0 +1,17 @@
+{
+  "type": "eternalartifacts:grafter",
+  "conditions": [
+    {
+      "condition": "eternalartifacts:block_tag_condition",
+      "tag": "eternalartifacts:mineable/grafter"
+    },
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "items": [
+          "eternalartifacts:grafter"
+        ]
+      }
+    }
+  ]
+}

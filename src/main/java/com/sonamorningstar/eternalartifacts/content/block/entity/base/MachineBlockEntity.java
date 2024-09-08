@@ -46,8 +46,6 @@ import java.util.function.BooleanSupplier;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
-    @Deprecated
-    protected Recipe<?> currentRecipe = null;
 
     @Setter
     public ModItemStorage inventory;
@@ -230,15 +228,15 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    protected void inputFluidFromDir(Level lvl, BlockPos pos, Direction dir, IFluidHandler tank) {
+    protected void inputFluidFromDir(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank) {
         transferFluidToBE(lvl, pos, dir, tank, true);
     }
 
-    protected void outputFluidToDir(Level lvl, BlockPos pos, Direction dir, IFluidHandler tank) {
+    protected void outputFluidToDir(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank) {
         transferFluidToBE(lvl, pos, dir, tank, false);
     }
 
-    protected void transferFluidToBE(Level lvl, BlockPos pos, Direction dir, IFluidHandler tank, boolean isReverse) {
+    protected void transferFluidToBE(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank, boolean isReverse) {
         BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
         if(be != null) {
             IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
@@ -261,21 +259,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                 }
             }
         }
-    }
-
-    @Deprecated
-    protected <R extends Recipe<C>, C extends Container> @Nullable R findRecipe(RecipeType<R> recipeType, EntityType<?> type) {
-        if(level == null) return null;
-        if(currentRecipe != null && ((MobLiquifierRecipe) currentRecipe).matches(type)) return null;
-        currentRecipe = null;
-        List<R> recipeList = level.getRecipeManager().getAllRecipesFor(recipeType).stream().map(RecipeHolder::value).toList();
-        for(R recipe : recipeList) {
-            if(((MobLiquifierRecipe) recipe).matches(type)) {
-                currentRecipe = recipe;
-                return recipe;
-            }
-        }
-        return null;
     }
 
 }

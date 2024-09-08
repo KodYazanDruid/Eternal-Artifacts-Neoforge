@@ -1,4 +1,5 @@
-// 1.20.4	2024-08-31T22:07:27.7148882	Item Models: eternalartifacts
+// 1.20.4	2024-09-06T23:30:46.768645	Item Models: eternalartifacts
+559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
@@ -66,6 +67,7 @@ db3a3dd7934801c74cef3b2261d40a0d14d9a5ff assets/eternalartifacts/models/item/gol
 f205ffc0053ae6f777a86c20272de724bdb8d54b assets/eternalartifacts/models/item/gold_drum.json
 df2644d1984cf0b62f3bdc77fde033a2e0818907 assets/eternalartifacts/models/item/gold_oreberry.json
 20d21c39c19c51e80328abe3103e4c9229641fee assets/eternalartifacts/models/item/gold_ring.json
+bbc068e61f4ca3d7bb315614a2d2cca1a6d00bdb assets/eternalartifacts/models/item/grafter.json
 17cea3c921ca033b040efdb8c0d358402f8ec92f assets/eternalartifacts/models/item/hammaxe.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
 d660795854e4bf04885248e050254bfd59bc1cfb assets/eternalartifacts/models/item/induction_furnace.json
@@ -87,8 +89,10 @@ ada2695d85a8d6aacc3fa5c0de02db49b151ee30 assets/eternalartifacts/models/item/man
 ba45015e7dc9ae4818265b534eea5a35b592f993 assets/eternalartifacts/models/item/material_squeezer.json
 db4c87dbd56c73964e1d7bbdda87976add57067c assets/eternalartifacts/models/item/meat_ingot.json
 7a50e7be3962d1f20a7d6ad3968e1acfeebd77e1 assets/eternalartifacts/models/item/meat_packer.json
+f07a1e1cc2b1a99080b38bbe509d0a04faa930c5 assets/eternalartifacts/models/item/meat_shredder.json
 e27a29410dee3d2b3bcee6f52a1cd980728b1076 assets/eternalartifacts/models/item/medkit.json
 eac553947dded131497aea667f841552a8f08c69 assets/eternalartifacts/models/item/melting_crucible.json
+25484d3a562b80d50c5b4f6e7b29b2df2eb4808d assets/eternalartifacts/models/item/mob_liquifier.json
 81c9e09f20bcba45f4e17bfcf9ce4d3d4b38b846 assets/eternalartifacts/models/item/natural_spade.json
 245adcf57e86b7ee4cf06f90f25baac1895c2061 assets/eternalartifacts/models/item/netherite_drum.json
 39d02e2ae8dcc20063278cab7f10c433f9572980 assets/eternalartifacts/models/item/netherite_hammer.json

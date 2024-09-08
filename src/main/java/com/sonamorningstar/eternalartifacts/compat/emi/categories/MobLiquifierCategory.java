@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.render.EmiTexture;
@@ -36,7 +37,7 @@ public class MobLiquifierCategory extends BasicEmiRecipe {
     private static final ResourceLocation HEART_CONTAINER = new ResourceLocation("textures/gui/sprites/hud/heart/container.png");
     private static final EmiTexture HEART_TEXTURE = new EmiTexture(HEART, 0, 0, 9, 9, 9, 9, 9 ,9);
     private static final EmiTexture HEART_CONTAINER_TEXTURE = new EmiTexture(HEART_CONTAINER, 0, 0, 9, 9, 9, 9, 9 ,9);
-    public static final EmiRecipeCategory MOB_LIQUIFIER_CATEGORY = new EmiRecipeCategory(new ResourceLocation(MODID, "mob_liquifying"), EmiStack.of(ModBlocks.MOB_LIQUIFIER));
+    public static final EmiRecipeCategory MOB_LIQUIFIER_CATEGORY = new EmiRecipeCategory(new ResourceLocation(MODID, "mob_liquifying"), EmiStack.of(ModMachines.MOB_LIQUIFIER.getItem()));
     public MobLiquifierCategory(MobLiquifierRecipe recipe, ResourceLocation id) {
         super(MOB_LIQUIFIER_CATEGORY, id, 144, 50);
         recipe.getResultFluidList().forEach(fs -> outputs.add(EmiStack.of(fs.getFluid(), fs.getAmount())));

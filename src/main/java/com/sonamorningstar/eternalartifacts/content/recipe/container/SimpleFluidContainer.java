@@ -1,21 +1,31 @@
 package com.sonamorningstar.eternalartifacts.content.recipe.container;
 
 import com.google.common.collect.Lists;
+import com.sonamorningstar.eternalartifacts.content.recipe.container.base.ItemlessContainer;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.NonNullList;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerListener;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class SimpleFluidContainer implements Container {
+public class SimpleFluidContainer extends ItemlessContainer {
     private final int size;
+    @Setter
     @Getter
-    private final NonNullList<FluidStack> fluidStacks;
+    private boolean fixedSize = false;
+    @Getter
+    protected final NonNullList<FluidStack> fluidStacks;
+    protected final Map<Fluid, Integer> capacityMap = new HashMap<>();
     @Nullable
     private List<ContainerListener> listeners;
 
@@ -39,7 +49,7 @@ public class SimpleFluidContainer implements Container {
     }
 
     public FluidStack getFluidstack(int index) {
-        return fluidStacks.get(index);
+        return isInBounds(index) ? fluidStacks.get(index) : FluidStack.EMPTY;
     }
     public FluidStack shrinkFluidStack(int index, int amount) {
         if (!isInBounds(index)) return FluidStack.EMPTY;
@@ -76,12 +86,16 @@ public class SimpleFluidContainer implements Container {
         }
     }
 
+    public void setCapacity(Fluid fluid, int capacity) {
+        capacityMap.put(fluid, capacity);
+    }
+
     public FluidStack addFluid(FluidStack stack) {
         if (stack.isEmpty()) {
             return FluidStack.EMPTY;
         } else {
             FluidStack fluidStack = stack.copy();
-            this.moveFluidToOccupiedSlotsWithSameType(fluidStack);
+            moveFluidToOccupiedSlotsWithSameType(fluidStack);
             if (fluidStack.isEmpty()) {
                 return FluidStack.EMPTY;
             } else {
@@ -92,52 +106,52 @@ public class SimpleFluidContainer implements Container {
     }
 
     private void moveFluidToEmptySlots(FluidStack stack) {
-        for(int i = 0; i < this.size; ++i) {
-            FluidStack fluidStack = this.getFluidstack(i);
-            if (fluidStack.isEmpty()) {
-                this.setFluidStack(i, stack.copy());
+        for(int i = 0; i < this.size; i++) {
+            FluidStack stackInCon = this.getFluidstack(i);
+            if (stackInCon.isEmpty()) {
+                int transfered = stack.getAmount();
+                if (capacityMap.containsKey(stack.getFluid())) {
+                    int capacity = capacityMap.get(stack.getFluid());
+                    transfered = Mth.clamp(stack.getAmount(),0, capacity);
+                }
+                FluidStack inserted = stack.copy();
+                inserted.setAmount(transfered);
+                setFluidStack(i, inserted);
                 stack.setAmount(0);
+                setChanged();
                 return;
             }
         }
     }
 
     private void moveFluidToOccupiedSlotsWithSameType(FluidStack fluidStack) {
-        for(int i = 0; i < this.size; ++i) {
+        for(int i = 0; i < this.size; i++) {
             FluidStack stackInCon = this.getFluidstack(i);
-            if (FluidStack.areFluidStackTagsEqual(stackInCon, fluidStack)) {
-                this.moveFluidsBetweenStacks(fluidStack, stackInCon);
-                if (fluidStack.isEmpty()) {
-                    return;
-                }
+            if (stackInCon.isFluidEqual(fluidStack)) {
+                moveFluidsBetweenStacks(fluidStack, stackInCon);
+                if (fluidStack.isEmpty()) return;
             }
         }
     }
 
     private void moveFluidsBetweenStacks(FluidStack stack, FluidStack other) {
-        /*int i = Math.min(this.getMaxStackSize(), other.getMaxStackSize());
-        int j = Math.min(stack.getAmount(), i - other.getAmount());
-        if (j > 0) {
-            other.grow(j);
-            stack.shrink(j);
-            this.setChanged();
-        }*/
-        int i = stack.getAmount();
-        //other.grow(i);
-        if (other.isEmpty()) {
-            other = new FluidStack(stack.getFluid(), i);
-        } else other.grow(i);
-        stack.shrink(i);
-        if (stack.getAmount() <= 0) stack = FluidStack.EMPTY;
+        int transfered = stack.getAmount();
+        if (capacityMap.containsKey(other.getFluid())) {
+            int capacity = capacityMap.get(other.getFluid());
+            transfered = Mth.clamp(stack.getAmount(),0, capacity - other.getAmount());
+        }
+        other.grow(transfered);
+        stack.shrink(transfered);
+
         this.setChanged();
     }
 
     @Override
     public int getContainerSize() {
-        return this.size;
+        return size;
     }
 
-    private boolean isInBounds(int index) {
+    protected boolean isInBounds(int index) {
         return index < size && index >= 0;
     }
 
@@ -168,14 +182,4 @@ public class SimpleFluidContainer implements Container {
         this.fluidStacks.clear();
         this.setChanged();
     }
-
-    //ItemStack related thing which we do not need in this type of container.
-    @Override
-    public ItemStack getItem(int pSlot) {return null;}
-    @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {return null;}
-    @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {return null;}
-    @Override
-    public void setItem(int pSlot, ItemStack pStack) {}
 }

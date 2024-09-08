@@ -37,7 +37,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GRAVEL_GOLD_ORE.get(), "iron", "shovel");
         tierAndTool(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SANDY_STONE_BRICKS.get(), "stone", "pickaxe");
-        tierAndTool(ModBlocks.MEAT_SHREDDER.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SANDY_PRISMARINE.get(), "", "pickaxe");
         tierAndTool(ModBlocks.VERY_SANDY_PRISMARINE.get(), "", "pickaxe");
         tierAndTool(ModBlocks.SANDY_DARK_PRISMARINE.get(), "", "pickaxe");
@@ -51,7 +50,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.MOB_LIQUIFIER.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
@@ -63,7 +61,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.ARDITE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SNOW_BRICKS.get(), "", "pickaxe");
         tierAndTool(ModBlocks.ICE_BRICKS.get(), "", "pickaxe");
-        tierAndTool(ModBlocks.OIL_REFINERY.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.COPPER_DRUM.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.IRON_DRUM.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.GOLD_DRUM.get(), "iron", "pickaxe");
@@ -76,12 +73,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.RESONATOR.get(),
                 ModBlocks.ANVILINATOR.get(),
                 ModBlocks.BOOK_DUPLICATOR.get(),
-                ModBlocks.MEAT_SHREDDER.get(),
-                ModBlocks.MOB_LIQUIFIER.get(),
                 ModBlocks.BATTERY_BOX.get(),
                 ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                ModBlocks.NOUS_TANK.get(),
-                ModBlocks.OIL_REFINERY.get()
+                ModBlocks.NOUS_TANK.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);
@@ -89,6 +83,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).add(
                 Blocks.GLOWSTONE, Blocks.SEA_LANTERN
         );
+        tag(ModTags.Blocks.MINEABLE_WITH_GRAFTER).addTags(BlockTags.LEAVES);
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());

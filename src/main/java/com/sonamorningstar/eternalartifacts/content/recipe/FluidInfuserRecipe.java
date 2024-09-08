@@ -2,9 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.sonamorningstar.eternalartifacts.content.recipe.base.AbstractFluidRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.ItemFluidContainer;
-import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;

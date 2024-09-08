@@ -3,10 +3,7 @@ package com.sonamorningstar.eternalartifacts.data.loot;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTagCondition;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddItemListModifier;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.GlasscutterModifier;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemModifier;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.ReplaceItemWithChanceModifier;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.*;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -71,6 +68,12 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 new LootItemCondition[] {
                         LootItemBlockTagCondition.builder(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).build(),
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModItems.GLASSCUTTER.get())).build()
+                }
+        ));
+        add("grafter", new GrafterModifier(
+                new LootItemCondition[] {
+                        LootItemBlockTagCondition.builder(ModTags.Blocks.MINEABLE_WITH_GRAFTER).build(),
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModItems.GRAFTER.get())).build()
                 }
         ));
 

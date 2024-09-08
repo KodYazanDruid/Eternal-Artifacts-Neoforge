@@ -46,13 +46,10 @@ public class ClientModEvents {
         event.register(ModMenuTypes.ANVILINATOR.get(), AnvilinatorScreen::new);
         event.register(ModMenuTypes.BIOFURNACE.get(), BioFurnaceScreen::new);
         event.register(ModMenuTypes.BOOK_DUPLICATOR.get(), BookDuplicatorScreen::new);
-        event.register(ModMenuTypes.MEAT_SHREDDER.get(), MeatShredderScreen::new);
         event.register(ModMenuTypes.BATTERY_BOX.get(), BatteryBoxScreen::new);
-        event.register(ModMenuTypes.MOB_LIQUIFIER.get(), MobLiquifierScreen::new);
         event.register(ModMenuTypes.FLUID_COMBUSTION_MENU.get(), FluidCombustionScreen::new);
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
-        event.register(ModMenuTypes.OIL_REFINERY.get(), OilRefineryScreen::new);
     }
 
     @SubscribeEvent
@@ -116,7 +113,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.JAR.get(), JarRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), FluidCombustionRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.NOUS_TANK.get(), NousTankRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.OIL_REFINERY.get(), OilRefineryRenderer::new);
+        event.registerBlockEntityRenderer(ModMachines.OIL_REFINERY.getBlockEntity(), OilRefineryRenderer::new);
     }
 
     @SubscribeEvent

@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlo
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -44,7 +45,7 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
         blockEntityModels(ModBlocks.JAR.get(), Blocks.GLASS).create(ModBlocks.JAR.get());
         blockEntityModels(ModBlocks.NOUS_TANK.get(), Blocks.GLASS).create(ModBlocks.NOUS_TANK.get());
-        blockEntityModels(ModBlocks.OIL_REFINERY.get(), Blocks.GLASS).create(ModBlocks.OIL_REFINERY.get());
+        blockEntityModels(ModMachines.OIL_REFINERY.getBlock(), Blocks.GLASS).create(ModMachines.OIL_REFINERY.getBlock());
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 

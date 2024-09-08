@@ -42,8 +42,8 @@ public class EmiCompat implements EmiPlugin {
         registry.addCategory(MaceratingCategory.MACERATING_CATEGORY);
 
         registry.addWorkstation(MeatPackerCategory.MEAT_PACKER_CATEGORY, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
-        registry.addWorkstation(MeatShredderCategory.MEAT_SHREDDER_CATEGORY, EmiStack.of(ModBlocks.MEAT_SHREDDER));
-        registry.addWorkstation(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY, EmiStack.of(ModBlocks.MOB_LIQUIFIER));
+        registry.addWorkstation(MeatShredderCategory.MEAT_SHREDDER_CATEGORY, EmiStack.of(ModMachines.MEAT_SHREDDER.getItem()));
+        registry.addWorkstation(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY, EmiStack.of(ModMachines.MOB_LIQUIFIER.getItem()));
         registry.addWorkstation(MaceratingCategory.MACERATING_CATEGORY, EmiStack.of(ModMachines.INDUSTRIAL_MACERATOR.getItem()));
 
         registry.addRecipe(new MeatPackerCategory());

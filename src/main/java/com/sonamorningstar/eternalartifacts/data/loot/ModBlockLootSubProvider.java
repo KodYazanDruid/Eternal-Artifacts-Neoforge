@@ -56,7 +56,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.CHLOROPHYTE_DEBRIS.get());
         dropSelf(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
         dropSelf(ModBlocks.SANDY_STONE_BRICKS.get());
-        dropSelf(ModBlocks.MEAT_SHREDDER.get());
         dropSelf(ModBlocks.SANDY_PRISMARINE.get());
         dropSelf(ModBlocks.VERY_SANDY_PRISMARINE.get());
         dropSelf(ModBlocks.SANDY_DARK_PRISMARINE.get());
@@ -71,7 +70,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.STRIPPED_CITRUS_WOOD.get());
         dropSelf(ModBlocks.CITRUS_PLANKS.get());
         dropSelf(ModBlocks.BATTERY_BOX.get());
-        dropSelf(ModBlocks.MOB_LIQUIFIER.get());
         dropSelf(ModBlocks.FLUID_COMBUSTION_DYNAMO.get());
         dropSelf(ModBlocks.RAW_MANGANESE_BLOCK.get());
         dropSelf(ModBlocks.RAW_ARDITE_BLOCK.get());
@@ -81,6 +79,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.SNOW_BRICKS.get());
         dropSelf(ModBlocks.ICE_BRICKS.get());
         dropSelf(ModBlocks.ASPHALT_BLOCK.get());
+        dropSelf(ModBlocks.COPPER_CABLE.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -105,7 +104,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.GOLD_DRUM, KeepFluidsFunction.builder());
         dropSelfWithFunction(ModBlocks.DIAMOND_DRUM, KeepFluidsFunction.builder());
         dropSelfWithFunction(ModBlocks.NETHERITE_DRUM, KeepFluidsFunction.builder());
-        dropSelf(ModBlocks.OIL_REFINERY.get());
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())

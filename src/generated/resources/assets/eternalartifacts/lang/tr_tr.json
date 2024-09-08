@@ -1,4 +1,5 @@
 {
+  "block.eternalartifacts.alloy_smelter": "Alaşım Isıtıcı",
   "block.eternalartifacts.anvilinator": "Örsinatör",
   "block.eternalartifacts.ardite_block": "Ardite Bloğu",
   "block.eternalartifacts.ardite_ore": "Ardite Cevheri",
@@ -168,6 +169,7 @@
   "item.eternalartifacts.gold_ring": "Altın Yüzük",
   "item.eternalartifacts.golden_ancient_fruit": "Altın Antik Meyve",
   "item.eternalartifacts.golden_hammer": "Altın Balyoz",
+  "item.eternalartifacts.grafter": "Aşı Bıçağı",
   "item.eternalartifacts.hammaxe": "Balyozta",
   "item.eternalartifacts.holy_dagger": "Kutsal Hançer",
   "item.eternalartifacts.iron_hammer": "Demir Balyoz",

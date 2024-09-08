@@ -1,7 +1,8 @@
-// 1.20.4	2024-08-27T14:26:18.4108756	vanilla/Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-09-06T23:30:46.768645	vanilla/Tags for minecraft:block mod id eternalartifacts
 bd02464e1c960573d4213bff84b83f239b8f0947 data/eternalartifacts/tags/blocks/mineable/glasscutter.json
+a4e8097fff07f9a74259d6b5dd583f3437ff28a2 data/eternalartifacts/tags/blocks/mineable/grafter.json
 f3e660e89a1134f382a8b3f42bce0dc91d88fe6d data/eternalartifacts/tags/blocks/mineable/hammaxe.json
-6f377d34fdbb2af6eeaf0cef66d361d7222352d2 data/forge/tags/blocks/mineable/wrench.json
+568c732ee669439754c9993b31549a278211436d data/forge/tags/blocks/mineable/wrench.json
 6e955beae490aa633e2a0c3c4171c29860662334 data/forge/tags/blocks/ores.json
 73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/blocks/ores/manganese.json
 642e5cabb06508478a570530145ab49006b60db4 data/forge/tags/blocks/ore_bearing_ground/deepslate.json
@@ -18,10 +19,10 @@ f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/minecraft/tags/blocks/gold_ores.js
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/minecraft/tags/blocks/iron_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
-500249042c5e4174c1cd84fed0537de01dad964a data/minecraft/tags/blocks/mineable/pickaxe.json
+7cc96c72a8d5747fce0e0a6279dab19deb6b0ded data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
 d878eee38f8135e5fcb0fcf6d87bcbfbdfe235e8 data/minecraft/tags/blocks/needs_diamond_tool.json
-c2204dd002219d424f0249cc14854e1aac8ec5e6 data/minecraft/tags/blocks/needs_iron_tool.json
+da11694efa8b14f2b63923fe5b3c0eba766abaa6 data/minecraft/tags/blocks/needs_iron_tool.json
 7ba40ce6ef55d19bcd909bc8b07d61ca2e75931f data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/blocks/small_flowers.json

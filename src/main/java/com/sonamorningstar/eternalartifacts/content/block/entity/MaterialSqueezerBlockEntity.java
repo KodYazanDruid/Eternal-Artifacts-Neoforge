@@ -14,7 +14,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class MaterialSqueezerBlockEntity extends GenericMachineBlockEntity {
     public MaterialSqueezerBlockEntity(BlockPos pos, BlockState blockState) {
-        super(ModMachines.MATERIAL_SQUEEZER.getBlockEntity(), pos, blockState, ModMachines.MATERIAL_SQUEEZER.getMenu());
+        super(ModMachines.MATERIAL_SQUEEZER, pos, blockState);
         setEnergy(createDefaultEnergy());
         setTank(createBasicTank(16000, true, false));
         outputSlots.add(1);
