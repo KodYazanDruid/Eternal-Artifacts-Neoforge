@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-06T23:30:46.768645	Item Models: eternalartifacts
+// 1.20.4	2024-09-09T15:21:41.6085613	Item Models: eternalartifacts
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
@@ -111,6 +111,7 @@ a82a650b3c02ef68ab64fd1e4a4623566f81f23a assets/eternalartifacts/models/item/pla
 08d60efc2125a901b49bb0452f036921e8501c14 assets/eternalartifacts/models/item/raw_meat_ingot.json
 62a008a8d95c366702b9e51a4e1d4c85fd09a5ff assets/eternalartifacts/models/item/resonator.json
 08a2d746a6f53b410d3c0fa6c4895e19929e07a6 assets/eternalartifacts/models/item/rosy_froglight.json
+e638078001941c05d1ed72445d7051f77e3fa313 assets/eternalartifacts/models/item/steel_drum.json
 771b0a82ba0260baf49cc5a8447882d107a90bf1 assets/eternalartifacts/models/item/steel_ingot.json
 c2ba6e613a9d34d8645d20445e90e19ada25b666 assets/eternalartifacts/models/item/steel_nugget.json
 0ca7dcebc9842167bd7fd4a967ccb5a3ba1ddc2c assets/eternalartifacts/models/item/stone_hammer.json

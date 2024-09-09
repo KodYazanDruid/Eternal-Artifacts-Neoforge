@@ -117,9 +117,9 @@ public class ClientEvents {
         if (stack.is(ModItems.WITHERING_SWORD) && !player.getCooldowns().isOnCooldown(stack.getItem())) Channel.sendToServer(new ShootSkullsToServer(stack, event.getHand()));
     }
 
-/*    @SubscribeEvent
+    @SubscribeEvent
     public static void bomba(RenderPlayerEvent.Pre event) {
-        event.setCanceled(true);
+        /*event.setCanceled(true);
         PoseStack pose = event.getPoseStack();
         BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(ModItems.RAW_MEAT_INGOT.toStack(), null, null, 0);
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
@@ -129,15 +129,15 @@ public class ClientEvents {
             Minecraft.getInstance().getItemRenderer().renderQuadList(
                     pose,
                     buffer.getBuffer(Sheets.translucentCullBlockSheet()),
-                    model.getQuads(null, dir, living.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
+                    model.getQuads(null, dir, player.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
                     ItemStack.EMPTY,
                     0xF000F0,
                     OverlayTexture.NO_OVERLAY
             );
         }
 
-
-    }*/
+*/
+    }
 
 
 }

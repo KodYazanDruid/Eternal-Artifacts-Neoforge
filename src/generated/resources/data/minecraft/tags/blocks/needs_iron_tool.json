@@ -12,16 +12,18 @@
     "eternalartifacts:raw_ardite_block",
     "eternalartifacts:ardite_block",
     "eternalartifacts:gold_drum",
+    "eternalartifacts:steel_drum",
     "eternalartifacts:diamond_drum",
+    "eternalartifacts:steel_block",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
-    "eternalartifacts:oil_refinery",
     "eternalartifacts:fluid_infuser",
     "eternalartifacts:industrial_macerator",
     "eternalartifacts:melting_crucible",
     "eternalartifacts:material_squeezer",
     "eternalartifacts:alloy_smelter",
+    "eternalartifacts:oil_refinery",
     "eternalartifacts:induction_furnace"
   ]
 }

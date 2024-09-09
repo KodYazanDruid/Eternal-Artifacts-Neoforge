@@ -184,6 +184,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.DIESEL.getTranslationKey(), "Diesel");
                 add(ModBlocks.PUNJI_STICKS.get(), "Punji Sticks");
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asphalt Block");
+                add(ModBlocks.STEEL_BLOCK.get(), "Steel Block");
+                add(ModBlocks.STEEL_DRUM.get(), "Steel Drum");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -436,6 +438,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.MELTING_CRUCIBLE.getBlockTranslationKey(), "Eritici Kazan");
                 add(ModMachines.MATERIAL_SQUEEZER.getBlockTranslationKey(), "Materyal Sıkıcı");
                 add(ModMachines.ALLOY_SMELTER.getBlockTranslationKey(), "Alaşım Isıtıcı");
+                add(ModBlocks.STEEL_BLOCK.get(), "Çelik Bloğu");
+                add(ModBlocks.STEEL_DRUM.get(), "Çelik Varil");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

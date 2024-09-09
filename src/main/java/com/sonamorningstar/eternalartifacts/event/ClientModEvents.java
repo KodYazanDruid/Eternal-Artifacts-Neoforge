@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
+import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.ColoredBlockModel;
 import com.sonamorningstar.eternalartifacts.client.resources.model.FluidCombustionDynamoModel;
 import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
@@ -130,6 +131,7 @@ public class ClientModEvents {
 
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
         renderer.addLayer(new HolyDaggerLayer<>(renderer));
+        renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
     }
 
 

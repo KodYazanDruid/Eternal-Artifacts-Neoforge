@@ -64,9 +64,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.COPPER_DRUM.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.IRON_DRUM.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.GOLD_DRUM.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.STEEL_DRUM.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.DIAMOND_DRUM.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.NETHERITE_DRUM.get(), "diamond", "pickaxe");
         tierAndTool(ModBlocks.ASPHALT_BLOCK.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.STEEL_BLOCK.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -123,13 +125,25 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
-                ModBlocks.ARDITE_BLOCK.get()
+                ModBlocks.ARDITE_BLOCK.get(),
+                ModBlocks.STEEL_BLOCK.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).addTag(
                 ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL
         );
         tag(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL).add(
                 ModBlocks.CHARCOAL_BLOCK.get()
+        );
+        tag(ModTags.Blocks.STORAGE_BLOCKS_STEEL).add(
+                ModBlocks.STEEL_BLOCK.get()
+        );
+        tag(ModTags.Blocks.DRUM).add(
+                ModBlocks.COPPER_DRUM.get(),
+                ModBlocks.IRON_DRUM.get(),
+                ModBlocks.GOLD_DRUM.get(),
+                ModBlocks.STEEL_DRUM.get(),
+                ModBlocks.DIAMOND_DRUM.get(),
+                ModBlocks.NETHERITE_DRUM.get()
         );
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());

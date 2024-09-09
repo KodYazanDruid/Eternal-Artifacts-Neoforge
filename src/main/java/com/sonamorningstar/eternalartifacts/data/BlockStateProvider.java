@@ -75,6 +75,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.SNOW_BRICKS.get());
         simpleBlockWithItemWithRenderType(ModBlocks.ICE_BRICKS.get(), "translucent");
         simpleBlockWithItem(ModBlocks.ASPHALT_BLOCK.get());
+        simpleBlockWithItem(ModBlocks.STEEL_BLOCK.get());
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -105,6 +106,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createDrums(ModBlocks.COPPER_DRUM, Blocks.COPPER_BLOCK);
         createDrums(ModBlocks.IRON_DRUM, Blocks.IRON_BLOCK);
         createDrums(ModBlocks.GOLD_DRUM, Blocks.GOLD_BLOCK);
+        createDrums(ModBlocks.STEEL_DRUM, ModBlocks.STEEL_BLOCK.get());
         createDrums(ModBlocks.DIAMOND_DRUM, Blocks.DIAMOND_BLOCK);
         createDrums(ModBlocks.NETHERITE_DRUM, Blocks.NETHERITE_BLOCK);
 

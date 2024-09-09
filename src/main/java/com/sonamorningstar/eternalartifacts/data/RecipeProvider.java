@@ -248,7 +248,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STEEL_INGOT)
                 .pattern("NNN").pattern("NMN").pattern("NNN")
                 .define('N', ModTags.Items.NUGGETS_STEEL).define('M', ModItems.STEEL_NUGGET)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL)).save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_STEEL)).save(recipeOutput, makeID("steel_ingot_from_steel_nuggets"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.MANGANESE_INGOT)
                 .pattern("NNN").pattern("NMN").pattern("NNN")
                 .define('N', ModTags.Items.NUGGETS_MANGANESE).define('M', ModItems.MANGANESE_NUGGET)
@@ -285,6 +285,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('N', ModTags.Items.INGOTS_ARDITE)
                 .define('M', ModItems.ARDITE_INGOT)
                 .unlockedBy("has_item", has(ModTags.Items.INGOTS_ARDITE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.STEEL_BLOCK)
+                .pattern("SSS").pattern("STS").pattern("SSS")
+                .define('T', ModTags.Items.INGOTS_STEEL)
+                .define('S', ModItems.STEEL_INGOT)
+                .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
         createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Items.COBBLESTONE, Items.SMOOTH_STONE);
         createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
@@ -333,7 +338,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ARDITE_INGOT, 9)
                 .requires(ModBlocks.ARDITE_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.ARDITE_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STEEL_INGOT, 9)
+                .requires(ModBlocks.STEEL_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.STEEL_BLOCK)).save(recipeOutput, makeID("steel_ingots_from_steel_block"));
 
+    }
+
+    private ResourceLocation makeID(String name) {
+        return new ResourceLocation(MODID, name);
     }
 
     private void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {

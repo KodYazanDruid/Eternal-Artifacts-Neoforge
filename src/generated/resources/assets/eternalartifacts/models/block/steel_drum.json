@@ -1,0 +1,7 @@
+{
+  "parent": "eternalartifacts:block/base_drum",
+  "textures": {
+    "0": "eternalartifacts:block/steel_drum",
+    "particle": "eternalartifacts:block/steel_block"
+  }
+}

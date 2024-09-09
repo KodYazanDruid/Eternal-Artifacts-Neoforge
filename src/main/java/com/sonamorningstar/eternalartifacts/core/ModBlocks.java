@@ -78,6 +78,8 @@ public class ModBlocks {
             () -> new Block(Blocks.RAW_GOLD_BLOCK.properties().mapColor(MapColor.TERRACOTTA_ORANGE)));
     public static final DeferredBlock<Block> ARDITE_BLOCK = registerWithItem("ardite_block",
             () -> new Block(Blocks.GOLD_BLOCK.properties().mapColor(MapColor.COLOR_ORANGE)));
+    public static final DeferredBlock<Block> STEEL_BLOCK = registerWithItem("steel_block",
+            () -> new Block(Blocks.IRON_BLOCK.properties().strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY)));
 
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));
@@ -160,7 +162,7 @@ public class ModBlocks {
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
     public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 128000);
     //public static final DeferredBlock<DrumBlock> DEMONIC_DRUM = registerDrum("demonic_drum", Blocks.GOLD_BLOCK.properties(), 256000);
-    //public static final DeferredBlock<DrumBlock> STEEL_DRUM = registerDrum("steel_drum", Blocks.GOLD_BLOCK.properties(), 512000);
+    public static final DeferredBlock<DrumBlock> STEEL_DRUM = registerDrum("steel_drum", Blocks.IRON_BLOCK.properties().strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY), 512000);
     public static final DeferredBlock<DrumBlock> DIAMOND_DRUM = registerDrum("diamond_drum", Blocks.DIAMOND_BLOCK.properties(), 1024000);
     public static final DeferredBlock<DrumBlock> NETHERITE_DRUM = registerDrum("netherite_drum", Blocks.NETHERITE_BLOCK.properties(), 2048000, new Item.Properties().fireResistant());
 

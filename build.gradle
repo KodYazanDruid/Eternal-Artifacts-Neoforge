@@ -110,7 +110,7 @@ dependencies {
     implementation "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
     implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
-    //runtimeOnly "me.desht.pneumaticcraft:pneumaticcraft-repressurized:${pnc_version}"
+    runtimeOnly "curse.maven:pneumaticcraft-repressurized-281849:5523027"
 
     testImplementation(platform("org.junit:junit-bom:${junit_version}"))
     testCompileOnly "org.junit.jupiter:junit-jupiter-api"

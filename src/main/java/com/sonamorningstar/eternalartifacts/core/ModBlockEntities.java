@@ -34,6 +34,7 @@ public class ModBlockEntities {
                     ModBlocks.COPPER_DRUM.get(),
                     ModBlocks.IRON_DRUM.get(),
                     ModBlocks.GOLD_DRUM.get(),
+                    ModBlocks.STEEL_DRUM.get(),
                     ModBlocks.DIAMOND_DRUM.get(),
                     ModBlocks.NETHERITE_DRUM.get()
             ).build(null));

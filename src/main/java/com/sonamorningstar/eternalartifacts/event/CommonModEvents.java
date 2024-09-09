@@ -58,6 +58,7 @@ public class CommonModEvents {
         registerDrum(event, ModBlocks.COPPER_DRUM);
         registerDrum(event, ModBlocks.IRON_DRUM);
         registerDrum(event, ModBlocks.GOLD_DRUM);
+        registerDrum(event, ModBlocks.STEEL_DRUM);
         registerDrum(event, ModBlocks.DIAMOND_DRUM);
         registerDrum(event, ModBlocks.NETHERITE_DRUM);
 
@@ -65,6 +66,7 @@ public class CommonModEvents {
 
         event.registerItem(ModCapabilities.NutritionStorage.ITEM, (stack, ctx) -> new ItemNutritionStorage(stack), ModItems.FEEDING_CANISTER.get());
         event.registerBlockEntity(ModCapabilities.Heat.BLOCK, ModMachines.INDUCTION_FURNACE.getBlockEntity(), (be, ctx) -> be.heat);
+        event.registerItem(ModCapabilities.ItemCooldown.ITEM, (stack, ctx) -> new ItemStackCooldown(stack, 200), ModItems.WRENCH);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);

@@ -130,6 +130,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.COPPER_DRUM);
         withParentBlock(ModBlocks.IRON_DRUM);
         withParentBlock(ModBlocks.GOLD_DRUM);
+        withParentBlock(ModBlocks.STEEL_DRUM);
         withParentBlock(ModBlocks.DIAMOND_DRUM);
         withParentBlock(ModBlocks.NETHERITE_DRUM);
         withExistingParent(ModBlocks.COPPER_ORE_BERRY.getId().getPath(), modLoc("block/copper_oreberry_stage1"));
