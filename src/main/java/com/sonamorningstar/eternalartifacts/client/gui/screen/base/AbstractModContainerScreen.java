@@ -1,6 +1,9 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -8,14 +11,14 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T> {
+public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends AbstractContainerScreen<T> {
     //Margin: 5px
     //Corner: 5px * 5px
     //Sides: 5px * -px
@@ -51,104 +54,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu
 
     private void renderBackground(GuiGraphics gui, int x, int y) {
         if(!isModular) gui.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
-        else {
-            blitCorners(gui, x, y);
-            blitSides(gui, x, y);
-            blitInside(gui, x, y);
-        }
-    }
-
-    private void blitCorners(GuiGraphics gui, int x, int y) {
-        gui.blit(texture, x, y, 0, 0, 5, 5);
-        gui.blit(texture, x + imageWidth - 5, y, 171, 0, 5, 5);
-        gui.blit(texture, x, y + imageHeight - 5, 0, 161, 5, 5);
-        gui.blit(texture, x + imageWidth - 5, y + imageHeight - 5, 171, 161, 5, 5);
-    }
-
-    private void blitSides(GuiGraphics gui, int x, int y) {
-        iterateXSide(gui, x, y);
-        iterateYSide(gui, x, y);
-    }
-
-    private void iterateXSide(GuiGraphics gui, int x, int y) {
-        int totalWidth = imageWidth - 10;
-        int iteration = totalWidth / 166;
-        int remaining = totalWidth % 166;
-        if(iteration > 0) {
-            for(int i = 0; i < iteration; i++) {
-                gui.blit(texture, x + 5 + (166 * i), y, 5, 0, 166, 5);
-                gui.blit(texture, x + 5 + (166 * i), y + imageHeight - 5, 5, 161, 166, 5);
-            }
-            if(remaining > 0) {
-                gui.blit(texture, x + 5 + (166 * iteration), y, 5, 0, remaining, 5);
-                gui.blit(texture, x + 5 + (166 * iteration), y + imageHeight - 5, 5, 161, remaining, 5);
-            }
-        } else {
-            gui.blit(texture, x + 5, y, 5, 0, remaining, 5);
-            gui.blit(texture, x + 5, y + imageHeight - 5, 5, 161, remaining, 5);
-        }
-    }
-
-    private void iterateYSide(GuiGraphics gui, int x, int y) {
-        int totalHeight = imageHeight - 10;
-        int iteration = totalHeight / 156;
-        int remaining = totalHeight % 156;
-        if(iteration > 0) {
-            for(int i = 0; i < iteration; i++) {
-                gui.blit(texture, x, y + 5 + (156 * i), 0, 5, 5, 156);
-                gui.blit(texture, x + imageWidth - 5, y + 5 + (156 * i), 171, 5, 5, 156);
-            }
-            if (remaining > 0) {
-                gui.blit(texture, x, y + 5 + (156 * iteration), 0, 5, 5, remaining);
-                gui.blit(texture, x + imageWidth - 5, y + 5 + (156 * iteration), 171, 5, 5, remaining);
-            }
-        }else {
-            gui.blit(texture, x, y + 5, 0, 5, 5, remaining);
-            gui.blit(texture, x + imageWidth - 5, y + 5, 171, 5, 5, remaining);
-        }
-    }
-
-    private void blitInside(GuiGraphics gui, int x, int y) {
-        int totalWidth = imageWidth - 10;
-        int iterationX = totalWidth / 166;
-        int remainingX = totalWidth % 166;
-        int totalHeight = imageHeight - 10;
-        int iterationY = totalHeight / 156;
-        int remainingY = totalHeight % 156;
-
-        if(iterationX <= 0 && iterationY <= 0) gui.blit(texture, x + 5, y + 5, 5, 5, remainingX, remainingY);
-
-        if (iterationX > 0 && iterationY <= 0) {
-            for (int i = 0; i < iterationX; i++) gui.blit(texture, x + 5 + (166 * i), y + 5, 5, 5, 166, remainingY);
-            if (remainingX > 0) gui.blit(texture, x + 5 + (166 * iterationX), y + 5, 5, 5, remainingX, remainingY);
-        }
-
-        if (iterationX <= 0 && iterationY > 0) {
-            for (int i = 0; i < iterationY; i++) gui.blit(texture, x + 5, y + 5 + (156 * i), 5, 5, remainingX, 156);
-            if (remainingY > 0) gui.blit(texture, x + 5, y + 5 + (156 * iterationY), 5, 5, remainingX, remainingY);
-        }
-
-        if (iterationX > 0 && iterationY > 0) {
-            for (int i = 0; i < iterationX; i++) {
-                for (int j = 0; j < iterationY; j++) {
-                    gui.blit(texture, x + 5 + (166 * i), y + 5 + (156 * j), 5, 5, 166, 156);
-                }
-            }
-
-            if (remainingX > 0) {
-                for (int i = 0; i < iterationY; i++)
-                    gui.blit(texture, x + 5 + (166 * iterationX), y + 5 + (156 * i), 5, 5, remainingX, 156);
-            }
-
-            if (remainingY > 0) {
-                for (int i = 0; i < iterationX; i++)
-                    gui.blit(texture, x + 5 + (166 * i), y + 5 + (156 * iterationY), 5, 5, 166, remainingY);
-            }
-
-            if (remainingX > 0 && remainingY > 0) {
-                gui.blit(texture, x + 5 + (166 * iterationX), y + 5 + (156 * iterationY), 5, 5, remainingX, remainingY);
-            }
-        }
+        else GuiDrawer.drawBackground(gui, x, y, imageWidth, imageHeight);
     }
 
     @Override
@@ -156,6 +62,21 @@ public abstract class AbstractModContainerScreen<T extends AbstractContainerMenu
         renderBackground(gui, mx, my, partialTick);
         super.render(gui, mx, my, partialTick);
         renderTooltip(gui, mx, my);
+    }
+
+    protected boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, int mx, int my) {
+        return mx >= startX && mx <= startX + lengthX &&
+                my >= startY && my <= startY + lengthY;
+    }
+
+    protected void renderTankSlots(GuiGraphics gui, int x, int y) {
+        for(FluidSlot slot : menu.fluidSlots) renderTankSlot(gui, x, y, slot);
+    }
+
+    protected void renderTankSlot(GuiGraphics gui, int x, int y, FluidSlot slot) {
+        FluidStack stack = slot.getFluid();
+        int percentage = stack.getAmount() * 12 / slot.getMaxSize();
+        GuiDrawer.drawFluidWithSmallTank(gui, x + slot.x, y + slot.y, stack, percentage);
     }
 
     protected void renderSlots(GuiGraphics gui, int x, int y) {

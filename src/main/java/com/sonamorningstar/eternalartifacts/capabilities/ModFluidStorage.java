@@ -3,12 +3,15 @@ package com.sonamorningstar.eternalartifacts.capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class ModFluidStorage extends AbstractFluidTank {
     protected Predicate<FluidStack> validator;
     protected FluidStack fluid = FluidStack.EMPTY;
     protected int capacity;
+    private final List<Runnable> listeners = new ArrayList<>();
 
     public ModFluidStorage(int capacity) {
         this(capacity, e -> true);
@@ -17,6 +20,10 @@ public class ModFluidStorage extends AbstractFluidTank {
     public ModFluidStorage(int capacity, Predicate<FluidStack> validator) {
         this.capacity = capacity;
         this.validator = validator;
+    }
+
+    public void addListener(Runnable listener) {
+        listeners.add(listener);
     }
 
     //region Transfer stuff forced.
@@ -198,7 +205,9 @@ public class ModFluidStorage extends AbstractFluidTank {
         return isFluidValid(stack);
     }
 
-    protected void onContentsChanged() {}
+    protected void onContentsChanged() {
+        listeners.forEach(Runnable::run);
+    }
 
     public boolean isEmpty() {
         return fluid.isEmpty();

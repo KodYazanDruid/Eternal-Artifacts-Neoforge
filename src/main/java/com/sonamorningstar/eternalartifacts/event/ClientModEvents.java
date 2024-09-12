@@ -51,6 +51,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.FLUID_COMBUSTION_MENU.get(), FluidCombustionScreen::new);
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
+        event.register(ModMenuTypes.TANK_KNAPSACK.get(), TankKnapsackScreen::new);
     }
 
     @SubscribeEvent

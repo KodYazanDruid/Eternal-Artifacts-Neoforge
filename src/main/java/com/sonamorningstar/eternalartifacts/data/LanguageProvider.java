@@ -113,6 +113,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DEMON_INGOT.get(), "Demon Ingot");
                 add(ModItems.DEMONIC_TABLET.get(), "Demonic Tablet");
                 add(ModItems.GRAFTER.get(), "Grafter");
+                add(ModItems.TANK_KNAPSACK.get(), "Tank Knapsack");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -253,6 +254,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Fluid Transportation");
                 add(ModConstants.GUI.withSuffix("heat"), "Heat");
                 add(ModConstants.GUI.withSuffix("dynamo_produce_rate"), "Generating");
+                add(ModConstants.GUI.withSuffix("left_click_transfer"), "Left Click to take the fluid.");
+                add(ModConstants.GUI.withSuffix("right_click_transfer"), "Right Click to deposit the fluid.");
 
                 ModMachines.MACHINES.getMachines().forEach(holder -> {
                     String displayName = holder.getBlockId().getPath().replace('_', ' ');
@@ -357,6 +360,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DEMON_INGOT.get(), "Şeytan Külçesi");
                 add(ModItems.DEMONIC_TABLET.get(), "Şeytani Levha");
                 add(ModItems.GRAFTER.get(), "Aşı Bıçağı");
+                add(ModItems.TANK_KNAPSACK.get(), "Tank Sırt Çantası");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -507,7 +511,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Sıvı Transferi");
                 add(ModConstants.GUI.withSuffix("heat"), "Isı");
                 add(ModConstants.GUI.withSuffix("dynamo_produce_rate"), "Üretilen");
-
+                add(ModConstants.GUI.withSuffix("left_click_transfer"), "Sıvıyı almak için Sol tıkla.");
+                add(ModConstants.GUI.withSuffix("right_click_transfer"), "Sıvıyı koymak için Sağ tıkla.");
             }
         }
     }

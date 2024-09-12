@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.IItemCooldown;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
@@ -8,6 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
@@ -16,6 +18,13 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+
+import java.util.Objects;
 
 public class WrenchItem extends DiggerItem {
     public WrenchItem(Properties props) {super(2F, -2F, Tiers.IRON, ModTags.Blocks.MINEABLE_WITH_WRENCH, props); }
@@ -26,17 +35,23 @@ public class WrenchItem extends DiggerItem {
         return super.mineBlock(stack, level, state, pos, living);
     }
 
+    private IFluidHandler cachedHandler;
+
     //Testing and debugging stuff.
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        /*ModFluidStorage tank = new ModFluidStorage(8000);
+        tank.fill(new FluidStack(ModFluids.BLOOD.getFluid(), 500), IFluidHandler.FluidAction.EXECUTE);*/
         ItemStack stack = player.getItemInHand(hand);
-        IItemCooldown itemCooldown = stack.getCapability(ModCapabilities.ItemCooldown.ITEM);
-        if (itemCooldown != null && !itemCooldown.isOnCooldown()) {
-            itemCooldown.setCooldown(100);
-            if (!level.isClientSide()) {
-                player.sendSystemMessage(Component.literal("bomba"));
-            }
-        }
+        ItemStack container = player.getItemBySlot(EquipmentSlot.OFFHAND);
+
+        IItemHandler inventory = player.getCapability(Capabilities.ItemHandler.ENTITY);
+        Objects.requireNonNull(inventory, "Null inventory");
+
+        if (cachedHandler != null)
+            FluidUtil.tryFillContainerAndStow(container, cachedHandler, inventory, Integer.MAX_VALUE, player, true);
+
+
         return super.use(level, player, hand);
     }
 
@@ -45,6 +60,8 @@ public class WrenchItem extends DiggerItem {
         BlockPos pos = ctx.getClickedPos();
         Level level = ctx.getLevel();
         BlockState state = level.getBlockState(pos);
+
+        cachedHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, ctx.getClickedFace());
 
         return super.useOn(ctx);
     }

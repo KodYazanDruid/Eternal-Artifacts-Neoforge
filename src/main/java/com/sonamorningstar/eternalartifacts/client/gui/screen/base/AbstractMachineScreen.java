@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
@@ -65,11 +66,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         }
     }
 
-    protected boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, int mx, int my) {
-        return mx >= startX && mx <= startX + lengthX &&
-                my >= startY && my <= startY + lengthY;
-    }
-
     protected void renderDefaultEnergyAndFluidBar(GuiGraphics gui) {
         renderDefaultEnergyBar(gui);
         renderDefaultFluidBar(gui);
@@ -77,9 +73,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     protected void renderDefaultEnergyBar(GuiGraphics gui) {
         renderEnergyBar(gui, x + 5, y + 20);
     }
-
-    protected void renderDefaultFluidBar(GuiGraphics gui) { renderDefaultFluidBar(gui, 0); }
-    protected void renderDefaultFluidBar(GuiGraphics gui, int tankSlot) { renderFluidBar(gui, x + 24, y + 20, tankSlot); }
 
     protected void renderEnergyBar(GuiGraphics guiGraphics, int x, int y) {
         guiGraphics.blit(bars, x, y, 0, 0, 18, 56);
@@ -90,6 +83,8 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         energyLoc.put("height", 56);
     }
 
+    protected void renderDefaultFluidBar(GuiGraphics gui) { renderDefaultFluidBar(gui, 0); }
+    protected void renderDefaultFluidBar(GuiGraphics gui, int tankSlot) { renderFluidBar(gui, x + 24, y + 20, tankSlot); }
     protected void renderFluidBar(GuiGraphics guiGraphics, int x, int y) { renderFluidBar(guiGraphics,  x,  y, 0); }
     protected void renderFluidBar(GuiGraphics guiGraphics, int x, int y, int tankSlot) {
         Map<String, Integer> fluidLoc = new HashMap<>();
@@ -102,33 +97,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         IFluidHandler tank = menu.getBlockEntity().getLevel().getCapability(Capabilities.FluidHandler.BLOCK, menu.getBlockEntity().getBlockPos(), menu.getBlockEntity().getBlockState(), menu.getBlockEntity(), null);
         FluidStack stack = FluidStack.EMPTY;
         if(tank != null) stack = tank.getFluidInTank(tankSlot);
-        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
-        ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(stack);
-        if(stillTexture != null){
-            TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
-
-            int tintColor = fluidTypeExtensions.getTintColor(stack);
-            float alpha = ((tintColor >> 24) & 0xFF) / 255f;
-            float red = ((tintColor >> 16) & 0xFF) / 255f;
-            float green = ((tintColor >> 8) & 0xFF) / 255f;
-            float blue = ((tintColor) & 0xFF) / 255f;
-            guiGraphics.setColor(red, green, blue, alpha);
-            guiGraphics.blitTiledSprite(
-                    sprite,
-                    x + 3,
-                    y + 53 - menu.getFluidProgress(tankSlot),
-                    0, //z - layer
-                    12,
-                    menu.getFluidProgress(tankSlot),
-                    0, // these are offsets for atlas x
-                    0, //  y
-                    16, // Sprite dimensions to cut.
-                    16, //
-                    16, // Resolutions. 16x16 works fine.
-                    16);
-            guiGraphics.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-        }
-        guiGraphics.blit(bars, x, y, 30, 0, 18, 56);
+        GuiDrawer.drawFluidWithTank(guiGraphics, x, y, stack, menu.getFluidProgress(tankSlot, 50));
     }
 
     protected void renderBurn(GuiGraphics guiGraphics, int x, int y, int mx, int my) {

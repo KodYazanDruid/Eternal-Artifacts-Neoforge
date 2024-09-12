@@ -27,4 +27,6 @@ public class ModMenuTypes {
 
     public static final DeferredHolder<MenuType<?>, MenuType<KnapsackMenu>> KNAPSACK = MENUS.register("knapsack",
             ()-> IMenuTypeExtension.create(KnapsackMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<TankKnapsackMenu>> TANK_KNAPSACK = MENUS.register("tank_knapsack",
+            ()-> IMenuTypeExtension.create(TankKnapsackMenu::fromNetwork));
 }

@@ -46,6 +46,9 @@ public class Channel {
         registrar.play(ShootSkullsToServer.ID,
                 ShootSkullsToServer::create,
                 handler -> handler.server(ShootSkullsToServer::handle));
+        registrar.play(TankKnapsackTransferToServer.ID,
+                TankKnapsackTransferToServer::create,
+                handler -> handler.server(TankKnapsackTransferToServer::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {

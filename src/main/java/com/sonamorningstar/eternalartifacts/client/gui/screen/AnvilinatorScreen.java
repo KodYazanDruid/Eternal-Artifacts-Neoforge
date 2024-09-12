@@ -129,10 +129,10 @@ public class AnvilinatorScreen extends AbstractContainerScreen<AnvilinatorMenu> 
         guiGraphics.blitTiledSprite(
                 sprite,
                 x + 27,
-                y + 73 - menu.getFluidProgress(0),
+                y + 73 - menu.getFluidProgress(0, 50),
                 0, //isn't this the ACTUAL offset wtf
                 12,
-                menu.getFluidProgress(0),
+                menu.getFluidProgress(0, 50),
                 0, // these are offsets for atlas x
                 0, //  y
                 16, // Sprite dimensions to cut.

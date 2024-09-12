@@ -95,13 +95,12 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         } else return 0;
     }
 
-    public int getFluidProgress(int slot) {
+    public int getFluidProgress(int slot, int height) {
         IFluidHandler tank = level.getCapability(Capabilities.FluidHandler.BLOCK, blockEntity.getBlockPos(), null);
         if(tank != null){
             int amount = tank.getFluidInTank(slot).getAmount();
             int max = tank.getTankCapacity(slot);
-            int barHeight = 50;
-            return max != 0 && amount != 0 ? amount * barHeight / max : 0;
+            return max != 0 && amount != 0 ? amount * height / max : 0;
         } else return 0;
     }
 

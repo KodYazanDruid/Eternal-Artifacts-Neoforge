@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-09T15:21:41.6085613	Item Models: eternalartifacts
+// 1.20.4	2024-09-10T17:53:17.3015472	Item Models: eternalartifacts
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
@@ -121,6 +121,7 @@ c2ba6e613a9d34d8645d20445e90e19ada25b666 assets/eternalartifacts/models/item/ste
 ba733dcc4dedb590bfbd7153bcdec9552b070693 assets/eternalartifacts/models/item/sugar_charcoal.json
 09cf58c9bbc6c758c38171a9da3b25db0d61fae8 assets/eternalartifacts/models/item/sugar_charcoal_dust.json
 d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/sword_of_the_green_earth.json
+c0f27d555175892c0bc4b0fda57cd6ec842b5c9d assets/eternalartifacts/models/item/tank_knapsack.json
 2b895ccad63794c5e49b10dfd58c6e99a05f6b3e assets/eternalartifacts/models/item/tar_ball.json
 cc8abe6c0bc099bb8b46cbb52306bc83c959fd5c assets/eternalartifacts/models/item/withering_sword.json
 5273157c9d8533d4f449f6e89c37a45e8364e596 assets/eternalartifacts/models/item/wooden_hammer.json

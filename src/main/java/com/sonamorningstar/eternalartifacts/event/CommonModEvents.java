@@ -12,6 +12,7 @@ import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
@@ -36,6 +37,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -63,6 +65,14 @@ public class CommonModEvents {
         registerDrum(event, ModBlocks.NETHERITE_DRUM);
 
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModScaleableItemItemStorage(stack, ModEnchantments.VOLUME.get(), 9), ModItems.KNAPSACK.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
+            int volume = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
+            List<ModFluidStorage> tankList = new ArrayList<>();
+            for (int i = 0; i < (1 + volume) * 9; i++) {
+                tankList.add(new ModFluidStorage(8000));
+            }
+            return new ModItemMultiFluidTank<>(stack, tankList);
+        }, ModItems.TANK_KNAPSACK.get());
 
         event.registerItem(ModCapabilities.NutritionStorage.ITEM, (stack, ctx) -> new ItemNutritionStorage(stack), ModItems.FEEDING_CANISTER.get());
         event.registerBlockEntity(ModCapabilities.Heat.BLOCK, ModMachines.INDUCTION_FURNACE.getBlockEntity(), (be, ctx) -> be.heat);

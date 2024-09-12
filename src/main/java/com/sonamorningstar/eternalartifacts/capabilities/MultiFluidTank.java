@@ -13,7 +13,7 @@ import java.util.*;
 
 @Setter
 public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTank {
-    private List<T> tanks = new ArrayList<>();
+    protected List<T> tanks = new ArrayList<>();
 
     @SafeVarargs
     public MultiFluidTank(T... tanks) {
