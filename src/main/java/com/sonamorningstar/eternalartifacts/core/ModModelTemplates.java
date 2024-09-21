@@ -13,11 +13,20 @@ public class ModModelTemplates {
     public static ModelTemplate BASE_DRUM = create("base_drum");
     public static ModelTemplate CUBE4X4 = create("cube4");
     public static ModelTemplate CUBE10X10 = create("cube10");
+    public static ModelTemplate COVERED_CABLE_INSIDE = create("covered_cable_inside", "_inside", TextureSlot.TEXTURE);
+    public static ModelTemplate COVERED_CABLE_SIDE = create("covered_cable_side", "_side", TextureSlot.TEXTURE);
+    public static ModelTemplate COVERED_CABLE_INVENTORY = create("covered_cable_inventory", "_inventory", TextureSlot.TEXTURE);
+    public static ModelTemplate CABLE_INSIDE = create("cable_inside", "_inside", TextureSlot.TEXTURE);
+    public static ModelTemplate CABLE_SIDE = create("cable_side", "_side", TextureSlot.TEXTURE);
+    public static ModelTemplate CABLE_INVENTORY = create("cable_inventory", "_inventory", TextureSlot.TEXTURE);
 
     public static ModelTemplate ENTITY_RENDER_TRANSFORMS = createItem("entity_renderer_transform");
 
     private static ModelTemplate create(String blockLoc, TextureSlot... slots) {
         return new ModelTemplate(Optional.of(new ResourceLocation(MODID, "block/" + blockLoc)), Optional.empty(), slots);
+    }
+    private static ModelTemplate create(String blockLoc, String suffix, TextureSlot... slots) {
+        return new ModelTemplate(Optional.of(new ResourceLocation(MODID, "block/" + blockLoc)), Optional.of(suffix), slots);
     }
     private static ModelTemplate createItem(String itemLoc, TextureSlot... slots) {
         return new ModelTemplate(Optional.of(new ResourceLocation(MODID, "item/" + itemLoc)), Optional.empty(), slots);

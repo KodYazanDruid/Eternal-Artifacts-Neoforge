@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"particle": "#texture"
+	},
+	"elements": [
+		{
+			"name": "innerrubber",
+			"from": [5, 5, 5],
+			"to": [11, 11, 11],
+			"rotation": {"angle": 0, "axis": "y", "origin": [9, 9, 5]},
+			"faces": {
+				"north": {"uv": [4, 0, 10, 6], "texture": "#texture"},
+				"east": {"uv": [4, 0, 10, 6], "texture": "#texture"},
+				"south": {"uv": [4, 0, 10, 6], "texture": "#texture"},
+				"west": {"uv": [4, 0, 10, 6], "texture": "#texture"},
+				"up": {"uv": [4, 0, 10, 6], "texture": "#texture"},
+				"down": {"uv": [4, 0, 10, 6], "texture": "#texture"}
+			}
+		}
+	]
+}

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,6 +19,17 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
         super(menu, playerInventory, title);
         this.machine = ((GenericMachineBlockEntity) menu.getBlockEntity());
         this.screenInfo = machine.getScreenInfo();
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        screenInfo.getButtons().forEach(info -> {
+            addRenderableWidget(CustomRenderButton
+                    .builder(Component.empty(), (button, key) -> info.onPress().accept(button, key), info.tex())
+                    .size(info.width(), info.height())
+                    .pos(leftPos + info.x(), topPos + info.y()).build());
+        });
     }
 
     @Override

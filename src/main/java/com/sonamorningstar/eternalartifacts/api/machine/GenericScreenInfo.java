@@ -1,15 +1,24 @@
 package com.sonamorningstar.eternalartifacts.api.machine;
 
 import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.api.machine.records.ComponentInfo;
+import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
+
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Getter
 @Setter
@@ -33,6 +42,7 @@ public class GenericScreenInfo {
     private final Map<AbstractFluidTank, Pair<Integer, Integer>> tankPositions = new HashMap<>();
     private final Map<Integer, Pair<Integer, Integer>> slotPositions = new HashMap<>();
     private final Map<Component, ComponentInfo> components = new HashMap<>();
+    private final List<CustomRenderButtonInfo> buttons = new ArrayList<>();
 
     public static final int defaultTankX = 24;
     public static final int defaultTankY = 20;
@@ -63,5 +73,12 @@ public class GenericScreenInfo {
     }
     public void addComponent(Component component, int x, int y, int color, boolean dropShadow) {
         components.put(component, new ComponentInfo(x, y, color, dropShadow));
+    }
+
+    public void addButton(String sprite, int x, int y, int width, int height, BiConsumer<CustomRenderButton, Integer> onPress) {
+        buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(sprite), onPress));
+    }
+    public void addButton(String namespace, String sprite, int x, int y, int width, int height, BiConsumer<CustomRenderButton, Integer> onPress) {
+        buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(namespace, sprite), onPress));
     }
 }

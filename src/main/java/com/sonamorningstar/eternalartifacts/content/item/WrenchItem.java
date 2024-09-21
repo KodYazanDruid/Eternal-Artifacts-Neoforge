@@ -3,6 +3,8 @@ package com.sonamorningstar.eternalartifacts.content.item;
 import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.IItemCooldown;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
+import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -40,17 +42,7 @@ public class WrenchItem extends DiggerItem {
     //Testing and debugging stuff.
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        /*ModFluidStorage tank = new ModFluidStorage(8000);
-        tank.fill(new FluidStack(ModFluids.BLOOD.getFluid(), 500), IFluidHandler.FluidAction.EXECUTE);*/
         ItemStack stack = player.getItemInHand(hand);
-        ItemStack container = player.getItemBySlot(EquipmentSlot.OFFHAND);
-
-        IItemHandler inventory = player.getCapability(Capabilities.ItemHandler.ENTITY);
-        Objects.requireNonNull(inventory, "Null inventory");
-
-        if (cachedHandler != null)
-            FluidUtil.tryFillContainerAndStow(container, cachedHandler, inventory, Integer.MAX_VALUE, player, true);
-
 
         return super.use(level, player, hand);
     }
@@ -60,8 +52,6 @@ public class WrenchItem extends DiggerItem {
         BlockPos pos = ctx.getClickedPos();
         Level level = ctx.getLevel();
         BlockState state = level.getBlockState(pos);
-
-        cachedHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, ctx.getClickedFace());
 
         return super.useOn(ctx);
     }

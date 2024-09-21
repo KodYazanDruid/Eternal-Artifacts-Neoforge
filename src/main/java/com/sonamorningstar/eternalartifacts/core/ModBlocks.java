@@ -2,12 +2,9 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
-import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.block.*;
-import com.sonamorningstar.eternalartifacts.content.block.base.CableBlock;
-import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
+import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
-import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.ConstantInt;

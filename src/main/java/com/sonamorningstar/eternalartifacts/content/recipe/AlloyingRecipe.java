@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.content.recipe.base.BasicRecipe;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.Getter;
 import net.minecraft.core.RegistryAccess;
@@ -37,7 +38,7 @@ public class AlloyingRecipe extends BasicRecipe {
                 if (j < inputs.size()) {
                     if (inputs.get(j).test(item)) matched[j] = true;
                 }
-                else if (item.isEmpty()) matched[j] = true;
+                else if (item.isEmpty() || item.is(ModItems.SLOT_LOCK)) matched[j] = true;
             }
         }
         for (int i = 0; i < 3; i++) if (!matched[i]) return false;

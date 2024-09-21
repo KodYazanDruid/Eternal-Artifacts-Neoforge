@@ -1,5 +1,6 @@
-package com.sonamorningstar.eternalartifacts.content.block.entity.base;
+package com.sonamorningstar.eternalartifacts.cables;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

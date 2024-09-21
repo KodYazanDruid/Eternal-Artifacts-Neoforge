@@ -4,12 +4,13 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
-import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,15 +24,17 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MobLiquifierBlockEntity extends GenericMachineBlockEntity {
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+
+public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implements IAreaRenderer {
     public MobLiquifierBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
         setEnergy(createDefaultEnergy());
         setTank(new MultiFluidTank<>(
-                createBasicTank(8000),
-                createBasicTank(8000),
-                createBasicTank(8000),
-                createBasicTank(8000)
+                createBasicTank(8000, true, false),
+                createBasicTank(8000, true, false),
+                createBasicTank(8000, true, false),
+                createBasicTank(8000, true, false)
         ));
         screenInfo.setOverrideArrowPos(true);
         screenInfo.setArrowX(110);
@@ -41,15 +44,36 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity {
         screenInfo.setTankPosition(64, 20, 2);
         screenInfo.setTankPosition(84, 20, 3);
         screenInfo.setShouldDrawInventoryTitle(false);
+        screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, (b, i) -> {
+            shouldRenderArea = !shouldRenderArea;
+            sendUpdate();
+        });
     }
     List<LivingEntity> livingList = new ArrayList<>();
-
     RecipeCache<MobLiquifierRecipe, SimpleEntityContainer> cache = new RecipeCache<>();
+    private boolean shouldRenderArea = false;
 
     @Override
     protected void findRecipe() {
         EntityType<?>[] typeArray = livingList.stream().map(Entity::getType).toArray(EntityType[]::new);
         cache.findRecipe(ModRecipes.MOB_LIQUIFYING.getType(), new SimpleEntityContainer(typeArray), level);
+    }
+
+    @Override
+    public boolean shouldRender() {
+        return shouldRenderArea;
+    }
+
+    @Override
+    protected void saveSynced(CompoundTag tag) {
+        super.saveSynced(tag);
+        tag.putBoolean("RenderArea", shouldRenderArea);
+    }
+
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        shouldRenderArea = tag.getBoolean("RenderArea");
     }
 
     @Override
@@ -95,5 +119,4 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity {
         }
 
     }
-
 }

@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-09T15:05:33.667567	Recipes
+// 1.20.4	2024-09-20T22:21:01.6084015	Recipes
 1dc3ff242bda0de185641d64da91915dcbb5f074 data/eternalartifacts/advancements/recipes/building_blocks/pink_slime_block.json
 50deffa9c78012d384dfe5cdf31ba8044e3eca30 data/eternalartifacts/advancements/recipes/building_blocks/sugar_charcoal_block.json
 4c33f0f96b88c93d2dbf72ea7810664a7399846f data/eternalartifacts/advancements/recipes/decorations/ice_bricks.json
@@ -72,7 +72,6 @@ b123cbfd4faae36b73cd591e1cbc9dfe68462237 data/eternalartifacts/advancements/reci
 a21d437798f4ea7b55c126ba61ff2acf304c87f3 data/eternalartifacts/advancements/recipes/tools/stone_hammer.json
 a0efa73c4ff5edaf710cbb3f9fb51cbfe287ff6a data/eternalartifacts/advancements/recipes/tools/wooden_hammer.json
 d5a8055725f59e555c239c62e7beed2bece4a4f8 data/eternalartifacts/recipes/alloying/chlorophyte_ingot.json
-455e9212fdcf36bdbccf93d779c6e7c7bb9bf49b data/eternalartifacts/recipes/alloying/demon_ingot.json
 ad38731b94020e3c8a55309496f72d3f66549d2d data/eternalartifacts/recipes/ardite_block.json
 5fe49c7d76eab227706cec3bc6dde5376155e108 data/eternalartifacts/recipes/ardite_ingot.json
 27d963fd524e3bb2a96e1c0e46936374fc5800a7 data/eternalartifacts/recipes/battery.json

@@ -9,9 +9,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
 
@@ -43,11 +41,9 @@ public class EternalArtifacts {
 
     public static final String MODID = "eternalartifacts";
     public static final Logger LOGGER = LogUtils.getLogger();
-
-    public static final ModHooks hooks = new ModHooks();
+    public static final ModHooks HOOKS = new ModHooks();
 
     public EternalArtifacts(IEventBus modEventBus) {
-        boolean isClient = FMLLoader.getDist().isClient();
         enableMilkFluid();
         ModMachines.MACHINES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
@@ -66,12 +62,10 @@ public class EternalArtifacts {
         ModPaintings.PAINTINGS.register(modEventBus);
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
 
-        //if (isClient) modEventBus.addListener(RegisterMenuScreensEvent.class, ModMachines.MACHINES::registerScreens);
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        hooks.construct(modEventBus);
+        HOOKS.construct(modEventBus);
     }
-
 }

@@ -33,15 +33,13 @@ public class TankKnapsackMenu extends AbstractModContainerMenu {
             for (int i = 0; i < fh.getTanks(); i++) {
                 int x = i % column;
                 int y = i / column;
-                addFluidSlot(new FluidSlot(multiTank.getTank(i), i, 7 + x * 18, 18 + y * 18));
+                addFluidSlot(new FluidSlot(multiTank.getTank(i), i, 7 + x * 18, 17 + y * 18));
             }
         }
     }
 
     @Override
-    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {
-        return null;
-    }
+    public ItemStack quickMoveStack(Player pPlayer, int pIndex) {return ItemStack.EMPTY;}
 
     @Override
     public boolean stillValid(Player player) {
@@ -61,7 +59,6 @@ public class TankKnapsackMenu extends AbstractModContainerMenu {
             switch (button) {
                 case 0 -> setCarried(drainSlotAndStow(slot, getCarried(), player));
                 case 1 -> setCarried(fillSlotAndStow(slot, getCarried(), player));
-                case 2 -> System.out.println("other thing idk");
             }
         }
     }

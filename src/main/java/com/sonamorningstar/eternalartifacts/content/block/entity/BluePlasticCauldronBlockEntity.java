@@ -68,6 +68,9 @@ public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements IT
             }
             return ItemStack.EMPTY;
         }
+
+        @Override
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {return ItemStack.EMPTY;}
     };
 
     @Override

@@ -4,13 +4,10 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -21,6 +18,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> extends AbstractModContainerScreen<T> {
     protected static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
+    protected static final ResourceLocation buttons = new ResourceLocation(MODID, "textures/gui/buttons.png");
     private final Map<String, Integer> energyLoc = new HashMap<>();
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
     protected static final int labelColor = 4210752;

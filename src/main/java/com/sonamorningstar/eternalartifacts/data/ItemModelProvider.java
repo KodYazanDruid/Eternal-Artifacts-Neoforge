@@ -111,6 +111,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.DEMONIC_TABLET.get());
         handheld(ModItems.GRAFTER);
         basicItem(ModItems.TANK_KNAPSACK.get());
+        basicItem(ModItems.SLOT_LOCK.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

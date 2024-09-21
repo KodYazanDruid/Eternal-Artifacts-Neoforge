@@ -160,9 +160,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected void progress(BooleanSupplier test, Runnable running, Runnable result, ModEnergyStorage energy) {
         if(!hasEnergy(energyPerTick, energy) || level == null) return;
         SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
-        if(type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos()) ||
-            type == SidedTransferMachineBlockEntity.RedstoneType.LOW && !level.hasNeighborSignal(getBlockPos()) ||
-            (type == SidedTransferMachineBlockEntity.RedstoneType.IGNORED || type == null)){
+        if(redstoneChecks(type, level)){
             if (test.getAsBoolean()) {
                 progress = 0;
                 return;
@@ -175,6 +173,12 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                 progress = 0;
             }
         }
+    }
+
+    private boolean redstoneChecks(SidedTransferMachineBlockEntity.RedstoneType type, Level level) {
+        return (type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.getDirectSignalTo(getBlockPos()) > 0) ||
+                (type == SidedTransferMachineBlockEntity.RedstoneType.LOW && level.getDirectSignalTo(getBlockPos()) == 0) ||
+                type == SidedTransferMachineBlockEntity.RedstoneType.IGNORED || type == null;
     }
 
     protected boolean hasEnergy(int amount, ModEnergyStorage energy) {

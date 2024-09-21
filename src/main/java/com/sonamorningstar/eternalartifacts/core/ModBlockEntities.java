@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.CableBlockEntity;
+import com.sonamorningstar.eternalartifacts.cables.CableBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;

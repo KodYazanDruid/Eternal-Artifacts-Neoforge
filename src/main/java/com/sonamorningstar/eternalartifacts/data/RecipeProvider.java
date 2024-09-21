@@ -119,11 +119,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), Items.GREEN_DYE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
 
         createAlloyingRecipe(recipeOutput, List.of(
-                Ingredient.of(Tags.Items.INGOTS_GOLD),
-                Ingredient.of(Items.REDSTONE)),
-                ModItems.DEMON_INGOT.toStack());
-
-        createAlloyingRecipe(recipeOutput, List.of(
                 Ingredient.of(ModItems.DEMON_INGOT),
                 Ingredient.of(Items.GLOWSTONE_DUST),
                 Ingredient.of(ModItems.PLANT_MATTER)),

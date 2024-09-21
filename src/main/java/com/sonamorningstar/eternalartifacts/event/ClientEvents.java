@@ -3,12 +3,10 @@ package com.sonamorningstar.eternalartifacts.event;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
-import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.FluidCombustionRenderer;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -18,7 +16,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -42,8 +39,9 @@ public class ClientEvents {
     @SubscribeEvent
     public static void renderLevelStage(final RenderLevelStageEvent event) {
         PoseStack pose = event.getPoseStack();
-        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
-        MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+        Minecraft minecraft = Minecraft.getInstance();
+        BakedModel model = minecraft.getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
+        MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
         LivingEntity living = Minecraft.getInstance().player;
 
         /**
@@ -66,7 +64,7 @@ public class ClientEvents {
                 pose.translate(-0.5, -0.65, -0.5);
                 pose.translate(0F, 0F, -1.5F);
                 for (Direction dir : DIRS) {
-                    Minecraft.getInstance().getItemRenderer().renderQuadList(
+                    minecraft.getItemRenderer().renderQuadList(
                             pose,
                             buffer.getBuffer(Sheets.translucentCullBlockSheet()),
                             model.getQuads(null, dir, living.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),

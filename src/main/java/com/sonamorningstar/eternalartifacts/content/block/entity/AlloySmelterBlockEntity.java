@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.AlloyingRecipe;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import net.minecraft.core.BlockPos;
@@ -42,9 +43,9 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
 
         progress(condition::getResult, () -> {
             inventory.insertItemForced(3, recipe.getResultItem(lvl.registryAccess()).copy(), false);
-            inventory.extractItem(0, 1, false);
-            inventory.extractItem(1, 1, false);
-            inventory.extractItem(2, 1, false);
+            if (!inventory.getStackInSlot(0).is(ModItems.SLOT_LOCK)) inventory.extractItem(0, 1, false);
+            if (!inventory.getStackInSlot(1).is(ModItems.SLOT_LOCK)) inventory.extractItem(1, 1, false);
+            if (!inventory.getStackInSlot(2).is(ModItems.SLOT_LOCK)) inventory.extractItem(2, 1, false);
         }, energy);
     }
 }

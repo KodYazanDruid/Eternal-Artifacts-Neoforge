@@ -114,6 +114,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DEMONIC_TABLET.get(), "Demonic Tablet");
                 add(ModItems.GRAFTER.get(), "Grafter");
                 add(ModItems.TANK_KNAPSACK.get(), "Tank Knapsack");
+                add(ModItems.SLOT_LOCK.get(), "Slot Lock");
 
                 //Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -187,6 +188,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ASPHALT_BLOCK.get(), "Asphalt Block");
                 add(ModBlocks.STEEL_BLOCK.get(), "Steel Block");
                 add(ModBlocks.STEEL_DRUM.get(), "Steel Drum");
+                add(ModBlocks.COPPER_CABLE.get(), "Copper Cable");
 
                 //Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -256,6 +258,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("dynamo_produce_rate"), "Generating");
                 add(ModConstants.GUI.withSuffix("left_click_transfer"), "Left Click to take the fluid.");
                 add(ModConstants.GUI.withSuffix("right_click_transfer"), "Right Click to deposit the fluid.");
+                add(ModConstants.GUI.withSuffix("deposit_1_level"), "Deposit 1 level.");
+                add(ModConstants.GUI.withSuffix("deposit_10_level"), "Deposit 10 levels.");
+                add(ModConstants.GUI.withSuffix("deposit_all_levels"), "Deposit all levels.");
+                add(ModConstants.GUI.withSuffix("take_1_level"), "Take 1 level.");
+                add(ModConstants.GUI.withSuffix("take_10_level"), "Take 10 levels.");
+                add(ModConstants.GUI.withSuffix("take_all_levels"), "Take all levels.");
 
                 ModMachines.MACHINES.getMachines().forEach(holder -> {
                     String displayName = holder.getBlockId().getPath().replace('_', ' ');
@@ -361,6 +369,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DEMONIC_TABLET.get(), "Şeytani Levha");
                 add(ModItems.GRAFTER.get(), "Aşı Bıçağı");
                 add(ModItems.TANK_KNAPSACK.get(), "Tank Sırt Çantası");
+                add(ModItems.SLOT_LOCK.get(), "Slot Kilidi");
 
                 //Bloklar
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -444,6 +453,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.ALLOY_SMELTER.getBlockTranslationKey(), "Alaşım Isıtıcı");
                 add(ModBlocks.STEEL_BLOCK.get(), "Çelik Bloğu");
                 add(ModBlocks.STEEL_DRUM.get(), "Çelik Varil");
+                add(ModBlocks.COPPER_CABLE.get(), "Bakır Kablo");
 
                 //Varlıklar
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -513,6 +523,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("dynamo_produce_rate"), "Üretilen");
                 add(ModConstants.GUI.withSuffix("left_click_transfer"), "Sıvıyı almak için Sol tıkla.");
                 add(ModConstants.GUI.withSuffix("right_click_transfer"), "Sıvıyı koymak için Sağ tıkla.");
+                add(ModConstants.GUI.withSuffix("deposit_1_level"), "1 seviye sakla.");
+                add(ModConstants.GUI.withSuffix("deposit_10_levels"), "10 seviye sakla.");
+                add(ModConstants.GUI.withSuffix("deposit_all_levels"), "Tüm seviyeni sakla.");
+                add(ModConstants.GUI.withSuffix("take_1_level"), "1 seviye al.");
+                add(ModConstants.GUI.withSuffix("take_10_levels"), "10 seviye al.");
+                add(ModConstants.GUI.withSuffix("take_all_levels"), "Tüm seviyeleri al.");
             }
         }
     }

@@ -44,7 +44,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-//Custom model loader.
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 public class RetexturedModel implements IUnbakedGeometry<RetexturedModel> {
     public static IGeometryLoader<RetexturedModel> LOADER = RetexturedModel::deserialize;
@@ -86,7 +85,7 @@ public class RetexturedModel implements IUnbakedGeometry<RetexturedModel> {
             JsonElement retextured = json.get("retextured");
             if(retextured.isJsonArray()) {
                 JsonArray array = retextured.getAsJsonArray();
-                if(array.size() == 0) throw new JsonSyntaxException("Must have atleast one texture in the retextured");
+                if(array.isEmpty()) throw new JsonSyntaxException("Must have least one texture in the retextured");
                 ImmutableSet.Builder<String> builder = ImmutableSet.builder();
 
                 for(int i = 0; i < array.size(); i++) {

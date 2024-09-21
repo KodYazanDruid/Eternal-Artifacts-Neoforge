@@ -1,11 +1,10 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.google.gson.JsonElement;
+import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModFluids;
-import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.ModelTemplates;
@@ -54,6 +53,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                         ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
                         ModelTemplates.PARTICLE_ONLY.create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), TextureMapping.particle(new ResourceLocation(MODID, "block/machine_side")), modelOutput)
                 ));
+
+        cable(ModBlocks.COPPER_CABLE.get(), true);
     }
 
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {
@@ -121,6 +122,63 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                 .select(4, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_four")))
                 .select(5, Variant.variant().with(VariantProperties.MODEL, ModelLocationUtils.getModelLocation(ModBlocks.PUNJI_STICKS.get(), "_five")))
         ));
+    }
+
+    public void cable(Block cable, boolean isCovered) {
+        ResourceLocation inside;
+        ResourceLocation side;
+        ResourceLocation inventory;
+        if (isCovered) {
+            inside = ModModelTemplates.COVERED_CABLE_INSIDE.create(cable, ModTextureMappings.cable(cable), modelOutput);
+            side = ModModelTemplates.COVERED_CABLE_SIDE.create(cable, ModTextureMappings.cable(cable), modelOutput);
+            inventory = ModModelTemplates.COVERED_CABLE_INVENTORY.create(cable, ModTextureMappings.cable(cable), modelOutput);
+        } else {
+            inside = ModModelTemplates.CABLE_INSIDE.create(cable, ModTextureMappings.cable(cable), modelOutput);
+            side = ModModelTemplates.CABLE_SIDE.create(cable, ModTextureMappings.cable(cable), modelOutput);
+            inventory = ModModelTemplates.CABLE_INVENTORY.create(cable, ModTextureMappings.cable(cable), modelOutput);
+        }
+        stateOutput.accept(createCable(cable, inside, side));
+        delegateItemModel(cable, inventory);
+    }
+
+    private BlockStateGenerator createCable(Block cable, ResourceLocation insideLoc, ResourceLocation sideLoc) {
+        return MultiPartGenerator.multiPart(cable)
+            .with(Variant.variant().with(VariantProperties.MODEL, insideLoc))
+            .with(
+                Condition.condition().term(CableBlock.NORTH, true),
+                Variant.variant()
+                    .with(VariantProperties.MODEL, sideLoc)
+            )
+            .with(
+                Condition.condition().term(CableBlock.EAST, true),
+                Variant.variant()
+                    .with(VariantProperties.MODEL, sideLoc)
+                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+            )
+            .with(
+                Condition.condition().term(CableBlock.SOUTH, true),
+                Variant.variant()
+                    .with(VariantProperties.MODEL, sideLoc)
+                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+            )
+            .with(
+                Condition.condition().term(CableBlock.WEST, true),
+                Variant.variant()
+                    .with(VariantProperties.MODEL, sideLoc)
+                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+            )
+            .with(
+                Condition.condition().term(CableBlock.UP, true),
+                Variant.variant()
+                    .with(VariantProperties.MODEL, sideLoc)
+                    .with(VariantProperties.X_ROT, VariantProperties.Rotation.R270)
+            )
+            .with(
+                Condition.condition().term(CableBlock.DOWN, true),
+                Variant.variant()
+                    .with(VariantProperties.MODEL, sideLoc)
+                    .with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+            );
     }
 
     void createSimpleFlatItemModel(Item item) {

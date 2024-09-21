@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import lombok.Setter;
+import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Tooltip;
@@ -9,14 +11,25 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.vehicle.Minecart;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
+
+import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent.ButtonBoundInfo;
+import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent.SpriteStyle;
+import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent.SpriteInfo;
 
 public class CustomRenderButton extends AbstractButton {
     private ResourceLocation[] textures;
+    private final ButtonDrawContent sprites;
+    private final List<Component> tooltips;
     protected static final CustomRenderButton.CreateNarration DEFAULT_NARRATION = Supplier::get;
     protected final CustomRenderButton.OnPress onPress;
     protected final CustomRenderButton.CreateNarration createNarration;
@@ -30,15 +43,17 @@ public class CustomRenderButton extends AbstractButton {
     }
 
     public CustomRenderButton(Builder builder) {
-        this(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress, builder.createNarration, builder.textures);
+        this(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress, builder.createNarration, builder.sprites, builder.tooltips, builder.textures);
         setTooltip(builder.tooltip);
     }
 
-    private CustomRenderButton(int pX, int pY, int pWidth, int pHeight, Component pMessage, CustomRenderButton.OnPress pOnPress, CreateNarration pCreateNarration, ResourceLocation... textures) {
-        super(pX, pY, pWidth, pHeight, pMessage);
+    private CustomRenderButton(int x, int y, int width, int hegiht, Component pMessage, CustomRenderButton.OnPress pOnPress, CreateNarration pCreateNarration, ButtonDrawContent sprites, List<Component> tooltips, ResourceLocation... textures) {
+        super(x, y, width, hegiht, pMessage);
         this.onPress = pOnPress;
         this.createNarration = pCreateNarration;
         this.textures = textures;
+        this.sprites = sprites;
+        this.tooltips = tooltips;
     }
 
     @Override
@@ -47,12 +62,44 @@ public class CustomRenderButton extends AbstractButton {
     @Override
     protected void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         gui.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-        /*if(isHovered())*/ gui.fillGradient(getX(), getY(), getX()+getWidth(), getY()+getHeight(), 0xb6cdf2, 0x262d38);
         RenderSystem.enableBlend();
         RenderSystem.enableDepthTest();
-        if(textures != null &&textures.length > 0)
+        if(textures != null)
             for(ResourceLocation texture : textures)
                 gui.blit(texture, getX(), getY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());
+        if (sprites != null)
+            for (int i = 0; i < sprites.getSpriteInfos().size(); i++) {
+                SpriteInfo sprite = sprites.getSpriteInfos().get(i);
+                Collection<ButtonBoundInfo> infos = sprites.getUvMap().get(i);
+                for (ButtonBoundInfo info : infos) {
+                    int width = sprite.width();
+                    int height = sprite.height();
+                    SpriteStyle style = sprite.style();
+                    if (style != null){
+                        switch (style) {
+                            case SINGLE -> {
+                                int singleWidth = Math.min(sprite.width(), getWidth());
+                                int singleHeight = Math.min(sprite.height(), getHeight());
+                                gui.blit(sprite.sprite(), getX(), getY(), info.u(), info.v(), singleWidth, singleHeight, sprite.width(), sprite.height());
+                            }
+                            case SCALE -> {
+                                width = getWidth();
+                                height = getHeight();
+                            }
+                        }
+                    }
+
+                    if (style != SpriteStyle.SINGLE){
+                        gui.blit(sprite.sprite(), getX(), getY(), getWidth(), getHeight(),
+                                info.u(), info.v(), info.width(), info.height(),
+                                width, height);
+                    }
+                }
+
+            }
+
+        if (isMouseOver(mouseX, mouseY) && !tooltips.isEmpty())
+            gui.renderTooltip(Minecraft.getInstance().font, tooltips, Optional.empty(), mouseX, mouseY);
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -88,6 +135,9 @@ public class CustomRenderButton extends AbstractButton {
         private int y;
         private int width = 150;
         private int height = 20;
+        private final ButtonDrawContent sprites = new ButtonDrawContent(width, height);
+        private final List<Component> tooltips = new ArrayList<>();
+
         private CustomRenderButton.CreateNarration createNarration = CustomRenderButton.DEFAULT_NARRATION;
 
         public Builder(Component pMessage, CustomRenderButton.OnPress pOnPress, ResourceLocation... textures) {
@@ -95,42 +145,73 @@ public class CustomRenderButton extends AbstractButton {
             this.onPress = pOnPress;
             this.textures = textures;
         }
-
         public Builder(Component pMessage, CustomRenderButton.OnPress pOnPress) {
             this.message = pMessage;
             this.onPress = pOnPress;
         }
 
+        //region Position and size
         public CustomRenderButton.Builder pos(int pX, int pY) {
             this.x = pX;
             this.y = pY;
             return this;
         }
-
-        public CustomRenderButton.Builder width(int pWidth) {
-            this.width = pWidth;
+        public CustomRenderButton.Builder width(int width) {
+            this.width = width;
+            sprites.setButtonWidth(width);
             return this;
         }
-
-        public CustomRenderButton.Builder size(int pWidth, int pHeight) {
-            this.width = pWidth;
-            this.height = pHeight;
+        public CustomRenderButton.Builder height(int height) {
+            this.height = height;
+            sprites.setButtonHeight(height);
             return this;
         }
-
+        public CustomRenderButton.Builder size(int width, int height) {
+            this.width = width;
+            this.height = height;
+            sprites.setButtonWidth(width);
+            sprites.setButtonHeight(height);
+            return this;
+        }
         public CustomRenderButton.Builder bounds(int pX, int pY, int pWidth, int pHeight) {
             return this.pos(pX, pY).size(pWidth, pHeight);
         }
-
+        //endregion
+        //region Misc button stuff
         public CustomRenderButton.Builder tooltip(@Nullable Tooltip pTooltip) {
             this.tooltip = pTooltip;
             return this;
         }
-
         public CustomRenderButton.Builder createNarration(CustomRenderButton.CreateNarration pCreateNarration) {
             this.createNarration = pCreateNarration;
             return this;
         }
+        //endregion
+        //region Sprite adding.
+        public CustomRenderButton.Builder addSprite(ResourceLocation sprite) {
+            return addSprite(sprite, 256, 256, SpriteStyle.SCALE);
+        }
+        public CustomRenderButton.Builder addSprite(ResourceLocation sprite, SpriteStyle style) {
+            return addSprite(sprite, 256, 256, style);
+        }
+        public CustomRenderButton.Builder addSprite(ResourceLocation sprite, int width, int height, SpriteStyle style) {
+            sprites.addSprite(sprite, width, height, style);
+            return this;
+        }
+        public CustomRenderButton.Builder addSprite(ResourceLocation sprite, int u, int v, int width, int height) {
+            return addSprite(sprite, 256, 256, u, v, width, height);
+        }
+        public CustomRenderButton.Builder addSprite(ResourceLocation sprite, int spriteWidth, int spriteHeight, int u, int v, int width, int height) {
+            sprites.addBlitSprite(sprite, spriteWidth, spriteHeight, u, v, width, height);
+            return this;
+        }
+        //endregion
+        //region Component adding.
+        public CustomRenderButton.Builder addTooltipHover(Component tooltip) {
+            tooltips.add(tooltip);
+            return this;
+        }
+        //endregion
 
         public CustomRenderButton build() {
             return build(CustomRenderButton::new);

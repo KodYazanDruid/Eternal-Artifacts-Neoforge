@@ -19,7 +19,6 @@ public class AddItemListModifier extends LootModifier {
                     .and(ItemStack.CODEC.listOf().fieldOf("itemstack").forGetter(m -> m.itemList))
                     .apply(instance, AddItemListModifier::new)));
 
-
     private final List<ItemStack> itemList;
 
     public AddItemListModifier(LootItemCondition[] conditionsIn, List<ItemStack> item) {
@@ -29,11 +28,8 @@ public class AddItemListModifier extends LootModifier {
 
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        for(LootItemCondition condition : conditions)
-            if(!condition.test(context)) return generatedLoot;
-
+        for(LootItemCondition condition : conditions) if(!condition.test(context)) return generatedLoot;
         generatedLoot.addAll(itemList);
-
         return generatedLoot;
     }
 

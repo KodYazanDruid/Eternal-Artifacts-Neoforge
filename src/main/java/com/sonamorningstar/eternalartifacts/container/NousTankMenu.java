@@ -14,6 +14,7 @@ public class NousTankMenu extends AbstractMachineMenu {
     }
     public NousTankMenu( int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(ModMenuTypes.NOUS_TANK.get(), pContainerId, inv, entity, data);
-
     }
+
+
 }

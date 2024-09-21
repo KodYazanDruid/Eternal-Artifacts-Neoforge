@@ -100,6 +100,7 @@ public class ModItems {
     public static final DeferredItem<Item> PINK_SLIME_INGOT = register("pink_slime_ingot");
     public static final DeferredItem<Item> DEMON_INGOT = register("demon_ingot", p -> new Item(p.fireResistant()));
     public static final DeferredItem<Item> DEMONIC_TABLET = register("demonic_tablet");
+    public static final DeferredItem<Item> SLOT_LOCK = registerStacksToOne("slot_lock");
 
     public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
             ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));

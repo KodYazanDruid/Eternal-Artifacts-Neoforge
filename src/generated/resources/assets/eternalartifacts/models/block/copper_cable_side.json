@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:block/covered_cable_side",
+  "textures": {
+    "texture": "eternalartifacts:block/copper_cable"
+  }
+}

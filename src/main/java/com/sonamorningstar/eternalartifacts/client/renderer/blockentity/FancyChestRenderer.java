@@ -2,8 +2,10 @@ package com.sonamorningstar.eternalartifacts.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.sonamorningstar.eternalartifacts.client.resources.model.util.ModelHelper;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FancyChestBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
@@ -14,12 +16,15 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import org.joml.Quaternionf;
+
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEntity> {
 
@@ -50,31 +55,36 @@ public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEn
     }
 
     @Override
-    public void render(FancyChestBlockEntity blockEntity, float partialTicks, PoseStack matrixStackIn,
-                       MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        matrixStackIn.pushPose();
+    public void render(FancyChestBlockEntity blockEntity, float partialTicks, PoseStack pose,
+                       MultiBufferSource bufferIn, int light, int overlay) {
+        pose.pushPose();
         float f = blockEntity.getBlockState().getValue(HorizontalDirectionalBlock.FACING).toYRot();
-        matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-        matrixStackIn.mulPose(new Quaternionf().rotationY(Mth.DEG_TO_RAD * -f));
-        matrixStackIn.translate(-0.5D, -0.5D, -0.5D);
+        pose.translate(0.5D, 0.5D, 0.5D);
+        pose.mulPose(new Quaternionf().rotationY(Mth.DEG_TO_RAD * -f));
+        pose.translate(-0.5D, -0.5D, -0.5D);
 
         float f1 = blockEntity.getOpenNess(partialTicks);
         f1 = 1.0F - f1;
         f1 = 1.0F - f1 * f1 * f1;
         Material material = getRenderMaterial(blockEntity);
-        VertexConsumer vertexbuilder = material.buffer(bufferIn, RenderType::entityCutout);
-        this.renderModels(matrixStackIn, vertexbuilder, this.lid, this.lock, this.base, f1,
-                combinedLightIn, combinedOverlayIn);
+        VertexConsumer consumer = material.buffer(bufferIn, RenderType::entityCutout);
+        BakedModel baked = Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(MODID, "block/fancy_chest"));
+        /*Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(
+                pose.last(), consumer, blockEntity.getBlockState(), baked, 1,1,1, light, overlay);*/
+        /*this.renderModels(matrixStackIn, consumer, this.lid, this.lock, this.base, f1,
+                light, overlay);*/
 
-        matrixStackIn.popPose();
+        pose.popPose();
+        /*Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(
+                pose.last(), consumer, blockEntity.getBlockState(), baked, 1,1,1, light, overlay);*/
 /*
         RetexturedModel.CableBakedModel model = ModelHelper.getBakedModel(blockEntity.getBlockState(), RetexturedModel.CableBakedModel.class);
         matrixStackIn.pushPose();
         Material material = getRenderMaterial(blockEntity);
-        VertexConsumer vertexbuilder = material.buffer(bufferIn, RenderType::entityCutout);
+        VertexConsumer consumer = material.buffer(bufferIn, RenderType::entityCutout);
         if(model != null){
             Minecraft.getInstance().getBlockRenderer().getModelRenderer().renderModel(
-                    matrixStackIn.last(), vertexbuilder, blockEntity.getBlockState(), model, 255, 255, 255, combinedLightIn, combinedOverlayIn);
+                    matrixStackIn.last(), consumer, blockEntity.getBlockState(), model, 255, 255, 255, light, overlay);
         }
         matrixStackIn.popPose();*/
 

@@ -100,6 +100,12 @@ public class CommonModEvents {
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DRUM.get(), (be, ctx) -> be.tank);
 
+        //Basically this will return all the capabilities that connected (except the receiver) to cable network.
+        /*event.registerBlock(Capabilities.EnergyStorage.BLOCK, (lvl, pos, state, be, dir) -> {
+            if (dir == null) return null;
+            return lvl.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(dir.getOpposite()).relative(dir.getOpposite()), dir.getOpposite());
+        }, ModBlocks.COPPER_CABLE.get());*/
+
     }
 
     @Contract("_, _, null, _ -> param2")
