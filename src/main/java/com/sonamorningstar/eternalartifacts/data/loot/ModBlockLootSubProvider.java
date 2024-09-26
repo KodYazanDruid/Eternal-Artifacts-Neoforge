@@ -27,7 +27,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -81,6 +80,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.ICE_BRICKS.get());
         dropSelf(ModBlocks.ASPHALT_BLOCK.get());
         dropSelf(ModBlocks.COPPER_CABLE.get());
+        dropSelf(ModBlocks.COVERED_COPPER_CABLE.get());
         dropSelf(ModBlocks.STEEL_BLOCK.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);

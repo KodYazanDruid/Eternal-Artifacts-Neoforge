@@ -110,6 +110,9 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     }
 
     @Override
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {return false;}
+
+    @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
         BlockEntity entity = level.getBlockEntity(pos);
         if(entity instanceof GardeningPotEntity potEntity) {

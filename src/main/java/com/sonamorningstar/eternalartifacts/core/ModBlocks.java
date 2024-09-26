@@ -45,6 +45,17 @@ public class ModBlocks {
             .isSuffocating(ModBlocks::never)
             .isViewBlocking(ModBlocks::never);
 
+    static final BlockBehaviour.Properties cableProps = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_ORANGE)
+            .sound(SoundType.COPPER)
+            .pushReaction(PushReaction.DESTROY)
+            .noOcclusion()
+            .strength(3.0F, 4.0F)
+            .isValidSpawn(ModBlocks::never)
+            .isRedstoneConductor(ModBlocks::never)
+            .isSuffocating(ModBlocks::never)
+            .isViewBlocking(ModBlocks::never);
+
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
@@ -148,7 +159,9 @@ public class ModBlocks {
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
-            ()-> new CableBlock(Blocks.LANTERN.properties().lightLevel(st -> 0).pushReaction(PushReaction.IGNORE)));
+            ()-> new UncoveredCableBlock(cableProps));
+    public static final DeferredBlock<CableBlock> COVERED_COPPER_CABLE = registerWithItem("covered_copper_cable",
+            ()-> new CableBlock(cableProps));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));

@@ -35,7 +35,7 @@ public class GrafterModifier extends LootModifier {
         for(LootItemCondition condition : conditions) if(!condition.test(context)) return generatedLoot;
         BlockState minedBlockState = context.getParam(LootContextParams.BLOCK_STATE);
         ServerLevel serverLevel = context.getLevel();
-        List<Item> possibleLoots = LootTableHelper.getItems(serverLevel, minedBlockState.getBlock());
+        List<Item> possibleLoots = LootTableHelper.getItems(serverLevel, minedBlockState.getBlock().getLootTable());
         ItemStack sapling = ItemStack.EMPTY;
         for (Item item : possibleLoots) {
             if (item instanceof BlockItem bi) {

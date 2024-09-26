@@ -148,6 +148,14 @@ public class ModItems {
     public static final DeferredItem<Item> FEEDING_CANISTER = registerStacksToOne("feeding_canister", FeedingCanister::new);
     public static final DeferredItem<Item> GRAFTER = registerStacksToOne("grafter", GrafterItem::new);
     public static final DeferredItem<Item> TANK_KNAPSACK = registerStacksToOne("tank_knapsack", TankKnapsackItem::new);
+    public static final DeferredItem<Item> WOODEN_CUTLASS = registerStacksToOne("wooden_cutlass", p -> new CutlassItem(Tiers.WOOD, 3, -2.4F, p));
+    public static final DeferredItem<Item> STONE_CUTLASS = registerStacksToOne("stone_cutlass", p -> new CutlassItem(Tiers.STONE, 3, -2.4F, p));
+    public static final DeferredItem<Item> COPPER_CUTLASS = registerStacksToOne("copper_cutlass", p -> new CutlassItem(ModTiers.COPPER, 3, -2.4F, p));
+    public static final DeferredItem<Item> IRON_CUTLASS = registerStacksToOne("iron_cutlass", p -> new CutlassItem(Tiers.IRON, 3, -2.4F, p));
+    public static final DeferredItem<Item> GOLDEN_CUTLASS = registerStacksToOne("golden_cutlass", p -> new CutlassItem(Tiers.GOLD, 3, -2.4F, p));
+    public static final DeferredItem<Item> DIAMOND_CUTLASS = registerStacksToOne("diamond_cutlass", p -> new CutlassItem(Tiers.DIAMOND, 3, -2.4F, p));
+    public static final DeferredItem<Item> NETHERITE_CUTLASS = registerStacksToOne("netherite_cutlass", p -> new CutlassItem(Tiers.NETHERITE, 3, -2.4F, p.fireResistant()));
+    public static final DeferredItem<Item> CHLOROPHYTE_CUTLASS = registerStacksToOne("chlorophyte_cutlass", p -> new CutlassItem(ModTiers.CHLOROPHYTE, 3, -2.4F, p));
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

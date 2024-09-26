@@ -54,7 +54,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                         ModelTemplates.PARTICLE_ONLY.create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), TextureMapping.particle(new ResourceLocation(MODID, "block/machine_side")), modelOutput)
                 ));
 
-        cable(ModBlocks.COPPER_CABLE.get(), true);
+        cable(ModBlocks.COPPER_CABLE.get(), false);
+        cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);
     }
 
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {

@@ -1,6 +1,7 @@
-// 1.20.4	2024-07-16T17:43:40.4887191	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2024-09-25T22:02:49.3139259	Tags for minecraft:item mod id eternalartifacts
 739b14f3f9fa7b447d8ac1989c2d47a24f23a539 data/eternalartifacts/tags/items/gardening_pot_suitable.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
+2ab5a1591948f980d3d532da30cf9e588eeb4d28 data/eternalartifacts/tags/items/tools/cutlass.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/forge/tags/items/charcoal.json
 9af9f891b3169d8d7827827c0f61ed7dedffb474 data/forge/tags/items/dusts.json
 823cdebeedb138c0ae6b910e89a0318c87613ef4 data/forge/tags/items/dusts/charcoal.json
@@ -43,4 +44,4 @@ cc13896e8dbe303c2a63351a52e2cf7d5a7e112c data/minecraft/tags/items/hoes.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/items/planks.json
 6f74e249c227c501da70dee03e55198dd2aa3cc6 data/minecraft/tags/items/shovels.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/items/small_flowers.json
-2b1f303588624d3883c31356885e49e220982c21 data/minecraft/tags/items/swords.json
+5251295a585fccabdfa1d03fe428c762e139eba6 data/minecraft/tags/items/swords.json

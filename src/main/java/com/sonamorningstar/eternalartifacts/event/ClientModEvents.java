@@ -11,9 +11,12 @@ import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLay
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.BiomeColors;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -85,16 +88,14 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void fmlClient(FMLClientSetupEvent event) {
-        event.enqueueWork( () ->
+        event.enqueueWork(() -> {
             ItemProperties.register(ModItems.ENCUMBATOR.get(),
-                    new ResourceLocation(MODID, "active"), (s, l, e, sd) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F)
-        );
+                    new ResourceLocation(MODID, "active"), (s, l, e, seed) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F);
 
-        EntityRenderers.register(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
-        EntityRenderers.register(ModEntities.PINKY.get(), PinkyRenderer::new);
-        EntityRenderers.register(ModEntities.DUCK.get(), DuckRenderer::new);
-        EntityRenderers.register(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
-        EntityRenderers.register(ModEntities.PRIMED_BLOCK.get(), TntRenderer::new);
+        });
+
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());
     }
 
     @SubscribeEvent
@@ -118,6 +119,12 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModMachines.OIL_REFINERY.getBlockEntity(), OilRefineryRenderer::new);
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
+
+        event.registerEntityRenderer(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
+        event.registerEntityRenderer(ModEntities.PINKY.get(), PinkyRenderer::new);
+        event.registerEntityRenderer(ModEntities.DUCK.get(), DuckRenderer::new);
+        event.registerEntityRenderer(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
+        event.registerEntityRenderer(ModEntities.PRIMED_BLOCK.get(), TntRenderer::new);
     }
 
     @SubscribeEvent

@@ -1,5 +1,5 @@
 {
-  "parent": "eternalartifacts:block/covered_cable_inventory",
+  "parent": "eternalartifacts:block/cable_inventory",
   "textures": {
     "texture": "eternalartifacts:block/copper_cable"
   }

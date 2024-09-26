@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-09T15:21:41.5955647	Loot Tables
+// 1.20.4	2024-09-22T15:49:29.5316346	Loot Tables
 a50ef6533c773bcb5946c86a3ca5eb5aed8b850f data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
@@ -17,6 +17,7 @@ cbc47d6862614edb4d9e78554a77d15a0ccf875d data/eternalartifacts/loot_tables/block
 5e9a6373b928d1918cf3aaba6c068a346fd14d90 data/eternalartifacts/loot_tables/blocks/copper_cable.json
 22df2f6d940531740f340904b2baa586ab9f907e data/eternalartifacts/loot_tables/blocks/copper_drum.json
 7bbea995f886e5bf45d835f986bd7df3aefd095f data/eternalartifacts/loot_tables/blocks/copper_oreberry.json
+0c768e77e4b86518ed3ccff9ca952ae769ae6610 data/eternalartifacts/loot_tables/blocks/covered_copper_cable.json
 36b93c29e60730e91048865cb63c2c3a34fe3fc8 data/eternalartifacts/loot_tables/blocks/deepslate_manganese_ore.json
 846e1e280dd16256d5148e0c9f4f28b6aa41e934 data/eternalartifacts/loot_tables/blocks/diamond_drum.json
 d2558221a824af0d9c7cb4efbce9ec3b26f26c29 data/eternalartifacts/loot_tables/blocks/experience_oreberry.json

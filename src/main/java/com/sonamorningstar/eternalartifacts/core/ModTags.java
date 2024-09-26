@@ -51,6 +51,7 @@ public class ModTags {
         public static final TagKey<Item> DUSTS_SUGAR_CHARCOAL = forgeTag("dusts/sugar_charcoal");
         public static final TagKey<Item> TOOLS_HAMMER = forgeTag("tools/hammer");
         public static final TagKey<Item> CHARCOAL = forgeTag("charcoal");
+        public static final TagKey<Item> TOOLS_CUTLASS = modTag("tools/cutlass");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

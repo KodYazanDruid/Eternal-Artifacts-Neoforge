@@ -96,6 +96,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.COPPER_SWORD.get(),
                 ModItems.SWORD_OF_THE_GREEN_EARTH.get()
         );
+        tag(ItemTags.SWORDS).addTags(ModTags.Items.TOOLS_CUTLASS);
         tag(ItemTags.PICKAXES).add(
                 ModItems.COPPER_PICKAXE.get(),
                 ModItems.CHLOROVEIN_PICKAXE.get()
@@ -122,6 +123,16 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.DIAMOND_HAMMER.get(),
                 ModItems.NETHERITE_HAMMER.get(),
                 ModItems.HAMMAXE.get()
+        );
+        tag(ModTags.Items.TOOLS_CUTLASS).add(
+                ModItems.WOODEN_CUTLASS.get(),
+                ModItems.STONE_CUTLASS.get(),
+                ModItems.COPPER_CUTLASS.get(),
+                ModItems.IRON_CUTLASS.get(),
+                ModItems.GOLDEN_CUTLASS.get(),
+                ModItems.DIAMOND_CUTLASS.get(),
+                ModItems.NETHERITE_CUTLASS.get(),
+                ModItems.CHLOROPHYTE_CUTLASS.get()
         );
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(

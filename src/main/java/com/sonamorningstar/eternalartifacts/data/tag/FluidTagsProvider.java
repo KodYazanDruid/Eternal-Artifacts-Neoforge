@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.FluidTags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
@@ -25,5 +26,6 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
         tag(ModTags.Fluids.CRUDE_OIL).add(ModFluids.CRUDE_OIL.getFluid());
         tag(ModTags.Fluids.GASOLINE).add(ModFluids.GASOLINE.getFluid());
         tag(ModTags.Fluids.DIESEL).add(ModFluids.DIESEL.getFluid());
+        tag(FluidTags.WATER).add(ModFluids.HOT_SPRING_WATER.getFluid(), ModFluids.HOT_SPRING_WATER.getFlowingFluid());
     }
 }

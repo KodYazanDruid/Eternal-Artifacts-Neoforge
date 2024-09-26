@@ -93,22 +93,22 @@ dependencies {
 
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
     runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 
     runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
-    runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
+    //runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
 
     compileOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}:api"
     runtimeOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}"
 
     implementation "curse.maven:modern-dynamics-552758:5373764" //Modern Industrialization
-    implementation "mekanism:Mekanism:${mekanism_version}"// Mekanism
-    implementation "mekanism:Mekanism:${mekanism_version}:additions"// Mekanism: Additions
-    implementation "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
-    implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
+    compileOnly "mekanism:Mekanism:${mekanism_version}"// Mekanism
+    compileOnly "mekanism:Mekanism:${mekanism_version}:additions"// Mekanism: Additions
+    compileOnly "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
+    compileOnly "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
     runtimeOnly "curse.maven:pneumaticcraft-repressurized-281849:5523027"
 

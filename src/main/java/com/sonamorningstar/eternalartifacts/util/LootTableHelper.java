@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -15,8 +16,8 @@ import java.util.Objects;
 
 public class LootTableHelper {
 
-    public static LootTable getTable(ServerLevel serverLevel, Block block){
-        return serverLevel.getServer().getLootData().getLootTable(block.getLootTable());
+    public static LootTable getTable(ServerLevel serverLevel, ResourceLocation tableId){
+        return serverLevel.getServer().getLootData().getLootTable(tableId);
     }
 
     public static List<LootPool> getPools(LootTable table) {
@@ -37,12 +38,13 @@ public class LootTableHelper {
         return drops;
     }
 
-    public static List<Item> getItems(ServerLevel serverLevel, Block block) {
+    public static List<Item> getItems(ServerLevel serverLevel, ResourceLocation table) {
         List<Item> drops = new ArrayList<>();
-        getPools(getTable(serverLevel, block)).forEach(pool -> getEntries(pool)
-            .forEach(entry -> drops.addAll(getItems(entry)))
+        getPools(getTable(serverLevel, table)).forEach(pool -> getEntries(pool)
+                .forEach(entry -> drops.addAll(getItems(entry)))
         );
         drops.removeIf(Objects::isNull);
         return drops;
     }
+
 }

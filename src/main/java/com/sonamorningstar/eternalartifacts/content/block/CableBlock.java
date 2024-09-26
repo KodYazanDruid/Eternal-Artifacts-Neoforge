@@ -2,8 +2,6 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
-import com.mojang.serialization.MapCodec;
-import com.sonamorningstar.eternalartifacts.cables.CableBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -12,13 +10,9 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -35,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class CableBlock extends Block implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -94,11 +88,6 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Override
     public RenderShape getRenderShape(BlockState pState) {return RenderShape.MODEL;}
     @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {return simpleCodec(CableBlock::new);}
-    @Nullable
-    @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {return new CableBlockEntity(pos, state);}
-    @Override
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {return false;}
     @Override
     public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) { return false; }
@@ -108,7 +97,7 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         builder.add(WATERLOGGED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
     }
 
-    protected boolean connectsTo(BlockPos pos, Level level, Direction direction) {
+    public boolean connectsTo(BlockPos pos, Level level, Direction direction) {
         BlockState state = level.getBlockState(pos);
         IEnergyStorage energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction);
         return energyStorage != null || state.is(this);
@@ -148,13 +137,5 @@ public class CableBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> beType) {
-        return level.isClientSide() ? null : (lvl, pos, st, be) -> {
-            if (be instanceof CableBlockEntity cable) cable.tickServer(lvl, pos, st);
-        };
     }
 }

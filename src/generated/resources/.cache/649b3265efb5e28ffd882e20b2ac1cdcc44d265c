@@ -1,4 +1,4 @@
-// 1.20.4	2024-08-09T21:47:16.1830502	Tags for minecraft:fluid mod id eternalartifacts
+// 1.20.4	2024-09-25T17:23:25.6333858	Tags for minecraft:fluid mod id eternalartifacts
 8add11ef599216dff0594f806c517ef696618b7b data/forge/tags/fluids/blood.json
 ad5de8f5fb9b04234f83f3a8a5c9ecbcb3d5619a data/forge/tags/fluids/crude_oil.json
 2e1fd0a60c85a5fa6620116f40f8fde393391fbd data/forge/tags/fluids/diesel.json
@@ -7,3 +7,4 @@ ee1d147a73608c60c46f361ab5908f38b55cadb6 data/forge/tags/fluids/gasoline.json
 aea35528b249e04bd1aea332e4d5baecfcd85205 data/forge/tags/fluids/meat.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/fluids/pink_slime.json
 7d2821f7dd114201ba1320543aa26b236d2d2322 data/forge/tags/fluids/plastic.json
+2460539577fcc90eb9640641ef3ca7f9b7b62d4d data/minecraft/tags/fluids/water.json

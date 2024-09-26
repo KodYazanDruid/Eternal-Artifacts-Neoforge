@@ -112,6 +112,14 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.GRAFTER);
         basicItem(ModItems.TANK_KNAPSACK.get());
         basicItem(ModItems.SLOT_LOCK.get());
+        handheld(ModItems.WOODEN_CUTLASS);
+        handheld(ModItems.STONE_CUTLASS);
+        handheld(ModItems.COPPER_CUTLASS);
+        handheld(ModItems.IRON_CUTLASS);
+        handheld(ModItems.GOLDEN_CUTLASS);
+        handheld(ModItems.DIAMOND_CUTLASS);
+        handheld(ModItems.NETHERITE_CUTLASS);
+        handheld(ModItems.CHLOROPHYTE_CUTLASS);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -164,7 +172,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .fluid(source.get())
                 .applyTint(true);
     }
-    private void bucketItem(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> holder) {
+    private void bucketItem(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, ? extends LiquidBlock> holder) {
         withExistingParent(holder.getBucketItemHolder().getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(holder.getFluid())

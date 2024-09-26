@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
@@ -22,7 +23,9 @@ import net.neoforged.neoforge.registries.*;
 import org.joml.Vector3f;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -31,7 +34,7 @@ public class FluidDeferredRegister{
     private final DeferredRegister<Fluid> fluidRegister;
     private final DeferredRegister.Blocks blockRegister;
     private final DeferredRegister.Items itemRegister;
-    private final Map<FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock>, Boolean> entryMap = new HashMap<>();
+    private final Map<FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, ? extends LiquidBlock>, Boolean> entryMap = new HashMap<>();
 
     private static final ResourceLocation WATER_FLOW = new ResourceLocation("block/water_flow");
     private static final ResourceLocation WATER_STILL = new ResourceLocation("block/water_still");
@@ -50,7 +53,14 @@ public class FluidDeferredRegister{
     private static ResourceLocation getFlowTexture(String name) {return new ResourceLocation(MODID, "block/"+name+"_flow");}
 
     public FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> register(
-            String name, int light, int density, int viscosity, Rarity rarity, int fogX, int fogY, int fogZ, MapColor mapColor, boolean isGeneric, int... tint) {
+            String name, int light, int density, int viscosity, Rarity rarity,
+            int fogX, int fogY, int fogZ, MapColor mapColor, boolean isGeneric, int... tint) {
+        return register(name, LiquidBlock::new, light, density, viscosity, rarity, fogX, fogY, fogZ, mapColor, isGeneric, tint);
+    }
+
+    public <B extends LiquidBlock> FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, B> register(
+            String name, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, B> liquidBlockFun, int light, int density, int viscosity, Rarity rarity,
+            int fogX, int fogY, int fogZ, MapColor mapColor, boolean isGeneric, int... tint) {
 
         ResourceLocation stillTex = isGeneric ? WATER_STILL : getStillTexture(name);
         ResourceLocation flowTex = isGeneric ? WATER_FLOW : getFlowTexture(name);
@@ -58,7 +68,7 @@ public class FluidDeferredRegister{
 
         DeferredHolder<FluidType, BaseFluidType> fluidType = fluidTypeRegister.register(name, ()->
                 new BaseFluidType(stillTex, flowTex, WATER_RENDER_OVERLAY, tintColor, new Vector3f((float) fogX / 255, (float) fogY / 255, (float) fogZ / 255),
-                    FluidType.Properties.create().lightLevel(light).density(density).viscosity(viscosity).rarity(rarity)
+                    FluidType.Properties.create().lightLevel(light).density(density).viscosity(viscosity).rarity(rarity).canExtinguish(true).canSwim(true)
                         .sound(SoundActions.BUCKET_FILL, SoundEvents.BOTTLE_FILL).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BOTTLE_EMPTY))
         );
 
@@ -71,9 +81,10 @@ public class FluidDeferredRegister{
         DeferredHolder<Fluid, BaseFlowingFluid.Flowing> flowing = fluidRegister.register(name+"_flow",()-> new BaseFlowingFluid.Flowing(fluidProperties));
 
         DeferredItem<BucketItem> bucket = itemRegister.register(name+"_bucket", ()-> new BucketItem(source, new Item.Properties().stacksTo(1)));
-        DeferredBlock<LiquidBlock> liquidBlock = blockRegister.register(name, ()-> new LiquidBlock(source, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(mapColor)));
+        //DeferredBlock<LiquidBlock> liquidBlock = blockRegister.register(name, ()-> new LiquidBlock(source, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(mapColor)));
+        DeferredBlock<B> liquidBlock = blockRegister.register(name, ()-> liquidBlockFun.apply(source, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(mapColor)));
 
-        FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> holder = new FluidDeferredHolder<>(fluidType, source, flowing, bucket, liquidBlock, tintColor);
+        FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, B> holder = new FluidDeferredHolder<>(fluidType, source, flowing, bucket, liquidBlock, tintColor);
         entryMap.put(holder, isGeneric);
         return holder;
     }
@@ -85,7 +96,7 @@ public class FluidDeferredRegister{
         this.itemRegister.register(bus);
     }
 
-    public boolean isGeneric(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> holder) {
+    public boolean isGeneric(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem,? extends LiquidBlock> holder) {
         return entryMap.get(holder);
     }
 
@@ -129,7 +140,7 @@ public class FluidDeferredRegister{
         }
     }
 
-    public Set<FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock>> getEntries() {
+    public Set<FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, ? extends LiquidBlock>> getEntries() {
         return Collections.unmodifiableSet(entryMap.keySet());
     }
 
