@@ -32,7 +32,7 @@ public final class RetexturedHelper {
     }
 
     public static String getTextureName(Block block) {
-        return block == Blocks.AIR ? "" : Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block).toString());
+        return block == Blocks.AIR ? "minecraft:air" : Objects.requireNonNull(BuiltInRegistries.BLOCK.getKey(block).toString());
     }
 
     public static void setTexture(CompoundTag tag, String texture) {

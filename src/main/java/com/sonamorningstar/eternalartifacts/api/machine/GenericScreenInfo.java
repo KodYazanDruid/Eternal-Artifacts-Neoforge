@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.records.ComponentInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Getter
 @Setter
@@ -75,10 +73,10 @@ public class GenericScreenInfo {
         components.put(component, new ComponentInfo(x, y, color, dropShadow));
     }
 
-    public void addButton(String sprite, int x, int y, int width, int height, BiConsumer<CustomRenderButton, Integer> onPress) {
+    public void addButton(String sprite, int x, int y, int width, int height, BiConsumer<SpriteButton, Integer> onPress) {
         buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(sprite), onPress));
     }
-    public void addButton(String namespace, String sprite, int x, int y, int width, int height, BiConsumer<CustomRenderButton, Integer> onPress) {
+    public void addButton(String namespace, String sprite, int x, int y, int width, int height, BiConsumer<SpriteButton, Integer> onPress) {
         buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(namespace, sprite), onPress));
     }
 }

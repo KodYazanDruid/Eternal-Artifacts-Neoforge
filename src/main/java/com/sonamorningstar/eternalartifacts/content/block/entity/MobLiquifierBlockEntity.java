@@ -5,10 +5,12 @@ import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IButtonHolder;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,16 +19,22 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implements IAreaRenderer {
+public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implements IAreaRenderer, IButtonHolder {
+    private final Map<Integer, Consumer<Integer>> buttonConsumerMap = new HashMap<>();
+
     public MobLiquifierBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
         setEnergy(createDefaultEnergy());
@@ -45,9 +53,9 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         screenInfo.setTankPosition(84, 20, 3);
         screenInfo.setShouldDrawInventoryTitle(false);
         screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, (b, i) -> {
-            shouldRenderArea = !shouldRenderArea;
-            sendUpdate();
+            switchRender();
         });
+        buttonConsumerMap.put(0, i -> switchRender());
     }
     List<LivingEntity> livingList = new ArrayList<>();
     RecipeCache<MobLiquifierRecipe, SimpleEntityContainer> cache = new RecipeCache<>();
@@ -59,9 +67,24 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         cache.findRecipe(ModRecipes.MOB_LIQUIFYING.getType(), new SimpleEntityContainer(typeArray), level);
     }
 
+    public void switchRender() {
+        shouldRenderArea = !shouldRenderArea;
+        if (level != null && !level.isClientSide()) sendUpdate();
+    }
+
     @Override
     public boolean shouldRender() {
         return shouldRenderArea;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+        return getWorkingArea(getBlockPos(), getBlockState());
+    }
+
+    @Override
+    public Map<Integer, Consumer<Integer>> buttonConsumerMap() {
+        return buttonConsumerMap;
     }
 
     @Override
@@ -76,10 +99,14 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         shouldRenderArea = tag.getBoolean("RenderArea");
     }
 
+    private static AABB getWorkingArea(BlockPos pos, BlockState state) {
+        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        return new AABB(pos.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
+    }
+
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        //Living entities inside 3x3 above the machine.
-        livingList = lvl.getEntitiesOfClass(LivingEntity.class, new AABB(pos.above(2)).inflate(1))
+        livingList = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos, st))
                         .stream().filter(living -> {
                     EntityType<?> type = living.getType();
                     return !(EntityType.PLAYER == type || living.isDeadOrDying() || living.isBaby());
@@ -114,7 +141,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
             progress(condition::getResult, ()-> {
                 finalEntityToHurt.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 200));
                 finalEntityToHurt.hurt(lvl.damageSources().cramming(), 1);
-                for(FluidStack stack : outputs) tank.fill(stack, IFluidHandler.FluidAction.EXECUTE);
+                for(FluidStack stack : outputs) tank.fillForced(stack, IFluidHandler.FluidAction.EXECUTE);
             }, energy);
         }
 

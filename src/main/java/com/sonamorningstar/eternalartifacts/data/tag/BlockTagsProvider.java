@@ -149,7 +149,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
-            tierAndTool(holder.getBlock(), "iron", "pickaxe");
+            tierAndTool(holder.getBlock(), "stone", "pickaxe");
             tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(holder.getBlock());
         });
 

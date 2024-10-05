@@ -45,7 +45,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.RAW_MEAT_INGOT.get());
         basicItem(ModItems.MEAT_INGOT.get());
         basicItem(ModItems.PINK_SLIME.get());
-        basicItem(ModItems.ENDER_POUCH.get());
+        basicItem(ModItems.ENDER_KNAPSACK.get());
         basicItem(ModItems.PORTABLE_CRAFTER.get());
         basicItem(ModItems.GOLDEN_ANCIENT_FRUIT.get());
         basicItem(ModItems.COMFY_SHOES.get());

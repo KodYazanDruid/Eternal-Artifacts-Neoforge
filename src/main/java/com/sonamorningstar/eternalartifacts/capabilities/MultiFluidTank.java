@@ -19,19 +19,6 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
     public MultiFluidTank(T... tanks) {
             this.tanks.addAll(Arrays.asList(tanks));
     }
-
-    public void deserializeNBT(CompoundTag nbt) {
-        ListTag tanksList = nbt.getList("Tanks", 10);
-        for(int i = 0; i < tanksList.size() ; i++) {
-            CompoundTag entry = tanksList.getCompound(i);
-            Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(entry.getString("FluidName")));
-            FluidStack stack;
-            if(fluid == Fluids.EMPTY) stack = FluidStack.EMPTY;
-            else stack = new FluidStack(fluid, entry.getInt("Amount"));
-            tanks.get(i).setFluid(stack, i);
-        }
-    }
-
     @Override
     public int getCapacity(int tank) {
         return getTankCapacity(0);
@@ -53,6 +40,17 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
         }
         nbt.put("Tanks", tanksList);
         return nbt;
+    }
+    public void deserializeNBT(CompoundTag nbt) {
+        ListTag tanksList = nbt.getList("Tanks", 10);
+        for(int i = 0; i < tanksList.size() ; i++) {
+            CompoundTag entry = tanksList.getCompound(i);
+            Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(entry.getString("FluidName")));
+            FluidStack stack;
+            if(fluid == Fluids.EMPTY) stack = FluidStack.EMPTY;
+            else stack = new FluidStack(fluid, entry.getInt("Amount"));
+            tanks.get(i).setFluid(stack, i);
+        }
     }
 
     public T get(int tank) {
@@ -91,9 +89,24 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
     //region Transfer Methods
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        int filled;
+        /*List<Integer> existingTanks = new ArrayList<>();
+        for (int i = 0; i < getTanks(); i++) {
+            T tank = tanks.get(i);
+            Fluid fluid = tank.getFluid(0).getFluid();
+            if (fluid.isSame(resource.getFluid())) existingTanks.add(i);
+        }
+        if (!existingTanks.isEmpty()) {
+            int filled;
+            for (Integer tankNo : existingTanks) {
+                T tank = tanks.get(tankNo);
+                filled = tank.fill(resource, FluidAction.SIMULATE);
+                if (filled > 0) filled = filled - tank.fill(resource, action);
+                if (filled == 0) return 0;
+            }
+        }*/
         for(T tank : tanks) {
-             filled = tank.fill(resource, FluidAction.SIMULATE);
+            int filled;
+            filled = tank.fill(resource, FluidAction.SIMULATE);
             if(filled > 0) {
                 filled = tank.fill(resource, action);
                 return filled;
@@ -128,7 +141,6 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
         return FluidStack.EMPTY;
     }
     //endregion
-
     //region Transfer stuff forced
     @Override
     public FluidStack drainForced(int i, FluidAction fluidAction) {

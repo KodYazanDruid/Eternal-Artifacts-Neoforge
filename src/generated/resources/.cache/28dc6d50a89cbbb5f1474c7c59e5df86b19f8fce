@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-09T15:21:41.6065619	vanilla/Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-10-03T22:52:49.0126325	vanilla/Tags for minecraft:block mod id eternalartifacts
 ac1bf6404c14e187fcaa7abdd95e02398a3f3e9d data/eternalartifacts/tags/blocks/drum.json
 bd02464e1c960573d4213bff84b83f239b8f0947 data/eternalartifacts/tags/blocks/mineable/glasscutter.json
 a4e8097fff07f9a74259d6b5dd583f3437ff28a2 data/eternalartifacts/tags/blocks/mineable/grafter.json
@@ -24,7 +24,7 @@ f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/minecraft/tags/blocks/gold_ores.js
 68d4c4d8353ed023f21dfe1e709e11508e65a29c data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
 d878eee38f8135e5fcb0fcf6d87bcbfbdfe235e8 data/minecraft/tags/blocks/needs_diamond_tool.json
-754f0632484c8a33c6e62063adb0bc323aed633d data/minecraft/tags/blocks/needs_iron_tool.json
-7ba40ce6ef55d19bcd909bc8b07d61ca2e75931f data/minecraft/tags/blocks/needs_stone_tool.json
+8affe3b7f698367526c2ab1b9379a7213943328c data/minecraft/tags/blocks/needs_iron_tool.json
+a583cf3a7603fd552a49343345af89c1dfc7915f data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 e976c787c2d91c7198ff0281881d398cb0810a1f data/minecraft/tags/blocks/small_flowers.json

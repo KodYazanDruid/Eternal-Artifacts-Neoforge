@@ -2,15 +2,19 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
+import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<GenericMachineMenu>{
     private final GenericMachineBlockEntity machine;
@@ -24,12 +28,20 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
     @Override
     protected void init() {
         super.init();
-        screenInfo.getButtons().forEach(info -> {
-            addRenderableWidget(CustomRenderButton
-                    .builder(Component.empty(), (button, key) -> info.onPress().accept(button, key), info.tex())
+        for (int i = 0; i < screenInfo.getButtons().size(); i++) {
+            CustomRenderButtonInfo info = screenInfo.getButtons().get(i);
+            int finalI = i;
+            addRenderableWidget(SpriteButton
+                    .builder(Component.empty(), (button, key) -> handleButtonPress(button, key, finalI, info.onPress()), info.tex())
                     .size(info.width(), info.height())
                     .pos(leftPos + info.x(), topPos + info.y()).build());
-        });
+        }
+
+    }
+
+    private void handleButtonPress(SpriteButton button, int key, int index, BiConsumer<SpriteButton, Integer> onPress) {
+        onPress.accept(button, key);
+        Channel.sendToServer(new BlockEntityButtonPress(machine.getBlockPos(), key, index));
     }
 
     @Override

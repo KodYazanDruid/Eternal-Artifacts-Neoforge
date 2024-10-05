@@ -18,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,7 +48,10 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -159,6 +163,9 @@ public class CommonEvents {
         }
     }
 
+    private static final Set<BlockPos> TREE_CHOP = new HashSet<>();
+    private static final Set<BlockPos> ORE_BREAK = new HashSet<>();
+
     @SubscribeEvent
     public static void mineEvent(BlockEvent.BreakEvent event) {
         if(event.getLevel().isClientSide()) return;
@@ -167,10 +174,16 @@ public class CommonEvents {
         BlockPos pos = event.getPos();
         BlockState soil = level.getBlockState(pos.below());
         ItemStack stack = player.getMainHandItem();
+
         //Tree chopping.
-        if(BlockHelper.isLog(level, pos) && stack.getItem() instanceof AxeOfRegrowthItem){
+        if(BlockHelper.isLog(level, pos) && stack.getItem() instanceof AxeOfRegrowthItem &&
+                player instanceof ServerPlayer serverPlayer &&
+                !TREE_CHOP.contains(pos)){
+
             event.setCanceled(true);
-            List<ItemStack> drops = AutomationHelper.doTreeHarvest(level, pos, stack, null);
+            //TREE_CHOP.add(pos);
+            List<ItemStack> drops = AutomationHelper.doTreeHarvest(level, pos, stack, null, serverPlayer);
+            //TREE_CHOP.remove(pos);
             ItemStack sapling = ItemStack.EMPTY;
             boolean saplingSetted = false;
 
@@ -180,23 +193,25 @@ public class CommonEvents {
                     drops.remove(is);
                     saplingSetted = true;
                 }
-                ItemHandlerHelper.giveItemToPlayer(player, is);
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                ItemHandlerHelper.giveItemToPlayer(serverPlayer, is);
             }
             if (sapling.getItem() instanceof BlockItem bi &&
                     bi.getBlock() instanceof SaplingBlock saplingBlock &&
                     soil.canSustainPlant(level, pos, Direction.UP, saplingBlock)) {
                 level.setBlockAndUpdate(pos, saplingBlock.defaultBlockState());
-                //level.scheduleTick(pos, saplingBlock, 1);
             }
         }
         //Ore breaking.
-        if(BlockHelper.isOre(level, pos) && stack.getItem() instanceof ChloroveinPickaxeItem) {
+        if(BlockHelper.isOre(level, pos) && stack.getItem() instanceof ChloroveinPickaxeItem &&
+                player instanceof ServerPlayer serverPlayer &&
+                !ORE_BREAK.contains(pos)) {
+
             event.setCanceled(true);
-            List<ItemStack> drops = AutomationHelper.doOreVeinMine(level, pos, stack, null);
+            ORE_BREAK.add(pos);
+            List<ItemStack> drops = AutomationHelper.doOreVeinMine(level, pos, stack, null, serverPlayer);
+            ORE_BREAK.remove(pos);
             for (ItemStack is : drops) {
-                ItemHandlerHelper.giveItemToPlayer(player, is);
-                stack.hurtAndBreak(1, player, p -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+                ItemHandlerHelper.giveItemToPlayer(serverPlayer, is);
             }
         }
 

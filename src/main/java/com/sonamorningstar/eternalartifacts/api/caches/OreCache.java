@@ -1,19 +1,24 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public class OreCache {
+    @Getter
     private Queue<BlockPos> oreCache;
     private Level level;
     private BlockPos current;
@@ -31,19 +36,24 @@ public class OreCache {
         this.minedOre = level.getBlockState(current).getBlock();
     }
 
-    public List<ItemStack> mine(Queue<BlockPos> cache) {
+    public List<ItemStack> mine(Queue<BlockPos> cache, @Nullable ServerPlayer player) {
         BlockPos p = cache.peek();
         NonNullList<ItemStack> stacks = NonNullList.create();
+        if (p == null) return stacks;
         if (BlockHelper.isOre(level, p)) {
-            stacks.addAll(BlockHelper.getBlockDrops((ServerLevel) level, p, tool, blockEntity));
-            level.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
+            boolean isMined;
+            if (player != null) isMined = player.gameMode.destroyBlock(p);
+            else {
+                isMined = true;
+                level.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
+            }
+
+            if (isMined) stacks.addAll(BlockHelper.getBlockDrops((ServerLevel) level, p, tool, blockEntity));
+            /*if (player != null && hand != null && tool != null && !tool.isEmpty())
+                tool.hurtAndBreak(1, player, pl -> pl.broadcastBreakEvent(hand));*/
         }
         cache.poll();
         return stacks;
-    }
-
-    public Queue<BlockPos> getOreCache() {
-        return oreCache;
     }
 
     public void scanForOreVein() {

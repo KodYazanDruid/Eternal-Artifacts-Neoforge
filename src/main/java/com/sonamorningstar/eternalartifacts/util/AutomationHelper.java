@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.api.caches.TreeCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BambooStalkBlock;
@@ -39,28 +40,31 @@ public class AutomationHelper {
         return totalDrops;
     }
 
-    public static List<ItemStack> doTreeHarvest(Level level, BlockPos pos, @Nullable ItemStack axe, @Nullable BlockEntity blockEntity) {
+    public static List<ItemStack> doTreeHarvest(Level level, BlockPos pos,
+                                            @Nullable ItemStack axe, @Nullable BlockEntity blockEntity,
+                                            @Nullable ServerPlayer player) {
         TreeCache cache = new TreeCache(level, pos, axe, blockEntity);
         cache.scanForTreeBlockSection();
 
         NonNullList<ItemStack> totalDrops = NonNullList.create();
 
         while(!cache.getLeavesCache().isEmpty() || !cache.getWoodCache().isEmpty()) {
-            if(!cache.getLeavesCache().isEmpty()) totalDrops.addAll(cache.chop(cache.getLeavesCache()));
-            else totalDrops.addAll(cache.chop(cache.getWoodCache()));
+            if(!cache.getLeavesCache().isEmpty()) totalDrops.addAll(cache.chop(cache.getLeavesCache(), player));
+            else totalDrops.addAll(cache.chop(cache.getWoodCache(), player));
         }
 
         return totalDrops;
     }
 
-    public static List<ItemStack> doOreVeinMine(Level level, BlockPos pos, @Nullable ItemStack pickaxe, @Nullable BlockEntity blockEntity) {
+    public static List<ItemStack> doOreVeinMine(Level level, BlockPos pos,
+                                            @Nullable ItemStack pickaxe, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
         OreCache cache = new OreCache(level, pos, pickaxe, blockEntity);
         cache.scanForOreVein();
 
         NonNullList<ItemStack> totalDrops = NonNullList.create();
 
         while(!cache.getOreCache().isEmpty()) {
-            totalDrops.addAll(cache.mine(cache.getOreCache()));
+            totalDrops.addAll(cache.mine(cache.getOreCache(), player));
         }
 
         return totalDrops;

@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.network;
+package com.sonamorningstar.eternalartifacts.network.endernotebook;
 
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.nbt.CompoundTag;

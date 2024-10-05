@@ -10,17 +10,18 @@ public class WarpPageHandler {
     private final List<Warp> warpList;
     private final int warpsPerPage;
     private int pageSize;
+    private float pageSizeFloat;
     private int currentPage = 0;
 
-    public WarpPageHandler(List<Warp> warpsList, int warpsPerPage) {
-        this.warpList = warpsList;
+    public WarpPageHandler(List<Warp> warpList, int warpsPerPage) {
+        this.warpList = warpList;
         this.warpsPerPage = warpsPerPage;
-        this.pageSize = warpsList.size() / warpsPerPage;
+        this.pageSize = warpList.size() / warpsPerPage;
+        this.pageSizeFloat = (float) warpList.size() / warpsPerPage;
     }
 
     public void addWarp(Warp warp) {
         warpList.add(warp);
-        //warp.deleteLogic = (button, key) -> deleteWarp(warp);
         recalculatePageSize();
     }
 
@@ -40,6 +41,7 @@ public class WarpPageHandler {
 
     public void recalculatePageSize() {
         this.pageSize = warpList.size() / warpsPerPage;
+        this.pageSizeFloat = (float) warpList.size() / warpsPerPage;
     }
 
     public void turnPageRight() {
@@ -49,6 +51,10 @@ public class WarpPageHandler {
         currentPage = Math.max(currentPage -1, 0);
     }
 
+    public int getWarpCount() {
+        return warpList.size();
+    }
+
     public List<Warp> getCurrentWarps() {
         int startIndex = currentPage * warpsPerPage;
         int endIndex = Math.min(startIndex + warpsPerPage, warpList.size());
@@ -56,7 +62,4 @@ public class WarpPageHandler {
         for (int i = startIndex; i < endIndex; i++) currentPageWarps.add(warpList.get(i));
         return currentPageWarps;
     }
-
-
-
 }

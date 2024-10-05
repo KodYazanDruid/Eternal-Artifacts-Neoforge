@@ -3,10 +3,13 @@ package com.sonamorningstar.eternalartifacts.client.resources.model.util;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
+import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
+import net.minecraft.client.renderer.texture.SpriteContents;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.client.resources.model.MultiPartBakedModel;
@@ -49,8 +52,14 @@ public class ModelHelper {
     }
 
     public static ResourceLocation getParticleTextureInternal(Block block) {
-        TextureAtlasSprite particle = Minecraft.getInstance().getModelManager().getBlockModelShaper().getBlockModel(block.defaultBlockState()).getParticleIcon();
-        if(particle != null) return particle.contents().name();
+        TextureAtlasSprite particle = Minecraft.getInstance().getModelManager()
+                .getBlockModelShaper().getBlockModel(block.defaultBlockState()).getParticleIcon(RetexturedHelper.getModelData(block));
+        if(particle != null) {
+            /*try(SpriteContents contents = particle.contents()) {
+                return contents.name();
+            }*/
+            return particle.contents().name();
+        }
         return MissingTextureAtlasSprite.getLocation();
     }
 

@@ -22,8 +22,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class EnderPouchItem extends ArtifactItem {
-    public EnderPouchItem(Properties pProperties) {
+public class EnderKnapsackItem extends ArtifactItem {
+    public EnderKnapsackItem(Properties pProperties) {
         super(pProperties);
     }
 

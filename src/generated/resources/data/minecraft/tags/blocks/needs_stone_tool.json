@@ -11,6 +11,16 @@
     "eternalartifacts:raw_manganese_block",
     "eternalartifacts:copper_drum",
     "eternalartifacts:iron_drum",
-    "eternalartifacts:asphalt_block"
+    "eternalartifacts:asphalt_block",
+    "eternalartifacts:mob_liquifier",
+    "eternalartifacts:meat_shredder",
+    "eternalartifacts:meat_packer",
+    "eternalartifacts:fluid_infuser",
+    "eternalartifacts:industrial_macerator",
+    "eternalartifacts:melting_crucible",
+    "eternalartifacts:material_squeezer",
+    "eternalartifacts:alloy_smelter",
+    "eternalartifacts:oil_refinery",
+    "eternalartifacts:induction_furnace"
   ]
 }

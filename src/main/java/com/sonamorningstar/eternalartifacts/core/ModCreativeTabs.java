@@ -1,14 +1,11 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.content.block.GardeningPotBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -24,13 +21,14 @@ public class ModCreativeTabs {
             .icon(ModItems.ORANGE.get()::getDefaultInstance)
             .displayItems((parameters, output) -> {
                 for(DeferredHolder<Item, ? extends Item> item : ModItems.ITEMS.getEntries()) {
-                    if(item.get() instanceof RetexturedBlockItem pot) pot.fillItemCategory(output);
+                    if(item.get() instanceof RetexturedBlockItem ret) ret.fillItemCategory(output);
                     else output.accept(item.get());
                 }
-                for(DeferredHolder<Block, ? extends Block> block : ModBlocks.BLOCKS.getEntries()) {
-                    if(!(block.get() instanceof GardeningPotBlock) && !(block.get() instanceof LiquidBlock)) {
-                        output.accept(block.get());
-                    }
+                for (var machineHolder : ModMachines.MACHINES.getMachines()) {
+                    output.accept(machineHolder.getItem());
+                }
+                for (var bucketHolder : ModFluids.FLUIDS.getBucketEntries()) {
+                    output.accept(bucketHolder.get());
                 }
             }).build());
 

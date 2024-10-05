@@ -63,14 +63,14 @@ public class ColoredBlockModel extends SimpleBlockModel{
         int size = elements.size();
         IQuadTransformer quadTransformer = applyTransform(transform, owner.getRootTransform());
         Transformation transformation = transform.getRotation();
-        boolean uvlock = transform.isUvLocked();
+        boolean uvLock = transform.isUvLocked();
         for(int i = 0; i < size; i++) {
             BlockElement part = elements.get(i);
             ColorData colors = LogicHelper.getOrDefault(colorData, i, ColorData.DEFAULT);
             if(colors.luminosity != -1 && !location.equals(BAKE_LOCATION)) EternalArtifacts.LOGGER.warn("Deprecated");
 
             IQuadTransformer partTransformer = colors.color == -1 ? quadTransformer : quadTransformer.andThen(applyColorQuadTransformer(colors.color));
-            bakePart(builder, owner, part, colors.luminosity, spriteGetter, transformation, partTransformer, colors.isUvlock(uvlock), location);
+            bakePart(builder, owner, part, colors.luminosity, spriteGetter, transformation, partTransformer, colors.isUvlock(uvLock), location);
         }
         return builder.build(getRenderTypeGroup(owner));
     }
@@ -85,7 +85,7 @@ public class ColoredBlockModel extends SimpleBlockModel{
         return bakeModel(owner, getElements(), colorData, Material::sprite, transform, ItemOverrides.EMPTY, BAKE_LOCATION);
     }
 
-    public record ColorData(int color, int luminosity, @Nullable Boolean uvlock) {
+    public record ColorData(int color, int luminosity, @Nullable Boolean uvlock)    {
         public static final ColorData DEFAULT = new ColorData(-1, -1, null);
 
         public boolean isUvlock(boolean defaultLock) {
@@ -96,8 +96,7 @@ public class ColoredBlockModel extends SimpleBlockModel{
         public static ColorData fromJson(JsonObject json){
             String key = "color";
             JsonElement element = json.get("key");
-
-            int color = element != null || !element.isJsonNull() ? parseString(GsonHelper.convertToString(json, key), key) : -1;
+            int color = element != null || !element.isJsonNull() ? parseString(GsonHelper.convertToString(element, key), key) : -1;
             int luminosity = GsonHelper.getAsInt(json, "luminosity", -1);
             Boolean uvlock = null;
             if(json.has("uvlock")) {
@@ -109,9 +108,9 @@ public class ColoredBlockModel extends SimpleBlockModel{
         private static Integer parseString(String color, String key) {
             if(color.charAt(0) != '-') {
                 try {
-                    int lenght = color.length();
-                    if(lenght == 8) return (int)Long.parseLong(color, 16);
-                    if(lenght == 6) return 0xFF000000 | Integer.parseInt(color, 16);
+                    int length = color.length();
+                    if(length == 8) return (int)Long.parseLong(color, 16);
+                    if(length == 6) return 0xFF000000 | Integer.parseInt(color, 16);
                 } catch (NumberFormatException ex) {
                     //Bombaclat
                 }
@@ -166,10 +165,9 @@ public class ColoredBlockModel extends SimpleBlockModel{
         if(rotation == null) FACE_BAKERY.recalculateWinding(vertexData, direction);
         ClientHooks.fillNormal(vertexData, direction);
 
-
         BakedQuad quad = new BakedQuad(vertexData, face.tintIndex, direction, sprite, shade);
         if(emissivity == -1) emissivity = face.getFaceData().blockLight();
-        else if(emissivity > 0) QuadTransformers.settingEmissivity(emissivity).processInPlace(quad);
+        if(emissivity > 0) QuadTransformers.settingEmissivity(emissivity).processInPlace(quad);
 
         return quad;
     }

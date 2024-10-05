@@ -105,40 +105,7 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     }
 
     @Override
-    public boolean hasDynamicLightEmission(BlockState state) {
-        return true;
-    }
-
-    @Override
-    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {return false;}
-
-    @Override
-    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        BlockEntity entity = level.getBlockEntity(pos);
-        if(entity instanceof GardeningPotEntity potEntity) {
-            BlockState light = RetexturedHelper.getBlock(potEntity.getTextureName()).defaultBlockState();
-            return light.getLightEmission(level, pos);
-        }
-        return super.getLightEmission(state, level, pos);
-    }
-
-    @Override
-    public float getShadeBrightness(BlockState state, BlockGetter level, BlockPos pos) {
-        BlockEntity entity = level.getBlockEntity(pos);
-        if(entity instanceof IRetexturedBlockEntity retexture) {
-            BlockState texture = RetexturedHelper.getBlock(retexture.getTextureName()).defaultBlockState();
-            return texture.getShadeBrightness(level, pos);
-        }else return super.getShadeBrightness(state, level, pos);
-    }
-
-    @Override
-    public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-        BlockEntity entity = level.getBlockEntity(pos);
-        if(entity instanceof IRetexturedBlockEntity retexture) {
-            BlockState texture = RetexturedHelper.getBlock(retexture.getTextureName()).defaultBlockState();
-            return texture.getLightBlock(level, pos);
-        }else return super.getLightBlock(state, level, pos);
-    }
+    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {return true;}
 
     @Nullable
     @Override

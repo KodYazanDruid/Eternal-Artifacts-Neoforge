@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
-import com.sonamorningstar.eternalartifacts.client.gui.widget.CustomRenderButton;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
@@ -10,12 +10,10 @@ import com.sonamorningstar.eternalartifacts.network.SidedTransferSideSaveToServe
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +28,9 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     @Setter
     private boolean redstoneControllable = true;
     private boolean sidedTransferBarActive;
-    private final List<CustomRenderButton> sideSetters = new ArrayList<>(6);
-    private final List<CustomRenderButton> autoSetters = new ArrayList<>(4);
-    private final List<CustomRenderButton> redstoneSetters = new ArrayList<>(1);
+    private final List<SpriteButton> sideSetters = new ArrayList<>(6);
+    private final List<SpriteButton> autoSetters = new ArrayList<>(4);
+    private final List<SpriteButton> redstoneSetters = new ArrayList<>(1);
     private static final ResourceLocation allow = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/allow.png");
     private static final ResourceLocation deny = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/deny.png");
     private static final ResourceLocation input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/input.png");
@@ -58,24 +56,24 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         super.init();
         for (int i = 0; i < 6; i++) {
             int finalI = i;
-            sideSetters.add(CustomRenderButton.builder(Component.empty(), (button, key) -> buttonSideSet(button, key, finalI), allow).size(9, 9).build());
+            sideSetters.add(SpriteButton.builder(Component.empty(), (button, key) -> buttonSideSet(button, key, finalI), allow).size(9, 9).build());
             addRenderableWidget(sideSetters.get(i));
         }
         for (int i = 0; i < 4; i++) {
             int finalI = i;
-            autoSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), (button, key) -> buttonAutoSet(button, key, finalI)).size(9, 9).build());
+            autoSetters.add(SpriteButton.builderNoTexture(Component.empty(), (button, key) -> buttonAutoSet(button, key, finalI)).size(9, 9).build());
             addRenderableWidget(autoSetters.get(i));
         }
         if(redstoneControllable){
             for (int i = 0; i < 1; i++) {
                 int finalI = i;
-                redstoneSetters.add(CustomRenderButton.builderNoTexture(Component.empty(), (button, key) -> buttonRedstoneSet(button, key, finalI)).size(9, 9).build());
+                redstoneSetters.add(SpriteButton.builderNoTexture(Component.empty(), (button, key) -> buttonRedstoneSet(button, key, finalI)).size(9, 9).build());
                 addRenderableWidget(redstoneSetters.get(i));
             }
         }
     }
 
-    private void buttonSideSet(CustomRenderButton button, int key, int index) {
+    private void buttonSideSet(SpriteButton button, int key, int index) {
         SidedTransferMachineBlockEntity.TransferType type;
         switch (key) {
             case 1 -> type = SidedTransferMachineBlockEntity.TransferType.cyclePrev(index, sidedTransferMachineBlockEntity);
@@ -85,12 +83,12 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         Channel.sendToServer(new SidedTransferSideSaveToServer(index, type, sidedTransferMachineBlockEntity.getBlockPos()));
     }
 
-    private void buttonAutoSet(CustomRenderButton button, int key, int index) {
+    private void buttonAutoSet(SpriteButton button, int key, int index) {
         boolean auto = sidedTransferMachineBlockEntity.getAutoConfigs().get(index) != null && sidedTransferMachineBlockEntity.getAutoConfigs().get(index);
         Channel.sendToServer(new SidedTransferAutoSaveToServer(index, !auto, sidedTransferMachineBlockEntity.getBlockPos()));
     }
 
-    private void buttonRedstoneSet(CustomRenderButton button, int key, int index) {
+    private void buttonRedstoneSet(SpriteButton button, int key, int index) {
         SidedTransferMachineBlockEntity.RedstoneType type;
         switch (key) {
             case 1 -> type = SidedTransferMachineBlockEntity.RedstoneType.cyclePrev(index, sidedTransferMachineBlockEntity);
@@ -117,7 +115,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         for (int i = 0; i < sideSetters.size(); i++) {
             if (sideSetters.get(i).visible) {
                 Map<Integer, SidedTransferMachineBlockEntity.TransferType> side = sidedTransferMachineBlockEntity.getSideConfigs();
-                CustomRenderButton button = sideSetters.get(i);
+                SpriteButton button = sideSetters.get(i);
                 String direction = "";
                 switch (i) {
                     case 0 -> direction = "up";
@@ -138,7 +136,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         for (int i = 0; i < autoSetters.size(); i++) {
             if (autoSetters.get(i).visible) {
                 Map<Integer, Boolean> auto = sidedTransferMachineBlockEntity.getAutoConfigs();
-                CustomRenderButton button = autoSetters.get(i);
+                SpriteButton button = autoSetters.get(i);
                 boolean value = auto.get(i) != null && auto.get(i);
                 boolean isAuto = i == 0 || i == 1;
                 String type = "";
@@ -159,7 +157,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
         for (int i = 0; i < redstoneSetters.size(); i++) {
             if (redstoneSetters.get(i).visible) {
                 Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstone = sidedTransferMachineBlockEntity.getRedstoneConfigs();
-                CustomRenderButton button = redstoneSetters.get(i);
+                SpriteButton button = redstoneSetters.get(i);
                 if(isCursorInBounds(button.getX(), button.getY(), button.getWidth(), button.getHeight(), mx, my)){
                     guiGraphics.renderTooltip(font,
                             ModConstants.GUI.withSuffixTranslatable("redstone")

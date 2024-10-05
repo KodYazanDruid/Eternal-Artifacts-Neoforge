@@ -12,6 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -102,14 +104,10 @@ public class ModItems {
     public static final DeferredItem<Item> DEMONIC_TABLET = register("demonic_tablet");
     public static final DeferredItem<Item> SLOT_LOCK = registerStacksToOne("slot_lock");
 
-    public static final DeferredItem<Item> DEMON_EYE_SPAWN_EGG = register("demon_eye_spawn_egg",
-            ()-> new DeferredSpawnEggItem(ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212, new Item.Properties()));
-    public static final DeferredItem<Item> PINKY_SPAWN_EGG = register("pinky_spawn_egg",
-            ()-> new DeferredSpawnEggItem(ModEntities.PINKY, 0xE8B3E2, 0xC062B3, new Item.Properties()));
-    public static final DeferredItem<Item> MAGICAL_BOOK_SPAWN_EGG = register("magical_book_spawn_egg",
-            ()-> new DeferredSpawnEggItem(ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802, new Item.Properties()));
-    public static final DeferredItem<Item> DUCK_SPAWN_EGG = register("duck_spawn_egg",
-            ()-> new DeferredSpawnEggItem(ModEntities.DUCK, 0x126700, 0xF2691B, new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
+    public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
+    public static final DeferredItem<DeferredSpawnEggItem> MAGICAL_BOOK_SPAWN_EGG = registerSpawnEgg("magical_book_spawn_egg", ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802);
+    public static final DeferredItem<DeferredSpawnEggItem> DUCK_SPAWN_EGG = registerSpawnEgg("duck_spawn_egg", ModEntities.DUCK, 0x126700, 0xF2691B);
 
     //Actual artifacts.
     public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger", HolyDaggerItem::new);
@@ -117,7 +115,7 @@ public class ModItems {
     public static final DeferredItem<Item> FROG_LEGS = registerStacksToOne("frog_legs", FrogLegsItem::new);
     public static final DeferredItem<Item> MAGIC_FEATHER = registerStacksToOne("magic_feather", MagicFeatherItem::new);
     public static final DeferredItem<Item> ENCUMBATOR = registerStacksToOne("encumbator", EncumbatorItem::new);
-    public static final DeferredItem<Item> ENDER_POUCH = registerStacksToOne("ender_pouch", EnderPouchItem::new);
+    public static final DeferredItem<Item> ENDER_KNAPSACK = registerStacksToOne("ender_knapsack", EnderKnapsackItem::new);
     public static final DeferredItem<Item> PORTABLE_CRAFTER = registerStacksToOne("portable_crafter", PortableCrafterItem::new);
     public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes", ComfyShoesItem::new);
     public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
@@ -179,6 +177,10 @@ public class ModItems {
 
     private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func, Item.Properties props) {
         return props == null ? register(name, func) : ITEMS.register(name, ()-> func.apply(props));
+    }
+
+    private static DeferredItem<DeferredSpawnEggItem> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int background, int highlight) {
+        return register(name, ()-> new DeferredSpawnEggItem(type, background, highlight, new Item.Properties()));
     }
 
     private static DeferredItem<Item> registerStacksToOne(String name) {

@@ -15,16 +15,16 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record EnderNotebookTeleportToServer(ResourceKey<Level> target, BlockPos pos) implements CustomPacketPayload {
+public record PlayerTeleportToServer(ResourceKey<Level> target, BlockPos pos) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "endernotebook_teleport");
 
-    public static EnderNotebookTeleportToServer create(FriendlyByteBuf buf) {
-        return new EnderNotebookTeleportToServer(buf.readResourceKey(Registries.DIMENSION), buf.readBlockPos());
+    public static PlayerTeleportToServer create(FriendlyByteBuf buf) {
+        return new PlayerTeleportToServer(buf.readResourceKey(Registries.DIMENSION), buf.readBlockPos());
     }
 
-    public static EnderNotebookTeleportToServer create(ResourceKey<Level> dimension, BlockPos pos) {
-        return new EnderNotebookTeleportToServer(dimension, pos);
+    public static PlayerTeleportToServer create(ResourceKey<Level> dimension, BlockPos pos) {
+        return new PlayerTeleportToServer(dimension, pos);
     }
 
     @Override

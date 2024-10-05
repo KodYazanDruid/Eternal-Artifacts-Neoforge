@@ -8,6 +8,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
 
 public class LanguageProvider extends net.neoforged.neoforge.common.data.LanguageProvider {
     String locale;
@@ -40,7 +41,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MEAT_INGOT.get(), "Meat Ingot");
                 add(ModItems.PINK_SLIME.get(), "Pink Slime");
                 add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Spawn Egg");
-                add(ModItems.ENDER_POUCH.get(), "Ender Pouch");
+                add(ModItems.ENDER_KNAPSACK.get(), "Ender Knapsack");
                 add(ModItems.PORTABLE_CRAFTER.get(), "Portable Crafter");
                 add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Golden Ancient Fruit");
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Enchanted Golden Ancient Fruit");
@@ -215,12 +216,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Add Copper tool");
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Chlorophyte Ingot");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Chlorophyte Upgrade");
-                add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Meat Packing");
+                /*add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Meat Packing");
                 add("emi.category."+MODID+".meat_shredding", "Meat Shredding");
-                add("emi.category."+MODID+".mob_liquifying", "Mob Liquifying");
+                add("emi.category."+MODID+".mob_liquifying", "Mob Liquifying");*/
                 add(ModConstants.GUI.withSuffix("energy"), "Energy");
                 add(ModConstants.GUI.withSuffix("fluid"), "Fluid");
-                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("addwarp"), "Add Warp");
+                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("add_warp"), "Add Warp");
                 add(ModConstants.WARPS.getString(), "Warps:");
                 add(ModConstants.GUI.withSuffix("progress"), "Progress");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Burn Time");
@@ -250,11 +251,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("left_click_transfer"), "Left Click to take the fluid.");
                 add(ModConstants.GUI.withSuffix("right_click_transfer"), "Right Click to deposit the fluid.");
                 add(ModConstants.GUI.withSuffix("deposit_1_level"), "Deposit 1 level.");
-                add(ModConstants.GUI.withSuffix("deposit_10_level"), "Deposit 10 levels.");
+                add(ModConstants.GUI.withSuffix("deposit_10_levels"), "Deposit 10 levels.");
                 add(ModConstants.GUI.withSuffix("deposit_all_levels"), "Deposit all levels.");
                 add(ModConstants.GUI.withSuffix("take_1_level"), "Take 1 level.");
-                add(ModConstants.GUI.withSuffix("take_10_level"), "Take 10 levels.");
+                add(ModConstants.GUI.withSuffix("take_10_levels"), "Take 10 levels.");
                 add(ModConstants.GUI.withSuffix("take_all_levels"), "Take all levels.");
+                add(ModConstants.GUI.withSuffix("rename_warp"), "Rename warp.");
+                add(ModConstants.GUI.withSuffix("delete_warp"), "Delete warp.");
+                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Rename");
+                add(ModConstants.GUI.withSuffix("renaming"), "Renaming...");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -289,7 +294,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MEAT_INGOT.get(), "Et Külçesi");
                 add(ModItems.PINK_SLIME.get(), "Pembe Balçık");
                 add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Çağırma Yumurtası");
-                add(ModItems.ENDER_POUCH.get(), "Ender Çantası");
+                add(ModItems.ENDER_KNAPSACK.get(), "Ender Çantası");
                 add(ModItems.PORTABLE_CRAFTER.get(), "Taşınabilir Üretim Masası");
                 add(ModItems.GOLDEN_ANCIENT_FRUIT.get(), "Altın Antik Meyve");
                 add(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT.get(), "Büyülü Altın Antik Meyve");
@@ -503,12 +508,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Bakır alet ekleyin.");
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Klorofit Külçesi");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Klorofit Yükseltmesi");
-                add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Et Paketleme");
+                /*add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Et Paketleme");
                 add("emi.category."+MODID+".meat_shredding", "Et Parçalama");
-                add("emi.category."+MODID+".mob_liquifying", "Yaratık Sıvılaştırma");
+                add("emi.category."+MODID+".mob_liquifying", "Yaratık Sıvılaştırma");*/
                 add(ModConstants.GUI.withSuffix("energy"), "Enerji");
                 add(ModConstants.GUI.withSuffix("fluid"), "Sıvı");
-                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("addwarp"), "Işınlama Ekle");
+                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("add_warp"), "Işınlama Ekle");
                 add(ModConstants.WARPS.getString(), "Işınlanmalar:");
                 add(ModConstants.GUI.withSuffix("progress"), "İlerleme");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Yanma Zamanı");
@@ -543,16 +548,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("take_1_level"), "1 seviye al.");
                 add(ModConstants.GUI.withSuffix("take_10_levels"), "10 seviye al.");
                 add(ModConstants.GUI.withSuffix("take_all_levels"), "Tüm seviyeleri al.");
+                add(ModConstants.GUI.withSuffix("rename_warp"), "Işınlayıcıyı yeniden adlandır.");
+                add(ModConstants.GUI.withSuffix("delete_warp"), "Işınlayıcıyı sil.");
+                add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Yeniden Adlandır");
+                add(ModConstants.GUI.withSuffix("renaming"), "Yeniden adlandırılıyor...");
                 //endregion
             }
         }
-    }
-
-    private String prettyName(String path) {
-        String displayName = path.replace('_', ' ');
-        String[] pathWords = displayName.split("\\s");
-        StringBuilder prettyPath = new StringBuilder();
-        for(String word : pathWords) prettyPath.append(Character.toTitleCase(word.charAt(0))).append(word.substring(1)).append(" ");
-        return prettyPath.toString().trim();
     }
 }

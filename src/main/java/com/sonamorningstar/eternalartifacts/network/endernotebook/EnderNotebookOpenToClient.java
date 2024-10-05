@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.network;
+package com.sonamorningstar.eternalartifacts.network.endernotebook;
 
 import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import net.minecraft.network.FriendlyByteBuf;

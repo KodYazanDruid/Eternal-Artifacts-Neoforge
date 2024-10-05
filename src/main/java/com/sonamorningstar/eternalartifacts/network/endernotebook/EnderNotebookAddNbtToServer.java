@@ -1,11 +1,9 @@
-package com.sonamorningstar.eternalartifacts.network;
+package com.sonamorningstar.eternalartifacts.network.endernotebook;
 
-import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceKey;
@@ -44,18 +42,7 @@ public record EnderNotebookAddNbtToServer(String name, ResourceKey<Level> dimens
     public void handle(PlayPayloadContext ctx) {
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             if(book.is(ModItems.ENDER_NOTEBOOK)) {
-                ListTag listTag =  book.getTag() != null ? book.getTag().getList("Warps", 10) : new ListTag();
-
-                CompoundTag singleWarp = new CompoundTag();
-                singleWarp.putString("Name", name);
-                singleWarp.putString("Dimension", dimension.location().toString());
-                singleWarp.putInt("X", position.getX());
-                singleWarp.putInt("Y", position.getY());
-                singleWarp.putInt("Z", position.getZ());
-                listTag.add(singleWarp);
-
-                CompoundTag tag = book.getOrCreateTag();
-                tag.put("Warps", listTag);
+                EnderNotebookItem.addWarp(book, name, dimension, position);
             }
         }));
     }

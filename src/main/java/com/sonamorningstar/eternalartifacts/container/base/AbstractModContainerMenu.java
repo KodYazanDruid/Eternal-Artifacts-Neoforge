@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.container.base;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
+import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -66,9 +67,10 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
                     FluidStack emptied = emptyContainer(slot, containerTank, player);
                     if (emptied.getAmount() > 0) {
                         container.shrink(1);
-                        if(!player.addItem(containerTank.getContainer())) {
+                        PlayerHelper.giveItemOrPop(player, containerTank.getContainer());
+                        /*if(!player.addItem(containerTank.getContainer())) {
                             popStackInLevel(player.level(), player.getX(), player.getY(), player.getZ(), containerTank.getContainer());
-                        }
+                        }*/
                     }
                 }
             }
@@ -111,9 +113,10 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
                     int filledAmount = fillContainer(slot, containerTank, player);
                     if (filledAmount > 0) {
                         container.shrink(1);
-                        if (!player.addItem(containerTank.getContainer())) {
+                        PlayerHelper.giveItemOrPop(player, containerTank.getContainer());
+                        /*if (!player.addItem(containerTank.getContainer())) {
                             popStackInLevel(player.level(), player.getX(), player.getY(), player.getZ(), containerTank.getContainer());
-                        }
+                        }*/
                     }
                 }
             }
@@ -141,7 +144,7 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         return 0;
     }
 
-    private void popStackInLevel(Level level, double x, double y, double z, ItemStack stack) {
+/*    private void popStackInLevel(Level level, double x, double y, double z, ItemStack stack) {
         if(stack.isEmpty()) return;
         double d0 = (double) EntityType.ITEM.getHeight() / 2.0;
         double d1 = x + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
@@ -149,5 +152,5 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         double d3 = z + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
         ItemEntity itemEntity = new ItemEntity(level, d1, d2, d3, stack);
         level.addFreshEntity(itemEntity);
-    }
+    }*/
 }
