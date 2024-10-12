@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:item/spell_tome",
+  "textures": {
+    "texture": "eternalartifacts:item/tornado_tome"
+  }
+}

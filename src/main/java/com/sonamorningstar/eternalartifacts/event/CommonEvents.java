@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.event;
 
 import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.Tornado;
 import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
@@ -59,10 +61,10 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class CommonEvents {
     @SubscribeEvent
     public static void anvilUpdateEvent(AnvilUpdateEvent event) {
-        if (event.getLeft().is(Items.APPLE)  && event.getRight().is(Items.ORANGE_DYE)) {
+        /*if (event.getLeft().is(Items.APPLE)  && event.getRight().is(Items.ORANGE_DYE)) {
             event.setCost(5);
             event.setOutput(new ItemStack(ModItems.ORANGE.get()));
-        }
+        }*/
     }
 
     //TODO: Do the data pack thing.
@@ -151,7 +153,6 @@ public class CommonEvents {
             player.hurtMarked = true;
             player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
         }
-
     }
 
     @SubscribeEvent
@@ -234,12 +235,21 @@ public class CommonEvents {
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         AttributeInstance stepHeight = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
+        AttributeInstance spellDamage = player.getAttribute(ModAttributes.SPELL_DAMAGE.get());
 
         if(!(player.hasItemInSlot(EquipmentSlot.FEET) && player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.COMFY_SHOES.get()))) {
             if(stepHeight != null && stepHeight.hasModifier(ComfyShoesItem.getStepHeight())) {
                 stepHeight.removeModifier(ComfyShoesItem.getStepHeight().getId());
             }
         }
+
+        /*if (!PlayerHelper.findItem(player, ModItems.ORANGE.get())) {
+            if (spellDamage != null && spellDamage.hasModifier(Spell.spellDamage)) {
+                spellDamage.removeModifier(Spell.spellDamage.getId());
+            }
+        }else if (spellDamage != null && !spellDamage.hasModifier(Spell.spellDamage)) {
+            spellDamage.addTransientModifier(Spell.spellDamage);
+        }*/
     }
 
     @SubscribeEvent

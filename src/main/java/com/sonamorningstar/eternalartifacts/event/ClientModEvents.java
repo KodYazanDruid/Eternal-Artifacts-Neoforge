@@ -11,15 +11,12 @@ import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLay
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.TntRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -104,6 +101,7 @@ public class ClientModEvents {
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModModelLayers.DEMON_EYE_LAYER, DemonEyeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.DUCK_LAYER, DuckModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.TORNADO_LAYER, TornadoModel::createBodyLayer);
 
         //event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
@@ -127,6 +125,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.DUCK.get(), DuckRenderer::new);
         event.registerEntityRenderer(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
         event.registerEntityRenderer(ModEntities.PRIMED_BLOCK.get(), TntRenderer::new);
+        event.registerEntityRenderer(ModEntities.TORNADO.get(), TornadoRenderer::new);
     }
 
     @SubscribeEvent

@@ -10,10 +10,16 @@ import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
+import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import net.minecraft.core.Direction;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -25,6 +31,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
@@ -33,7 +40,9 @@ import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.NewRegistryEvent;
 import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
@@ -85,16 +94,16 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedEnergyCaps(be, be.energy, ctx));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> regSidedItemCaps(be, be.inventory, ctx, null));
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedEnergyCaps(be, be.energy, ctx));
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, null));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
 
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> regSidedFluidCaps(be, be.tank, ctx));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
 
@@ -106,47 +115,6 @@ public class CommonModEvents {
             return lvl.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(dir.getOpposite()).relative(dir.getOpposite()), dir.getOpposite());
         }, ModBlocks.COPPER_CABLE.get());*/
 
-    }
-
-    @Contract("_, _, null, _ -> param2")
-    private static @org.jetbrains.annotations.Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
-        if (ctx != null) {
-            be.invalidateCapabilities();
-            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
-            return new WrappedItemStorage(inventory,
-                    i -> (outputSlots != null && outputSlots.contains(i)) &&
-                            SidedTransferMachineBlockEntity.canPerformTransfers(be, ctx, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isItemsAllowed(),
-                    (i, s) -> (outputSlots == null || !outputSlots.contains(i)) &&
-                            SidedTransferMachineBlockEntity.canPerformTransfers(be ,ctx, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isItemsAllowed());
-        } else return inventory;
-    }
-
-    @Contract("_, _, null -> param2")
-    private static @org.jetbrains.annotations.Nullable IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
-        if(ctx != null) {
-            be.invalidateCapabilities();
-            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
-            return new WrappedFluidStorage(tank,
-                    dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isFluidsAllowed(),
-                    (dir, fs) -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isFluidsAllowed(),
-                    ctx);
-        } else return tank;
-    }
-
-    @Contract("_, _, null -> param2")
-    private static @org.jetbrains.annotations.Nullable IEnergyStorage regSidedEnergyCaps(SidedTransferMachineBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
-        if(ctx != null) {
-            be.invalidateCapabilities();
-            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE)) return null;
-            return new WrappedEnergyStorage(energy,
-                    dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT),
-                    dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT),
-                    ctx);
-        }else return energy;
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
@@ -179,6 +147,12 @@ public class CommonModEvents {
         });
     }
 
+    @SubscribeEvent
+    public static void addAttributes(EntityAttributeModificationEvent event) {
+        event.add(EntityType.PLAYER, ModAttributes.SPELL_DAMAGE.get());
+        event.add(EntityType.PLAYER, ModAttributes.COOLDOWN_REDUCTION.get());
+    }
+
     private static void registerCauldronContextsForItemFluidHandlers(DeferredItem<?>... holders) {
         for(DeferredItem<?> holder : holders) {
             Item item = holder.get();
@@ -192,9 +166,9 @@ public class CommonModEvents {
         ModCauldronInteraction.PLASTIC.map().put(Items.BLUE_DYE, ModCauldronInteraction.DYE_PLASTIC);
     }
 
-/*    @SubscribeEvent
-    public static void addReloadListenersEvent(AddReloadListenerEvent event) {
-        event.addListener();
-    }*/
+    @SubscribeEvent
+    public static void newRegistryEvent(NewRegistryEvent event) {
+        event.register(ModRegistries.SPELL);
+    }
 
 }

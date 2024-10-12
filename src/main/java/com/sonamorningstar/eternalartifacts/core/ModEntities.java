@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.entity.*;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.Tornado;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -24,5 +25,9 @@ public class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<PrimedBlockEntity>> PRIMED_BLOCK = ENTITY_TYPES.register("primed_drum",
             ()-> EntityType.Builder.<PrimedBlockEntity>of(PrimedBlockEntity::new, MobCategory.MISC).fireImmune().sized(0.98f, 0.98f).clientTrackingRange(10).updateInterval(10).build("primed_drum"));
+
+    //Projectiles
+    public static final DeferredHolder<EntityType<?>, EntityType<Tornado>> TORNADO = ENTITY_TYPES.register("tornado",
+            ()-> EntityType.Builder.<Tornado>of(Tornado::new, MobCategory.MISC).fireImmune().sized(1.0f, 2.0f).clientTrackingRange(4).updateInterval(10).build("tornado"));
 
 }

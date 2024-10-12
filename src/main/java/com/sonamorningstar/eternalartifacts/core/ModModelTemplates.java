@@ -21,6 +21,7 @@ public class ModModelTemplates {
     public static ModelTemplate CABLE_INVENTORY = create("cable_inventory", "_inventory", TextureSlot.TEXTURE);
 
     public static ModelTemplate ENTITY_RENDER_TRANSFORMS = createItem("entity_renderer_transform");
+    public static ModelTemplate SPELL_TOME = createItem("spell_tome", TextureSlot.TEXTURE);
 
     private static ModelTemplate create(String blockLoc, TextureSlot... slots) {
         return new ModelTemplate(Optional.of(new ResourceLocation(MODID, "block/" + blockLoc)), Optional.empty(), slots);

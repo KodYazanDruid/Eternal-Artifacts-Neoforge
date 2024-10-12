@@ -115,6 +115,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DIAMOND_CUTLASS.get(), "Diamond Cutlass");
                 add(ModItems.NETHERITE_CUTLASS.get(), "Netherite Cutlass");
                 add(ModItems.CHLOROPHYTE_CUTLASS.get(), "Chlorophyte Cutlass");
+                add(ModItems.EVOKERS_TOME.get(), "Evokers Tome");
+                add(ModItems.FIREBALL_TOME.get(), "Fireball Tome");
+                add(ModItems.TORNADO_TOME.get(), "Tornado Tome");
+                add(ModItems.LIGHTSABER.get(), "Lightsaber");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -194,6 +198,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEffects.DIVINE_PROTECTION.get(), "Divine Protection");
                 add(ModEffects.MALADY.get(), "Malady");
                 //endregion
+                //region Attributes
+                ModAttributes.ATTRIBUTES.getEntries().forEach(holder -> {
+                    add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath()));
+                });
+                //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Naming disabled.");
@@ -266,7 +275,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                     add(holder.getFluidBlock(), prettyName(holder.getFluidBlockHolder().getId().getPath()));
                     add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                 });
-
                 ModMachines.MACHINES.getMachines().forEach(holder -> {
                     add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath()));
                 });
@@ -377,6 +385,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.NETHERITE_CUTLASS.get(), "Netherit Pala");
                 add(ModItems.CHLOROPHYTE_CUTLASS.get(), "Klorofit Pala");
                 add(ModFluids.HOT_SPRING_WATER.getBucketItem(), "Kaplıca Suyu Kovası");
+                add(ModItems.EVOKERS_TOME.get(), "Çağırıcının Büyü Kitabı");
+                add(ModItems.FIREBALL_TOME.get(), "Ateştopu Büyü Kitabı");
+                add(ModItems.TORNADO_TOME.get(), "Kasırga Büyü Kitabı");
+                add(ModItems.LIGHTSABER.get(), "Işın Kılıcı");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -485,6 +497,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEffects.FLIGHT.get(), "Uçuş");
                 add(ModEffects.DIVINE_PROTECTION.get(), "Kutsal Koruma");
                 add(ModEffects.MALADY.get(), "İllet");
+                //endregion
+                //region Türkçe Özellikler
+                add(ModAttributes.SPELL_DAMAGE.get().getDescriptionId(), "Büyü Gücü");
+                add(ModAttributes.COOLDOWN_REDUCTION.get().getDescriptionId(), "Bekleme Süresi Azaltması");
                 //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");

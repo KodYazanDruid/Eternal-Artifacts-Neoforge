@@ -14,7 +14,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -63,8 +62,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
 
     @Override
     protected void findRecipe() {
-        EntityType<?>[] typeArray = livingList.stream().map(Entity::getType).toArray(EntityType[]::new);
-        cache.findRecipe(ModRecipes.MOB_LIQUIFYING.getType(), new SimpleEntityContainer(typeArray), level);
+        cache.findRecipe(ModRecipes.MOB_LIQUIFYING.getType(), new SimpleEntityContainer(livingList), level);
     }
 
     public void switchRender() {

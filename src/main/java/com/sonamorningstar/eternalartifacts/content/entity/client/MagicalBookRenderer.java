@@ -19,12 +19,11 @@ import static net.minecraft.client.renderer.entity.LivingEntityRenderer.isEntity
 
 public class MagicalBookRenderer extends EntityRenderer<MagicalBookEntity> {
 
-    Minecraft minecraft = Minecraft.getInstance();
     private final BookModel model;
 
     public MagicalBookRenderer(EntityRendererProvider.Context ctx) {
         super(ctx);
-        model = new BookModel(minecraft.getEntityModels().bakeLayer(ModelLayers.BOOK));
+        model = new BookModel(ctx.bakeLayer(ModelLayers.BOOK));
     }
 
     @Override

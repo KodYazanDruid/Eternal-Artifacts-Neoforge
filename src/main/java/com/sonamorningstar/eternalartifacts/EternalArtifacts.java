@@ -45,6 +45,7 @@ public class EternalArtifacts {
 
     public EternalArtifacts(IEventBus modEventBus) {
         enableMilkFluid();
+        ModSpells.SPELLS.register(modEventBus);
         ModMachines.MACHINES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
@@ -61,6 +62,7 @@ public class EternalArtifacts {
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         ModPaintings.PAINTINGS.register(modEventBus);
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
+        ModAttributes.ATTRIBUTES.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);

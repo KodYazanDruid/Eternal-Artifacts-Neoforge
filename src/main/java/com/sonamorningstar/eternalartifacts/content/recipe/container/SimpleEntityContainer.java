@@ -3,13 +3,16 @@ package com.sonamorningstar.eternalartifacts.content.recipe.container;
 import com.google.common.collect.Lists;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.base.ItemlessContainer;
 import net.minecraft.world.ContainerListener;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SimpleEntityContainer extends ItemlessContainer {
     private final int size;
@@ -25,6 +28,11 @@ public class SimpleEntityContainer extends ItemlessContainer {
     public SimpleEntityContainer(EntityType<?>... entityTypes) {
         this.size = entityTypes.length;
         this.entityTypeList = Arrays.stream(entityTypes).toList();
+    }
+    public SimpleEntityContainer(List<? extends Entity> entities) {
+        this.size = entities.size();
+        entityTypeList = new ArrayList<>();
+        entities.forEach(e -> entityTypeList.add(e.getType()));
     }
 
     public void addListener(ContainerListener listener) {

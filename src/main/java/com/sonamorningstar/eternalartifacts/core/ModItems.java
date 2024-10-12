@@ -1,10 +1,15 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.content.spell.EvokerFangsSpell;
+import com.sonamorningstar.eternalartifacts.content.spell.FireballSpell;
+import com.sonamorningstar.eternalartifacts.content.spell.TornadoSpell;
+import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -17,6 +22,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -119,6 +125,9 @@ public class ModItems {
     public static final DeferredItem<Item> PORTABLE_CRAFTER = registerStacksToOne("portable_crafter", PortableCrafterItem::new);
     public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes", ComfyShoesItem::new);
     public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
+    public static final DeferredItem<SpellTomeItem<EvokerFangsSpell>> EVOKERS_TOME = registerTome("evokers_tome", ModSpells.EVOKER_FANGS);
+    public static final DeferredItem<SpellTomeItem<FireballSpell>> FIREBALL_TOME = registerTome("fireball_tome", ModSpells.FIREBALL);
+    public static final DeferredItem<SpellTomeItem<TornadoSpell>> TORNADO_TOME = registerTome("tornado_tome", ModSpells.TORNADO);
 
     //Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -154,6 +163,7 @@ public class ModItems {
     public static final DeferredItem<Item> DIAMOND_CUTLASS = registerStacksToOne("diamond_cutlass", p -> new CutlassItem(Tiers.DIAMOND, 3, -2.4F, p));
     public static final DeferredItem<Item> NETHERITE_CUTLASS = registerStacksToOne("netherite_cutlass", p -> new CutlassItem(Tiers.NETHERITE, 3, -2.4F, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_CUTLASS = registerStacksToOne("chlorophyte_cutlass", p -> new CutlassItem(ModTiers.CHLOROPHYTE, 3, -2.4F, p));
+    public static final DeferredItem<Item> LIGHTSABER = registerStacksToOne("lightsaber", p -> new SwordItem(ModTiers.CHLOROPHYTE, 5, -2.0F, p));
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
@@ -163,31 +173,33 @@ public class ModItems {
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));
     public static final DeferredItem<DoubleHighBlockItem> FORSYTHIA = register("forsythia", ()-> new DoubleHighBlockItem(ModBlocks.FORSYTHIA.get(), new Item.Properties()));
 
+    //region Register methods.
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> supplier) {
         return ITEMS.register(name, supplier);
     }
-
     private static DeferredItem<Item> register(String name) {
         return register(name, ()-> new Item(new Item.Properties()));
     }
-
     private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func) {
         return register(name, ()-> func.apply(new Item.Properties()));
     }
-
     private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func, Item.Properties props) {
         return props == null ? register(name, func) : ITEMS.register(name, ()-> func.apply(props));
+    }
+
+    private static DeferredItem<Item> registerStacksToOne(String name) {
+        return registerStacksToOne(name, Item::new);
+    }
+    private static <T extends Item> DeferredItem<T> registerStacksToOne(String name, Function<Item.Properties, T> func) {
+        return register(name, ()-> func.apply(new Item.Properties().stacksTo(1)));
     }
 
     private static DeferredItem<DeferredSpawnEggItem> registerSpawnEgg(String name, Supplier<? extends EntityType<? extends Mob>> type, int background, int highlight) {
         return register(name, ()-> new DeferredSpawnEggItem(type, background, highlight, new Item.Properties()));
     }
 
-    private static DeferredItem<Item> registerStacksToOne(String name) {
-        return registerStacksToOne(name, Item::new);
+    private static <S extends Spell> DeferredItem<SpellTomeItem<S>> registerTome(String name, DeferredHolder<Spell, S> spellHolder) {
+        return register(name, () -> new SpellTomeItem<>(spellHolder, new Item.Properties()));
     }
-
-    private static <T extends Item> DeferredItem<T> registerStacksToOne(String name, Function<Item.Properties, T> func) {
-        return register(name, ()-> func.apply(new Item.Properties().stacksTo(1)));
-    }
+    //endregion
 }
