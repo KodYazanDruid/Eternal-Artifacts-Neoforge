@@ -102,6 +102,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.DEMON_EYE_LAYER, DemonEyeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.DUCK_LAYER, DuckModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.TORNADO_LAYER, TornadoModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.METEORITE_LAYER, MeteoriteModel::createBodyLayer);
 
         //event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
@@ -126,6 +127,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
         event.registerEntityRenderer(ModEntities.PRIMED_BLOCK.get(), TntRenderer::new);
         event.registerEntityRenderer(ModEntities.TORNADO.get(), TornadoRenderer::new);
+        event.registerEntityRenderer(ModEntities.METEORITE.get(), MeteoriteRenderer::new);
     }
 
     @SubscribeEvent

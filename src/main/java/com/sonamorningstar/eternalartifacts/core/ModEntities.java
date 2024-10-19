@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.entity.*;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.Meteorite;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.Tornado;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -29,5 +30,7 @@ public class ModEntities {
     //Projectiles
     public static final DeferredHolder<EntityType<?>, EntityType<Tornado>> TORNADO = ENTITY_TYPES.register("tornado",
             ()-> EntityType.Builder.<Tornado>of(Tornado::new, MobCategory.MISC).fireImmune().sized(1.0f, 2.0f).clientTrackingRange(4).updateInterval(10).build("tornado"));
+    public static final DeferredHolder<EntityType<?>, EntityType<Meteorite>> METEORITE = ENTITY_TYPES.register("meteorite",
+            ()-> EntityType.Builder.<Meteorite>of(Meteorite::new, MobCategory.MISC).fireImmune().sized(2.0f, 2.0f).clientTrackingRange(4).updateInterval(10).build("meteorite"));
 
 }

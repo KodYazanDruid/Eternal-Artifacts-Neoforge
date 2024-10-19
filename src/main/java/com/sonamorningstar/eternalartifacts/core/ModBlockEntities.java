@@ -38,6 +38,12 @@ public class ModBlockEntities {
                     ModBlocks.NETHERITE_DRUM.get()
             ).build(null));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CableBlockEntity>> CABLE = BLOCK_ENTITIES.register("cable", ()->
+            BlockEntityType.Builder.of(CableBlockEntity::new,
+                    ModBlocks.COPPER_CABLE.get(),
+                    ModBlocks.COVERED_COPPER_CABLE.get()
+            ).build(null));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->
             BlockEntityType.Builder.of(GardeningPotEntity::new, ModBlocks.GARDENING_POT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<JarBlockEntity>> JAR = BLOCK_ENTITIES.register("jar", () ->

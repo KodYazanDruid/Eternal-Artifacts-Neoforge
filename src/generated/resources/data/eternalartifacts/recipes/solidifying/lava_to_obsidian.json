@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:solidifying",
+  "inputFluid": {
+    "amount": 1000,
+    "id": "minecraft:lava"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:obsidian"
+  }
+}

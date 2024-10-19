@@ -1,9 +1,9 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModTags;

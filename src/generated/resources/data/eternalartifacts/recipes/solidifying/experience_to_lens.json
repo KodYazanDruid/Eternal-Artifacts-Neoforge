@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:solidifying",
+  "inputFluid": {
+    "amount": 100,
+    "tag": "forge:experience"
+  },
+  "output": {
+    "Count": 5,
+    "id": "eternalartifacts:lens"
+  }
+}

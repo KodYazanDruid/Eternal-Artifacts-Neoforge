@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:solidifying",
+  "inputFluid": {
+    "amount": 1000,
+    "id": "minecraft:water"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:ice"
+  }
+}

@@ -27,6 +27,7 @@ public class ModMachines {
     public static final GenericMachineHolder<MeltingCrucibleBlockEntity> MELTING_CRUCIBLE = registerGeneric("melting_crucible", MeltingCrucibleBlockEntity::new);
     public static final GenericMachineHolder<MaterialSqueezerBlockEntity> MATERIAL_SQUEEZER = registerGeneric("material_squeezer", MaterialSqueezerBlockEntity::new);
     public static final GenericMachineHolder<AlloySmelterBlockEntity> ALLOY_SMELTER = registerGeneric("alloy_smelter", AlloySmelterBlockEntity::new);
+    public static final GenericMachineHolder<SolidifierBlockEntity> SOLIDIFIER = registerGeneric("solidifier", SolidifierBlockEntity::new);
 
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefineryBlockEntity, OilRefineryBlock<OilRefineryBlockEntity>, BEWLRBlockItem>
             OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefineryBlockEntity::new, OilRefineryBlock::new, BEWLRBlockItem::new, true, true);

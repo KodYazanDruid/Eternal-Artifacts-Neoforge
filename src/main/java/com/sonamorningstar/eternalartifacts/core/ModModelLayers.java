@@ -14,5 +14,6 @@ public class ModModelLayers {
     public static final ModelLayerLocation NOUS_TANK_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "nous_tank_layer"), "main");
     public static final ModelLayerLocation OIL_REFINERY_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "oil_refinery_layer"), "main");
     public static final ModelLayerLocation TORNADO_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "tornado_layer"), "main");
+    public static final ModelLayerLocation METEORITE_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "meteorite_layer"), "main");
 
 }

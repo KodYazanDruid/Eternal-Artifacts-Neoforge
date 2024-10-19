@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -48,17 +48,15 @@ public class ResonatorBlockEntity extends ModBlockEntity {
     }
 
     private void distributePower() {
-        if(energy.getEnergyStored() <= 0) return;
+        if(energy.getEnergyStored() <= 0 || level == null) return;
         Direction direction = getBlockState().getValue(BlockStateProperties.FACING);
         BlockEntity be = level.getBlockEntity(getBlockPos().relative(direction));
         if(be != null) {
             IEnergyStorage target = level.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), direction.getOpposite());
-            if(target != null && target.canReceive()) {
-                int received = target.receiveEnergy(Math.min(energy.getEnergyStored(), energy.getMaxEnergyStored()), false);
-                energy.extractEnergy(received, false);
-                setChanged();
+            if(target != null) {
+                int received = target.receiveEnergy(energy.getEnergyStored(), false);
+                energy.extractEnergyForced(received, false);
             }
         }
-
     }
 }

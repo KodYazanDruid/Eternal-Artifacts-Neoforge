@@ -1,8 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -16,7 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
@@ -36,7 +35,7 @@ public class ModBlockEntity extends BlockEntity {
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return shouldSyncOnUpdate() ? ClientboundBlockEntityDataPacket.create(this) : null;
+        return shouldSyncOnUpdate() ? ClientboundBlockEntityDataPacket.create(this) : super.getUpdatePacket();
     }
 
     protected void saveSynced(CompoundTag tag) {}

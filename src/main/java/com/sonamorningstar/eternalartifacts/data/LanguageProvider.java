@@ -485,6 +485,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COVERED_COPPER_CABLE.get(), "İzole Bakır Kablo");
                 add(ModFluids.HOT_SPRING_WATER.getTranslationKey(), "Kaplıca Suyu");
                 add(ModFluids.HOT_SPRING_WATER.getFluidBlock(), "Kaplıca Suyu");
+                add(ModMachines.SOLIDIFIER.getBlockTranslationKey(), "Katılaştırıcı");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

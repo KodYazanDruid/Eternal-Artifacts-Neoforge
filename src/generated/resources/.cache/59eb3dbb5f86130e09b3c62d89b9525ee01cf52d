@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-22T15:49:29.5316346	Loot Tables
+// 1.20.4	2024-10-12T15:18:48.0422555	Loot Tables
 a50ef6533c773bcb5946c86a3ca5eb5aed8b850f data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
@@ -66,6 +66,7 @@ c65c797452b495809bdf5b41bb611b7c87e865b6 data/eternalartifacts/loot_tables/block
 8db9218e28d384200124270dc55e8030b5b860ea data/eternalartifacts/loot_tables/blocks/sandy_stone_bricks.json
 dd29dd415f32b17e7bb174e525f10b3ad21e4c4f data/eternalartifacts/loot_tables/blocks/sandy_tiled_stone_bricks.json
 2d3448b17d4ea0ac42eb08576062e93d6cd62af4 data/eternalartifacts/loot_tables/blocks/snow_bricks.json
+cf673ed3937bd937b53dedd19d94044244b6bbd3 data/eternalartifacts/loot_tables/blocks/solidifier.json
 8b1b87328ecdc6c398069e7bd2be1caf1fd62db0 data/eternalartifacts/loot_tables/blocks/steel_block.json
 4adc81efc80661c03d32249582d4b6b3f0e02405 data/eternalartifacts/loot_tables/blocks/steel_drum.json
 b32df60ac22ceac897f8b11c45e6a5bb42a8b3fc data/eternalartifacts/loot_tables/blocks/stripped_citrus_log.json

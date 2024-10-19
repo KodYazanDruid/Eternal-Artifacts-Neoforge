@@ -1,16 +1,13 @@
 package com.sonamorningstar.eternalartifacts.api.machine;
 
-import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.MultiFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BooleanSupplier;

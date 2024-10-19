@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
 import lombok.RequiredArgsConstructor;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -17,6 +19,11 @@ public class RecipeDeferredHolder<C extends Container, R extends Recipe<C>> {
     public DeferredHolder<RecipeType<?>, RecipeType<R>> getTypeHolder() {return this.type;}
     public RecipeType<R> getType() {return this.getTypeHolder().get();}
 
+    public ResourceLocation getKey() {
+        return BuiltInRegistries.RECIPE_TYPE.getKey(getType());
+    }
 
-
+    public ResourceLocation getSerializerKey() {
+        return BuiltInRegistries.RECIPE_SERIALIZER.getKey(getSerializer());
+    }
 }

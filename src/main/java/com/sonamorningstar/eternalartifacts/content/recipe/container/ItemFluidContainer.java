@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.recipe.container;
 
 import com.google.common.collect.Lists;
-import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
-import com.sonamorningstar.eternalartifacts.capabilities.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import lombok.Getter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
@@ -14,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemFluidContainer implements Container {

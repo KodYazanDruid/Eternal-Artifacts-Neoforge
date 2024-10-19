@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.container;
 
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemMultiFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;

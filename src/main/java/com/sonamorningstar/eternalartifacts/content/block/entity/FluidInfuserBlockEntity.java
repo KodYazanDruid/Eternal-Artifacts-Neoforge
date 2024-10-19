@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
@@ -51,7 +52,7 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
                 .tryInsertForced(recipe.getOutput());
         progress(condition::getResult, ()-> {
             ItemHelper.insertItemStackedForced(inventory, recipe.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new));
-            tank.drainForced(recipe.getInputFluid().getFluidStacks()[0], IFluidHandler.FluidAction.EXECUTE);
+            tank.drainForced(recipe.getInputFluid().getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
             inventory.extractItem(0, recipe.getInput().getItems()[0].getCount(), false);
         }, energy);
     }

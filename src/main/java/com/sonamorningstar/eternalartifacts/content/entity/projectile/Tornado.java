@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.entity.projectile;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -11,13 +12,14 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 
 public class Tornado extends AbstractHurtingProjectile {
@@ -60,6 +62,15 @@ public class Tornado extends AbstractHurtingProjectile {
         }
     }
 
+    @Override
+    protected void onInsideBlock(BlockState state) {
+        if (state.is(BlockTags.FIRE)) {
+            BlockPos posToDestroy = this.getOnPos(0);
+            if (level().getBlockState(posToDestroy).is(BlockTags.FIRE))
+                this.level().destroyBlock(posToDestroy, false, this);
+        }
+    }
+
     //region Serialization stuff.
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
@@ -68,7 +79,6 @@ public class Tornado extends AbstractHurtingProjectile {
         tag.putBoolean("inGround", inGround);
         tag.putString("SoundEvent", BuiltInRegistries.SOUND_EVENT.getKey(soundEvent).toString());
     }
-
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
@@ -82,27 +92,20 @@ public class Tornado extends AbstractHurtingProjectile {
     }
     //endregion
 
-
     @Override
-    public void move(MoverType pType, Vec3 pPos) {
-        super.move(pType, pPos);
-        if (pType != MoverType.SELF && this.shouldFall()) {
-            this.startFalling();
-        }
+    public void tick() {
+        super.tick();
+        Vec3 deltaMovement = getDeltaMovement();
+        //double y = !this.isNoGravity() && shouldFall() ? deltaMovement.y *.5 - 0.05 : 0;
+        double y = !this.isNoGravity() && shouldFall() ? -0.1 : 0;
+        setDeltaMovement(deltaMovement.x, y, deltaMovement.z);
     }
 
     private boolean shouldFall() {
-        return this.inGround && this.level().noCollision(new AABB(this.position(), this.position()).inflate(0.06));
+        return this.level().noCollision(new AABB(this.position(), this.position()).inflate(0.6));
     }
 
-    private void startFalling() {
-        this.inGround = false;
-        Vec3 vec3 = this.getDeltaMovement();
-        this.setDeltaMovement(
-                vec3.multiply(this.random.nextFloat() * 0.2F, this.random.nextFloat() * 0.2F, this.random.nextFloat() * 0.2F)
-        );
-    }
-
+    //region Bloatware.
     private SoundEvent defaultSoundEvent() {return SoundEvents.CAT_PURR;}
     @Override
     public boolean canCollideWith(Entity entity) {return !(entity instanceof Tornado) && super.canCollideWith(entity);}
@@ -116,4 +119,5 @@ public class Tornado extends AbstractHurtingProjectile {
     protected ParticleOptions getTrailParticle() {return ParticleTypes.DUST_PLUME;}
     @Override
     protected boolean shouldBurn() {return false;}
+    //endregion
 }

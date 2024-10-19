@@ -1,8 +1,8 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.WrappedItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.WrappedEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.WrappedFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import net.minecraft.core.Direction;
 import net.neoforged.neoforge.energy.IEnergyStorage;

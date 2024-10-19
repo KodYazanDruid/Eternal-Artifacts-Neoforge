@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.mojang.datafixers.util.Either;
 import com.sonamorningstar.eternalartifacts.content.recipe.*;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
@@ -63,7 +64,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SHOVEL.get(), RecipeCategory.TOOLS, ModItems.NATURAL_SPADE.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HOE.get(), RecipeCategory.TOOLS, ModItems.LUSH_GRUBBER.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HAMMER.get(), RecipeCategory.TOOLS, ModItems.HAMMAXE.get());
-        netheriteSmithing(recipeOutput, ModItems.DIAMOND_HAMMER.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_HAMMER.get());
+        modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_HAMMER.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_HAMMER.get());
 
         createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, 250);
         createMeatShredderRecipe(recipeOutput, Items.BEEF.getDefaultInstance(), 250);
@@ -82,13 +83,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.GASOLINE, 270, 300);
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);
 
-        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Ingredient.of(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
-        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Ingredient.of(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
+        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Either.left(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
+        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
 
         createMeltingRecipe(recipeOutput, Items.NETHERRACK.getDefaultInstance(), new FluidStack(Fluids.LAVA, 1000));
         createMeltingRecipe(recipeOutput, Items.ICE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
         createMeltingRecipe(recipeOutput, ModItems.PINK_SLIME.toStack(), new FluidStack(ModFluids.PINK_SLIME.getFluid(), 250));
 
+        //region Macerating recipes.
         createMaceratingRecipe(recipeOutput, Items.CLAY.getDefaultInstance(), new ItemStack(ModItems.CLAY_DUST.get(), 4));
         createMaceratingRecipe(recipeOutput, Items.CLAY_BALL.getDefaultInstance(), ModItems.CLAY_DUST.toStack());
         createMaceratingRecipe(recipeOutput, Items.COAL.getDefaultInstance(), ModItems.COAL_DUST.toStack());
@@ -114,6 +116,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, Items.SMOOTH_QUARTZ.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
         createMaceratingRecipe(recipeOutput, Items.SUGAR_CANE.getDefaultInstance(), new ItemStack(Items.SUGAR, 3));
         createMaceratingRecipe(recipeOutput, Items.BEETROOT.getDefaultInstance(), new ItemStack(Items.SUGAR, 2));
+        //endregion
 
         createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
         createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), Items.GREEN_DYE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
@@ -124,6 +127,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 Ingredient.of(ModItems.PLANT_MATTER)),
                 ModItems.CHLOROPHYTE_INGOT.toStack());
 
+        //region Mob Liquifying recipes.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.BLOOD.getFluid(), 40),
@@ -183,9 +187,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 new FluidStack(ModFluids.PINK_SLIME.getFluid(), 10),
                 new FluidStack(ModFluids.NOUS.getFluid(), 15)
         ));
+        //endregion
+        createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
+        createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());
+        createSolidifyingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 100, new ItemStack(ModItems.LENS.get(), 5));
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
+        //region Shaped Recipes
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.GOLDEN_ANCIENT_FRUIT)
                 .pattern("NNN").pattern("NFN").pattern("NNN")
                 .define('N', Items.GOLD_INGOT).define('F', ModItems.ANCIENT_FRUIT)
@@ -305,7 +314,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern(" D ")
                 .define('S', ModItems.STONE_TABLET).define('D', ModItems.DEMON_INGOT)
                 .unlockedBy("has_item", has(ModItems.DEMON_INGOT)).save(recipeOutput);
-
+        //endregion
+        //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.SUGAR_CHARCOAL_BLOCK)).save(recipeOutput);
@@ -336,7 +346,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STEEL_INGOT, 9)
                 .requires(ModBlocks.STEEL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.STEEL_BLOCK)).save(recipeOutput, makeID("steel_ingots_from_steel_block"));
-
+        //endregion
     }
 
     private ResourceLocation makeID(String name) {
@@ -344,50 +354,55 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     }
 
     private void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
-        ResourceLocation resultId = BuiltInRegistries.ITEM.getKey(result.asItem());
-        ResourceLocation inputId = BuiltInRegistries.ITEM.getKey(input.asItem());
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.asItem()).getPath();
+        String inputPath = BuiltInRegistries.ITEM.getKey(input.asItem()).getPath();
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+resultId.getPath()+"_from_"+inputId.getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+inputPath+"_to_"+resultPath));
     }
-
     private void createFoodCookingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
-        ResourceLocation resultId = BuiltInRegistries.ITEM.getKey(result.asItem());
-        ResourceLocation inputId = BuiltInRegistries.ITEM.getKey(input.asItem());
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.asItem()).getPath();
+        String inputPath = BuiltInRegistries.ITEM.getKey(input.asItem()).getPath();
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+resultId.getPath()+"_from_"+inputId.getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+inputPath+"_to_"+resultPath));
         SimpleCookingRecipeBuilder.smoking(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 100)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smoking/"+resultId.getPath()+"_from_"+inputId.getPath()));
+                .save(output, new ResourceLocation(MODID, "smoking/"+inputPath+"_to_"+resultPath));
         SimpleCookingRecipeBuilder.campfireCooking(Ingredient.of(input), RecipeCategory.FOOD, result, xp, 600)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "campfire_cooking/"+resultId.getPath()+"_from_"+inputId.getPath()));
+                .save(output, new ResourceLocation(MODID, "campfire_cooking/"+inputPath+"_to_"+resultPath));
     }
-
     private void createOreSmeltingRecipe(RecipeOutput output, List<ItemLike> ingredients, ItemLike result, float xp) {
         for(ItemLike item : ingredients) createOreSmeltingRecipe(output, item, result, xp);
     }
-
     private void createOreSmeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
-        ResourceLocation resultId = BuiltInRegistries.ITEM.getKey(result.asItem());
-        ResourceLocation inputId = BuiltInRegistries.ITEM.getKey(input.asItem());
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.asItem()).getPath();
+        String inputPath = BuiltInRegistries.ITEM.getKey(input.asItem()).getPath();
         SimpleCookingRecipeBuilder.smelting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 200)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "smelting/"+resultId.getPath()+"_from_"+inputId.getPath()));
+                .save(output, new ResourceLocation(MODID, "smelting/"+inputPath+"_to_"+resultPath));
         SimpleCookingRecipeBuilder.blasting(Ingredient.of(input), RecipeCategory.MISC, result, xp, 100)
                 .unlockedBy("has_item", has(input))
-                .save(output, new ResourceLocation(MODID, "blasting/"+resultId.getPath()+"_from_"+inputId.getPath()));
+                .save(output, new ResourceLocation(MODID, "blasting/"+inputPath+"_to_"+resultPath));
     }
-
     private void chlorophyteSmithing(RecipeOutput recipeOutput, Item ingredientItem, RecipeCategory category, Item resultItem) {
         SmithingTransformRecipeBuilder.smithing(
-                        Ingredient.of(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE), Ingredient.of(ingredientItem), Ingredient.of(ModItems.CHLOROPHYTE_INGOT), category, resultItem
+                        Ingredient.of(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE),
+                        Ingredient.of(ingredientItem), Ingredient.of(ModItems.CHLOROPHYTE_INGOT), category, resultItem
                 )
                 .unlocks("has_item", has(ModItems.CHLOROPHYTE_INGOT))
                 .save(recipeOutput, new ResourceLocation(MODID, "smithing/"+getItemName(resultItem)+"_smithing"));
     }
 
+    protected static void modNetheriteSmithing(RecipeOutput recipeOutput, Item ingredient, RecipeCategory category, Item result) {
+        SmithingTransformRecipeBuilder.smithing(
+                        Ingredient.of(Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE),
+                        Ingredient.of(ingredient), Ingredient.of(Items.NETHERITE_INGOT), category, result
+                )
+                .unlocks("has_netherite_ingot", has(Items.NETHERITE_INGOT))
+                .save(recipeOutput, new ResourceLocation(MODID, "smithing/"+getItemName(result)+"_smithing"));
+    }
     private void createHammerRecipe(RecipeOutput output, ItemLike result, ItemLike firstIng, ItemLike secondIng) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
                 .pattern("FFF").pattern("FSF").pattern(" R ")
@@ -411,8 +426,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+path));
     }
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, int output) {
+        String path = input.location().getPath();
         SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT.getStillFluidHolder(), output)))
-                .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+input.location().getPath()));
+                .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+ path));
     }
 
     private void createMobLiquifyingRecipe(RecipeOutput recipeOutput, EntityType<?> entity, NonNullList<FluidStack> outputs) {
@@ -421,8 +437,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+path));
     }
     private void createMobLiquifyingRecipe(RecipeOutput recipeOutput, TagKey<EntityType<?>> entity, NonNullList<FluidStack> outputs) {
+        String path = entity.location().getPath();
         SpecialRecipeBuilder.special(category -> new MobLiquifierRecipe(EntityIngredient.of(entity), outputs))
-                .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+entity.location().getPath()));
+                .save(recipeOutput, new ResourceLocation(MODID, "mob_liquifying/"+path));
     }
 
     private void createFluidCombustionRecipe(RecipeOutput output, Fluid fluid, int generation, int duration) {
@@ -431,56 +448,104 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
     }
     private void createFluidCombustionRecipe(RecipeOutput output, TagKey<Fluid> fluid, int generation, int duration) {
-        //String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
+        String path = fluid.location().getPath();
         SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid, 1000), generation, duration))
-                .save(output, new ResourceLocation(MODID, "fluid_combusting/"+fluid.location().getPath()));
+                .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
     }
 
-    private void createFluidInfusingRecipe(RecipeOutput output, Fluid fluid, int fluidAmount, Ingredient ingredient, ItemStack result) {
-        String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+    private void createFluidInfusingRecipe(RecipeOutput output, Fluid fluid, int fluidAmount, Either<Item, TagKey<Item>> either, ItemStack result) {
+        String path = "";
+        Ingredient ingredient;
+        if(either.left().isPresent()) {
+            path = BuiltInRegistries.ITEM.getKey(either.left().get()).getPath();
+            ingredient = Ingredient.of(either.left().get());
+        }
+        else if (either.right().isPresent()) {
+            path = either.right().get().location().getPath();
+            ingredient = Ingredient.of(either.right().get());
+        } else ingredient = Ingredient.EMPTY;
+
+
+        String fluidPath = BuiltInRegistries.FLUID.getKey(fluid).getPath();
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new FluidInfuserRecipe(FluidIngredient.of(new FluidStack(fluid, fluidAmount)), ingredient, result))
-                .save(output, new ResourceLocation(MODID, "fluid_infusing/"+path));
+                .save(output, new ResourceLocation(MODID, "fluid_infusing/"+fluidPath+"_and_"+path+"_to_"+resultPath));
     }
-    private void createFluidInfusingRecipe(RecipeOutput output, TagKey<Fluid> fluid, int fluidAmount, Ingredient ingredient, ItemStack result) {
-        //String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+    private void createFluidInfusingRecipe(RecipeOutput output, TagKey<Fluid> fluid, int fluidAmount, Either<Item, TagKey<Item>> either, ItemStack result) {
+        String path = "";
+        Ingredient ingredient;
+        if(either.left().isPresent()) {
+            path = BuiltInRegistries.ITEM.getKey(either.left().get()).getPath();
+            ingredient = Ingredient.of(either.left().get());
+        }
+        else if (either.right().isPresent()) {
+            String wildPath = either.right().get().location().getPath();
+            path = wildPath.substring(wildPath.lastIndexOf('/') + 1);
+            ingredient = Ingredient.of(either.right().get());
+        } else ingredient = Ingredient.EMPTY;
+
+        String fluidPath = fluid.location().getPath();
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new FluidInfuserRecipe(FluidIngredient.of(fluid, fluidAmount), ingredient, result))
-                .save(output, new ResourceLocation(MODID, "fluid_infusing/"+fluid.location().getPath()));
+                .save(output, new ResourceLocation(MODID, "fluid_infusing/"+fluidPath+"_and_"+path+"_to_"+resultPath));
     }
 
     private void createMeltingRecipe(RecipeOutput output, ItemStack input, FluidStack result){
         String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
+        String fluidPath = BuiltInRegistries.FLUID.getKey(result.getFluid()).getPath();
         SpecialRecipeBuilder.special(category -> new MeltingRecipe(Ingredient.of(input), result))
-                .save(output, new ResourceLocation(MODID, "melting/"+path));
+                .save(output, new ResourceLocation(MODID, "melting/"+path+"_to_"+fluidPath));
     }
     private void createMeltingRecipe(RecipeOutput output, TagKey<Item> input, FluidStack result){
+        String path = input.location().getPath();
+        String fluidPath = BuiltInRegistries.FLUID.getKey(result.getFluid()).getPath();
         SpecialRecipeBuilder.special(category -> new MeltingRecipe(Ingredient.of(input), result))
-                .save(output, new ResourceLocation(MODID, "melting/"+input.location().getPath()));
+                .save(output, new ResourceLocation(MODID, "melting/"+path+"_to_"+fluidPath));
     }
 
     private void createMaceratingRecipe(RecipeOutput output, ItemStack input, ItemStack result){
         String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new MaceratingRecipe(Ingredient.of(input), result))
-                .save(output, new ResourceLocation(MODID, "macerating/"+path));
+                .save(output, new ResourceLocation(MODID, "macerating/"+path+"_to_"+resultPath));
     }
     private void createMaceratingRecipe(RecipeOutput output, TagKey<Item> input, ItemStack result){
+        String path = input.location().getPath();
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new MaceratingRecipe(Ingredient.of(input), result))
-                .save(output, new ResourceLocation(MODID, "macerating/"+input.location().getPath()));
+                .save(output, new ResourceLocation(MODID, "macerating/"+path+"_to_"+resultPath));
     }
 
     private void createSqueezingRecipe(RecipeOutput output, ItemStack input, ItemStack result, FluidStack resultFluid){
         String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
+        String fluidPath = BuiltInRegistries.FLUID.getKey(resultFluid.getFluid()).getPath();
         SpecialRecipeBuilder.special(category -> new SqueezingRecipe(Ingredient.of(input), result, resultFluid))
-                .save(output, new ResourceLocation(MODID, "squeezing/"+path));
+                .save(output, new ResourceLocation(MODID, "squeezing/"+path+"_to_"+fluidPath));
     }
     private void createSqueezingRecipe(RecipeOutput output, TagKey<Item> input, ItemStack result, FluidStack resultFluid){
+        String path = input.location().getPath();
+        String fluidPath = BuiltInRegistries.FLUID.getKey(resultFluid.getFluid()).getPath();
         SpecialRecipeBuilder.special(category -> new SqueezingRecipe(Ingredient.of(input), result, resultFluid))
-                .save(output, new ResourceLocation(MODID, "squeezing/"+input.location().getPath()));
+                .save(output, new ResourceLocation(MODID, "squeezing/"+path+"_to_"+fluidPath));
     }
 
     private void createAlloyingRecipe(RecipeOutput output, List<Ingredient> inputs, ItemStack result){
         String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new AlloyingRecipe(inputs, result))
                 .save(output, new ResourceLocation(MODID, "alloying/"+path));
+    }
+
+    private void createSolidifyingRecipe(RecipeOutput output, Fluid fluid, int fluidAmount, ItemStack result) {
+        String fluidPath = BuiltInRegistries.FLUID.getKey(fluid).getPath();
+        String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new SolidifierRecipe(FluidIngredient.of(new FluidStack(fluid, fluidAmount)), result))
+                .save(output, new ResourceLocation(MODID, "solidifying/"+fluidPath+"_to_"+path));
+    }
+    private void createSolidifyingRecipe(RecipeOutput output, TagKey<Fluid> fluid, int fluidAmount, ItemStack result) {
+        String fluidPath = fluid.location().getPath();
+        String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new SolidifierRecipe(FluidIngredient.of(fluid, fluidAmount), result))
+                .save(output, new ResourceLocation(MODID, "solidifying/"+fluidPath+"_to_"+path));
     }
 
 

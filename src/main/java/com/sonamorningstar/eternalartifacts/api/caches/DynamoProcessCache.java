@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
-import com.sonamorningstar.eternalartifacts.capabilities.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

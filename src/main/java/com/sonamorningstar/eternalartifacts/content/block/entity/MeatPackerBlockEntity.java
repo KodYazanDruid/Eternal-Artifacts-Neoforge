@@ -23,9 +23,6 @@ public class MeatPackerBlockEntity extends GenericMachineBlockEntity {
     }
 
     @Override
-    protected void findRecipe() {}
-
-    @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutput(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
         performAutoInputFluids(lvl, pos, tank);

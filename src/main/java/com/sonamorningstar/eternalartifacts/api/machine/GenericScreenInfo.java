@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.api.machine;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.records.ComponentInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
-import com.sonamorningstar.eternalartifacts.capabilities.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import lombok.Getter;

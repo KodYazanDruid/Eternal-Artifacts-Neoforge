@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.sonamorningstar.eternalartifacts.content.block.entity.CableBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -11,8 +12,10 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -27,9 +30,11 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-public class CableBlock extends Block implements SimpleWaterloggedBlock {
+public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -103,6 +108,28 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock {
         return energyStorage != null || state.is(this);
     }
 
+    public List<Direction> getConnections(BlockPos pos, Level level) {
+        List<Direction> connected = new ArrayList<>();
+        BlockState state = level.getBlockState(pos);
+        if (!(state.getBlock() instanceof CableBlock)) return connected;
+
+        var north = state.getValue(NORTH);
+        var east = state.getValue(EAST);
+        var south = state.getValue(SOUTH);
+        var west = state.getValue(WEST);
+        var up = state.getValue(UP);
+        var down = state.getValue(DOWN);
+
+        if (north) connected.add(Direction.NORTH);
+        if (east) connected.add(Direction.EAST);
+        if (south) connected.add(Direction.SOUTH);
+        if (west) connected.add(Direction.WEST);
+        if (up) connected.add(Direction.UP);
+        if (down) connected.add(Direction.DOWN);
+
+        return connected;
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
@@ -138,4 +165,8 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock {
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
+
+    @Nullable
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {return new CableBlockEntity(pos, state);}
 }

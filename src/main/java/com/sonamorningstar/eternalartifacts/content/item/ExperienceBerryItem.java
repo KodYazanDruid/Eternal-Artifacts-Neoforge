@@ -17,8 +17,9 @@ public class ExperienceBerryItem extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
-        if(!player.getAbilities().instabuild) stack.shrink(1);
-        player.giveExperiencePoints(5);
+        int consumed = player.isShiftKeyDown() ? stack.getCount() : 1;
+        if(!player.getAbilities().instabuild) stack.shrink(consumed);
+        player.giveExperiencePoints(5 * consumed);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS);
         return InteractionResultHolder.consume(stack);
     }

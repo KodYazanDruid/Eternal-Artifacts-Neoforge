@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.util;
 
 import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -14,7 +14,7 @@ public class ItemHelper {
 
     /**
      * I modified some methods in {@link net.neoforged.neoforge.items.ItemHandlerHelper}
-     * to make work with {@link com.sonamorningstar.eternalartifacts.capabilities.ModItemStorage}
+     * to make work with {@link ModItemStorage}
      * easier.
      */
     public static ItemStack insertItemForced(ModItemStorage destination, ItemStack stack, boolean simulate) {

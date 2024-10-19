@@ -19,7 +19,6 @@ import static net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid;
 public class EternalArtifacts {
     /**
      * TODO: Add proper power generation system (like biodiesel engine from IE, peat generator from cyclic(originally from forestry)) instead of burning oranges.
-     * TODO: Add orange tree or add orange as a drop for acacia leaves.
      * TODO: Add disenchanter and other enchantment related blocks.
      * TODO: A storage block can storage items, fluids and energy dynamically.
      * TODO: Fourlegged model for gardening pot.
@@ -33,7 +32,6 @@ public class EternalArtifacts {
      * TODO: Configs.
      * TODO: Scrap boxes and similar loot thingies.
      * TODO: Add error tab to machines for why machine isn't working.
-     * TODO: MOAR yandere-coding in induction furnace BE code. YIPPIE.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *

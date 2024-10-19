@@ -46,7 +46,7 @@ public class TornadoModel extends Model {
         return LayerDefinition.create(mesh, 16, 16);
     }
 
-    public void setupAnim(Tornado tornado, float ageInTicks) {
+    public void setupAnim(float ageInTicks) {
         float f3 = ageInTicks / 60;
         topCube.xRot = 0.3F;
         middleCube.xRot = -0.3F;
