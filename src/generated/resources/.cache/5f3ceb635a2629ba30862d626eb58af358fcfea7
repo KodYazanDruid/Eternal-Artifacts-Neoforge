@@ -1,4 +1,4 @@
-// 1.20.4	2024-09-25T22:02:49.3139259	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2024-10-25T20:27:15.167318	Tags for minecraft:item mod id eternalartifacts
 739b14f3f9fa7b447d8ac1989c2d47a24f23a539 data/eternalartifacts/tags/items/gardening_pot_suitable.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
 2ab5a1591948f980d3d532da30cf9e588eeb4d28 data/eternalartifacts/tags/items/tools/cutlass.json
@@ -33,6 +33,7 @@ c62014969adb0ef42681a22f54694b04ab5172ba data/forge/tags/items/raw_materials.jso
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
 e8eb559259023c2a514cbbfac7bde683bf566c3a data/forge/tags/items/tools/hammer.json
+530be8d750c8ea5a094ece570b25e218624b20e9 data/forge/tags/items/tools/sickle.json
 4c36db30a00d54d37767d1315c2d9e4edeec3c8a data/forge/tags/items/tools/wrench.json
 1247507c3b27d84e64eec122d4cc88ffb823a08e data/minecraft/tags/items/axes.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/minecraft/tags/items/coals.json

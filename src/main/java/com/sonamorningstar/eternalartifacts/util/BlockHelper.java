@@ -3,10 +3,10 @@ package com.sonamorningstar.eternalartifacts.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -22,7 +22,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.common.Tags;
 
 import javax.annotation.Nullable;
-import java.util.Collection;
 import java.util.List;
 
 public class BlockHelper {
@@ -59,7 +58,7 @@ public class BlockHelper {
                 || (level.getBlockState(pos).getBlock().equals(Blocks.MANGROVE_PROPAGULE) && level.getBlockState(pos).getValue(MangrovePropaguleBlock.HANGING));
     }
 
-    public static List<ItemStack> getBlockDrops(ServerLevel level, BlockPos pos, @Nullable ItemStack tool, @Nullable BlockEntity blockEntity) {
+    public static List<ItemStack> getBlockDrops(ServerLevel level, BlockPos pos, @Nullable ItemStack tool, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
         BlockState state = level.getBlockState(pos);
         NonNullList<ItemStack> drops = NonNullList.create();
 
@@ -67,7 +66,8 @@ public class BlockHelper {
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
                 .withParameter(LootContextParams.BLOCK_STATE, level.getBlockState(pos))
                 .withParameter(LootContextParams.TOOL, tool == null ? ItemStack.EMPTY : tool)
-                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity);
+                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity)
+                .withOptionalParameter(LootContextParams.THIS_ENTITY, player);
 
         drops.addAll(state.getDrops(lootparams$builder));
 

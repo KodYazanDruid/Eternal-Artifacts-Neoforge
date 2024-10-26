@@ -1,4 +1,4 @@
-// 1.20.4	2024-10-09T21:54:38.8661429	Model Definitions
+// 1.20.4	2024-10-19T23:26:03.6175409	Model Definitions
 00dc325fc50310cb196ac3ebc1457ad2d84a84e7 assets/eternalartifacts/blockstates/blue_plastic_cauldron.json
 5450153ad7d01567ce4373689be7bb6fabffbcb2 assets/eternalartifacts/blockstates/copper_cable.json
 de311ab6db2d3d00a68b470b9962bfe0bd70078b assets/eternalartifacts/blockstates/covered_copper_cable.json
@@ -25,7 +25,7 @@ a1e84ff060e6b67b8309ccae2232aecd279f0311 assets/eternalartifacts/models/block/fl
 9213224ee6d50883bd7e59c3b3ee0d42803cc0ab assets/eternalartifacts/models/item/copper_cable.json
 9d89e8482a25a4ddea9d3cbbcd34808cd9655846 assets/eternalartifacts/models/item/covered_copper_cable.json
 cf00b6b86cba80ce1952eb3f199a446394f3d78d assets/eternalartifacts/models/item/evokers_tome.json
-4c43e41bb883cbe4b919cc42e6a9d3b7addd13e1 assets/eternalartifacts/models/item/fireball_tome.json
+554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/fireball_tome.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/fluid_combustion_dynamo.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/jar.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/nous_tank.json

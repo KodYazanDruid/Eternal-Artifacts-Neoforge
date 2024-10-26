@@ -65,6 +65,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HOE.get(), RecipeCategory.TOOLS, ModItems.LUSH_GRUBBER.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HAMMER.get(), RecipeCategory.TOOLS, ModItems.HAMMAXE.get());
         modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_HAMMER.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_HAMMER.get());
+        modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_CUTLASS.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_CUTLASS.get());
 
         createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, 250);
         createMeatShredderRecipe(recipeOutput, Items.BEEF.getDefaultInstance(), 250);

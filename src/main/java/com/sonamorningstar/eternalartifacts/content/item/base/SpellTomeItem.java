@@ -23,6 +23,10 @@ public class SpellTomeItem<S extends Spell> extends Item {
         return spellHolder.get().rarity;
     }
 
+    public Spell getSpell() {
+        return spellHolder.get();
+    }
+
     /**
      *
      * If you want to change spell casting logic (giving tome an energy/xp cost etc.) override

@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.renderer;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sonamorningstar.eternalartifacts.client.renderer.item.SpellTomeRenderer;
 import com.sonamorningstar.eternalartifacts.content.block.FluidCombustionDynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.JarBlock;
 import com.sonamorningstar.eternalartifacts.content.block.NousTankBlock;
@@ -10,6 +11,8 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustion
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
+import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -18,6 +21,7 @@ import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.BlockItem;
@@ -32,10 +36,15 @@ import java.util.function.Supplier;
 
 public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     public static final Supplier<ModItemStackBEWLR> INSTANCE = Suppliers.memoize(ModItemStackBEWLR::new);
-    private final BlockEntityRenderDispatcher blockEntityRenderDispatcher = Minecraft.getInstance().getBlockEntityRenderDispatcher();
-    private final EntityModelSet entityModelSet = Minecraft.getInstance().getEntityModels();
+    static Minecraft minecraft = Minecraft.getInstance();
+    private static final BlockEntityRenderDispatcher blockEntityRenderDispatcher = minecraft.getBlockEntityRenderDispatcher();
+    private static final EntityModelSet entityModelSet = minecraft.getEntityModels();
+    EntityRendererProvider.Context entityrendererprovider$context = new EntityRendererProvider.Context(
+            minecraft.getEntityRenderDispatcher(), minecraft.getItemRenderer(), minecraft.getBlockRenderer(), minecraft.gameRenderer.itemInHandRenderer, minecraft.getResourceManager(), entityModelSet, minecraft.font
+    );
+
     private ModItemStackBEWLR() {
-        super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+        super(blockEntityRenderDispatcher, entityModelSet);
     }
 
     private final JarBlockEntity jarBlockEntity = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
@@ -46,7 +55,6 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
         Item item = stack.getItem();
-        Minecraft minecraft = Minecraft.getInstance();
         if(item instanceof BlockItem blockItem) {
             IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).orElse(null);
             Block block = blockItem.getBlock();
@@ -63,14 +71,13 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
-                if(fluidHandlerItem != null) {
-                    /*oilRefineryBlockEntity.tanks.get(0).setFluid(fluidHandlerItem.getFluidInTank(0));
-                    oilRefineryBlockEntity.tanks.get(1).setFluid(fluidHandlerItem.getFluidInTank(1));
-                    oilRefineryBlockEntity.tanks.get(2).setFluid(fluidHandlerItem.getFluidInTank(2));*/
-                }
                 blockEntityRenderDispatcher.renderItem(oilRefineryBlockEntity, ps, buff, light, overlay);
             }
+        } else {
+            if (item instanceof AnimatedSpellTomeItem<?> tome) {
+                SpellTomeRenderer renderer = new SpellTomeRenderer(entityrendererprovider$context);
+                renderer.render(stack, minecraft.getPartialTick(), ps, buff, light, overlay);
+            }
         }
-
     }
 }

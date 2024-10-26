@@ -11,6 +11,7 @@ import net.minecraft.data.models.model.ModelLocationUtils;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -32,15 +33,18 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         createBEWLRTransforms(ModBlocks.JAR);
         createBEWLRTransforms(ModBlocks.NOUS_TANK);
         createBEWLRTransforms(ModBlocks.FLUID_COMBUSTION_DYNAMO);
-        createBEWLRTransforms(ModMachines.OIL_REFINERY.getBlockHolder());
+        createBEWLRTransforms(ModMachines.OIL_REFINERY.getItem());
+
+        createBEWLRTransforms(ModItems.FIREBALL_TOME);
 
         createSpellTome(ModItems.EVOKERS_TOME);
-        createSpellTome(ModItems.FIREBALL_TOME);
+        //createSpellTome(ModItems.FIREBALL_TOME);
         createSpellTome(ModItems.TORNADO_TOME);
     }
 
-    private void createBEWLRTransforms(DeferredHolder<Block, ? extends Block> holder) {
-        ModModelTemplates.ENTITY_RENDER_TRANSFORMS.create(ModelLocationUtils.getModelLocation(holder.get().asItem()), TextureMapping.defaultTexture(holder.get()), output);
+    private void createBEWLRTransforms(ItemLike itemLike) {
+        ResourceLocation texture = BuiltInRegistries.ITEM.getKey(itemLike.asItem()).withPrefix("item/");
+        ModModelTemplates.ENTITY_RENDER_TRANSFORMS.create(ModelLocationUtils.getModelLocation(itemLike.asItem()), TextureMapping.defaultTexture(texture), output);
     }
 
     private void createSpellTome(DeferredHolder<Item, ? extends SpellTomeItem<?>> holder) {

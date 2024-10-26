@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatPackerCategory;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
@@ -119,6 +118,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.FIREBALL_TOME.get(), "Fireball Tome");
                 add(ModItems.TORNADO_TOME.get(), "Tornado Tome");
                 add(ModItems.LIGHTSABER.get(), "Lightsaber");
+                add(ModItems.WOODEN_SICKLE.get(), "Wooden Sickle");
+                add(ModItems.STONE_SICKLE.get(), "Stone Sickle");
+                add(ModItems.COPPER_SICKLE.get(), "Copper Sickle");
+                add(ModItems.IRON_SICKLE.get(), "Iron Sickle");
+                add(ModItems.GOLDEN_SICKLE.get(), "Golden Sickle");
+                add(ModItems.DIAMOND_SICKLE.get(), "Diamond Sickle");
+                add(ModItems.NETHERITE_SICKLE.get(), "Netherite Sickle");
+                add(ModItems.CHLOROPHYTE_SICKLE.get(), "Chlorophyte Sickle");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -199,9 +206,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEffects.MALADY.get(), "Malady");
                 //endregion
                 //region Attributes
-                ModAttributes.ATTRIBUTES.getEntries().forEach(holder -> {
-                    add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath()));
-                });
+                ModAttributes.ATTRIBUTES.getEntries().forEach(holder -> add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath())));
                 //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -275,9 +280,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                     add(holder.getFluidBlock(), prettyName(holder.getFluidBlockHolder().getId().getPath()));
                     add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                 });
-                ModMachines.MACHINES.getMachines().forEach(holder -> {
-                    add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath()));
-                });
+                ModMachines.MACHINES.getMachines().forEach(holder -> add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath())));
                 //endregion
             }
             case "tr_tr" -> {
@@ -389,6 +392,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.FIREBALL_TOME.get(), "Ateştopu Büyü Kitabı");
                 add(ModItems.TORNADO_TOME.get(), "Kasırga Büyü Kitabı");
                 add(ModItems.LIGHTSABER.get(), "Işın Kılıcı");
+                add(ModItems.WOODEN_SICKLE.get(), "Odun Orak");
+                add(ModItems.STONE_SICKLE.get(), "Taş Orak");
+                add(ModItems.COPPER_SICKLE.get(), "Bakır Orak");
+                add(ModItems.IRON_SICKLE.get(), "Demir Orak");
+                add(ModItems.GOLDEN_SICKLE.get(), "Altın Orak");
+                add(ModItems.DIAMOND_SICKLE.get(), "Elmas Orak");
+                add(ModItems.NETHERITE_SICKLE.get(), "Netherit Orak");
+                add(ModItems.CHLOROPHYTE_SICKLE.get(), "Klorofit Orak");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");

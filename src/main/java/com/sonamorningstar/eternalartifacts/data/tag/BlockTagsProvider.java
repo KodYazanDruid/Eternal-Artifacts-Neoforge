@@ -86,6 +86,31 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 Blocks.GLOWSTONE, Blocks.SEA_LANTERN
         );
         tag(ModTags.Blocks.MINEABLE_WITH_GRAFTER).addTags(BlockTags.LEAVES);
+        tag(ModTags.Blocks.MINEABLE_WITH_SICKLE).addTags(
+                BlockTags.MINEABLE_WITH_HOE,
+                BlockTags.CROPS
+        );
+        tag(ModTags.Blocks.MINEABLE_WITH_SICKLE).add(
+                Blocks.SHORT_GRASS,
+                Blocks.FERN,
+                Blocks.DEAD_BUSH,
+                Blocks.VINE,
+                Blocks.GLOW_LICHEN,
+                Blocks.SUNFLOWER,
+                Blocks.LILAC,
+                Blocks.ROSE_BUSH,
+                Blocks.PEONY,
+                Blocks.TALL_GRASS,
+                Blocks.LARGE_FERN,
+                Blocks.HANGING_ROOTS,
+                Blocks.PITCHER_PLANT,
+                Blocks.WARPED_ROOTS,
+                Blocks.WEEPING_VINES,
+                Blocks.WEEPING_VINES_PLANT,
+                Blocks.CRIMSON_ROOTS,
+                Blocks.TWISTING_VINES,
+                Blocks.TWISTING_VINES_PLANT
+        );
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());

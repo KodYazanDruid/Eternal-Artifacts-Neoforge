@@ -120,6 +120,14 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.DIAMOND_CUTLASS);
         handheld(ModItems.NETHERITE_CUTLASS);
         handheld(ModItems.CHLOROPHYTE_CUTLASS);
+        handheld(ModItems.WOODEN_SICKLE);
+        handheld(ModItems.STONE_SICKLE);
+        handheld(ModItems.COPPER_SICKLE);
+        handheld(ModItems.IRON_SICKLE);
+        handheld(ModItems.GOLDEN_SICKLE);
+        handheld(ModItems.DIAMOND_SICKLE);
+        handheld(ModItems.NETHERITE_SICKLE);
+        handheld(ModItems.CHLOROPHYTE_SICKLE);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

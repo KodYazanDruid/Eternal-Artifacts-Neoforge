@@ -1,8 +1,9 @@
-// 1.20.4	2024-10-12T15:18:48.0442648	Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-10-26T18:34:35.0298497	Tags for minecraft:block mod id eternalartifacts
 ac1bf6404c14e187fcaa7abdd95e02398a3f3e9d data/eternalartifacts/tags/blocks/drum.json
 bd02464e1c960573d4213bff84b83f239b8f0947 data/eternalartifacts/tags/blocks/mineable/glasscutter.json
 a4e8097fff07f9a74259d6b5dd583f3437ff28a2 data/eternalartifacts/tags/blocks/mineable/grafter.json
 f3e660e89a1134f382a8b3f42bce0dc91d88fe6d data/eternalartifacts/tags/blocks/mineable/hammaxe.json
+e517276b36e45ee8c7323d191fbe31bc00c68624 data/forge/tags/blocks/mineable/sickle.json
 a40747aa8cfa62fc39f620acd0cb7f2cd88592cd data/forge/tags/blocks/mineable/wrench.json
 6e955beae490aa633e2a0c3c4171c29860662334 data/forge/tags/blocks/ores.json
 73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/blocks/ores/manganese.json

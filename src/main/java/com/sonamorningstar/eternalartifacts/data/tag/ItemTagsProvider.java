@@ -5,12 +5,9 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -133,6 +130,16 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.DIAMOND_CUTLASS.get(),
                 ModItems.NETHERITE_CUTLASS.get(),
                 ModItems.CHLOROPHYTE_CUTLASS.get()
+        );
+        tag(ModTags.Items.TOOLS_SICKLE).add(
+                ModItems.WOODEN_SICKLE.get(),
+                ModItems.STONE_SICKLE.get(),
+                ModItems.COPPER_SICKLE.get(),
+                ModItems.IRON_SICKLE.get(),
+                ModItems.GOLDEN_SICKLE.get(),
+                ModItems.DIAMOND_SICKLE.get(),
+                ModItems.NETHERITE_SICKLE.get(),
+                ModItems.CHLOROPHYTE_SICKLE.get()
         );
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(

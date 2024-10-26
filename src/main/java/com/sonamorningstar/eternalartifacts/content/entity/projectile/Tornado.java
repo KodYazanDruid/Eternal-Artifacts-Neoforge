@@ -96,8 +96,7 @@ public class Tornado extends AbstractHurtingProjectile {
     public void tick() {
         super.tick();
         Vec3 deltaMovement = getDeltaMovement();
-        //double y = !this.isNoGravity() && shouldFall() ? deltaMovement.y *.5 - 0.05 : 0;
-        double y = !this.isNoGravity() && shouldFall() ? -0.1 : 0;
+        double y = !this.isNoGravity() && shouldFall() ? -0.2 : 0;
         setDeltaMovement(deltaMovement.x, y, deltaMovement.z);
     }
 

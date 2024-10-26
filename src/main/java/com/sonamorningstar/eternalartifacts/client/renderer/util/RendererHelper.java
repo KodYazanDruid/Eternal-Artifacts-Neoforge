@@ -76,7 +76,7 @@ public class RendererHelper {
             if(info.shouldRender(Direction.DOWN)) {
                 poseStack.pushPose();
                 poseStack.mulPose(Axis.XP.rotationDegrees(180));
-                poseStack.translate(0, -2 / 16f, -1);
+                poseStack.translate(0, 0/*-2 / 16f*/, -1);
                 drawQuad(
                         vertexConsumer, poseStack,
                         x0, y0, z0, x1, y0, z1,

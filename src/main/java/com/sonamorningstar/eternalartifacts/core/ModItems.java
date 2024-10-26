@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
@@ -126,7 +127,7 @@ public class ModItems {
     public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes", ComfyShoesItem::new);
     public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
     public static final DeferredItem<SpellTomeItem<EvokerFangsSpell>> EVOKERS_TOME = registerTome("evokers_tome", ModSpells.EVOKER_FANGS);
-    public static final DeferredItem<SpellTomeItem<FireballSpell>> FIREBALL_TOME = registerTome("fireball_tome", ModSpells.FIREBALL);
+    public static final DeferredItem<AnimatedSpellTomeItem<FireballSpell>> FIREBALL_TOME = registerAnimatedTome("fireball_tome", ModSpells.FIREBALL);
     public static final DeferredItem<SpellTomeItem<TornadoSpell>> TORNADO_TOME = registerTome("tornado_tome", ModSpells.TORNADO);
 
     //Tools.
@@ -164,6 +165,15 @@ public class ModItems {
     public static final DeferredItem<Item> NETHERITE_CUTLASS = registerStacksToOne("netherite_cutlass", p -> new CutlassItem(Tiers.NETHERITE, 3, -2.4F, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_CUTLASS = registerStacksToOne("chlorophyte_cutlass", p -> new CutlassItem(ModTiers.CHLOROPHYTE, 3, -2.4F, p));
     public static final DeferredItem<Item> LIGHTSABER = registerStacksToOne("lightsaber", p -> new SwordItem(ModTiers.CHLOROPHYTE, 5, -2.0F, p));
+    public static final DeferredItem<Item> WOODEN_SICKLE = registerStacksToOne("wooden_sickle", p -> new SickleItem(Tiers.WOOD, p));
+    public static final DeferredItem<Item> STONE_SICKLE = registerStacksToOne("stone_sickle", p -> new SickleItem(Tiers.STONE, p));
+    public static final DeferredItem<Item> COPPER_SICKLE = registerStacksToOne("copper_sickle", p -> new SickleItem(ModTiers.COPPER, p));
+    public static final DeferredItem<Item> IRON_SICKLE = registerStacksToOne("iron_sickle", p -> new SickleItem(Tiers.IRON, p));
+    public static final DeferredItem<Item> GOLDEN_SICKLE = registerStacksToOne("golden_sickle", p -> new SickleItem(Tiers.GOLD, p));
+    public static final DeferredItem<Item> DIAMOND_SICKLE = registerStacksToOne("diamond_sickle", p -> new SickleItem(Tiers.DIAMOND, p));
+    public static final DeferredItem<Item> NETHERITE_SICKLE = registerStacksToOne("netherite_sickle", p -> new SickleItem(Tiers.NETHERITE, p.fireResistant()));
+    public static final DeferredItem<Item> CHLOROPHYTE_SICKLE = registerStacksToOne("chlorophyte_sickle", p -> new SickleItem(ModTiers.CHLOROPHYTE, p));
+
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
@@ -200,6 +210,9 @@ public class ModItems {
 
     private static <S extends Spell> DeferredItem<SpellTomeItem<S>> registerTome(String name, DeferredHolder<Spell, S> spellHolder) {
         return register(name, () -> new SpellTomeItem<>(spellHolder, new Item.Properties()));
+    }
+    private static <S extends Spell> DeferredItem<AnimatedSpellTomeItem<S>> registerAnimatedTome(String name, DeferredHolder<Spell, S> spellHolder) {
+        return register(name, () -> new AnimatedSpellTomeItem<>(spellHolder, new Item.Properties()));
     }
     //endregion
 }

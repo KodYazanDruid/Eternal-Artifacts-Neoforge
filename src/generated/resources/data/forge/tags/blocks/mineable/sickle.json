@@ -1,0 +1,25 @@
+{
+  "values": [
+    "#minecraft:mineable/hoe",
+    "#minecraft:crops",
+    "minecraft:short_grass",
+    "minecraft:fern",
+    "minecraft:dead_bush",
+    "minecraft:vine",
+    "minecraft:glow_lichen",
+    "minecraft:sunflower",
+    "minecraft:lilac",
+    "minecraft:rose_bush",
+    "minecraft:peony",
+    "minecraft:tall_grass",
+    "minecraft:large_fern",
+    "minecraft:hanging_roots",
+    "minecraft:pitcher_plant",
+    "minecraft:warped_roots",
+    "minecraft:weeping_vines",
+    "minecraft:weeping_vines_plant",
+    "minecraft:crimson_roots",
+    "minecraft:twisting_vines",
+    "minecraft:twisting_vines_plant"
+  ]
+}

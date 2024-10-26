@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.client.resources.model.FluidCombusti
 import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
+import com.sonamorningstar.eternalartifacts.client.resources.model.SpellTomeModel;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -103,6 +104,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.DUCK_LAYER, DuckModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.TORNADO_LAYER, TornadoModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.METEORITE_LAYER, MeteoriteModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.SPELL_TOME_LAYER, SpellTomeModel::createBodyLayer);
 
         //event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);

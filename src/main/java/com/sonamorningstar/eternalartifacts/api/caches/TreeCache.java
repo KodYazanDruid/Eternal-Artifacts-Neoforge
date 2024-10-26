@@ -53,7 +53,7 @@ public class TreeCache {
                 level.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
             }
 
-            if (isChopped) stacks.addAll(BlockHelper.getBlockDrops((ServerLevel) level, p, tool, blockEntity));
+            if (isChopped) stacks.addAll(BlockHelper.getBlockDrops((ServerLevel) level, p, tool, blockEntity, player));
             /*if (player != null && hand != null && tool != null && !tool.isEmpty())
                 tool.hurtAndBreak(1, player, pl -> pl.broadcastBreakEvent(hand));*/
         }

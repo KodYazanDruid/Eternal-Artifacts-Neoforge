@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
-import com.google.common.collect.ImmutableList;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -52,14 +51,14 @@ public class FluidDeferredRegister{
     private static ResourceLocation getStillTexture(String name) {return new ResourceLocation(MODID, "block/"+name+"_still");}
     private static ResourceLocation getFlowTexture(String name) {return new ResourceLocation(MODID, "block/"+name+"_flow");}
 
-    public FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, LiquidBlock> register(
+    public GenericLiquidHolder register(
             String name, int light, int density, int viscosity, Rarity rarity,
             int fogX, int fogY, int fogZ, MapColor mapColor, boolean isGeneric, int... tint) {
-        return register(name, LiquidBlock::new, light, density, viscosity, rarity, fogX, fogY, fogZ, mapColor, isGeneric, tint);
+        return GenericLiquidHolder.convert(register(name, LiquidBlock::new, light, density, viscosity, rarity, fogX, fogY, fogZ, mapColor, isGeneric, tint));
     }
 
-    public <B extends LiquidBlock> FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, B> register(
-            String name, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, B> liquidBlockFun, int light, int density, int viscosity, Rarity rarity,
+    public <B extends LiquidBlock> LiquidBlockFluidHolder<B> register(
+            String name, BiFunction<Supplier<? extends FlowingFluid>, BlockBehaviour.Properties, B> liquidBlockGetter, int light, int density, int viscosity, Rarity rarity,
             int fogX, int fogY, int fogZ, MapColor mapColor, boolean isGeneric, int... tint) {
 
         ResourceLocation stillTex = isGeneric ? WATER_STILL : getStillTexture(name);
@@ -81,10 +80,9 @@ public class FluidDeferredRegister{
         DeferredHolder<Fluid, BaseFlowingFluid.Flowing> flowing = fluidRegister.register(name+"_flow",()-> new BaseFlowingFluid.Flowing(fluidProperties));
 
         DeferredItem<BucketItem> bucket = itemRegister.register(name+"_bucket", ()-> new BucketItem(source, new Item.Properties().stacksTo(1)));
-        //DeferredBlock<LiquidBlock> liquidBlock = blockRegister.register(name, ()-> new LiquidBlock(source, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(mapColor)));
-        DeferredBlock<B> liquidBlock = blockRegister.register(name, ()-> liquidBlockFun.apply(source, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(mapColor)));
+        DeferredBlock<B> liquidBlock = blockRegister.register(name, ()-> liquidBlockGetter.apply(source, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(mapColor)));
 
-        FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, B> holder = new FluidDeferredHolder<>(fluidType, source, flowing, bucket, liquidBlock, tintColor);
+        LiquidBlockFluidHolder<B> holder = new LiquidBlockFluidHolder<>(fluidType, source, flowing, bucket, liquidBlock, tintColor);
         entryMap.put(holder, isGeneric);
         return holder;
     }

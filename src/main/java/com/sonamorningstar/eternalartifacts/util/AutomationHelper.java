@@ -33,7 +33,7 @@ public class AutomationHelper {
         }
         NonNullList<ItemStack> totalDrops = NonNullList.create();
         while (pos.getY() >= baseY) {
-            totalDrops.addAll(BlockHelper.getBlockDrops(level, pos, null, null));
+            totalDrops.addAll(BlockHelper.getBlockDrops(level, pos, null, null, null));
             level.destroyBlock(pos, false);
             pos = pos.below();
         }
