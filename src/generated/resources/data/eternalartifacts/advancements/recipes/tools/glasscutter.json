@@ -5,9 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": [
-              "eternalartifacts:raw_meat_ingot"
-            ]
+            "tag": "forge:ingots/iron"
           }
         ]
       },
@@ -15,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "eternalartifacts:smelting/raw_meat_ingot_to_meat_ingot"
+        "recipe": "eternalartifacts:glasscutter"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "eternalartifacts:smelting/raw_meat_ingot_to_meat_ingot"
+      "eternalartifacts:glasscutter"
     ]
   }
 }

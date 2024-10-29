@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event;
 
+import com.sonamorningstar.eternalartifacts.client.ColorTinter;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GrassColor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
@@ -68,6 +70,7 @@ public class ClientModEvents {
         ModFluids.FLUIDS.getEntries().forEach(holder -> {
             if (ModFluids.FLUIDS.isGeneric(holder)) event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
         });
+        event.register(ColorTinter::getColorFromNBT, ModItems.LIGHTSABER);
     }
 
     @SubscribeEvent

@@ -36,8 +36,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ANCIENT_FRUIT.get(), "Ancient Fruit");
                 add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "Demon Eye Spawn Egg");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Axe of Regrowth");
-                add(ModItems.RAW_MEAT_INGOT.get(), "Raw Meat Ingot");
-                add(ModItems.MEAT_INGOT.get(), "Meat Ingot");
+                add(ModItems.RAW_MEAT_INGOT.get(), "Meat Ingot");
+                add(ModItems.COOKED_MEAT_INGOT.get(), "Cooked Meat Ingot");
                 add(ModItems.PINK_SLIME.get(), "Pink Slime");
                 add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Spawn Egg");
                 add(ModItems.ENDER_KNAPSACK.get(), "Ender Knapsack");
@@ -126,6 +126,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DIAMOND_SICKLE.get(), "Diamond Sickle");
                 add(ModItems.NETHERITE_SICKLE.get(), "Netherite Sickle");
                 add(ModItems.CHLOROPHYTE_SICKLE.get(), "Chlorophyte Sickle");
+                add(ModItems.FLOUR.get(),"Flour");
+                add(ModItems.DOUGH.get(),"Dough");
+                add(ModItems.BANANA_BREAD.get(),"Banana Bread");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -301,8 +304,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ANCIENT_FRUIT.get(), "Antik Meyve");
                 add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "İblis Gözü Canlandırma Yumurtası");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Yeşertme Baltası");
-                add(ModItems.RAW_MEAT_INGOT.get(), "Çiğ Et Külçesi");
-                add(ModItems.MEAT_INGOT.get(), "Et Külçesi");
+                add(ModItems.RAW_MEAT_INGOT.get(), "Et Külçesi");
+                add(ModItems.COOKED_MEAT_INGOT.get(), "Pişmiş Et Külçesi");
                 add(ModItems.PINK_SLIME.get(), "Pembe Balçık");
                 add(ModItems.PINKY_SPAWN_EGG.get(), "Pinky Çağırma Yumurtası");
                 add(ModItems.ENDER_KNAPSACK.get(), "Ender Çantası");
@@ -400,6 +403,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DIAMOND_SICKLE.get(), "Elmas Orak");
                 add(ModItems.NETHERITE_SICKLE.get(), "Netherit Orak");
                 add(ModItems.CHLOROPHYTE_SICKLE.get(), "Klorofit Orak");
+                add(ModItems.FLOUR.get(),"Un");
+                add(ModItems.DOUGH.get(),"Hamur");
+                add(ModItems.BANANA_BREAD.get(),"Muzlu Ekmek");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");

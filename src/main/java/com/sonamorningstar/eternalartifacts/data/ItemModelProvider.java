@@ -43,7 +43,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.ANCIENT_FRUIT.get());
         handheld(ModItems.AXE_OF_REGROWTH);
         basicItem(ModItems.RAW_MEAT_INGOT.get());
-        basicItem(ModItems.MEAT_INGOT.get());
+        basicItem(ModItems.COOKED_MEAT_INGOT.get());
         basicItem(ModItems.PINK_SLIME.get());
         basicItem(ModItems.ENDER_KNAPSACK.get());
         basicItem(ModItems.PORTABLE_CRAFTER.get());
@@ -128,6 +128,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.DIAMOND_SICKLE);
         handheld(ModItems.NETHERITE_SICKLE);
         handheld(ModItems.CHLOROPHYTE_SICKLE);
+        basicItem(ModItems.FLOUR.get());
+        basicItem(ModItems.DOUGH.get());
+        basicItem(ModItems.BANANA_BREAD.get());
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");

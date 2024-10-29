@@ -48,7 +48,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         craftingRecipes(recipeOutput);
         smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
-        createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.MEAT_INGOT, 0.35f);
+        createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.COOKED_MEAT_INGOT, 0.35f);
         createFoodCookingRecipe(recipeOutput, ModItems.DUCK_MEAT, ModItems.COOKED_DUCK_MEAT, 0.35f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COAL_ORE, Items.COAL, 0.1f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COPPER_ORE, Items.COPPER_INGOT, 0.7f);
@@ -56,6 +56,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
         createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ARDITE_SMELTABLES, ModItems.ARDITE_INGOT, 1.0f);
+        createFoodCookingRecipe(recipeOutput, ModItems.DOUGH, Items.BREAD, 0.35f);
 
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
@@ -64,8 +65,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SHOVEL.get(), RecipeCategory.TOOLS, ModItems.NATURAL_SPADE.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HOE.get(), RecipeCategory.TOOLS, ModItems.LUSH_GRUBBER.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_HAMMER.get(), RecipeCategory.TOOLS, ModItems.HAMMAXE.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_CUTLASS.get(), RecipeCategory.TOOLS, ModItems.CHLOROPHYTE_CUTLASS.get());
+        chlorophyteSmithing(recipeOutput, ModItems.COPPER_SICKLE.get(), RecipeCategory.TOOLS, ModItems.CHLOROPHYTE_SICKLE.get());
         modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_HAMMER.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_HAMMER.get());
         modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_CUTLASS.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_CUTLASS.get());
+        modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_SICKLE.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_SICKLE.get());
 
         createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, 250);
         createMeatShredderRecipe(recipeOutput, Items.BEEF.getDefaultInstance(), 250);
@@ -86,6 +90,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Either.left(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
+        createFluidInfusingRecipe(recipeOutput, Fluids.WATER, 125, Either.right(ModTags.Items.DUSTS_FLOUR), ModItems.DOUGH.toStack());
 
         createMeltingRecipe(recipeOutput, Items.NETHERRACK.getDefaultInstance(), new FluidStack(Fluids.LAVA, 1000));
         createMeltingRecipe(recipeOutput, Items.ICE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
@@ -109,24 +114,29 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, Items.CHISELED_RED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.RED_SAND, 4));
         createMaceratingRecipe(recipeOutput, Items.SMOOTH_RED_SANDSTONE.getDefaultInstance(), new ItemStack(Items.RED_SAND, 4));
         createMaceratingRecipe(recipeOutput, Items.NETHER_BRICKS.getDefaultInstance(), new ItemStack(Items.NETHER_BRICK, 4));
-        createMaceratingRecipe(recipeOutput, Items.BONE.getDefaultInstance(), new ItemStack(Items.BONE_MEAL, 5));
-        createMaceratingRecipe(recipeOutput, Items.BLAZE_ROD.getDefaultInstance(), new ItemStack(Items.BLAZE_POWDER, 4));
+        createMaceratingRecipe(recipeOutput, Items.BONE.getDefaultInstance(), new ItemStack(Items.BONE_MEAL, 6));
+        createMaceratingRecipe(recipeOutput, Items.BLAZE_ROD.getDefaultInstance(), new ItemStack(Items.BLAZE_POWDER, 5));
         createMaceratingRecipe(recipeOutput, Items.QUARTZ_BLOCK.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
         createMaceratingRecipe(recipeOutput, Items.QUARTZ_BRICKS.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
         createMaceratingRecipe(recipeOutput, Items.QUARTZ_PILLAR.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
         createMaceratingRecipe(recipeOutput, Items.SMOOTH_QUARTZ.getDefaultInstance(), new ItemStack(Items.QUARTZ, 4));
         createMaceratingRecipe(recipeOutput, Items.SUGAR_CANE.getDefaultInstance(), new ItemStack(Items.SUGAR, 3));
         createMaceratingRecipe(recipeOutput, Items.BEETROOT.getDefaultInstance(), new ItemStack(Items.SUGAR, 2));
+        createMaceratingRecipe(recipeOutput, Tags.Items.CROPS_WHEAT, new ItemStack(ModItems.FLOUR.get(), 3));
         //endregion
 
-        createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
-        createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), Items.GREEN_DYE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
+        createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 100));
+        createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), new ItemStack(Items.GREEN_DYE, 3), new FluidStack(Fluids.WATER, 125));
 
         createAlloyingRecipe(recipeOutput, List.of(
                 Ingredient.of(ModItems.DEMON_INGOT),
                 Ingredient.of(Items.GLOWSTONE_DUST),
                 Ingredient.of(ModItems.PLANT_MATTER)),
                 ModItems.CHLOROPHYTE_INGOT.toStack());
+        /*createAlloyingRecipe(recipeOutput, List.of(
+                    Ingredient.of(Tags.Items.INGOTS_IRON),
+                    Ingredient.of(ModTags.Items.DUSTS_COAL)),
+                ModItems.CHLOROPHYTE_INGOT.toStack());*/
 
         //region Mob Liquifying recipes.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
@@ -191,7 +201,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         //endregion
         createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());
-        createSolidifyingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 100, new ItemStack(ModItems.LENS.get(), 5));
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
@@ -315,6 +324,39 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern(" D ")
                 .define('S', ModItems.STONE_TABLET).define('D', ModItems.DEMON_INGOT)
                 .unlockedBy("has_item", has(ModItems.DEMON_INGOT)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CAPACITOR)
+                .pattern(" P ").pattern("PRP").pattern("C C")
+                .define('C', Tags.Items.INGOTS_COPPER)
+                .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE)
+                .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLD_RING)
+                .pattern("GGG").pattern("G G").pattern("GGG")
+                .define('G', Tags.Items.INGOTS_GOLD)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_GOLD)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SLOT_LOCK)
+                .pattern(" N ").pattern("NPN").pattern(" N ")
+                .define('N', Tags.Items.NUGGETS_IRON).define('P', Items.PAPER)
+                .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BANANA_BREAD)
+                .pattern("WBW")
+                .define('W', Tags.Items.CROPS_WHEAT).define('B', ModTags.Items.FRUITS_BANANA)
+                .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
+        createCutlassRecipe(recipeOutput, ModItems.WOODEN_CUTLASS, ItemTags.PLANKS);
+        createCutlassRecipe(recipeOutput, ModItems.STONE_CUTLASS, Items.COBBLESTONE);
+        createCutlassRecipe(recipeOutput, ModItems.COPPER_CUTLASS, Tags.Items.INGOTS_COPPER);
+        createCutlassRecipe(recipeOutput, ModItems.IRON_CUTLASS, Tags.Items.INGOTS_IRON);
+        createCutlassRecipe(recipeOutput, ModItems.GOLDEN_CUTLASS, Tags.Items.INGOTS_GOLD);
+        createCutlassRecipe(recipeOutput, ModItems.DIAMOND_CUTLASS, Tags.Items.GEMS_DIAMOND);
+        createSickleRecipe(recipeOutput, ModItems.WOODEN_SICKLE, ItemTags.PLANKS);
+        createSickleRecipe(recipeOutput, ModItems.STONE_SICKLE, Items.COBBLESTONE);
+        createSickleRecipe(recipeOutput, ModItems.COPPER_SICKLE, Tags.Items.INGOTS_COPPER);
+        createSickleRecipe(recipeOutput, ModItems.IRON_SICKLE, Tags.Items.INGOTS_IRON);
+        createSickleRecipe(recipeOutput, ModItems.GOLDEN_SICKLE, Tags.Items.INGOTS_GOLD);
+        createSickleRecipe(recipeOutput, ModItems.DIAMOND_SICKLE, Tags.Items.GEMS_DIAMOND);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.GLASSCUTTER)
+                .pattern(" II").pattern(" S ").pattern("S  ")
+                .define('I', Tags.Items.INGOTS_IRON).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_IRON)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -347,6 +389,20 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STEEL_INGOT, 9)
                 .requires(ModBlocks.STEEL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.STEEL_BLOCK)).save(recipeOutput, makeID("steel_ingots_from_steel_block"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.APPLE_PIE, 1)
+                .requires(Items.APPLE)
+                .requires(Items.SUGAR)
+                .requires(Tags.Items.EGGS)
+                .unlockedBy("has_item", has(Items.APPLE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.BANANA_CREAM_PIE, 1)
+                .requires(ModTags.Items.FRUITS_BANANA)
+                .requires(Items.SUGAR)
+                .requires(Tags.Items.EGGS)
+                .unlockedBy("has_item", has(ModTags.Items.FRUITS_BANANA)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENDER_PAPER, 1)
+                .requires(Items.PAPER)
+                .requires(Items.ENDER_PEARL)
+                .unlockedBy("has_item", has(Items.ENDER_PEARL)).save(recipeOutput);
         //endregion
     }
 
@@ -409,7 +465,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("FFF").pattern("FSF").pattern(" R ")
                 .define('F', firstIng)
                 .define('S', secondIng)
-                .define('R', Items.STICK)
+                .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(firstIng)).save(output);
     }
     private void createHammerRecipe(RecipeOutput output, ItemLike result, TagKey<Item> firstIng, TagKey<Item> secondIng) {
@@ -417,8 +473,36 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("FFF").pattern("FSF").pattern(" R ")
                 .define('F', firstIng)
                 .define('S', secondIng)
-                .define('R', Items.STICK)
+                .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(firstIng)).save(output);
+    }
+    private void createCutlassRecipe(RecipeOutput output, ItemLike result, ItemLike ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern(" FF").pattern(" F ").pattern("R  ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private void createCutlassRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern(" FF").pattern(" F ").pattern("R  ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private void createSickleRecipe(RecipeOutput output, ItemLike result, ItemLike ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern(" FF").pattern("  F").pattern(" RF")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private void createSickleRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern(" FF").pattern("  F").pattern(" RF")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
     }
 
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, int output) {

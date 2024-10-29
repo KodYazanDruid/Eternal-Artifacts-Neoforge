@@ -49,13 +49,17 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Mac
 
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
-            if (be instanceof SidedTransferMachineBlockEntity<?> sided) return CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots);
-            else return be.inventory;
+            if (be instanceof SidedTransferMachineBlockEntity<?> sided) {
+                if(sided.inventory != null) return CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots);
+                else return null;
+            } else return be.inventory;
         });
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
-            if (be instanceof SidedTransferMachineBlockEntity<?> sided) return CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx);
-            else return be.tank;
+            if (be instanceof SidedTransferMachineBlockEntity<?> sided) {
+                if(sided.tank != null) return CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx);
+                else return null;
+            } else return be.tank;
         });
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), (be, ctx) -> be.energy != null ? be.energy : null);
     }
 }

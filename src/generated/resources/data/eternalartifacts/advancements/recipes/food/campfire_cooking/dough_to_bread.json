@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "eternalartifacts:raw_meat_ingot"
+              "eternalartifacts:dough"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "eternalartifacts:smoking/raw_meat_ingot_to_meat_ingot"
+        "recipe": "eternalartifacts:campfire_cooking/dough_to_bread"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "eternalartifacts:smoking/raw_meat_ingot_to_meat_ingot"
+      "eternalartifacts:campfire_cooking/dough_to_bread"
     ]
   }
 }

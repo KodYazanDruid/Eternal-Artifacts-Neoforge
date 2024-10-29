@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "minecraft:planks"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " FF",
+    " F ",
+    "R  "
+  ],
+  "result": {
+    "item": "eternalartifacts:wooden_cutlass"
+  }
+}

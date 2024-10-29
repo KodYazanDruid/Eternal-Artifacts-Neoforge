@@ -19,12 +19,24 @@ public class GuiDrawer {
         blitSides(gui, x, y, width, height);
         blitInside(gui, x, y, width, height);
     }
+    public static void drawItemSlot(GuiGraphics gui, int x, int y) {
+        gui.blitSprite(new ResourceLocation("container/slot"), x, y, 0, 18, 18);
+    }
+    public static void drawEmptyArrow(GuiGraphics gui, int x, int y) {
+        gui.blit(bars, x, y, 0, 56, 22, 15);
+    }
     public static void drawFluidWithTank(GuiGraphics gui, int x, int y, FluidStack stack, int percentage) {
         drawTiledFluid(gui, x, y, 12, 50, percentage, stack);
+        drawEmptyTank(gui, x, y);
+    }
+    public static void drawEmptyTank(GuiGraphics gui, int x, int y) {
         gui.blit(bars, x, y, 30, 0, 18, 56);
     }
     public static void drawFluidWithSmallTank(GuiGraphics gui, int x, int y, FluidStack stack, int percentage) {
         drawTiledFluid(gui, x, y, 12, 12, percentage, stack);
+        drawEmptySmallTank(gui, x, y);
+    }
+    public static void drawEmptySmallTank(GuiGraphics gui, int x, int y) {
         gui.blit(bars, x, y, 66, 37, 18, 18);
     }
     public static void drawTiledFluid(GuiGraphics gui, int x, int y, int width, int height, int percentage, FluidStack stack) {

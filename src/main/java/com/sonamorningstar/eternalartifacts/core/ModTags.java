@@ -32,7 +32,7 @@ public class ModTags {
     public static class Items {
         public static final TagKey<Item> FRUITS = forgeTag("fruits");
         public static final TagKey<Item> FRUITS_ORANGE = forgeTag("fruits/orange");
-        public static final TagKey<Item> BANANA = forgeTag("fruits/banana");
+        public static final TagKey<Item> FRUITS_BANANA = forgeTag("fruits/banana");
         public static final TagKey<Item> FRUITS_ANCIENT = forgeTag("fruits/ancient");
         public static final TagKey<Item> GARDENING_POT_SUITABLE = modTag("gardening_pot_suitable");
         public static final TagKey<Item> INGOTS_MEAT = forgeTag("ingots/meat");
@@ -55,6 +55,10 @@ public class ModTags {
         public static final TagKey<Item> CHARCOAL = forgeTag("charcoal");
         public static final TagKey<Item> TOOLS_CUTLASS = modTag("tools/cutlass");
         public static final TagKey<Item> TOOLS_SICKLE = forgeTag("tools/sickle");
+        public static final TagKey<Item> DUSTS_FLOUR = forgeTag("dusts/flour");
+        public static final TagKey<Item> FLOUR_WHEAT = forgeTag("flour/wheat");
+        public static final TagKey<Item> DOUGH = forgeTag("dough");
+        public static final TagKey<Item> DOUGH_WHEAT = forgeTag("dough/wheat");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

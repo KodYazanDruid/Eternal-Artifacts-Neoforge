@@ -6,7 +6,7 @@
       "tag": "minecraft:planks"
     },
     "R": {
-      "item": "minecraft:stick"
+      "tag": "forge:rods/wooden"
     },
     "S": {
       "tag": "minecraft:logs"

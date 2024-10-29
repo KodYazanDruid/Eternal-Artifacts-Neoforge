@@ -1,7 +1,7 @@
 {
   "values": [
-    "eternalartifacts:raw_meat_ingot",
     "eternalartifacts:meat_ingot",
+    "eternalartifacts:cooked_meat_ingot",
     "eternalartifacts:chlorophyte_ingot",
     "eternalartifacts:manganese_ingot",
     "eternalartifacts:steel_ingot",

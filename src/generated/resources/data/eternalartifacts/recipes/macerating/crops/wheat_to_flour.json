@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:crops/wheat"
+  },
+  "output": {
+    "Count": 3,
+    "id": "eternalartifacts:flour"
+  }
+}

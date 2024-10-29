@@ -41,11 +41,11 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
     @Setter
-    public ModItemStorage inventory;
+    public ModItemStorage inventory = null;
     @Setter
-    public AbstractFluidTank tank;
+    public AbstractFluidTank tank = null;
     @Setter
-    public ModEnergyStorage energy;
+    public ModEnergyStorage energy = null;
 
     @Getter
     @Setter
@@ -184,16 +184,15 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
             if(sourceInv != null) {
                 for(int i = 0; i < sourceInv.getSlots(); i++) {
-                    ItemStack stack = sourceInv.getStackInSlot(i);
-                    if(stack.isEmpty()) continue;
-                    ItemStack remainder = ItemHandlerHelper.insertItemStacked(inventory, stack, true);
-                    if(remainder.isEmpty()) {
-                        ItemHandlerHelper.insertItemStacked(inventory, stack.copyWithCount(stack.getCount()), false);
-                        sourceInv.extractItem(i, stack.getCount(), false);
-                    }else {
-                        int transferred = stack.getCount() - remainder.getCount();
-                        ItemHandlerHelper.insertItemStacked(inventory, stack.copyWithCount(transferred), false);
-                        stack.shrink(transferred);
+                    if(sourceInv.getStackInSlot(i).isEmpty()) continue;
+                    ItemStack extracted = sourceInv.extractItem(i, 1, true);
+                    if (!extracted.isEmpty()) {
+                        ItemStack remained = ItemHandlerHelper.insertItemStacked(inventory, extracted, true);
+                        if (remained.getCount() != extracted.getCount()) {
+                            int count = extracted.getCount() - remained.getCount();
+                            sourceInv.extractItem(i, count, false);
+                            ItemHandlerHelper.insertItemStacked(inventory, extracted.copyWithCount(count), false);
+                        }
                     }
                 }
             }
@@ -237,7 +236,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
         if(be != null) {
             IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-            if(targetTank != null) {
+            if(targetTank != null && tank != null) {
                 if(isReverse) FluidUtil.tryFluidTransfer(tank, targetTank, 1000, true);
                 else FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
             }

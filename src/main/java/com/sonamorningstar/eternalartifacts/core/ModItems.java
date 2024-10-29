@@ -16,8 +16,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.food.FoodProperties;
@@ -36,33 +34,17 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
-    public static final DeferredItem<Item> ORANGE = register("orange", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()));
-    public static final DeferredItem<Item> BANANA = register("banana", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()));
-    public static final DeferredItem<Item> ANCIENT_FRUIT = register("ancient_fruit", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationMod(0.3f).build()));
-    public static final DeferredItem<Item> RAW_MEAT_INGOT = register("raw_meat_ingot", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(0.3f).meat().build()));
-    public static final DeferredItem<Item> MEAT_INGOT = register("meat_ingot", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.8f).meat().build()));
-    public static final DeferredItem<Item> APPLE_PIE = register("apple_pie", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.3f).build()));
-    public static final DeferredItem<Item> BANANA_CREAM_PIE = register("banana_cream_pie", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationMod(0.3f).build()));
-    public static final DeferredItem<Item> DUCK_MEAT = register("duck_meat", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(2).saturationMod(0.3f).meat().build()));
-    public static final DeferredItem<Item> COOKED_DUCK_MEAT = register("cooked_duck_meat", Item::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(6).saturationMod(0.6f).meat().build()));
-    public static final DeferredItem<Item> GOLDEN_ANCIENT_FRUIT = register("golden_ancient_fruit", GoldenAncientFruitItem::new, new Item.Properties().rarity(Rarity.RARE).food(
-            new FoodProperties.Builder()
-                .nutrition(4)
-                .saturationMod(1.2F)
-                .effect(()->new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 1), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.DIG_SPEED, 2400, 1), 1.0F)
-                .alwaysEat()
-                .build()));
-    public static final DeferredItem<Item> ENCHANTED_GOLDEN_ANCIENT_FRUIT = register("enchanted_golden_ancient_fruit", EnchantedGoldenAncientFruitItem::new, new Item.Properties().rarity(Rarity.EPIC).food(
-            new FoodProperties.Builder()
-                .nutrition(4)
-                .saturationMod(1.2F)
-                .effect(()->new MobEffectInstance(ModEffects.FLIGHT.get(), 2400, 0), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 2400, 2), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.DIG_SPEED, 2400, 2), 1.0F)
-                .effect(()->new MobEffectInstance(MobEffects.ABSORPTION, 2400, 4), 1.0F)
-                .alwaysEat()
-                .build()));
+    public static final DeferredItem<Item> ORANGE = register("orange", p -> new Item(p.food(ModFoods.ORANGE)));
+    public static final DeferredItem<Item> BANANA = register("banana", p -> new Item(p.food(ModFoods.BANANA)));
+    public static final DeferredItem<Item> ANCIENT_FRUIT = register("ancient_fruit", p -> new Item(p.food(ModFoods.ANCIENT_FRUIT)));
+    public static final DeferredItem<Item> RAW_MEAT_INGOT = register("meat_ingot", p -> new Item(p.food(ModFoods.MEAT_INGOT)));
+    public static final DeferredItem<Item> COOKED_MEAT_INGOT = register("cooked_meat_ingot", p -> new Item(p.food(ModFoods.COOKED_MEAT_INGOT)));
+    public static final DeferredItem<Item> APPLE_PIE = register("apple_pie", p -> new Item(p.food(ModFoods.APPLE_PIE)));
+    public static final DeferredItem<Item> BANANA_CREAM_PIE = register("banana_cream_pie", p -> new Item(p.food(ModFoods.BANANA_CREAM_PIE)));
+    public static final DeferredItem<Item> DUCK_MEAT = register("duck_meat", p -> new Item(p.food(ModFoods.DUCK_MEAT)));
+    public static final DeferredItem<Item> COOKED_DUCK_MEAT = register("cooked_duck_meat", p -> new Item(p.food(ModFoods.COOKED_DUCK_MEAT)));
+    public static final DeferredItem<Item> GOLDEN_ANCIENT_FRUIT = register("golden_ancient_fruit", p -> new GoldenAncientFruitItem(p.rarity(Rarity.RARE).food(ModFoods.GOLDEN_ANCIENT_FRUIT)));
+    public static final DeferredItem<Item> ENCHANTED_GOLDEN_ANCIENT_FRUIT = register("enchanted_golden_ancient_fruit", p -> new EnchantedGoldenAncientFruitItem(p.rarity(Rarity.EPIC).food(ModFoods.ENCHANTED_GOLDEN_ANCIENT_FRUIT)));
     public static final DeferredItem<Item> BATTERY = registerStacksToOne("battery", BatteryItem::new);
     public static final DeferredItem<Item> CAPACITOR = register("capacitor");
     public static final DeferredItem<Item> LENS = register("lens");
@@ -108,8 +90,11 @@ public class ModItems {
     public static final DeferredItem<Item> BITUMEN = register("bitumen");
     public static final DeferredItem<Item> PINK_SLIME_INGOT = register("pink_slime_ingot");
     public static final DeferredItem<Item> DEMON_INGOT = register("demon_ingot", p -> new Item(p.fireResistant()));
-    public static final DeferredItem<Item> DEMONIC_TABLET = register("demonic_tablet");
+    public static final DeferredItem<Item> DEMONIC_TABLET = register("demonic_tablet", p -> new Item(p.fireResistant()));
     public static final DeferredItem<Item> SLOT_LOCK = registerStacksToOne("slot_lock");
+    public static final DeferredItem<Item> FLOUR = register("flour");
+    public static final DeferredItem<Item> DOUGH = register("dough");
+    public static final DeferredItem<Item> BANANA_BREAD = register("banana_bread", p -> new Item(p.food(ModFoods.BANANA_BREAD)));
 
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -164,7 +149,7 @@ public class ModItems {
     public static final DeferredItem<Item> DIAMOND_CUTLASS = registerStacksToOne("diamond_cutlass", p -> new CutlassItem(Tiers.DIAMOND, 3, -2.4F, p));
     public static final DeferredItem<Item> NETHERITE_CUTLASS = registerStacksToOne("netherite_cutlass", p -> new CutlassItem(Tiers.NETHERITE, 3, -2.4F, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_CUTLASS = registerStacksToOne("chlorophyte_cutlass", p -> new CutlassItem(ModTiers.CHLOROPHYTE, 3, -2.4F, p));
-    public static final DeferredItem<Item> LIGHTSABER = registerStacksToOne("lightsaber", p -> new SwordItem(ModTiers.CHLOROPHYTE, 5, -2.0F, p));
+    public static final DeferredItem<Item> LIGHTSABER = register("lightsaber", LightSaberItem::new);
     public static final DeferredItem<Item> WOODEN_SICKLE = registerStacksToOne("wooden_sickle", p -> new SickleItem(Tiers.WOOD, p));
     public static final DeferredItem<Item> STONE_SICKLE = registerStacksToOne("stone_sickle", p -> new SickleItem(Tiers.STONE, p));
     public static final DeferredItem<Item> COPPER_SICKLE = registerStacksToOne("copper_sickle", p -> new SickleItem(ModTiers.COPPER, p));
@@ -173,7 +158,6 @@ public class ModItems {
     public static final DeferredItem<Item> DIAMOND_SICKLE = registerStacksToOne("diamond_sickle", p -> new SickleItem(Tiers.DIAMOND, p));
     public static final DeferredItem<Item> NETHERITE_SICKLE = registerStacksToOne("netherite_sickle", p -> new SickleItem(Tiers.NETHERITE, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_SICKLE = registerStacksToOne("chlorophyte_sickle", p -> new SickleItem(ModTiers.CHLOROPHYTE, p));
-
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
@@ -192,9 +176,6 @@ public class ModItems {
     }
     private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func) {
         return register(name, ()-> func.apply(new Item.Properties()));
-    }
-    private static <T extends Item> DeferredItem<T> register(String name, Function<Item.Properties, T> func, Item.Properties props) {
-        return props == null ? register(name, func) : ITEMS.register(name, ()-> func.apply(props));
     }
 
     private static DeferredItem<Item> registerStacksToOne(String name) {

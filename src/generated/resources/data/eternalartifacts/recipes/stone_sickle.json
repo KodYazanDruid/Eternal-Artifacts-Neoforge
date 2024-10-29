@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "item": "minecraft:cobblestone"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " FF",
+    "  F",
+    " RF"
+  ],
+  "result": {
+    "item": "eternalartifacts:stone_sickle"
+  }
+}

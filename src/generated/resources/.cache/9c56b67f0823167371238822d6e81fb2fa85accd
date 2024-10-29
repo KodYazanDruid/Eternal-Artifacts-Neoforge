@@ -1,4 +1,4 @@
-// 1.20.4	2024-10-25T20:27:15.1753146	Item Models: eternalartifacts
+// 1.20.4	2024-10-28T18:01:23.4059926	Item Models: eternalartifacts
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
@@ -6,6 +6,7 @@
 8291c6a68d3934f679910041ce227bf10ee47df7 assets/eternalartifacts/models/item/ardite_ingot.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
 b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/banana.json
+8e45fe9190618cef1e5f5eef79ac0b441ac2de63 assets/eternalartifacts/models/item/banana_bread.json
 ed67fafb38c72f12af67434f3f9b4c42b336271d assets/eternalartifacts/models/item/banana_cream_pie.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 0cc868a9f308e87b07a6b548fe521193c957b6a7 assets/eternalartifacts/models/item/battery_box.json
@@ -26,6 +27,7 @@ cdc897d603b343e881b0dabb96a42c3ab5da8aab assets/eternalartifacts/models/item/chl
 731a88b67cfec3e767410bddd323fbf328d75c20 assets/eternalartifacts/models/item/coal_dust.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json
 c4b6d532ce2e21a9a09107482c4b2398be18c975 assets/eternalartifacts/models/item/cooked_duck_meat.json
+84fedefcdb1bac4a8f7eb9e315af21790725c4a1 assets/eternalartifacts/models/item/cooked_meat_ingot.json
 c78b55733b75ccccae2e361537d3e3ed38d29842 assets/eternalartifacts/models/item/copper_axe.json
 c9bf4d22878b6ad2a9293ccdf38eaee16e2c7d7e assets/eternalartifacts/models/item/copper_cutlass.json
 dbe142fbfa5bfec5116e10e6fcb09631b4c84a12 assets/eternalartifacts/models/item/copper_drum.json
@@ -47,6 +49,7 @@ f1476b9fa5d5efe7be7e6404b600a07967fec27c assets/eternalartifacts/models/item/dia
 8e19d7289ec1e1f7c90af274388b8a02ca2868ee assets/eternalartifacts/models/item/diamond_hammer.json
 b202fb37c092f64d494eda42dc58c3977f2f7d3e assets/eternalartifacts/models/item/diamond_sickle.json
 dcb7b0fe07a3dddfd11a0092e2e611a3bbd13937 assets/eternalartifacts/models/item/diesel_bucket.json
+146fbb5915c9c6dc314d80f2b0795bca07f9de4d assets/eternalartifacts/models/item/dough.json
 c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duck_feather.json
 558a11394d26f4ac2ffe1f71505cf5d7f69bacff assets/eternalartifacts/models/item/duck_meat.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/duck_spawn_egg.json
@@ -61,6 +64,7 @@ cacbc1204e0f048313f4821f660548aa6c1fa736 assets/eternalartifacts/models/item/end
 c2fdc74aea92bb242790af24ba4471dd51ca9817 assets/eternalartifacts/models/item/experience_oreberry.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json
 6458f1561471ece43f5545c14baf41969817f73f assets/eternalartifacts/models/item/feeding_canister.json
+9b1b466c164aa8f9c2c495d3d6195981378cd460 assets/eternalartifacts/models/item/flour.json
 98db580560adef0538044a44ccd9b7e5b4f12940 assets/eternalartifacts/models/item/fluid_infuser.json
 c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/forsythia.json
 8dbc4a5b8db74c606be2099f6043700716fd7bfd assets/eternalartifacts/models/item/four_leaf_clover.json
@@ -121,7 +125,6 @@ a82a650b3c02ef68ab64fd1e4a4623566f81f23a assets/eternalartifacts/models/item/pla
 94a79bbcf69b4808293feeb6b54f52fd15260cae assets/eternalartifacts/models/item/portable_crafter.json
 3e3e31c7870e0d0f9fe46d41c5d786de5ccd46fa assets/eternalartifacts/models/item/raw_ardite.json
 848ea09bf19c94247e4badf808687de5fb7fbe66 assets/eternalartifacts/models/item/raw_manganese.json
-08d60efc2125a901b49bb0452f036921e8501c14 assets/eternalartifacts/models/item/raw_meat_ingot.json
 62a008a8d95c366702b9e51a4e1d4c85fd09a5ff assets/eternalartifacts/models/item/resonator.json
 08a2d746a6f53b410d3c0fa6c4895e19929e07a6 assets/eternalartifacts/models/item/rosy_froglight.json
 e14b4423cf36a1c875ff676f1bfaf45bf664d7cc assets/eternalartifacts/models/item/slot_lock.json

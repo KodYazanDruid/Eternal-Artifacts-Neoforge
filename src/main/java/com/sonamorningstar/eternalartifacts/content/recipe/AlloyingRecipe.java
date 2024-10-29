@@ -17,8 +17,8 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
 public class AlloyingRecipe extends BasicRecipe {
-    @Getter
     private final List<Ingredient> inputs;
     private final ItemStack output;
 

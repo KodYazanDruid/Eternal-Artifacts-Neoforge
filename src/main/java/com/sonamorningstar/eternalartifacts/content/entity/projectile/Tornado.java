@@ -101,7 +101,12 @@ public class Tornado extends AbstractHurtingProjectile {
     }
 
     private boolean shouldFall() {
-        return this.level().noCollision(new AABB(this.position(), this.position()).inflate(0.6));
+        AABB size = this.getBoundingBox();
+        return this.level().noCollision(
+                new AABB(this.position(), this.position().add(size.getXsize(), size.getYsize() + 0.6, size.getZsize()))
+                .move(0, -0.6, 0)
+
+        );
     }
 
     //region Bloatware.

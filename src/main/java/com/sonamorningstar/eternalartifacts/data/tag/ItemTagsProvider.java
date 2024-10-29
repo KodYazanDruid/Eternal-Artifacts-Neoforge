@@ -31,17 +31,17 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
         tag(ModTags.Items.FRUITS_ORANGE).add(ModItems.ORANGE.get());
         tag(ModTags.Items.FRUITS_ANCIENT).add(ModItems.ANCIENT_FRUIT.get());
-        tag(ModTags.Items.BANANA).add(ModItems.BANANA.get());
+        tag(ModTags.Items.FRUITS_BANANA).add(ModItems.BANANA.get());
 
         tag(Tags.Items.INGOTS).add(
                 ModItems.RAW_MEAT_INGOT.get(),
-                ModItems.MEAT_INGOT.get(),
+                ModItems.COOKED_MEAT_INGOT.get(),
                 ModItems.CHLOROPHYTE_INGOT.get(),
                 ModItems.MANGANESE_INGOT.get(),
                 ModItems.STEEL_INGOT.get(),
                 ModItems.ARDITE_INGOT.get()
         );
-        tag(ModTags.Items.INGOTS_MEAT).add(ModItems.MEAT_INGOT.get());
+        tag(ModTags.Items.INGOTS_MEAT).add(ModItems.COOKED_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
         tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
@@ -88,6 +88,10 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ItemTags.LOGS).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
         tag(ItemTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.asItem());
         tag(ModTags.Items.PLASTIC).add(ModItems.PLASTIC_SHEET.get());
+        tag(ModTags.Items.FLOUR_WHEAT).add(ModItems.FLOUR.get());
+        tag(ModTags.Items.DUSTS_FLOUR).addTag(ModTags.Items.FLOUR_WHEAT);
+        tag(ModTags.Items.DOUGH_WHEAT).add(ModItems.DOUGH.get());
+        tag(ModTags.Items.DOUGH).addTag(ModTags.Items.DOUGH_WHEAT);
 
         tag(ItemTags.SWORDS).add(
                 ModItems.COPPER_SWORD.get(),

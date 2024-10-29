@@ -6,7 +6,7 @@
       "tag": "forge:ingots/gold"
     },
     "R": {
-      "item": "minecraft:stick"
+      "tag": "forge:rods/wooden"
     },
     "S": {
       "tag": "forge:storage_blocks/gold"

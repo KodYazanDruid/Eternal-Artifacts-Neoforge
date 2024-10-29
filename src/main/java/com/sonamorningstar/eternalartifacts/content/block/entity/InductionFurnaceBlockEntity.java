@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity<InductionFurnaceMenu> {
     private int heatKeepCost = 10;
-    //private boolean isWorking = false;
     public InductionFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new InductionFurnaceMenu(ModMachines.INDUCTION_FURNACE.getMenu(), a, b, c, d));
         outputSlots.add(2);
@@ -33,9 +32,8 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         setInventory(new ModItemStorage(4) {
             @Override
             protected void onContentsChanged(int slot) {
+                InductionFurnaceBlockEntity.this.sendUpdate();
                 if(!outputSlots.contains(slot)){
-                    progress = 0;
-                    InductionFurnaceBlockEntity.this.sendUpdate();
                     //Find recipe for slot 0.
                     if(slot == 0){
                         blastingCache0.findRecipe(RecipeType.BLASTING, new SimpleContainer(inventory.getStackInSlot(0)), level);
@@ -130,24 +128,23 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
         if (recipe0 == null && recipe1 == null) {
             progress = 0;
-            //return;
         }
 
         ProcessCondition condition = new ProcessCondition()
                 .initInventory(inventory)
                 .initOutputSlots(outputSlots);
 
-        if (recipe0 != null) condition.tryInsertForced(recipe0.getResultItem(lvl.registryAccess()));
-        if (recipe1 != null) condition.tryInsertForced(recipe1.getResultItem(lvl.registryAccess()));
+        if (recipe0 != null) condition.queueItemStack(recipe0.getResultItem(lvl.registryAccess()));
+        if (recipe1 != null) condition.queueItemStack(recipe1.getResultItem(lvl.registryAccess()));
+        condition.commitQueuedItemStacks();
 
-        boolean result = condition.getResult();
         setMaxProgressForHeat();
 
         AtomicBoolean shouldHeat = new AtomicBoolean();
         shouldHeat.set(false);
         progress(
                 //Condition for machine to run
-                ()-> result,
+                condition::getResult,
                 //This executes while machine running.
                 () -> shouldHeat.set(true),
                 //This executes when progress reaches max progress.

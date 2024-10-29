@@ -6,7 +6,7 @@
       "tag": "forge:gems/diamond"
     },
     "R": {
-      "item": "minecraft:stick"
+      "tag": "forge:rods/wooden"
     },
     "S": {
       "tag": "forge:storage_blocks/diamond"
