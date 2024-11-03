@@ -6,6 +6,6 @@ import net.minecraft.world.item.DiggerItem;
 
 public class GrafterItem extends DiggerItem {
     public GrafterItem(Properties props) {
-        super(1.5F, -3.0F, ModTiers.COPPER, ModTags.Blocks.MINEABLE_WITH_GRAFTER, props.durability(32));
+        super(1.5F, -2.5F, ModTiers.COPPER, ModTags.Blocks.MINEABLE_WITH_GRAFTER, props.durability(32));
     }
 }

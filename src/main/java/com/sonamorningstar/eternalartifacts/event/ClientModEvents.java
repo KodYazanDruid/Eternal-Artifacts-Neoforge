@@ -96,7 +96,6 @@ public class ClientModEvents {
                     new ResourceLocation(MODID, "active"), (s, l, e, seed) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F);
 
         });
-
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());
     }

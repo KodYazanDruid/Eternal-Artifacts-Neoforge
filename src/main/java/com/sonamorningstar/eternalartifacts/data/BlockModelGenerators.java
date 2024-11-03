@@ -5,14 +5,18 @@ import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplate;
 import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -56,6 +60,7 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
         cable(ModBlocks.COPPER_CABLE.get(), false);
         cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);
+
     }
 
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {
@@ -185,4 +190,5 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
     void createSimpleFlatItemModel(Item item) {
         ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), modelOutput);
     }
+
 }

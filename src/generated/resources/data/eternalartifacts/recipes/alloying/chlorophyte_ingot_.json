@@ -1,0 +1,27 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    {
+      "item_stack": {
+        "Count": 1,
+        "id": "eternalartifacts:demon_ingot"
+      }
+    },
+    {
+      "item_stack": {
+        "Count": 1,
+        "id": "minecraft:glowstone_dust"
+      }
+    },
+    {
+      "item_stack": {
+        "Count": 1,
+        "id": "eternalartifacts:plant_matter"
+      }
+    }
+  ],
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:chlorophyte_ingot"
+  }
+}

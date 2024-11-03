@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.content.recipe.base.BasicRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
@@ -19,10 +19,10 @@ import java.util.List;
 
 @Getter
 public class AlloyingRecipe extends BasicRecipe {
-    private final List<Ingredient> inputs;
+    private final List<SizedIngredient> inputs;
     private final ItemStack output;
 
-    public AlloyingRecipe(List<Ingredient> inputs, ItemStack output) {
+    public AlloyingRecipe(List<SizedIngredient> inputs, ItemStack output) {
         super(ModRecipes.ALLOYING);
         this.inputs = inputs;
         this.output = output;
@@ -36,7 +36,8 @@ public class AlloyingRecipe extends BasicRecipe {
                 if (matched[j]) continue;
                 ItemStack item = con.getItem(i);
                 if (j < inputs.size()) {
-                    if (inputs.get(j).test(item)) matched[j] = true;
+                    SizedIngredient ingredient = inputs.get(j);
+                    if (ingredient.canBeSustained(item)) matched[j] = true;
                 }
                 else if (item.isEmpty() || item.is(ModItems.SLOT_LOCK)) matched[j] = true;
             }
@@ -50,7 +51,7 @@ public class AlloyingRecipe extends BasicRecipe {
 
     public static class Serializer implements RecipeSerializer<AlloyingRecipe> {
         private final Codec<AlloyingRecipe> CODEC = RecordCodecBuilder.create(inst ->  inst.group(
-                Ingredient.LIST_CODEC.fieldOf("inputs").forGetter(r -> r.inputs),
+                SizedIngredient.LIST_CODEC.fieldOf("inputs").forGetter(r -> r.inputs),
                 ItemStack.CODEC.fieldOf("output").forGetter(r -> r.output)
         ).apply(inst, AlloyingRecipe::new));
 
@@ -59,7 +60,7 @@ public class AlloyingRecipe extends BasicRecipe {
 
         @Override
         public AlloyingRecipe fromNetwork(FriendlyByteBuf buff) {
-            List<Ingredient> inputs = buff.readCollection(ArrayList::new, Ingredient::fromNetwork);
+            List<SizedIngredient> inputs = buff.readCollection(ArrayList::new, SizedIngredient::fromNetwork);
             ItemStack output = buff.readItem();
             return new AlloyingRecipe(inputs, output);
         }

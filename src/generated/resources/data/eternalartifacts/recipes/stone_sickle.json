@@ -3,16 +3,16 @@
   "category": "equipment",
   "key": {
     "F": {
-      "item": "minecraft:cobblestone"
+      "tag": "forge:cobblestone"
     },
     "R": {
       "tag": "forge:rods/wooden"
     }
   },
   "pattern": [
-    " FF",
+    " F ",
     "  F",
-    " RF"
+    "RF "
   ],
   "result": {
     "item": "eternalartifacts:stone_sickle"

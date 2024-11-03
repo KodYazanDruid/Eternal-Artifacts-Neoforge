@@ -1,11 +1,11 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.FluidTags;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
+import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 
@@ -23,10 +23,12 @@ public class ModTags {
         public static final TagKey<Block> STORAGE_BLOCKS_STEEL = forgeTag("storage_blocks/steel");
         public static final TagKey<Block> DRUM = modTag("drum");
         public static final TagKey<Block> MINEABLE_WITH_SICKLE = forgeTag("mineable/sickle");
-
+        public static final TagKey<Block> GLASS_HARDENED = forgeTag("glass/hardened");
+        public static final TagKey<Block> HARDENED_GLASS = forgeTag("hardened_glass");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
+        private static TagKey<Block> otherTag(String namespace, String name) { return BlockTags.create(new ResourceLocation(namespace, name)); }
     }
 
     public static class Items {
@@ -59,6 +61,7 @@ public class ModTags {
         public static final TagKey<Item> FLOUR_WHEAT = forgeTag("flour/wheat");
         public static final TagKey<Item> DOUGH = forgeTag("dough");
         public static final TagKey<Item> DOUGH_WHEAT = forgeTag("dough/wheat");
+        public static final TagKey<Item> DUSTS_CLAY = forgeTag("dusts/clay");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }
@@ -78,4 +81,12 @@ public class ModTags {
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }
     }
 
+    public static class Biomes {
+
+        public static final TagKey<Biome> VALID_SURVIVALISTS_IGLOO_BIOMES = modTag("can_survivalists_igloo_spawn");
+
+        private static TagKey<Biome> forgeTag(String name) { return TagKey.create(Registries.BIOME, new ResourceLocation("forge", name)); }
+        private static TagKey<Biome> modTag(String name) { return TagKey.create(Registries.BIOME, new ResourceLocation(MODID, name)); }
+
+    }
 }

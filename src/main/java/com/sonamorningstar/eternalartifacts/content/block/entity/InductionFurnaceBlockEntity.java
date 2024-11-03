@@ -64,7 +64,6 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     public HeatStorage heat = new HeatStorage(20000) {
         @Override
         public void onChange() {
-            super.onChange();
             sendUpdate();
         }
     };

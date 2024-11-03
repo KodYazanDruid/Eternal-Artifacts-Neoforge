@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
@@ -9,18 +8,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
-
-import java.util.function.Consumer;
 
 public class OilRefineryBlock<T extends OilRefineryBlockEntity> extends MachineFourWayBlock<T> {
     public OilRefineryBlock(Properties props, BlockEntityType.BlockEntitySupplier<T> supplier) {
-        super(props.sound(SoundType.GLASS), supplier);
+        super(BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_LIGHT_GRAY)
+                .requiresCorrectToolForDrops()
+                .strength(4.0F, 3.0F)
+                .sound(SoundType.GLASS), supplier);
     }
 
     public static final VoxelShape BOTTOM = BlockHelper.generateByArea(16, 9, 16, 0, 0, 0);

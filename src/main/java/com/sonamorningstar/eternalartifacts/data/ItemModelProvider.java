@@ -17,6 +17,7 @@ import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 
@@ -160,12 +161,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.EXPERIENCE_ORE_BERRY.getId().getPath(), modLoc("block/experience_oreberry_stage1"));
         withExistingParent(ModBlocks.MANGANESE_ORE_BERRY.getId().getPath(), modLoc("block/manganese_oreberry_stage1"));
         withParentBlock(ModBlocks.BATTERY_BOX);
-        getBuilder(ModBlocks.FORSYTHIA.getId().getPath())
-            .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", modLoc("block/forsythia_upper"));
-        getBuilder(ModBlocks.FOUR_LEAF_CLOVER.getId().getPath())
-                .parent(new ModelFile.UncheckedModelFile("item/generated"))
-                .texture("layer0", modLoc("block/four_leaf_clover"));
+        itemGenerated(ModBlocks.FORSYTHIA, "upper");
+        itemGenerated(ModBlocks.FOUR_LEAF_CLOVER);
+        itemGenerated(ModBlocks.TIGRIS_FLOWER);
 
         ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {
@@ -174,7 +172,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     }
 
     private void handheld(DeferredItem<Item> deferred) {
-        singleTexture(deferred.getId().getPath(), mcLoc("item/handheld"), "layer0", modLoc("item/" + deferred.getId().getPath()));
+        String path = deferred.getId().getPath();
+        singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/"+path));
     }
 
     private void bucketItem(DeferredHolder<Item, BucketItem> bucket, DeferredHolder<Fluid, BaseFlowingFluid.Source> source) {
@@ -188,6 +187,16 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(holder.getFluid())
                 .applyTint(true);
+    }
+
+    private void itemGenerated(DeferredBlock<?> holder) {
+        itemGenerated(holder, "");
+    }
+    private void itemGenerated(DeferredBlock<?> holder, String suffix) {
+        String path = holder.getId().getPath();
+        String loc = suffix.isEmpty() ? "block/"+path : "block/"+path+"_"+suffix;
+        getBuilder(path).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", modLoc(loc));
     }
 
     private void withParentBlock(DeferredHolder<Block, ? extends Block> holder) {

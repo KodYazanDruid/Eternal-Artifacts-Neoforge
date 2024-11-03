@@ -9,6 +9,13 @@
           "name": "minecraft:gold_nugget"
         }
       ],
+      "functions": [
+        {
+          "add": false,
+          "count": 1.0,
+          "function": "minecraft:set_count"
+        }
+      ],
       "rolls": 1.0
     }
   ],

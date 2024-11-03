@@ -179,20 +179,18 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected void insertItemFromDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory) {
-        BlockEntity targetBe = lvl.getBlockEntity(pos.relative(dir));
-        if(targetBe != null) {
-            IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
-            if(sourceInv != null) {
-                for(int i = 0; i < sourceInv.getSlots(); i++) {
-                    if(sourceInv.getStackInSlot(i).isEmpty()) continue;
-                    ItemStack extracted = sourceInv.extractItem(i, 1, true);
-                    if (!extracted.isEmpty()) {
-                        ItemStack remained = ItemHandlerHelper.insertItemStacked(inventory, extracted, true);
-                        if (remained.getCount() != extracted.getCount()) {
-                            int count = extracted.getCount() - remained.getCount();
-                            sourceInv.extractItem(i, count, false);
-                            ItemHandlerHelper.insertItemStacked(inventory, extracted.copyWithCount(count), false);
-                        }
+        IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(dir), dir.getOpposite());
+        if(sourceInv != null) {
+            for(int i = 0; i < sourceInv.getSlots(); i++) {
+                if(sourceInv.getStackInSlot(i).isEmpty()) continue;
+                ItemStack extracted = sourceInv.extractItem(i, 1, true);
+                if (!extracted.isEmpty()) {
+                    ItemStack remained = ItemHandlerHelper.insertItemStacked(inventory, extracted, true);
+                    if (remained.getCount() != extracted.getCount()) {
+                        int count = extracted.getCount() - remained.getCount();
+                        sourceInv.extractItem(i, count, false);
+                        ItemHandlerHelper.insertItemStacked(inventory, extracted.copyWithCount(count), false);
+                        break;
                     }
                 }
             }
@@ -200,25 +198,22 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory, Integer... outputSlots) {
-        BlockEntity targetBe = lvl.getBlockEntity(pos.relative(dir));
-        if(targetBe != null) {
-            IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, targetBe.getBlockPos(), targetBe.getBlockState(), targetBe, dir.getOpposite());
-            if(targetInv != null) {
-                for(int output : outputSlots) {
-                    try {
-                        ItemStack stack = inventory.getStackInSlot(output);
-                        ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInv, stack, true);
-                        if(remainder.isEmpty()) {
-                            ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(stack.getCount()), false);
-                            inventory.extractItem(output, stack.getCount(), false);
-                        }else {
-                            int transferred = stack.getCount() - remainder.getCount();
-                            ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(transferred), false);
-                            stack.shrink(transferred);
-                        }
-                    }catch (IndexOutOfBoundsException e) {
-                        EternalArtifacts.LOGGER.error("Output slot {} is out of bounds in {} sized inventory", output, targetInv.getSlots());
+        IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(dir), dir.getOpposite());
+        if(targetInv != null) {
+            for(int output : outputSlots) {
+                try {
+                    ItemStack stack = inventory.getStackInSlot(output);
+                    ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInv, stack, true);
+                    if(remainder.isEmpty()) {
+                        ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(stack.getCount()), false);
+                        inventory.extractItem(output, stack.getCount(), false);
+                    }else {
+                        int transferred = stack.getCount() - remainder.getCount();
+                        ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(transferred), false);
+                        stack.shrink(transferred);
                     }
+                }catch (IndexOutOfBoundsException e) {
+                    EternalArtifacts.LOGGER.error("Output slot {} is out of bounds in {} sized inventory", output, targetInv.getSlots());
                 }
             }
         }
@@ -233,25 +228,36 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected void transferFluidToBE(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank, boolean isReverse) {
-        BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-        if(be != null) {
-            IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-            if(targetTank != null && tank != null) {
-                if(isReverse) FluidUtil.tryFluidTransfer(tank, targetTank, 1000, true);
-                else FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
+        IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, pos.relative(dir), dir.getOpposite());
+        if(targetTank != null) {
+            if(isReverse) FluidUtil.tryFluidTransfer(tank, targetTank, 1000, true);
+            else FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
+        }
+    }
+
+    protected void inputEnergyToDir(Level lvl, BlockPos pos, Direction dir, ModEnergyStorage energy) {
+        IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(dir), dir.getOpposite());
+        if(target != null && target.canExtract()) {
+            int extracted = target.extractEnergy(1000, true);
+            if(extracted > 0) {
+                int received = energy.receiveEnergy(extracted, true);
+                if(received > 0) {
+                    energy.receiveEnergy(received, false);
+                    target.extractEnergy(received, false);
+                }
             }
         }
     }
 
-    protected void outputEnergyToDir(Level lvl, BlockPos pos, Direction dir, IEnergyStorage energy) {
-        BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-        if(be != null) {
-            IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-            if(target != null && target.canReceive()) {
-                int inserted = target.receiveEnergy(energy.getEnergyStored(), true);
-                if(inserted > 0) {
-                    target.receiveEnergy(inserted, false);
-                    energy.extractEnergy(inserted, false);
+    protected void outputEnergyToDir(Level lvl, BlockPos pos, Direction dir, ModEnergyStorage energy) {
+        IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(dir), dir.getOpposite());
+        if(target != null && target.canReceive()) {
+            int extracted = energy.extractEnergyForced(1000, true);
+            if (extracted > 0) {
+                int received = target.receiveEnergy(extracted, true);
+                if (received > 0) {
+                    target.receiveEnergy(received, false);
+                    energy.extractEnergy(received, false);
                 }
             }
         }

@@ -78,6 +78,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItemWithRenderType(ModBlocks.ICE_BRICKS.get(), "translucent");
         simpleBlockWithItem(ModBlocks.ASPHALT_BLOCK.get());
         simpleBlockWithItem(ModBlocks.STEEL_BLOCK.get());
+        simpleBlockWithItemWithRenderType(ModBlocks.TEMPERED_GLASS.get(), "cutout");
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -115,6 +116,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
         tintedCrossBlock(ModBlocks.FOUR_LEAF_CLOVER);
+        tintedCrossBlock(ModBlocks.TIGRIS_FLOWER);
+        flowerPotBlock(ModBlocks.POTTED_TIGRIS, ModBlocks.TIGRIS_FLOWER);
 
         createOreBerries(ModBlocks.COPPER_ORE_BERRY);
         createOreBerries(ModBlocks.IRON_ORE_BERRY);
@@ -180,6 +183,14 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
             .withExistingParent(block.getId().getPath(), mcLoc("block/tinted_cross"))
             .texture("cross", "block/"+block.getId().getPath())
             .renderType("cutout");
+        simpleBlock(block.get(), model);
+    }
+
+    private <T extends FlowerPotBlock, F extends FlowerBlock> void flowerPotBlock(DeferredBlock<T> block, DeferredBlock<F> flower) {
+        ModelFile model = models()
+                .withExistingParent(block.getId().getPath(), mcLoc("block/flower_pot_cross"))
+                .texture("plant","block/" + flower.getId().getPath())
+                .renderType("cutout");
         simpleBlock(block.get(), model);
     }
 

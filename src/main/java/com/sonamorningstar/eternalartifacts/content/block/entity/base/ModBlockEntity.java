@@ -169,7 +169,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                sendUpdate();
+                ModBlockEntity.this.sendUpdate();
                 for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
             }
 
@@ -184,7 +184,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                sendUpdate();
+                ModBlockEntity.this.sendUpdate();
                 for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
             }
 
@@ -197,7 +197,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (!outputSlots.contains(slot)) findRecipe();
-                sendUpdate();
+                ModBlockEntity.this.sendUpdate();
             }
 
             @Override
@@ -208,7 +208,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                sendUpdate();
+                ModBlockEntity.this.sendUpdate();
             }
 
             @Override
@@ -222,7 +222,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 findRecipe();
-                sendUpdate();
+                ModBlockEntity.this.sendUpdate();
             }
 
             @Override

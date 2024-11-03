@@ -5,10 +5,12 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInterac
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModScaleableItemItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
+import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.CableBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
@@ -18,11 +20,15 @@ import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -36,6 +42,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -98,12 +105,20 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
-
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
-
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DRUM.get(), (be, ctx) -> be.tank);
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
+            Container container = FancyChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
+            return container == null ? null : new InvWrapper(container);
+        }, ModBlocks.FANCY_CHEST.get());
 
-        //event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.CABLE.get(), CableBlockEntity::getCapability);
+        event.registerBlock(Capabilities.FluidHandler.BLOCK,
+                (level, pos, state, blockEntity, context) -> InfiniteWaterTank.INSTANCE,
+                ModBlocks.TIGRIS_FLOWER.get(), ModBlocks.POTTED_TIGRIS.get());
+        event.registerBlock(Capabilities.FluidHandler.BLOCK, (level, pos, state, blockEntity, context) -> {
+            boolean flag = level.getBlockState(pos.above()).is(ModBlocks.TIGRIS_FLOWER);
+            return flag ? InfiniteWaterTank.INSTANCE : null;
+        }, ModBlocks.GARDENING_POT.get());
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
@@ -132,7 +147,9 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void fmlCommonSetupEvent(FMLCommonSetupEvent event) {
         event.enqueueWork(()-> {
-            registerCauldronContextsForItemFluidHandlers(ModItems.JAR);
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.TIGRIS_FLOWER.getId(), ModBlocks.POTTED_TIGRIS);
+            registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
+            setupCauldronInteractions();
         });
     }
 
@@ -142,14 +159,13 @@ public class CommonModEvents {
         event.add(EntityType.PLAYER, ModAttributes.COOLDOWN_REDUCTION.get());
     }
 
-    private static void registerCauldronContextsForItemFluidHandlers(DeferredItem<?>... holders) {
-        for(DeferredItem<?> holder : holders) {
-            Item item = holder.get();
-            CauldronInteraction.EMPTY.map().put(item, ModCauldronInteraction.EMPTY);
-            CauldronInteraction.WATER.map().put(item, ModCauldronDrainInteraction.WATER);
-            CauldronInteraction.LAVA.map().put(item, ModCauldronDrainInteraction.LAVA);
-            ModCauldronInteraction.PLASTIC.map().put(item, ModCauldronDrainInteraction.PLASTIC);
-        }
+    private static void registerCauldronContextsForItemFluidHandlers(Item item) {
+        CauldronInteraction.EMPTY.map().put(item, ModCauldronInteraction.EMPTY);
+        CauldronInteraction.WATER.map().put(item, ModCauldronDrainInteraction.WATER);
+        CauldronInteraction.LAVA.map().put(item, ModCauldronDrainInteraction.LAVA);
+        ModCauldronInteraction.PLASTIC.map().put(item, ModCauldronDrainInteraction.PLASTIC);
+    }
+    private static void setupCauldronInteractions() {
         ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, ModCauldronDrainInteraction.PLASTIC);
         CauldronInteraction.EMPTY.map().put(ModFluids.LIQUID_PLASTIC.getBucketItem(), ModCauldronInteraction.EMPTY);
         ModCauldronInteraction.PLASTIC.map().put(Items.BLUE_DYE, ModCauldronInteraction.DYE_PLASTIC);

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.compat.jei.categories;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.compat.jei.SimpleBackgroundDrawable;
 import com.sonamorningstar.eternalartifacts.content.recipe.AlloyingRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.Getter;
@@ -16,7 +17,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 
 @Getter
 public class AlloySmelterCategory implements IRecipeCategory<AlloyingRecipe> {
@@ -46,9 +46,9 @@ public class AlloySmelterCategory implements IRecipeCategory<AlloyingRecipe> {
     @Override
     public void setRecipe(IRecipeLayoutBuilder layout, AlloyingRecipe recipe, IFocusGroup focus) {
         for (int i = 0; i < recipe.getInputs().size(); i++) {
-            Ingredient input = recipe.getInputs().get(i);
+            SizedIngredient input = recipe.getInputs().get(i);
             layout.addSlot(RecipeIngredientRole.INPUT, 7 + 18 * i, 18)
-                    .addIngredients(input);
+                    .addIngredients(input.toIngredient());
         }
 
         layout.addSlot(RecipeIngredientRole.OUTPUT, 93, 18)

@@ -12,14 +12,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -32,9 +33,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -42,11 +45,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.PlantType;
+import net.neoforged.neoforge.common.ToolAction;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.ToIntFunction;
 
@@ -60,38 +67,46 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     public static final IntegerProperty LIGHT_LEVEL = BlockStateProperties.LEVEL;
     public static final ToIntFunction<BlockState> LIGHT_EMISSION = state -> state.getValue(LIGHT_LEVEL);
 
-    public GardeningPotBlock(Properties props) {
-        super(props.lightLevel(LIGHT_EMISSION));
+    public GardeningPotBlock() {
+        super(Properties.of()
+                .destroyTime(1.5F)
+                .mapColor(MapColor.TERRACOTTA_ORANGE)
+                .noOcclusion().randomTicks()
+                .lightLevel(LIGHT_EMISSION));
         registerDefaultState(defaultBlockState()
                 .setValue(WATERLOGGED, false)
                 .setValue(LIGHT_LEVEL, 0));
     }
 
     @Override
-    protected MapCodec<? extends Block> codec() {
-        return simpleCodec(GardeningPotBlock::new);
-    }
-
+    protected MapCodec<? extends Block> codec() {return simpleCodec(p -> new GardeningPotBlock());}
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
     }
-
-
     @Override
-    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return Shapes.join(TOP, BOTTOM, BooleanOp.OR);
-    }
-
+    public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {return Shapes.join(TOP, BOTTOM, BooleanOp.OR);}
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new GardeningPotEntity(pPos, pState);
     }
+    @Override
+    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {return false;}
 
     @Override
-    public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
-        return false;
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        if (itemStack.getCapability(Capabilities.FluidHandler.ITEM) == null) return InteractionResult.PASS;
+        if (!level.isClientSide()) {
+            IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+            var playerInventory = player.getCapability(Capabilities.ItemHandler.ENTITY);
+            Objects.requireNonNull(playerInventory, "Player item handler is null");
+            if (fluidHandler != null) {
+                FluidUtil.interactWithFluidHandler(player, hand, level, pos, hit.getDirection());
+            }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
     }
 
     @Override
@@ -124,6 +139,7 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
         if(pos.above().equals(neighborPos) && levelAccessor instanceof ServerLevel level) {
+            level.invalidateCapabilities(pos);
             GardeningPotEntity potEntity = (GardeningPotEntity) level.getBlockEntity(pos);
             IItemHandler inventoryBelow = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
             if(potEntity != null){
@@ -200,6 +216,12 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
         }
     }
 
+    private Block getTexture(BlockGetter level, BlockPos pos) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (!(blockEntity instanceof IRetexturedBlockEntity)) return Blocks.AIR;
+        return ((GardeningPotEntity) blockEntity).getTexture();
+    }
+
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction direction, IPlantable plantable) {
         PlantType plantType = plantable.getPlantType(level, pos);
@@ -237,9 +259,11 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
 
     @Override
     public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        Block texture = ((GardeningPotEntity) blockEntity).getTexture();
-        return texture.getSoundType(state, level, pos, entity);
+        return getTexture(level, pos).getSoundType(state, level, pos, entity);
     }
-    
+
+    @Override
+    public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+        return getTexture(level, pos).getExplosionResistance(state, level, pos, explosion);
+    }
 }

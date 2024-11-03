@@ -17,9 +17,6 @@ public class ModItemStorage extends ItemStackHandler {
         if (stack.isEmpty())
             return ItemStack.EMPTY;
 
-        /*if (!isItemValid(slot, stack))
-            return stack;*/
-
         validateSlotIndex(slot);
 
         ItemStack existing = this.stacks.get(slot);
@@ -56,6 +53,10 @@ public class ModItemStorage extends ItemStackHandler {
             items.add(this.getStackInSlot(i));
         }
         return items;
+    }
+
+    public void sendUpdate(int slot) {
+        onContentsChanged(slot);
     }
 
 }

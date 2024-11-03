@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
@@ -93,7 +94,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoInputEnergy(Level lvl, BlockPos pos, IEnergyStorage energy) {
+    protected void performAutoInputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         if(!isAllowedAuto) return;
         List<Direction> inputDirs = new ArrayList<>();
@@ -102,21 +103,11 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PULL || type == TransferType.DEFAULT) inputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : inputDirs) {
-            BlockEntity be = lvl.getBlockEntity(pos.relative(dir));
-            if(be != null) {
-                IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, be.getBlockPos(), be.getBlockState(), be, dir.getOpposite());
-                if(target != null && target.canExtract()) {
-                    int received = target.extractEnergy(Math.min(energy.getMaxEnergyStored() - energy.getEnergyStored(), target.getEnergyStored()), true);
-                    if(received > 0) {
-                        energy.receiveEnergy(received, false);
-                        target.extractEnergy(received, false);
-                    }
-                }
-            }
+            inputEnergyToDir(lvl, pos, dir, energy);
         }
     }
 
-    protected void performAutoOutputEnergy(Level lvl, BlockPos pos, IEnergyStorage energy) {
+    protected void performAutoOutputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         if(!isAllowedAuto) return;
         List<Direction> outputDirs = new ArrayList<>();

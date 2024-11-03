@@ -61,6 +61,7 @@ public class JeiCompat implements IModPlugin {
         registration.addRecipeCatalyst(ModMachines.ALLOY_SMELTER.getItem().getDefaultInstance(), AlloySmelterCategory.recipeType);
         registration.addRecipeCatalyst(ModMachines.MEAT_PACKER.getItem().getDefaultInstance(), MeatPackerCategory.recipeType);
         registration.addRecipeCatalyst(ModMachines.MOB_LIQUIFIER.getItem().getDefaultInstance(), MobLiquifierCategory.recipeType);
+        registration.addRecipeCatalyst(ModMachines.COMPRESSOR.getItem().getDefaultInstance(), CompressingCategory.recipeType);
 
     }
 
@@ -76,6 +77,7 @@ public class JeiCompat implements IModPlugin {
         registration.addRecipeCategories(new AlloySmelterCategory(guiHelper));
         registration.addRecipeCategories(new MeatPackerCategory(guiHelper));
         registration.addRecipeCategories(new MobLiquifierCategory(guiHelper));
+        registration.addRecipeCategories(new CompressingCategory(guiHelper));
 
     }
 
@@ -90,6 +92,7 @@ public class JeiCompat implements IModPlugin {
         registration.addRecipes(AlloySmelterCategory.recipeType, getAllRecipes(ModRecipes.ALLOYING.getType()));
         registration.addRecipes(MeatPackerCategory.recipeType, List.of(new IJeiMeatPackerRecipe() {}));
         registration.addRecipes(MobLiquifierCategory.recipeType, getAllRecipes(ModRecipes.MOB_LIQUIFYING.getType()));
+        registration.addRecipes(CompressingCategory.recipeType, getAllRecipes(ModRecipes.COMPRESSING.getType()));
 
     }
 

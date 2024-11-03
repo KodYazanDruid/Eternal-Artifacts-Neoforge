@@ -10,9 +10,9 @@
     }
   },
   "pattern": [
-    " FF",
+    " F ",
     "  F",
-    " RF"
+    "RF "
   ],
   "result": {
     "item": "eternalartifacts:diamond_sickle"

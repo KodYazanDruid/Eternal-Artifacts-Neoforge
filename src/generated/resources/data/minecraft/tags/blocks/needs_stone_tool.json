@@ -1,7 +1,6 @@
 {
   "values": [
     "eternalartifacts:biofurnace",
-    "eternalartifacts:gardening_pot",
     "eternalartifacts:gravel_copper_ore",
     "eternalartifacts:gravel_iron_ore",
     "eternalartifacts:sandy_tiled_stone_bricks",
@@ -21,6 +20,7 @@
     "eternalartifacts:material_squeezer",
     "eternalartifacts:alloy_smelter",
     "eternalartifacts:solidifier",
+    "eternalartifacts:compressor",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:induction_furnace"
   ]

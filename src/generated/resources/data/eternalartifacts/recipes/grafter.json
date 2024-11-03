@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/copper"
+    },
+    "N": {
+      "tag": "forge:nuggets/copper"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "N",
+    "I",
+    "S"
+  ],
+  "result": {
+    "item": "eternalartifacts:grafter"
+  }
+}

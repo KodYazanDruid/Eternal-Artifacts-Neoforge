@@ -3,13 +3,13 @@
   "category": "equipment",
   "key": {
     "F": {
-      "item": "minecraft:cobblestone"
+      "tag": "forge:cobblestone"
     },
     "R": {
       "tag": "forge:rods/wooden"
     },
     "S": {
-      "item": "minecraft:smooth_stone"
+      "tag": "forge:stone"
     }
   },
   "pattern": [

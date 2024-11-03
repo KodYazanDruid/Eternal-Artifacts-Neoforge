@@ -82,6 +82,9 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.COPPER_CABLE.get());
         dropSelf(ModBlocks.COVERED_COPPER_CABLE.get());
         dropSelf(ModBlocks.STEEL_BLOCK.get());
+        dropSelf(ModBlocks.TIGRIS_FLOWER.get());
+        dropSelf(ModBlocks.TEMPERED_GLASS.get());
+        dropPottedContents(ModBlocks.POTTED_TIGRIS.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);

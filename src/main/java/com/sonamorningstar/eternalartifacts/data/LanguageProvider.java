@@ -195,6 +195,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.STEEL_DRUM.get(), "Steel Drum");
                 add(ModBlocks.COPPER_CABLE.get(), "Copper Cable");
                 add(ModBlocks.COVERED_COPPER_CABLE.get(), "Covered Copper Cable");
+                add(ModBlocks.TIGRIS_FLOWER.get(), "Tigris Flower");
+                add(ModBlocks.TEMPERED_GLASS.get(), "Tempered Glass");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -503,6 +505,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.HOT_SPRING_WATER.getTranslationKey(), "Kaplıca Suyu");
                 add(ModFluids.HOT_SPRING_WATER.getFluidBlock(), "Kaplıca Suyu");
                 add(ModMachines.SOLIDIFIER.getBlockTranslationKey(), "Katılaştırıcı");
+                add(ModBlocks.TIGRIS_FLOWER.get(), "Dicle Çiçeği");
+                add(ModBlocks.TEMPERED_GLASS.get(), "Temperli Cam");
+                add(ModMachines.COMPRESSOR.getBlockTranslationKey(), "Sıkıştırıcı");
+
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

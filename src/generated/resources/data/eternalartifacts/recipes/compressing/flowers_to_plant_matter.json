@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:compressing",
+  "input": {
+    "amount": 8,
+    "tag": "minecraft:flowers"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:plant_matter"
+  }
+}

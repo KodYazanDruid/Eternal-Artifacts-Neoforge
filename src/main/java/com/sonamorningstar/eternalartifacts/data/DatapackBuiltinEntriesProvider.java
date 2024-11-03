@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.core.ModStructures;
 import com.sonamorningstar.eternalartifacts.world.ModBiomeModifiers;
 import com.sonamorningstar.eternalartifacts.world.feature.ModConfiguredFeatures;
 import com.sonamorningstar.eternalartifacts.world.placement.ModPlacedFeatures;
@@ -19,7 +20,8 @@ public class DatapackBuiltinEntriesProvider extends net.neoforged.neoforge.commo
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
-            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap);
+            .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
+            .add(Registries.STRUCTURE, ModStructures::bootstrap);
 
     public DatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of("minecraft", MODID));

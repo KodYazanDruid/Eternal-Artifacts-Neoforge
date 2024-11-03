@@ -4,13 +4,20 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.AlloyingRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
     public AlloySmelterBlockEntity(BlockPos pos, BlockState blockState) {
@@ -32,20 +39,31 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
 
+        AlloyingRecipe recipe = recipeCache.getRecipe();
+        if (recipe == null) {
+            progress = 0;
+            return;
+        }
+
         ProcessCondition condition = new ProcessCondition()
                 .initInventory(inventory)
-                .initOutputSlots(outputSlots);
-
-        AlloyingRecipe recipe = recipeCache.getRecipe();
-        if (recipe != null) {
-            condition.tryInsertForced(recipe.getResultItem(lvl.registryAccess()));
-        }
+                .initOutputSlots(outputSlots)
+                .tryInsertForced(recipe.getResultItem(lvl.registryAccess()));
 
         progress(condition::getResult, () -> {
             inventory.insertItemForced(3, recipe.getResultItem(lvl.registryAccess()).copy(), false);
-            if (!inventory.getStackInSlot(0).is(ModItems.SLOT_LOCK)) inventory.extractItem(0, 1, false);
-            if (!inventory.getStackInSlot(1).is(ModItems.SLOT_LOCK)) inventory.extractItem(1, 1, false);
-            if (!inventory.getStackInSlot(2).is(ModItems.SLOT_LOCK)) inventory.extractItem(2, 1, false);
+            for (int i = 0; i < 3; i++) {
+                ItemStack inputItem = inventory.getStackInSlot(i);
+                if (!inputItem.is(ModItems.SLOT_LOCK) && !inputItem.isEmpty()) {
+                    for (SizedIngredient input : recipe.getInputs()) {
+                        for (ItemStack item : input.getItems()) {
+                            if (item.is(inputItem.getItem())) {
+                                inventory.extractItem(i, item.getCount(), false);
+                            }
+                        }
+                    }
+                }
+            }
         }, energy);
     }
 }

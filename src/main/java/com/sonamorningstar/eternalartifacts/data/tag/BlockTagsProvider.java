@@ -28,7 +28,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.BOOK_DUPLICATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BIOFURNACE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RESONATOR.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.GARDENING_POT.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.GARDENING_POT.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.GARDENING_POT.get(), "", "axe");
         tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "", "pickaxe");
         tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "", "shovel");
@@ -69,6 +70,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.NETHERITE_DRUM.get(), "diamond", "pickaxe");
         tierAndTool(ModBlocks.ASPHALT_BLOCK.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.STEEL_BLOCK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.TEMPERED_GLASS.get(), "diamond", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -113,7 +115,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
-        tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get());
+        tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get(), ModBlocks.TIGRIS_FLOWER.get());
         tag(BlockTags.COAL_ORES).add(ModBlocks.GRAVEL_COAL_ORE.get());
         tag(BlockTags.COPPER_ORES).add(ModBlocks.GRAVEL_COPPER_ORE.get());
         tag(BlockTags.IRON_ORES).add(ModBlocks.GRAVEL_IRON_ORE.get());
@@ -172,6 +174,10 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());
+        tag(Tags.Blocks.GLASS).add(ModBlocks.TEMPERED_GLASS.get());
+        tag(ModTags.Blocks.GLASS_HARDENED).add(ModBlocks.TEMPERED_GLASS.get());
+        tag(ModTags.Blocks.HARDENED_GLASS).add(ModBlocks.TEMPERED_GLASS.get());
+        tag(BlockTags.IMPERMEABLE).add(ModBlocks.TEMPERED_GLASS.get());
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             tierAndTool(holder.getBlock(), "stone", "pickaxe");

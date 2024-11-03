@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.registrar.GenericMachineHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredRegister;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -28,6 +29,7 @@ public class ModMachines {
     public static final GenericMachineHolder<MaterialSqueezerBlockEntity> MATERIAL_SQUEEZER = registerGeneric("material_squeezer", MaterialSqueezerBlockEntity::new);
     public static final GenericMachineHolder<AlloySmelterBlockEntity> ALLOY_SMELTER = registerGeneric("alloy_smelter", AlloySmelterBlockEntity::new);
     public static final GenericMachineHolder<SolidifierBlockEntity> SOLIDIFIER = registerGeneric("solidifier", SolidifierBlockEntity::new);
+    public static final GenericMachineHolder<CompressorBlockEntity> COMPRESSOR = registerGeneric("compressor", CompressorBlockEntity::new);
 
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefineryBlockEntity, OilRefineryBlock<OilRefineryBlockEntity>, BEWLRBlockItem>
             OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefineryBlockEntity::new, OilRefineryBlock::new, BEWLRBlockItem::new, true, true);

@@ -35,7 +35,8 @@ public class GrafterModifier extends LootModifier {
         for(LootItemCondition condition : conditions) if(!condition.test(context)) return generatedLoot;
         BlockState minedBlockState = context.getParam(LootContextParams.BLOCK_STATE);
         ServerLevel serverLevel = context.getLevel();
-        List<Item> possibleLoots = LootTableHelper.getItems(serverLevel, minedBlockState.getBlock().getLootTable());
+        Block minedBlock = minedBlockState.getBlock();
+        List<Item> possibleLoots = LootTableHelper.getItems(serverLevel, minedBlock.getLootTable());
         ItemStack sapling = ItemStack.EMPTY;
         for (Item item : possibleLoots) {
             if (item instanceof BlockItem bi) {
@@ -46,7 +47,7 @@ public class GrafterModifier extends LootModifier {
             if (!sapling.isEmpty()) break;
         }
         ItemStack finalSapling = sapling;
-        boolean flag = generatedLoot.stream().anyMatch(stack -> stack.is(finalSapling.getItem()));
+        boolean flag = generatedLoot.stream().anyMatch(stack -> stack.is(finalSapling.getItem()) || stack.is(minedBlock.asItem()));
         if (!sapling.isEmpty() && !flag) generatedLoot.add(sapling);
         return generatedLoot;
     }

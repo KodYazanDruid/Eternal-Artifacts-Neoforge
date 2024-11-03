@@ -37,6 +37,7 @@
     "eternalartifacts:netherite_drum",
     "eternalartifacts:asphalt_block",
     "eternalartifacts:steel_block",
+    "eternalartifacts:tempered_glass",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -46,6 +47,7 @@
     "eternalartifacts:material_squeezer",
     "eternalartifacts:alloy_smelter",
     "eternalartifacts:solidifier",
+    "eternalartifacts:compressor",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:induction_furnace"
   ]

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/compressor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/compressor"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/compressor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/compressor",
+      "y": 270
+    }
+  }
+}

@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "F": {
-      "item": "minecraft:cobblestone"
+      "tag": "forge:cobblestone"
     },
     "R": {
       "tag": "forge:rods/wooden"

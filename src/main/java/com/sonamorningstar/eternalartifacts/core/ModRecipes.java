@@ -27,5 +27,6 @@ public class ModRecipes {
     public static final RecipeDeferredHolder<SimpleContainer, SqueezingRecipe> SQUEEZING = RECIPES.register("squeezing", SqueezingRecipe.Serializer::new);
     public static final RecipeDeferredHolder<SimpleContainer, AlloyingRecipe> ALLOYING = RECIPES.register("alloying", AlloyingRecipe.Serializer::new);
     public static final RecipeDeferredHolder<SimpleFluidContainer, SolidifierRecipe> SOLIDIFYING = RECIPES.register("solidifying", SolidifierRecipe.Serializer::new);
+    public static final RecipeDeferredHolder<SimpleContainer, CompressorRecipe> COMPRESSING = RECIPES.register("compressing", CompressorRecipe.Serializer::new);
 
 }

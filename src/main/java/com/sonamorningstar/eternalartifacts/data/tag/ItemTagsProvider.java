@@ -81,8 +81,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
         tag(ItemTags.COALS).add(ModItems.SUGAR_CHARCOAL.get());
         tag(Tags.Items.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.asItem());
-        tag(ItemTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
-        tag(ItemTags.FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem());
+        tag(ItemTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem(), ModBlocks.TIGRIS_FLOWER.asItem());
+        tag(ItemTags.FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.asItem(), ModBlocks.TIGRIS_FLOWER.asItem());
         tag(Tags.Items.FEATHERS).add(ModItems.DUCK_FEATHER.get());
         tag(ItemTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
         tag(ItemTags.LOGS).add(ModBlocks.CITRUS_LOG.asItem(), ModBlocks.STRIPPED_CITRUS_LOG.asItem(), ModBlocks.CITRUS_WOOD.asItem(), ModBlocks.STRIPPED_CITRUS_WOOD.asItem());
@@ -92,6 +92,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.DUSTS_FLOUR).addTag(ModTags.Items.FLOUR_WHEAT);
         tag(ModTags.Items.DOUGH_WHEAT).add(ModItems.DOUGH.get());
         tag(ModTags.Items.DOUGH).addTag(ModTags.Items.DOUGH_WHEAT);
+        tag(ModTags.Items.DUSTS_CLAY).add(ModItems.CLAY_DUST.get());
 
         tag(ItemTags.SWORDS).add(
                 ModItems.COPPER_SWORD.get(),

@@ -39,8 +39,8 @@ public class MobLiquifierCategory implements IRecipeCategory<MobLiquifierRecipe>
     private static final Map<MobLiquifierRecipe, List<LivingEntity>> entities = new HashMap<>();
 
     public MobLiquifierCategory(IGuiHelper helper) {
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModMachines.ALLOY_SMELTER.getItem()));
-        this.title = Component.translatable(ModMachines.ALLOY_SMELTER.getBlockTranslationKey());
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ModMachines.MOB_LIQUIFIER.getItem()));
+        this.title = Component.translatable(ModMachines.MOB_LIQUIFIER.getBlockTranslationKey());
     }
 
     @Override

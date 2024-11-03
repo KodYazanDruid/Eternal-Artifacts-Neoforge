@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.container.slot.ModSlotItemHandler;
 import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
@@ -28,15 +30,15 @@ public class GenericMachineMenu extends AbstractMachineMenu {
                 int inputIndex = getBeInventory().getSlots() - outputSlots.size();
                 for (int i = 0; i < beInventory.getSlots(); i++) {
                     if (outputSlots.contains(i))
-                        addSlot(new SlotItemHandler(beInventory, i, arrowX + 25 + slotArrowPadding + (outputSlots.indexOf(i) * 18), arrowY-1));
+                        addSlot(new ModSlotItemHandler((ModItemStorage) beInventory, i, arrowX + 25 + slotArrowPadding + (outputSlots.indexOf(i) * 18), arrowY-1));
                     else {
-                        addSlot(new SlotItemHandler(beInventory, i, arrowX - slotArrowPadding - (inputIndex * 18), arrowY-1));
+                        addSlot(new ModSlotItemHandler((ModItemStorage) beInventory, i, arrowX - slotArrowPadding - (inputIndex * 18), arrowY-1));
                         inputIndex--;
                     }
                 }
             } else{
                 screenInfo.getSlotPositions().forEach((slot, pair) -> {
-                    addSlot(new SlotItemHandler(beInventory, slot, pair.getFirst(), pair.getSecond()));
+                    addSlot(new ModSlotItemHandler((ModItemStorage) beInventory, slot, pair.getFirst(), pair.getSecond()));
                 });
             }
         }

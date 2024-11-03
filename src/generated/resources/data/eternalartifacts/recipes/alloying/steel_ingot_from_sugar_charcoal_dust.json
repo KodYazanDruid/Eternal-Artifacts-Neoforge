@@ -1,0 +1,17 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    {
+      "amount": 1,
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "amount": 4,
+      "tag": "forge:dusts/sugar_charcoal"
+    }
+  ],
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:steel_ingot"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:compressing",
+  "input": {
+    "amount": 16,
+    "tag": "forge:seeds"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:plant_matter"
+  }
+}

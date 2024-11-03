@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Either;
 import com.sonamorningstar.eternalartifacts.content.recipe.*;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -129,14 +130,27 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), new ItemStack(Items.GREEN_DYE, 3), new FluidStack(Fluids.WATER, 125));
 
         createAlloyingRecipe(recipeOutput, List.of(
-                Ingredient.of(ModItems.DEMON_INGOT),
-                Ingredient.of(Items.GLOWSTONE_DUST),
-                Ingredient.of(ModItems.PLANT_MATTER)),
-                ModItems.CHLOROPHYTE_INGOT.toStack());
-        /*createAlloyingRecipe(recipeOutput, List.of(
-                    Ingredient.of(Tags.Items.INGOTS_IRON),
-                    Ingredient.of(ModTags.Items.DUSTS_COAL)),
-                ModItems.CHLOROPHYTE_INGOT.toStack());*/
+                    SizedIngredient.of(ModItems.DEMON_INGOT),
+                    SizedIngredient.of(Items.GLOWSTONE_DUST),
+                    SizedIngredient.of(ModItems.PLANT_MATTER)),
+                ModItems.CHLOROPHYTE_INGOT.toStack(), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+                    SizedIngredient.of(Tags.Items.SAND, 1),
+                    SizedIngredient.of(Tags.Items.OBSIDIAN, 1),
+                    SizedIngredient.of(ModTags.Items.DUSTS_CLAY, 1)),
+                ModBlocks.TEMPERED_GLASS.toStack(2), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+                    SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                    SizedIngredient.of(ModTags.Items.DUSTS_COAL, 2)),
+                ModItems.STEEL_INGOT.toStack(), "from_coal_dust");
+        createAlloyingRecipe(recipeOutput, List.of(
+                    SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                    SizedIngredient.of(ModTags.Items.DUSTS_CHARCOAL, 3)),
+                ModItems.STEEL_INGOT.toStack(), "from_charcoal_dust");
+        createAlloyingRecipe(recipeOutput, List.of(
+                    SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                    SizedIngredient.of(ModTags.Items.DUSTS_SUGAR_CHARCOAL, 4)),
+                ModItems.STEEL_INGOT.toStack(), "from_sugar_charcoal_dust");
 
         //region Mob Liquifying recipes.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
@@ -201,6 +215,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         //endregion
         createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());
+
+        createCompressingRecipe(recipeOutput, ItemTags.FLOWERS, 8, ModItems.PLANT_MATTER.toStack());
+        createCompressingRecipe(recipeOutput, Tags.Items.SEEDS, 16, ModItems.PLANT_MATTER.toStack());
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
@@ -305,7 +322,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('S', ModItems.STEEL_INGOT)
                 .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
-        createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Items.COBBLESTONE, Items.SMOOTH_STONE);
+        createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Tags.Items.COBBLESTONE, Tags.Items.STONE);
         createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
         createHammerRecipe(recipeOutput, ModItems.IRON_HAMMER, Tags.Items.INGOTS_IRON, Tags.Items.STORAGE_BLOCKS_IRON);
         createHammerRecipe(recipeOutput, ModItems.GOLDEN_HAMMER, Tags.Items.INGOTS_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
@@ -342,13 +359,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('W', Tags.Items.CROPS_WHEAT).define('B', ModTags.Items.FRUITS_BANANA)
                 .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
         createCutlassRecipe(recipeOutput, ModItems.WOODEN_CUTLASS, ItemTags.PLANKS);
-        createCutlassRecipe(recipeOutput, ModItems.STONE_CUTLASS, Items.COBBLESTONE);
+        createCutlassRecipe(recipeOutput, ModItems.STONE_CUTLASS, Tags.Items.COBBLESTONE);
         createCutlassRecipe(recipeOutput, ModItems.COPPER_CUTLASS, Tags.Items.INGOTS_COPPER);
         createCutlassRecipe(recipeOutput, ModItems.IRON_CUTLASS, Tags.Items.INGOTS_IRON);
         createCutlassRecipe(recipeOutput, ModItems.GOLDEN_CUTLASS, Tags.Items.INGOTS_GOLD);
         createCutlassRecipe(recipeOutput, ModItems.DIAMOND_CUTLASS, Tags.Items.GEMS_DIAMOND);
         createSickleRecipe(recipeOutput, ModItems.WOODEN_SICKLE, ItemTags.PLANKS);
-        createSickleRecipe(recipeOutput, ModItems.STONE_SICKLE, Items.COBBLESTONE);
+        createSickleRecipe(recipeOutput, ModItems.STONE_SICKLE, Tags.Items.COBBLESTONE);
         createSickleRecipe(recipeOutput, ModItems.COPPER_SICKLE, Tags.Items.INGOTS_COPPER);
         createSickleRecipe(recipeOutput, ModItems.IRON_SICKLE, Tags.Items.INGOTS_IRON);
         createSickleRecipe(recipeOutput, ModItems.GOLDEN_SICKLE, Tags.Items.INGOTS_GOLD);
@@ -357,6 +374,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern(" II").pattern(" S ").pattern("S  ")
                 .define('I', Tags.Items.INGOTS_IRON).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_IRON)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.GRAFTER)
+                .pattern("N").pattern("I").pattern("S")
+                .define('N', ModTags.Items.NUGGETS_COPPER)
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -460,14 +482,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .unlocks("has_netherite_ingot", has(Items.NETHERITE_INGOT))
                 .save(recipeOutput, new ResourceLocation(MODID, "smithing/"+getItemName(result)+"_smithing"));
     }
-    private void createHammerRecipe(RecipeOutput output, ItemLike result, ItemLike firstIng, ItemLike secondIng) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
-                .pattern("FFF").pattern("FSF").pattern(" R ")
-                .define('F', firstIng)
-                .define('S', secondIng)
-                .define('R', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(firstIng)).save(output);
-    }
     private void createHammerRecipe(RecipeOutput output, ItemLike result, TagKey<Item> firstIng, TagKey<Item> secondIng) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
                 .pattern("FFF").pattern("FSF").pattern(" R ")
@@ -476,13 +490,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(firstIng)).save(output);
     }
-    private void createCutlassRecipe(RecipeOutput output, ItemLike result, ItemLike ingredient) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
-                .pattern(" FF").pattern(" F ").pattern("R  ")
-                .define('F', ingredient)
-                .define('R', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(ingredient)).save(output);
-    }
     private void createCutlassRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
                 .pattern(" FF").pattern(" F ").pattern("R  ")
@@ -490,16 +497,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(ingredient)).save(output);
     }
-    private void createSickleRecipe(RecipeOutput output, ItemLike result, ItemLike ingredient) {
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
-                .pattern(" FF").pattern("  F").pattern(" RF")
-                .define('F', ingredient)
-                .define('R', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(ingredient)).save(output);
-    }
     private void createSickleRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
-                .pattern(" FF").pattern("  F").pattern(" RF")
+                .pattern(" F ").pattern("  F").pattern("RF ")
                 .define('F', ingredient)
                 .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(ingredient)).save(output);
@@ -614,10 +614,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .save(output, new ResourceLocation(MODID, "squeezing/"+path+"_to_"+fluidPath));
     }
 
-    private void createAlloyingRecipe(RecipeOutput output, List<Ingredient> inputs, ItemStack result){
+    private void createAlloyingRecipe(RecipeOutput output, List<SizedIngredient> inputs, ItemStack result, String suffix){
         String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new AlloyingRecipe(inputs, result))
-                .save(output, new ResourceLocation(MODID, "alloying/"+path));
+                .save(output, new ResourceLocation(MODID, "alloying/"+path+"_"+suffix));
     }
 
     private void createSolidifyingRecipe(RecipeOutput output, Fluid fluid, int fluidAmount, ItemStack result) {
@@ -631,6 +631,19 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new SolidifierRecipe(FluidIngredient.of(fluid, fluidAmount), result))
                 .save(output, new ResourceLocation(MODID, "solidifying/"+fluidPath+"_to_"+path));
+    }
+
+    private void createCompressingRecipe(RecipeOutput output, ItemStack input, ItemStack result){
+        String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new CompressorRecipe(SizedIngredient.of(input), result))
+                .save(output, new ResourceLocation(MODID, "compressing/"+path+"_to_"+resultPath));
+    }
+    private void createCompressingRecipe(RecipeOutput output, TagKey<Item> input, int amount, ItemStack result){
+        String path = input.location().getPath();
+        String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new CompressorRecipe(SizedIngredient.of(input, amount), result))
+                .save(output, new ResourceLocation(MODID, "compressing/"+path+"_to_"+resultPath));
     }
 
 

@@ -23,7 +23,6 @@ public class EternalArtifacts {
      * TODO: A storage block can storage items, fluids and energy dynamically.
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
-     * TODO: Banana bread.
      * TODO: Piezoelectric Plane
      * TODO: Modular Fluid Tank
      * TODO: A plant with infinite water supply
@@ -39,7 +38,6 @@ public class EternalArtifacts {
 
     public static final String MODID = "eternalartifacts";
     public static final Logger LOGGER = LogUtils.getLogger();
-    public static final ModHooks HOOKS = new ModHooks();
 
     public EternalArtifacts(IEventBus modEventBus) {
         enableMilkFluid();
@@ -61,11 +59,12 @@ public class EternalArtifacts {
         ModPaintings.PAINTINGS.register(modEventBus);
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
         ModAttributes.ATTRIBUTES.register(modEventBus);
+        ModStructureTypes.STRUCTURE_TYPES.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
-        HOOKS.construct(modEventBus);
+        new ModHooks().construct(modEventBus);
     }
 }
