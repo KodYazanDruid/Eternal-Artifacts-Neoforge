@@ -3,6 +3,7 @@
     "eternalartifacts:sugar_charcoal_block",
     "eternalartifacts:ardite_block",
     "eternalartifacts:steel_block",
+    "eternalartifacts:demon_block",
     "#forge:storage_blocks/charcoal"
   ]
 }

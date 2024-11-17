@@ -1,0 +1,320 @@
+package com.sonamorningstar.eternalartifacts.event.common;
+
+import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
+import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
+import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.EffectCures;
+import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.event.AnvilUpdateEvent;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.living.*;
+import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+
+import javax.annotation.Nullable;
+import java.time.Clock;
+import java.util.Optional;
+
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+
+@Mod.EventBusSubscriber(modid = MODID)
+public class CommonEvents {
+    @SubscribeEvent
+    public static void anvilUpdateEvent(AnvilUpdateEvent event) {
+        /*if (event.getLeft().is(Items.APPLE)  && event.getRight().is(Items.ORANGE_DYE)) {
+            event.setCost(5);
+            event.setOutput(new ItemStack(ModItems.ORANGE.get()));
+        }*/
+    }
+
+    @SubscribeEvent
+    public static void jarDrinkEvent(JarDrinkEvent event) {
+        FluidStack fluidStack = event.getFluidStack();
+        if(fluidStack.is(Tags.Fluids.MILK)) {
+            event.setDrinkingAmount(250);
+            event.setDefaultUseTime();
+            event.setAfterDrink((player, stack) -> player.removeEffectsCuredBy(EffectCures.MILK));
+        }
+        if(fluidStack.is(Fluids.LAVA)) {
+            event.setUseTime(80);
+            event.setAfterDrink((player, stack) -> player.setSecondsOnFire(10));
+        }
+        if(fluidStack.is(ModTags.Fluids.EXPERIENCE)) {
+            event.setUseTime(20);
+            int fluidAmount = fluidStack.getAmount();
+            int drankAmount = fluidAmount - (fluidAmount % 20);
+            if(drankAmount < 20) event.setCanceled(true);
+            event.setDrinkingAmount(drankAmount);
+            event.setAfterDrink((player, itemStack) -> player.giveExperiencePoints(drankAmount / 20));
+            event.setAfterDrinkSound(SoundEvents.EXPERIENCE_ORB_PICKUP);
+        }
+        if(fluidStack.is(FluidTags.WATER)) {
+            event.setDefaultUseTime();
+            event.setAfterDrink((player, itemStack) -> {
+                if(player.isOnFire()) event.setAfterDrinkSound(SoundEvents.FIRE_EXTINGUISH);
+                player.setRemainingFireTicks(0);
+            });
+        }
+        if(fluidStack.is(ModFluids.BEER.getFluid())) {
+            event.setDefaultUseTime();
+            event.setAfterDrink(((player, itemStack) -> player.heal(4.0F)));
+        }
+
+    }
+
+    @SubscribeEvent
+    public static void drumInteractEvent(DrumInteractEvent event) {
+        FluidStack stack = event.getContent();
+        if (stack.is(ModFluids.GASOLINE.getFluid()) && stack.getAmount() >= 1000) {
+            event.setFuseTime(40);
+            event.setRadius(20.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void livingHurtEvent(LivingHurtEvent event) {
+        LivingEntity living = event.getEntity();
+        if(living instanceof Player player) {
+            ItemCooldowns cooldowns = player.getCooldowns();
+            cooldowns.addCooldown(ModItems.MEDKIT.get(), 160);
+
+            Item dagger = ModItems.HOLY_DAGGER.get();
+            if(PlayerHelper.findItem(player, dagger)) {
+                if(!cooldowns.isOnCooldown(dagger)){
+                    float damage = event.getAmount();
+                    float health = player.getHealth();
+                    float absorption = player.getAbsorptionAmount();
+                    float maxHealth = player.getMaxHealth();
+                    if (health + absorption <= damage || health + absorption / maxHealth <= 0.2F) {
+                        player.addEffect(new MobEffectInstance(ModEffects.DIVINE_PROTECTION.get(), 600, 0));
+                        player.getCooldowns().addCooldown(dagger, 6000);
+                        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
+                        Channel.sendToPlayer(new ItemActivationToClient(dagger.getDefaultInstance()), (ServerPlayer) player);
+                    }
+                }
+            }
+        }
+
+    }
+
+    @SubscribeEvent
+    public static void pickupEvent(EntityItemPickupEvent event) {
+        Player player = event.getEntity();
+        CompoundTag tag = new CompoundTag();
+        tag.putBoolean(EncumbatorItem.ACTIVE, true);
+        if(PlayerHelper.findInStackWithTag(player, ModItems.ENCUMBATOR.get(), tag)) event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
+        LivingEntity entity = event.getEntity();
+        if(entity instanceof Player player && PlayerHelper.findItem(player, ModItems.FROG_LEGS.get()) && !player.isCrouching()) {
+            player.hurtMarked = true;
+            player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
+        }
+    }
+
+    @SubscribeEvent
+    public static void fallEvent(LivingFallEvent event) {
+        LivingEntity entity = event.getEntity();
+        if(entity instanceof Player player && PlayerHelper.findItem(player, ModItems.FROG_LEGS.get())) {
+            event.setDistance(Math.max(event.getDistance() - 3, 0));
+            event.setDamageMultiplier(0.5F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void serverTick(TickEvent.ServerTickEvent event) {
+        Pair<Boolean, Integer> activeTicks = MagicFeatherItem.activeTicks;
+        if(activeTicks != null){
+            boolean bool = activeTicks.getFirst();
+            int ticks = activeTicks.getSecond();
+            if (ticks > 0) ticks--;
+            else bool = false;
+            MagicFeatherItem.activeTicks = Pair.of(bool, ticks);
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        AttributeInstance stepHeight = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
+        AttributeInstance spellDamage = player.getAttribute(ModAttributes.SPELL_DAMAGE.get());
+
+        if(!(player.hasItemInSlot(EquipmentSlot.FEET) && player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.COMFY_SHOES.get()))) {
+            if(stepHeight != null && stepHeight.hasModifier(ComfyShoesItem.getStepHeight())) {
+                stepHeight.removeModifier(ComfyShoesItem.getStepHeight().getId());
+            }
+        }
+
+        /*if (!PlayerHelper.findItem(player, ModItems.ORANGE.get())) {
+            if (spellDamage != null && spellDamage.hasModifier(Spell.spellDamage)) {
+                spellDamage.removeModifier(Spell.spellDamage.getId());
+            }
+        }else if (spellDamage != null && !spellDamage.hasModifier(Spell.spellDamage)) {
+            spellDamage.addTransientModifier(Spell.spellDamage);
+        }*/
+    }
+
+    @SubscribeEvent
+    public static void healEvent(LivingHealEvent event) {
+        LivingEntity entity = event.getEntity();
+        if(entity.hasEffect(ModEffects.MALADY.get())) event.setCanceled(true);
+    }
+
+    public static volatile BlockHitResult eternal_Artifacts_Neoforge$cachedRay;
+    @SubscribeEvent
+    public static void blockBreakEvent(BlockEvent.BreakEvent event) {
+        Player player = event.getPlayer();
+        ItemStack itemStack = player.getMainHandItem();
+        LevelAccessor level = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState blockState = event.getState();
+        if (blockState.is(ModBlocks.POTTED_TIGRIS) && level instanceof ServerLevel serverLevel) {
+            serverLevel.invalidateCapabilities(event.getPos());
+        }
+        if (itemStack.canApplyAtEnchantingTable(ModEnchantments.VERSATILITY.get())) {
+            if (itemStack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
+                int amount = Config.VERSATILITY_COST.get() - 1;
+                itemStack.hurt(amount, level.getRandom(), player instanceof ServerPlayer serverPlayer ? serverPlayer : null);
+            }
+        }
+        if (itemStack.getItem() instanceof ChiselItem) {
+            eternal_Artifacts_Neoforge$cachedRay = RayTraceHelper.retrace(player, ClipContext.Fluid.NONE);
+        }
+    }
+
+    @SubscribeEvent
+    public static void playerOnDeath(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            Player died = event.getOriginal();
+            Player clone = event.getEntity();
+            CompoundTag charms = died.getPersistentData().getCompound("Charms");
+            clone.getPersistentData().put("Charms", charms);
+        }
+    }
+    @SubscribeEvent
+    public static void onLivingConvert(LivingConversionEvent.Post event) {
+        LivingEntity original = event.getEntity();
+        LivingEntity converted = event.getOutcome();
+        CompoundTag charms = original.getPersistentData().getCompound("Charms");
+        converted.getPersistentData().put("Charms", charms);
+    }
+
+    @SubscribeEvent
+    public static void useEvent(UseItemOnBlockEvent event) {
+        ItemStack itemStack = event.getItemStack();
+        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK &&
+                itemStack.canApplyAtEnchantingTable(ModEnchantments.VERSATILITY.get()) &&
+                itemStack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
+
+            Level level = event.getLevel();
+            BlockPos blockPos = event.getPos();
+            Player player = event.getEntity();
+            BlockState blockState = level.getBlockState(blockPos);
+            InteractionHand hand = event.getHand();
+            UseOnContext context = event.getUseOnContext();
+            Optional<BlockState> axeModifiedState = calculateStateForAxe(level, blockPos, player, blockState, context);
+            if (axeModifiedState.isPresent()) {
+                level.setBlock(blockPos, axeModifiedState.get(), 11);
+                level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, axeModifiedState.get()));
+
+                if (player instanceof ServerPlayer) {
+                    CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
+                }
+
+                itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(hand));
+                if (level.isClientSide) player.swing(hand);
+            }
+            if (context.getClickedFace() != Direction.DOWN) {
+                BlockState shovelModifiedState = blockState.getToolModifiedState(context, ToolActions.SHOVEL_FLATTEN, false);
+                BlockState newState = null;
+
+                if (shovelModifiedState != null && level.getBlockState(blockPos.above()).isAir()) {
+                    level.playSound(player, blockPos, SoundEvents.SHOVEL_FLATTEN, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    newState = shovelModifiedState;
+                } else if (blockState.getBlock() instanceof CampfireBlock && blockState.getValue(CampfireBlock.LIT)) {
+                    if (!level.isClientSide()) {
+                        level.levelEvent(null, 1009, blockPos, 0);
+                    }
+                    CampfireBlock.dowse(player, level, blockPos, blockState);
+                    newState = blockState.setValue(CampfireBlock.LIT, false);
+                }
+
+                if (newState != null) {
+                    if (!level.isClientSide) {
+                        level.setBlock(blockPos, newState, 11);
+                        level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, newState));
+                        itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(context.getHand()));
+
+                    }else player.swing(hand);
+
+                }
+            }
+        }
+    }
+
+    private static Optional<BlockState> calculateStateForAxe(Level level, BlockPos pos, @Nullable Player player, BlockState state, UseOnContext context) {
+        Optional<BlockState> stripState = Optional.ofNullable(state.getToolModifiedState(context, ToolActions.AXE_STRIP, false));
+        if (stripState.isPresent()) {
+            level.playSound(player, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
+            return stripState;
+        } else {
+            Optional<BlockState> scrapeState = Optional.ofNullable(state.getToolModifiedState(context, ToolActions.AXE_SCRAPE, false));
+            if (scrapeState.isPresent()) {
+                level.playSound(player, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
+                level.levelEvent(player, 3005, pos, 0);
+                return scrapeState;
+            } else {
+                Optional<BlockState> wasOffState = Optional.ofNullable(state.getToolModifiedState(context, ToolActions.AXE_WAX_OFF, false));
+                if (wasOffState.isPresent()) {
+                    level.playSound(player, pos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
+                    level.levelEvent(player, 3004, pos, 0);
+                    return wasOffState;
+                } else {
+                    return Optional.empty();
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-// 1.20.4	2024-11-03T02:08:31.1453314	Item Models: eternalartifacts
+// 1.20.4	2024-11-15T01:13:17.2927328	Item Models: eternalartifacts
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
@@ -15,6 +15,7 @@ c43326db2f6ef314a41073641fbed9216f9ed163 assets/eternalartifacts/models/item/bit
 1588e5b1ebc429bd4c22688d56627146e81456a9 assets/eternalartifacts/models/item/blood_bucket.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 6d52c2a913b67814033c91dc8ce2c6443b549d12 assets/eternalartifacts/models/item/charcoal_dust.json
+3d6b91b2bde1ae551952f36f0209d1ea3adc599e assets/eternalartifacts/models/item/chisel.json
 80f78501054e377bf122ec5eb833fc3e5184f578 assets/eternalartifacts/models/item/chlorophyte_cutlass.json
 66eec94e2e9ef972b02e8054ef7bccaa254aab86 assets/eternalartifacts/models/item/chlorophyte_ingot.json
 d7c4351197e0e044b26d0043b22dfc21d19a091b assets/eternalartifacts/models/item/chlorophyte_sickle.json
@@ -84,6 +85,9 @@ bbc068e61f4ca3d7bb315614a2d2cca1a6d00bdb assets/eternalartifacts/models/item/gra
 17cea3c921ca033b040efdb8c0d358402f8ec92f assets/eternalartifacts/models/item/hammaxe.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
 fc4fce82723f7d09cc6fce17f5bfd223b0b48d13 assets/eternalartifacts/models/item/hot_spring_water_bucket.json
+a9070a20a23138343210ca678b8019924f4169e9 assets/eternalartifacts/models/item/ice_brick_slab.json
+7a44f68b3b3b68ad1270ee7f78bc1cbaac5ab06e assets/eternalartifacts/models/item/ice_brick_stairs.json
+5421e91d5aa92006dcbf3f3fffb8663d2a368e4a assets/eternalartifacts/models/item/ice_brick_wall.json
 d660795854e4bf04885248e050254bfd59bc1cfb assets/eternalartifacts/models/item/induction_furnace.json
 c26763eab56edf48666cc6a8eee96773867b4c6a assets/eternalartifacts/models/item/industrial_macerator.json
 5ad85fbe559ae885dcd6a10bf0fb2cf3aca42cf1 assets/eternalartifacts/models/item/iron_cutlass.json

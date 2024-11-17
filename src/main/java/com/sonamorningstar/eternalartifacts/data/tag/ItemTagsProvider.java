@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -146,18 +147,49 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.NETHERITE_SICKLE.get(),
                 ModItems.CHLOROPHYTE_SICKLE.get()
         );
+        tag(ModTags.Items.TABLETS).add(
+                ModItems.STONE_TABLET.get(),
+                ModItems.ENDER_TABLET.get(),
+                ModItems.CHLOROPHYTE_TABLET.get(),
+                ModItems.COPPER_TABLET.get()
+        );
+
+        tag(ModTags.Items.CHARMS_HEAD).add(
+                Items.SHULKER_SHELL
+        );
+        tag(ModTags.Items.CHARMS_RING).add(
+                ModItems.GOLD_RING.get()
+        );
+        tag(ModTags.Items.CHARMS_BACK).add(
+                ModItems.KNAPSACK.get(),
+                ModItems.TANK_KNAPSACK.get(),
+                ModItems.ENDER_KNAPSACK.get()
+        );
+        tag(ModTags.Items.CHARMS_BOOTS).add(
+                ModItems.COMFY_SHOES.get()
+        );
+        tag(ModTags.Items.CHARMS_CHARM).add(
+                ModItems.BATTERY.get(),
+                ModItems.MAGIC_FEATHER.get()
+        );
+
+        tag(ModTags.Items.CHARMS).addTags(
+                ModTags.Items.CHARMS_HEAD,
+                //ModTags.Items.CHARMS_NECKLACE,
+                //ModTags.Items.CHARMS_HAND,
+                ModTags.Items.CHARMS_RING,
+                ModTags.Items.CHARMS_BACK,
+                //ModTags.Items.CHARMS_BOOTS,
+                ModTags.Items.CHARMS_CHARM
+                //ModTags.Items.CHARMS_BELT,
+                //ModTags.Items.CHARMS_BRACELET
+        );
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
                 ItemTags.STONE_BRICKS,
                 ItemTags.STONE_CRAFTING_MATERIALS,
                 Tags.Items.SANDSTONE
-        );
-        tag(ModTags.Items.TABLETS).add(
-                ModItems.STONE_TABLET.get(),
-                ModItems.ENDER_TABLET.get(),
-                ModItems.CHLOROPHYTE_TABLET.get(),
-                ModItems.COPPER_TABLET.get()
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),

@@ -23,7 +23,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.annotation.Nullable;
 
-@Debug(export = true)
 @Mixin(value = BeaconBlockEntity.class)
 public abstract class BeaconEntityMixin {
 

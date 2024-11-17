@@ -37,6 +37,7 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
         renderTankSlots(gui, leftPos, topPos, mx, my);
+        renderTooltip(gui, mx, my);
     }
 
     private void renderTankSlots(GuiGraphics gui, int x, int y, int mx, int my) {

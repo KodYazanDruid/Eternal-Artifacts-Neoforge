@@ -29,6 +29,7 @@ public class ModLootSubProvider implements LootTableSubProvider {
         output.accept(ModLootTables.SURVIVALISTS_IGLOO, LootTable.lootTable()
             .withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(Items.RABBIT_STEW).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 2))))
                 .add(LootItem.lootTableItem(Items.COOKED_COD).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 4))))
                 .add(LootItem.lootTableItem(Items.COOKED_SALMON).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 3))))
                 .add(LootItem.lootTableItem(Items.COOKED_RABBIT).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))

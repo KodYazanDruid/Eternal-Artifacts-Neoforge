@@ -1,11 +1,13 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
+import com.sonamorningstar.eternalartifacts.core.ModBlockFamilies;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.client.renderer.block.model.MultiVariant;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder;
@@ -74,11 +77,14 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.ARDITE_ORE.get());
         simpleBlockWithItem(ModBlocks.RAW_ARDITE_BLOCK.get());
         simpleBlockWithItem(ModBlocks.ARDITE_BLOCK.get());
-        simpleBlockWithItem(ModBlocks.SNOW_BRICKS.get());
         simpleBlockWithItemWithRenderType(ModBlocks.ICE_BRICKS.get(), "translucent");
+        createSpecialSlab(ModBlockFamilies.ICE_BRICKS, "translucent");
+        createSpecialStairs(ModBlockFamilies.ICE_BRICKS, "translucent");
+        createSpecialWall(ModBlockFamilies.ICE_BRICKS, "translucent");
         simpleBlockWithItem(ModBlocks.ASPHALT_BLOCK.get());
         simpleBlockWithItem(ModBlocks.STEEL_BLOCK.get());
         simpleBlockWithItemWithRenderType(ModBlocks.TEMPERED_GLASS.get(), "cutout");
+        simpleBlockWithItem(ModBlocks.DEMON_BLOCK.get());
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -128,6 +134,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             if(!holder.isHasCustomRender()) machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture());
         });
+        ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel)
+                .forEach(family -> simpleBlockItem(family.getBaseBlock(), cubeAll(family.getBaseBlock())));
+
     }
 
     private void machineBlock(DeferredHolder<Block, ? extends Block> holder, boolean unique) {
@@ -240,6 +249,36 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
            ModelFile model = models().withExistingParent(path, new ResourceLocation(MODID, "block/base_drum"))
                    .texture("0", "block/"+path).texture("particle", particleRL.getNamespace()+":block/"+particleRL.getPath());
            return ConfiguredModel.builder().modelFile(model).build();
+        });
+    }
+
+    private void createSpecialStairs(BlockFamily family, String renderType) {
+        family.getVariants().values().forEach(block -> {
+            if (block instanceof StairBlock stair) stairsBlockWithRenderType(stair, blockTexture(family.getBaseBlock()), renderType);
+        });
+    }
+    private void createSpecialSlab(BlockFamily family, String renderType) {
+        family.getVariants().values().forEach(block -> {
+            ResourceLocation baseKey = BuiltInRegistries.BLOCK.getKey(family.getBaseBlock());
+            ResourceLocation stairKey = BuiltInRegistries.BLOCK.getKey(block);
+            ResourceLocation texture = blockTexture(family.getBaseBlock());
+            if (block instanceof SlabBlock slab) {
+                getVariantBuilder(slab)
+                        .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(models().slab(stairKey.getPath(), texture, texture, texture).renderType(renderType)))
+                        .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(models().slabTop(stairKey.getPath() + "_top", texture, texture, texture).renderType(renderType)))
+                        .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(models().getExistingFile(baseKey)));
+            }
+        });
+    }
+    private void createSpecialWall(BlockFamily family, String renderType) {
+        family.getVariants().values().forEach(block -> {
+            if (block instanceof WallBlock wall) {
+                ResourceLocation wallRL = BuiltInRegistries.BLOCK.getKey(wall);
+                ResourceLocation texture = blockTexture(family.getBaseBlock());
+                wallBlockWithRenderType(wall, texture, renderType);
+                ModelFile inventoryModel = models().wallInventory(wallRL.getPath()+"_inventory", texture).renderType(renderType);
+                simpleBlockItem(wall, inventoryModel);
+            }
         });
     }
 

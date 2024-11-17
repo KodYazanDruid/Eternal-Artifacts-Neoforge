@@ -18,7 +18,8 @@ public enum ModConstants {
     CHLOROPHYTE_UPGRADE_APPLIES_TO(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.applies_to"))),
     CHLOROPHYTE_UPGRADE_INGREDIENTS(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.ingredients"))),
     CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION(Util.makeDescriptionId("item", new ResourceLocation(MODID, "smithing_template.chlorophyte_upgrade.base_slot_description"))),
-    CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION(Util.makeDescriptionId("item", new ResourceLocation(MODID,"smithing_template.chlorophyte_upgrade.additions_slot_description")));
+    CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION(Util.makeDescriptionId("item", new ResourceLocation(MODID,"smithing_template.chlorophyte_upgrade.additions_slot_description"))),
+    INVENTORY_TAB("inventory_tab."+MODID),;
 
     String string;
     ModConstants(String string) {

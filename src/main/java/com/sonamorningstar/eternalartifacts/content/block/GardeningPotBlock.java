@@ -19,7 +19,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -45,7 +44,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.PlantType;
-import net.neoforged.neoforge.common.ToolAction;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -97,14 +95,12 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (itemStack.getCapability(Capabilities.FluidHandler.ITEM) == null) return InteractionResult.PASS;
+        IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, hit.getDirection());
+        if (itemStack.getCapability(Capabilities.FluidHandler.ITEM) == null || fluidHandler == null) return InteractionResult.PASS;
         if (!level.isClientSide()) {
-            IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
             var playerInventory = player.getCapability(Capabilities.ItemHandler.ENTITY);
             Objects.requireNonNull(playerInventory, "Player item handler is null");
-            if (fluidHandler != null) {
-                FluidUtil.interactWithFluidHandler(player, hand, level, pos, hit.getDirection());
-            }
+            FluidUtil.interactWithFluidHandler(player, hand, level, pos, hit.getDirection());
         }
         return InteractionResult.sidedSuccess(level.isClientSide);
     }

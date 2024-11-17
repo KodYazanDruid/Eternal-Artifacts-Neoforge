@@ -26,6 +26,9 @@ public class Channel {
         registrar.play(ItemActivationToClient.ID,
                 ItemActivationToClient::create,
                 handler -> handler.client(ItemActivationToClient::handle));
+        registrar.play(BlockPlaceOnClient.ID,
+                BlockPlaceOnClient::create,
+                handler -> handler.client(BlockPlaceOnClient::handle));
 
         registrar.play(EnderNotebookAddNbtToServer.ID,
                 EnderNotebookAddNbtToServer::create,
@@ -58,6 +61,9 @@ public class Channel {
         registrar.play(TankKnapsackTransferToServer.ID,
                 TankKnapsackTransferToServer::create,
                 handler -> handler.server(TankKnapsackTransferToServer::handle));
+        registrar.play(OpenMenuToServer.ID,
+                OpenMenuToServer::create,
+                handler -> handler.server(OpenMenuToServer::handle));
 
         registrar.play(BlockEntityButtonPress.ID,
                 BlockEntityButtonPress::create,

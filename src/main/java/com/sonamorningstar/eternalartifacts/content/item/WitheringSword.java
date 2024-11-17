@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.core.ModTiers;
-import com.sonamorningstar.eternalartifacts.event.ClientEvents;
+import com.sonamorningstar.eternalartifacts.event.client.ClientEvents;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;

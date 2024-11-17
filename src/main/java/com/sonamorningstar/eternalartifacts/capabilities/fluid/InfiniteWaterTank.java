@@ -1,14 +1,28 @@
 package com.sonamorningstar.eternalartifacts.capabilities.fluid;
 
+import lombok.Getter;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-public class InfiniteWaterTank implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class InfiniteWaterTank implements IFluidHandler, IFluidHandlerItem {
     public static final InfiniteWaterTank INSTANCE = new InfiniteWaterTank();
     private static final FluidStack INFINITE_WATER = new FluidStack(Fluids.WATER, Integer.MAX_VALUE);
 
+    @Getter
+    @Nullable
+    private ItemStack container;
+
     private InfiniteWaterTank(){}
+    private InfiniteWaterTank(ItemStack stack) {container = stack;}
+
+    public static InfiniteWaterTank createForItem(ItemStack stack, Void ctx) {
+        return new InfiniteWaterTank(stack);
+    }
 
     @Override
     public int getTanks() {return 1;}

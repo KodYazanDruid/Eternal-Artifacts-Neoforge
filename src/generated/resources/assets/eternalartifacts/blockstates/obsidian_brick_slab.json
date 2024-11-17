@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eternalartifacts:block/obsidian_brick_slab"
+    },
+    "type=double": {
+      "model": "eternalartifacts:block/obsidian_bricks"
+    },
+    "type=top": {
+      "model": "eternalartifacts:block/obsidian_brick_slab_top"
+    }
+  }
+}

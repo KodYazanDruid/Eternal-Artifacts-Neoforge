@@ -1,17 +1,16 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModFluids;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
@@ -132,6 +131,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.FLOUR.get());
         basicItem(ModItems.DOUGH.get());
         basicItem(ModItems.BANANA_BREAD.get());
+        handheld(ModItems.CHISEL);
 
         basicItem(modLoc("encumbator_active"));
         ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
@@ -164,6 +164,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         itemGenerated(ModBlocks.FORSYTHIA, "upper");
         itemGenerated(ModBlocks.FOUR_LEAF_CLOVER);
         itemGenerated(ModBlocks.TIGRIS_FLOWER);
+        withParentBlock(ModBlocks.ICE_BRICK_SLAB);
+        withParentBlock(ModBlocks.ICE_BRICK_STAIRS);
+        withExistingParent(ModBlocks.ICE_BRICK_WALL.getId().getPath(), modLoc("block/ice_brick_wall_inventory"));
 
         ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlockFamilies;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -71,6 +72,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.ASPHALT_BLOCK.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.STEEL_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.TEMPERED_GLASS.get(), "diamond", "pickaxe");
+        tierAndTool(ModBlocks.DEMON_BLOCK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.OBSIDIAN_BRICKS.get(), "diamond", "pickaxe");
+        ModBlockFamilies.OBSIDIAN_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "diamond", "pickaxe"));
+        ModBlockFamilies.SNOW_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
+        ModBlockFamilies.ICE_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),
@@ -113,6 +119,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 Blocks.TWISTING_VINES,
                 Blocks.TWISTING_VINES_PLANT
         );
+        tag(ModTags.Blocks.VERSATILITY_MINEABLES).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_SHOVEL);
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get(), ModBlocks.TIGRIS_FLOWER.get());
@@ -153,7 +160,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
                 ModBlocks.ARDITE_BLOCK.get(),
-                ModBlocks.STEEL_BLOCK.get()
+                ModBlocks.STEEL_BLOCK.get(),
+                ModBlocks.DEMON_BLOCK.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).addTag(
                 ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL
@@ -178,6 +186,13 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(ModTags.Blocks.GLASS_HARDENED).add(ModBlocks.TEMPERED_GLASS.get());
         tag(ModTags.Blocks.HARDENED_GLASS).add(ModBlocks.TEMPERED_GLASS.get());
         tag(BlockTags.IMPERMEABLE).add(ModBlocks.TEMPERED_GLASS.get());
+        tag(BlockTags.FLOWER_POTS).add(ModBlocks.POTTED_TIGRIS.get());
+        tag(Tags.Blocks.OBSIDIAN).add(ModBlocks.OBSIDIAN_BRICKS.get());
+        tag(BlockTags.WALLS).add(
+            ModBlocks.OBSIDIAN_BRICK_WALL.get(),
+            ModBlocks.ICE_BRICK_WALL.get(),
+            ModBlocks.SNOW_BRICK_WALL.get()
+        );
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             tierAndTool(holder.getBlock(), "stone", "pickaxe");

@@ -52,6 +52,30 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         return this.fluidSlots.get(slot);
     }
 
+    @Override
+    public ItemStack quickMoveStack(Player pPlayer, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+        if (slot != null && slot.hasItem()) {
+            ItemStack itemstack1 = slot.getItem();
+            itemstack = itemstack1.copy();
+            if (index < 36) {
+                if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {
+                return ItemStack.EMPTY;
+            }
+
+            if (itemstack1.isEmpty()) {
+                slot.setByPlayer(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
+            }
+        }
+        return itemstack;
+    }
+
     protected ItemStack fillSlotAndStow(FluidSlot slot, ItemStack container, Player player) {
         IFluidHandlerItem containerTank = container.getCapability(Capabilities.FluidHandler.ITEM);
         if (container.isEmpty()) return ItemStack.EMPTY;
@@ -143,14 +167,4 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         }
         return 0;
     }
-
-/*    private void popStackInLevel(Level level, double x, double y, double z, ItemStack stack) {
-        if(stack.isEmpty()) return;
-        double d0 = (double) EntityType.ITEM.getHeight() / 2.0;
-        double d1 = x + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
-        double d2 = y + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25) - d0;
-        double d3 = z + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
-        ItemEntity itemEntity = new ItemEntity(level, d1, d2, d3, stack);
-        level.addFreshEntity(itemEntity);
-    }*/
 }

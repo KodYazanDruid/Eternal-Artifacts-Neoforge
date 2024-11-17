@@ -10,17 +10,13 @@ public class VolumeEnchantment extends Enchantment {
     }
 
     @Override
-    public int getMinCost(int pEnchantmentLevel) {
-        return 20;
-    }
-
-    @Override
-    public int getMaxCost(int pEnchantmentLevel) {
-        return 50;
+    public int getMinCost(int pLevel) {
+        return super.getMinCost(pLevel);
     }
 
     @Override
     public int getMaxLevel() {
         return 5;
     }
+
 }

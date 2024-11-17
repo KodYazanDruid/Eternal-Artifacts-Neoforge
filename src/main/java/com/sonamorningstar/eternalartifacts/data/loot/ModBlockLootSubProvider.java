@@ -76,8 +76,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.ARDITE_BLOCK.get());
         dropOther(ModBlocks.PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
         dropOther(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
-        dropSelf(ModBlocks.SNOW_BRICKS.get());
-        dropSelf(ModBlocks.ICE_BRICKS.get());
         dropSelf(ModBlocks.ASPHALT_BLOCK.get());
         dropSelf(ModBlocks.COPPER_CABLE.get());
         dropSelf(ModBlocks.COVERED_COPPER_CABLE.get());
@@ -85,6 +83,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.TIGRIS_FLOWER.get());
         dropSelf(ModBlocks.TEMPERED_GLASS.get());
         dropPottedContents(ModBlocks.POTTED_TIGRIS.get());
+        dropSelf(ModBlocks.DEMON_BLOCK.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -165,6 +164,10 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         );
 
         ModMachines.MACHINES.getMachines().forEach(holder -> dropSelf(holder.getBlock()));
+        ModBlockFamilies.getAllFamilies().forEach(family -> {
+            dropSelf(family.getBaseBlock());
+            family.getVariants().values().forEach(this::dropSelf);
+        });
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {

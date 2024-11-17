@@ -8,13 +8,18 @@ import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngre
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamilies;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -47,6 +52,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         SpecialRecipeBuilder.special(category -> new ShapedRetexturedRecipe(category, ModItems.GARDENING_POT.get(), ModTags.Items.GARDENING_POT_SUITABLE))
                 .save(recipeOutput, new ResourceLocation(MODID, "gardening_pot_recipe"));
 
+        ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateRecipe).forEach(family -> generateRecipes(recipeOutput, family, FeatureFlags.DEFAULT_FLAGS));
+
         craftingRecipes(recipeOutput);
         smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.COOKED_MEAT_INGOT, 0.35f);
@@ -58,6 +65,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ARDITE_SMELTABLES, ModItems.ARDITE_INGOT, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.DOUGH, Items.BREAD, 0.35f);
+
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICKS, Blocks.SNOW_BLOCK);
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICKS, Blocks.ICE);
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICKS, Blocks.OBSIDIAN);
 
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
@@ -275,7 +286,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("TTT").pattern("TNT").pattern("TTT")
                 .define('T', ModTags.Items.NUGGETS_COPPER)
                 .define('N', ModItems.COPPER_NUGGET)
-                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER)).save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.NUGGETS_COPPER)).save(recipeOutput, new ResourceLocation(MODID, "copper_ingot"));
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.STEEL_INGOT)
                 .pattern("NNN").pattern("NMN").pattern("NNN")
                 .define('N', ModTags.Items.NUGGETS_STEEL).define('M', ModItems.STEEL_NUGGET)
@@ -296,8 +307,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 unlockedBy("has_item", has(ModBlocks.MACHINE_BLOCK)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.JAR)
                 .pattern(" W ").pattern("P P").pattern(" P ")
-                .define('W', ItemTags.LOGS).define('P', Tags.Items.GLASS_PANES)
-                .unlockedBy("has_item", has(Tags.Items.GLASS_PANES)).save(recipeOutput);
+                .define('W', ItemTags.LOGS).define('P', Tags.Items.GLASS_PANES_COLORLESS)
+                .unlockedBy("has_item", has(Tags.Items.GLASS_PANES_COLORLESS)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_MANGANESE_BLOCK)
                 .pattern("NNN").pattern("NNN").pattern("NNN")
                 .define('N', ModItems.RAW_MANGANESE)
@@ -379,6 +390,18 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('N', ModTags.Items.NUGGETS_COPPER)
                 .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DEMON_BLOCK)
+                .pattern("MMM").pattern("MMM").pattern("MMM")
+                .define('M', ModItems.DEMON_INGOT)
+                .unlockedBy("has_item", has(ModItems.DEMON_INGOT)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, new ItemStack(ModBlocks.PUNJI_STICKS, 5))
+                .pattern("B B").pattern(" B ").pattern("B B")
+                .define('B', Items.BAMBOO)
+                .unlockedBy("has_item", has(Items.BAMBOO)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, new ItemStack(ModBlocks.OBSIDIAN_BRICKS, 4))
+                .pattern("OO").pattern("OO")
+                .define('O', Items.OBSIDIAN)
+                .unlockedBy("has_item", has(Items.OBSIDIAN)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -401,7 +424,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .unlockedBy("has_item", has(ModBlocks.RAW_MANGANESE_BLOCK)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL, 9)
                 .requires(ModBlocks.CHARCOAL_BLOCK)
-                .unlockedBy("has_item", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput);
+                .unlockedBy("has_item", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput, new ResourceLocation(MODID, "charcoal"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_ARDITE, 9)
                 .requires(ModBlocks.RAW_ARDITE_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.RAW_ARDITE_BLOCK)).save(recipeOutput);
@@ -425,6 +448,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .requires(Items.PAPER)
                 .requires(Items.ENDER_PEARL)
                 .unlockedBy("has_item", has(Items.ENDER_PEARL)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.DEMON_INGOT, 9)
+                .requires(ModBlocks.DEMON_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.DEMON_BLOCK)).save(recipeOutput);
         //endregion
     }
 
@@ -503,6 +529,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('F', ingredient)
                 .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+
+    protected static void stoneCutterRecipe(RecipeOutput output, RecipeCategory category, ItemLike result, ItemLike material) {
+        stoneCutterRecipe(output, category, result, material, 1);
+    }
+
+    protected static void stoneCutterRecipe(RecipeOutput output, RecipeCategory category, ItemLike result, ItemLike material, int count) {
+        SingleItemRecipeBuilder.stonecutting(Ingredient.of(material), category, result, count)
+                .unlockedBy("has_item", has(material))
+                .save(output, new ResourceLocation(MODID, "stonecutting/"+ getConversionRecipeName(result, material)));
     }
 
     private void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, int output) {

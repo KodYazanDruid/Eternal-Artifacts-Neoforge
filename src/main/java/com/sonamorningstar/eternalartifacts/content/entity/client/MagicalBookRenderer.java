@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import org.joml.Quaternionf;
 
 import static net.minecraft.client.renderer.entity.LivingEntityRenderer.isEntityUpsideDown;
 
@@ -30,30 +31,31 @@ public class MagicalBookRenderer extends EntityRenderer<MagicalBookEntity> {
     public void render(MagicalBookEntity book, float yaw, float partialTick, PoseStack poseStack, MultiBufferSource buff, int light) {
         VertexConsumer consumer = buff.getBuffer(RenderType.entitySolid(getTextureLocation(book)));
         poseStack.pushPose();
-        setupRotations(book, poseStack, book.tickCount + partialTick, yaw, partialTick);
+        setupRotations(book, poseStack, partialTick);
         poseStack.translate(0, 0.5f, 0);
-        model.setupAnim(0.0F, 0.1F, 0.9F, 1.2F);
+        model.setupAnim(book.tickCount + partialTick, 0.9F, 0.1F, book.getBookOpenAmount(partialTick));
         model.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
         poseStack.popPose();
         super.render(book, yaw, partialTick, poseStack, buff, light);
     }
 
-    private void setupRotations(MagicalBookEntity book, PoseStack poseStack, float ageTick, float yaw, float partialTick) {
+    private void setupRotations(MagicalBookEntity book, PoseStack poseStack, float partialTick) {
         if (book.deathTime > 0) {
             float f = ((float)book.deathTime + partialTick - 1.0F) / 20.0F * 1.6F;
             f = Mth.sqrt(f);
             if (f > 1.0F) f = 1.0F;
-
             poseStack.mulPose(Axis.ZP.rotationDegrees(f * 90.0F));
         } else if (isEntityUpsideDown(book)) {
             poseStack.translate(0.0F, book.getBbHeight() + 0.1F, 0.0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         }
-        poseStack.mulPose(Axis.ZN.rotationDegrees(book.getXRot()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(book.getYRot() * (180.F / (float) Math.PI)));
+        poseStack.mulPose(Axis.ZN.rotationDegrees(45F));
+        poseStack.translate(-0.5F, -0.25F, 0.0F);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MagicalBookEntity pEntity) {
+    public ResourceLocation getTextureLocation(MagicalBookEntity entity) {
         return new ResourceLocation("textures/entity/enchanting_table_book.png");
     }
 

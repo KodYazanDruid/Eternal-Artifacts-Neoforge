@@ -2,13 +2,10 @@ package com.sonamorningstar.eternalartifacts.container;
 
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -42,36 +39,7 @@ public class KnapsackMenu extends AbstractModContainerMenu {
     }
 
     @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
-        //System.out.println("Slot index: "+index);
-        if (slot != null && slot.hasItem()) {
-            ItemStack itemstack1 = slot.getItem();
-            itemstack = itemstack1.copy();
-            //Clicked from player inventory
-            if (index < 36) {
-                 if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
-                     return ItemStack.EMPTY;
-                 }
-                //Clicked from opened container
-            } else if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {
-                return ItemStack.EMPTY;
-            }
-
-            if (itemstack1.isEmpty()) {
-                slot.setByPlayer(ItemStack.EMPTY);
-            } else {
-                slot.setChanged();
-            }
-        }
-        return itemstack;
-    }
-
-    @Override
     public boolean stillValid(Player player) {
-        /*ItemStack stack = player.getMainHandItem();
-        return stack.is(ModItems.KNAPSACK);*/
         return PlayerHelper.findStack(player, stack);
     }
 }

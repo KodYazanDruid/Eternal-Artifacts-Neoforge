@@ -5,12 +5,16 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BeaconEntityMixin",
+    "BlockMixin",
+    "DiggerItemMixin",
     "FlowerPotBlockMixin",
-    "ItemEntityMixin"
+    "ItemEntityMixin",
+    "PickaxeItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
+    "AbstractContainerScreenMixin"
   ]
 }

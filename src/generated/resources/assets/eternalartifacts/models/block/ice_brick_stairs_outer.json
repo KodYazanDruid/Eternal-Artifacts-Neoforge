@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "bottom": "eternalartifacts:block/ice_bricks",
+    "side": "eternalartifacts:block/ice_bricks",
+    "top": "eternalartifacts:block/ice_bricks"
+  }
+}

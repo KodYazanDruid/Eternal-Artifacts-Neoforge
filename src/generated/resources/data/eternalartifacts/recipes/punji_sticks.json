@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:bamboo"
+    }
+  },
+  "pattern": [
+    "B B",
+    " B ",
+    "B B"
+  ],
+  "result": {
+    "count": 5,
+    "item": "eternalartifacts:punji_sticks"
+  }
+}

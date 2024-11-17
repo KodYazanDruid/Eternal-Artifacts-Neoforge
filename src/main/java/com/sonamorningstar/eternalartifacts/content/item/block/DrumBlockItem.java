@@ -3,7 +3,9 @@ package com.sonamorningstar.eternalartifacts.content.item.block;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.FluidHolderBlockItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
@@ -14,10 +16,7 @@ public class DrumBlockItem extends FluidHolderBlockItem {
     }
 
     @Override
-    public void onFluidContentChange(ItemStack stack) {
-
-    }
-
+    public void onFluidContentChange(ItemStack stack) {}
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {}
 
@@ -25,4 +24,5 @@ public class DrumBlockItem extends FluidHolderBlockItem {
     public Component getName(ItemStack stack) {
         return Component.translatable(getDescriptionId(stack));
     }
+
 }

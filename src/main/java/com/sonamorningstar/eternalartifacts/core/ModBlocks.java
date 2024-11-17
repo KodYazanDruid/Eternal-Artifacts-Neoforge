@@ -1,43 +1,26 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import net.neoforged.neoforge.fluids.FluidActionResult;
-import net.neoforged.neoforge.fluids.FluidUtil;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
@@ -45,28 +28,6 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static net.minecraft.world.level.block.Blocks.CAULDRON;
 
 public class ModBlocks {
-    static final BlockBehaviour.Properties oreBerryProps = BlockBehaviour.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_ORANGE)
-            .sound(SoundType.COPPER)
-            .pushReaction(PushReaction.DESTROY)
-            .randomTicks()
-            .noOcclusion()
-            .isValidSpawn(ModBlocks::never)
-            .isRedstoneConductor(ModBlocks::never)
-            .isSuffocating(ModBlocks::never)
-            .isViewBlocking(ModBlocks::never);
-
-    static final BlockBehaviour.Properties cableProps = BlockBehaviour.Properties.of()
-            .mapColor(MapColor.TERRACOTTA_ORANGE)
-            .sound(SoundType.COPPER)
-            .pushReaction(PushReaction.DESTROY)
-            .noOcclusion()
-            .strength(3.0F, 4.0F)
-            .isValidSpawn(ModBlocks::never)
-            .isRedstoneConductor(ModBlocks::never)
-            .isSuffocating(ModBlocks::never)
-            .isViewBlocking(ModBlocks::never);
-
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
@@ -80,23 +41,25 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CHLOROPHYTE_DEBRIS = registerWithItem("chlorophyte_debris",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.3F).sound(SoundType.MOSS)));
     public static final DeferredBlock<Block> MANGANESE_ORE = registerWithItem("manganese_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.IRON_ORE.properties()));
+            () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
     public static final DeferredBlock<Block> DEEPSLATE_MANGANESE_ORE = registerWithItem("deepslate_manganese_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.DEEPSLATE_IRON_ORE.properties()));
+            () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)));
     public static final DeferredBlock<Block> RAW_MANGANESE_BLOCK = registerWithItem("raw_manganese_block",
-            () -> new Block(Blocks.RAW_IRON_BLOCK.properties()));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerWithItem("charcoal_block",
-            () -> new Block(Blocks.COAL_BLOCK.properties()));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
     public static final DeferredBlock<Block> ARDITE_ORE = registerWithItem("ardite_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(0), Blocks.NETHER_GOLD_ORE.properties().mapColor(DyeColor.ORANGE)));
+            () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE).mapColor(DyeColor.ORANGE)));
     public static final DeferredBlock<Block> RAW_ARDITE_BLOCK = registerWithItem("raw_ardite_block",
-            () -> new Block(Blocks.RAW_GOLD_BLOCK.properties().mapColor(MapColor.TERRACOTTA_ORANGE)));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)));
     public static final DeferredBlock<Block> ARDITE_BLOCK = registerWithItem("ardite_block",
-            () -> new Block(Blocks.GOLD_BLOCK.properties().mapColor(MapColor.COLOR_ORANGE)));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_ORANGE)));
     public static final DeferredBlock<Block> STEEL_BLOCK = registerWithItem("steel_block",
-            () -> new Block(Blocks.IRON_BLOCK.properties().strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY)));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY)));
     public static final DeferredBlock<Block> TEMPERED_GLASS = registerWithItem("tempered_glass",
-            () -> new TemperedGlassBlock(Blocks.GLASS.properties().strength(25.0f, 3600000.0F).mapColor(MapColor.COLOR_PURPLE).requiresCorrectToolForDrops()));
+            () -> new TemperedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).strength(25.0f, 3600000.0F).mapColor(MapColor.COLOR_PURPLE).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> DEMON_BLOCK = registerWithItem("demon_block",
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_RED)));
 
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));
@@ -129,27 +92,33 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CITRUS_PLANKS = registerWithItem("citrus_planks",
             ()-> new Block(Blocks.JUNGLE_PLANKS.properties()));
     public static final DeferredBlock<Block> SNOW_BRICKS = registerWithItem("snow_bricks",
-            ()-> new Block(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.SNOW)
-                    .requiresCorrectToolForDrops()
-                    .strength(0.9F)
-                    .explosionResistance(2.0F)
-                    .sound(SoundType.SNOW)
-            ));
+            ()-> new Block(ModProperties.Blocks.SNOW_BRICKS));
+    public static final DeferredBlock<Block> SNOW_BRICK_SLAB = registerWithItem("snow_brick_slab",
+            ()-> new SlabBlock(ModProperties.Blocks.SNOW_BRICKS));
+    public static final DeferredBlock<Block> SNOW_BRICK_STAIRS = registerWithItem("snow_brick_stairs",
+            ()-> new StairBlock(()-> SNOW_BRICKS.get().defaultBlockState(), ModProperties.Blocks.SNOW_BRICKS));
+    public static final DeferredBlock<Block> SNOW_BRICK_WALL = registerWithItem("snow_brick_wall",
+            ()-> new WallBlock(ModProperties.Blocks.SNOW_BRICKS));
     public static final DeferredBlock<Block> ICE_BRICKS = registerWithItem("ice_bricks",
-            ()-> new IceBricksBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.ICE)
-                    .requiresCorrectToolForDrops()
-                    .strength(1.2F)
-                    .explosionResistance(2.5F)
-                    .sound(SoundType.GLASS)
-                    .friction(0.98F)
-                    .noOcclusion()
-                    .isValidSpawn((state, getter, pos, type) -> type == EntityType.POLAR_BEAR)
-                    .isRedstoneConductor(ModBlocks::never)
-            ));
+            ()-> new IceBricksBlock(ModProperties.Blocks.ICE_BRICKS
+                    .isValidSpawn((state, getter, pos, type) -> type == EntityType.POLAR_BEAR)));
+    public static final DeferredBlock<Block> ICE_BRICK_SLAB = registerWithItem("ice_brick_slab",
+            ()-> new IceBrickSlab(ModProperties.Blocks.ICE_BRICKS));
+    public static final DeferredBlock<Block> ICE_BRICK_STAIRS = registerWithItem("ice_brick_stairs",
+            ()-> new IceBrickStairs(()-> ICE_BRICKS.get().defaultBlockState(), ModProperties.Blocks.ICE_BRICKS));
+    public static final DeferredBlock<Block> ICE_BRICK_WALL = registerWithItem("ice_brick_wall",
+            ()-> new IceBrickWall(ModProperties.Blocks.ICE_BRICKS));
+
     public static final DeferredBlock<Block> ASPHALT_BLOCK = registerWithItem("asphalt_block",
             ()-> new AsphaltBlock(Blocks.DEEPSLATE.properties()));
+    public static final DeferredBlock<Block> OBSIDIAN_BRICKS = registerWithItem("obsidian_bricks",
+            ()-> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<Block> OBSIDIAN_BRICK_SLAB = registerWithItem("obsidian_brick_slab",
+            ()-> new SlabBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<Block> OBSIDIAN_BRICK_STAIRS = registerWithItem("obsidian_brick_stairs",
+            ()-> new StairBlock(()-> OBSIDIAN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<Block> OBSIDIAN_BRICK_WALL = registerWithItem("obsidian_brick_wall",
+            ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
 
     public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
@@ -163,9 +132,9 @@ public class ModBlocks {
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
-            ()-> new UncoveredCableBlock(cableProps));
+            ()-> new UncoveredCableBlock(ModProperties.Blocks.CABLE));
     public static final DeferredBlock<CableBlock> COVERED_COPPER_CABLE = registerWithItem("covered_copper_cable",
-            ()-> new CableBlock(cableProps));
+            ()-> new CableBlock(ModProperties.Blocks.CABLE));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -176,7 +145,7 @@ public class ModBlocks {
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
     public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 128000);
     //public static final DeferredBlock<DrumBlock> DEMONIC_DRUM = registerDrum("demonic_drum", Blocks.GOLD_BLOCK.properties(), 256000);
-    public static final DeferredBlock<DrumBlock> STEEL_DRUM = registerDrum("steel_drum", Blocks.IRON_BLOCK.properties().strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY), 512000);
+    public static final DeferredBlock<DrumBlock> STEEL_DRUM = registerDrum("steel_drum", BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY), 512000);
     public static final DeferredBlock<DrumBlock> DIAMOND_DRUM = registerDrum("diamond_drum", Blocks.DIAMOND_BLOCK.properties(), 1024000);
     public static final DeferredBlock<DrumBlock> NETHERITE_DRUM = registerDrum("netherite_drum", Blocks.NETHERITE_BLOCK.properties(), 2048000, new Item.Properties().fireResistant());
 
@@ -185,15 +154,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SUGAR_CHARCOAL_BLOCK = registerWithItem("sugar_charcoal_block",
             ()-> new Block(Blocks.COAL_BLOCK.properties()));
 
-    public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron",
-            ()-> new LayeredCauldronBlock(Biome.Precipitation.NONE, ModCauldronInteraction.PLASTIC, BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)) {
-                @Override
-                public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-                    return Items.CAULDRON.getDefaultInstance();
-                }
-            });
+    public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron", PlasticCauldronBlock::new);
     public static final DeferredBlock<Block> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
-            ()-> new BluePlasticCauldronBlock(BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
+            ()-> new BluePlasticCauldronBlock(BlockBehaviour.Properties.ofFullCopy(CAULDRON)));
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot", GardeningPotBlock::new);
     public static final DeferredBlock<JarBlock> JAR = registerNoItem("jar",
@@ -204,26 +167,9 @@ public class ModBlocks {
     public static final DeferredBlock<AncientCropBlock> ANCIENT_CROP = registerNoItem("ancient_crop",
             ()-> new AncientCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
     public static final DeferredBlock<TallFlowerBlock> FORSYTHIA = registerNoItem("forsythia",
-            ()-> new TallFlowerBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .offsetType(BlockBehaviour.OffsetType.XZ)
-                    .ignitedByLava()
-                    .pushReaction(PushReaction.DESTROY)
-            ));
+            ()-> new TallFlowerBlock(ModProperties.Blocks.FLOWER));
     public static final DeferredBlock<FlowerBlock> FOUR_LEAF_CLOVER = registerWithItem("four_leaf_clover",
-            ()-> new FlowerBlock(
-                    ()-> MobEffects.LUCK, 15,
-                    BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.PLANT)
-                    .noCollission()
-                    .instabreak()
-                    .sound(SoundType.GRASS)
-                    .offsetType(BlockBehaviour.OffsetType.XZ)
-                    .pushReaction(PushReaction.DESTROY)
-            ));
+            ()-> new FlowerBlock(()-> MobEffects.LUCK, 15, ModProperties.Blocks.FLOWER));
     public static final DeferredBlock<PunjiBlock> PUNJI_STICKS = registerWithItem("punji_sticks",
             ()-> new PunjiBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
@@ -249,6 +195,19 @@ public class ModBlocks {
         return block;
     }
 
+    private static <T extends Block, I extends BlockItem> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier, Class<I> clazz) {
+        DeferredBlock<T> block = BLOCKS.register(name, supplier);
+        ModItems.ITEMS.register(name, () -> {
+            try {
+                Constructor<I> cons = clazz.getDeclaredConstructor(Block.class, Item.Properties.class);
+                return cons.newInstance(block.get(), new Item.Properties());
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return block;
+    }
+
     private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier, Item.Properties props){
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), props));
@@ -269,7 +228,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<OreBerryBlock> registerOreBerryBlock(String material) {
-        return registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(oreBerryProps, material));
+        return registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(ModProperties.Blocks.ORE_BERRY, material));
     }
     private static DeferredBlock<Block> registerGravelOres(String name) {
         return registerGravelOres(name, ConstantInt.of(0));
@@ -299,15 +258,6 @@ public class ModBlocks {
         return new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), block, BlockBehaviour.Properties.of().instabreak().noOcclusion().pushReaction(PushReaction.DESTROY));
     }
     //endregion
-
-    private static Boolean never(BlockState p_50779_, BlockGetter p_50780_, BlockPos p_50781_, EntityType<?> p_50782_) {return false;}
-    private static Boolean always(BlockState p_50810_, BlockGetter p_50811_, BlockPos p_50812_, EntityType<?> p_50813_) {return true;}
-    private static boolean never(BlockState p_50806_, BlockGetter p_50807_, BlockPos p_50808_) {return false;}
-    private static boolean always(BlockState p_50775_, BlockGetter p_50776_, BlockPos p_50777_) {
-        return true;
-    }
-
-
 
 }
 

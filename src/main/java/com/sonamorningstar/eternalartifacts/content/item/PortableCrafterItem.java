@@ -51,12 +51,7 @@ public class PortableCrafterItem extends ArtifactItem{
     }
 
     private void declare(Player pplayer) {
-            pplayer.openMenu(new SimpleMenuProvider((id, slots, player) -> new CraftingMenu(id, slots, new ContainerLevelAccess() {
-                @Override
-                public <T> Optional<T> evaluate(BiFunction<Level, BlockPos, T> pLevelPosConsumer) {
-                    return Optional.ofNullable(pLevelPosConsumer.apply(player.level(), player.blockPosition()));
-                }
-            }) {
+            pplayer.openMenu(new SimpleMenuProvider((id, slots, player) -> new CraftingMenu(id, slots, ContainerLevelAccess.create(player.level(), player.blockPosition())) {
                 @Override
                 public boolean stillValid(Player pPlayer) {
                     return PlayerHelper.findItem(pPlayer, PortableCrafterItem.this);

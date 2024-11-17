@@ -74,7 +74,7 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
         }
     }
 
-    class RandomFloatAroundGoal extends Goal {
+    static class RandomFloatAroundGoal extends Goal {
         private final DemonEyeEntity demonEye;
 
         public RandomFloatAroundGoal(DemonEyeEntity demonEye) {
@@ -112,7 +112,7 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
         }
     }
 
-    class FlyTowardsTargetGoal extends Goal {
+    static class FlyTowardsTargetGoal extends Goal {
         private final DemonEyeEntity demonEye;
 
         FlyTowardsTargetGoal(DemonEyeEntity demonEye) {

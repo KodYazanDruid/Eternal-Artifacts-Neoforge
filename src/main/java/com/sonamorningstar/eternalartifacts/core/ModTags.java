@@ -25,6 +25,7 @@ public class ModTags {
         public static final TagKey<Block> MINEABLE_WITH_SICKLE = forgeTag("mineable/sickle");
         public static final TagKey<Block> GLASS_HARDENED = forgeTag("glass/hardened");
         public static final TagKey<Block> HARDENED_GLASS = forgeTag("hardened_glass");
+        public static final TagKey<Block> VERSATILITY_MINEABLES = modTag("mineable/versatility");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
@@ -62,6 +63,16 @@ public class ModTags {
         public static final TagKey<Item> DOUGH = forgeTag("dough");
         public static final TagKey<Item> DOUGH_WHEAT = forgeTag("dough/wheat");
         public static final TagKey<Item> DUSTS_CLAY = forgeTag("dusts/clay");
+        public static final TagKey<Item> CHARMS = modTag("charms");
+        public static final TagKey<Item> CHARMS_HEAD = modTag("charms/head");
+        public static final TagKey<Item> CHARMS_NECKLACE = modTag("charms/necklace");
+        public static final TagKey<Item> CHARMS_HAND = modTag("charms/hand");
+        public static final TagKey<Item> CHARMS_RING = modTag("charms/ring");
+        public static final TagKey<Item> CHARMS_BACK = modTag("charms/back");
+        public static final TagKey<Item> CHARMS_BOOTS = modTag("charms/boots");
+        public static final TagKey<Item> CHARMS_CHARM = modTag("charms/charm");
+        public static final TagKey<Item> CHARMS_BELT = modTag("charms/belt");
+        public static final TagKey<Item> CHARMS_BRACELET = modTag("charms/bracelet");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

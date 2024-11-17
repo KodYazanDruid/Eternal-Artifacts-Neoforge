@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -17,7 +16,9 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
-import java.util.Objects;
+import javax.annotation.Nullable;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //No it does not help you find a girlfriend.
 public class PlayerHelper {
@@ -30,15 +31,10 @@ public class PlayerHelper {
         return false;
     }
 
+    @Nullable
     public static boolean findStack(Player player, ItemStack stack) {
-        IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
-        if(playerItemCapability == null) return false;
-        for (int i = 0; i < playerItemCapability.getSlots(); i++) {
-            if(Objects.equals(playerItemCapability.getStackInSlot(i), stack)) return true;
-        }
-        return false;
+        return player.getInventory().contains(stack);
     }
-
     public static boolean findInStackWithTag(Player player, Item item, CompoundTag tag) {
         IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
         if(playerItemCapability == null) return false;
@@ -47,13 +43,28 @@ public class PlayerHelper {
                 ItemStack found = playerItemCapability.getStackInSlot(i);
                 CompoundTag foundTag = found.getOrCreateTag();
                 for(String key : foundTag.getAllKeys()) {
-                    if(found.hasTag() && foundTag.contains(key) && foundTag.get(key).equals(tag.get(key))) {
+                    if(found.hasTag() && foundTag.contains(key) && Objects.equals(foundTag.get(key), tag.get(key))) {
                         return true;
                     }
                 }
             }
         }
         return false;
+    }
+    public static ItemStack findItemWithClass(Player player, Class<? extends Item> itemClass) {
+        IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
+        if(playerItemCapability == null) return ItemStack.EMPTY;
+        for (int i = 0; i < playerItemCapability.getSlots(); i++) {
+            ItemStack stack = playerItemCapability.getStackInSlot(i);
+            if(itemClass.isInstance(stack.getItem())) return stack;
+        }
+        return ItemStack.EMPTY;
+    }
+    public static ListIterator<ItemStack> itemWithClassIterable(Player player, Class<? extends Item> itemClass) {
+        return new ListIterator<>(player.getInventory().items.stream()
+                .filter(stack -> itemClass.isInstance(stack.getItem()))
+                .collect(Collectors.toList())
+        );
     }
 
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {
@@ -64,6 +75,11 @@ public class PlayerHelper {
     public static void giveItemOrPop(Player player, ItemStack stack) {
         if (!player.addItem(stack)) {
             popStackInLevel(player.level(), player.getX(), player.getY(), player.getZ(), stack);
+        }
+    }
+    public static void giveItemOrPop(Player player, ItemStack stack, double x, double y, double z) {
+        if (!player.addItem(stack)) {
+            popStackInLevel(player.level(), x, y, z, stack);
         }
     }
     private static void popStackInLevel(Level level, double x, double y, double z, ItemStack stack) {

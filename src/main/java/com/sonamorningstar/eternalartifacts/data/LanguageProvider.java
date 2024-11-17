@@ -129,6 +129,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.FLOUR.get(),"Flour");
                 add(ModItems.DOUGH.get(),"Dough");
                 add(ModItems.BANANA_BREAD.get(),"Banana Bread");
+                add(ModItems.CHISEL.get(),"Chisel");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -197,6 +198,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COVERED_COPPER_CABLE.get(), "Covered Copper Cable");
                 add(ModBlocks.TIGRIS_FLOWER.get(), "Tigris Flower");
                 add(ModBlocks.TEMPERED_GLASS.get(), "Tempered Glass");
+                add(ModBlocks.DEMON_BLOCK.get(), "Demon Block");
+                add(ModBlocks.OBSIDIAN_BRICKS.get(), "Obsidian Bricks");
+                add(ModBlocks.OBSIDIAN_BRICK_SLAB.get(), "Obsidian Brick Slab");
+                add(ModBlocks.OBSIDIAN_BRICK_STAIRS.get(), "Obsidian Brick Stairs");
+                add(ModBlocks.OBSIDIAN_BRICK_WALL.get(), "Obsidian Brick Wall");
+                add(ModBlocks.SNOW_BRICK_SLAB.get(), "Snow Brick Slab");
+                add(ModBlocks.SNOW_BRICK_STAIRS.get(), "Snow Brick Stairs");
+                add(ModBlocks.SNOW_BRICK_WALL.get(), "Snow Brick Wall");
+                add(ModBlocks.ICE_BRICK_SLAB.get(), "Ice Brick Slab");
+                add(ModBlocks.ICE_BRICK_STAIRS.get(), "Ice Brick Stairs");
+                add(ModBlocks.ICE_BRICK_WALL.get(), "Ice Brick Wall");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -212,6 +224,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //endregion
                 //region Attributes
                 ModAttributes.ATTRIBUTES.getEntries().forEach(holder -> add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath())));
+                //endregion
+                //region Tabs
+                ModInventoryTabs.INVENTORY_TABS.getEntries().forEach(holder -> add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath())));
                 //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -279,6 +294,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("delete_warp"), "Delete warp.");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Rename");
                 add(ModConstants.GUI.withSuffix("renaming"), "Renaming...");
+                add(ModEnchantments.VERSATILITY.get(), "Versatility");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -408,6 +424,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.FLOUR.get(),"Un");
                 add(ModItems.DOUGH.get(),"Hamur");
                 add(ModItems.BANANA_BREAD.get(),"Muzlu Ekmek");
+                add(ModItems.CHISEL.get(),"Keski");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -508,7 +525,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.TIGRIS_FLOWER.get(), "Dicle Çiçeği");
                 add(ModBlocks.TEMPERED_GLASS.get(), "Temperli Cam");
                 add(ModMachines.COMPRESSOR.getBlockTranslationKey(), "Sıkıştırıcı");
-
+                add(ModBlocks.DEMON_BLOCK.get(), "Şeytan Bloğu");
+                add(ModBlocks.OBSIDIAN_BRICKS.get(), "Obsidyen Tuğlası");
+                add(ModBlocks.OBSIDIAN_BRICK_SLAB.get(), "Obsidyen Tuğla Basamak");
+                add(ModBlocks.OBSIDIAN_BRICK_STAIRS.get(), "Obsidyen Tuğla Merdiven");
+                add(ModBlocks.OBSIDIAN_BRICK_WALL.get(), "Obsidyen Tuğla Duvar");
+                add(ModBlocks.SNOW_BRICK_SLAB.get(), "Kar Tuğla Basamak");
+                add(ModBlocks.SNOW_BRICK_STAIRS.get(), "Kar Tuğla Merdiven");
+                add(ModBlocks.SNOW_BRICK_WALL.get(), "Kar Tuğla Duvar");
+                add(ModBlocks.ICE_BRICK_SLAB.get(), "Buz Tuğla Basamak");
+                add(ModBlocks.ICE_BRICK_STAIRS.get(), "Buz Tuğla Merdiven");
+                add(ModBlocks.ICE_BRICK_WALL.get(), "Buz Tuğla Duvar");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -525,6 +552,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //region Türkçe Özellikler
                 add(ModAttributes.SPELL_DAMAGE.get().getDescriptionId(), "Büyü Gücü");
                 add(ModAttributes.COOLDOWN_REDUCTION.get().getDescriptionId(), "Bekleme Süresi Azaltması");
+                //endregion
+                //region Türkçe Sekmeler
+                add(ModInventoryTabs.INVENTORY.get().getDescriptionId(), "Envanter");
+                add(ModInventoryTabs.ENDER_KNAPSACK.get().getDescriptionId(), "Ender Çantası");
+                add(ModInventoryTabs.CHARMS.get().getDescriptionId(), "Tılsımlar");
                 //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
@@ -592,6 +624,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("delete_warp"), "Işınlayıcıyı sil.");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Yeniden Adlandır");
                 add(ModConstants.GUI.withSuffix("renaming"), "Yeniden adlandırılıyor...");
+                add(ModEnchantments.VERSATILITY.get(), "Çok Yönlülük");
                 //endregion
             }
         }

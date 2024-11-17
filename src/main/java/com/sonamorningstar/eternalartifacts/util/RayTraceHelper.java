@@ -13,7 +13,6 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 
 public class RayTraceHelper {
     public static BlockHitResult retrace(LivingEntity entity) {
-
         return retrace(entity, getBlockReachDistance(entity), ClipContext.Fluid.ANY);
     }
 
@@ -26,17 +25,14 @@ public class RayTraceHelper {
     }
 
     public static BlockHitResult retrace(LivingEntity entity, double reach, ClipContext.Fluid fluidMode) {
-
         return retrace(entity, reach, ClipContext.Block.COLLIDER, fluidMode);
     }
 
     public static BlockHitResult retrace(LivingEntity entity, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
-
         return entity.level().clip(new ClipContext(getStartVec(entity), getEndVec(entity), blockMode, fluidMode, entity));
     }
 
     public static BlockHitResult retrace(LivingEntity entity, double reach, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
-
         return entity.level().clip(new ClipContext(getStartVec(entity), getEndVec(entity, reach), blockMode, fluidMode, entity));
     }
 
@@ -46,14 +42,14 @@ public class RayTraceHelper {
 
     public static Vec3 getEndVec(LivingEntity player) {
         Vec3 headVec = getCorrectedHeadVec(player);
-        Vec3 lookVec = player.getViewVector(1.0F);
+        Vec3 lookVec = player.getViewVector(0.0F);
         double reach = getBlockReachDistance(player);
         return headVec.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
     }
 
     public static Vec3 getEndVec(LivingEntity player, double reach) {
         Vec3 headVec = getCorrectedHeadVec(player);
-        Vec3 lookVec = player.getViewVector(1.0F);
+        Vec3 lookVec = player.getViewVector(0.0F);
         return headVec.add(lookVec.x * reach, lookVec.y * reach, lookVec.z * reach);
     }
 

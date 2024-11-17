@@ -11,4 +11,9 @@ public class ModTextureMappings extends TextureMapping{
             .put(TextureSlot.TEXTURE, getBlockTexture(cable))
             .put(TextureSlot.PARTICLE, getBlockTexture(cable));
     }
+
+    public static TextureMapping inventoryWall(Block wall) {
+        return new TextureMapping()
+                .put(TextureSlot.WALL, getBlockTexture(wall));
+    }
 }

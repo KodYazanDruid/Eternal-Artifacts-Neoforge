@@ -33,6 +33,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         super.render(gui, mx, my, partialTick);
         renderEnergyTooltip(gui, mx, my);
         renderFluidTooltip(gui, mx, my);
+        renderTooltip(gui, mx, my);
     }
 
     private void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
