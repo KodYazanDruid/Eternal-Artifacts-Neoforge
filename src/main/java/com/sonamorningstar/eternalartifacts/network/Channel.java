@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.network;
 
+import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
+import com.sonamorningstar.eternalartifacts.network.charm.ReloadTabs;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookAddNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookOpenToClient;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRemoveNbtToServer;
@@ -7,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookR
 import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
@@ -68,6 +71,13 @@ public class Channel {
         registrar.play(BlockEntityButtonPress.ID,
                 BlockEntityButtonPress::create,
                 handler -> handler.server(BlockEntityButtonPress::handle));
+
+        registrar.play(UpdateCharmsToClient.ID,
+                UpdateCharmsToClient::create,
+                handler -> handler.client(UpdateCharmsToClient::handle));
+        registrar.play(ReloadTabs.ID,
+                ReloadTabs::create,
+                handler -> handler.client(ReloadTabs::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {
@@ -76,5 +86,9 @@ public class Channel {
 
     public static <MSG extends CustomPacketPayload> void sendToPlayer(MSG message, ServerPlayer player) {
         PacketDistributor.PLAYER.with(player).send(message);
+    }
+
+    public static <MSG extends CustomPacketPayload> void sendToSelfAndTracking(MSG message, Entity owner) {
+        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(owner).send(message);
     }
 }

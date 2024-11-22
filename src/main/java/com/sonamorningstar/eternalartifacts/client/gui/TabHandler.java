@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
+import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModInventoryTabs;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.OpenMenuToServer;
@@ -10,41 +12,55 @@ import com.sonamorningstar.eternalartifacts.registrar.TabType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TabHandler {
     @Nullable
     public static TabHandler INSTANCE = null;
     public static List<TabType<?>> registeredTabs;
+    public static Map<Item, TabType<?>> tabHolders = new IdentityHashMap<>();
     public List<TabType<?>> activeTabs = new ArrayList<>();
     @Nullable
     public TabType<?> currentTab = ModInventoryTabs.INVENTORY.get();
+
     public boolean requested = false;
 
-    public TabHandler() {
-        activeTabs.add(ModInventoryTabs.INVENTORY.get());
-        activeTabs.add(ModInventoryTabs.CHARMS.get());
-    }
+    public TabHandler() { }
 
     public static final ResourceLocation UNSELECTED = new ResourceLocation("container/creative_inventory/tab_top_unselected_2");
     public static final ResourceLocation SELECTED = new ResourceLocation("container/creative_inventory/tab_top_selected_2");
 
-    public static void onTabsConstruct(Screen oldScreen, Screen newScreen) {
-        if (oldScreen == null && newScreen instanceof EffectRenderingInventoryScreen<?>) {
-            INSTANCE = new TabHandler();
-        }
+    public static void onTabsConstruct(InventoryScreen screen) {
+        INSTANCE = new TabHandler();
+        INSTANCE.reloadTabs();
     }
 
     public static void onTabsFinalize() {
         INSTANCE = null;
+    }
+
+    public void reloadTabs() {
+        activeTabs.clear();
+        activeTabs.add(ModInventoryTabs.INVENTORY.get());
+        activeTabs.add(ModInventoryTabs.CHARMS.get());
+        PlayerCharmsStorage charms = Minecraft.getInstance().player.getData(ModDataAttachments.PLAYER_CHARMS);
+        for (int i = 0; i < charms.getSlots(); i++) {
+            ItemStack charm = charms.getStackInSlot(i);
+            Item item = charm.getItem();
+            TabType<?> tabType = tabHolders.get(item);
+            if (tabHolders.containsKey(item) && !activeTabs.contains(tabType))
+                activeTabs.add(tabType);
+        }
     }
 
     public void renderTabs(GuiGraphics gui, int x, int y) {

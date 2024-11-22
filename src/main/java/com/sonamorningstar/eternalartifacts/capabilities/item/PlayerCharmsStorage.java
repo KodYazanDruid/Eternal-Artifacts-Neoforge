@@ -1,30 +1,42 @@
 package com.sonamorningstar.eternalartifacts.capabilities.item;
 
+import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
+import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import lombok.Getter;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemStackHandler;
+import net.neoforged.neoforge.network.PacketDistributor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Getter
 public class PlayerCharmsStorage extends ItemStackHandler {
-    private final LivingEntity living;
+    private final List<Consumer<Integer>> listeners = new ArrayList<>();
+    private final Player player;
     public static final Map<Integer, CharmType> slotTypes = new HashMap<>(12);
 
-    public PlayerCharmsStorage(LivingEntity living) {
+    public PlayerCharmsStorage(Player player) {
         super(12);
-        this.living = living;
-        deserializeNBT(living.getPersistentData().getCompound("Charms"));
+        this.player = player;
     }
 
-    /*public static PlayerCharmsStorage getFromNBT(LivingEntity player) {
-        return new PlayerCharmsStorage(player);
-    }*/
+    public static PlayerCharmsStorage get(Player player) {
+        return player.getData(ModDataAttachments.PLAYER_CHARMS);
+    }
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
@@ -34,7 +46,39 @@ public class PlayerCharmsStorage extends ItemStackHandler {
 
     @Override
     protected void onContentsChanged(int slot) {
-        living.getPersistentData().put("Charms", serializeNBT());
+        syncSelfAndTracking();
+        listeners.forEach(listener -> listener.accept(slot));
+    }
+
+    public void addListener(Consumer<Integer> listener) {
+        listeners.add(listener);
+    }
+
+    public void syncSelf() {
+        if (player instanceof ServerPlayer sp && Config.CHARMS_ENABLED.getAsBoolean()) {
+            Channel.sendToPlayer(new UpdateCharmsToClient(player.getId(), this.stacks), sp);
+        }
+    }
+
+    public void syncSelfAndTracking() {
+        if (player instanceof ServerPlayer && Config.CHARMS_ENABLED.getAsBoolean()) {
+            Channel.sendToSelfAndTracking(new UpdateCharmsToClient(player.getId(), this.stacks), player);
+        }
+    }
+
+    public boolean contains(Item item) {
+        for (int i = 0; i < getSlots(); i++) {
+            if (getStackInSlot(i).is(item)) return true;
+        }
+        return false;
+    }
+
+    public NonNullList<ItemStack> getStacks() {
+        return this.stacks;
+    }
+
+    public void setStacks(NonNullList<ItemStack> stacks) {
+        this.stacks = stacks;
     }
 
     public enum CharmType {

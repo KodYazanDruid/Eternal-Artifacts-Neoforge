@@ -7,6 +7,10 @@ import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+
+import javax.annotation.Nullable;
+import java.util.function.Consumer;
 
 public abstract class AbstractInventoryTab implements MenuProvider {
     @Getter
@@ -17,6 +21,11 @@ public abstract class AbstractInventoryTab implements MenuProvider {
         this.type = type;
         this.data = data;
     }
+
+    @Nullable
+    public Consumer<FriendlyByteBuf> getBytes(Player player) {
+        return null;
+    };
 
     @Override
     public Component getDisplayName() {

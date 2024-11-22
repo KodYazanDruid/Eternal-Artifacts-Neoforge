@@ -234,7 +234,7 @@ public class ModBlocks {
         return registerGravelOres(name, ConstantInt.of(0));
     }
     private static DeferredBlock<Block> registerGravelOres(String name, IntProvider exp) {
-        return registerWithItem(name, () -> new FallingDropExperienceBlock(exp, Blocks.GRAVEL.properties()));
+        return registerWithItem(name, () -> new FallingDropExperienceBlock(exp, BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)));
     }
 
     private static DeferredBlock<FluidCombustionDynamoBlock> registerDynamo(String name) {

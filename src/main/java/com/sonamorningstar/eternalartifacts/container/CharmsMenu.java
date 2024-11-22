@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.container;
 
 import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -9,13 +10,12 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class CharmsMenu extends TabMenu {
     public final Player player;
-    public final PlayerCharmsStorage charms;
     public CharmsMenu(int id, Inventory inv, FriendlyByteBuf buff) {
         super(ModMenuTypes.CHARMS.get(), id);
         this.player = inv.player;
-        this.charms = new PlayerCharmsStorage(player);
         addPlayerInventoryAndHotbar(inv, 8, 66);
-        for (int i = 0; i < charms.getSlots(); i ++) {
+        PlayerCharmsStorage charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+        for (int i = 0; i < charms.getSlots(); i++) {
             addSlot(new SlotItemHandler(charms, i, calculateX(i), calculateY(i)));
         }
     }

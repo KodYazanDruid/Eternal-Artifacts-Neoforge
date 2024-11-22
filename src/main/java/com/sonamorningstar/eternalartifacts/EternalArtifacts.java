@@ -3,6 +3,8 @@ package com.sonamorningstar.eternalartifacts;
 import com.mojang.logging.LogUtils;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
+import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
+import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.neoforged.bus.api.IEventBus;
@@ -60,7 +62,9 @@ public class EternalArtifacts {
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
         ModAttributes.ATTRIBUTES.register(modEventBus);
         ModStructureTypes.STRUCTURE_TYPES.register(modEventBus);
+        ModStructurePieces.PIECE_TYPE.register(modEventBus);
         ModInventoryTabs.INVENTORY_TABS.register(modEventBus);
+        ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);

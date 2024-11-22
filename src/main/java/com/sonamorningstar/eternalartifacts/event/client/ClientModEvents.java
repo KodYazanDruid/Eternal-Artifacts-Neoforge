@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.sonamorningstar.eternalartifacts.client.ColorTinter;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
-import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.ColoredBlockModel;
@@ -12,18 +11,14 @@ import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.SpellTomeModel;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
-import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.TntRenderer;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,7 +29,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.*;
 
 import java.util.Objects;
@@ -55,6 +49,14 @@ public class ClientModEvents {
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
         event.register(ModMenuTypes.TANK_KNAPSACK.get(), TankKnapsackScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void registerTabHolder(RegisterTabHoldersEvent event) {
+        event.register(ModItems.KNAPSACK.get(), ModInventoryTabs.KNAPSACK.get());
+        event.register(ModItems.ENDER_KNAPSACK.get(), ModInventoryTabs.ENDER_KNAPSACK.get());
+        event.register(ModItems.TANK_KNAPSACK.get(), ModInventoryTabs.TANK_KNAPSACK.get());
+        event.register(ModItems.PORTABLE_CRAFTER.get(), ModInventoryTabs.CRAFTER.get());
     }
 
     @SubscribeEvent

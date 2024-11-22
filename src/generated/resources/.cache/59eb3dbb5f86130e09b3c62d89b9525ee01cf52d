@@ -1,4 +1,4 @@
-// 1.20.4	2024-11-04T22:35:33.8108946	Loot Tables
+// 1.20.4	2024-11-18T19:02:26.2558006	Loot Tables
 a50ef6533c773bcb5946c86a3ca5eb5aed8b850f data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
 73bb81b26bab1ba401a2fdbfb51200d348c1ee49 data/eternalartifacts/loot_tables/blocks/anvilinator.json
@@ -89,7 +89,7 @@ c11f341ee1ea31eb97953ab066aed44ae28c95ee data/eternalartifacts/loot_tables/block
 0e22ab1bbe5eae86e56859e0e6ddc45e51a0ca1b data/eternalartifacts/loot_tables/blocks/tigris_flower.json
 2b0c80370322d176412e5576155075e7e626bdd6 data/eternalartifacts/loot_tables/blocks/very_sandy_dark_prismarine.json
 4dc8e7bc72dfbc99f2e1e1703cfd2ef673108379 data/eternalartifacts/loot_tables/blocks/very_sandy_prismarine.json
-52ddbf13a528738c71f0621ef33c337f7a7dd0d5 data/eternalartifacts/loot_tables/chests/survivalists_igloo.json
+3e2d54db93d8da2d1be5ee8ec5a674a500db9b3f data/eternalartifacts/loot_tables/chests/survivalists_igloo.json
 c0e3731ff79dbcd23191ed8563f789961ec2fb15 data/eternalartifacts/loot_tables/entities/demon_eye.json
 a4611bf5536257aea77d51c82bee632fe5a5953b data/eternalartifacts/loot_tables/entities/duck.json
 293be983c103d056b006c6eb21ce99c950f10707 data/eternalartifacts/loot_tables/entities/magical_book.json

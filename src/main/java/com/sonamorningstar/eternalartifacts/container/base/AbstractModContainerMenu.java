@@ -89,12 +89,9 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
                 containerTank = singleContainer.getCapability(Capabilities.FluidHandler.ITEM);
                 if (containerTank != null) {
                     FluidStack emptied = emptyContainer(slot, containerTank, player);
-                    if (emptied.getAmount() > 0) {
+                    if (emptied.getAmount() > 0 ) {
                         container.shrink(1);
                         PlayerHelper.giveItemOrPop(player, containerTank.getContainer());
-                        /*if(!player.addItem(containerTank.getContainer())) {
-                            popStackInLevel(player.level(), player.getX(), player.getY(), player.getZ(), containerTank.getContainer());
-                        }*/
                     }
                 }
             }
@@ -135,12 +132,9 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
                 containerTank = singleContainer.getCapability(Capabilities.FluidHandler.ITEM);
                 if (containerTank != null) {
                     int filledAmount = fillContainer(slot, containerTank, player);
-                    if (filledAmount > 0) {
+                    if (filledAmount > 0 ) {
                         container.shrink(1);
                         PlayerHelper.giveItemOrPop(player, containerTank.getContainer());
-                        /*if (!player.addItem(containerTank.getContainer())) {
-                            popStackInLevel(player.level(), player.getX(), player.getY(), player.getZ(), containerTank.getContainer());
-                        }*/
                     }
                 }
             }

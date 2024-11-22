@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -12,8 +13,11 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.common.NeoForge;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -26,6 +30,7 @@ public class FMLClientSetup {
             ItemProperties.register(ModItems.ENCUMBATOR.get(),
                     new ResourceLocation(MODID, "active"), (s, l, e, seed) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F);
             TabHandler.registeredTabs = ModRegistries.TAB_TYPE.stream().toList();
+            ModLoader.get().postEvent(new RegisterTabHoldersEvent(TabHandler.tabHolders));
 
             setupCharmSprites();
         });

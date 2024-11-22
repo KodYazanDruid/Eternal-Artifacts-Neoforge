@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.world;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
-import com.sonamorningstar.eternalartifacts.world.placement.ModPlacedFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;

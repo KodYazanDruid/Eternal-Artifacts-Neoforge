@@ -37,7 +37,8 @@ public record OpenMenuToServer(TabType<? extends AbstractInventoryTab> type) imp
     public void handle(PlayPayloadContext ctx) {
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             ServerPlayer serverPlayer = (ServerPlayer) player;
-            serverPlayer.openMenu(type.create(new FriendlyByteBuf(Unpooled.buffer())));
+            AbstractInventoryTab tab = type.create(new FriendlyByteBuf(Unpooled.buffer()));
+            serverPlayer.openMenu(tab, tab.getBytes(ctx.player().get()));
         }));
     }
 }

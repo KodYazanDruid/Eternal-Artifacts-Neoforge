@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.handler.IHeatHandler;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.IItemCooldown;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.INutritionHandler;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.IPersistentCooldown;
+import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -32,6 +33,10 @@ public final class ModCapabilities {
 
     public static final class PersistentPlayerCooldown {
         public static final EntityCapability<IPersistentCooldown, Void> ENTITY = EntityCapability.createVoid(create("persistent_player_cooldown"), IPersistentCooldown.class);
+    }
+
+    public static final class Item {
+        public static final EntityCapability<PlayerCharmsStorage, Void> ENTITY_CHARMS = EntityCapability.createVoid(create("charms"), PlayerCharmsStorage.class);
     }
 
     private static ResourceLocation create(String path) {

@@ -1,9 +1,10 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.sonamorningstar.eternalartifacts.core.ModStructures;
+import com.sonamorningstar.eternalartifacts.world.ModStructureSets;
+import com.sonamorningstar.eternalartifacts.world.ModStructures;
 import com.sonamorningstar.eternalartifacts.world.ModBiomeModifiers;
-import com.sonamorningstar.eternalartifacts.world.feature.ModConfiguredFeatures;
-import com.sonamorningstar.eternalartifacts.world.placement.ModPlacedFeatures;
+import com.sonamorningstar.eternalartifacts.world.ModConfiguredFeatures;
+import com.sonamorningstar.eternalartifacts.world.ModPlacedFeatures;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -21,7 +22,8 @@ public class DatapackBuiltinEntriesProvider extends net.neoforged.neoforge.commo
             .add(Registries.CONFIGURED_FEATURE, ModConfiguredFeatures::bootstrap)
             .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
-            .add(Registries.STRUCTURE, ModStructures::bootstrap);
+            .add(Registries.STRUCTURE, ModStructures::bootstrap)
+            .add(Registries.STRUCTURE_SET, ModStructureSets::bootstrap);
 
     public DatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of("minecraft", MODID));

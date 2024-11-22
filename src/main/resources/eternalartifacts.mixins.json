@@ -9,7 +9,8 @@
     "DiggerItemMixin",
     "FlowerPotBlockMixin",
     "ItemEntityMixin",
-    "PickaxeItemMixin"
+    "PickaxeItemMixin",
+    "PlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

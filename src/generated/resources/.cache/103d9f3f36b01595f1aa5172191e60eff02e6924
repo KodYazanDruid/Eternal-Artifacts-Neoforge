@@ -1,4 +1,4 @@
-// 1.20.4	2024-06-25T16:21:43.3179461	Registries
+// 1.20.4	2024-11-19T12:53:00.4021346	Registries
 368f3e60809b5bad82578412be10caabb6eec0e3 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_coal_ore.json
 468ba395d6cbef1b3d38a68caae705e4ed670be3 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_copper_ore.json
 6d2eaa1aba4c8356e91250a67c485b18e81111a0 data/eternalartifacts/neoforge/biome_modifier/feature/add_gravel_gold_ore.json
@@ -18,3 +18,5 @@ f8a0ae237802e902879d259328ad8b5de389c9a5 data/eternalartifacts/neoforge/biome_mo
 d0989dd6742ce092cced2db45c794d95631be4bc data/eternalartifacts/worldgen/placed_feature/gravel_iron_ore.json
 2bb1850318d0e13be4eafb44487799ce74746c5a data/eternalartifacts/worldgen/placed_feature/placed_manganese_ore_middle.json
 8ca2f6c40ca92187c9502bce70393ece02c761e4 data/eternalartifacts/worldgen/placed_feature/placed_manganese_ore_small.json
+7f7d12d7ef3642e68aec2040224bc6537ae262f2 data/eternalartifacts/worldgen/structure/survivalists_igloo.json
+d7d3ca59b6d11f4b175a5d6cc6b01c5d1a1eb5fd data/eternalartifacts/worldgen/structure_set/survivalists_igloo.json

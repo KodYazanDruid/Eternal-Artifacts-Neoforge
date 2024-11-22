@@ -1,10 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.content.tabs.CatTab;
-import com.sonamorningstar.eternalartifacts.content.tabs.CharmsTab;
+import com.sonamorningstar.eternalartifacts.content.tabs.*;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
-import com.sonamorningstar.eternalartifacts.content.tabs.EnderChestTab;
-import com.sonamorningstar.eternalartifacts.content.tabs.PlayerInventoryTab;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.registrar.TabType;
 import net.minecraft.world.item.Items;
@@ -20,8 +17,15 @@ public class ModInventoryTabs {
             TabType.create(PlayerInventoryTab::new, () -> Items.CHEST));
     public static final DeferredHolder<TabType<?>, TabType<AbstractInventoryTab>> CHARMS = register("charms",
             TabType.create(CharmsTab::new, () -> Items.DIAMOND_CHESTPLATE));
+    public static final DeferredHolder<TabType<?>, TabType<KnapsackTab>> KNAPSACK = register("knapsack",
+            TabType.create(KnapsackTab::new, ModItems.KNAPSACK));
     public static final DeferredHolder<TabType<?>, TabType<EnderChestTab>> ENDER_KNAPSACK = register("ender_knapsack",
             TabType.create(EnderChestTab::new, () -> Items.ENDER_CHEST));
+    public static final DeferredHolder<TabType<?>, TabType<TankKnapsackTab>> TANK_KNAPSACK = register("tank_knapsack",
+            TabType.create(TankKnapsackTab::new, ModItems.TANK_KNAPSACK));
+    public static final DeferredHolder<TabType<?>, TabType<CrafterTab>> CRAFTER = register("crafter",
+            TabType.create(CrafterTab::new, ModItems.PORTABLE_CRAFTER));
+
     public static final DeferredHolder<TabType<?>, TabType<CatTab>> CAT = register("cat",
             TabType.create(CatTab::new, ModItems.CHLOROPHYTE_INGOT));
 

@@ -170,7 +170,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
                 ModItems.BATTERY.get(),
-                ModItems.MAGIC_FEATHER.get()
+                ModItems.MAGIC_FEATHER.get(),
+                ModItems.PORTABLE_CRAFTER.get()
         );
 
         tag(ModTags.Items.CHARMS).addTags(
@@ -179,7 +180,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 //ModTags.Items.CHARMS_HAND,
                 ModTags.Items.CHARMS_RING,
                 ModTags.Items.CHARMS_BACK,
-                //ModTags.Items.CHARMS_BOOTS,
+                ModTags.Items.CHARMS_BOOTS,
                 ModTags.Items.CHARMS_CHARM
                 //ModTags.Items.CHARMS_BELT,
                 //ModTags.Items.CHARMS_BRACELET

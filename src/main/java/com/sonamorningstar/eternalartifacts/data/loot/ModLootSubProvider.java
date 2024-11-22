@@ -39,11 +39,12 @@ public class ModLootSubProvider implements LootTableSubProvider {
                 .setRolls(UniformGenerator.between(3, 4))
                 .add(LootItem.lootTableItem(ModBlocks.SNOW_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(5, 8))))
                 .add(LootItem.lootTableItem(ModBlocks.ICE_BRICKS).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 7))))
+                .add(LootItem.lootTableItem(Items.SPRUCE_LOG).apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 5))))
                 .add(LootItem.lootTableItem(Items.STRING).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5))))
                 .add(LootItem.lootTableItem(Items.LEATHER).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3))))
+                .add(LootItem.lootTableItem(Items.RABBIT_HIDE).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))))
                 .add(LootItem.lootTableItem(Items.FERN).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
                 .add(LootItem.lootTableItem(Items.LARGE_FERN).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
-                .add(LootItem.lootTableItem(Items.SPRUCE_LOG).apply(SetItemCountFunction.setCount(UniformGenerator.between(3, 5))))
             ).withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))
                 .add(LootItem.lootTableItem(Items.IRON_INGOT).setWeight(75).apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 5))))
@@ -52,6 +53,7 @@ public class ModLootSubProvider implements LootTableSubProvider {
                 .add(LootItem.lootTableItem(Items.EMERALD).setWeight(15).apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 4))))
             )
         );
+
 
     }
 

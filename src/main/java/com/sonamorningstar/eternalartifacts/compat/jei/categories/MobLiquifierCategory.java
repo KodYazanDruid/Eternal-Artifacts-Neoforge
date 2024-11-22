@@ -73,7 +73,7 @@ public class MobLiquifierCategory implements IRecipeCategory<MobLiquifierRecipe>
     @Override
     public void draw(MobLiquifierRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-        ClientLevel level = Minecraft.getInstance().level;
+        /*ClientLevel level = Minecraft.getInstance().level;
         if (level == null) return;
 
         long tick = Minecraft.getInstance().clientTickCount;
@@ -95,6 +95,6 @@ public class MobLiquifierCategory implements IRecipeCategory<MobLiquifierRecipe>
                     guiGraphics, 23, 51, 25, new Vector3f(),
                     new Quaternionf().rotationXYZ(0.2F, 3F, (float) Math.PI), null,
                     living);
-        }
+        }*/
     }
 }

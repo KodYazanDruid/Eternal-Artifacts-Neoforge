@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.event.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
@@ -111,8 +112,10 @@ public class ClientEvents {
         Screen screen = event.getScreen();
         Screen oldScreen = event.getCurrentScreen();
         TabHandler instance = TabHandler.INSTANCE;
-        if (instance == null && screen instanceof InventoryScreen && Config.CHARMS_ENABLED.getAsBoolean()) {
-            TabHandler.onTabsConstruct(event.getCurrentScreen(), screen);
+        if (instance == null &&
+                screen instanceof InventoryScreen inventoryScreen && oldScreen == null &&
+                Config.CHARMS_ENABLED.getAsBoolean()) {
+            TabHandler.onTabsConstruct(inventoryScreen);
         }
        if (instance != null) {
            if (!instance.requested) instance.currentTab = null;
@@ -120,12 +123,17 @@ public class ClientEvents {
        }
     }
 
+    static int delay = 2;
     @SubscribeEvent
     public static void clientTickEvent(TickEvent.ClientTickEvent event) {
         if(event.phase.equals(TickEvent.Phase.END)) {
             Screen screen = Minecraft.getInstance().screen;
-            if (screen == null) {
-                TabHandler.onTabsFinalize();
+            if (screen == null && TabHandler.INSTANCE != null) {
+                delay--;
+                if (delay <= 0) {
+                    TabHandler.onTabsFinalize();
+                    delay = 2;
+                }
             }
         }
     }

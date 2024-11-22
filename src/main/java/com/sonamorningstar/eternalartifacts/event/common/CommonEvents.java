@@ -2,16 +2,19 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
+import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -38,10 +41,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.EffectCures;
-import net.neoforged.neoforge.common.NeoForgeMod;
-import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.living.*;
@@ -52,7 +52,6 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
-import java.time.Clock;
 import java.util.Optional;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -175,9 +174,38 @@ public class CommonEvents {
         }
     }
 
+    public static void startTracingEvent(PlayerEvent.StartTracking event) {
+        if (event.getTarget() instanceof Player player && !player.level().isClientSide) {
+            PlayerCharmsStorage.get(player).syncSelfAndTracking();
+        };
+    }
+    @SubscribeEvent
+    public static void playerCloneEvent(PlayerEvent.Clone event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide) return;
+        PlayerCharmsStorage.get(player).syncSelf();
+    }
+
+    @SubscribeEvent
+    public static void playerLoginEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide) return;
+        PlayerCharmsStorage.get(player).syncSelf();
+    }
+    public static void playerChangeDimensionsEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide) return;
+        PlayerCharmsStorage.get(player).syncSelf();
+    }
+
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
+        /*long time = player.level().getGameTime();
+        if (time % 60 == 0 && event.phase == TickEvent.Phase.START) {
+            PlayerCharmsStorage.sendUpdatePacket(player);
+        }*/
+
         AttributeInstance stepHeight = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
         AttributeInstance spellDamage = player.getAttribute(ModAttributes.SPELL_DAMAGE.get());
 
@@ -187,13 +215,33 @@ public class CommonEvents {
             }
         }
 
-        /*if (!PlayerHelper.findItem(player, ModItems.ORANGE.get())) {
-            if (spellDamage != null && spellDamage.hasModifier(Spell.spellDamage)) {
-                spellDamage.removeModifier(Spell.spellDamage.getId());
+        if (event.phase == TickEvent.Phase.START) {
+            var charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+            for (int i = 0; i < charms.getSlots(); i++) {
+                var stack = charms.getStackInSlot(i);
+                if (stack.isEmpty()) continue;
+                CharmTickEvent charmEvent = new CharmTickEvent(player, stack, i);
+                NeoForge.EVENT_BUS.post(charmEvent);
             }
-        }else if (spellDamage != null && !spellDamage.hasModifier(Spell.spellDamage)) {
-            spellDamage.addTransientModifier(Spell.spellDamage);
-        }*/
+
+        }
+
+    }
+
+    @SubscribeEvent
+    public static void charmTick(CharmTickEvent event) {
+        Player player = event.getEntity();
+        ItemStack charm = event.getCharm();
+        int slot = event.getSlot();
+        if (charm.getItem() instanceof ComfyShoesItem) {
+            AttributeInstance step = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
+            if(step != null){
+                var mod = ComfyShoesItem.getStepHeight();
+                if (step.hasModifier(mod) && player.isCrouching()) step.removeModifier(mod.getId());
+                if (!step.hasModifier(mod) && !player.isCrouching())
+                    step.addTransientModifier(mod);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -222,23 +270,6 @@ public class CommonEvents {
         if (itemStack.getItem() instanceof ChiselItem) {
             eternal_Artifacts_Neoforge$cachedRay = RayTraceHelper.retrace(player, ClipContext.Fluid.NONE);
         }
-    }
-
-    @SubscribeEvent
-    public static void playerOnDeath(PlayerEvent.Clone event) {
-        if (event.isWasDeath()) {
-            Player died = event.getOriginal();
-            Player clone = event.getEntity();
-            CompoundTag charms = died.getPersistentData().getCompound("Charms");
-            clone.getPersistentData().put("Charms", charms);
-        }
-    }
-    @SubscribeEvent
-    public static void onLivingConvert(LivingConversionEvent.Post event) {
-        LivingEntity original = event.getEntity();
-        LivingEntity converted = event.getOutcome();
-        CompoundTag charms = original.getPersistentData().getCompound("Charms");
-        converted.getPersistentData().put("Charms", charms);
     }
 
     @SubscribeEvent

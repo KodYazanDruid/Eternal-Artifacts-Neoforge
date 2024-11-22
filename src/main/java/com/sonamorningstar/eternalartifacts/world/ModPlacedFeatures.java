@@ -1,6 +1,5 @@
-package com.sonamorningstar.eternalartifacts.world.placement;
+package com.sonamorningstar.eternalartifacts.world;
 
-import com.sonamorningstar.eternalartifacts.world.feature.ModConfiguredFeatures;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;

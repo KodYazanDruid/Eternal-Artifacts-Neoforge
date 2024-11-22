@@ -1,13 +1,12 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
-import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
-import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModScaleableItemItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
@@ -17,21 +16,15 @@ import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
-import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -86,6 +79,7 @@ public class CommonModEvents {
         event.registerBlockEntity(ModCapabilities.Heat.BLOCK, ModMachines.INDUCTION_FURNACE.getBlockEntity(), (be, ctx) -> be.heat);
         event.registerItem(ModCapabilities.ItemCooldown.ITEM, (stack, ctx) -> new ItemStackCooldown(stack, 200), ModItems.WRENCH);
         event.registerItem(Capabilities.FluidHandler.ITEM, InfiniteWaterTank::createForItem, ModBlocks.TIGRIS_FLOWER.asItem());
+        /*event.registerEntity(ModCapabilities.Item.ENTITY_CHARMS, EntityType.PLAYER, (player, ctx) -> new PlayerCharmsStorage());*/
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) ->
                 be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
