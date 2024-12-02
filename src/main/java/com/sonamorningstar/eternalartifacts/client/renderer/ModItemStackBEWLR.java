@@ -3,16 +3,9 @@ package com.sonamorningstar.eternalartifacts.client.renderer;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.renderer.item.SpellTomeRenderer;
-import com.sonamorningstar.eternalartifacts.content.block.FluidCombustionDynamoBlock;
-import com.sonamorningstar.eternalartifacts.content.block.JarBlock;
-import com.sonamorningstar.eternalartifacts.content.block.NousTankBlock;
-import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamoBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.*;
+import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
-import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -51,6 +44,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final FluidCombustionDynamoBlockEntity fluidCombustionBlockEntity = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
     private final NousTankBlockEntity nousTankBlockEntity = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
     private final OilRefineryBlockEntity oilRefineryBlockEntity = new OilRefineryBlockEntity(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
+    private final EnergyDockBlockEntity energyDockBlockEntity = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
@@ -72,6 +66,8 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
                 blockEntityRenderDispatcher.renderItem(oilRefineryBlockEntity, ps, buff, light, overlay);
+            }else if (block instanceof EnergyDockBlock) {
+                blockEntityRenderDispatcher.renderItem(energyDockBlockEntity, ps, buff, light, overlay);
             }
         } else {
             if (item instanceof AnimatedSpellTomeItem<?> tome) {

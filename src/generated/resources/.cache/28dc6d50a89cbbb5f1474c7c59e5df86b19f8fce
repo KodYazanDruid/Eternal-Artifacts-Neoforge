@@ -1,4 +1,4 @@
-// 1.20.4	2024-11-21T01:07:47.7282573	vanilla/Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2024-12-02T22:05:18.6297016	vanilla/Tags for minecraft:block mod id eternalartifacts
 ac1bf6404c14e187fcaa7abdd95e02398a3f3e9d data/eternalartifacts/tags/blocks/drum.json
 bd02464e1c960573d4213bff84b83f239b8f0947 data/eternalartifacts/tags/blocks/mineable/glasscutter.json
 a4e8097fff07f9a74259d6b5dd583f3437ff28a2 data/eternalartifacts/tags/blocks/mineable/grafter.json
@@ -8,7 +8,7 @@ ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/blocks/glass.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/blocks/glass/hardened.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/blocks/hardened_glass.json
 e517276b36e45ee8c7323d191fbe31bc00c68624 data/forge/tags/blocks/mineable/sickle.json
-f4205f347c70b318d24bfebc801c4c7bc7f25194 data/forge/tags/blocks/mineable/wrench.json
+5e0c74d4708ce7516c91be52f66c38012ce19db8 data/forge/tags/blocks/mineable/wrench.json
 2c703674343a9e87bf062be50ac23af75d52e24d data/forge/tags/blocks/obsidian.json
 6e955beae490aa633e2a0c3c4171c29860662334 data/forge/tags/blocks/ores.json
 73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/blocks/ores/manganese.json
@@ -29,11 +29,11 @@ ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/minecraft/tags/blocks/impermeable.
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/minecraft/tags/blocks/iron_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 55b799b302c13cb02af1e69dc279b3bdc3e08fae data/minecraft/tags/blocks/mineable/axe.json
-fb1316c936e83a76e4d052eed9878ed451b0b81e data/minecraft/tags/blocks/mineable/pickaxe.json
+258a060f7a0a03597a655b9922f2cf695541e927 data/minecraft/tags/blocks/mineable/pickaxe.json
 70018ed1e37755d0c82d501d378b9c5b5cff1966 data/minecraft/tags/blocks/mineable/shovel.json
 327f78fd894fc270c0faeb4cc76df7b9905bb937 data/minecraft/tags/blocks/needs_diamond_tool.json
-fb2e98564e6379e81aa4d4b6d27a9845f605f3eb data/minecraft/tags/blocks/needs_iron_tool.json
-14d83443dd7cdb05286e1c4c62718e1f7f2d1b6d data/minecraft/tags/blocks/needs_stone_tool.json
+9a6187f7b28c4a7e2fe70140045cfd89b05e6f9d data/minecraft/tags/blocks/needs_iron_tool.json
+b74dbda8deef09e11e6ef4704ccc0c1a9b89e548 data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/blocks/small_flowers.json
 00a2c195bda5248564865d9dd8a47494bd91f6ff data/minecraft/tags/blocks/walls.json

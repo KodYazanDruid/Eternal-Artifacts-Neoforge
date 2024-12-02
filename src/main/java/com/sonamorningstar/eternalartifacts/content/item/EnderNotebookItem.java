@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.widget.Warp;
 import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookOpenToClient;
+import com.sonamorningstar.eternalartifacts.network.endernotebook.OpenItemStackScreenToClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -43,7 +43,7 @@ public class EnderNotebookItem extends VolumeHolderItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         if(player instanceof ServerPlayer serverPlayer) {
-            Channel.sendToPlayer(new EnderNotebookOpenToClient(itemstack), serverPlayer);
+            Channel.sendToPlayer(new OpenItemStackScreenToClient(itemstack), serverPlayer);
         }
 
         player.awardStat(Stats.ITEM_USED.get(this));
@@ -51,7 +51,7 @@ public class EnderNotebookItem extends VolumeHolderItem {
     }
 
     public static void addWarp(ItemStack stack, String name, ResourceKey<Level> dimension, BlockPos position) {
-        ListTag listTag =  stack.getTag() != null ? stack.getTag().getList("Warps", 10) : new ListTag();
+        ListTag listTag = stack.getTag() != null ? stack.getTag().getList("Warps", 10) : new ListTag();
 
         CompoundTag singleWarp = new CompoundTag();
         singleWarp.putString("Name", name);

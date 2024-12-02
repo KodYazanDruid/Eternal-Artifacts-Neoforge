@@ -6,13 +6,10 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModScaleableItemItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
-import com.sonamorningstar.eternalartifacts.content.entity.DemonEyeEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.DuckEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.MagicalBookEntity;
-import com.sonamorningstar.eternalartifacts.content.entity.PinkyEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
@@ -79,11 +76,12 @@ public class CommonModEvents {
         event.registerBlockEntity(ModCapabilities.Heat.BLOCK, ModMachines.INDUCTION_FURNACE.getBlockEntity(), (be, ctx) -> be.heat);
         event.registerItem(ModCapabilities.ItemCooldown.ITEM, (stack, ctx) -> new ItemStackCooldown(stack, 200), ModItems.WRENCH);
         event.registerItem(Capabilities.FluidHandler.ITEM, InfiniteWaterTank::createForItem, ModBlocks.TIGRIS_FLOWER.asItem());
-        /*event.registerEntity(ModCapabilities.Item.ENTITY_CHARMS, EntityType.PLAYER, (player, ctx) -> new PlayerCharmsStorage());*/
+        event.registerEntity(Capabilities.EnergyStorage.ENTITY, ModEntities.CHARGED_SHEEP.get(), (entity, ctx) -> entity.energy);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) ->
                 be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
@@ -127,6 +125,7 @@ public class CommonModEvents {
         event.put(ModEntities.MAGICAL_BOOK.get(), MagicalBookEntity.createAttributes().build());
 
         event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
+        event.put(ModEntities.CHARGED_SHEEP.get(), ChargedSheepEntity.createAttributes().build());
     }
 
     @SubscribeEvent

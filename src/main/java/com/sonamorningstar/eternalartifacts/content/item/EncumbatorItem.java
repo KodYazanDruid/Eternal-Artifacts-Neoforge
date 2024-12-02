@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -17,15 +18,16 @@ import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class EncumbatorItem extends ArtifactItem {
+public class EncumbatorItem extends ArtifactItem implements IActiveStack {
 
-    public static final String ACTIVE = MODID+":active";
+    public static final String ACTIVE = "Active";
 
     public EncumbatorItem(Properties pProperties) {
         super(pProperties);
     }
 
-    public static boolean isStackActive(ItemStack stack) {
+    @Override
+    public boolean isActive(ItemStack stack) {
         return stack.hasTag() && stack.getTag().getBoolean(ACTIVE);
     }
 

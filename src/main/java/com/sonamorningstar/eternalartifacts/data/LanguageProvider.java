@@ -130,6 +130,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DOUGH.get(),"Dough");
                 add(ModItems.BANANA_BREAD.get(),"Banana Bread");
                 add(ModItems.CHISEL.get(),"Chisel");
+                add(ModItems.CHARGED_SHEEP_SPAWN_EGG.get(), "Charged Sheep Spawn Egg");
+                add(ModItems.BLUEPRINT.get(), "Blueprint");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -209,6 +211,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ICE_BRICK_SLAB.get(), "Ice Brick Slab");
                 add(ModBlocks.ICE_BRICK_STAIRS.get(), "Ice Brick Stairs");
                 add(ModBlocks.ICE_BRICK_WALL.get(), "Ice Brick Wall");
+                add(ModBlocks.ENERGY_DOCK.get(), "Energy Dock");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -216,6 +219,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.DUCK.get(), "Duck");
                 add(ModEntities.MAGICAL_BOOK.get(), "Magical Book");
                 add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Primed %s");
+                add(ModEntities.CHARGED_SHEEP.get(), "Charged Sheep");
                 //endregion
                 //region Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -295,6 +299,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Rename");
                 add(ModConstants.GUI.withSuffix("renaming"), "Renaming...");
                 add(ModEnchantments.VERSATILITY.get(), "Versatility");
+                add(ModConstants.GUI.withSuffix("done"), "Done");
+                add(ModConstants.GUI.withSuffix("alpha"), "Alpha");
+                add(ModConstants.GUI.withSuffix("red"), "Red");
+                add(ModConstants.GUI.withSuffix("green"), "Green");
+                add(ModConstants.GUI.withSuffix("blue"), "Blue");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -320,7 +329,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENCUMBATOR.get(), "Yük Engelleyici");
                 add(ModItems.ANCIENT_SEED.get(), "Antik Tohum");
                 add(ModItems.ANCIENT_FRUIT.get(), "Antik Meyve");
-                add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "İblis Gözü Canlandırma Yumurtası");
+                add(ModItems.DEMON_EYE_SPAWN_EGG.get(), "İblis Gözü Çağırma Yumurtası");
                 add(ModItems.AXE_OF_REGROWTH.get(), "Yeşertme Baltası");
                 add(ModItems.RAW_MEAT_INGOT.get(), "Et Külçesi");
                 add(ModItems.COOKED_MEAT_INGOT.get(), "Pişmiş Et Külçesi");
@@ -425,6 +434,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.DOUGH.get(),"Hamur");
                 add(ModItems.BANANA_BREAD.get(),"Muzlu Ekmek");
                 add(ModItems.CHISEL.get(),"Keski");
+                add(ModItems.CHARGED_SHEEP_SPAWN_EGG.get(), "Şarzlı Koyun Çağırma Yumurtası");
+                add(ModItems.BLUEPRINT.get(), "Plan");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -536,6 +547,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ICE_BRICK_SLAB.get(), "Buz Tuğla Basamak");
                 add(ModBlocks.ICE_BRICK_STAIRS.get(), "Buz Tuğla Merdiven");
                 add(ModBlocks.ICE_BRICK_WALL.get(), "Buz Tuğla Duvar");
+                add(ModBlocks.ENERGY_DOCK.get(), "Enerji İskelesi");
+                add(ModMachines.ADVANCED_CRAFTER.getBlockTranslationKey(), "Sıvı Üretim Masası");
+                add(ModMachines.ELECTRIC_FURNACE.getBlockTranslationKey(), "Elektrikli Fırın");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -543,6 +557,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.DUCK.get(), "Ördek");
                 add(ModEntities.MAGICAL_BOOK.get(), "Büyülü Kitap");
                 add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Ateşlenmiş %s");
+                add(ModEntities.CHARGED_SHEEP.get(), "Şarzlı Koyun");
                 //endregion
                 //region Türkçe Efekt
                 add(ModEffects.FLIGHT.get(), "Uçuş");
@@ -625,6 +640,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Yeniden Adlandır");
                 add(ModConstants.GUI.withSuffix("renaming"), "Yeniden adlandırılıyor...");
                 add(ModEnchantments.VERSATILITY.get(), "Çok Yönlülük");
+                add(ModConstants.GUI.withSuffix("done"), "Tamamlandı");
+                add(ModConstants.GUI.withSuffix("alpha"), "Alfa");
+                add(ModConstants.GUI.withSuffix("red"), "Kırmızı");
+                add(ModConstants.GUI.withSuffix("green"), "Yeşil");
+                add(ModConstants.GUI.withSuffix("blue"), "Mavi");
                 //endregion
             }
         }

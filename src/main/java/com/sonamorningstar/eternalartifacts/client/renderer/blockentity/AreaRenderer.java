@@ -15,7 +15,7 @@ public class AreaRenderer<T extends BlockEntity & IAreaRenderer> implements Bloc
     @Override
     public void render(T be, float partialTick, PoseStack pose, MultiBufferSource buff, int light, int overlay) {
         VertexConsumer consumer = buff.getBuffer(RenderType.lines());
-        AABB box = be.getRenderBoundingBox();
+        AABB box = be.getBoundingBox();
         Vec3 posVec = Vec3.atLowerCornerOf(be.getBlockPos());
         if(be.shouldRender()) LevelRenderer.renderLineBox(pose, consumer,
                 box.minX - posVec.x, box.minY - posVec.y, box.minZ - posVec.z,
@@ -25,6 +25,6 @@ public class AreaRenderer<T extends BlockEntity & IAreaRenderer> implements Bloc
 
     @Override
     public AABB getRenderBoundingBox(T blockEntity) {
-        return blockEntity.getRenderBoundingBox();
+        return blockEntity.getBoundingBox();
     }
 }

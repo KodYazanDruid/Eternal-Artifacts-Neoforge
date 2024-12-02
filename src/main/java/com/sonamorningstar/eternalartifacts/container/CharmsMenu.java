@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,7 +14,7 @@ public class CharmsMenu extends TabMenu {
         super(ModMenuTypes.CHARMS.get(), id);
         this.player = inv.player;
         addPlayerInventoryAndHotbar(inv, 8, 66);
-        PlayerCharmsStorage charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+        CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
         for (int i = 0; i < charms.getSlots(); i++) {
             addSlot(new SlotItemHandler(charms, i, calculateX(i), calculateY(i)));
         }

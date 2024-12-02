@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:orange_wool"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "eternalartifacts:entities/charged_sheep"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eternalartifacts:entities/charged_sheep/orange"
+}

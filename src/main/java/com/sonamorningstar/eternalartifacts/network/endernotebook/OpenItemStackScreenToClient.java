@@ -9,20 +9,20 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record EnderNotebookOpenToClient(ItemStack book) implements CustomPacketPayload {
-    public static final ResourceLocation ID = new ResourceLocation(MODID, "open_endernotebook_screen");
+public record OpenItemStackScreenToClient(ItemStack stack) implements CustomPacketPayload {
+    public static final ResourceLocation ID = new ResourceLocation(MODID, "open_itemstack_screen");
 
-    public static EnderNotebookOpenToClient create(FriendlyByteBuf buf) {
-        return new EnderNotebookOpenToClient(buf.readItem());
+    public static OpenItemStackScreenToClient create(FriendlyByteBuf buf) {
+        return new OpenItemStackScreenToClient(buf.readItem());
     }
 
-    public static EnderNotebookOpenToClient create(ItemStack book) {
-        return new EnderNotebookOpenToClient(book);
+    public static OpenItemStackScreenToClient create(ItemStack stack) {
+        return new OpenItemStackScreenToClient(stack);
     }
 
     @Override
     public void write(FriendlyByteBuf buf) {
-        buf.writeItem(book);
+        buf.writeItem(stack);
     }
 
     @Override
@@ -34,7 +34,8 @@ public record EnderNotebookOpenToClient(ItemStack book) implements CustomPacketP
         if(ctx.flow().isClientbound()){
             ctx.workHandler().execute(() -> {
                 if (ctx.player().isPresent()) {
-                    ClientProxy.openEnderNotebook(book);
+                    //ClientProxy.openEnderNotebook(stack);
+                    ClientProxy.requestScreen(stack);
                 };
             });
         }

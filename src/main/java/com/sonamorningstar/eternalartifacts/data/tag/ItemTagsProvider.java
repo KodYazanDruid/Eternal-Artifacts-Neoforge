@@ -155,7 +155,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
 
         tag(ModTags.Items.CHARMS_HEAD).add(
-                Items.SHULKER_SHELL
+                Items.SHULKER_SHELL,
+                Items.TURTLE_HELMET
         );
         tag(ModTags.Items.CHARMS_RING).add(
                 ModItems.GOLD_RING.get()
@@ -163,15 +164,22 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARMS_BACK).add(
                 ModItems.KNAPSACK.get(),
                 ModItems.TANK_KNAPSACK.get(),
-                ModItems.ENDER_KNAPSACK.get()
+                ModItems.ENDER_KNAPSACK.get(),
+                Items.ELYTRA
         );
         tag(ModTags.Items.CHARMS_BOOTS).add(
-                ModItems.COMFY_SHOES.get()
+                ModItems.COMFY_SHOES.get(),
+                ModItems.FROG_LEGS.get()
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
                 ModItems.BATTERY.get(),
                 ModItems.MAGIC_FEATHER.get(),
-                ModItems.PORTABLE_CRAFTER.get()
+                ModItems.PORTABLE_CRAFTER.get(),
+                ModItems.HOLY_DAGGER.get(),
+                ModItems.ENCUMBATOR.get(),
+                ModItems.MEDKIT.get(),
+                Items.RABBIT_FOOT,
+                Items.COD
         );
 
         tag(ModTags.Items.CHARMS).addTags(

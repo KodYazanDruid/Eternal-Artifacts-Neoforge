@@ -4,7 +4,7 @@ import com.google.common.base.Predicates;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
-import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;

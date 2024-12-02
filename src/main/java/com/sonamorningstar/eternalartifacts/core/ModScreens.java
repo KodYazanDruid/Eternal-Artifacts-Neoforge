@@ -19,6 +19,9 @@ public class ModScreens {
         event.register(ModMachines.OIL_REFINERY.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.INDUCTION_FURNACE.getMenu(), InductionFurnaceScreen::new);
 
+        //event.register(ModMenuTypes.SCREEN_WRAPPER.get(), ScreenWrapperScreen::new);
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
+        event.register(ModMenuTypes.FISH.get(), FishScreen::new);
+        event.register(ModMenuTypes.BLUEPRINT.get(), BlueprintScreen::new);
     }
 }

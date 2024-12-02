@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -16,7 +16,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-import static com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage.CharmType;
+import static com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage.CharmType;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FMLCommonSetup {
@@ -44,7 +44,7 @@ public class FMLCommonSetup {
     }
 
     private static void setupCharmSlots() {
-        var map = PlayerCharmsStorage.slotTypes;
+        var map = CharmStorage.slotTypes;
         map.put(0, CharmType.HEAD);
         map.put(1, CharmType.NECKLACE);
         map.put(2, CharmType.RING);

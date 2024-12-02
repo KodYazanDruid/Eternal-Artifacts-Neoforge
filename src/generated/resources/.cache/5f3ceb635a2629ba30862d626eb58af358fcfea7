@@ -1,9 +1,9 @@
-// 1.20.4	2024-11-21T01:07:47.721257	Tags for minecraft:item mod id eternalartifacts
-5c5282c4fa23c73d3bede21f0839ec990eed73be data/eternalartifacts/tags/items/charms.json
-cf8c13820db63b3afea5eca90efe0fc0f8628fb9 data/eternalartifacts/tags/items/charms/back.json
-105e4a8df4ffd03d7639df72f3168aec04c3998a data/eternalartifacts/tags/items/charms/boots.json
-be8dec3d48a563cd5efa7fef0f26c9b59629ee17 data/eternalartifacts/tags/items/charms/charm.json
-3dadbb2c1136f332171f8fe4cb38baf9c4d2b624 data/eternalartifacts/tags/items/charms/head.json
+// 1.20.4	2024-11-29T20:27:36.5538143	Tags for minecraft:item mod id eternalartifacts
+67d088eeaefcee8620e3032a650aa196c5bf9506 data/eternalartifacts/tags/items/charms.json
+ce025b8dd856bd8cf07059dd0699b891e5aa7ae1 data/eternalartifacts/tags/items/charms/back.json
+d613f71114ab2701c883292c2acdf914026a87e8 data/eternalartifacts/tags/items/charms/boots.json
+596f59811eed85b0bc1aa8d36ad4f71aab43a852 data/eternalartifacts/tags/items/charms/charm.json
+4f303aa294ceafc308cf856838b7e7584db3eb99 data/eternalartifacts/tags/items/charms/head.json
 b71cc5723036c3c57ac0aa555bf4f8c968b22ff4 data/eternalartifacts/tags/items/charms/ring.json
 739b14f3f9fa7b447d8ac1989c2d47a24f23a539 data/eternalartifacts/tags/items/gardening_pot_suitable.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.event.client;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
+import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
@@ -11,13 +12,13 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -27,15 +28,20 @@ public class FMLClientSetup {
     @SubscribeEvent
     public static void fmlClient(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            ItemProperties.register(ModItems.ENCUMBATOR.get(),
-                    new ResourceLocation(MODID, "active"), (s, l, e, seed) -> EncumbatorItem.isStackActive(s) ? 1.0F : 0.0F);
+            registerItemProperty(ModItems.ENCUMBATOR, "active");
+            registerItemProperty(ModItems.BLUEPRINT, "filled");
+
             TabHandler.registeredTabs = ModRegistries.TAB_TYPE.stream().toList();
             ModLoader.get().postEvent(new RegisterTabHoldersEvent(TabHandler.tabHolders));
-
             setupCharmSprites();
         });
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());
+    }
+
+    private static void registerItemProperty(DeferredHolder<Item, ? extends Item> holder, String prefix) {
+        ItemProperties.register(holder.get(),
+                new ResourceLocation(MODID, prefix), (s, l, e, seed) -> s.getItem() instanceof IActiveStack as && as.isActive(s) ? 1.0F : 0.0F);
     }
 
     private static void setupCharmSprites() {

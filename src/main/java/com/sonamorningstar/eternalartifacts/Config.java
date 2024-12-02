@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts;
 
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
@@ -19,6 +20,11 @@ public class Config {
     public static final ModConfigSpec.IntValue VERSATILITY_COST =
             COMMON.comment("The durability damage amount for pickaxes enchanted with versatility?")
                     .defineInRange("versatility_cost", 3, 1, Integer.MAX_VALUE);
+    static{COMMON.pop();}
+    static{COMMON.push("World");}
+    public static final ModConfigSpec.IntValue GASOLINE_EXPLOSION_THRESHOLD =
+            COMMON.comment("The amount of gasoline required to cause an explosion.")
+                    .defineInRange("gasoline_explosion_threshold", 1000, 1, Integer.MAX_VALUE);
     static{COMMON.pop();}
 
     public static final ModConfigSpec.BooleanValue CHARMS_ENABLED =

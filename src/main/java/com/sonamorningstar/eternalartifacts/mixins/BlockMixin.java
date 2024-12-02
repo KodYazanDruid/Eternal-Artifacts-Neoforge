@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.mixins;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.sonamorningstar.eternalartifacts.api.item.ChiselBlockPlaceContext;
 import com.sonamorningstar.eternalartifacts.content.item.ChiselItem;
 import com.sonamorningstar.eternalartifacts.event.common.CommonEvents;
 import com.sonamorningstar.eternalartifacts.network.BlockPlaceOnClient;
@@ -57,7 +58,7 @@ public abstract class BlockMixin {
             ItemStack offHand = player.getOffhandItem();
             if(!offHand.isEmpty() && offHand.getItem() instanceof BlockItem) blocks.putFirst(offHand);
             eternal_Artifacts_Neoforge$insertItems(player, level, state, pos, blockEntity, tool);
-            eternal_Artifacts_Neoforge$tryPlace(blocks, level, player, state, hitResult);
+            eternal_Artifacts_Neoforge$tryPlace(blocks, level, player, state, pos, hitResult);
             eternal_Artifacts_Neoforge$isSuccessful = true;
         }
     }
@@ -72,23 +73,23 @@ public abstract class BlockMixin {
     }
 
     @Unique
-    private void eternal_Artifacts_Neoforge$tryPlace(Iterator<ItemStack> iterator, Level level, Player player, BlockState state, BlockHitResult hitResult) {
+    private void eternal_Artifacts_Neoforge$tryPlace(Iterator<ItemStack> iterator, Level level, Player player,
+                                                     BlockState state, BlockPos pos, BlockHitResult hitResult) {
         if (iterator.hasNext()) {
             ItemStack blockItemStack = iterator.next();
             if(!blockItemStack.isEmpty() &&
                     blockItemStack.getItem() instanceof BlockItem blockItem) {
                 if(blockItem.getBlock() == state.getBlock()) {
-                    eternal_Artifacts_Neoforge$tryPlace(iterator, level, player, state, hitResult);
+                    eternal_Artifacts_Neoforge$tryPlace(iterator, level, player, state, pos, hitResult);
                     return;
                 }
                 ItemStack clientStack = blockItemStack.copy();
-                BlockPlaceContext ctx = new BlockPlaceContext(level, player, InteractionHand.MAIN_HAND, blockItemStack, hitResult);
+                ChiselBlockPlaceContext ctx = new ChiselBlockPlaceContext(player, InteractionHand.MAIN_HAND, blockItemStack, pos, hitResult);
                 blockItem.updatePlacementContext(ctx);
                 ctx.replaceClicked = true;
-                //TODO: Redo all the block placement logic
                 InteractionResult result = blockItem.place(ctx);
-                Channel.sendToPlayer(new BlockPlaceOnClient(clientStack, InteractionHand.MAIN_HAND, hitResult), (ServerPlayer) player);
-                if(!result.consumesAction()) eternal_Artifacts_Neoforge$tryPlace(iterator, level, player, state, hitResult);
+                Channel.sendToPlayer(new BlockPlaceOnClient(clientStack, pos, InteractionHand.MAIN_HAND, hitResult), (ServerPlayer) player);
+                if(!result.consumesAction()) eternal_Artifacts_Neoforge$tryPlace(iterator, level, player, state, pos, hitResult);
             }
         }
     }

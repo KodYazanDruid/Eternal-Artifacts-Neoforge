@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButt
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
 import net.minecraft.client.gui.GuiGraphics;

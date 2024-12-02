@@ -25,10 +25,16 @@ public class ModMenuTypes {
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
             ()-> IMenuTypeExtension.create(NousTankMenu::new));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<ScreenWrapperMenu>> SCREEN_WRAPPER = MENUS.register("screen_wrapper",
+            ()-> IMenuTypeExtension.create(ScreenWrapperMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<KnapsackMenu>> KNAPSACK = MENUS.register("knapsack",
             ()-> IMenuTypeExtension.create(KnapsackMenu::fromNetwork));
     public static final DeferredHolder<MenuType<?>, MenuType<TankKnapsackMenu>> TANK_KNAPSACK = MENUS.register("tank_knapsack",
             ()-> IMenuTypeExtension.create(TankKnapsackMenu::fromNetwork));
     public static final DeferredHolder<MenuType<?>, MenuType<CharmsMenu>> CHARMS = MENUS.register("charms",
             ()-> IMenuTypeExtension.create(CharmsMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<FishMenu>> FISH = MENUS.register("fish",
+            ()-> IMenuTypeExtension.create(FishMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<BlueprintMenu>> BLUEPRINT = MENUS.register("blueprint",
+            ()-> IMenuTypeExtension.create(BlueprintMenu::fromNetwork));
 }

@@ -14,8 +14,8 @@ public class MedkitItem extends ArtifactItem {
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-        if(entity instanceof Player player && !player.getCooldowns().isOnCooldown(this)) {
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 2, 1, false, false, false));
+        if(entity instanceof Player player && !player.getCooldowns().isOnCooldown(this) && !player.hasEffect(MobEffects.REGENERATION)) {
+            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
         }
 
     }

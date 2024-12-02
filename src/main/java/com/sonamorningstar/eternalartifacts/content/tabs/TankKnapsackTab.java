@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.container.TankKnapsackMenu;
 import com.sonamorningstar.eternalartifacts.content.item.TankKnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
@@ -23,7 +23,7 @@ public class TankKnapsackTab extends AbstractInventoryTab {
     @Nullable
     @Override
     public Consumer<FriendlyByteBuf> getBytes(Player player) {
-        PlayerCharmsStorage charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+        CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
         ItemStack stack = charms.getStackInSlot(9);
         return wr -> wr.writeItem(stack);
     }
@@ -31,7 +31,7 @@ public class TankKnapsackTab extends AbstractInventoryTab {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
-        PlayerCharmsStorage charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+        CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
         ItemStack stack = charms.getStackInSlot(9);
         if (stack.getItem() instanceof TankKnapsackItem) {
             return new TankKnapsackMenu(id, inv, stack) {

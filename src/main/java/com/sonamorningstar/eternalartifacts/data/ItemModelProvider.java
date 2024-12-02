@@ -3,14 +3,12 @@ package com.sonamorningstar.eternalartifacts.data;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
-import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
@@ -57,11 +55,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.CHLOROVEIN_PICKAXE);
         basicItem(ModItems.ENDER_TABLET.get());
         basicItem(ModItems.STONE_TABLET.get());
-        basicItem(ModItems.COPPER_SWORD.get());
-        basicItem(ModItems.COPPER_PICKAXE.get());
-        basicItem(ModItems.COPPER_AXE.get());
-        basicItem(ModItems.COPPER_SHOVEL.get());
-        basicItem(ModItems.COPPER_HOE.get());
+        handheld(ModItems.COPPER_SWORD);
+        handheld(ModItems.COPPER_PICKAXE);
+        handheld(ModItems.COPPER_AXE);
+        handheld(ModItems.COPPER_SHOVEL);
+        handheld(ModItems.COPPER_HOE);
         basicItem(ModItems.CHLOROPHYTE_TABLET.get());
         basicItem(ModItems.CHLOROPHYTE_INGOT.get());
         basicItem(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.get());
@@ -132,10 +130,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.DOUGH.get());
         basicItem(ModItems.BANANA_BREAD.get());
         handheld(ModItems.CHISEL);
-
-        basicItem(modLoc("encumbator_active"));
-        ModelFile encumbator = withExistingParent(ModItems.ENCUMBATOR.getId().getPath()+"_active", "item/generated");
-        basicItem(modLoc("encumbator")).override().model(encumbator).predicate(modLoc("active"), 1.0F);
+        spawnEggItem(ModItems.CHARGED_SHEEP_SPAWN_EGG);
+        generateTwoStateItem(ModItems.ENCUMBATOR, "active");
+        generateTwoStateItem(ModItems.BLUEPRINT, "filled");
 
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 
@@ -215,5 +212,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     }
     private void spawnEggItem(DeferredItem<?> holder) {
         withParentItemPath(holder, "template_spawn_egg");
+    }
+
+    private void generateTwoStateItem(DeferredItem<?> holder, String activePrefix) {
+        String path = holder.getId().getPath();
+        basicItem(modLoc(path+"_"+activePrefix));
+        ModelFile active = withExistingParent(path+"_"+activePrefix, "item/generated");
+        basicItem(modLoc(path)).override().model(active).predicate(modLoc(activePrefix), 1.0F);
     }
 }

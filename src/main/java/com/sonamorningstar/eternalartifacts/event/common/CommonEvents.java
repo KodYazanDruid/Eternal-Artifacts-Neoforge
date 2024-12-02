@@ -2,21 +2,24 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.SpellCastEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
-import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -25,9 +28,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -44,6 +48,8 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -104,10 +110,23 @@ public class CommonEvents {
     @SubscribeEvent
     public static void drumInteractEvent(DrumInteractEvent event) {
         FluidStack stack = event.getContent();
-        if (stack.is(ModFluids.GASOLINE.getFluid()) && stack.getAmount() >= 1000) {
+        int gasolineExplosionThreshold = Config.GASOLINE_EXPLOSION_THRESHOLD.get();
+        if (stack.is(ModTags.Fluids.GASOLINE) && stack.getAmount() >= gasolineExplosionThreshold) {
             event.setFuseTime(40);
-            event.setRadius(20.0F);
+            event.setRadius(20.0F * ((float) stack.getAmount() / gasolineExplosionThreshold));
         }
+    }
+
+    @SubscribeEvent
+    public static void spellCastEvent(SpellCastEvent event) {
+        LivingEntity caster = event.getCaster();
+        Level level = event.getLevel();
+        ItemStack tome = event.getTome();
+        Spell spell = event.getSpell();
+        float amplifiedDamage = event.getAmplifiedDamage();
+        /*if (spell.is(ModSpells.TORNADO) && tome.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
+            event.setAmplifiedDamage(amplifiedDamage * 2);
+        }*/
     }
 
     @SubscribeEvent
@@ -118,7 +137,7 @@ public class CommonEvents {
             cooldowns.addCooldown(ModItems.MEDKIT.get(), 160);
 
             Item dagger = ModItems.HOLY_DAGGER.get();
-            if(PlayerHelper.findItem(player, dagger)) {
+            if(!PlayerCharmManager.findInPlayer(player, dagger).isEmpty()) {
                 if(!cooldowns.isOnCooldown(dagger)){
                     float damage = event.getAmount();
                     float health = player.getHealth();
@@ -141,13 +160,16 @@ public class CommonEvents {
         Player player = event.getEntity();
         CompoundTag tag = new CompoundTag();
         tag.putBoolean(EncumbatorItem.ACTIVE, true);
-        if(PlayerHelper.findInStackWithTag(player, ModItems.ENCUMBATOR.get(), tag)) event.setCanceled(true);
+        if(!PlayerCharmManager.findInPlayerWithTag(player, ModItems.ENCUMBATOR.get(), tag).isEmpty())
+            event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof Player player && PlayerHelper.findItem(player, ModItems.FROG_LEGS.get()) && !player.isCrouching()) {
+        if(entity instanceof Player player &&
+                !PlayerCharmManager.findInPlayer(player, ModItems.FROG_LEGS.get()).isEmpty() &&
+                !player.isCrouching()) {
             player.hurtMarked = true;
             player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
         }
@@ -156,9 +178,34 @@ public class CommonEvents {
     @SubscribeEvent
     public static void fallEvent(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof Player player && PlayerHelper.findItem(player, ModItems.FROG_LEGS.get())) {
+        if(entity instanceof Player player && !PlayerCharmManager.findInPlayer(player, ModItems.FROG_LEGS.get()).isEmpty()) {
             event.setDistance(Math.max(event.getDistance() - 3, 0));
             event.setDamageMultiplier(0.5F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void lightningOnEntity(EntityStruckByLightningEvent event) {
+        Entity entity = event.getEntity();
+        if (entity instanceof Sheep sheep &&
+                sheep.level() instanceof ServerLevel serverLevel &&
+                net.neoforged.neoforge.event.EventHooks.canLivingConvert(sheep, ModEntities.CHARGED_SHEEP.get(), (timer) -> {})) {
+            ChargedSheepEntity chargedSheep = ModEntities.CHARGED_SHEEP.get().create(serverLevel);
+            if (chargedSheep == null) return;
+            chargedSheep.copyPosition(sheep);
+            chargedSheep.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(chargedSheep.blockPosition()), MobSpawnType.CONVERSION, null, null);
+            chargedSheep.setNoAi(sheep.isNoAi());
+            chargedSheep.setBaby(sheep.isBaby());
+            chargedSheep.setColor(sheep.getColor());
+            chargedSheep.setAge(sheep.getAge());
+            if (sheep.hasCustomName()) {
+                chargedSheep.setCustomName(sheep.getCustomName());
+                chargedSheep.setCustomNameVisible(sheep.isCustomNameVisible());
+            }
+            chargedSheep.setPersistenceRequired();
+            net.neoforged.neoforge.event.EventHooks.onLivingConvert(sheep, chargedSheep);
+            serverLevel.addFreshEntityWithPassengers(chargedSheep);
+            sheep.discard();
         }
     }
 
@@ -173,39 +220,40 @@ public class CommonEvents {
             MagicFeatherItem.activeTicks = Pair.of(bool, ticks);
         }
     }
-
-    public static void startTracingEvent(PlayerEvent.StartTracking event) {
+    @SubscribeEvent
+    public static void startTrackingEvent(PlayerEvent.StartTracking event) {
         if (event.getTarget() instanceof Player player && !player.level().isClientSide) {
-            PlayerCharmsStorage.get(player).syncSelfAndTracking();
-        };
+            CharmStorage.get(player).syncSelf();
+        }
     }
     @SubscribeEvent
     public static void playerCloneEvent(PlayerEvent.Clone event) {
-        Player player = event.getEntity();
-        if (player.level().isClientSide) return;
-        PlayerCharmsStorage.get(player).syncSelf();
-    }
+        Player oldPlayer = event.getOriginal();
+        Player newPlayer = event.getEntity();
+        var oldCharms = CharmStorage.get(oldPlayer);
+        NonNullList<ItemStack> oldItems = oldCharms.getStacks();
+        var newCharms = CharmStorage.get(newPlayer);
+        for (int i = 0; i < oldItems.size(); i++)
+            newCharms.setStackInSlot(i, oldItems.get(i));
 
-    @SubscribeEvent
-    public static void playerLoginEvent(PlayerEvent.PlayerLoggedInEvent event) {
-        Player player = event.getEntity();
-        if (player.level().isClientSide) return;
-        PlayerCharmsStorage.get(player).syncSelf();
     }
+    @SubscribeEvent
+    public static void entityJoinWorld(EntityJoinLevelEvent event) {
+        Entity entity = event.getEntity();
+        if (entity instanceof Player player && !player.level().isClientSide)
+            CharmStorage.get(player).syncSelf();
+
+    }
+    @SubscribeEvent
     public static void playerChangeDimensionsEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
         if (player.level().isClientSide) return;
-        PlayerCharmsStorage.get(player).syncSelf();
+        CharmStorage.get(player).syncSelf();
     }
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        /*long time = player.level().getGameTime();
-        if (time % 60 == 0 && event.phase == TickEvent.Phase.START) {
-            PlayerCharmsStorage.sendUpdatePacket(player);
-        }*/
-
         AttributeInstance stepHeight = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
         AttributeInstance spellDamage = player.getAttribute(ModAttributes.SPELL_DAMAGE.get());
 
@@ -216,7 +264,7 @@ public class CommonEvents {
         }
 
         if (event.phase == TickEvent.Phase.START) {
-            var charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+            var charms = player.getData(ModDataAttachments.CHARMS);
             for (int i = 0; i < charms.getSlots(); i++) {
                 var stack = charms.getStackInSlot(i);
                 if (stack.isEmpty()) continue;
@@ -242,6 +290,11 @@ public class CommonEvents {
                     step.addTransientModifier(mod);
             }
         }
+        if (charm.is(ModItems.MEDKIT)) {
+            if (!player.getCooldowns().isOnCooldown(ModItems.MEDKIT.get()) && !player.hasEffect(MobEffects.REGENERATION)) {
+                player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
+            }
+        }
     }
 
     @SubscribeEvent
@@ -258,8 +311,8 @@ public class CommonEvents {
         LevelAccessor level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState blockState = event.getState();
-        if (blockState.is(ModBlocks.POTTED_TIGRIS) && level instanceof ServerLevel serverLevel) {
-            serverLevel.invalidateCapabilities(event.getPos());
+        if (blockState.is(ModBlocks.POTTED_TIGRIS) && level instanceof Level realLevel) {
+            realLevel.invalidateCapabilities(event.getPos());
         }
         if (itemStack.canApplyAtEnchantingTable(ModEnchantments.VERSATILITY.get())) {
             if (itemStack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {

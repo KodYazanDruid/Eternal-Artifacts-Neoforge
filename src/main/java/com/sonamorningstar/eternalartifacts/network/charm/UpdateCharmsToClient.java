@@ -1,11 +1,9 @@
 package com.sonamorningstar.eternalartifacts.network.charm;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
-import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -39,15 +37,6 @@ public record UpdateCharmsToClient(int playerId, NonNullList<ItemStack> items) i
     }
 
     public void handle(PlayPayloadContext ctx) {
-        ctx.workHandler().submitAsync(()-> {
-            ctx.player().ifPresent(player -> {
-                Entity entity = ClientProxy.getPlayerFromId(playerId);
-                if (entity instanceof Player pl){
-                    PlayerCharmsStorage.get(pl).setStacks(items);
-                    TabHandler tabs = TabHandler.INSTANCE;
-                    if (tabs != null) tabs.reloadTabs();
-                }
-            });
-        });
+        ClientProxy.handleUpdateCharms(this, ctx);
     }
 }

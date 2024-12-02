@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
-import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BEWLRBlockItem;
@@ -11,7 +11,6 @@ import com.sonamorningstar.eternalartifacts.registrar.GenericMachineHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredRegister;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -30,13 +29,14 @@ public class ModMachines {
     public static final GenericMachineHolder<AlloySmelterBlockEntity> ALLOY_SMELTER = registerGeneric("alloy_smelter", AlloySmelterBlockEntity::new);
     public static final GenericMachineHolder<SolidifierBlockEntity> SOLIDIFIER = registerGeneric("solidifier", SolidifierBlockEntity::new);
     public static final GenericMachineHolder<CompressorBlockEntity> COMPRESSOR = registerGeneric("compressor", CompressorBlockEntity::new);
+    public static final GenericMachineHolder<AdvancedCrafterBlockEntity> ADVANCED_CRAFTER = registerGeneric("advanced_crafter", AdvancedCrafterBlockEntity::new);
+    public static final GenericMachineHolder<ElectricFurnaceBlockEntity> ELECTRIC_FURNACE = registerGeneric("electric_furnace", ElectricFurnaceBlockEntity::new);
 
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefineryBlockEntity, OilRefineryBlock<OilRefineryBlockEntity>, BEWLRBlockItem>
             OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefineryBlockEntity::new, OilRefineryBlock::new, BEWLRBlockItem::new, true, true);
 
     public static final MachineDeferredHolder<InductionFurnaceMenu, InductionFurnaceBlockEntity, MachineFourWayBlock<InductionFurnaceBlockEntity>, BlockItem>
             INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnaceBlockEntity::new);
-
 
     private static <T extends GenericMachineBlockEntity> GenericMachineHolder<T> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp) {
         return MACHINES.registerGeneric(name, supp,false);

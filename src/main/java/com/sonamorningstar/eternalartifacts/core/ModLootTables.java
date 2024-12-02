@@ -18,6 +18,22 @@ public class ModLootTables {
     public static final ResourceLocation GOLD_OREBERRY_HARVEST = registerOreBerries("gold");
     public static final ResourceLocation EXPERIENCE_OREBERRY_HARVEST = registerOreBerries("experience");
     public static final ResourceLocation MANGANESE_OREBERRY_HARVEST = registerOreBerries("manganese");
+    public static final ResourceLocation CHARGED_SHEEP_WHITE = register("entities/charged_sheep/white");
+    public static final ResourceLocation CHARGED_SHEEP_ORANGE = register("entities/charged_sheep/orange");
+    public static final ResourceLocation CHARGED_SHEEP_MAGENTA = register("entities/charged_sheep/magenta");
+    public static final ResourceLocation CHARGED_SHEEP_LIGHT_BLUE = register("entities/charged_sheep/light_blue");
+    public static final ResourceLocation CHARGED_SHEEP_YELLOW = register("entities/charged_sheep/yellow");
+    public static final ResourceLocation CHARGED_SHEEP_LIME = register("entities/charged_sheep/lime");
+    public static final ResourceLocation CHARGED_SHEEP_PINK = register("entities/charged_sheep/pink");
+    public static final ResourceLocation CHARGED_SHEEP_GRAY = register("entities/charged_sheep/gray");
+    public static final ResourceLocation CHARGED_SHEEP_LIGHT_GRAY = register("entities/charged_sheep/light_gray");
+    public static final ResourceLocation CHARGED_SHEEP_CYAN = register("entities/charged_sheep/cyan");
+    public static final ResourceLocation CHARGED_SHEEP_PURPLE = register("entities/charged_sheep/purple");
+    public static final ResourceLocation CHARGED_SHEEP_BLUE = register("entities/charged_sheep/blue");
+    public static final ResourceLocation CHARGED_SHEEP_BROWN = register("entities/charged_sheep/brown");
+    public static final ResourceLocation CHARGED_SHEEP_GREEN = register("entities/charged_sheep/green");
+    public static final ResourceLocation CHARGED_SHEEP_RED = register("entities/charged_sheep/red");
+    public static final ResourceLocation CHARGED_SHEEP_BLACK = register("entities/charged_sheep/black");
 
     public static final ResourceLocation SURVIVALISTS_IGLOO = register("chests/survivalists_igloo");
 

@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.network;
 
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
-import com.sonamorningstar.eternalartifacts.network.charm.ReloadTabs;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookAddNbtToServer;
-import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookOpenToClient;
+import com.sonamorningstar.eternalartifacts.network.endernotebook.OpenItemStackScreenToClient;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRemoveNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRenameWarpToServer;
 import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
@@ -20,8 +19,7 @@ public class Channel {
 
     public static void onRegisterPayloadHandler(RegisterPayloadHandlerEvent event) {
         final IPayloadRegistrar registrar = event.registrar(MODID)
-                .versioned("1.0")
-                .optional();
+                .versioned("1.0");
 
         registrar.play(PacketAnvilatorSwitchToServer.ID,
                 PacketAnvilatorSwitchToServer::create,
@@ -39,12 +37,16 @@ public class Channel {
         registrar.play(EnderNotebookRemoveNbtToServer.ID,
                 EnderNotebookRemoveNbtToServer::create,
                 handler -> handler.server(EnderNotebookRemoveNbtToServer::handle));
-        registrar.play(EnderNotebookOpenToClient.ID,
-                EnderNotebookOpenToClient::create,
-                handler -> handler.client(EnderNotebookOpenToClient::handle));
+        registrar.play(OpenItemStackScreenToClient.ID,
+                OpenItemStackScreenToClient::create,
+                handler -> handler.client(OpenItemStackScreenToClient::handle));
         registrar.play(EnderNotebookRenameWarpToServer.ID,
                 EnderNotebookRenameWarpToServer::create,
                 handler -> handler.server(EnderNotebookRenameWarpToServer::handle));
+
+        registrar.play(BlueprintReloadNbtToServer.ID,
+                BlueprintReloadNbtToServer::create,
+                handler -> handler.server(BlueprintReloadNbtToServer::handle));
 
         registrar.play(PlayerTeleportToServer.ID,
                 PlayerTeleportToServer::create,
@@ -75,9 +77,9 @@ public class Channel {
         registrar.play(UpdateCharmsToClient.ID,
                 UpdateCharmsToClient::create,
                 handler -> handler.client(UpdateCharmsToClient::handle));
-        registrar.play(ReloadTabs.ID,
-                ReloadTabs::create,
-                handler -> handler.client(ReloadTabs::handle));
+        registrar.play(UpdateEntityEnergyToClient.ID,
+                UpdateEntityEnergyToClient::create,
+                handler -> handler.client(UpdateEntityEnergyToClient::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {
@@ -86,6 +88,10 @@ public class Channel {
 
     public static <MSG extends CustomPacketPayload> void sendToPlayer(MSG message, ServerPlayer player) {
         PacketDistributor.PLAYER.with(player).send(message);
+    }
+
+    public static <MSG extends CustomPacketPayload> void sendToAll(MSG message) {
+        PacketDistributor.ALL.noArg().send(message);
     }
 
     public static <MSG extends CustomPacketPayload> void sendToSelfAndTracking(MSG message, Entity owner) {

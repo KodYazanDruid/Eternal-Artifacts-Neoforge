@@ -17,7 +17,7 @@ public class FireballSpell extends Spell {
     }
 
     @Override
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster) {
+    public boolean cast(ItemStack stack, Level level, LivingEntity caster, float amplifiedDamage) {
         BlockHitResult result = RayTraceHelper.retrace(caster, ClipContext.Fluid.NONE);
         if (result.getType() == HitResult.Type.MISS) {
             Vec3 eyePosition = caster.getEyePosition();

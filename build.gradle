@@ -91,29 +91,29 @@ test {
 dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    implementation("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    implementation("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+    implementation("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
     compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    compileOnly "dev.emi:emi-neoforge:${emi_version}"
+    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
 
     //runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
     runtimeOnly "curse.maven:jade-324717:5109393"
-    //runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
+    runtimeOnly "appeng:appliedenergistics2-neoforge:${ae2_version}"
 
     compileOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}:api"
     runtimeOnly "squeek.appleskin:appleskin-neoforge:mc${appleskin_version}"
 
     implementation "curse.maven:modern-dynamics-552758:5373764" //Modern Industrialization
-    compileOnly "mekanism:Mekanism:${mekanism_version}"// Mekanism
-    compileOnly "mekanism:Mekanism:${mekanism_version}:additions"// Mekanism: Additions
-    compileOnly "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
-    compileOnly "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
+    implementation "mekanism:Mekanism:${mekanism_version}"// Mekanism
+    implementation "mekanism:Mekanism:${mekanism_version}:additions"// Mekanism: Additions
+    implementation "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
+    implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
     implementation "curse.maven:pneumaticcraft-repressurized-281849:5523027"
-    runtimeOnly "curse.maven:cloth-config-348521:5729139"
-    runtimeOnly "curse.maven:powah-rearchitected-633483:5083059"
+    /*runtimeOnly "curse.maven:cloth-config-348521:5729139"
+    runtimeOnly "curse.maven:powah-rearchitected-633483:5083059"*/
     runtimeOnly "curse.maven:spark-361579:5243943"
 
     testImplementation(platform("org.junit:junit-bom:${junit_version}"))

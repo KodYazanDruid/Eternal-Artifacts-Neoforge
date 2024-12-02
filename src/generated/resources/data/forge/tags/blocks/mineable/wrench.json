@@ -18,6 +18,8 @@
     "eternalartifacts:alloy_smelter",
     "eternalartifacts:solidifier",
     "eternalartifacts:compressor",
+    "eternalartifacts:advanced_crafter",
+    "eternalartifacts:electric_furnace",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:induction_furnace"
   ]

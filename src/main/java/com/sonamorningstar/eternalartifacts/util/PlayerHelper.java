@@ -1,8 +1,11 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.mixins_interfaces.ICharmProvider;
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -22,34 +25,49 @@ import java.util.stream.Collectors;
 
 //No it does not help you find a girlfriend.
 public class PlayerHelper {
-    public static boolean findItem(Player player, Item item) {
+    public static ItemStack findItem(Player player, Item item) {
         IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
-        if(playerItemCapability == null) return false;
+        if(playerItemCapability == null) return ItemStack.EMPTY;
         for (int i = 0; i < playerItemCapability.getSlots(); i++) {
-            if(playerItemCapability.getStackInSlot(i).getItem() == item) return true;
+            if(playerItemCapability.getStackInSlot(i).getItem() == item) return playerItemCapability.getStackInSlot(i);
         }
-        return false;
+        return ItemStack.EMPTY;
     }
 
-    @Nullable
     public static boolean findStack(Player player, ItemStack stack) {
         return player.getInventory().contains(stack);
     }
-    public static boolean findInStackWithTag(Player player, Item item, CompoundTag tag) {
+    public static ItemStack findItemWithTag(Player player, Item item, CompoundTag tag) {
         IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
-        if(playerItemCapability == null) return false;
+        if(playerItemCapability == null) return ItemStack.EMPTY;
         for(int i = 0; i < playerItemCapability.getSlots(); i++) {
             if(playerItemCapability.getStackInSlot(i).getItem() == item) {
                 ItemStack found = playerItemCapability.getStackInSlot(i);
                 CompoundTag foundTag = found.getOrCreateTag();
                 for(String key : foundTag.getAllKeys()) {
                     if(found.hasTag() && foundTag.contains(key) && Objects.equals(foundTag.get(key), tag.get(key))) {
-                        return true;
+                        return found;
                     }
                 }
             }
         }
-        return false;
+        return ItemStack.EMPTY;
+    }
+    public static ItemStack findItemWithTag(Player player, Item item, Tag tag) {
+        IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);
+        if(playerItemCapability == null) return ItemStack.EMPTY;
+        for(int i = 0; i < playerItemCapability.getSlots(); i++) {
+            if(playerItemCapability.getStackInSlot(i).getItem() == item) {
+                ItemStack found = playerItemCapability.getStackInSlot(i);
+                CompoundTag foundTag = found.getOrCreateTag();
+                for(String key : foundTag.getAllKeys()) {
+                    if(found.hasTag() && foundTag.contains(key) && Objects.equals(foundTag.get(key), tag)) {
+                        return found;
+                    }
+                }
+            }
+        }
+        return ItemStack.EMPTY;
     }
     public static ItemStack findItemWithClass(Player player, Class<? extends Item> itemClass) {
         IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);

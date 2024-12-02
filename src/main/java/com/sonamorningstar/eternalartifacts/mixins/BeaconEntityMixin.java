@@ -2,7 +2,8 @@ package com.sonamorningstar.eternalartifacts.mixins;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
@@ -15,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BeaconBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -46,8 +46,8 @@ public abstract class BeaconEntityMixin {
     @Unique
     private static boolean eternal_Artifacts_Neoforge$findFeather(Player player, int ticks){
         MagicFeatherItem feather = (MagicFeatherItem) ModItems.MAGIC_FEATHER.get();
-        PlayerCharmsStorage charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
-        if(PlayerHelper.findItem(player, feather) || charms.contains(feather)) {
+        CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
+        if(!PlayerCharmManager.findInPlayer(player, feather).isEmpty()) {
             MagicFeatherItem.activeTicks = Pair.of(true, ticks);
             return true;
         }else {

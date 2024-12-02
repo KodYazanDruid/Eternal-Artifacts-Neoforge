@@ -2,6 +2,7 @@
   "values": [
     "eternalartifacts:knapsack",
     "eternalartifacts:tank_knapsack",
-    "eternalartifacts:ender_knapsack"
+    "eternalartifacts:ender_knapsack",
+    "minecraft:elytra"
   ]
 }

@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModInventoryTabs;
@@ -24,7 +24,7 @@ public class CrafterTab extends AbstractInventoryTab {
         return new CraftingMenu(id, inv, ContainerLevelAccess.create(player.level(), player.blockPosition())){
             @Override
             public boolean stillValid(Player player) {
-                PlayerCharmsStorage charms = player.getData(ModDataAttachments.PLAYER_CHARMS);
+                CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
                 return !player.isDeadOrDying() && charms.contains(ModItems.PORTABLE_CRAFTER.get());
             }
         };

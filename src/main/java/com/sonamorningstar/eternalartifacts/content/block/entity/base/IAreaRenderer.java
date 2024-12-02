@@ -5,5 +5,5 @@ import net.minecraft.world.phys.AABB;
 public interface IAreaRenderer {
     boolean shouldRender();
 
-    AABB getRenderBoundingBox();
+    AABB getBoundingBox();
 }

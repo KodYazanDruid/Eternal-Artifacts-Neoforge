@@ -54,7 +54,7 @@ public class PortableCrafterItem extends ArtifactItem{
             pplayer.openMenu(new SimpleMenuProvider((id, slots, player) -> new CraftingMenu(id, slots, ContainerLevelAccess.create(player.level(), player.blockPosition())) {
                 @Override
                 public boolean stillValid(Player pPlayer) {
-                    return PlayerHelper.findItem(pPlayer, PortableCrafterItem.this);
+                    return !PlayerHelper.findItem(pPlayer, PortableCrafterItem.this).isEmpty();
                 }
             }, Component.translatable("container.crafting")));
             pplayer.awardStat(Stats.INTERACT_WITH_CRAFTING_TABLE);

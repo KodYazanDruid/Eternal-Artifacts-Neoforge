@@ -49,9 +49,9 @@ public class ModBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        saveSynced(pTag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        saveSynced(tag);
     }
 
     public void sendUpdate(){

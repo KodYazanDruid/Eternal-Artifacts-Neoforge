@@ -23,6 +23,8 @@ public class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<DuckEntity>> DUCK = ENTITY_TYPES.register("duck",
             ()-> EntityType.Builder.of(DuckEntity::new, MobCategory.CREATURE).sized(0.4f, 0.7f).clientTrackingRange(10).build("duck"));
+public static final DeferredHolder<EntityType<?>, EntityType<ChargedSheepEntity>> CHARGED_SHEEP = ENTITY_TYPES.register("charged_sheep",
+            ()-> EntityType.Builder.of(ChargedSheepEntity::new, MobCategory.CREATURE).sized(0.9F, 1.3F).clientTrackingRange(10).build("charged_sheep"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<PrimedBlockEntity>> PRIMED_BLOCK = ENTITY_TYPES.register("primed_drum",
             ()-> EntityType.Builder.<PrimedBlockEntity>of(PrimedBlockEntity::new, MobCategory.MISC).fireImmune().sized(0.98f, 0.98f).clientTrackingRange(10).updateInterval(10).build("primed_drum"));

@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.data.loot;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
+import com.sonamorningstar.eternalartifacts.content.block.EnergyDockBlock;
 import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
+import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
@@ -84,6 +86,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.TEMPERED_GLASS.get());
         dropPottedContents(ModBlocks.POTTED_TIGRIS.get());
         dropSelf(ModBlocks.DEMON_BLOCK.get());
+        add(ModBlocks.ENERGY_DOCK.get(), createSinglePropConditionTable(ModBlocks.ENERGY_DOCK.get(), EnergyDockBlock.DOCK_PART, DockPart.CENTER));
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);

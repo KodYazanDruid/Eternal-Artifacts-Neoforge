@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
-import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IButtonHolder;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
@@ -32,7 +32,6 @@ import java.util.function.Consumer;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implements IAreaRenderer, IButtonHolder {
-    private final Map<Integer, Consumer<Integer>> buttonConsumerMap = new HashMap<>();
 
     public MobLiquifierBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
@@ -44,8 +43,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
                 createBasicTank(8000, true, false)
         ));
         screenInfo.setOverrideArrowPos(true);
-        screenInfo.setArrowX(110);
-        screenInfo.setArrowY(35);
+        screenInfo.setArrowPos(110, 35);
         screenInfo.setTankPosition(24, 20, 0);
         screenInfo.setTankPosition(44, 20, 1);
         screenInfo.setTankPosition(64, 20, 2);
@@ -54,7 +52,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, (b, i) -> {
             switchRender();
         });
-        buttonConsumerMap.put(0, i -> switchRender());
+        //buttonConsumerMap.put(0, i -> switchRender());
     }
     List<LivingEntity> livingList = new ArrayList<>();
     RecipeCache<MobLiquifierRecipe, SimpleEntityContainer> cache = new RecipeCache<>();
@@ -76,13 +74,8 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
     }
 
     @Override
-    public AABB getRenderBoundingBox() {
+    public AABB getBoundingBox() {
         return getWorkingArea(getBlockPos(), getBlockState());
-    }
-
-    @Override
-    public Map<Integer, Consumer<Integer>> buttonConsumerMap() {
-        return buttonConsumerMap;
     }
 
     @Override

@@ -32,6 +32,12 @@ public class TigrisFlowerBlock extends FlowerBlock {
     }
 
     @Override
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        level.invalidateCapabilities(pos);
+        super.onRemove(state, level, pos, newState, movedByPiston);
+    }
+
+    @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (itemStack.getCapability(Capabilities.FluidHandler.ITEM) == null) return InteractionResult.PASS;

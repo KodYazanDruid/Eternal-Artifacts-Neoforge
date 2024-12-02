@@ -1,21 +1,20 @@
 package com.sonamorningstar.eternalartifacts.capabilities.item;
 
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import lombok.Getter;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,18 +23,18 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 @Getter
-public class PlayerCharmsStorage extends ItemStackHandler {
+public class CharmStorage extends ItemStackHandler {
     private final List<Consumer<Integer>> listeners = new ArrayList<>();
-    private final Player player;
+    private final Player owner;
     public static final Map<Integer, CharmType> slotTypes = new HashMap<>(12);
 
-    public PlayerCharmsStorage(Player player) {
+    public CharmStorage(IAttachmentHolder holder) {
         super(12);
-        this.player = player;
+        this.owner = (Player) holder;
     }
 
-    public static PlayerCharmsStorage get(Player player) {
-        return player.getData(ModDataAttachments.PLAYER_CHARMS);
+    public static CharmStorage get(LivingEntity living) {
+        return living.getData(ModDataAttachments.CHARMS);
     }
 
     @Override
@@ -46,7 +45,9 @@ public class PlayerCharmsStorage extends ItemStackHandler {
 
     @Override
     protected void onContentsChanged(int slot) {
-        syncSelfAndTracking();
+        if (owner != null && !owner.level().isClientSide) {
+            syncSelf();
+        }
         listeners.forEach(listener -> listener.accept(slot));
     }
 
@@ -55,14 +56,20 @@ public class PlayerCharmsStorage extends ItemStackHandler {
     }
 
     public void syncSelf() {
+        if (owner instanceof ServerPlayer sp && Config.CHARMS_ENABLED.getAsBoolean()) {
+            Channel.sendToPlayer(new UpdateCharmsToClient(sp.getId(), this.stacks), sp);
+        }
+    }
+
+    public void syncFor(Player player) {
         if (player instanceof ServerPlayer sp && Config.CHARMS_ENABLED.getAsBoolean()) {
-            Channel.sendToPlayer(new UpdateCharmsToClient(player.getId(), this.stacks), sp);
+            Channel.sendToPlayer(new UpdateCharmsToClient(sp.getId(), this.stacks), sp);
         }
     }
 
     public void syncSelfAndTracking() {
-        if (player instanceof ServerPlayer && Config.CHARMS_ENABLED.getAsBoolean()) {
-            Channel.sendToSelfAndTracking(new UpdateCharmsToClient(player.getId(), this.stacks), player);
+        if (owner instanceof ServerPlayer sp && Config.CHARMS_ENABLED.getAsBoolean()) {
+            Channel.sendToSelfAndTracking(new UpdateCharmsToClient(sp.getId(), this.stacks), sp);
         }
     }
 
@@ -72,13 +79,16 @@ public class PlayerCharmsStorage extends ItemStackHandler {
         }
         return false;
     }
-
-    public NonNullList<ItemStack> getStacks() {
-        return this.stacks;
+    public boolean containsStack(ItemStack stack) {
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack s = getStackInSlot(i);
+            if (ItemStack.isSameItemSameTags(stack, s)) return true;
+        }
+        return false;
     }
 
-    public void setStacks(NonNullList<ItemStack> stacks) {
-        this.stacks = stacks;
+    public NonNullList<ItemStack> getStacks() {
+        return stacks;
     }
 
     public enum CharmType {

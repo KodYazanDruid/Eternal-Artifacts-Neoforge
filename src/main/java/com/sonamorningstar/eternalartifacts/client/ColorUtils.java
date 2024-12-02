@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.client;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-public class ColorTinter {
+public class ColorUtils {
 
     public static int getColorFromNBT(ItemStack stack, int tintIndex) {
         CompoundTag nbt = stack.getTag();

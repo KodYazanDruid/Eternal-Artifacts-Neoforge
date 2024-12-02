@@ -11,6 +11,8 @@
     "eternalartifacts:copper_drum",
     "eternalartifacts:iron_drum",
     "eternalartifacts:asphalt_block",
+    "eternalartifacts:copper_cable",
+    "eternalartifacts:covered_copper_cable",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -21,6 +23,8 @@
     "eternalartifacts:alloy_smelter",
     "eternalartifacts:solidifier",
     "eternalartifacts:compressor",
+    "eternalartifacts:advanced_crafter",
+    "eternalartifacts:electric_furnace",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:induction_furnace"
   ]

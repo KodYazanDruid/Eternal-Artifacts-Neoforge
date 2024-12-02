@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"texture_size": [32, 32],
+	"render_type": "minecraft:translucent",
 	"textures": {
 		"0": "eternalartifacts:item/light_saber",
 		"particle": "eternalartifacts:item/light_saber"

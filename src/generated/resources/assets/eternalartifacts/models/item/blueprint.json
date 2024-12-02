@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "eternalartifacts:item/blueprint_filled",
+      "predicate": {
+        "eternalartifacts:filled": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "eternalartifacts:item/blueprint"
+  }
+}

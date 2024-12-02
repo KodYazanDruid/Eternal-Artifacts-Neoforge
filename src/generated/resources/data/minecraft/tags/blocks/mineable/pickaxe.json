@@ -49,6 +49,9 @@
     "eternalartifacts:ice_brick_stairs",
     "eternalartifacts:ice_brick_wall",
     "eternalartifacts:ice_brick_slab",
+    "eternalartifacts:copper_cable",
+    "eternalartifacts:covered_copper_cable",
+    "eternalartifacts:energy_dock",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -59,6 +62,8 @@
     "eternalartifacts:alloy_smelter",
     "eternalartifacts:solidifier",
     "eternalartifacts:compressor",
+    "eternalartifacts:advanced_crafter",
+    "eternalartifacts:electric_furnace",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:induction_furnace"
   ]

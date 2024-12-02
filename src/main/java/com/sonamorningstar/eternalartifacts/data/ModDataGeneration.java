@@ -44,6 +44,7 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeServer(), new RecipeProvider(packOutput));
         dataGenerator.addProvider(event.includeServer(), new DataMapProvider(packOutput, lookupProvider));
         dataGenerator.addProvider(event.includeServer(), new PaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        dataGenerator.addProvider(event.includeServer(), new SpellTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         DatapackBuiltinEntriesProvider datapackProv = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider);
         CompletableFuture<HolderLookup.Provider> datapackLookupProv = datapackProv.getRegistryProvider();

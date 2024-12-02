@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -25,8 +24,8 @@ public class MeatPackerCategory extends BasicEmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgets) {
         widgets.addSlot(EmiIngredient.of(ModTags.Fluids.MEAT).setAmount(250), 0, 0);
-        widgets.addFillingArrow(49, 0, 10000);
-        widgets.addSlot(EmiStack.of(ModItems.RAW_MEAT_INGOT), 94, 0).recipeContext(this);
+        widgets.addFillingArrow(24, 0, 10000);
+        widgets.addSlot(EmiStack.of(ModItems.RAW_MEAT_INGOT), 54, 0).recipeContext(this);
     }
 
     @Override

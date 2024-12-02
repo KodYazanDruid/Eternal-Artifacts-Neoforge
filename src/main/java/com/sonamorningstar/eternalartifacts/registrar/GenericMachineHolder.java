@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;

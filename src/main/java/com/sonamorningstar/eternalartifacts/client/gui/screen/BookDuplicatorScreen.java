@@ -26,7 +26,7 @@ public class BookDuplicatorScreen extends AbstractSidedMachineScreen<BookDuplica
         IItemHandler inventory = menu.getBlockEntity().getLevel().getCapability(Capabilities.ItemHandler.BLOCK, menu.getBlockEntity().getBlockPos(), null);
 
         if(inventory != null && inventory.getStackInSlot(2).isEmpty())
-        //Cycle between book and book and quill.
+        //Cycle between stack and stack and quill.
         ItemRendererHelper.renderFakeItemTransparent(gui.pose(), Items.BOOK.getDefaultInstance(), x + 80, y + 26, 96);
 
     }

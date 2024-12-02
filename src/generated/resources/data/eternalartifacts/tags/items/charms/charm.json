@@ -2,6 +2,11 @@
   "values": [
     "eternalartifacts:battery",
     "eternalartifacts:magic_feather",
-    "eternalartifacts:portable_crafter"
+    "eternalartifacts:portable_crafter",
+    "eternalartifacts:holy_dagger",
+    "eternalartifacts:encumbator",
+    "eternalartifacts:medkit",
+    "minecraft:rabbit_foot",
+    "minecraft:cod"
   ]
 }

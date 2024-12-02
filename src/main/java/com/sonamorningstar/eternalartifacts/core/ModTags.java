@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
+import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -90,6 +92,24 @@ public class ModTags {
 
         private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }
+    }
+
+    public static class Spells {
+
+        public static final TagKey<Spell> FIRE = forgeTag("fire");
+        public static final TagKey<Spell> LIGHTNING = forgeTag("lightning");
+        public static final TagKey<Spell> EARTH = forgeTag("earth");
+        public static final TagKey<Spell> WATER = forgeTag("water");
+        public static final TagKey<Spell> AIR = forgeTag("air");
+        public static final TagKey<Spell> ARCANE = forgeTag("arcane");
+        public static final TagKey<Spell> HOLY = forgeTag("holy");
+        public static final TagKey<Spell> NATURE = forgeTag("nature");
+        public static final TagKey<Spell> SHADOW = forgeTag("shadow");
+        public static final TagKey<Spell> VOID = forgeTag("void");
+
+
+        private static TagKey<Spell> forgeTag(String name) { return TagKey.create(ModRegistries.Keys.SPELL, new ResourceLocation("forge", name)); }
+        private static TagKey<Spell> modTag(String name) { return TagKey.create(ModRegistries.Keys.SPELL, new ResourceLocation(MODID, name)); }
     }
 
     public static class Biomes {

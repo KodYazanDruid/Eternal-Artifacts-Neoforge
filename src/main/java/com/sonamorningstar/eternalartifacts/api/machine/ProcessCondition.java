@@ -161,6 +161,12 @@ public class ProcessCondition {
         }
         return this;
     }
+    public ProcessCondition createCustomCondition(BooleanSupplier custom) {
+        if (supplier == null || !supplier.getAsBoolean()) {
+            supplier = custom;
+        }
+        return this;
+    }
     //endregion
 
     public static BooleanSupplier noCondition() { return () -> false; }

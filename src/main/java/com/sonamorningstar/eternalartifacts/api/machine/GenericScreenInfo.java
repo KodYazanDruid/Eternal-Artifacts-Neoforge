@@ -5,7 +5,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.records.ComponentInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
-import com.sonamorningstar.eternalartifacts.content.block.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -19,22 +19,27 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 @Getter
-@Setter
 @RequiredArgsConstructor
 public class GenericScreenInfo {
     private final GenericMachineBlockEntity machine;
-
     private int arrowXOffset = 0;
     private int arrowYOffset = 0;
+    @Setter
     private int imageWidth = 176;
+    @Setter
     private int imageHeight = 166;
     private int arrowX = 0;
     private int arrowY = 0;
 
+    @Setter
     private boolean shouldBindSlots = true;
+    @Setter
     private boolean overrideArrowPos = false;
+    @Setter
     private boolean shouldDrawArrow = true;
+    @Setter
     private boolean shouldDrawMachineTitle = true;
+    @Setter
     private boolean shouldDrawInventoryTitle = true;
 
     private final Map<AbstractFluidTank, Pair<Integer, Integer>> tankPositions = new HashMap<>();
@@ -50,8 +55,17 @@ public class GenericScreenInfo {
         tankPositions.put(tank, Pair.of(x, y));
     }
     public void setArrowPos(int x, int y) {
-        setArrowX(x);
-        setArrowY(y);
+        overrideArrowPos = true;
+        this.arrowX = x;
+        this.arrowY = y;
+    }
+    public void setArrowXOffset(int x) {
+        overrideArrowPos = false;
+        arrowXOffset = x;
+    }
+    public void setArrowYOffset(int y) {
+        overrideArrowPos = false;
+        arrowYOffset = y;
     }
 
     public void attachTankToLeft(int tankNo) {
@@ -63,6 +77,7 @@ public class GenericScreenInfo {
     }
 
     public void setSlotPosition(int x, int y, int slot) {
+        shouldBindSlots = false;
         slotPositions.put(slot, Pair.of(x, y));
     }
 
@@ -74,9 +89,11 @@ public class GenericScreenInfo {
     }
 
     public void addButton(String sprite, int x, int y, int width, int height, BiConsumer<SpriteButton, Integer> onPress) {
+        machine.getButtonConsumerMap().put(buttons.size(), i -> onPress.accept(null, i));
         buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(sprite), onPress));
     }
     public void addButton(String namespace, String sprite, int x, int y, int width, int height, BiConsumer<SpriteButton, Integer> onPress) {
+        machine.getButtonConsumerMap().put(buttons.size(), i -> onPress.accept(null, i));
         buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(namespace, sprite), onPress));
     }
 }

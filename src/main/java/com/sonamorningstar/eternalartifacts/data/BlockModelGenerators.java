@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -45,9 +46,10 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
         createBluePlasticCauldron(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), new ResourceLocation(MODID, "block/blue_plastic"));
 
-        blockEntityModels(ModBlocks.JAR.get(), Blocks.GLASS).create(ModBlocks.JAR.get());
-        blockEntityModels(ModBlocks.NOUS_TANK.get(), Blocks.GLASS).create(ModBlocks.NOUS_TANK.get());
-        blockEntityModels(ModMachines.OIL_REFINERY.getBlock(), Blocks.GLASS).create(ModMachines.OIL_REFINERY.getBlock());
+        createForParticle(ModBlocks.JAR, Blocks.GLASS);
+        createForParticle(ModBlocks.NOUS_TANK, Blocks.GLASS);
+        createForParticle(ModMachines.OIL_REFINERY.getBlockHolder(), Blocks.GLASS);
+        createForParticle(ModBlocks.ENERGY_DOCK, new ResourceLocation(MODID, "block/machine_side"));
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 
@@ -63,7 +65,7 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
 
     }
-
+    //region Functions for block models...
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {
         stateOutput
             .accept(
@@ -187,8 +189,15 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                     .with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
             );
     }
-
+    //endregion
     void createSimpleFlatItemModel(Item item) {
         ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), modelOutput);
+    }
+
+    private void createForParticle(DeferredHolder<Block, ? extends Block> holder, Block particle) {
+        createForParticle(holder, ModelLocationUtils.getModelLocation(particle));
+    }
+    private void createForParticle(DeferredHolder<Block, ? extends Block> holder, ResourceLocation particle) {
+        stateOutput.accept(createSimpleBlock(holder.get(), ModelTemplates.PARTICLE_ONLY.create(holder.get(), TextureMapping.particle(particle), modelOutput)));
     }
 }

@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -23,7 +22,7 @@ public class MeatShredderCategory extends BasicEmiRecipe {
     @Override
     public void addWidgets(WidgetHolder widgets) {
         widgets.addSlot(inputs.get(0), 0, 0);
-        widgets.addFillingArrow(49, 0, 10000);
-        widgets.addSlot(outputs.get(0).setAmount(outputs.get(0).getAmount()), 94, 0).recipeContext(this);
+        widgets.addFillingArrow(24, 0, 10000);
+        widgets.addSlot(outputs.get(0).setAmount(outputs.get(0).getAmount()), 54, 0).recipeContext(this);
     }
 }

@@ -95,11 +95,13 @@ public class ModItems {
     public static final DeferredItem<Item> FLOUR = register("flour");
     public static final DeferredItem<Item> DOUGH = register("dough");
     public static final DeferredItem<Item> BANANA_BREAD = register("banana_bread", p -> new Item(p.food(ModFoods.BANANA_BREAD)));
+    public static final DeferredItem<Item> BLUEPRINT = register("blueprint", BlueprintItem::new);
 
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
     public static final DeferredItem<DeferredSpawnEggItem> MAGICAL_BOOK_SPAWN_EGG = registerSpawnEgg("magical_book_spawn_egg", ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802);
     public static final DeferredItem<DeferredSpawnEggItem> DUCK_SPAWN_EGG = registerSpawnEgg("duck_spawn_egg", ModEntities.DUCK, 0x126700, 0xF2691B);
+    public static final DeferredItem<DeferredSpawnEggItem> CHARGED_SHEEP_SPAWN_EGG = registerSpawnEgg("charged_sheep_spawn_egg", ModEntities.CHARGED_SHEEP, 0XF8D0FF, 0xFFA1D7);
 
     //Actual artifacts.
     public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger", HolyDaggerItem::new);
@@ -191,10 +193,10 @@ public class ModItems {
     }
 
     private static <S extends Spell> DeferredItem<SpellTomeItem<S>> registerTome(String name, DeferredHolder<Spell, S> spellHolder) {
-        return register(name, () -> new SpellTomeItem<>(spellHolder, new Item.Properties()));
+        return register(name, () -> new SpellTomeItem<>(spellHolder, new Item.Properties().stacksTo(1)));
     }
     private static <S extends Spell> DeferredItem<AnimatedSpellTomeItem<S>> registerAnimatedTome(String name, DeferredHolder<Spell, S> spellHolder) {
-        return register(name, () -> new AnimatedSpellTomeItem<>(spellHolder, new Item.Properties()));
+        return register(name, () -> new AnimatedSpellTomeItem<>(spellHolder, new Item.Properties().stacksTo(1)));
     }
     //endregion
 }

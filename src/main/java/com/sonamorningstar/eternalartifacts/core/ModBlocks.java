@@ -140,6 +140,8 @@ public class ModBlocks {
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
             ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties().forceSolidOn(), 128));
+    public static final DeferredBlock<EnergyDockBlock> ENERGY_DOCK = registerWithBewlr("energy_dock",
+            ()-> new EnergyDockBlock(Blocks.DEEPSLATE.properties().forceSolidOn()));
 
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);

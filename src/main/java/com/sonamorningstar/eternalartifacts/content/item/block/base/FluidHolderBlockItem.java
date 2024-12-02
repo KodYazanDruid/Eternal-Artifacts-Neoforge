@@ -112,4 +112,17 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
             }
         });
     }
+
+    @Override
+    public boolean hasCraftingRemainingItem(ItemStack stack) {
+        return FluidUtil.getFluidContained(stack).map((fs) -> !fs.isEmpty()).orElse(false);
+    }
+
+    @Override
+    public ItemStack getCraftingRemainingItem(ItemStack itemStack) {
+        return FluidUtil.getFluidHandler(itemStack.copy()).map((handler) -> {
+            handler.drain(1000, IFluidHandler.FluidAction.EXECUTE);
+            return handler.getContainer();
+        }).orElseThrow(RuntimeException::new);
+    }
 }

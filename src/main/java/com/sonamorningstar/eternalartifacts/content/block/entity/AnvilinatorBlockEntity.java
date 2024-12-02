@@ -269,7 +269,7 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         if(!onAnvilatorChance(anvilUpdateEvent)) return;
 
         if(!input.isEmpty() && secondary.is(Items.ENCHANTED_BOOK) && !combineEnchants(input, secondary).isEmpty()) {
-            //Transferring enchants from book. Combining books.
+            //Transferring enchants from stack. Combining books.
             progressAndCraft(input, secondary, combineEnchants(input, secondary));
 
         }else if(input.isDamageableItem() && input.getItem().isValidRepairItem(input, secondary)) {

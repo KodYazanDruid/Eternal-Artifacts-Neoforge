@@ -19,7 +19,7 @@ public class EvokerFangsSpell extends Spell {
     }
 
     @Override
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster) {
+    public boolean cast(ItemStack stack, Level level, LivingEntity caster, float amplifiedDamage) {
         if (!(caster instanceof Player) || (caster instanceof Player player && !player.getCooldowns().isOnCooldown(stack.getItem()))){
             Vec3 looking = caster.getLookAngle();
             Vec3[] all = new Vec3[]{looking, looking.yRot(0.22f), looking.yRot(-0.22f)};

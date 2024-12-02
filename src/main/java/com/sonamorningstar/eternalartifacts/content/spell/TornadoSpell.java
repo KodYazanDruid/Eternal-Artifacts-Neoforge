@@ -16,12 +16,11 @@ public class TornadoSpell extends Spell {
     }
 
     @Override
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster) {
+    public boolean cast(ItemStack stack, Level level, LivingEntity caster, float amplifiedDamage) {
         BlockHitResult result = RayTraceHelper.retrace(caster, ClipContext.Fluid.NONE);
-
         Vec3 casterPos = caster.position();
         Vec3 shootVector = caster.getEyePosition().vectorTo(result.getLocation());
-        Tornado tornado = new Tornado(level, caster, shootVector.x, shootVector.y, shootVector.z, applySpellDamage(caster, 2.0F));
+        Tornado tornado = new Tornado(level, caster, shootVector.x, shootVector.y, shootVector.z, amplifiedDamage);
         tornado.setPos(casterPos.x, casterPos.y, casterPos.z);
         level.addFreshEntity(tornado);
         return true;

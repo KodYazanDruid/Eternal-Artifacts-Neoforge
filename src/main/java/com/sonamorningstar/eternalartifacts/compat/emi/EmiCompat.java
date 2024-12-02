@@ -4,7 +4,6 @@ import com.sonamorningstar.eternalartifacts.compat.emi.categories.MaceratingCate
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatPackerCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatShredderCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MobLiquifierCategory;
-import com.sonamorningstar.eternalartifacts.compat.emi.categories.base.BasicCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MaceratingRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
@@ -15,13 +14,12 @@ import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
-import dev.emi.emi.api.stack.EmiIngredient;
+import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
@@ -41,6 +39,7 @@ public class EmiCompat implements EmiPlugin {
         registry.addCategory(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY);
         registry.addCategory(MaceratingCategory.MACERATING_CATEGORY);
 
+        registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModMachines.ADVANCED_CRAFTER.getItem()));
         registry.addWorkstation(MeatPackerCategory.MEAT_PACKER_CATEGORY, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
         registry.addWorkstation(MeatShredderCategory.MEAT_SHREDDER_CATEGORY, EmiStack.of(ModMachines.MEAT_SHREDDER.getItem()));
         registry.addWorkstation(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY, EmiStack.of(ModMachines.MOB_LIQUIFIER.getItem()));

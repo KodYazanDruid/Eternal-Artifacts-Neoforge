@@ -77,6 +77,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         ModBlockFamilies.OBSIDIAN_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "diamond", "pickaxe"));
         ModBlockFamilies.SNOW_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
         ModBlockFamilies.ICE_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
+        tierAndTool(ModBlocks.COPPER_CABLE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.COVERED_COPPER_CABLE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.ENERGY_DOCK.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),

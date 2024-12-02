@@ -85,7 +85,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
                     }
                 }
             }
-            //Written book copy stuff.
+            //Written stack copy stuff.
         } else if (inputBook.getItem() == Items.WRITTEN_BOOK &&
                     consumableBook.getItem() == Items.WRITABLE_BOOK &&
                     output.isEmpty() &&

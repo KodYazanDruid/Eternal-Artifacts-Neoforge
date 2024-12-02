@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.ItemStackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Warp;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.WarpPageHandler;
@@ -15,7 +16,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -35,14 +35,11 @@ import java.util.function.Function;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class EnderNotebookScreen extends Screen {
+public class EnderNotebookScreen extends ItemStackScreen {
     public static final ResourceLocation background = new ResourceLocation(MODID, "textures/gui/ender_notebook.png");
     public static final ResourceLocation buttons = new ResourceLocation(MODID, "textures/gui/buttons.png");
     private final WarpPageHandler pageHandler;
     private final int maxWarpAmount;
-    private final ItemStack notebook;
-    int x;
-    int y;
     int margin = 20;
     int textColor = 16777215;
     private EditBox name;
@@ -51,19 +48,19 @@ public class EnderNotebookScreen extends Screen {
     private boolean isRenaming = false;
     private int renamingWarpIndex;
     public EnderNotebookScreen(ItemStack notebook) {
-        super(notebook.getDisplayName());
-        this.notebook = notebook;
+        super(notebook);
         this.pageHandler = new WarpPageHandler(readWarps(notebook), 8);
         this.maxWarpAmount = EnderNotebookItem.calculateMaxWarpAmount(notebook);
     }
 
     @Override
     protected void init() {
-        x = (width - 192) / 2;
-        y = (height - 256) / 2;
+        imageWidth = 192;
+        imageHeight = 256;
+        super.init();
         addWarpButton = Button.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("add_warp"), this::addWarpPress)
-                .bounds(x + 107, y + 196, 85, 20).build();
-        name = new EditBox(font, x + 5, y + 196, 100, 20, Component.empty());
+                .bounds(leftPos + 107, topPos + 196, 85, 20).build();
+        name = new EditBox(font, leftPos + 5, topPos + 196, 100, 20, Component.empty());
         name.setMaxLength(20);
         name.setCanLoseFocus(true);
         addRenderableWidget(name);
@@ -72,22 +69,21 @@ public class EnderNotebookScreen extends Screen {
         generateTurningButtons(this::addRenderableWidget);
     }
 
-    @Override
-    public boolean isPauseScreen() { return false; }
-
     //region Render stuff
+    @Override
+    public void renderLabel(GuiGraphics gui) {}
     @Override
     public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
-        x = (width - 192) / 2;
-        y = (height - 256) / 2;
-        guiGraphics.blit(background, x, y, 0, 0, 192, 192);
+        leftPos = (width - 192) / 2;
+        topPos = (height - 256) / 2;
+        guiGraphics.blit(background, leftPos, topPos, 0, 0, 192, 192);
     }
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        guiGraphics.drawString(font, ModConstants.WARPS.translatable().append(String.valueOf(pageHandler.getWarpList().size())).append("/"+maxWarpAmount), x + 13, y + 171, textColor);
-        if (isRenaming) guiGraphics.drawString(font, ModConstants.GUI.withSuffixTranslatable("renaming").append(" #"+(renamingWarpIndex+1)), x + 5, y + 220, textColor);
+        guiGraphics.drawString(font, ModConstants.WARPS.translatable().append(String.valueOf(pageHandler.getWarpList().size())).append("/"+maxWarpAmount), leftPos + 13, topPos + 171, textColor);
+        if (isRenaming) guiGraphics.drawString(font, ModConstants.GUI.withSuffixTranslatable("renaming").append(" #"+(renamingWarpIndex+1)), leftPos + 5, topPos + 220, textColor);
 
         renderWarpInfo(guiGraphics);
     }
@@ -98,8 +94,8 @@ public class EnderNotebookScreen extends Screen {
             String prettyName = TooltipHelper.prettyName(warp.getDimension().location().getPath());
             BlockPos pos = warp.getPosition();
             Component info = Component.literal(prettyName).append(" ").append(pos.getX() + " " + pos.getY() + " " + pos.getZ());
-            gui.drawString(font, warp.getLabel(), x + 16, y + 12 + (margin * i), textColor);
-            gui.drawString(font, info, x + 16, y + 20 + (margin * i), textColor);
+            gui.drawString(font, warp.getLabel(), leftPos + 16, topPos + 12 + (margin * i), textColor);
+            gui.drawString(font, info, leftPos + 16, topPos + 20 + (margin * i), textColor);
         }
     }
     //endregion
@@ -124,7 +120,7 @@ public class EnderNotebookScreen extends Screen {
     private void renameWarpButton(Button button) {
         Warp warp = pageHandler.getWarp(renamingWarpIndex);
         warp.setLabel(name.getValue());
-        Channel.sendToServer(new EnderNotebookRenameWarpToServer(renamingWarpIndex, notebook, name.getValue()));
+        Channel.sendToServer(new EnderNotebookRenameWarpToServer(renamingWarpIndex, stack, name.getValue()));
         resetRenamingState();
     }
     private void resetRenamingState() {
@@ -150,17 +146,17 @@ public class EnderNotebookScreen extends Screen {
             Warp warp = currentWarps.get(i);
             SpriteButton teleport = warp.getTeleportButton();
             SpriteButton rename = SpriteButton.builder(Component.empty(), (button, key) -> rename(button, key, pageHandler.getWarpList().indexOf(warp)))
-                    .bounds(x + 142, y + 11 + (margin * i), 18, 18)
+                    .bounds(leftPos + 142, topPos + 11 + (margin * i), 18, 18)
                     .addSprite(buttons, 0, 16, 18, 18)
                     .addTooltipHover(ModConstants.GUI.withSuffixTranslatable("rename_warp")).build();
             SpriteButton delete = warp.getDeleteButton();
 
             teleport.setSize(129, 18);
-            teleport.setPosition(x + 13, y + 11 + (margin * i));
+            teleport.setPosition(leftPos + 13, topPos + 11 + (margin * i));
             teleport.setAlpha(0.5F);
             teleport.setTextures(new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png"));
             delete.setSize(18, 18);
-            delete.setPosition(x + 160, y + 11 + (margin * i));
+            delete.setPosition(leftPos + 160, topPos + 11 + (margin * i));
             delete.setTextures(new ResourceLocation(MODID, "textures/gui/sprites/blank_red.png"), new ResourceLocation(MODID, "textures/gui/sprites/trash_can.png"));
             warp.deleteLogic = (a, b) -> removeWarp(warp);
             func.apply(teleport);
@@ -168,15 +164,15 @@ public class EnderNotebookScreen extends Screen {
             func.apply(delete);
         }
         renameWarpButton = Button.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("rename_warp"), this::renameWarpButton)
-                .bounds(x + 107, y + 196, 85, 20).build();
+                .bounds(leftPos + 107, topPos + 196, 85, 20).build();
         renameWarpButton.visible = false;
         func.apply(renameWarpButton);
     }
     private void generateTurningButtons(Function<SpriteButton, ?> fun) {
         SpriteButton rightArrow = SpriteButton.builder(Component.empty(), this::turnRight, new ResourceLocation(MODID, "textures/gui/sprites/right_arrow.png"))
-                .size(16, 9).pos(x + 160, y + 175).build();
+                .size(16, 9).pos(leftPos + 160, topPos + 175).build();
         SpriteButton leftArrow = SpriteButton.builder(Component.empty(), this::turnLeft, new ResourceLocation(MODID, "textures/gui/sprites/left_arrow.png")
-        ).size(16, 9).pos(x + 140, y + 175).build();
+        ).size(16, 9).pos(leftPos + 140, topPos + 175).build();
         rightArrow.visible = pageHandler.getPageSizeFloat() > pageHandler.getCurrentPage() + 1.0F;
         leftArrow.visible = pageHandler.getCurrentPage() > 0;
         fun.apply(rightArrow);
@@ -185,13 +181,13 @@ public class EnderNotebookScreen extends Screen {
     //endregion
     //region Add-Remove warp
     private void addWarp(Warp warp) {
-        Channel.sendToServer(new EnderNotebookAddNbtToServer(warp.getLabel(), warp.getDimension(), warp.getPosition(), notebook));
+        Channel.sendToServer(new EnderNotebookAddNbtToServer(warp.getLabel(), warp.getDimension(), warp.getPosition(), stack));
         pageHandler.addWarp(warp);
         rebuildWidgets();
     }
     private void removeWarp(Warp warp) {
         int index = pageHandler.getWarpList().indexOf(warp);
-        Channel.sendToServer(new EnderNotebookRemoveNbtToServer(index, notebook));
+        Channel.sendToServer(new EnderNotebookRemoveNbtToServer(index, stack));
         pageHandler.deleteWarp(warp);
         rebuildWidgets();
     }

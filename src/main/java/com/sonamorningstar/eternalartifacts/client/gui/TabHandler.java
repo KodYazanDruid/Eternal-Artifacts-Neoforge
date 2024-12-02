@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.capabilities.item.PlayerCharmsStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
@@ -53,13 +53,12 @@ public class TabHandler {
         activeTabs.clear();
         activeTabs.add(ModInventoryTabs.INVENTORY.get());
         activeTabs.add(ModInventoryTabs.CHARMS.get());
-        PlayerCharmsStorage charms = Minecraft.getInstance().player.getData(ModDataAttachments.PLAYER_CHARMS);
+        CharmStorage charms = Minecraft.getInstance().player.getData(ModDataAttachments.CHARMS);
         for (int i = 0; i < charms.getSlots(); i++) {
             ItemStack charm = charms.getStackInSlot(i);
             Item item = charm.getItem();
             TabType<?> tabType = tabHolders.get(item);
-            if (tabHolders.containsKey(item) && !activeTabs.contains(tabType))
-                activeTabs.add(tabType);
+            if (tabHolders.containsKey(item)) activeTabs.add(tabType);
         }
     }
 
