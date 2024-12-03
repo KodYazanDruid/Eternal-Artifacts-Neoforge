@@ -29,36 +29,7 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         outputSlots.add(2);
         outputSlots.add(3);
         setEnergy(createDefaultEnergy());
-        setInventory(new ModItemStorage(4) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                InductionFurnaceBlockEntity.this.sendUpdate();
-                if(!outputSlots.contains(slot)){
-                    //Find recipe for slot 0.
-                    if(slot == 0){
-                        blastingCache0.findRecipe(RecipeType.BLASTING, new SimpleContainer(inventory.getStackInSlot(0)), level);
-                        if (blastingCache0.getRecipe() == null) {
-                            smeltingCache0.findRecipe(RecipeType.SMELTING, new SimpleContainer(inventory.getStackInSlot(0)), level);
-                            if (smeltingCache0.getRecipe() == null) {
-                                smokingCache0.findRecipe(RecipeType.SMOKING, new SimpleContainer(inventory.getStackInSlot(0)), level);
-                            }
-                        }
-                    }
-                    //Find recipe for slot 1.
-                    if(slot == 1){
-                        blastingCache1.findRecipe(RecipeType.BLASTING, new SimpleContainer(inventory.getStackInSlot(1)), level);
-                        if (blastingCache1.getRecipe() == null) {
-                            smeltingCache1.findRecipe(RecipeType.SMELTING, new SimpleContainer(inventory.getStackInSlot(1)), level);
-                            if (smeltingCache1.getRecipe() == null) {
-                                smokingCache1.findRecipe(RecipeType.SMOKING, new SimpleContainer(inventory.getStackInSlot(1)), level);
-                            }
-                        }
-                    }
-                }
-            }
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {return !outputSlots.contains(slot);}
-        });
+        setInventory(createRecipeFinderInventory(4, outputSlots));
     }
 
     public HeatStorage heat = new HeatStorage(20000) {
@@ -84,22 +55,27 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        setMaxProgressForHeat();
-        //Find recipes for both slots on load.
-        blastingCache0.findRecipe(RecipeType.BLASTING, new SimpleContainer(inventory.getStackInSlot(0)), level);
+    protected void findRecipe() {
+        recipeCon0 = new SimpleContainer(inventory.getStackInSlot(0));
+        blastingCache0.findRecipe(RecipeType.BLASTING, recipeCon0, level);
         if (blastingCache0.getRecipe() == null) {
-            smeltingCache0.findRecipe(RecipeType.SMELTING, new SimpleContainer(inventory.getStackInSlot(0)), level);
-            if (smeltingCache0.getRecipe() == null) {
-                smokingCache0.findRecipe(RecipeType.SMOKING, new SimpleContainer(inventory.getStackInSlot(0)), level);
+            smokingCache0.findRecipe(RecipeType.SMOKING, recipeCon0, level);
+            if (smokingCache0.getRecipe() == null) {
+                campfireCookingCache0.findRecipe(RecipeType.CAMPFIRE_COOKING, recipeCon0, level);
+                if (campfireCookingCache0.getRecipe() == null) {
+                    smeltingCache0.findRecipe(RecipeType.SMELTING, recipeCon0, level);
+                }
             }
         }
-        blastingCache1.findRecipe(RecipeType.BLASTING, new SimpleContainer(inventory.getStackInSlot(1)), level);
+        recipeCon1 = new SimpleContainer(inventory.getStackInSlot(1));
+        blastingCache1.findRecipe(RecipeType.BLASTING, recipeCon1, level);
         if (blastingCache1.getRecipe() == null) {
-            smeltingCache1.findRecipe(RecipeType.SMELTING, new SimpleContainer(inventory.getStackInSlot(1)), level);
-            if (smeltingCache1.getRecipe() == null) {
-                smokingCache1.findRecipe(RecipeType.SMOKING, new SimpleContainer(inventory.getStackInSlot(1)), level);
+            smokingCache1.findRecipe(RecipeType.SMOKING, recipeCon1, level);
+            if (smokingCache1.getRecipe() == null) {
+                campfireCookingCache1.findRecipe(RecipeType.CAMPFIRE_COOKING, recipeCon1, level);
+                if (campfireCookingCache1.getRecipe() == null) {
+                    smeltingCache1.findRecipe(RecipeType.SMELTING, recipeCon1, level);
+                }
             }
         }
     }
@@ -116,14 +92,18 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     private final RecipeCache<BlastingRecipe, Container> blastingCache1 = new RecipeCache<>();
     private final RecipeCache<SmokingRecipe, Container> smokingCache0 = new RecipeCache<>();
     private final RecipeCache<SmokingRecipe, Container> smokingCache1 = new RecipeCache<>();
+    private final RecipeCache<CampfireCookingRecipe, Container> campfireCookingCache0 = new RecipeCache<>();
+    private final RecipeCache<CampfireCookingRecipe, Container> campfireCookingCache1 = new RecipeCache<>();
+    private SimpleContainer recipeCon0 = null;
+    private SimpleContainer recipeCon1 = null;
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInput(lvl, pos, inventory);
         performAutoOutput(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
 
-        Recipe<?> recipe0 = getValidRecipe(0);
-        Recipe<?> recipe1 = getValidRecipe(1);
+        Recipe<Container> recipe0 = getValidRecipe(0);
+        Recipe<Container> recipe1 = getValidRecipe(1);
 
         if (recipe0 == null && recipe1 == null) {
             progress = 0;
@@ -133,9 +113,19 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
                 .initInventory(inventory)
                 .initOutputSlots(outputSlots);
 
-        if (recipe0 != null) condition.queueItemStack(recipe0.getResultItem(lvl.registryAccess()));
-        if (recipe1 != null) condition.queueItemStack(recipe1.getResultItem(lvl.registryAccess()));
-        condition.commitQueuedItemStacks();
+        ItemStack resultItem0;
+        ItemStack resultItem1;
+        if (recipe0 != null) {
+            resultItem0 = recipe0.assemble(recipeCon0, lvl.registryAccess());
+            condition.queueItemStack(resultItem0);
+        } else resultItem0 = ItemStack.EMPTY;
+
+        if (recipe1 != null) {
+            resultItem1 = recipe1.assemble(recipeCon1, lvl.registryAccess());
+            condition.queueItemStack(resultItem1);
+        } else resultItem1 = ItemStack.EMPTY;
+
+        condition.commitQueuedItemStacks().createCustomCondition(() -> resultItem0.isEmpty() && resultItem1.isEmpty());
 
         setMaxProgressForHeat();
 
@@ -151,10 +141,10 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
             ItemStack remainder0 = ItemStack.EMPTY;
             ItemStack remainder1 = ItemStack.EMPTY;
             if (recipe0 != null) {
-                remainder0 = ItemHelper.insertItemStackedForced(inventory, recipe0.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
+                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0.copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
             }
             if (recipe1 != null) {
-                remainder1 = ItemHelper.insertItemStackedForced(inventory, recipe1.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
+                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1.copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
             }
             if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
             if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
@@ -187,17 +177,19 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         return false;
     }
 
-    private Recipe<?> getValidRecipe(int slot) {
+    private Recipe<Container> getValidRecipe(int slot) {
         switch (slot) {
             case 0 -> {
                 if (blastingCache0.getRecipe() != null) return blastingCache0.getRecipe();
-                else if(smeltingCache0.getRecipe() != null) return smeltingCache0.getRecipe();
                 else if(smokingCache0.getRecipe() != null) return smokingCache0.getRecipe();
+                else if(campfireCookingCache0.getRecipe() != null) return campfireCookingCache0.getRecipe();
+                else if(smeltingCache0.getRecipe() != null) return smeltingCache0.getRecipe();
             }
             case 1 -> {
                 if (blastingCache1.getRecipe() != null) return blastingCache1.getRecipe();
-                else if(smeltingCache1.getRecipe() != null) return smeltingCache1.getRecipe();
                 else if(smokingCache1.getRecipe() != null) return smokingCache1.getRecipe();
+                else if(campfireCookingCache1.getRecipe() != null) return campfireCookingCache1.getRecipe();
+                else if(smeltingCache1.getRecipe() != null) return smeltingCache1.getRecipe();
             }
         }
         return null;
