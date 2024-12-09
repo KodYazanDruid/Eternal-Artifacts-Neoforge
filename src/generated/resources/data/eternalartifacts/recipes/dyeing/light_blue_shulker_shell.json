@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:light_blue_dye"
+    },
+    "I": {
+      "tag": "eternalartifacts:shulker_shell"
+    }
+  },
+  "pattern": [
+    "III",
+    "IDI",
+    "III"
+  ],
+  "result": {
+    "count": 8,
+    "item": "eternalartifacts:light_blue_shulker_shell"
+  }
+}

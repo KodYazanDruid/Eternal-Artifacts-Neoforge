@@ -85,6 +85,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.STEEL_BLOCK.get());
         simpleBlockWithItemWithRenderType(ModBlocks.TEMPERED_GLASS.get(), "cutout");
         simpleBlockWithItem(ModBlocks.DEMON_BLOCK.get());
+        horizontalBlockWithItem(ModBlocks.SHOCK_ABSORBER);
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -154,6 +155,12 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 modLoc(siding))
             .texture("particle", modLoc(siding))), BlockStateProperties.HORIZONTAL_FACING);
         simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
+    }
+    private void horizontalBlockWithItem(DeferredHolder<Block, ? extends Block> holder) {
+        String name = holder.getId().getPath();
+        ModelFile model = models().cubeColumnHorizontal(name, modLoc("block/"+name+"_side"), modLoc("block/"+name+"_end"));
+        simpleBlock(holder.get(), model);
+        simpleBlockItem(holder.get(), model);
     }
 
     private void makeAncientCrop(CropBlock crop, String textureName) {

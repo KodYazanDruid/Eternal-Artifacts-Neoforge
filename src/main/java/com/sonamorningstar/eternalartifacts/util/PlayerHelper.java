@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
-import com.sonamorningstar.eternalartifacts.mixins_interfaces.ICharmProvider;
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +18,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -83,6 +81,10 @@ public class PlayerHelper {
                 .filter(stack -> itemClass.isInstance(stack.getItem()))
                 .collect(Collectors.toList())
         );
+    }
+
+    public static NonNullList<ItemStack> getPlayerItems(Player player) {
+        return player.getInventory().items;
     }
 
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {

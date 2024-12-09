@@ -132,6 +132,23 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CHISEL.get(),"Chisel");
                 add(ModItems.CHARGED_SHEEP_SPAWN_EGG.get(), "Charged Sheep Spawn Egg");
                 add(ModItems.BLUEPRINT.get(), "Blueprint");
+                add(ModItems.WHITE_SHULKER_SHELL.get(), "White Shulker Shell");
+                add(ModItems.ORANGE_SHULKER_SHELL.get(), "Orange Shulker Shell");
+                add(ModItems.MAGENTA_SHULKER_SHELL.get(), "Magenta Shulker Shell");
+                add(ModItems.LIGHT_BLUE_SHULKER_SHELL.get(), "Light Blue Shulker Shell");
+                add(ModItems.YELLOW_SHULKER_SHELL.get(), "Yellow Shulker Shell");
+                add(ModItems.LIME_SHULKER_SHELL.get(), "Lime Shulker Shell");
+                add(ModItems.PINK_SHULKER_SHELL.get(), "Pink Shulker Shell");
+                add(ModItems.GRAY_SHULKER_SHELL.get(), "Gray Shulker Shell");
+                add(ModItems.LIGHT_GRAY_SHULKER_SHELL.get(), "Light Gray Shulker Shell");
+                add(ModItems.CYAN_SHULKER_SHELL.get(), "Cyan Shulker Shell");
+                add(ModItems.PURPLE_SHULKER_SHELL.get(), "Purple Shulker Shell");
+                add(ModItems.BLUE_SHULKER_SHELL.get(), "Blue Shulker Shell");
+                add(ModItems.BROWN_SHULKER_SHELL.get(), "Brown Shulker Shell");
+                add(ModItems.GREEN_SHULKER_SHELL.get(), "Green Shulker Shell");
+                add(ModItems.RED_SHULKER_SHELL.get(), "Red Shulker Shell");
+                add(ModItems.BLACK_SHULKER_SHELL.get(), "Black Shulker Shell");
+
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -212,6 +229,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ICE_BRICK_STAIRS.get(), "Ice Brick Stairs");
                 add(ModBlocks.ICE_BRICK_WALL.get(), "Ice Brick Wall");
                 add(ModBlocks.ENERGY_DOCK.get(), "Energy Dock");
+                add(ModBlocks.SHOCK_ABSORBER.get(), "Shock Absorber");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -436,6 +454,22 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CHISEL.get(),"Keski");
                 add(ModItems.CHARGED_SHEEP_SPAWN_EGG.get(), "Şarzlı Koyun Çağırma Yumurtası");
                 add(ModItems.BLUEPRINT.get(), "Plan");
+                add(ModItems.WHITE_SHULKER_SHELL.get(), "Beyaz Shulker Kabuğu");
+                add(ModItems.ORANGE_SHULKER_SHELL.get(), "Turuncu Shulker Kabuğu");
+                add(ModItems.MAGENTA_SHULKER_SHELL.get(), "Eflatun Shulker Kabuğu");
+                add(ModItems.LIGHT_BLUE_SHULKER_SHELL.get(), "Açık Mavi Shulker Kabuğu");
+                add(ModItems.YELLOW_SHULKER_SHELL.get(), "Sarı Shulker Kabuğu");
+                add(ModItems.LIME_SHULKER_SHELL.get(), "Açık Yeşil Shulker Kabuğu");
+                add(ModItems.PINK_SHULKER_SHELL.get(), "Pembe Shulker Kabuğu");
+                add(ModItems.GRAY_SHULKER_SHELL.get(), "Gri Shulker Kabuğu");
+                add(ModItems.LIGHT_GRAY_SHULKER_SHELL.get(), "Açık Gri Shulker Kabuğu");
+                add(ModItems.CYAN_SHULKER_SHELL.get(), "Camgöbeği Shulker Kabuğu");
+                add(ModItems.PURPLE_SHULKER_SHELL.get(), "Mor Shulker Kabuğu");
+                add(ModItems.BLUE_SHULKER_SHELL.get(), "Mavi Shulker Kabuğu");
+                add(ModItems.BROWN_SHULKER_SHELL.get(), "Kahverengi Shulker Kabuğu");
+                add(ModItems.GREEN_SHULKER_SHELL.get(), "Yeşil Shulker Kabuğu");
+                add(ModItems.RED_SHULKER_SHELL.get(), "Kırmızı Shulker Kabuğu");
+                add(ModItems.BLACK_SHULKER_SHELL.get(), "Siyah Shulker Kabuğu");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -548,8 +582,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ICE_BRICK_STAIRS.get(), "Buz Tuğla Merdiven");
                 add(ModBlocks.ICE_BRICK_WALL.get(), "Buz Tuğla Duvar");
                 add(ModBlocks.ENERGY_DOCK.get(), "Enerji İskelesi");
-                add(ModMachines.ADVANCED_CRAFTER.getBlockTranslationKey(), "Sıvı Üretim Masası");
+                add(ModMachines.ADVANCED_CRAFTER.getBlockTranslationKey(), "Gelişmiş Üretim Masası");
                 add(ModMachines.ELECTRIC_FURNACE.getBlockTranslationKey(), "Elektrikli Fırın");
+                add(ModBlocks.SHOCK_ABSORBER.get(), "Şok Emici");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

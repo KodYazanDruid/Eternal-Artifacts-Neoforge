@@ -7,6 +7,11 @@
     "eternalartifacts:encumbator",
     "eternalartifacts:medkit",
     "minecraft:rabbit_foot",
-    "minecraft:cod"
+    "minecraft:cod",
+    "minecraft:totem_of_undying",
+    {
+      "id": "pneumaticcraft:memory_stick",
+      "required": false
+    }
   ]
 }

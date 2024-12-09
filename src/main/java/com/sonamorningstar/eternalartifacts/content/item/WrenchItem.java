@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.cables.CableNetwork;
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import net.minecraft.core.BlockPos;
@@ -13,10 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,6 +50,14 @@ public class WrenchItem extends DiggerItem {
     }
 
     @Override
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+        CharmStorage targetCharms = CharmStorage.get(target);
+        targetCharms.setStackInSlot(0, Items.SHULKER_SHELL.getDefaultInstance());
+        return InteractionResult.sidedSuccess(player.level().isClientSide());
+        //return super.interactLivingEntity(stack, player, target, hand);
+    }
+
+    /*    @Override
     public InteractionResult useOn(UseOnContext ctx) {
         BlockPos pos = ctx.getClickedPos();
         Level level = ctx.getLevel();
@@ -64,5 +70,5 @@ public class WrenchItem extends DiggerItem {
         if(level.isClientSide()) cableNetwork.printNetwork();
 
         return super.useOn(ctx);
-    }
+    }*/
 }

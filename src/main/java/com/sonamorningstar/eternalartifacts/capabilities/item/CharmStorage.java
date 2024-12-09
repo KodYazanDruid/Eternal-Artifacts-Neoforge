@@ -25,12 +25,12 @@ import java.util.function.Consumer;
 @Getter
 public class CharmStorage extends ItemStackHandler {
     private final List<Consumer<Integer>> listeners = new ArrayList<>();
-    private final Player owner;
+    private final LivingEntity owner;
     public static final Map<Integer, CharmType> slotTypes = new HashMap<>(12);
 
     public CharmStorage(IAttachmentHolder holder) {
         super(12);
-        this.owner = (Player) holder;
+        this.owner = (LivingEntity) holder;
     }
 
     public static CharmStorage get(LivingEntity living) {
@@ -98,7 +98,7 @@ public class CharmStorage extends ItemStackHandler {
         BELT(ModTags.Items.CHARMS_BELT),
         BRACELET(ModTags.Items.CHARMS_BRACELET),
         HAND(ModTags.Items.CHARMS_HAND),
-        BOOTS(ModTags.Items.CHARMS_BOOTS),
+        FEET(ModTags.Items.CHARM_FEET),
         BACK(ModTags.Items.CHARMS_BACK),
         CHARM(ModTags.Items.CHARMS_CHARM);
 
@@ -110,6 +110,10 @@ public class CharmStorage extends ItemStackHandler {
 
         public boolean test(ItemStack stack) {
             return stack.is(tag);
+        }
+
+        public String getLowerCaseName() {
+            return name().toLowerCase();
         }
     }
 }

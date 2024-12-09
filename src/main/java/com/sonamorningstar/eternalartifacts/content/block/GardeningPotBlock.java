@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sonamorningstar.eternalartifacts.content.block.base.RetexturedBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.InheritorRetexturedBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.GardeningPotEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import net.minecraft.core.BlockPos;
@@ -14,7 +13,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -34,8 +32,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.level.storage.loot.LootParams;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -58,7 +54,8 @@ import java.util.function.ToIntFunction;
 import static net.minecraft.references.Blocks.ATTACHED_MELON_STEM;
 import static net.minecraft.references.Blocks.ATTACHED_PUMPKIN_STEM;
 
-public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterloggedBlock{
+@SuppressWarnings("deprecation")
+public class GardeningPotBlock extends InheritorRetexturedBlock implements SimpleWaterloggedBlock{
     private static final VoxelShape TOP = BlockHelper.generateByArea(16, 2, 16, 0, 14, 0);
     private static final VoxelShape BOTTOM = BlockHelper.generateByArea(14, 14, 14, 1, 0, 1);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -141,11 +138,7 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
             if(potEntity != null){
                 Block neighborBlock = neighborState.getBlock();
                 //Getting drops
-                LootParams.Builder lootParams = new LootParams.Builder((ServerLevel) level)
-                        .withParameter(LootContextParams.BLOCK_ENTITY, potEntity)
-                        .withParameter(LootContextParams.ORIGIN, pos.getCenter())
-                        .withParameter(LootContextParams.TOOL, ItemStack.EMPTY);
-                List<ItemStack> drops = neighborState.getDrops(lootParams);
+                List<ItemStack> drops = BlockHelper.getBlockDrops(level, neighborState, neighborPos, ItemStack.EMPTY, potEntity, null);
 
                 if (neighborBlock instanceof CropBlock crop) {
                     if (crop.getAge(neighborState) == crop.getMaxAge()) {
@@ -173,7 +166,7 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
                         }
 
                     }
-                }//Not all BushBlocks are producing fruits and things so i am doing it manually.
+                }//Not all BushBlocks are producing fruits and things, so I am doing it manually.
                 else if(neighborBlock instanceof SweetBerryBushBlock bushBlock) {
                     if(neighborState.getValue(SweetBerryBushBlock.AGE) == SweetBerryBushBlock.MAX_AGE) {
                         level.setBlockAndUpdate(neighborPos, bushBlock.defaultBlockState().setValue(BlockStateProperties.AGE_3, 1));
@@ -185,7 +178,8 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
                     Direction facing = neighborState.getValue(HorizontalDirectionalBlock.FACING);
                     BlockPos melPos = neighborPos.relative(facing);
                     BlockState harvest = level.getBlockState(melPos);
-                    drops = harvest.getDrops(lootParams);
+                    //drops = harvest.getDrops(lootParams);
+                    drops = BlockHelper.getBlockDrops(level, harvest, melPos, ItemStack.EMPTY, potEntity, null);
                     pushOrPop(drops, level, melPos, inventoryBelow);
                     level.destroyBlock(melPos, false);
                     level.sendBlockUpdated(pos, state, state, 2);
@@ -212,12 +206,6 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
         }
     }
 
-    private Block getTexture(BlockGetter level, BlockPos pos) {
-        BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (!(blockEntity instanceof IRetexturedBlockEntity)) return Blocks.AIR;
-        return ((GardeningPotEntity) blockEntity).getTexture();
-    }
-
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction direction, IPlantable plantable) {
         PlantType plantType = plantable.getPlantType(level, pos);
@@ -232,12 +220,15 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-        FluidState fluidstate = pContext.getLevel().getFluidState(pContext.getClickedPos());
+    public BlockState getStateForPlacement(BlockPlaceContext ctx) {
+        Level level = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        FluidState fluidstate = level.getFluidState(pos);
         int light = 0;
-        ItemStack stack = pContext.getItemInHand();
+        ItemStack stack = ctx.getItemInHand();
         Block texture = RetexturedHelper.getBlock(RetexturedHelper.getTextureName(stack.getTag()));
-        if(texture != Blocks.AIR) light = texture.getLightEmission(texture.defaultBlockState(), pContext.getLevel(), pContext.getClickedPos());
+        //Block texture = getTexture(level, pos);
+        if(texture != Blocks.AIR) light = texture.getLightEmission(texture.defaultBlockState(), ctx.getLevel(), ctx.getClickedPos());
         return defaultBlockState()
                 .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER)
                 .setValue(LIGHT_LEVEL, light);
@@ -251,15 +242,5 @@ public class GardeningPotBlock extends RetexturedBlock implements SimpleWaterlog
     @Override
     public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
-    }
-
-    @Override
-    public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, @Nullable Entity entity) {
-        return getTexture(level, pos).getSoundType(state, level, pos, entity);
-    }
-
-    @Override
-    public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
-        return getTexture(level, pos).getExplosionResistance(state, level, pos, explosion);
     }
 }

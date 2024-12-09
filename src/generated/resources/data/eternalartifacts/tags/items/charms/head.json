@@ -1,6 +1,6 @@
 {
   "values": [
-    "minecraft:shulker_shell",
-    "minecraft:turtle_helmet"
+    "minecraft:turtle_helmet",
+    "#eternalartifacts:shulker_shell"
   ]
 }

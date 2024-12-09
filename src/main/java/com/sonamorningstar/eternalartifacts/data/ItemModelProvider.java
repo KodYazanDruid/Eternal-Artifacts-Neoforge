@@ -133,6 +133,22 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         spawnEggItem(ModItems.CHARGED_SHEEP_SPAWN_EGG);
         generateTwoStateItem(ModItems.ENCUMBATOR, "active");
         generateTwoStateItem(ModItems.BLUEPRINT, "filled");
+        basicItem(ModItems.WHITE_SHULKER_SHELL.get());
+        basicItem(ModItems.ORANGE_SHULKER_SHELL.get());
+        basicItem(ModItems.MAGENTA_SHULKER_SHELL.get());
+        basicItem(ModItems.LIGHT_BLUE_SHULKER_SHELL.get());
+        basicItem(ModItems.YELLOW_SHULKER_SHELL.get());
+        basicItem(ModItems.LIME_SHULKER_SHELL.get());
+        basicItem(ModItems.PINK_SHULKER_SHELL.get());
+        basicItem(ModItems.GRAY_SHULKER_SHELL.get());
+        basicItem(ModItems.LIGHT_GRAY_SHULKER_SHELL.get());
+        basicItem(ModItems.CYAN_SHULKER_SHELL.get());
+        basicItem(ModItems.PURPLE_SHULKER_SHELL.get());
+        basicItem(ModItems.BLUE_SHULKER_SHELL.get());
+        basicItem(ModItems.BROWN_SHULKER_SHELL.get());
+        basicItem(ModItems.GREEN_SHULKER_SHELL.get());
+        basicItem(ModItems.RED_SHULKER_SHELL.get());
+        basicItem(ModItems.BLACK_SHULKER_SHELL.get());
 
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

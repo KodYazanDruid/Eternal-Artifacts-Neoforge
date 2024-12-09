@@ -53,4 +53,16 @@ public class CharmsScreen extends AbstractModContainerScreen<CharmsMenu> {
             }
         }
     }
+
+    private void renderSlotTooltips(GuiGraphics gui, int mx, int my) {
+        /*int invSize = menu.player.getInventory().items.size();
+        for (int i = invSize; i < menu.slots.size(); i++) {
+            Slot slot = menu.getSlot(i);
+            if (!slot.getItem().isEmpty() || !slot.isHovered(mx, my)) continue;
+            ResourceLocation sprite = slotTextures.getOrDefault(i - invSize, null);
+            if (sprite != null) {
+                renderTooltip(gui, slot.getItem(), mx, my);
+            }
+        }*/
+    }
 }

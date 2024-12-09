@@ -50,7 +50,7 @@ public class FMLCommonSetup {
         map.put(2, CharmType.RING);
         map.put(3, CharmType.RING);
         map.put(4, CharmType.BELT);
-        map.put(5, CharmType.BOOTS);
+        map.put(5, CharmType.FEET);
         map.put(6, CharmType.HAND);
         map.put(7, CharmType.HAND);
         map.put(8, CharmType.BRACELET);

@@ -1,9 +1,9 @@
 package com.sonamorningstar.eternalartifacts.capabilities.energy;
 
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +12,16 @@ public class ModularEnergyStorage extends ModEnergyStorage {
 
     List<IEnergyStorage> energyHandlers = new ArrayList<>();
 
-    public ModularEnergyStorage(SimpleContainer inventory) {
+    public ModularEnergyStorage(RecipeWrapper inventory) {
         super(0, Integer.MAX_VALUE);
-        for(ItemStack stack : inventory.getItems()) {
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stack = inventory.getItem(i);
             IEnergyStorage cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
             if(cap != null) energyHandlers.add(cap);
         }
     }
 
-    @Override
+/*    @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         if (!canReceive()) return 0;
         int energyReceived = 0;
@@ -48,13 +49,45 @@ public class ModularEnergyStorage extends ModEnergyStorage {
             }
         }
         return energyExtracted;
+    }*/
+
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
+        if (!canReceive()) return 0;
+        int totalReceived = 0;
+        for(IEnergyStorage handler : energyHandlers) {
+            int simReceived = handler.receiveEnergy(maxReceive, true);
+            if (simReceived > 0 ) {
+                int received = handler.receiveEnergy(simReceived, simulate);
+                onEnergyChanged();
+                totalReceived += received;
+                return totalReceived;
+            }
+        }
+        return totalReceived;
     }
 
     @Override
-    public int receiveEnergyForced(int maxReceive, boolean simulate) {return 0;}
+    public int extractEnergy(int maxExtract, boolean simulate) {
+        if (!canExtract()) return 0;
+        int totalExtracted = 0;
+        for(IEnergyStorage handler : energyHandlers) {
+            int simExtracted = handler.extractEnergy(maxExtract, true);
+            if(simExtracted > 0) {
+                int extracted = handler.extractEnergy(simExtracted, simulate);
+                onEnergyChanged();
+                totalExtracted += extracted;
+                return totalExtracted;
+            }
+        }
+        return totalExtracted;
+    }
 
     @Override
-    public int extractEnergyForced(int maxExtract, boolean simulate) {return 0;}
+    public int receiveEnergyForced(int maxReceive, boolean simulate) {return receiveEnergy(maxReceive, simulate);}
+
+    @Override
+    public int extractEnergyForced(int maxExtract, boolean simulate) {return extractEnergy(maxExtract, simulate);}
 
     @Override
     public int getEnergyStored() {
@@ -92,9 +125,10 @@ public class ModularEnergyStorage extends ModEnergyStorage {
 
     public void onEnergyChanged() {}
 
-    public void reloadEnergyHandlers(SimpleContainer container) {
+    public void reloadEnergyHandlers(RecipeWrapper container) {
         List<IEnergyStorage> newEnergyHandlers = new ArrayList<>();
-        for(ItemStack stack : container.getItems()) {
+        for (int i = 0; i < container.getContainerSize(); i++) {
+            ItemStack stack = container.getItem(i);
             IEnergyStorage cap = stack.getCapability(Capabilities.EnergyStorage.ITEM);
             if(cap != null) newEnergyHandlers.add(cap);
         }

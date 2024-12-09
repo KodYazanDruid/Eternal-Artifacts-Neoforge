@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.compat.emi.categories.MaceratingCate
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatPackerCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MeatShredderCategory;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.MobLiquifierCategory;
+import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MaceratingRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
@@ -13,7 +14,6 @@ import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
-import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.core.Holder;
@@ -34,6 +34,9 @@ public class EmiCompat implements EmiPlugin {
 
     @Override
     public void register(EmiRegistry registry) {
+        registry.addGenericDragDropHandler(new EADragDropHandler());
+        registry.addRecipeHandler(ModMenuTypes.BLUEPRINT.get(), new BlueprintRecipeHandler());
+
         registry.addCategory(MeatPackerCategory.MEAT_PACKER_CATEGORY);
         registry.addCategory(MeatShredderCategory.MEAT_SHREDDER_CATEGORY);
         registry.addCategory(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY);

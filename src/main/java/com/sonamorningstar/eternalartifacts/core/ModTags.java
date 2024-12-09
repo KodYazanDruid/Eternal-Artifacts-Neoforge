@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.*;
 import net.minecraft.world.item.Item;
@@ -71,10 +70,11 @@ public class ModTags {
         public static final TagKey<Item> CHARMS_HAND = modTag("charms/hand");
         public static final TagKey<Item> CHARMS_RING = modTag("charms/ring");
         public static final TagKey<Item> CHARMS_BACK = modTag("charms/back");
-        public static final TagKey<Item> CHARMS_BOOTS = modTag("charms/boots");
+        public static final TagKey<Item> CHARM_FEET = modTag("charms/feet");
         public static final TagKey<Item> CHARMS_CHARM = modTag("charms/charm");
         public static final TagKey<Item> CHARMS_BELT = modTag("charms/belt");
         public static final TagKey<Item> CHARMS_BRACELET = modTag("charms/bracelet");
+        public static final TagKey<Item> SHULKER_SHELL = modTag("shulker_shell");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

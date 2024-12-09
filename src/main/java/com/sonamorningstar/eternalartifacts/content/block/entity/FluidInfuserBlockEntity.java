@@ -34,8 +34,8 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInput(lvl, pos, inventory);
-        performAutoOutput(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
+        performAutoInputItems(lvl, pos, inventory);
+        performAutoOutputItems(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
         performAutoInputFluids(lvl, pos, tank);
         FluidInfuserRecipe recipe = cache.getRecipe();
         if (recipe == null) {

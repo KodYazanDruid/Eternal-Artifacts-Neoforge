@@ -3,6 +3,8 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
+import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -12,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -142,6 +143,7 @@ public class ModBlocks {
             ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties().forceSolidOn(), 128));
     public static final DeferredBlock<EnergyDockBlock> ENERGY_DOCK = registerWithBewlr("energy_dock",
             ()-> new EnergyDockBlock(Blocks.DEEPSLATE.properties().forceSolidOn()));
+    public static final DeferredBlock<Block> SHOCK_ABSORBER = registerWithItem("shock_absorber", ShockAbsorberBlock::new);
 
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);

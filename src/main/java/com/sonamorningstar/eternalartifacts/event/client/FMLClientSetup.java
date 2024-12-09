@@ -1,8 +1,8 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
+import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
-import com.sonamorningstar.eternalartifacts.content.item.EncumbatorItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -46,20 +46,20 @@ public class FMLClientSetup {
 
     private static void setupCharmSprites() {
         var slotTextures = CharmsScreen.slotTextures;
-        slotTextures.put(0 , createSlotSprite("empty_head_slot"));
-        slotTextures.put(1 , createSlotSprite("empty_magic_feather_slot"));
-        slotTextures.put(2 , createSlotSprite("empty_ring_slot"));
-        slotTextures.put(3 , createSlotSprite("empty_ring_slot"));
-        slotTextures.put(4 , createSlotSprite("empty_magic_feather_slot"));
-        slotTextures.put(5 , createSlotSprite("empty_feet_slot"));
-        slotTextures.put(6 , createSlotSprite("empty_magic_feather_slot"));
-        slotTextures.put(7 , createSlotSprite("empty_magic_feather_slot"));
-        slotTextures.put(8 , createSlotSprite("empty_magic_feather_slot"));
-        slotTextures.put(9 , createSlotSprite("empty_back_slot"));
-        slotTextures.put(10, createSlotSprite("empty_magic_feather_slot"));
-        slotTextures.put(11, createSlotSprite("empty_magic_feather_slot"));
+        slotTextures.put(0 , createSlotSprite(CharmStorage.CharmType.HEAD));
+        slotTextures.put(1 , createSlotSprite(CharmStorage.CharmType.NECKLACE));
+        slotTextures.put(2 , createSlotSprite(CharmStorage.CharmType.RING));
+        slotTextures.put(3 , createSlotSprite(CharmStorage.CharmType.RING));
+        slotTextures.put(4 , createSlotSprite(CharmStorage.CharmType.BELT));
+        slotTextures.put(5 , createSlotSprite(CharmStorage.CharmType.FEET));
+        slotTextures.put(6 , createSlotSprite(CharmStorage.CharmType.HAND));
+        slotTextures.put(7 , createSlotSprite(CharmStorage.CharmType.HAND));
+        slotTextures.put(8 , createSlotSprite(CharmStorage.CharmType.BRACELET));
+        slotTextures.put(9 , createSlotSprite(CharmStorage.CharmType.BACK));
+        slotTextures.put(10, createSlotSprite(CharmStorage.CharmType.CHARM));
+        slotTextures.put(11, createSlotSprite(CharmStorage.CharmType.CHARM));
     }
-    private static ResourceLocation createSlotSprite(String name) {
-        return new ResourceLocation(MODID, "slots/" + name);
+    private static ResourceLocation createSlotSprite(CharmStorage.CharmType type) {
+        return new ResourceLocation(MODID, "slots/empty_"+type.getLowerCaseName()+"_slot");
     }
 }

@@ -1,11 +1,12 @@
-// 1.20.4	2024-11-29T20:27:36.5538143	Tags for minecraft:item mod id eternalartifacts
-67d088eeaefcee8620e3032a650aa196c5bf9506 data/eternalartifacts/tags/items/charms.json
-ce025b8dd856bd8cf07059dd0699b891e5aa7ae1 data/eternalartifacts/tags/items/charms/back.json
-d613f71114ab2701c883292c2acdf914026a87e8 data/eternalartifacts/tags/items/charms/boots.json
-596f59811eed85b0bc1aa8d36ad4f71aab43a852 data/eternalartifacts/tags/items/charms/charm.json
-4f303aa294ceafc308cf856838b7e7584db3eb99 data/eternalartifacts/tags/items/charms/head.json
+// 1.20.4	2024-12-08T13:00:52.9377287	Tags for minecraft:item mod id eternalartifacts
+45e09dc8c5b03a8a7c6f3c32e7cfc7f25a7c8502 data/eternalartifacts/tags/items/charms.json
+c5e8312be0b1363037e9d86f5beb64c02f37601e data/eternalartifacts/tags/items/charms/back.json
+c6377adf85d2c49675d14aa0ccb225e180c2a5e7 data/eternalartifacts/tags/items/charms/charm.json
+d613f71114ab2701c883292c2acdf914026a87e8 data/eternalartifacts/tags/items/charms/feet.json
+be2105e86aab8c4d00018310ae19bd3c3d8f9bbe data/eternalartifacts/tags/items/charms/head.json
 b71cc5723036c3c57ac0aa555bf4f8c968b22ff4 data/eternalartifacts/tags/items/charms/ring.json
-739b14f3f9fa7b447d8ac1989c2d47a24f23a539 data/eternalartifacts/tags/items/gardening_pot_suitable.json
+cd40b2c4f0e4714c52bb7abbe39a8e26f9feb65d data/eternalartifacts/tags/items/gardening_pot_suitable.json
+4d5a856cfddb256d28a3f63c15763ee25a51820b data/eternalartifacts/tags/items/shulker_shell.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
 2ab5a1591948f980d3d532da30cf9e588eeb4d28 data/eternalartifacts/tags/items/tools/cutlass.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/forge/tags/items/charcoal.json
@@ -53,6 +54,7 @@ cc13896e8dbe303c2a63351a52e2cf7d5a7e112c data/minecraft/tags/items/hoes.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/items/logs.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/items/logs_that_burn.json
 779594871a6ff44a423b632cb41535507ceef500 data/minecraft/tags/items/pickaxes.json
+b71cc5723036c3c57ac0aa555bf4f8c968b22ff4 data/minecraft/tags/items/piglin_loved.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/items/planks.json
 6f74e249c227c501da70dee03e55198dd2aa3cc6 data/minecraft/tags/items/shovels.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/items/small_flowers.json

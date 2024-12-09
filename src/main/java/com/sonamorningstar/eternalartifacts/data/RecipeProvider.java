@@ -8,21 +8,16 @@ import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngre
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.flag.FeatureFlags;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
@@ -37,7 +32,7 @@ import org.spongepowered.include.com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
+@SuppressWarnings({"unused", "SameParameterValue"})
 public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider implements IConditionBuilder {
 
     private final List<ItemLike> MANGANESE_SMELTABLES = ImmutableList.of(ModBlocks.MANGANESE_ORE, ModBlocks.DEEPSLATE_MANGANESE_ORE, ModItems.RAW_MANGANESE);
@@ -141,7 +136,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), new ItemStack(Items.GREEN_DYE, 3), new FluidStack(Fluids.WATER, 125));
 
         createAlloyingRecipe(recipeOutput, List.of(
-                    SizedIngredient.of(ModItems.DEMON_INGOT),
+                    SizedIngredient.of(ModItems.PINK_SLIME_INGOT),
                     SizedIngredient.of(Items.GLOWSTONE_DUST),
                     SizedIngredient.of(ModItems.PLANT_MATTER)),
                 ModItems.CHLOROPHYTE_INGOT.toStack(), "");
@@ -381,6 +376,38 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSickleRecipe(recipeOutput, ModItems.IRON_SICKLE, Tags.Items.INGOTS_IRON);
         createSickleRecipe(recipeOutput, ModItems.GOLDEN_SICKLE, Tags.Items.INGOTS_GOLD);
         createSickleRecipe(recipeOutput, ModItems.DIAMOND_SICKLE, Tags.Items.GEMS_DIAMOND);
+        createColoredShulkerBoxRecipe(recipeOutput, Items.WHITE_SHULKER_BOX, ModItems.WHITE_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.ORANGE_SHULKER_BOX, ModItems.ORANGE_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.MAGENTA_SHULKER_BOX, ModItems.MAGENTA_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.LIGHT_BLUE_SHULKER_BOX, ModItems.LIGHT_BLUE_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.YELLOW_SHULKER_BOX, ModItems.YELLOW_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.LIME_SHULKER_BOX, ModItems.LIME_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.PINK_SHULKER_BOX, ModItems.PINK_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.GRAY_SHULKER_BOX, ModItems.GRAY_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.LIGHT_GRAY_SHULKER_BOX, ModItems.LIGHT_GRAY_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.CYAN_SHULKER_BOX, ModItems.CYAN_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.PURPLE_SHULKER_BOX, ModItems.PURPLE_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.BLUE_SHULKER_BOX, ModItems.BLUE_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.BROWN_SHULKER_BOX, ModItems.BROWN_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.GREEN_SHULKER_BOX, ModItems.GREEN_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.RED_SHULKER_BOX, ModItems.RED_SHULKER_SHELL.get());
+        createColoredShulkerBoxRecipe(recipeOutput, Items.BLACK_SHULKER_BOX, ModItems.BLACK_SHULKER_SHELL.get());
+        createDyeingRecipe(recipeOutput, ModItems.WHITE_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.WHITE_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.ORANGE_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.ORANGE_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.MAGENTA_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.MAGENTA_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.LIGHT_BLUE_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.LIGHT_BLUE_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.YELLOW_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.YELLOW_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.LIME_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.LIME_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.PINK_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.PINK_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.GRAY_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.GRAY_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.LIGHT_GRAY_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.LIGHT_GRAY_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.CYAN_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.CYAN_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.PURPLE_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.PURPLE_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.BLUE_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.BLUE_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.BROWN_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.BROWN_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.GREEN_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.GREEN_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.RED_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.RED_DYE);
+        createDyeingRecipe(recipeOutput, ModItems.BLACK_SHULKER_SHELL, ModTags.Items.SHULKER_SHELL, Items.BLACK_DYE);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.GLASSCUTTER)
                 .pattern(" II").pattern(" S ").pattern("S  ")
                 .define('I', Tags.Items.INGOTS_IRON).define('S', Tags.Items.RODS_WOODEN)
@@ -529,6 +556,23 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('F', ingredient)
                 .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private void createColoredShulkerBoxRecipe(RecipeOutput output, ItemLike result, Item shell) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result)
+                .pattern("S").pattern("C").pattern("S")
+                .define('C', Tags.Items.CHESTS_WOODEN)
+                .define('S', shell)
+                .unlockedBy("has_item", has(shell)).save(output, new ResourceLocation(MODID, getItemName(result)));
+    }
+    private void createDyeingRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient, Item dye) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, new ItemStack(result, 8))
+                .pattern("III").pattern("IDI").pattern("III")
+                .define('D', dye)
+                .define('I', ingredient)
+                .unlockedBy("has_item", has(ingredient)).save(output, new ResourceLocation(MODID, "dyeing/"+getItemName(result)));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.DECORATIONS, result)
+                .requires(ingredient).requires(dye)
+                .unlockedBy("has_item", has(ingredient)).save(output, new ResourceLocation(MODID, "single_dyeing/"+getItemName(result)));
     }
 
     protected static void stoneCutterRecipe(RecipeOutput output, RecipeCategory category, ItemLike result, ItemLike material) {

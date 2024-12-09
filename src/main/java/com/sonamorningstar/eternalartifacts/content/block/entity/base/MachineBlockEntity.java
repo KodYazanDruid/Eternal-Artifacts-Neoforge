@@ -38,7 +38,8 @@ import java.util.Map;
 import java.util.function.BooleanSupplier;
 
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
-    QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
+    @Nullable
+    private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
     @Setter
     public ModItemStorage inventory = null;
@@ -46,6 +47,12 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     public AbstractFluidTank tank = null;
     @Setter
     public ModEnergyStorage energy = null;
+    @Setter
+    public int itemTransferRate = 1;
+    @Setter
+    public int fluidTransferRate = 1000;
+    @Setter
+    public int energyTransferRate = 1000;
 
     @Getter
     @Setter
@@ -88,6 +95,10 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return true;
     }
 
+    protected boolean shouldSerializeEnergy() {return true;}
+    protected boolean shouldSerializeInventory() {return true;}
+    protected boolean shouldSerializeTank() {return true;}
+
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
@@ -101,9 +112,9 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     public void load(CompoundTag tag) {
         super.load(tag);
         progress = tag.getInt("progress");
-        if(energy != null) energy.deserializeNBT(tag.get("Energy"));
-        if(inventory != null) inventory.deserializeNBT(tag.getCompound("Inventory"));
-        if(tank != null) tank.deserializeNBT(tag.getCompound("Fluid"));
+        if(energy != null && shouldSerializeEnergy()) energy.deserializeNBT(tag.get("Energy"));
+        if(inventory != null && shouldSerializeInventory()) inventory.deserializeNBT(tag.getCompound("Inventory"));
+        if(tank != null && shouldSerializeTank()) tank.deserializeNBT(tag.getCompound("Fluid"));
     }
 
     @Override
@@ -120,7 +131,11 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return menuConstructor.apply(pContainerId, pPlayerInventory, this, data);
+        if (menuConstructor == null) return null;
+        else return menuConstructor.apply(pContainerId, pPlayerInventory, this, data);
+    }
+    public boolean canConstructMenu() {
+        return menuConstructor != null;
     }
 
     protected void initializeDefaultEnergyAndTank() {
@@ -178,12 +193,16 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return energy.extractEnergyForced(amount, true) >= amount;
     }
 
+    protected boolean hasAnyEnergy(ModEnergyStorage energy) {
+        return energy.getEnergyStored() > 0;
+    }
+
     protected void insertItemFromDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory) {
         IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(dir), dir.getOpposite());
         if(sourceInv != null) {
             for(int i = 0; i < sourceInv.getSlots(); i++) {
                 if(sourceInv.getStackInSlot(i).isEmpty()) continue;
-                ItemStack extracted = sourceInv.extractItem(i, 1, true);
+                ItemStack extracted = sourceInv.extractItem(i, itemTransferRate, true);
                 if (!extracted.isEmpty()) {
                     ItemStack remained = ItemHandlerHelper.insertItemStacked(inventory, extracted, true);
                     if (remained.getCount() != extracted.getCount()) {
@@ -220,25 +239,25 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected void inputFluidFromDir(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank) {
-        transferFluidToBE(lvl, pos, dir, tank, true);
+        transferFluidToTank(lvl, pos, dir, tank, true);
     }
 
     protected void outputFluidToDir(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank) {
-        transferFluidToBE(lvl, pos, dir, tank, false);
+        transferFluidToTank(lvl, pos, dir, tank, false);
     }
 
-    protected void transferFluidToBE(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank, boolean isReverse) {
+    protected void transferFluidToTank(Level lvl, BlockPos pos, Direction dir, AbstractFluidTank tank, boolean isReverse) {
         IFluidHandler targetTank = lvl.getCapability(Capabilities.FluidHandler.BLOCK, pos.relative(dir), dir.getOpposite());
         if(targetTank != null) {
-            if(isReverse) FluidUtil.tryFluidTransfer(tank, targetTank, 1000, true);
-            else FluidUtil.tryFluidTransfer(targetTank, tank, 1000, true);
+            if(isReverse) FluidUtil.tryFluidTransfer(tank, targetTank, fluidTransferRate, true);
+            else FluidUtil.tryFluidTransfer(targetTank, tank, fluidTransferRate, true);
         }
     }
 
     protected void inputEnergyToDir(Level lvl, BlockPos pos, Direction dir, ModEnergyStorage energy) {
         IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(dir), dir.getOpposite());
         if(target != null && target.canExtract()) {
-            int extracted = target.extractEnergy(1000, true);
+            int extracted = target.extractEnergy(energyTransferRate, true);
             if(extracted > 0) {
                 int received = energy.receiveEnergy(extracted, true);
                 if(received > 0) {
@@ -252,7 +271,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected void outputEnergyToDir(Level lvl, BlockPos pos, Direction dir, ModEnergyStorage energy) {
         IEnergyStorage target = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, pos.relative(dir), dir.getOpposite());
         if(target != null && target.canReceive()) {
-            int extracted = energy.extractEnergyForced(1000, true);
+            int extracted = energy.extractEnergyForced(energyTransferRate, true);
             if (extracted > 0) {
                 int received = target.receiveEnergy(extracted, true);
                 if (received > 0) {

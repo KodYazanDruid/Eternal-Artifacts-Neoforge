@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
+import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 
 public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<GenericMachineMenu>{
+    @Getter
     private final GenericMachineBlockEntity machine;
     private final GenericScreenInfo screenInfo;
     public GenericSidedMachineScreen(GenericMachineMenu menu, Inventory playerInventory, Component title) {

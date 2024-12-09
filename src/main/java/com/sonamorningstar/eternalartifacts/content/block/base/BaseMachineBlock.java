@@ -6,7 +6,6 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableC
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -25,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntityBlock {
     private final BlockEntityType.BlockEntitySupplier<T> supplier;
-    protected BaseMachineBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> fun) {
+    public BaseMachineBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> fun) {
         super(pProperties);
         this.supplier = fun;
     }
@@ -62,39 +61,34 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Nullable
     @Override
     public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level level, BlockState pState, BlockEntityType<B> pBlockEntityType) {
-        if (level.isClientSide) {
-            return (lvl, pos, st, be) -> {
-                if (be instanceof ITickableClient entity) {
-                    entity.tickClient(lvl, pos, st);
-                }
-            };
-        } else {
-            return (lvl, pos, st, be) -> {
-                if (be instanceof ITickableServer entity) {
-                    entity.tickServer(lvl, pos, st);
-                }
-            };
-        }
+        return new SimpleTicker<>(level.isClientSide());
     }
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if(!level.isClientSide()) {
-            BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof MenuProvider) {
-                IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
-                if(fluidHandler == null) AbstractMachineMenu.openContainer((ServerPlayer) player, pos);
-                else if(!FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) AbstractMachineMenu.openContainer((ServerPlayer) player, pos);
-            }else {
-                throw new IllegalStateException("Container provider is missing!");
-            }
+        IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+        if (fluidHandler != null && FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) return InteractionResult.sidedSuccess(level.isClientSide());
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof MachineBlockEntity<?> mbe && mbe.canConstructMenu()) {
+            AbstractMachineMenu.openContainer(player, pos);
+            return InteractionResult.sidedSuccess(level.isClientSide());
         }
-        return InteractionResult.sidedSuccess(level.isClientSide());
+        return InteractionResult.PASS;
     }
 
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return supplier.create(pPos, pState);
+    }
+
+    private record SimpleTicker<B extends BlockEntity>(boolean isRemote) implements BlockEntityTicker<B> {
+        @Override
+        public void tick(Level lvl, BlockPos pos, BlockState st, B be) {
+            if (isRemote) {
+                if (be instanceof ITickableClient en) en.tickClient(lvl, pos, st);
+            } else if (be instanceof ITickableServer en) en.tickServer(lvl, pos, st);
+
+        }
     }
 }

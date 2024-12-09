@@ -50,7 +50,7 @@ public class ModItems {
     public static final DeferredItem<Item> LENS = register("lens");
     public static final DeferredItem<Item> PLANT_MATTER = register("plant_matter");
     public static final DeferredItem<Item> PINK_SLIME = register("pink_slime");
-    public static final DeferredItem<Item> GOLD_RING = registerStacksToOne("gold_ring");
+    public static final DeferredItem<Item> GOLD_RING = registerStacksToOne("gold_ring", GoldRingItem::new);
     public static final DeferredItem<Item> SUGAR_CHARCOAL = register("sugar_charcoal");
     public static final DeferredItem<Item> ENDER_TABLET = register("ender_tablet");
     public static final DeferredItem<Item> STONE_TABLET = register("stone_tablet");
@@ -96,6 +96,22 @@ public class ModItems {
     public static final DeferredItem<Item> DOUGH = register("dough");
     public static final DeferredItem<Item> BANANA_BREAD = register("banana_bread", p -> new Item(p.food(ModFoods.BANANA_BREAD)));
     public static final DeferredItem<Item> BLUEPRINT = register("blueprint", BlueprintItem::new);
+    public static final DeferredItem<Item> WHITE_SHULKER_SHELL = register("white_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.WHITE));
+    public static final DeferredItem<Item> ORANGE_SHULKER_SHELL = register("orange_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.ORANGE));
+    public static final DeferredItem<Item> MAGENTA_SHULKER_SHELL = register("magenta_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.MAGENTA));
+    public static final DeferredItem<Item> LIGHT_BLUE_SHULKER_SHELL = register("light_blue_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.LIGHT_BLUE));
+    public static final DeferredItem<Item> YELLOW_SHULKER_SHELL = register("yellow_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.YELLOW));
+    public static final DeferredItem<Item> LIME_SHULKER_SHELL = register("lime_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.LIME));
+    public static final DeferredItem<Item> PINK_SHULKER_SHELL = register("pink_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.PINK));
+    public static final DeferredItem<Item> GRAY_SHULKER_SHELL = register("gray_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.GRAY));
+    public static final DeferredItem<Item> LIGHT_GRAY_SHULKER_SHELL = register("light_gray_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.LIGHT_GRAY));
+    public static final DeferredItem<Item> CYAN_SHULKER_SHELL = register("cyan_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.CYAN));
+    public static final DeferredItem<Item> PURPLE_SHULKER_SHELL = register("purple_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.PURPLE));
+    public static final DeferredItem<Item> BLUE_SHULKER_SHELL = register("blue_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.BLUE));
+    public static final DeferredItem<Item> BROWN_SHULKER_SHELL = register("brown_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.BROWN));
+    public static final DeferredItem<Item> GREEN_SHULKER_SHELL = register("green_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.GREEN));
+    public static final DeferredItem<Item> RED_SHULKER_SHELL = register("red_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.RED));
+    public static final DeferredItem<Item> BLACK_SHULKER_SHELL = register("black_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.BLACK));
 
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);

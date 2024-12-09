@@ -26,6 +26,7 @@ public class SickleItem extends DiggerItem {
 
     private static final List<ItemStack> currentMiners = new ArrayList<>();
 
+    //TODO: Could use some improvements.
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
         if (isCorrectToolForDrops(stack, state) &&

@@ -1,30 +1,22 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
+import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
-import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
-import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
@@ -55,12 +47,13 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
     @Override
     public ItemStack quickMoveStack(Player pPlayer, int index) {
         ItemStack itemstack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
+        Slot slot = slots.get(index);
+        if (slot instanceof FakeSlot) return ItemStack.EMPTY;
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
             if (index < 36) {
-                if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
+                if (!this.moveItemStackTo(itemstack1, 36, slots.size(), false)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {

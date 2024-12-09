@@ -3,18 +3,17 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
-import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
-import com.sonamorningstar.eternalartifacts.event.custom.SpellCastEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
-import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -25,6 +24,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -36,17 +36,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
@@ -55,6 +57,7 @@ import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -62,16 +65,9 @@ import java.util.Optional;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MODID)
 public class CommonEvents {
-    @SubscribeEvent
-    public static void anvilUpdateEvent(AnvilUpdateEvent event) {
-        /*if (event.getLeft().is(Items.APPLE)  && event.getRight().is(Items.ORANGE_DYE)) {
-            event.setCost(5);
-            event.setOutput(new ItemStack(ModItems.ORANGE.get()));
-        }*/
-    }
-
     @SubscribeEvent
     public static void jarDrinkEvent(JarDrinkEvent event) {
         FluidStack fluidStack = event.getFluidStack();
@@ -115,18 +111,6 @@ public class CommonEvents {
             event.setFuseTime(40);
             event.setRadius(20.0F * ((float) stack.getAmount() / gasolineExplosionThreshold));
         }
-    }
-
-    @SubscribeEvent
-    public static void spellCastEvent(SpellCastEvent event) {
-        LivingEntity caster = event.getCaster();
-        Level level = event.getLevel();
-        ItemStack tome = event.getTome();
-        Spell spell = event.getSpell();
-        float amplifiedDamage = event.getAmplifiedDamage();
-        /*if (spell.is(ModSpells.TORNADO) && tome.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
-            event.setAmplifiedDamage(amplifiedDamage * 2);
-        }*/
     }
 
     @SubscribeEvent
@@ -326,18 +310,40 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
+    public static void preExplosionEvent(ExplosionEvent.Start event) {
+        Level level = event.getLevel();
+        Explosion explosion = event.getExplosion();
+        if(explosion.radius() <= 0) return;
+        Vec3 center = explosion.center();
+        BlockPos pos = BlockPos.containing(center.x, center.y, center.z);
+        for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(2, 2, 2), pos.offset(-2, -2, -2))) {
+            BlockEntity blockEntity = level.getBlockEntity(blockPos);
+            if (blockEntity instanceof ShockAbsorberBlockEntity absorber) {
+                ModEnergyStorage energy = absorber.energy;
+                if (energy != null) {
+                    int generated = (int) (explosion.radius() * 5000);
+                    int received = energy.receiveEnergyForced(generated, false);
+                    if (received == generated) event.setCanceled(true);
+                    if (received > 0) break;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void useEvent(UseItemOnBlockEvent event) {
         ItemStack itemStack = event.getItemStack();
+        Level level = event.getLevel();
+        BlockPos blockPos = event.getPos();
+        Player player = event.getEntity();
+        BlockState blockState = level.getBlockState(blockPos);
+        InteractionHand hand = event.getHand();
+        ItemStack otherHandStack = player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
+        UseOnContext context = event.getUseOnContext();
         if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK &&
                 itemStack.canApplyAtEnchantingTable(ModEnchantments.VERSATILITY.get()) &&
                 itemStack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
 
-            Level level = event.getLevel();
-            BlockPos blockPos = event.getPos();
-            Player player = event.getEntity();
-            BlockState blockState = level.getBlockState(blockPos);
-            InteractionHand hand = event.getHand();
-            UseOnContext context = event.getUseOnContext();
             Optional<BlockState> axeModifiedState = calculateStateForAxe(level, blockPos, player, blockState, context);
             if (axeModifiedState.isPresent()) {
                 level.setBlock(blockPos, axeModifiedState.get(), 11);
@@ -374,6 +380,18 @@ public class CommonEvents {
                     }else player.swing(hand);
 
                 }
+            }
+        }
+
+        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK &&
+                blockState.is(Tags.Blocks.CHESTS_WOODEN) &&
+                (itemStack.is(Items.SHULKER_SHELL) || otherHandStack.is(Items.SHULKER_SHELL)) &&
+                ((itemStack.is(Items.SHULKER_SHELL) && !(otherHandStack.getItem() instanceof ColoredShulkerShellItem)) ||
+                (otherHandStack.is(Items.SHULKER_SHELL) && !(itemStack.getItem() instanceof ColoredShulkerShellItem)))) {
+            byte result = ColoredShulkerShellItem.transform(level, blockPos, itemStack, otherHandStack, player, null);
+            if (result == 1) {
+                if (player instanceof ServerPlayer sp) sp.awardStat(Stats.ITEM_USED.get(Items.SHULKER_SHELL));
+                player.swing(hand, true);
             }
         }
     }

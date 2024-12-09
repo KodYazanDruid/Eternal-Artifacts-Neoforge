@@ -6,6 +6,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 
@@ -58,6 +59,19 @@ public class ModProperties {
                 .offsetType(BlockBehaviour.OffsetType.XZ)
                 .ignitedByLava()
                 .pushReaction(PushReaction.DESTROY);
+
+        public static final BlockBehaviour.Properties MACHINE = BlockBehaviour.Properties.of()
+                .mapColor(MapColor.METAL)
+                .instrument(NoteBlockInstrument.IRON_XYLOPHONE)
+                .requiresCorrectToolForDrops()
+                .strength(5.0F, 6.0F)
+                .sound(SoundType.METAL);
+        public static final BlockBehaviour.Properties SHOCK_ABSORBER = BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_ORANGE)
+                .instrument(NoteBlockInstrument.BANJO)
+                .requiresCorrectToolForDrops()
+                .strength(5.0F, 7200000.0F)
+                .sound(SoundType.METAL);
 
         private static Boolean never(BlockState st, BlockGetter lvl, BlockPos pos, EntityType<?> type) {return false;}
         private static Boolean always(BlockState st, BlockGetter lvl, BlockPos pos, EntityType<?> type) {return true;}

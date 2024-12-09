@@ -3,8 +3,11 @@ package com.sonamorningstar.eternalartifacts.data.tag;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +16,7 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -24,7 +28,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void addTags(HolderLookup.Provider pProvider) {
+    protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.Items.FRUITS).add(
                 ModItems.ORANGE.get(),
                 ModItems.ANCIENT_FRUIT.get(),
@@ -94,6 +98,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.DOUGH_WHEAT).add(ModItems.DOUGH.get());
         tag(ModTags.Items.DOUGH).addTag(ModTags.Items.DOUGH_WHEAT);
         tag(ModTags.Items.DUSTS_CLAY).add(ModItems.CLAY_DUST.get());
+        tag(ItemTags.PIGLIN_LOVED).add(ModItems.GOLD_RING.get());
 
         tag(ItemTags.SWORDS).add(
                 ModItems.COPPER_SWORD.get(),
@@ -155,8 +160,10 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
 
         tag(ModTags.Items.CHARMS_HEAD).add(
-                Items.SHULKER_SHELL,
                 Items.TURTLE_HELMET
+        );
+        tag(ModTags.Items.CHARMS_HEAD).addTags(
+                ModTags.Items.SHULKER_SHELL
         );
         tag(ModTags.Items.CHARMS_RING).add(
                 ModItems.GOLD_RING.get()
@@ -167,7 +174,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.ENDER_KNAPSACK.get(),
                 Items.ELYTRA
         );
-        tag(ModTags.Items.CHARMS_BOOTS).add(
+        tag(ModTags.Items.CHARM_FEET).add(
                 ModItems.COMFY_SHOES.get(),
                 ModItems.FROG_LEGS.get()
         );
@@ -179,7 +186,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.ENCUMBATOR.get(),
                 ModItems.MEDKIT.get(),
                 Items.RABBIT_FOOT,
-                Items.COD
+                Items.COD,
+                Items.TOTEM_OF_UNDYING
         );
 
         tag(ModTags.Items.CHARMS).addTags(
@@ -188,17 +196,40 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 //ModTags.Items.CHARMS_HAND,
                 ModTags.Items.CHARMS_RING,
                 ModTags.Items.CHARMS_BACK,
-                ModTags.Items.CHARMS_BOOTS,
+                ModTags.Items.CHARM_FEET,
                 ModTags.Items.CHARMS_CHARM
                 //ModTags.Items.CHARMS_BELT,
                 //ModTags.Items.CHARMS_BRACELET
+        );
+
+        tag(ModTags.Items.SHULKER_SHELL).add(
+                ModItems.WHITE_SHULKER_SHELL.get(),
+                ModItems.ORANGE_SHULKER_SHELL.get(),
+                ModItems.MAGENTA_SHULKER_SHELL.get(),
+                ModItems.LIGHT_BLUE_SHULKER_SHELL.get(),
+                ModItems.YELLOW_SHULKER_SHELL.get(),
+                ModItems.LIME_SHULKER_SHELL.get(),
+                ModItems.PINK_SHULKER_SHELL.get(),
+                ModItems.GRAY_SHULKER_SHELL.get(),
+                ModItems.LIGHT_GRAY_SHULKER_SHELL.get(),
+                ModItems.CYAN_SHULKER_SHELL.get(),
+                ModItems.PURPLE_SHULKER_SHELL.get(),
+                ModItems.BLUE_SHULKER_SHELL.get(),
+                ModItems.BROWN_SHULKER_SHELL.get(),
+                ModItems.GREEN_SHULKER_SHELL.get(),
+                ModItems.RED_SHULKER_SHELL.get(),
+                ModItems.BLACK_SHULKER_SHELL.get(),
+                Items.SHULKER_SHELL
         );
 
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
                 ItemTags.STONE_BRICKS,
                 ItemTags.STONE_CRAFTING_MATERIALS,
-                Tags.Items.SANDSTONE
+                Tags.Items.SANDSTONE,
+                Tags.Items.COBBLESTONE,
+                Tags.Items.COBBLESTONE_MOSSY,
+                Tags.Items.COBBLESTONE_DEEPSLATE
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),
@@ -218,6 +249,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Blocks.VERDANT_FROGLIGHT.asItem(),
                 Blocks.PEARLESCENT_FROGLIGHT.asItem(),
                 ModBlocks.ROSY_FROGLIGHT.asItem(),
+                ModBlocks.SNOW_BRICKS.asItem(),
+                ModBlocks.OBSIDIAN_BRICKS.asItem(),
                 //Glazed terracottas
                 Blocks.WHITE_GLAZED_TERRACOTTA.asItem(),
                 Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.asItem(),
@@ -259,5 +292,10 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Blocks.WARPED_STEM.asItem(),
                 Blocks.STRIPPED_WARPED_STEM.asItem()
         );
+        ModHooks.ItemTagAppender.itemTags.forEach((tagKey, itemSupList) -> itemSupList.stream().map(Supplier::get).forEach(item -> {
+            ResourceLocation rl = BuiltInRegistries.ITEM.getKey(item);
+            tag(tagKey).addOptional(rl);
+        }));
+        ModHooks.ItemTagAppender.tagKeyTags.forEach((tagKey, tagKeys) -> tagKeys.forEach(keys -> tag(tagKey).addOptionalTag(keys)));
     }
 }

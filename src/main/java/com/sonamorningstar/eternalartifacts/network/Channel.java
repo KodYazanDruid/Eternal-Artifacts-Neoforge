@@ -44,9 +44,9 @@ public class Channel {
                 EnderNotebookRenameWarpToServer::create,
                 handler -> handler.server(EnderNotebookRenameWarpToServer::handle));
 
-        registrar.play(BlueprintReloadNbtToServer.ID,
-                BlueprintReloadNbtToServer::create,
-                handler -> handler.server(BlueprintReloadNbtToServer::handle));
+        registrar.play(BlueprintUpdateSlotToServer.ID,
+                BlueprintUpdateSlotToServer::create,
+                handler -> handler.server(BlueprintUpdateSlotToServer::handle));
 
         registrar.play(PlayerTeleportToServer.ID,
                 PlayerTeleportToServer::create,

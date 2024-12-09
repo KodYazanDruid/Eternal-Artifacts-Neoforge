@@ -27,6 +27,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnergyDockBlockEntity>> ENERGY_DOCK = BLOCK_ENTITIES.register("energy_dock", ()->
             BlockEntityType.Builder.of(EnergyDockBlockEntity::new, ModBlocks.ENERGY_DOCK.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ShockAbsorberBlockEntity>> SHOCK_ABSORBER = BLOCK_ENTITIES.register("shock_absorber", ()->
+            BlockEntityType.Builder.of(ShockAbsorberBlockEntity::new, ModBlocks.SHOCK_ABSORBER.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonatorBlockEntity>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
             BlockEntityType.Builder.of(ResonatorBlockEntity::new, ModBlocks.RESONATOR.get()).build(null));

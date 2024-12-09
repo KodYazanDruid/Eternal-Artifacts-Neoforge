@@ -24,7 +24,7 @@ public class MeatPackerBlockEntity extends GenericMachineBlockEntity {
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoOutput(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
+        performAutoOutputItems(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
         performAutoInputFluids(lvl, pos, tank);
 
         ProcessCondition condition = new ProcessCondition()

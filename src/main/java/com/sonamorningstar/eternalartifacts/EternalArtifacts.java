@@ -27,12 +27,12 @@ public class EternalArtifacts {
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
      * TODO: Piezoelectric Plane
      * TODO: Modular Fluid Tank
-     * TODO: A plant with infinite water supply
      * TODO: Smart Piston (with sticky)
      * TODO: ARDITE ?
-     * TODO: Configs.
      * TODO: Scrap boxes and similar loot thingies.
      * TODO: Add error tab to machines for why machine isn't working.
+     * TODO: Shulker armor.
+     * TODO: Camouflage armor.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *

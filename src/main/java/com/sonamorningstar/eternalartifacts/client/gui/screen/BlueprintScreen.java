@@ -1,13 +1,12 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
-import com.sonamorningstar.eternalartifacts.container.slot.FakeSlotItemHandler;
-import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
-import com.sonamorningstar.eternalartifacts.network.BlueprintReloadNbtToServer;
+import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
+import com.sonamorningstar.eternalartifacts.network.BlueprintUpdateSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ClickType;
@@ -22,35 +21,30 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
     @Override
     public void render(GuiGraphics gui, int mX, int mY, float partTick) {
         super.render(gui, mX, mY, partTick);
+        GuiDrawer.drawEmptyArrow(gui, leftPos + 90, topPos + 35);
         renderTooltip(gui, mX, mY);
     }
 
-/*    @Override
+    @Override
     protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
         super.slotClicked(slot, slotId, mouseButton, type);
-        if (slot instanceof FakeSlotItemHandler fakeSlot) {
+        if (slot instanceof FakeSlot fakeSlot && !fakeSlot.isDisplayOnly()) {
             ItemStack carried = menu.getCarried();
-            ItemStack blueprint = menu.getBlueprint();
             if (carried.isEmpty()) {
                 ItemStack stack = slot.getItem();
                 if (!stack.isEmpty()) {
-                    var list = BlueprintItem.getFakeItems(blueprint);
-                    list.set(fakeSlot.getSlotIndex(), ItemStack.EMPTY);
-                    updateItem(menu.getBlueprint(), list);
+                    updateItem(menu.containerId, fakeSlot.getSlotIndex(), ItemStack.EMPTY);
                     fakeSlot.set(ItemStack.EMPTY);
                 }
             } else {
                 ItemStack stack = carried.copyWithCount(1);
-                var list = BlueprintItem.getFakeItems(blueprint);
-                list.set(fakeSlot.getSlotIndex(), stack);
-                updateItem(blueprint, list);
+                updateItem(menu.containerId, fakeSlot.getSlotIndex(), stack);
                 fakeSlot.set(stack);
             }
         }
-    }*/
+    }
 
-/*    private void updateItem(ItemStack stack, NonNullList<ItemStack> items) {
-        //BlueprintItem.updateFakeItems(stack, items);
-        Channel.sendToServer(new BlueprintReloadNbtToServer(stack, items));
-    }*/
+    private void updateItem(int menuId, int slotIndex, ItemStack stack) {
+        Channel.sendToServer(new BlueprintUpdateSlotToServer(menuId, slotIndex, stack));
+    }
 }

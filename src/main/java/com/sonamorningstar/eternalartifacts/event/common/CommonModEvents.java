@@ -82,6 +82,7 @@ public class CommonModEvents {
                 be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SHOCK_ABSORBER.get(), (be, ctx) -> be.energy);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
@@ -94,7 +95,7 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, null));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
-                be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+                ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));

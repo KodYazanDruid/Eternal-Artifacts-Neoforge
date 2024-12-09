@@ -87,6 +87,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropPottedContents(ModBlocks.POTTED_TIGRIS.get());
         dropSelf(ModBlocks.DEMON_BLOCK.get());
         add(ModBlocks.ENERGY_DOCK.get(), createSinglePropConditionTable(ModBlocks.ENERGY_DOCK.get(), EnergyDockBlock.DOCK_PART, DockPart.CENTER));
+        dropSelf(ModBlocks.SHOCK_ABSORBER.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);

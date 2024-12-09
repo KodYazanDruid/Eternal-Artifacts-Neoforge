@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "eternalartifacts:block/shock_absorber_end",
+    "side": "eternalartifacts:block/shock_absorber_side"
+  }
+}

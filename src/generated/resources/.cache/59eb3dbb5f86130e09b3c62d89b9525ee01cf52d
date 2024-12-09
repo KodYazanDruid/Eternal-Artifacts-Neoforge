@@ -1,4 +1,4 @@
-// 1.20.4	2024-12-02T22:05:18.6226993	Loot Tables
+// 1.20.4	2024-12-08T16:58:34.0790601	Loot Tables
 0385bb0703835d6e8268b0d8e033d2eb6e7862b9 data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 a50ef6533c773bcb5946c86a3ca5eb5aed8b850f data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
@@ -78,6 +78,7 @@ b686ed87f1ee8bc993b0915508faab7ec6b07113 data/eternalartifacts/loot_tables/block
 c65c797452b495809bdf5b41bb611b7c87e865b6 data/eternalartifacts/loot_tables/blocks/sandy_prismarine_bricks.json
 8db9218e28d384200124270dc55e8030b5b860ea data/eternalartifacts/loot_tables/blocks/sandy_stone_bricks.json
 dd29dd415f32b17e7bb174e525f10b3ad21e4c4f data/eternalartifacts/loot_tables/blocks/sandy_tiled_stone_bricks.json
+03e4feccf035b7c58b20bda66da6403b3e3426ae data/eternalartifacts/loot_tables/blocks/shock_absorber.json
 2d3448b17d4ea0ac42eb08576062e93d6cd62af4 data/eternalartifacts/loot_tables/blocks/snow_bricks.json
 fffb478d1b66dd4942dd8200bd916a3c4dd585d3 data/eternalartifacts/loot_tables/blocks/snow_brick_slab.json
 64acea887cc74457a73b09e3d7b7541721a5fa2b data/eternalartifacts/loot_tables/blocks/snow_brick_stairs.json

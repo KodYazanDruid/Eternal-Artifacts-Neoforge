@@ -3,6 +3,10 @@
     "eternalartifacts:knapsack",
     "eternalartifacts:tank_knapsack",
     "eternalartifacts:ender_knapsack",
-    "minecraft:elytra"
+    "minecraft:elytra",
+    {
+      "id": "mekanism:hdpe_elytra",
+      "required": false
+    }
   ]
 }

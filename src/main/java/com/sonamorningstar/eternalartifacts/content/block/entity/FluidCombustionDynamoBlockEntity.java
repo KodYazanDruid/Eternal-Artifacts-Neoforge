@@ -84,7 +84,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        if(energy.getEnergyStored() > 0) outputEnergyToDir(lvl, pos, getBlockState().getValue(BlockStateProperties.FACING), energy);
+        if(hasAnyEnergy(energy)) outputEnergyToDir(lvl, pos, getBlockState().getValue(BlockStateProperties.FACING), energy);
 
         //TODO: Create parent DynamoBlockEntity class and move this to there.
         if(cache != null) {

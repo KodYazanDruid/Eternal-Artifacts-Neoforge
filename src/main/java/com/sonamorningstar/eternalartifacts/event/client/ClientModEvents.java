@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
+import com.sonamorningstar.eternalartifacts.client.renderer.entity.ShulkerShellLayer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.ColoredBlockModel;
 import com.sonamorningstar.eternalartifacts.client.resources.model.FluidCombustionDynamoModel;
 import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
@@ -15,14 +16,20 @@ import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidArmorModel;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.BiomeColors;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.TntRenderer;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
@@ -33,6 +40,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -132,21 +141,27 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void attachLayers(EntityRenderersEvent.AddLayers event) {
+        EntityRendererProvider.Context ctx = event.getContext();
         for (EntityType<?> type : event.getEntityTypes()) {
             EntityRenderer<?> renderer = event.getRenderer(type);
-            if(renderer instanceof LivingEntityRenderer<?, ?> livingRenderer) attachRenderLayers(livingRenderer);
+            if (renderer instanceof LivingEntityRenderer<?,?> ler) attachLayers(ler, ctx);
         }
         event.getSkins().forEach(renderer ->{
             LivingEntityRenderer<Player, EntityModel<Player>> skin = event.getSkin(renderer);
-            attachRenderLayers(Objects.requireNonNull(skin));
+            attachLayers(Objects.requireNonNull(skin), ctx);
         });
     }
 
-    private static <T extends LivingEntity, M extends EntityModel<T>> void attachRenderLayers(LivingEntityRenderer<T, M> renderer) {
+    private static <T extends LivingEntity, M extends EntityModel<T>> void attachLayers(LivingEntityRenderer<T, M> renderer, EntityRendererProvider.Context ctx) {
         renderer.addLayer(new HolyDaggerLayer<>(renderer));
         renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
+
+        if (renderer instanceof HumanoidMobRenderer<?, ?> hmr) {
+            renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(hmr, ctx));
+        }
+        if (renderer instanceof PlayerRenderer pr) {
+            renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(pr, ctx));
+        }
     }
-
-
 
 }

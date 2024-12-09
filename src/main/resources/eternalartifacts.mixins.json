@@ -8,14 +8,22 @@
     "BlockMixin",
     "DiggerItemMixin",
     "FlowerPotBlockMixin",
-    "ItemEntityMixin",
+    "entity.LivingEntityMixin",
     "PickaxeItemMixin",
-    "PlayerMixin"
+    "entity.AbstractSkeletonMixin",
+    "entity.ItemEntityMixin",
+    "entity.PiglinAiMixin",
+    "entity.PlayerMixin",
+    "entity.ZombieMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "client": [
-    "AbstractContainerScreenMixin"
+    "AbstractContainerScreenMixin",
+    "ClientPacketListenerMixin",
+    "render.ElytraLayerMixin",
+    "render.HumanoidArmorLayerMixin",
+    "entity.LocalPlayerMixin"
   ]
 }
