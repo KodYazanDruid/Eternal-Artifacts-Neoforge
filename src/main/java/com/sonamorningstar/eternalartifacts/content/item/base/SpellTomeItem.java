@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.item.base;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.event.custom.SpellCastEvent;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +34,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
     /**
      *
      * If you want to change spell casting logic (giving tome an energy/xp cost etc.) override
-     * {@link #castSpell(Level, LivingEntity, InteractionHand, float)} instead. <br><br>
+     * {@link #castSpell(Level, LivingEntity, InteractionHand, RandomSource, float)} instead. <br><br>
      *
      * Overriding this method is fine but make sure to call {@code super} for this method so spell will cast.
      */
@@ -46,7 +47,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
             SpellCastEvent event = new SpellCastEvent(player, level, tome, amplifiedDamage, spellHolder.get());
             if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                 amplifiedDamage = event.getAmplifiedDamage();
-                if (castSpell(level, player, hand, amplifiedDamage)) {
+                if (castSpell(level, player, hand, player.getRandom(), amplifiedDamage)) {
                     player.awardStat(Stats.ITEM_USED.get(this));
                     return InteractionResultHolder.sidedSuccess(tome, level.isClientSide);
                 } else {
@@ -68,7 +69,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
      * @param hand   The hand (main or offhand) used to cast the spell.
      * @return {@code true} if the spell was successfully cast, {@code false} otherwise.
      */
-    protected boolean castSpell(Level level, LivingEntity caster, InteractionHand hand, float amplifiedDamage) {
-        return spellHolder.get().cast(caster.getItemInHand(hand), level, caster, amplifiedDamage);
+    protected boolean castSpell(Level level, LivingEntity caster, InteractionHand hand, RandomSource random, float amplifiedDamage) {
+        return spellHolder.get().cast(caster.getItemInHand(hand), level, caster, random, amplifiedDamage);
     }
 }

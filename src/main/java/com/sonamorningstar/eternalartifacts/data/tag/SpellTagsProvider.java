@@ -63,7 +63,13 @@ public class SpellTagsProvider extends IntrinsicHolderTagsProvider<Spell> {
         tag(ModTags.Spells.FIRE).add(
                 ModSpells.FIREBALL.get()
         );
-        tag(ModTags.Spells.AIR).add(ModSpells.TORNADO.get());
+        tag(ModTags.Spells.AIR).add(
+                ModSpells.TORNADO.get(),
+                ModSpells.SHULKER_BULLETS.get()
+        );
+        tag(ModTags.Spells.NATURE).add(
+                ModSpells.SHULKER_BULLETS.get()
+        );
 
 
     }

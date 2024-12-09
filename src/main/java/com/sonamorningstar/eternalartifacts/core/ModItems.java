@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.content.spell.EvokerFangsSpell;
 import com.sonamorningstar.eternalartifacts.content.spell.FireballSpell;
+import com.sonamorningstar.eternalartifacts.content.spell.ShulkerBulletsSpell;
 import com.sonamorningstar.eternalartifacts.content.spell.TornadoSpell;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -18,7 +19,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -132,6 +132,11 @@ public class ModItems {
     public static final DeferredItem<SpellTomeItem<EvokerFangsSpell>> EVOKERS_TOME = registerTome("evokers_tome", ModSpells.EVOKER_FANGS);
     public static final DeferredItem<AnimatedSpellTomeItem<FireballSpell>> FIREBALL_TOME = registerAnimatedTome("fireball_tome", ModSpells.FIREBALL);
     public static final DeferredItem<SpellTomeItem<TornadoSpell>> TORNADO_TOME = registerTome("tornado_tome", ModSpells.TORNADO);
+    public static final DeferredItem<Item> SHULKER_HELMET = registerStacksToOne("shulker_helmet", p -> new ShulkerArmorItem(ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> SHULKER_CHESTPLATE = registerStacksToOne("shulker_chestplate", p -> new ShulkerArmorItem(ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> SHULKER_LEGGINGS = registerStacksToOne("shulker_leggings", p -> new ShulkerArmorItem(ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> SHULKER_BOOTS = registerStacksToOne("shulker_boots", p -> new ShulkerArmorItem(ArmorItem.Type.BOOTS, p));
+    public static final DeferredItem<SpellTomeItem<ShulkerBulletsSpell>> SHULKER_BULLETS_TOME = registerTome("shulker_bullets_tome", ModSpells.SHULKER_BULLETS);
 
     //Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));

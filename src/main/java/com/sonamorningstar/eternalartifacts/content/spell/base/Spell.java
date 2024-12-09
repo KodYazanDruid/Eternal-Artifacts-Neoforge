@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.content.spell.base;
 
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
-import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.core.ModAttributes;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -10,7 +9,7 @@ import lombok.Getter;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -51,7 +50,7 @@ public class Spell {
      * @param caster     The caster who casts the spell.
      * @return {@code true} if the spell was successfully cast, {@code false} otherwise.
      */
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster, float amplifiedDamage) {
+    public boolean cast(ItemStack stack, Level level, LivingEntity caster, RandomSource random, float amplifiedDamage) {
         return false;
     }
 

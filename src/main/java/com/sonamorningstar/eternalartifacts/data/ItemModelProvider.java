@@ -149,6 +149,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.GREEN_SHULKER_SHELL.get());
         basicItem(ModItems.RED_SHULKER_SHELL.get());
         basicItem(ModItems.BLACK_SHULKER_SHELL.get());
+        basicItem(ModItems.SHULKER_HELMET.get());
+        basicItem(ModItems.SHULKER_CHESTPLATE.get());
+        basicItem(ModItems.SHULKER_LEGGINGS.get());
+        basicItem(ModItems.SHULKER_BOOTS.get());
+        basicItem(ModItems.SHULKER_BULLETS_TOME.get());
 
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

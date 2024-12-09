@@ -6,8 +6,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.NeoForgeMod;
 
@@ -35,6 +38,21 @@ public class RayTraceHelper {
     public static BlockHitResult retrace(LivingEntity entity, double reach, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
         return entity.level().clip(new ClipContext(getStartVec(entity), getEndVec(entity, reach), blockMode, fluidMode, entity));
     }
+
+    public static EntityHitResult retraceEntity(LivingEntity entity) {
+        return ProjectileUtil.getEntityHitResult(entity.level(), entity, getStartVec(entity), getEndVec(entity), entity.getBoundingBox(),
+                (e) -> !e.isSpectator() /*&& !e.isPickable()*/, (float) getBlockReachDistance(entity));
+    }
+
+    public static HitResult retraceGeneric(LivingEntity living) {
+        return retraceGeneric(living, getEntityReachDistance(living));
+    }
+
+    public static HitResult retraceGeneric(LivingEntity living, double reach) {
+        return ProjectileUtil.getHitResultOnViewVector(living, e -> !e.isSpectator(), reach);
+    }
+
+
 
     public static Vec3 getStartVec(LivingEntity player) {
         return getCorrectedHeadVec(player);
@@ -68,6 +86,11 @@ public class RayTraceHelper {
 
     private static double getBlockReachDistanceServer(LivingEntity entity) {
         AttributeInstance attribute = entity.getAttribute(NeoForgeMod.BLOCK_REACH.value());
+        return attribute == null ? 5.0D : attribute.getValue();
+    }
+
+    private static double getEntityReachDistance(LivingEntity entity) {
+        AttributeInstance attribute = entity.getAttribute(NeoForgeMod.ENTITY_REACH.value());
         return attribute == null ? 5.0D : attribute.getValue();
     }
 

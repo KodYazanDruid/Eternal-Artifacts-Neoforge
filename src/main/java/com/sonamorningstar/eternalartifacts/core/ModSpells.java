@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.spell.EvokerFangsSpell;
 import com.sonamorningstar.eternalartifacts.content.spell.FireballSpell;
+import com.sonamorningstar.eternalartifacts.content.spell.ShulkerBulletsSpell;
 import com.sonamorningstar.eternalartifacts.content.spell.TornadoSpell;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
@@ -21,6 +22,7 @@ public class ModSpells {
     public static final DeferredHolder<Spell, EvokerFangsSpell> EVOKER_FANGS = register("evoker_fangs",
             () -> new EvokerFangsSpell(new Spell.Properties().rarity(Rarity.EPIC).cooldown(40).baseDamage(8.0F)));
     public static final DeferredHolder<Spell, TornadoSpell> TORNADO = register("tornado", TornadoSpell::new, 2.0F);
+    public static final DeferredHolder<Spell, ShulkerBulletsSpell> SHULKER_BULLETS = register("shulker_bullets", ShulkerBulletsSpell::new, 2.0F);
 
 
     private static <S extends Spell> DeferredHolder<Spell, S> register(String name, Function<Spell.Properties, S> props, float damage) {

@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.EvokerFangs;
@@ -19,7 +20,7 @@ public class EvokerFangsSpell extends Spell {
     }
 
     @Override
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster, float amplifiedDamage) {
+    public boolean cast(ItemStack stack, Level level, LivingEntity caster, RandomSource random, float amplifiedDamage) {
         if (!(caster instanceof Player) || (caster instanceof Player player && !player.getCooldowns().isOnCooldown(stack.getItem()))){
             Vec3 looking = caster.getLookAngle();
             Vec3[] all = new Vec3[]{looking, looking.yRot(0.22f), looking.yRot(-0.22f)};

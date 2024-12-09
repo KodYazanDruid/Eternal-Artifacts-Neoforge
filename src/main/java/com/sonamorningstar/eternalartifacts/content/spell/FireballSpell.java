@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.spell;
 
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.LargeFireball;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +18,7 @@ public class FireballSpell extends Spell {
     }
 
     @Override
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster, float amplifiedDamage) {
+    public boolean cast(ItemStack stack, Level level, LivingEntity caster, RandomSource random, float amplifiedDamage) {
         BlockHitResult result = RayTraceHelper.retrace(caster, ClipContext.Fluid.NONE);
         if (result.getType() == HitResult.Type.MISS) {
             Vec3 eyePosition = caster.getEyePosition();

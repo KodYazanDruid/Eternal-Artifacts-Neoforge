@@ -148,7 +148,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GREEN_SHULKER_SHELL.get(), "Green Shulker Shell");
                 add(ModItems.RED_SHULKER_SHELL.get(), "Red Shulker Shell");
                 add(ModItems.BLACK_SHULKER_SHELL.get(), "Black Shulker Shell");
-
+                add(ModItems.SHULKER_HELMET.get(), "Shulker Helmet");
+                add(ModItems.SHULKER_CHESTPLATE.get(), "Shulker Chestplate");
+                add(ModItems.SHULKER_LEGGINGS.get(), "Shulker Leggings");
+                add(ModItems.SHULKER_BOOTS.get(), "Shulker Boots");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -470,6 +473,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GREEN_SHULKER_SHELL.get(), "Yeşil Shulker Kabuğu");
                 add(ModItems.RED_SHULKER_SHELL.get(), "Kırmızı Shulker Kabuğu");
                 add(ModItems.BLACK_SHULKER_SHELL.get(), "Siyah Shulker Kabuğu");
+                add(ModItems.SHULKER_HELMET.get(), "Shulker Kaskı");
+                add(ModItems.SHULKER_CHESTPLATE.get(), "Shulker Göğüslüğü");
+                add(ModItems.SHULKER_LEGGINGS.get(), "Shulker Pantolonu");
+                add(ModItems.SHULKER_BOOTS.get(), "Shulker Botları");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
