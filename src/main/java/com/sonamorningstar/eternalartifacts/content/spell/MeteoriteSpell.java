@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.spell;
 
-import com.sonamorningstar.eternalartifacts.content.entity.projectile.Tornado;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.Meteorite;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.util.RandomSource;
@@ -12,19 +12,22 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class TornadoSpell extends Spell {
-    public TornadoSpell(Properties props) {
+public class MeteoriteSpell extends Spell {
+    public MeteoriteSpell(Properties props) {
         super(props);
     }
 
     @Override
     public boolean cast(ItemStack tome, LivingEntity caster, InteractionHand hand, Level level, RandomSource random, float amplifiedDamage) {
         BlockHitResult result = RayTraceHelper.retrace(caster, ClipContext.Fluid.NONE);
-        Vec3 casterPos = caster.position();
-        Vec3 shootVector = caster.getEyePosition().vectorTo(result.getLocation());
-        Tornado tornado = new Tornado(level, caster, shootVector.x, shootVector.y, shootVector.z, amplifiedDamage);
-        tornado.setPos(casterPos.x, casterPos.y, casterPos.z);
-        level.addFreshEntity(tornado);
-        return true;
+        if (!checkCooldown(caster, tome.getItem())) {
+            Vec3 eyePosition = caster.getEyePosition();
+            Vec3 shootVector = eyePosition.vectorTo(result.getLocation());
+            Meteorite meteorite = new Meteorite(level, caster, shootVector.x, shootVector.y, shootVector.z, amplifiedDamage);
+            meteorite.setPosRaw(eyePosition.x, eyePosition.y, eyePosition.z);
+            level.addFreshEntity(meteorite);
+            return true;
+        }
+        return false;
     }
 }

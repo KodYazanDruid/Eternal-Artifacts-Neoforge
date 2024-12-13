@@ -168,6 +168,11 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARMS_RING).add(
                 ModItems.GOLD_RING.get()
         );
+        tag(ModTags.Items.CHARMS_BRACELET).add(
+                Items.CLOCK,
+                Items.COMPASS,
+                Items.RECOVERY_COMPASS
+        );
         tag(ModTags.Items.CHARMS_BACK).add(
                 ModItems.KNAPSACK.get(),
                 ModItems.TANK_KNAPSACK.get(),
@@ -177,6 +182,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARM_FEET).add(
                 ModItems.COMFY_SHOES.get(),
                 ModItems.FROG_LEGS.get()
+        );
+        tag(ModTags.Items.CHARMS_BELT).add(
+                Items.FILLED_MAP
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
                 ModItems.BATTERY.get(),
@@ -195,11 +203,11 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 //ModTags.Items.CHARMS_NECKLACE,
                 //ModTags.Items.CHARMS_HAND,
                 ModTags.Items.CHARMS_RING,
+                ModTags.Items.CHARMS_BRACELET,
+                //ModTags.Items.CHARMS_BELT,
                 ModTags.Items.CHARMS_BACK,
                 ModTags.Items.CHARM_FEET,
                 ModTags.Items.CHARMS_CHARM
-                //ModTags.Items.CHARMS_BELT,
-                //ModTags.Items.CHARMS_BRACELET
         );
 
         tag(ModTags.Items.SHULKER_SHELL).add(

@@ -43,11 +43,13 @@ public class SpellTomeItem<S extends Spell> extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack tome = player.getItemInHand(hand);
         if (!player.getCooldowns().isOnCooldown(tome.getItem())){
-            float amplifiedDamage = spellHolder.get().getAmplifiedDamage(player);
-            SpellCastEvent event = new SpellCastEvent(player, level, tome, amplifiedDamage, spellHolder.get());
+            S spell = spellHolder.get();
+            float amplifiedDamage = spell.getAmplifiedDamage(player);
+            SpellCastEvent event = new SpellCastEvent(player, level, tome, amplifiedDamage, spell);
             if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                 amplifiedDamage = event.getAmplifiedDamage();
-                if (castSpell(level, player, hand, player.getRandom(), amplifiedDamage)) {
+                if (castSpell(event.getTome(), level, player, hand, player.getRandom(), amplifiedDamage)) {
+                    player.getCooldowns().addCooldown(event.getTome().getItem(), event.getCooldown());
                     player.awardStat(Stats.ITEM_USED.get(this));
                     return InteractionResultHolder.sidedSuccess(tome, level.isClientSide);
                 } else {
@@ -64,12 +66,13 @@ public class SpellTomeItem<S extends Spell> extends Item {
     /**
      * Casts a spell using the spell tome, with the specified level, caster, and hand used.
      *
+     * @param tome   The spell tome used to cast the spell.
      * @param level  The level where the spell is cast.
      * @param caster The entity that is casting the spell.
      * @param hand   The hand (main or offhand) used to cast the spell.
      * @return {@code true} if the spell was successfully cast, {@code false} otherwise.
      */
-    protected boolean castSpell(Level level, LivingEntity caster, InteractionHand hand, RandomSource random, float amplifiedDamage) {
-        return spellHolder.get().cast(caster.getItemInHand(hand), level, caster, random, amplifiedDamage);
+    protected boolean castSpell(ItemStack tome, Level level, LivingEntity caster, InteractionHand hand, RandomSource random, float amplifiedDamage) {
+        return spellHolder.get().cast(tome, caster, hand, level, random, amplifiedDamage);
     }
 }

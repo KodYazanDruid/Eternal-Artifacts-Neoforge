@@ -19,6 +19,7 @@ public class SpellCastEvent extends Event implements ICancellableEvent {
     private final Level level;
     private final ItemStack tome;
     private float amplifiedDamage;
+    private int cooldown;
 
     public SpellCastEvent(@Nullable LivingEntity caster, Level level, ItemStack tome, float amplifiedDamage, Spell spell) {
         this.caster = caster;
@@ -26,6 +27,7 @@ public class SpellCastEvent extends Event implements ICancellableEvent {
         this.tome = tome;
         this.spell = spell;
         this.amplifiedDamage = amplifiedDamage;
+        this.cooldown = spell.cooldown;
     }
 
 }

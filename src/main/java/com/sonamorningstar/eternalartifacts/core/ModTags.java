@@ -101,11 +101,14 @@ public class ModTags {
         public static final TagKey<Spell> EARTH = forgeTag("earth");
         public static final TagKey<Spell> WATER = forgeTag("water");
         public static final TagKey<Spell> AIR = forgeTag("air");
+        public static final TagKey<Spell> FROST = forgeTag("frost");
         public static final TagKey<Spell> ARCANE = forgeTag("arcane");
         public static final TagKey<Spell> HOLY = forgeTag("holy");
-        public static final TagKey<Spell> NATURE = forgeTag("nature");
         public static final TagKey<Spell> SHADOW = forgeTag("shadow");
+        public static final TagKey<Spell> FEL = forgeTag("fel");
         public static final TagKey<Spell> VOID = forgeTag("void");
+        public static final TagKey<Spell> ENDER = forgeTag("ender");
+        public static final TagKey<Spell> CURSE = forgeTag("curse");
 
 
         private static TagKey<Spell> forgeTag(String name) { return TagKey.create(ModRegistries.Keys.SPELL, new ResourceLocation("forge", name)); }

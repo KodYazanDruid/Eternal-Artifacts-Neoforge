@@ -49,7 +49,8 @@ public class ModProperties {
                 .sound(SoundType.GLASS)
                 .friction(0.98F)
                 .noOcclusion()
-                .isRedstoneConductor(ModProperties.Blocks::never);
+                .isRedstoneConductor(ModProperties.Blocks::never)
+                .isValidSpawn((state, getter, pos, type) -> type == EntityType.POLAR_BEAR);
 
         public static final BlockBehaviour.Properties FLOWER = BlockBehaviour.Properties.of()
                 .mapColor(MapColor.PLANT)

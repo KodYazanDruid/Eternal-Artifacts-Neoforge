@@ -8,10 +8,11 @@
     "BlockMixin",
     "DiggerItemMixin",
     "FlowerPotBlockMixin",
-    "entity.LivingEntityMixin",
+    "MapItemSavedDataMixin",
     "PickaxeItemMixin",
     "entity.AbstractSkeletonMixin",
     "entity.ItemEntityMixin",
+    "entity.LivingEntityMixin",
     "entity.PiglinAiMixin",
     "entity.PlayerMixin",
     "entity.ZombieMixin"
@@ -22,8 +23,8 @@
   "client": [
     "AbstractContainerScreenMixin",
     "ClientPacketListenerMixin",
+    "entity.LocalPlayerMixin",
     "render.ElytraLayerMixin",
-    "render.HumanoidArmorLayerMixin",
-    "entity.LocalPlayerMixin"
+    "render.HumanoidArmorLayerMixin"
   ]
 }

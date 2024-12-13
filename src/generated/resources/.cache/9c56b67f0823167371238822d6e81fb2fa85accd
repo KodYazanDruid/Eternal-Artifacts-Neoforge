@@ -1,4 +1,4 @@
-// 1.20.4	2024-12-09T23:29:35.0653994	Item Models: eternalartifacts
+// 1.20.4	2024-12-11T16:02:55.4132492	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
@@ -127,6 +127,7 @@ db4c87dbd56c73964e1d7bbdda87976add57067c assets/eternalartifacts/models/item/mea
 f07a1e1cc2b1a99080b38bbe509d0a04faa930c5 assets/eternalartifacts/models/item/meat_shredder.json
 e27a29410dee3d2b3bcee6f52a1cd980728b1076 assets/eternalartifacts/models/item/medkit.json
 eac553947dded131497aea667f841552a8f08c69 assets/eternalartifacts/models/item/melting_crucible.json
+3a9e72bd6fc8e64f0a1832e0db01df0710c34a2d assets/eternalartifacts/models/item/meteorite_tome.json
 25484d3a562b80d50c5b4f6e7b29b2df2eb4808d assets/eternalartifacts/models/item/mob_liquifier.json
 81c9e09f20bcba45f4e17bfcf9ce4d3d4b38b846 assets/eternalartifacts/models/item/natural_spade.json
 347b2371f5271deacad094ca5a95dd03bd9e50bc assets/eternalartifacts/models/item/netherite_cutlass.json

@@ -2,6 +2,10 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
+import com.sonamorningstar.eternalartifacts.client.gui.overlay.ClockOverlay;
+import com.sonamorningstar.eternalartifacts.client.gui.overlay.CompassOverlay;
+import com.sonamorningstar.eternalartifacts.client.gui.overlay.MapOverlay;
+import com.sonamorningstar.eternalartifacts.client.gui.overlay.RecoveryCompassOverlay;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ShulkerShellLayer;
@@ -16,20 +20,14 @@ import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidArmorModel;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
@@ -39,6 +37,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,6 +98,14 @@ public class ClientModEvents {
     public static void registerModelLoaders(ModelEvent.RegisterGeometryLoaders event) {
         event.register(new ResourceLocation(MODID, "colored_block"), ColoredBlockModel.LOADER);
         event.register(new ResourceLocation(MODID, "retextured"), RetexturedModel.LOADER);
+    }
+
+    @SubscribeEvent
+    public static void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "compass_overlay"), new CompassOverlay());
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "recovery_compass_overlay"), new RecoveryCompassOverlay());
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "clock_overlay"), new ClockOverlay());
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "map_overlay"), new MapOverlay());
     }
 
     @SubscribeEvent

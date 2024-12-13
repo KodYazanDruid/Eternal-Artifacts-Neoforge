@@ -27,19 +27,6 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
         setTank(createRecipeFinderTank(16000));
         outputSlots.add(9);
         setInventory(createRecipeFinderInventory(10, outputSlots));
-        /*setInventory(new ModItemStorage(10) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                if (!outputSlots.contains(slot)) findRecipe();
-                AdvancedCrafterBlockEntity.this.sendUpdate();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {
-                if (outputSlots.contains(slot)) return false;
-                return !outputSlots.contains(slot);
-            }
-        });*/
         for (int i = 0; i < 9; i++) {
             screenInfo.setSlotPosition(44 + (i % 3) * 18, 18 + (i / 3) * 18, i);
         }
@@ -84,6 +71,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
         previousRecipe = recipe;
 
         ItemStack result = craftingContainer != null ? recipe.assemble(craftingContainer, lvl.registryAccess()) : ItemStack.EMPTY;
+        result.onCraftedBySystem(lvl);
         NonNullList<ItemStack> remainders = craftingContainer != null ? lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, craftingContainer, lvl) : NonNullList.create();
         ProcessCondition condition = new ProcessCondition()
                 .initInventory(inventory)

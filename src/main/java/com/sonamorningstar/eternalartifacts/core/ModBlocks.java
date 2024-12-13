@@ -3,8 +3,6 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
-import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
@@ -101,8 +99,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SNOW_BRICK_WALL = registerWithItem("snow_brick_wall",
             ()-> new WallBlock(ModProperties.Blocks.SNOW_BRICKS));
     public static final DeferredBlock<Block> ICE_BRICKS = registerWithItem("ice_bricks",
-            ()-> new IceBricksBlock(ModProperties.Blocks.ICE_BRICKS
-                    .isValidSpawn((state, getter, pos, type) -> type == EntityType.POLAR_BEAR)));
+            ()-> new IceBricksBlock(ModProperties.Blocks.ICE_BRICKS));
     public static final DeferredBlock<Block> ICE_BRICK_SLAB = registerWithItem("ice_brick_slab",
             ()-> new IceBrickSlab(ModProperties.Blocks.ICE_BRICKS));
     public static final DeferredBlock<Block> ICE_BRICK_STAIRS = registerWithItem("ice_brick_stairs",
@@ -170,7 +167,7 @@ public class ModBlocks {
 
     public static final DeferredBlock<AncientCropBlock> ANCIENT_CROP = registerNoItem("ancient_crop",
             ()-> new AncientCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
-    public static final DeferredBlock<TallFlowerBlock> FORSYTHIA = registerNoItem("forsythia",
+    public static final DeferredBlock<TallFlowerBlock> FORSYTHIA = registerDoublePlant("forsythia",
             ()-> new TallFlowerBlock(ModProperties.Blocks.FLOWER));
     public static final DeferredBlock<FlowerBlock> FOUR_LEAF_CLOVER = registerWithItem("four_leaf_clover",
             ()-> new FlowerBlock(()-> MobEffects.LUCK, 15, ModProperties.Blocks.FLOWER));
@@ -211,13 +208,11 @@ public class ModBlocks {
         });
         return block;
     }
-
     private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier, Item.Properties props){
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), props));
         return block;
     }
-
     private static <T extends Block, E extends BlockItem> DeferredBlock<T> registerWithItem(String name, Supplier<T> blockSup, Class<E> itemClass, Item.Properties itemProps) {
         DeferredBlock<T> block = BLOCKS.register(name, blockSup);
         ModItems.ITEMS.register(name, ()-> {
@@ -229,6 +224,12 @@ public class ModBlocks {
             }
         });
         return block;
+    }
+
+    private static <T extends Block> DeferredBlock<T> registerDoublePlant(String name, Supplier<T> supplier) {
+        DeferredBlock<T> doublePlant = BLOCKS.register(name, supplier);
+        ModItems.ITEMS.register(name, () -> new DoubleHighBlockItem(doublePlant.get(), new Item.Properties()));
+        return doublePlant;
     }
 
     private static DeferredBlock<OreBerryBlock> registerOreBerryBlock(String material) {

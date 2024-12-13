@@ -10,9 +10,12 @@ import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
@@ -45,12 +48,16 @@ public class Spell {
     /**
      * Casts a spell using the provided item stack, level, caster.
      *
-     * @param stack      The item stack used to cast the spell.
-     * @param level      The level where the spell is cast.
-     * @param caster     The caster who casts the spell.
+     * @param tome    The tome used to cast the spell.
+     * @param caster  The caster who casts the spell.
+     * @param hand    The hand used to cast the spell.
+     * @param level   The level where the spell is cast.
+     * @param random  The random source used to generate random numbers.
+     * @param amplifiedDamage The damage value calculated based on casters spell damage.
+     *
      * @return {@code true} if the spell was successfully cast, {@code false} otherwise.
      */
-    public boolean cast(ItemStack stack, Level level, LivingEntity caster, RandomSource random, float amplifiedDamage) {
+    public boolean cast(ItemStack tome, LivingEntity caster, InteractionHand hand, Level level, RandomSource random, float amplifiedDamage) {
         return false;
     }
 
@@ -60,7 +67,7 @@ public class Spell {
      * @param caster The entity casting the spell.
      * @return The amplified damage value.
      * @deprecated This method is deprecated because you shouldn't be calling it.
-     *             Instead, use the argument from the {@link Spell#cast(ItemStack, Level, LivingEntity, float)} method.
+     *             Instead, use the argument from the {@link Spell#cast(LivingEntity, InteractionHand, Level, RandomSource, float)} method.
      *             It is fine to override this method if you need to change the spell damage calculation logic.
      */
     @Deprecated
@@ -69,6 +76,11 @@ public class Spell {
         if (spellDamage == null) return baseDamage;
         double amp = spellDamage.getValue();
         return (float) (baseDamage * amp / 100);
+    }
+
+    public static boolean checkCooldown(LivingEntity caster, Item tome) {
+        if (caster instanceof Player player) return player.getCooldowns().isOnCooldown(tome);
+        return false;
     }
 
     public boolean is(Spell spell) {

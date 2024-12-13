@@ -66,6 +66,12 @@ public class GuiDrawer {
             gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
+    public static void draw(GuiGraphics gui, ResourceLocation location, int x, int y, int width, int height) {
+        draw(gui, location, x, y, 0, 0, width, height);
+    }
+    public static void draw(GuiGraphics gui, ResourceLocation location, int x, int y, int u, int v, int width, int height) {
+        gui.blit(location, x, y, u, v, width, height);
+    }
 
     //region Background drawing.
     private static void blitCorners(GuiGraphics gui, int x, int y, int width, int height) {

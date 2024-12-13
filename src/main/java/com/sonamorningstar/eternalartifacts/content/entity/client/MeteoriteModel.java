@@ -21,12 +21,13 @@ public class MeteoriteModel extends Model {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition part = mesh.getRoot();
 
-        part.addOrReplaceChild("meteorite", CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, new CubeDeformation(0.0F))
+        part.addOrReplaceChild("meteorite", CubeListBuilder.create()
+                .texOffs(0, 0)
+                .addBox(-16.0F, -16.0F, -16.0F, 32.0F, 32.0F, 32.0F, new CubeDeformation(0.0F))
                 , PartPose.offset(0, 16.0F, 0)
         );
 
-        return LayerDefinition.create(mesh, 16, 16);
+        return LayerDefinition.create(mesh, 32, 32);
     }
 
     @Override

@@ -61,14 +61,15 @@ public class SpellTagsProvider extends IntrinsicHolderTagsProvider<Spell> {
     @Override
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.Spells.FIRE).add(
-                ModSpells.FIREBALL.get()
+            ModSpells.FIREBALL.get(),
+            ModSpells.METEORITE.get()
         );
         tag(ModTags.Spells.AIR).add(
-                ModSpells.TORNADO.get(),
-                ModSpells.SHULKER_BULLETS.get()
+            ModSpells.TORNADO.get(),
+            ModSpells.SHULKER_BULLETS.get()
         );
-        tag(ModTags.Spells.NATURE).add(
-                ModSpells.SHULKER_BULLETS.get()
+        tag(ModTags.Spells.EARTH).add(
+            ModSpells.METEORITE.get()
         );
 
 

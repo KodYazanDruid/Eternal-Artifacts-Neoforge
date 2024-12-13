@@ -20,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -246,12 +247,15 @@ public class CommonEvents {
                 stepHeight.removeModifier(ComfyShoesItem.getStepHeight().getId());
             }
         }
-
         if (event.phase == TickEvent.Phase.START) {
             var charms = player.getData(ModDataAttachments.CHARMS);
             for (int i = 0; i < charms.getSlots(); i++) {
                 var stack = charms.getStackInSlot(i);
                 if (stack.isEmpty()) continue;
+                if (player instanceof ServerPlayer sp && stack.getItem().isComplex()) {
+                    Packet<?> packet = ((ComplexItem)stack.getItem()).getUpdatePacket(stack, sp.level(), sp);
+                    if (packet != null) sp.connection.send(packet);
+                }
                 CharmTickEvent charmEvent = new CharmTickEvent(player, stack, i);
                 NeoForge.EVENT_BUS.post(charmEvent);
             }
@@ -278,6 +282,9 @@ public class CommonEvents {
             if (!player.getCooldowns().isOnCooldown(ModItems.MEDKIT.get()) && !player.hasEffect(MobEffects.REGENERATION)) {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
             }
+        }
+        if (charm.getItem() instanceof MapItem mapItem) {
+            mapItem.inventoryTick(charm, player.level(), player, -1, true);
         }
     }
 
@@ -392,6 +399,7 @@ public class CommonEvents {
             if (result == 1) {
                 if (player instanceof ServerPlayer sp) sp.awardStat(Stats.ITEM_USED.get(Items.SHULKER_SHELL));
                 player.swing(hand, true);
+                event.setCanceled(true);
             }
         }
     }

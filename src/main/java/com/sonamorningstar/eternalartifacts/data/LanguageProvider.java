@@ -152,6 +152,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_CHESTPLATE.get(), "Shulker Chestplate");
                 add(ModItems.SHULKER_LEGGINGS.get(), "Shulker Leggings");
                 add(ModItems.SHULKER_BOOTS.get(), "Shulker Boots");
+                add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Bullets Tome");
+                add(ModItems.METEORITE_TOME.get(), "Meteorite Tome");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -477,6 +479,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_CHESTPLATE.get(), "Shulker Göğüslüğü");
                 add(ModItems.SHULKER_LEGGINGS.get(), "Shulker Pantolonu");
                 add(ModItems.SHULKER_BOOTS.get(), "Shulker Botları");
+                add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Mermiler Kitabı");
+                add(ModItems.METEORITE_TOME.get(), "Meteorit Kitabı");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");

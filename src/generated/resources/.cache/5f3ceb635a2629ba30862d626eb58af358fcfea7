@@ -1,6 +1,8 @@
-// 1.20.4	2024-12-08T13:00:52.9377287	Tags for minecraft:item mod id eternalartifacts
-45e09dc8c5b03a8a7c6f3c32e7cfc7f25a7c8502 data/eternalartifacts/tags/items/charms.json
+// 1.20.4	2024-12-13T01:25:31.3778121	Tags for minecraft:item mod id eternalartifacts
+668be4be39ec1bb7467245847e2ac031a5cb645b data/eternalartifacts/tags/items/charms.json
 c5e8312be0b1363037e9d86f5beb64c02f37601e data/eternalartifacts/tags/items/charms/back.json
+17af95fdfeae062d798fc610dd9332ac88beae64 data/eternalartifacts/tags/items/charms/belt.json
+5a60d4d6defde1d77adad4959c5d4aac661e4a5f data/eternalartifacts/tags/items/charms/bracelet.json
 c6377adf85d2c49675d14aa0ccb225e180c2a5e7 data/eternalartifacts/tags/items/charms/charm.json
 d613f71114ab2701c883292c2acdf914026a87e8 data/eternalartifacts/tags/items/charms/feet.json
 be2105e86aab8c4d00018310ae19bd3c3d8f9bbe data/eternalartifacts/tags/items/charms/head.json

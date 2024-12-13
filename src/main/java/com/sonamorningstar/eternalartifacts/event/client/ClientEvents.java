@@ -27,6 +27,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
@@ -82,6 +83,11 @@ public class ClientEvents {
             }
         }
     }
+
+/*    @SubscribeEvent
+    public static void renderGuiEvent(RenderGuiEvent event) {
+
+    }*/
 
     @SubscribeEvent
     public static void mouseScrollEvent(ScreenEvent.MouseScrolled.Pre event) {

@@ -7,10 +7,7 @@ import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockIt
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
-import com.sonamorningstar.eternalartifacts.content.spell.EvokerFangsSpell;
-import com.sonamorningstar.eternalartifacts.content.spell.FireballSpell;
-import com.sonamorningstar.eternalartifacts.content.spell.ShulkerBulletsSpell;
-import com.sonamorningstar.eternalartifacts.content.spell.TornadoSpell;
+import com.sonamorningstar.eternalartifacts.content.spell.*;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
@@ -137,6 +134,7 @@ public class ModItems {
     public static final DeferredItem<Item> SHULKER_LEGGINGS = registerStacksToOne("shulker_leggings", p -> new ShulkerArmorItem(ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> SHULKER_BOOTS = registerStacksToOne("shulker_boots", p -> new ShulkerArmorItem(ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<SpellTomeItem<ShulkerBulletsSpell>> SHULKER_BULLETS_TOME = registerTome("shulker_bullets_tome", ModSpells.SHULKER_BULLETS);
+    public static final DeferredItem<SpellTomeItem<MeteoriteSpell>> METEORITE_TOME = registerTome("meteorite_tome", ModSpells.METEORITE);
 
     //Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -189,7 +187,6 @@ public class ModItems {
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));
-    public static final DeferredItem<DoubleHighBlockItem> FORSYTHIA = register("forsythia", ()-> new DoubleHighBlockItem(ModBlocks.FORSYTHIA.get(), new Item.Properties()));
 
     //region Register methods.
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> supplier) {
