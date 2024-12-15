@@ -327,6 +327,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("red"), "Red");
                 add(ModConstants.GUI.withSuffix("green"), "Green");
                 add(ModConstants.GUI.withSuffix("blue"), "Blue");
+                add(ModConstants.GUI.withSuffix("toggle_glint"), "Toggle Glint");
+                add(ModConstants.GUI.withSuffix("lodestone"), "Toggle Glint");
+                add(ModConstants.GUI.withSuffix("spawn"), "Toggle Glint");
+                add(ModConstants.GUI.withSuffix("death_location"), "Toggle Glint");
+                add(ModConstants.GUI.withSuffix("no_death_location"), "Toggle Glint");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -691,6 +696,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("red"), "Kırmızı");
                 add(ModConstants.GUI.withSuffix("green"), "Yeşil");
                 add(ModConstants.GUI.withSuffix("blue"), "Mavi");
+                add(ModConstants.GUI.withSuffix("toggle_glint"), "Parıltıyı Aç/Kapat");
+                add(ModConstants.GUI.withSuffix("lodestone"), "Manyetit");
+                add(ModConstants.GUI.withSuffix("spawn"), "Doğum Yeri");
+                add(ModConstants.GUI.withSuffix("death_location"), "Ölüm Yeri");
+                add(ModConstants.GUI.withSuffix("no_death_location"), "Ölüm Yeri Yok");
                 //endregion
             }
         }

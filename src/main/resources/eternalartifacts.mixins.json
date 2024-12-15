@@ -24,6 +24,7 @@
     "AbstractContainerScreenMixin",
     "ClientPacketListenerMixin",
     "entity.LocalPlayerMixin",
+    "render.CustomHeadLayerMixin",
     "render.ElytraLayerMixin",
     "render.HumanoidArmorLayerMixin"
   ]

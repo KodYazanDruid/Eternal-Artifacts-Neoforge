@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
@@ -20,7 +19,6 @@ import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 import org.joml.Matrix4f;
 
 public class MapOverlay extends ModGuiOverlay{
-    private static final ResourceLocation EMPTY_MAP = new ResourceLocation("textures/map/map_background_checkerboard.png");
     private static final RenderType MAP_BACKGROUND = RenderType.text(new ResourceLocation("textures/map/map_background.png"));
     private static final RenderType MAP_BACKGROUND_CHECKERBOARD = RenderType.text(new ResourceLocation("textures/map/map_background_checkerboard.png"));
 
@@ -49,7 +47,6 @@ public class MapOverlay extends ModGuiOverlay{
             poseStack.translate(x, y, 1);
             poseStack.scale(width / 128F, height / 128F, -10F);
             MultiBufferSource buff = guiGraphics.bufferSource();
-            //guiGraphics.blit(EMPTY_MAP, x - 3, y - 3, 0, 0, width + 6, height + 6, width, height);
             renderPaper(poseStack, buff, mapitemsaveddata, 15728880);
             renderer.render(poseStack, buff, integer, mapitemsaveddata, false, 15728880);
             poseStack.popPose();

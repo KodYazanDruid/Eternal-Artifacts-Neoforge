@@ -4,7 +4,9 @@ import com.sonamorningstar.eternalartifacts.cables.CableNetwork;
 import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
+import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -51,8 +53,8 @@ public class WrenchItem extends DiggerItem {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-        CharmStorage targetCharms = CharmStorage.get(target);
-        targetCharms.setStackInSlot(0, Items.SHULKER_SHELL.getDefaultInstance());
+        /*CharmStorage targetCharms = CharmStorage.get(target);
+        targetCharms.setStackInSlot(0, Items.SHULKER_SHELL.getDefaultInstance());*/
         return InteractionResult.sidedSuccess(player.level().isClientSide());
         //return super.interactLivingEntity(stack, player, target, hand);
     }

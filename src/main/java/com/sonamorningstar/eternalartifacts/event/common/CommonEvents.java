@@ -14,11 +14,14 @@ import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
+import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.server.level.ServerLevel;
@@ -33,6 +36,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -40,8 +44,11 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
@@ -53,6 +60,7 @@ import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
+import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -195,6 +203,31 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
+    public static void itemTossEvent(ItemTossEvent event) {
+        Player player = event.getPlayer();
+        Level level = event.getPlayer().level();
+        ItemCooldowns cd = player.getCooldowns();
+        ItemStack dispenser = PlayerCharmManager.findCharm(player, Items.DISPENSER);
+        if (!dispenser.isEmpty() && !player.isCrouching() && level instanceof ServerLevel sl && !cd.isOnCooldown(Items.DISPENSER)) {
+            ItemEntity itemEntity = event.getEntity();
+            ItemStack thrown = itemEntity.getItem();
+            DispenseItemBehavior dispenseMethod = DispenserBlock.DISPENSER_REGISTRY.get(thrown.getItem());
+            if (dispenseMethod != DispenseItemBehavior.NOOP) {
+                Direction playerFacing = PlayerHelper.getFacingDirection(player);
+                BlockPos bPos = BlockPos.containing(player.getEyePosition());
+                if (playerFacing == Direction.DOWN) bPos = bPos.below();
+                BlockState state = Blocks.DISPENSER.getStateDefinition().any().setValue(DispenserBlock.FACING, playerFacing);
+                DispenserBlockEntity dummyEntity = new DispenserBlockEntity(bPos, state);
+                BlockSource dummy = new BlockSource(
+                        (ServerLevel) player.level(), bPos,
+                        state, dummyEntity);
+                dispenseMethod.dispense(dummy, thrown);
+                cd.addCooldown(Items.DISPENSER, 4);
+            }
+        }
+    }
+
+    @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event) {
         Pair<Boolean, Integer> activeTicks = MagicFeatherItem.activeTicks;
         if(activeTicks != null){
@@ -227,7 +260,6 @@ public class CommonEvents {
         Entity entity = event.getEntity();
         if (entity instanceof Player player && !player.level().isClientSide)
             CharmStorage.get(player).syncSelf();
-
     }
     @SubscribeEvent
     public static void playerChangeDimensionsEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
@@ -383,19 +415,16 @@ public class CommonEvents {
                         level.setBlock(blockPos, newState, 11);
                         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, newState));
                         itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(context.getHand()));
-
                     }else player.swing(hand);
 
                 }
             }
         }
 
-        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK &&
-                blockState.is(Tags.Blocks.CHESTS_WOODEN) &&
-                (itemStack.is(Items.SHULKER_SHELL) || otherHandStack.is(Items.SHULKER_SHELL)) &&
-                ((itemStack.is(Items.SHULKER_SHELL) && !(otherHandStack.getItem() instanceof ColoredShulkerShellItem)) ||
-                (otherHandStack.is(Items.SHULKER_SHELL) && !(itemStack.getItem() instanceof ColoredShulkerShellItem)))) {
-            byte result = ColoredShulkerShellItem.transform(level, blockPos, itemStack, otherHandStack, player, null);
+        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_BEFORE_BLOCK &&
+                blockState.is(Blocks.CHEST) &&
+                (itemStack.is(Items.SHULKER_SHELL) || otherHandStack.is(Items.SHULKER_SHELL))) {
+            byte result = ColoredShulkerShellItem.handleTransform(level, blockPos, itemStack, otherHandStack, player, blockState);
             if (result == 1) {
                 if (player instanceof ServerPlayer sp) sp.awardStat(Stats.ITEM_USED.get(Items.SHULKER_SHELL));
                 player.swing(hand, true);

@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -83,10 +84,6 @@ public class PlayerHelper {
         );
     }
 
-    public static NonNullList<ItemStack> getPlayerItems(Player player) {
-        return player.getInventory().items;
-    }
-
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {
         level.getChunk(new BlockPos((int)targetVec.x, (int)targetVec.y, (int)targetVec.z));
         player.teleportTo(level, targetVec.x(), targetVec.y(), targetVec.z(), player.getYRot(), player.getXRot());
@@ -110,5 +107,15 @@ public class PlayerHelper {
         double d3 = z + 0.5 + Mth.nextDouble(level.random, -0.25, 0.25);
         ItemEntity itemEntity = new ItemEntity(level, d1, d2, d3, stack);
         level.addFreshEntity(itemEntity);
+    }
+
+    public static Direction getFacingDirection(Player player) {
+        //float yaw = player.getYHeadRot();
+        //float yaw0 = player.getYRot();
+        float pitch = player.getXRot();
+        //System.out.println("Yaw: " + yaw + "YRot: " + yaw0 + " Pitch: " + pitch);
+        if(pitch > 45) return Direction.DOWN;
+        if(pitch < -45) return Direction.UP;
+        return player.getDirection();
     }
 }

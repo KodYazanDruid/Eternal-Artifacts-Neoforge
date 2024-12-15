@@ -1,10 +1,12 @@
 package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,26 +26,25 @@ public class RecoveryCompassOverlay extends ModGuiOverlay{
         if (!compass.isEmpty()) {
             int x = 20;
             int y = 20;
-            String loc = getLocation(player);
-            renderBlankBlack(guiGraphics, x - 5, y - 5, 26 + loc.length() * 6, 26, 0.5F);
+            Component loc = getLocation(player);
+            int strWidth = getComponentWidth(loc);
+            renderBlankBlack(guiGraphics, x - 3, y - 5, strWidth + 25, 26, 0.5F);
             guiGraphics.renderItem(compass, x, y);
             guiGraphics.drawString(gui.getFont(), loc, x + 20, y + 5, 16777215, false);
         }
     }
 
-    private static @NotNull String getLocation(Player player) {
-        String loc = "";
+    private static Component getLocation(Player player) {
+        Component loc = Component.empty();
         Optional<GlobalPos> deathLoc = player.getLastDeathLocation();
         if (deathLoc.isPresent()) {
             GlobalPos pos = deathLoc.get();
             BlockPos blockPos = pos.pos();
             ResourceKey<Level> dimension = pos.dimension();
             if (dimension != player.level().dimension()) return loc;
-            loc = "Death location: " +
-                    TooltipHelper.prettyName(dimension.location().getNamespace()+" "+dimension.location().getPath()) +
-                    " " +
-                    blockPos.toShortString();
-        }else loc = "No death location";
+            //loc = "Death location: " + blockPos.toShortString();
+            loc = ModConstants.GUI.withSuffixTranslatable("death_location").append(": ").append(blockPos.toShortString());
+        }else loc = ModConstants.GUI.withSuffixTranslatable("no_death_location");
         return loc;
     }
 }

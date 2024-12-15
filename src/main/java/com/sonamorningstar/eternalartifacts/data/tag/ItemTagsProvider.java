@@ -160,7 +160,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
 
         tag(ModTags.Items.CHARMS_HEAD).add(
-                Items.TURTLE_HELMET
+                Items.TURTLE_HELMET,
+                Items.DISPENSER
         );
         tag(ModTags.Items.CHARMS_HEAD).addTags(
                 ModTags.Items.SHULKER_SHELL
@@ -204,7 +205,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 //ModTags.Items.CHARMS_HAND,
                 ModTags.Items.CHARMS_RING,
                 ModTags.Items.CHARMS_BRACELET,
-                //ModTags.Items.CHARMS_BELT,
+                ModTags.Items.CHARMS_BELT,
                 ModTags.Items.CHARMS_BACK,
                 ModTags.Items.CHARM_FEET,
                 ModTags.Items.CHARMS_CHARM

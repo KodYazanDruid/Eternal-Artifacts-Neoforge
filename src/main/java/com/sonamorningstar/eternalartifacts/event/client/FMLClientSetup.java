@@ -6,13 +6,18 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
+import com.sonamorningstar.eternalartifacts.mixin_helper.RenderOverrides;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
@@ -33,6 +38,7 @@ public class FMLClientSetup {
 
             TabHandler.registeredTabs = ModRegistries.TAB_TYPE.stream().toList();
             ModLoader.get().postEvent(new RegisterTabHoldersEvent(TabHandler.tabHolders));
+            ModLoader.get().postEvent(new RegisterUnrenderableOverridesEvent());
             setupCharmSprites();
         });
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
@@ -43,7 +49,6 @@ public class FMLClientSetup {
         ItemProperties.register(holder.get(),
                 new ResourceLocation(MODID, prefix), (s, l, e, seed) -> s.getItem() instanceof IActiveStack as && as.isActive(s) ? 1.0F : 0.0F);
     }
-
     private static void setupCharmSprites() {
         var slotTextures = CharmsScreen.slotTextures;
         slotTextures.put(0 , createSlotSprite(CharmStorage.CharmType.HEAD));

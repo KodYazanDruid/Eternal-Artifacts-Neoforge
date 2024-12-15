@@ -18,6 +18,7 @@ import com.sonamorningstar.eternalartifacts.client.resources.model.SpellTomeMode
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -27,6 +28,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -39,8 +41,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -68,6 +68,11 @@ public class ClientModEvents {
         event.register(ModItems.TANK_KNAPSACK.get(), ModInventoryTabs.TANK_KNAPSACK.get());
         event.register(ModItems.PORTABLE_CRAFTER.get(), ModInventoryTabs.CRAFTER.get());
         event.register(Items.COD, ModInventoryTabs.FISH_TAB.get());
+    }
+
+    @SubscribeEvent
+    public static void registerUnrenderableOverrides(RegisterUnrenderableOverridesEvent event) {
+        event.register(EquipmentSlot.HEAD, ModTags.Items.SHULKER_SHELL);
     }
 
     @SubscribeEvent

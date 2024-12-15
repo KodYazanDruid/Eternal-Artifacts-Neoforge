@@ -62,7 +62,7 @@ public class ShulkerShellLayer<T extends LivingEntity, M extends HumanoidModel<T
     public ResourceLocation getTextureLocation(T entity) {
         ItemStack shell = PlayerCharmManager.findCharm(entity, st -> st.is(ModTags.Items.SHULKER_SHELL));
         DyeColor color = null;
-        if (shell.getItem() instanceof ColoredShulkerShellItem cssi) color = cssi.getColor();
+        if (shell.getItem() instanceof ColoredShulkerShellItem) color = ColoredShulkerShellItem.getColor(shell);
         return color != null ? getByColor(color) : SHULKER_LOCATION;
     }
 
