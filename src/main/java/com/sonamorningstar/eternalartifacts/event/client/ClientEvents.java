@@ -1,40 +1,52 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -84,10 +96,25 @@ public class ClientEvents {
         }
     }
 
-/*    @SubscribeEvent
-    public static void renderGuiEvent(RenderGuiEvent event) {
+    @SubscribeEvent
+    public static void renderTooltipEvent(RenderTooltipEvent.GatherComponents event) {
+        ItemStack stack = event.getItemStack();
+        List<Either<FormattedText, TooltipComponent>> tooltips = event.getTooltipElements();
 
-    }*/
+        List<CharmType> types = CharmType.getTypesOfItem(stack.getItem());
+        if (!types.isEmpty()) {
+            MutableComponent charm = ModConstants.TOOLTIP.withSuffixTranslatable("charm").withStyle(ChatFormatting.DARK_GREEN);
+            MutableComponent combined = charm.append(": ");
+            for (int i = 0; i < types.size(); i++) {
+                CharmType type = types.get(i);
+                MutableComponent name = type.getDisplayName().withStyle(ChatFormatting.GREEN);
+                combined.append(name);
+                if (i < types.size() - 1) combined.append(", ").withStyle(ChatFormatting.DARK_GREEN);
+            }
+            tooltips.add(tooltips.size() - 1, Either.left(combined));
+        }
+
+    }
 
     @SubscribeEvent
     public static void mouseScrollEvent(ScreenEvent.MouseScrolled.Pre event) {

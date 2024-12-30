@@ -58,9 +58,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.NOUS_TANK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.CHARCOAL_BLOCK.get(), "", "pickaxe");
-        tierAndTool(ModBlocks.ARDITE_ORE.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.RAW_ARDITE_BLOCK.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.ARDITE_BLOCK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.MARIN_ORE.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.RAW_MARIN_BLOCK.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.MARIN_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SNOW_BRICKS.get(), "", "pickaxe");
         tierAndTool(ModBlocks.ICE_BRICKS.get(), "", "pickaxe");
         tierAndTool(ModBlocks.COPPER_DRUM.get(), "stone", "pickaxe");
@@ -142,7 +142,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.GRAVEL_GOLD_ORE.get(),
                 ModBlocks.MANGANESE_ORE.get(),
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
-                ModBlocks.ARDITE_ORE.get()
+                ModBlocks.MARIN_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE).add(
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
@@ -151,7 +151,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.MANGANESE_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
-                ModBlocks.ARDITE_ORE.get()
+                ModBlocks.MARIN_ORE.get()
         );
         tag(Tags.Blocks.ORES).add(
                 ModBlocks.MANGANESE_ORE.get(),
@@ -159,11 +159,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.GRAVEL_COPPER_ORE.get(),
                 ModBlocks.GRAVEL_IRON_ORE.get(),
                 ModBlocks.GRAVEL_GOLD_ORE.get(),
-                ModBlocks.ARDITE_ORE.get()
+                ModBlocks.MARIN_ORE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
-                ModBlocks.ARDITE_BLOCK.get(),
+                ModBlocks.MARIN_BLOCK.get(),
                 ModBlocks.STEEL_BLOCK.get(),
                 ModBlocks.DEMON_BLOCK.get()
         );

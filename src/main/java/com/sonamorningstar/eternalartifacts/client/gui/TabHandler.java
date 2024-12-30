@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;

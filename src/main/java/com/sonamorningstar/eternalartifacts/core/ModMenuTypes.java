@@ -37,4 +37,6 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(FishMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<BlueprintMenu>> BLUEPRINT = MENUS.register("blueprint",
             ()-> IMenuTypeExtension.create(BlueprintMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<PortableBatteryMenu>> PORTABLE_BATTERY = MENUS.register("portable_battery",
+            ()-> IMenuTypeExtension.create(PortableBatteryMenu::fromNetwork));
 }

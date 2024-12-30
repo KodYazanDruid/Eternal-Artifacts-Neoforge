@@ -22,17 +22,16 @@ public class EternalArtifacts {
     /**
      * TODO: Add proper power generation system (like biodiesel engine from IE, peat generator from cyclic(originally from forestry)) instead of burning oranges.
      * TODO: Add disenchanter and other enchantment related blocks.
-     * TODO: A storage block can storage items, fluids and energy dynamically.
+     * TODO: A storage block can storage items, fluids and energy. (battery box with items and fluids)
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
      * TODO: Piezoelectric Plane
      * TODO: Modular Fluid Tank
      * TODO: Smart Piston (with sticky)
-     * TODO: ARDITE ?
      * TODO: Scrap boxes and similar loot thingies.
-     * TODO: Add error tab to machines for why machine isn't working.
      * TODO: Shulker armor.
      * TODO: Camouflage armor.
+     * TODO: Colored flower pots.
      * <p>
      * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
      *

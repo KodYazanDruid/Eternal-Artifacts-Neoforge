@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.CharmsMenu;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
 import com.sonamorningstar.eternalartifacts.core.ModInventoryTabs;
@@ -9,8 +8,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class CharmsTab extends AbstractInventoryTab {
     public CharmsTab(FriendlyByteBuf data) {

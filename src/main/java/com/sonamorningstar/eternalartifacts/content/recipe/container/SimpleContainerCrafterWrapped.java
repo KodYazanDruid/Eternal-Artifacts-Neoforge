@@ -1,11 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.recipe.container;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class SimpleContainerCrafterWrapped extends SimpleContainer implements CraftingContainer {
 

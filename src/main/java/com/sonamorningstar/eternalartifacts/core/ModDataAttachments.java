@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.BlockTexture;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredHolder;

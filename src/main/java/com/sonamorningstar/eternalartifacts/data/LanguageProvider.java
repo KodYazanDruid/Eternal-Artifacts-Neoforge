@@ -1,10 +1,12 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.fml.common.Mod;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -93,8 +95,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.NETHERITE_HAMMER.get(), "Netherite Hammer");
                 add(ModItems.HAMMAXE.get(), "Hammaxe");
                 add(ModItems.CLAY_DUST.get(), "Clay Dust");
-                add(ModItems.ARDITE_INGOT.get(), "Ardite Ingot");
-                add(ModItems.RAW_ARDITE.get(), "Raw Ardite");
+                add(ModItems.MARIN_INGOT.get(), "Marin Ingot");
+                add(ModItems.RAW_MARIN.get(), "Raw Marin");
                 add(ModItems.TAR_BALL.get(), "Tar Ball");
                 add(ModItems.BITUMEN.get(), "Bitumen");
                 add(ModItems.PINK_SLIME_INGOT.get(), "Pink Slime Ingot");
@@ -154,6 +156,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_BOOTS.get(), "Shulker Boots");
                 add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Bullets Tome");
                 add(ModItems.METEORITE_TOME.get(), "Meteorite Tome");
+                add(ModItems.PORTABLE_BATTERY.get(), "Portable Battery");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -202,9 +205,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
                 add(ModBlocks.NOUS_TANK.get(), "Nous Tank");
                 add(ModBlocks.CHARCOAL_BLOCK.get(), "Charcoal Block");
-                add(ModBlocks.ARDITE_ORE.get(), "Ardite Ore");
-                add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Raw Ardite Block");
-                add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Block");
+                add(ModBlocks.MARIN_ORE.get(), "Marin Ore");
+                add(ModBlocks.RAW_MARIN_BLOCK.get(), "Raw Marin Block");
+                add(ModBlocks.MARIN_BLOCK.get(), "Marin Block");
                 add(ModBlocks.PLASTIC_CAULDRON.get(), "Cauldron");
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Cauldron");
                 add(ModBlocks.SNOW_BRICKS.get(), "Snow Bricks");
@@ -328,10 +331,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("green"), "Green");
                 add(ModConstants.GUI.withSuffix("blue"), "Blue");
                 add(ModConstants.GUI.withSuffix("toggle_glint"), "Toggle Glint");
-                add(ModConstants.GUI.withSuffix("lodestone"), "Toggle Glint");
-                add(ModConstants.GUI.withSuffix("spawn"), "Toggle Glint");
-                add(ModConstants.GUI.withSuffix("death_location"), "Toggle Glint");
-                add(ModConstants.GUI.withSuffix("no_death_location"), "Toggle Glint");
+                add(ModConstants.GUI.withSuffix("lodestone"), "Lodestone");
+                add(ModConstants.GUI.withSuffix("spawn"), "Spawn");
+                add(ModConstants.GUI.withSuffix("death_location"), "Death Location");
+                add(ModConstants.GUI.withSuffix("no_death_location"), "No Death Location");
+                add(ModConstants.GUI.withSuffix("inventory"), "Inventory");
+                add(ModConstants.GUI.withSuffix("main_hand"), "Main Hand");
+                add(ModConstants.GUI.withSuffix("off_hand"), "Off Hand");
+                add(ModConstants.GUI.withSuffix("armor"), "Armor");
+                add(ModConstants.GUI.withSuffix("hotbar"), "Hotbar");
+                add(ModConstants.GUI.withSuffix("stored_energy"), "Stored Energy");
+                add(ModConstants.GUI.withSuffix("energy_transfer_rate"), "Energy Transfer Rate");
+                add(ModConstants.TOOLTIP.withSuffix("charm"), "Charm");
+                add(ModConstants.GUI.withSuffix("not_found"), "Not Found");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -339,6 +351,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                     add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                 });
                 ModMachines.MACHINES.getMachines().forEach(holder -> add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath())));
+                for (CharmType value : CharmType.values()) {
+                    add(ModConstants.CHARM_TYPE.withSuffix(value.getLowerCaseName()), prettyName(value.getLowerCaseName()));
+                }
                 //endregion
             }
             case "tr_tr" -> {
@@ -421,8 +436,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.NETHERITE_HAMMER.get(), "Netherit Balyoz");
                 add(ModItems.HAMMAXE.get(), "Balyozta");
                 add(ModItems.CLAY_DUST.get(), "Kil Tozu");
-                add(ModItems.ARDITE_INGOT.get(), "Ardite Külçesi");
-                add(ModItems.RAW_ARDITE.get(), "Ham Ardite");
+                add(ModItems.MARIN_INGOT.get(), "Marin Külçesi");
+                add(ModItems.RAW_MARIN.get(), "Ham Marin");
                 add(ModFluids.CRUDE_OIL.getBucketItem(), "Ham Petrol Kovası");
                 add(ModItems.TAR_BALL.get(), "Katran Topu");
                 add(ModItems.BITUMEN.get(), "Zift");
@@ -486,6 +501,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_BOOTS.get(), "Shulker Botları");
                 add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Mermiler Kitabı");
                 add(ModItems.METEORITE_TOME.get(), "Meteorit Kitabı");
+                add(ModItems.PORTABLE_BATTERY.get(), "Taşınabilir Pil");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -549,9 +565,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.BEER.getTranslationKey(), "Bira");
                 add(ModFluids.BEER.getFluidBlock(), "Bira");
                 add(ModBlocks.CHARCOAL_BLOCK.get(), "Odun Kömürü Bloğu");
-                add(ModBlocks.ARDITE_ORE.get(), "Ardite Cevheri");
-                add(ModBlocks.RAW_ARDITE_BLOCK.get(), "Ham Ardite Bloğu");
-                add(ModBlocks.ARDITE_BLOCK.get(), "Ardite Bloğu");
+                add(ModBlocks.MARIN_ORE.get(), "Marin Cevheri");
+                add(ModBlocks.RAW_MARIN_BLOCK.get(), "Ham Marin Bloğu");
+                add(ModBlocks.MARIN_BLOCK.get(), "Marin Bloğu");
                 add(ModBlocks.PLASTIC_CAULDRON.get(), "Kazan");
                 add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Kazan");
                 add(ModBlocks.SNOW_BRICKS.get(), "Kar Tuğlası");
@@ -621,8 +637,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //endregion
                 //region Türkçe Sekmeler
                 add(ModInventoryTabs.INVENTORY.get().getDescriptionId(), "Envanter");
-                add(ModInventoryTabs.ENDER_KNAPSACK.get().getDescriptionId(), "Ender Çantası");
                 add(ModInventoryTabs.CHARMS.get().getDescriptionId(), "Tılsımlar");
+                add(ModInventoryTabs.ENDER_KNAPSACK.get().getDescriptionId(), "Ender Çantası");
+                add(ModInventoryTabs.KNAPSACK.get().getDescriptionId(), "Sırt Çantası");
+                add(ModInventoryTabs.TANK_KNAPSACK.get().getDescriptionId(), "Tank Sırt Çantası");
+                add(ModInventoryTabs.CRAFTER.get().getDescriptionId(), "Taşınabilir Üretim Masası");
+                add(ModInventoryTabs.FISH_TAB.get().getDescriptionId(), "Balık");
+                add(ModInventoryTabs.PORTABLE_BATTERY.get().getDescriptionId(), "Taşınabilir Pil");
                 //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
@@ -701,6 +722,24 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("spawn"), "Doğum Yeri");
                 add(ModConstants.GUI.withSuffix("death_location"), "Ölüm Yeri");
                 add(ModConstants.GUI.withSuffix("no_death_location"), "Ölüm Yeri Yok");
+                add(ModConstants.GUI.withSuffix("inventory"), "Envanter");
+                add(ModConstants.GUI.withSuffix("main_hand"), "Ana El");
+                add(ModConstants.GUI.withSuffix("off_hand"), "Yedek El");
+                add(ModConstants.GUI.withSuffix("armor"), "Zırh");
+                add(ModConstants.GUI.withSuffix("hotbar"), "Araç Çubuğu");
+                add(ModConstants.GUI.withSuffix("stored_energy"), "Depolanan Enerji");
+                add(ModConstants.GUI.withSuffix("energy_transfer_rate"), "Enerji Transfer Hızı");
+                add(ModConstants.TITLE.withSuffix("charm"), "Tılsım");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.HEAD.getLowerCaseName()), "Baş");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.NECKLACE.getLowerCaseName()), "Kolye");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.RING.getLowerCaseName()), "Yüzük");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.BELT.getLowerCaseName()), "Kemer");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.BRACELET.getLowerCaseName()), "Bilezik");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.HAND.getLowerCaseName()), "El");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.FEET.getLowerCaseName()), "Ayak");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.BACK.getLowerCaseName()), "Sırt");
+                add(ModConstants.TOOLTIP.withSuffix("charm"), "Tılsım");
+                add(ModConstants.GUI.withSuffix("not_found"), "Bulunamadı");
                 //endregion
             }
         }

@@ -43,7 +43,6 @@ public class ModTags {
         public static final TagKey<Item> INGOTS_RAW_MEAT = forgeTag("ingots/raw_meat");
         public static final TagKey<Item> INGOTS_MANGANESE = forgeTag("ingots/manganese");
         public static final TagKey<Item> INGOTS_STEEL = forgeTag("ingots/steel");
-        public static final TagKey<Item> INGOTS_ARDITE = forgeTag("ingots/ardite");
         public static final TagKey<Item> SLIMEBALLS_PINK = forgeTag("slimeballs/pink");
         public static final TagKey<Item> TABLETS = modTag("tablets");
         public static final TagKey<Item> NUGGETS_COPPER = forgeTag("nuggets/copper");
@@ -55,10 +54,10 @@ public class ModTags {
         public static final TagKey<Item> DUSTS_COAL = forgeTag("dusts/coal");
         public static final TagKey<Item> DUSTS_CHARCOAL = forgeTag("dusts/charcoal");
         public static final TagKey<Item> DUSTS_SUGAR_CHARCOAL = forgeTag("dusts/sugar_charcoal");
-        public static final TagKey<Item> TOOLS_HAMMER = forgeTag("tools/hammer");
+        public static final TagKey<Item> TOOLS_HAMMER = forgeTag("tools/hammers");
         public static final TagKey<Item> CHARCOAL = forgeTag("charcoal");
-        public static final TagKey<Item> TOOLS_CUTLASS = modTag("tools/cutlass");
-        public static final TagKey<Item> TOOLS_SICKLE = forgeTag("tools/sickle");
+        public static final TagKey<Item> TOOLS_CUTLASS = modTag("tools/cutlasses");
+        public static final TagKey<Item> TOOLS_SICKLE = forgeTag("tools/sickles");
         public static final TagKey<Item> DUSTS_FLOUR = forgeTag("dusts/flour");
         public static final TagKey<Item> FLOUR_WHEAT = forgeTag("flour/wheat");
         public static final TagKey<Item> DOUGH = forgeTag("dough");

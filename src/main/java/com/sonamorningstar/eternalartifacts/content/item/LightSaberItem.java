@@ -10,11 +10,12 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.Level;
 
 public class LightSaberItem extends SwordItem {
-    public LightSaberItem() {
-        super(ModTiers.CHLOROPHYTE, 5, -2.0F, new Properties().stacksTo(1));
+    public LightSaberItem(Tier tier) {
+        super(tier, 5, -2.0F, new Properties().stacksTo(1));
     }
 
     @Override

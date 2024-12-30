@@ -1,18 +1,14 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
+import com.sonamorningstar.eternalartifacts.content.recipe.blueprint.RecipePattern;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleContainerCrafterWrapped;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
@@ -20,15 +16,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeManager;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class BlueprintItem extends Item implements IActiveStack {
     public static final String FILLED = "Filled";
@@ -48,7 +39,6 @@ public class BlueprintItem extends Item implements IActiveStack {
                     fakeItems.set(slot, ItemStack.of(compound));
                 }
             }
-
         }
         return fakeItems;
     }
@@ -85,10 +75,12 @@ public class BlueprintItem extends Item implements IActiveStack {
         if (player.isShiftKeyDown()) {
             if (player instanceof ServerPlayer serverPlayer) {
                 var container = new SimpleContainerCrafterWrapped(getFakeItems(blueprint).toArray(ItemStack[]::new));
+                //var container = new SimpleContainerCrafterWrapped(EMPTY_ITEMS.toArray(ItemStack[]::new));
                 if (container.isEmpty()) return InteractionResultHolder.pass(blueprint);
-                Pair<CraftingRecipe, RecipeHolder<CraftingRecipe>> recipePair = findRecipe(serverPlayer, container);
-                if (recipePair == null) return InteractionResultHolder.pass(blueprint);
-                CraftingRecipe recipe = recipePair.getFirst();
+                RecipePattern pattern = new RecipePattern(container);
+                pattern.findRecipe(serverPlayer);
+
+                CraftingRecipe recipe = pattern.getRecipe();
                 ItemStack result = recipe.assemble(container, level.registryAccess());
                 List<ItemStack> remainders = recipe.getRemainingItems(container);
                 if (!result.isEmpty()) {
@@ -117,7 +109,8 @@ public class BlueprintItem extends Item implements IActiveStack {
                     if (container.isEmpty()) {
                         PlayerHelper.giveItemOrPop(serverPlayer, result);
                         remainders.forEach(s -> PlayerHelper.giveItemOrPop(serverPlayer, s));
-                        serverPlayer.triggerRecipeCrafted(recipePair.getSecond(), foundItems);
+                        //serverPlayer.triggerRecipeCrafted(recipePair.getSecond(), foundItems);
+                        serverPlayer.triggerRecipeCrafted(pattern.getRecipeHolder(), foundItems);
                         player.awardStat(Stats.ITEM_USED.get(blueprint.getItem()));
                         for (ItemStack foundItem : foundItems) {
                             foundItem.shrink(1);
@@ -126,18 +119,21 @@ public class BlueprintItem extends Item implements IActiveStack {
                 }
             }
             return InteractionResultHolder.sidedSuccess(blueprint, level.isClientSide());
-        }else if(player instanceof ServerPlayer serverPlayer){
-            serverPlayer.openMenu(
-                    new SimpleMenuProvider(
-                            (id, inv, pl) -> new BlueprintMenu(id, inv, blueprint),
-                            Component.translatable(blueprint.getDescriptionId())),
-                    buff -> buff.writeItem(blueprint));
+        }else if(player instanceof ServerPlayer serverPlayer) {
+            openMenu(serverPlayer, blueprint);
             return InteractionResultHolder.success(blueprint);
         }
         return InteractionResultHolder.pass(blueprint);
     }
 
-    private Pair<CraftingRecipe, RecipeHolder<CraftingRecipe>> findRecipe(ServerPlayer player, SimpleContainerCrafterWrapped fakeItems) {
+    private void openMenu(ServerPlayer player, ItemStack blueprint) {
+        player.openMenu(new SimpleMenuProvider(
+                (id, inv, pl) -> new BlueprintMenu(id, inv, blueprint),
+                Component.translatable(blueprint.getDescriptionId())),
+            buff -> buff.writeItem(blueprint));
+    }
+
+/*    private Pair<CraftingRecipe, RecipeHolder<CraftingRecipe>> findRecipe(ServerPlayer player, SimpleContainerCrafterWrapped fakeItems) {
         Level level = player.level();
         MinecraftServer server = level.getServer();
         if (server == null) return null;
@@ -154,7 +150,7 @@ public class BlueprintItem extends Item implements IActiveStack {
 
     private boolean recipeChecks(Level level, RecipeHolder<?> recipe) {
         return !(!recipe.value().isSpecial() && level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
-    }
+    }*/
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {

@@ -22,6 +22,11 @@ public abstract class AbstractInventoryTab implements MenuProvider {
         this.data = data;
     }
 
+    /**
+     * Writes data on the server side to be sent to the client.
+     * <br><br>
+     * Written data will be accessed on the client side.
+     */
     @Nullable
     public Consumer<FriendlyByteBuf> getBytes(Player player) {
         return null;

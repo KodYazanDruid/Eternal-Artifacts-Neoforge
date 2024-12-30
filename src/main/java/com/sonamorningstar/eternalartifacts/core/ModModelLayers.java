@@ -18,6 +18,9 @@ public class ModModelLayers {
     public static final ModelLayerLocation SPELL_TOME_LAYER = create("spell_tome_layer");
     public static final ModelLayerLocation CHARGED_SHEEP_SWIRL = create("charged_sheep_swirl", "swirl");
     public static final ModelLayerLocation ENERGY_DOCK_LAYER = create("energy_dock_layer");
+    public static final ModelLayerLocation MISSILE_LAYER = create("missile_layer");
+    public static final ModelLayerLocation PORTABLE_BATTERY_LAYER = create("portable_battery_layer");
+
 
     private static ModelLayerLocation create(String name) {
         return create(name, "main");

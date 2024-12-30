@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -42,9 +40,8 @@ public class RecoveryCompassOverlay extends ModGuiOverlay{
             BlockPos blockPos = pos.pos();
             ResourceKey<Level> dimension = pos.dimension();
             if (dimension != player.level().dimension()) return loc;
-            //loc = "Death location: " + blockPos.toShortString();
             loc = ModConstants.GUI.withSuffixTranslatable("death_location").append(": ").append(blockPos.toShortString());
-        }else loc = ModConstants.GUI.withSuffixTranslatable("no_death_location");
+        }else loc = ModConstants.GUI.withSuffixTranslatable("death_location").append(": ").append(ModConstants.GUI.withSuffixTranslatable("not_found"));
         return loc;
     }
 }

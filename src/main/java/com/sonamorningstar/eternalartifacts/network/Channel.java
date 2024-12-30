@@ -43,6 +43,9 @@ public class Channel {
         registrar.play(EnderNotebookRenameWarpToServer.ID,
                 EnderNotebookRenameWarpToServer::create,
                 handler -> handler.server(EnderNotebookRenameWarpToServer::handle));
+        registrar.play(SwitchBatteryChargeToServer.ID,
+                SwitchBatteryChargeToServer::create,
+                handler -> handler.server(SwitchBatteryChargeToServer::handle));
 
         registrar.play(BlueprintUpdateSlotToServer.ID,
                 BlueprintUpdateSlotToServer::create,

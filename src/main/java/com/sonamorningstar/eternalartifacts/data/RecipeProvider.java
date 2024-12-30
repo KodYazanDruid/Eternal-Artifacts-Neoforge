@@ -36,7 +36,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider implements IConditionBuilder {
 
     private final List<ItemLike> MANGANESE_SMELTABLES = ImmutableList.of(ModBlocks.MANGANESE_ORE, ModBlocks.DEEPSLATE_MANGANESE_ORE, ModItems.RAW_MANGANESE);
-    private final List<ItemLike> ARDITE_SMELTABLES = ImmutableList.of(ModBlocks.ARDITE_ORE, ModItems.RAW_ARDITE);
+    private final List<ItemLike> MARIN_SMELTABLES = ImmutableList.of(ModBlocks.MARIN_ORE, ModItems.RAW_MARIN);
 
     public RecipeProvider(PackOutput pOutput) {
         super(pOutput);
@@ -58,7 +58,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_IRON_ORE, Items.IRON_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
         createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
-        createOreSmeltingRecipe(recipeOutput, ARDITE_SMELTABLES, ModItems.ARDITE_INGOT, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, MARIN_SMELTABLES, ModItems.MARIN_INGOT, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.DOUGH, Items.BREAD, 0.35f);
 
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICKS, Blocks.SNOW_BLOCK);
@@ -313,15 +313,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('T', ModTags.Items.CHARCOAL)
                 .define('N', Items.CHARCOAL)
                 .unlockedBy("has_item", has(Items.CHARCOAL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_ARDITE_BLOCK)
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_MARIN_BLOCK)
                 .pattern("NNN").pattern("NNN").pattern("NNN")
-                .define('N', ModItems.RAW_ARDITE)
-                .unlockedBy("has_item", has(ModItems.RAW_ARDITE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.ARDITE_BLOCK)
-                .pattern("NNN").pattern("NMN").pattern("NNN")
-                .define('N', ModTags.Items.INGOTS_ARDITE)
-                .define('M', ModItems.ARDITE_INGOT)
-                .unlockedBy("has_item", has(ModTags.Items.INGOTS_ARDITE)).save(recipeOutput);
+                .define('N', ModItems.RAW_MARIN)
+                .unlockedBy("has_item", has(ModItems.RAW_MARIN)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.MARIN_BLOCK)
+                .pattern("MMM").pattern("MMM").pattern("MMM")
+                .define('M', ModItems.MARIN_INGOT)
+                .unlockedBy("has_item", has(ModItems.MARIN_INGOT)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.STEEL_BLOCK)
                 .pattern("SSS").pattern("STS").pattern("SSS")
                 .define('T', ModTags.Items.INGOTS_STEEL)
@@ -452,12 +451,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.CHARCOAL, 9)
                 .requires(ModBlocks.CHARCOAL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.CHARCOAL_BLOCK)).save(recipeOutput, new ResourceLocation(MODID, "charcoal"));
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_ARDITE, 9)
-                .requires(ModBlocks.RAW_ARDITE_BLOCK)
-                .unlockedBy("has_item", has(ModBlocks.RAW_ARDITE_BLOCK)).save(recipeOutput);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ARDITE_INGOT, 9)
-                .requires(ModBlocks.ARDITE_BLOCK)
-                .unlockedBy("has_item", has(ModBlocks.ARDITE_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.RAW_MARIN, 9)
+                .requires(ModBlocks.RAW_MARIN_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.RAW_MARIN_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MARIN_INGOT, 9)
+                .requires(ModBlocks.MARIN_BLOCK)
+                .unlockedBy("has_item", has(ModBlocks.MARIN_BLOCK)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.STEEL_INGOT, 9)
                 .requires(ModBlocks.STEEL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.STEEL_BLOCK)).save(recipeOutput, makeID("steel_ingots_from_steel_block"));

@@ -27,6 +27,8 @@ public class ModInventoryTabs {
             TabType.create(CrafterTab::new, ModItems.PORTABLE_CRAFTER));
     public static final DeferredHolder<TabType<?>, TabType<FishTab>> FISH_TAB = register("fish_tab",
             TabType.create(FishTab::new, () -> Items.COD));
+    public static final DeferredHolder<TabType<?>, TabType<PortableBatteryTab>> PORTABLE_BATTERY = register("portable_battery",
+            TabType.create(PortableBatteryTab::new, ModItems.BATTERY));
 
     public static final DeferredHolder<TabType<?>, TabType<CatTab>> CAT = register("cat",
             TabType.create(CatTab::new, ModItems.CHLOROPHYTE_INGOT));

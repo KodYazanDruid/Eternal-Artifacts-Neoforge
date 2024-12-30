@@ -1,11 +1,10 @@
 package com.sonamorningstar.eternalartifacts.network.proxy;
 
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.EnderNotebookScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.LightSaberScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.ItemStackScreen;
 import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;

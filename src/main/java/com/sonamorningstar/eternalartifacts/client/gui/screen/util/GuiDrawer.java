@@ -5,7 +5,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.energy.EnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -161,6 +165,15 @@ public class GuiDrawer {
                 gui.blit(texture, x + 5 + (166 * iterationX), y + 5 + (156 * iterationY), 5, 5, remainingX, remainingY);
             }
         }
+    }
+
+    public static void drawEnergyBar(GuiGraphics gui, ItemStack stack, int x, int y) {
+        if(stack.isEmpty()) return;
+        IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (energy == null) return;
+        draw(gui, bars, x, y, 0, 0, 18, 56);
+        int energyHeight = energy.getEnergyStored() * 53 / energy.getMaxEnergyStored();
+        draw(gui, bars, x + 3, y + 53 - energyHeight, 18, 53 - energyHeight, 12, energyHeight);
     }
     //endregion
 }

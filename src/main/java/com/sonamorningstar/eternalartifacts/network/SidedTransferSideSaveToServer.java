@@ -46,7 +46,6 @@ public record SidedTransferSideSaveToServer(int index, SidedTransferMachineBlock
                 sideConfigs.put(index, type);
                 sided.sendUpdate();
                 sided.invalidateCapabilities();
-                level.updateNeighborsAt(pos, entity.getBlockState().getBlock());
             }
         }));
     }

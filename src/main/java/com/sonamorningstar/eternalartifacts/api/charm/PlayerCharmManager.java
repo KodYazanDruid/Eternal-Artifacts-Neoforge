@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.api.charm;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.nbt.CompoundTag;
@@ -23,11 +22,19 @@ public class PlayerCharmManager {
         }
         return ItemStack.EMPTY;
     }
+    public static ItemStack findCharm(LivingEntity living, Class<? extends Item> charmClass) {
+        CharmStorage charms = living.getData(ModDataAttachments.CHARMS);
+        for (int i = 0; i < charms.getSlots(); i++) {
+            ItemStack c = charms.getStackInSlot(i);
+            if (charmClass.isInstance(c.getItem())) return c;
+        }
+        return ItemStack.EMPTY;
+    }
     public static boolean findCharm(LivingEntity living, ItemStack charm) {
         CharmStorage charms = living.getData(ModDataAttachments.CHARMS);
         return charms.containsStack(charm);
     }
-    public static ItemStack findCharm(LivingEntity living, CharmStorage.CharmType type) {
+    public static ItemStack findCharm(LivingEntity living, CharmType type) {
         CharmStorage charms = living.getData(ModDataAttachments.CHARMS);
         for (int i = 0; i < charms.getSlots(); i++) {
             ItemStack c = charms.getStackInSlot(i);

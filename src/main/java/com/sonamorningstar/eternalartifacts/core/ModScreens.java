@@ -23,5 +23,6 @@ public class ModScreens {
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);
         event.register(ModMenuTypes.BLUEPRINT.get(), BlueprintScreen::new);
+        event.register(ModMenuTypes.PORTABLE_BATTERY.get(), PortableBatteryScreen::new);
     }
 }

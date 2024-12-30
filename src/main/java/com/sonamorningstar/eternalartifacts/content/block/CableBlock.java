@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -102,10 +104,10 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
         builder.add(WATERLOGGED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
     }
 
-    public boolean connectsTo(BlockPos pos, Level level, Direction direction) {
+    public static boolean connectsTo(BlockPos pos, Level level, Direction direction) {
         BlockState state = level.getBlockState(pos);
         IEnergyStorage energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction);
-        return energyStorage != null || state.is(this);
+        return energyStorage != null || state.getBlock() instanceof CableBlock;
     }
 
     public List<Direction> getConnections(BlockPos pos, Level level) {
@@ -158,7 +160,23 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighState, LevelAccessor accessor, BlockPos pos, BlockPos neighPos) {
         if(state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
         boolean canConnect = accessor instanceof Level level && connectsTo(neighPos, level, direction.getOpposite());
+        //return state.setValue(PROPERTY_BY_DIRECTION.get(direction), canConnect);
+        if (accessor instanceof Level level) {
+            //updateConnection(state, level, neighPos, direction);
+            BlockEntity be = accessor.getBlockEntity(pos);
+            if (be instanceof CableBlockEntity cable) cable.updateConnections(level);
+        }
         return state.setValue(PROPERTY_BY_DIRECTION.get(direction), canConnect);
+        //return state;
+    }
+
+    public void updateConnections(BlockState state, Level level, BlockPos pos) {
+        for (Direction direction : Direction.values()) updateConnection(state, level, pos, direction);
+    }
+    public void updateConnection(BlockState state, Level level, BlockPos pos, Direction direction) {
+        //BlockState state = level.getBlockState(pos);
+        boolean canConnect = connectsTo(pos, level, direction.getOpposite());
+        state.setValue(PROPERTY_BY_DIRECTION.get(direction), canConnect);
     }
 
     @Override
@@ -169,4 +187,12 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {return new CableBlockEntity(pos, state);}
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+        return pLevel.isClientSide() ? null : (lvl, pos, state, be) -> {
+            if (be instanceof CableBlockEntity cable) cable.tickServer(lvl, pos, state);
+        };
+    }
 }

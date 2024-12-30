@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.handler.IHeatHandler;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.IItemCooldown;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.INutritionHandler;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.IPersistentCooldown;
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.capabilities.BlockCapability;

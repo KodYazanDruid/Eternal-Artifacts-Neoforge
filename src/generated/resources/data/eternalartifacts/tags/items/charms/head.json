@@ -2,6 +2,8 @@
   "values": [
     "minecraft:turtle_helmet",
     "minecraft:dispenser",
-    "#eternalartifacts:shulker_shell"
+    "minecraft:bucket",
+    "#eternalartifacts:shulker_shell",
+    "#forge:glass"
   ]
 }

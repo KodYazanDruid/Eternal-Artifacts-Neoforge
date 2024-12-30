@@ -3,8 +3,9 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.TagReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
@@ -56,13 +57,17 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.*;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
@@ -221,7 +226,7 @@ public class CommonEvents {
                 BlockSource dummy = new BlockSource(
                         (ServerLevel) player.level(), bPos,
                         state, dummyEntity);
-                dispenseMethod.dispense(dummy, thrown);
+                itemEntity.setItem(dispenseMethod.dispense(dummy, thrown));
                 cd.addCooldown(Items.DISPENSER, 4);
             }
         }
@@ -263,6 +268,12 @@ public class CommonEvents {
     }
     @SubscribeEvent
     public static void playerChangeDimensionsEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+        if (player.level().isClientSide) return;
+        CharmStorage.get(player).syncSelf();
+    }
+    @SubscribeEvent
+    public static void playerOpenContainerEvent(PlayerContainerEvent.Open event) {
         Player player = event.getEntity();
         if (player.level().isClientSide) return;
         CharmStorage.get(player).syncSelf();
@@ -317,6 +328,13 @@ public class CommonEvents {
         }
         if (charm.getItem() instanceof MapItem mapItem) {
             mapItem.inventoryTick(charm, player.level(), player, -1, true);
+        }
+        if (charm.getItem() instanceof CompassItem compassItem) {
+            compassItem.inventoryTick(charm, player.level(), player, -1, true);
+        }
+
+        if (charm.getItem() instanceof PortableBatteryItem battery) {
+            battery.chargeSlots(player, charm);
         }
     }
 
@@ -455,5 +473,10 @@ public class CommonEvents {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void registerResourceReloadEvent(AddReloadListenerEvent event) {
+        event.addListener(new TagReloadListener());
     }
 }

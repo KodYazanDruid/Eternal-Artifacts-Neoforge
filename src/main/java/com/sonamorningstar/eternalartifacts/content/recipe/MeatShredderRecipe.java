@@ -43,7 +43,6 @@ public class MeatShredderRecipe implements Recipe<SimpleContainer> {
     @Override
     public RecipeSerializer<?> getSerializer() {return ModRecipes.MEAT_SHREDDING.getSerializer();}
 
-
     public static class Serializer implements RecipeSerializer<MeatShredderRecipe> {
         private static final Codec<MeatShredderRecipe> CODEC = RecordCodecBuilder.create(instance -> instance.group(
                 Ingredient.CODEC.fieldOf("input").forGetter(recipe -> recipe.input),

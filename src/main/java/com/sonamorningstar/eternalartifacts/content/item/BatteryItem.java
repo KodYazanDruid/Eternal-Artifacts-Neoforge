@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -33,8 +35,11 @@ public class BatteryItem extends VolumeHolderItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if (energy != null) {
-            tooltipComponents.add(Component.literal("Stored Energy: ").append(energy.getEnergyStored() + " / ").append(String.valueOf(energy.getMaxEnergyStored())).withStyle(ChatFormatting.GRAY));
+        if (energy instanceof ModItemEnergyStorage mies) {
+            tooltipComponents.add(ModConstants.GUI.withSuffixTranslatable("stored_energy").append(": ")
+                    .append(energy.getEnergyStored() + " / ").append(String.valueOf(energy.getMaxEnergyStored())).withStyle(ChatFormatting.YELLOW));
+            tooltipComponents.add(ModConstants.GUI.withSuffixTranslatable("energy_transfer_rate").append(": ")
+                    .append(String.valueOf(mies.getMaxTransfer())).withStyle(ChatFormatting.YELLOW));
         }
     }
 
@@ -59,7 +64,7 @@ public class BatteryItem extends VolumeHolderItem {
         }
     }
 
-    private void switchCharge(ItemStack stack, Level level, BlockPos pos) {
+    public void switchCharge(ItemStack stack, Level level, BlockPos pos) {
         CompoundTag tag = stack.getOrCreateTag();
         if (!tag.getBoolean(KEY_CHARGE)) {
             tag.putBoolean(KEY_CHARGE, true);
@@ -77,9 +82,13 @@ public class BatteryItem extends VolumeHolderItem {
         return super.isFoil(stack);
     }
 
-    public boolean isCharging(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTag();
-        return tag.getBoolean(KEY_CHARGE);
+    public static boolean isCharging(ItemStack stack) {
+        boolean flag = stack.hasTag();
+        if (flag) {
+            CompoundTag tag = stack.getTag();
+            flag = tag.getBoolean(KEY_CHARGE);
+        }
+        return flag;
     }
 
     @Override

@@ -7,7 +7,7 @@
         {
           "condition": "minecraft:match_tool",
           "predicate": {
-            "tag": "forge:tools/hammer"
+            "tag": "forge:tools/hammers"
           }
         }
       ],
@@ -31,7 +31,7 @@
           "term": {
             "condition": "minecraft:match_tool",
             "predicate": {
-              "tag": "forge:tools/hammer"
+              "tag": "forge:tools/hammers"
             }
           }
         }

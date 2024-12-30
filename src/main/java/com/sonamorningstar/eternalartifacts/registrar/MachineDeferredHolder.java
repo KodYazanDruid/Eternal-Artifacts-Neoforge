@@ -11,6 +11,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -18,7 +19,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @RequiredArgsConstructor
-public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem> {
+public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem> implements ItemLike {
     private final DeferredHolder<MenuType<?>, MenuType<M>> menu;
     private final DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntity;
     private final DeferredHolder<Block, MB> block;
@@ -61,5 +62,10 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Mac
             } else return be.tank;
         });
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), (be, ctx) -> be.energy != null ? be.energy : null);
+    }
+
+    @Override
+    public Item asItem() {
+        return getItem();
     }
 }

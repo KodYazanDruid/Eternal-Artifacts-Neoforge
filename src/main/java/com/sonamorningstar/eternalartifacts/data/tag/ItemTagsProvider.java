@@ -44,13 +44,12 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.CHLOROPHYTE_INGOT.get(),
                 ModItems.MANGANESE_INGOT.get(),
                 ModItems.STEEL_INGOT.get(),
-                ModItems.ARDITE_INGOT.get()
+                ModItems.MARIN_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.COOKED_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
         tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
-        tag(ModTags.Items.INGOTS_ARDITE).add(ModItems.ARDITE_INGOT.get());
         tag(Tags.Items.NUGGETS).add(
                 ModItems.COPPER_NUGGET.get(),
                 ModItems.EXPERIENCE_BERRY.get(),
@@ -70,7 +69,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
         tag(Tags.Items.RAW_MATERIALS).add(
                 ModItems.RAW_MANGANESE.get(),
-                ModItems.RAW_ARDITE.get()
+                ModItems.RAW_MARIN.get()
         );
         tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
         tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());
@@ -161,10 +160,12 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
 
         tag(ModTags.Items.CHARMS_HEAD).add(
                 Items.TURTLE_HELMET,
-                Items.DISPENSER
+                Items.DISPENSER,
+                Items.BUCKET
         );
         tag(ModTags.Items.CHARMS_HEAD).addTags(
-                ModTags.Items.SHULKER_SHELL
+                ModTags.Items.SHULKER_SHELL,
+                Tags.Items.GLASS
         );
         tag(ModTags.Items.CHARMS_RING).add(
                 ModItems.GOLD_RING.get()
@@ -178,14 +179,16 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.KNAPSACK.get(),
                 ModItems.TANK_KNAPSACK.get(),
                 ModItems.ENDER_KNAPSACK.get(),
-                Items.ELYTRA
+                Items.ELYTRA,
+                ModItems.PORTABLE_BATTERY.get()
         );
         tag(ModTags.Items.CHARM_FEET).add(
                 ModItems.COMFY_SHOES.get(),
                 ModItems.FROG_LEGS.get()
         );
         tag(ModTags.Items.CHARMS_BELT).add(
-                Items.FILLED_MAP
+                Items.FILLED_MAP,
+                Items.BUNDLE
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
                 ModItems.BATTERY.get(),

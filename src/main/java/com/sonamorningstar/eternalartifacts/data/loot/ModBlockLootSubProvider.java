@@ -74,8 +74,8 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.BATTERY_BOX.get());
         dropSelf(ModBlocks.FLUID_COMBUSTION_DYNAMO.get());
         dropSelf(ModBlocks.RAW_MANGANESE_BLOCK.get());
-        dropSelf(ModBlocks.RAW_ARDITE_BLOCK.get());
-        dropSelf(ModBlocks.ARDITE_BLOCK.get());
+        dropSelf(ModBlocks.RAW_MARIN_BLOCK.get());
+        dropSelf(ModBlocks.MARIN_BLOCK.get());
         dropOther(ModBlocks.PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
         dropOther(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), Blocks.CAULDRON);
         dropSelf(ModBlocks.ASPHALT_BLOCK.get());
@@ -101,7 +101,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         add(ModBlocks.GRAVEL_GOLD_ORE.get(), block -> createOreDrop(block, Items.RAW_GOLD));
         add(ModBlocks.MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
-        add(ModBlocks.ARDITE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_ARDITE.get()));
+        add(ModBlocks.MARIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MARIN.get()));
 
         dropSelfWithFunction(ModBlocks.GARDENING_POT, RetexturedLootFunction.builder());
         dropSelfWithFunction(ModBlocks.FANCY_CHEST, RetexturedLootFunction.builder());

@@ -1,5 +1,6 @@
 {
   "values": [
-    "minecraft:filled_map"
+    "minecraft:filled_map",
+    "minecraft:bundle"
   ]
 }

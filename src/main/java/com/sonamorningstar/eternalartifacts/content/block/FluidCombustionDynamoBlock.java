@@ -81,6 +81,7 @@ public class FluidCombustionDynamoBlock extends BaseMachineBlock<FluidCombustion
         float pixelLen = 1 / 16.0F;
         
         Direction direction;
+        ctx.getHorizontalDirection();
         return defaultBlockState().setValue(BlockStateProperties.FACING, ctx.getClickedFace());
     }
 

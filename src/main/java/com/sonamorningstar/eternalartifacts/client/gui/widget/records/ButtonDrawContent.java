@@ -26,9 +26,16 @@ public class ButtonDrawContent {
     }
 
     public void addSprite(ResourceLocation spriteLoc, int width, int height, SpriteStyle style) {
+        /*SpriteInfo info = new SpriteInfo(spriteLoc, width, height, style);
+        spriteInfos.add(info);
+        uvMap.put(spriteInfos.indexOf(info), new ButtonBoundInfo(0, 0, buttonWidth, buttonHeight));*/
+        addSprite(spriteLoc, 0, 0, width, height, style);
+    }
+
+    public void addSprite(ResourceLocation spriteLoc, int u, int v, int width, int height, SpriteStyle style) {
         SpriteInfo info = new SpriteInfo(spriteLoc, width, height, style);
         spriteInfos.add(info);
-        uvMap.put(spriteInfos.indexOf(info), new ButtonBoundInfo(0, 0, buttonWidth, buttonHeight));
+        uvMap.put(spriteInfos.indexOf(info), new ButtonBoundInfo(u, v, buttonWidth, buttonHeight));
     }
 
     public void addBlitSprite(ResourceLocation spriteLoc, int spriteWidth, int spriteHeight, int u, int v, int width, int height) {

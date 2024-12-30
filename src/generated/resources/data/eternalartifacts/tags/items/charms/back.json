@@ -4,6 +4,7 @@
     "eternalartifacts:tank_knapsack",
     "eternalartifacts:ender_knapsack",
     "minecraft:elytra",
+    "eternalartifacts:portable_battery",
     {
       "id": "mekanism:hdpe_elytra",
       "required": false

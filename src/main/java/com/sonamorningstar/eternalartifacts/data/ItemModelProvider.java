@@ -97,8 +97,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         handheld(ModItems.NETHERITE_HAMMER);
         handheld(ModItems.HAMMAXE);
         basicItem(ModItems.CLAY_DUST.get());
-        basicItem(ModItems.RAW_ARDITE.get());
-        basicItem(ModItems.ARDITE_INGOT.get());
+        basicItem(ModItems.RAW_MARIN.get());
+        basicItem(ModItems.MARIN_INGOT.get());
         basicItem(ModItems.TAR_BALL.get());
         basicItem(ModItems.BITUMEN.get());
         basicItem(ModItems.PINK_SLIME_INGOT.get());

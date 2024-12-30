@@ -1,10 +1,7 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.BlueprintScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
-import com.sonamorningstar.eternalartifacts.content.block.entity.AdvancedCrafterBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.BlueprintUpdateSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import dev.emi.emi.api.EmiDragDropHandler;
@@ -13,7 +10,6 @@ import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;

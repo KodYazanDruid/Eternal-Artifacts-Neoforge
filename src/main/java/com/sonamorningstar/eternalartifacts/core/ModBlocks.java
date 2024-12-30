@@ -8,7 +8,6 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -47,11 +46,11 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerWithItem("charcoal_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
-    public static final DeferredBlock<Block> ARDITE_ORE = registerWithItem("ardite_ore",
+    public static final DeferredBlock<Block> MARIN_ORE = registerWithItem("marin_ore",
             () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE).mapColor(DyeColor.ORANGE)));
-    public static final DeferredBlock<Block> RAW_ARDITE_BLOCK = registerWithItem("raw_ardite_block",
+    public static final DeferredBlock<Block> RAW_MARIN_BLOCK = registerWithItem("raw_marin_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)));
-    public static final DeferredBlock<Block> ARDITE_BLOCK = registerWithItem("ardite_block",
+    public static final DeferredBlock<Block> MARIN_BLOCK = registerWithItem("marin_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_ORANGE)));
     public static final DeferredBlock<Block> STEEL_BLOCK = registerWithItem("steel_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY)));

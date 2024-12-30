@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
+import com.sonamorningstar.eternalartifacts.api.charm.TagReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank;
@@ -24,6 +25,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
@@ -52,6 +54,13 @@ public class CommonModEvents {
             int transfer = (volumeLevel + 1) * 2500;
             return new ModItemEnergyStorage(capacity, transfer, stack);
         }, ModItems.BATTERY.get());
+
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> {
+            int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
+            int capacity = (volumeLevel + 1) * 75000;
+            int transfer = (volumeLevel + 1) * 5000;
+            return new ModItemEnergyStorage(capacity, transfer, stack);
+        }, ModItems.PORTABLE_BATTERY.get());
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
@@ -83,6 +92,7 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SHOCK_ABSORBER.get(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.CABLE.get(), (be, ctx) -> be.energy);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);

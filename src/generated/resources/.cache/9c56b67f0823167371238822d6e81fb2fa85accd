@@ -1,10 +1,9 @@
-// 1.20.4	2024-12-11T16:02:55.4132492	Item Models: eternalartifacts
+// 1.20.4	2024-12-22T21:38:55.6316714	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
-8291c6a68d3934f679910041ce227bf10ee47df7 assets/eternalartifacts/models/item/ardite_ingot.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
 b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/banana.json
 8e45fe9190618cef1e5f5eef79ac0b441ac2de63 assets/eternalartifacts/models/item/banana_bread.json
@@ -121,6 +120,7 @@ e1e5614b7b7738e4dc34e48d69862a79ffacd30f assets/eternalartifacts/models/item/mag
 f6a9f17379e64bf048e8ffefbde4223c30c28a5a assets/eternalartifacts/models/item/manganese_ingot.json
 ada2695d85a8d6aacc3fa5c0de02db49b151ee30 assets/eternalartifacts/models/item/manganese_nugget.json
 0d7c7e42ea921ed3c52ebf35bbbb4ab145fe3485 assets/eternalartifacts/models/item/manganese_oreberry.json
+cf48e2674205fdce7883a259864b0f37fee2f299 assets/eternalartifacts/models/item/marin_ingot.json
 ba45015e7dc9ae4818265b534eea5a35b592f993 assets/eternalartifacts/models/item/material_squeezer.json
 db4c87dbd56c73964e1d7bbdda87976add57067c assets/eternalartifacts/models/item/meat_ingot.json
 7a50e7be3962d1f20a7d6ad3968e1acfeebd77e1 assets/eternalartifacts/models/item/meat_packer.json
@@ -147,8 +147,8 @@ a82a650b3c02ef68ab64fd1e4a4623566f81f23a assets/eternalartifacts/models/item/pla
 19762a3b333726bffcd1c6c50808ea5c8c942046 assets/eternalartifacts/models/item/plastic_sheet.json
 94a79bbcf69b4808293feeb6b54f52fd15260cae assets/eternalartifacts/models/item/portable_crafter.json
 83f6f027c0599bd6a9d0af4c0273f0b21a55aff3 assets/eternalartifacts/models/item/purple_shulker_shell.json
-3e3e31c7870e0d0f9fe46d41c5d786de5ccd46fa assets/eternalartifacts/models/item/raw_ardite.json
 848ea09bf19c94247e4badf808687de5fb7fbe66 assets/eternalartifacts/models/item/raw_manganese.json
+9db8300e78202cce2f106f98cbc979bb3ceeed63 assets/eternalartifacts/models/item/raw_marin.json
 7ac4dd29aa11ab0803cee9120e83cf0c4e56e833 assets/eternalartifacts/models/item/red_shulker_shell.json
 62a008a8d95c366702b9e51a4e1d4c85fd09a5ff assets/eternalartifacts/models/item/resonator.json
 08a2d746a6f53b410d3c0fa6c4895e19929e07a6 assets/eternalartifacts/models/item/rosy_froglight.json

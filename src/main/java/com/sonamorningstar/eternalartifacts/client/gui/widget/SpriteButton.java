@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -26,7 +27,8 @@ import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.But
 
 public class SpriteButton extends AbstractButton {
     private ResourceLocation[] textures;
-    private final ButtonDrawContent sprites;
+    @Setter
+    private ButtonDrawContent sprites;
     private final List<Component> tooltips;
     protected static final SpriteButton.CreateNarration DEFAULT_NARRATION = Supplier::get;
     protected final SpriteButton.OnPress onPress;

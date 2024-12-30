@@ -81,8 +81,8 @@ public class ModItems {
     public static final DeferredItem<Item> CHARCOAL_DUST = register("charcoal_dust");
     public static final DeferredItem<Item> SUGAR_CHARCOAL_DUST = register("sugar_charcoal_dust");
     public static final DeferredItem<Item> CLAY_DUST = register("clay_dust");
-    public static final DeferredItem<Item> ARDITE_INGOT = register("ardite_ingot");
-    public static final DeferredItem<Item> RAW_ARDITE = register("raw_ardite");
+    public static final DeferredItem<Item> MARIN_INGOT = register("marin_ingot");
+    public static final DeferredItem<Item> RAW_MARIN = register("raw_marin");
     public static final DeferredItem<Item> TAR_BALL = register("tar_ball");
     public static final DeferredItem<Item> BITUMEN = register("bitumen");
     public static final DeferredItem<Item> PINK_SLIME_INGOT = register("pink_slime_ingot");
@@ -147,7 +147,7 @@ public class ModItems {
     public static final DeferredItem<Item> AXE_OF_REGROWTH = registerStacksToOne("axe_of_regrowth", AxeOfRegrowthItem::new);
     public static final DeferredItem<Item> NATURAL_SPADE = registerStacksToOne("natural_spade", NaturalSpadeItem::new);
     public static final DeferredItem<Item> LUSH_GRUBBER = registerStacksToOne("lush_grubber", LushGrubberItem::new);
-    public static final DeferredItem<Item> WRENCH = registerStacksToOne("wrench", WrenchItem::new);
+    public static final DeferredItem<Item> WRENCH = registerStacksToOne("wrench", p -> new WrenchItem(Tiers.IRON, p));
     public static final DeferredItem<Item> KNAPSACK = registerStacksToOne("knapsack", KnapsackItem::new);
     public static final DeferredItem<Item> WOODEN_HAMMER = registerStacksToOne("wooden_hammer", p -> new HammerItem(Tiers.WOOD, p));
     public static final DeferredItem<Item> STONE_HAMMER = registerStacksToOne("stone_hammer", p -> new HammerItem(Tiers.STONE, p));
@@ -156,11 +156,11 @@ public class ModItems {
     public static final DeferredItem<Item> GOLDEN_HAMMER = registerStacksToOne("golden_hammer", p -> new HammerItem(Tiers.GOLD, p));
     public static final DeferredItem<Item> DIAMOND_HAMMER = registerStacksToOne("diamond_hammer", p -> new HammerItem(Tiers.DIAMOND, p));
     public static final DeferredItem<Item> NETHERITE_HAMMER = registerStacksToOne("netherite_hammer", p -> new HammerItem(Tiers.NETHERITE, p.fireResistant()));
-    public static final DeferredItem<Item> HAMMAXE = registerStacksToOne("hammaxe", HammaxeItem::new);
-    public static final DeferredItem<Item> GLASSCUTTER = registerStacksToOne("glasscutter", GlasscutterItem::new);
+    public static final DeferredItem<Item> HAMMAXE = registerStacksToOne("hammaxe", p -> new HammaxeItem(ModTiers.CHLOROPHYTE, p));
+    public static final DeferredItem<Item> GLASSCUTTER = registerStacksToOne("glasscutter", p -> new GlasscutterItem(Tiers.IRON, p));
     public static final DeferredItem<Item> WITHERING_SWORD = register("withering_sword", WitheringSword::new);
     public static final DeferredItem<Item> FEEDING_CANISTER = registerStacksToOne("feeding_canister", FeedingCanister::new);
-    public static final DeferredItem<Item> GRAFTER = registerStacksToOne("grafter", GrafterItem::new);
+    public static final DeferredItem<Item> GRAFTER = registerStacksToOne("grafter", p -> new GrafterItem(ModTiers.COPPER, p));
     public static final DeferredItem<Item> TANK_KNAPSACK = registerStacksToOne("tank_knapsack", TankKnapsackItem::new);
     public static final DeferredItem<Item> WOODEN_CUTLASS = registerStacksToOne("wooden_cutlass", p -> new CutlassItem(Tiers.WOOD, p));
     public static final DeferredItem<Item> STONE_CUTLASS = registerStacksToOne("stone_cutlass", p -> new CutlassItem(Tiers.STONE, p));
@@ -170,7 +170,7 @@ public class ModItems {
     public static final DeferredItem<Item> DIAMOND_CUTLASS = registerStacksToOne("diamond_cutlass", p -> new CutlassItem(Tiers.DIAMOND, p));
     public static final DeferredItem<Item> NETHERITE_CUTLASS = registerStacksToOne("netherite_cutlass", p -> new CutlassItem(Tiers.NETHERITE, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_CUTLASS = registerStacksToOne("chlorophyte_cutlass", p -> new CutlassItem(ModTiers.CHLOROPHYTE, p));
-    public static final DeferredItem<Item> LIGHTSABER = register("lightsaber", LightSaberItem::new);
+    public static final DeferredItem<Item> LIGHTSABER = register("lightsaber", () -> new LightSaberItem(ModTiers.CHLOROPHYTE));
     public static final DeferredItem<Item> WOODEN_SICKLE = registerStacksToOne("wooden_sickle", p -> new SickleItem(Tiers.WOOD, p));
     public static final DeferredItem<Item> STONE_SICKLE = registerStacksToOne("stone_sickle", p -> new SickleItem(Tiers.STONE, p));
     public static final DeferredItem<Item> COPPER_SICKLE = registerStacksToOne("copper_sickle", p -> new SickleItem(ModTiers.COPPER, p));
@@ -179,7 +179,8 @@ public class ModItems {
     public static final DeferredItem<Item> DIAMOND_SICKLE = registerStacksToOne("diamond_sickle", p -> new SickleItem(Tiers.DIAMOND, p));
     public static final DeferredItem<Item> NETHERITE_SICKLE = registerStacksToOne("netherite_sickle", p -> new SickleItem(Tiers.NETHERITE, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_SICKLE = registerStacksToOne("chlorophyte_sickle", p -> new SickleItem(ModTiers.CHLOROPHYTE, p));
-    public static final DeferredItem<Item> CHISEL = registerStacksToOne("chisel", ChiselItem::new);
+    public static final DeferredItem<Item> CHISEL = registerStacksToOne("chisel", p -> new ChiselItem(Tiers.DIAMOND, p));
+    public static final DeferredItem<Item> PORTABLE_BATTERY = registerStacksToOne("portable_battery", PortableBatteryItem::new);
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

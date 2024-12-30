@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.container.KnapsackMenu;
 import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;

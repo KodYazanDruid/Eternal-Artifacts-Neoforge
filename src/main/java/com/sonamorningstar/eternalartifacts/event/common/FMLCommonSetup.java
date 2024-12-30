@@ -2,7 +2,8 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -16,7 +17,6 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-import static com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage.CharmType;
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class FMLCommonSetup {
@@ -28,6 +28,7 @@ public class FMLCommonSetup {
             registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
             setupCauldronInteractions();
             setupCharmSlots();
+            //cacheCharmTags();
         });
     }
 
@@ -58,4 +59,8 @@ public class FMLCommonSetup {
         map.put(10, CharmType.CHARM);
         map.put(11, CharmType.CHARM);
     }
+
+/*    private static void cacheCharmTags() {
+
+    }*/
 }

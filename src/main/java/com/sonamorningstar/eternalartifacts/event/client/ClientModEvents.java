@@ -9,12 +9,10 @@ import com.sonamorningstar.eternalartifacts.client.gui.overlay.RecoveryCompassOv
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ShulkerShellLayer;
-import com.sonamorningstar.eternalartifacts.client.resources.model.ColoredBlockModel;
-import com.sonamorningstar.eternalartifacts.client.resources.model.FluidCombustionDynamoModel;
-import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
+import com.sonamorningstar.eternalartifacts.client.renderer.item.PortableBatteryLayer;
+import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
-import com.sonamorningstar.eternalartifacts.client.resources.model.SpellTomeModel;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
@@ -68,6 +66,7 @@ public class ClientModEvents {
         event.register(ModItems.TANK_KNAPSACK.get(), ModInventoryTabs.TANK_KNAPSACK.get());
         event.register(ModItems.PORTABLE_CRAFTER.get(), ModInventoryTabs.CRAFTER.get());
         event.register(Items.COD, ModInventoryTabs.FISH_TAB.get());
+        event.register(ModItems.PORTABLE_BATTERY.get(), ModInventoryTabs.PORTABLE_BATTERY.get());
     }
 
     @SubscribeEvent
@@ -121,6 +120,8 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.METEORITE_LAYER, MeteoriteModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.SPELL_TOME_LAYER, SpellTomeModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.CHARGED_SHEEP_SWIRL, () -> ChargedSheepRenderer.createFurSwirlLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(ModModelLayers.MISSILE_LAYER, MissileModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.PORTABLE_BATTERY_LAYER, PortableBatteryModel::createLayer);
 
         //event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
@@ -149,6 +150,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.PRIMED_BLOCK.get(), TntRenderer::new);
         event.registerEntityRenderer(ModEntities.TORNADO.get(), TornadoRenderer::new);
         event.registerEntityRenderer(ModEntities.METEORITE.get(), MeteoriteRenderer::new);
+        event.registerEntityRenderer(ModEntities.MISSILE.get(), MissileRenderer::new);
     }
 
     @SubscribeEvent
@@ -167,6 +169,7 @@ public class ClientModEvents {
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachLayers(LivingEntityRenderer<T, M> renderer, EntityRendererProvider.Context ctx) {
         renderer.addLayer(new HolyDaggerLayer<>(renderer));
         renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
+        renderer.addLayer(new PortableBatteryLayer<>(renderer, ctx.getModelSet()));
 
         if (renderer instanceof HumanoidMobRenderer<?, ?> hmr) {
             renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(hmr, ctx));

@@ -40,16 +40,16 @@ public class CompassOverlay extends ModGuiOverlay{
                 BlockPos blockPos = pos.pos();
                 ResourceKey<Level> dimension = pos.dimension();
                 if (dimension != player.level().dimension()) return loc;
-                //loc = "Lodestone: " + blockPos.toShortString();
                 loc = ModConstants.GUI.withSuffixTranslatable("lodestone").append(": ").append(blockPos.toShortString());
-            }
+            } else
+                loc = ModConstants.GUI.withSuffixTranslatable("lodestone").append(": ").append(ModConstants.GUI.withSuffixTranslatable("not_found"));
         }else {
             GlobalPos pos = CompassItem.getSpawnPosition(player.level());
             if (pos != null) {
                 BlockPos blockPos = pos.pos();
-                //loc = "Spawn: " + blockPos.toShortString();
                 loc = ModConstants.GUI.withSuffixTranslatable("spawn").append(": ").append(blockPos.toShortString());
-            }
+            } else
+                loc = ModConstants.GUI.withSuffixTranslatable("spawn").append(": ").append(ModConstants.GUI.withSuffixTranslatable("not_found"));
         }
         return loc;
     }

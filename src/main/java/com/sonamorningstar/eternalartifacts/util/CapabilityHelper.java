@@ -18,7 +18,6 @@ public class CapabilityHelper {
     @Contract("_, _, null, _ -> param2")
     public static @org.jetbrains.annotations.Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
-            be.invalidateCapabilities();
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
             return new WrappedItemStorage(inventory,
                     i -> (outputSlots != null && outputSlots.contains(i)) &&
@@ -33,7 +32,6 @@ public class CapabilityHelper {
     @Contract("_, _, null -> param2")
     public static @org.jetbrains.annotations.Nullable IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
         if(ctx != null) {
-            be.invalidateCapabilities();
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
             return new WrappedFluidStorage(tank,
                     dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
@@ -47,7 +45,6 @@ public class CapabilityHelper {
     @Contract("_, _, null -> param2")
     public static @org.jetbrains.annotations.Nullable IEnergyStorage regSidedEnergyCaps(SidedTransferMachineBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
         if(ctx != null) {
-            be.invalidateCapabilities();
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE)) return null;
             return new WrappedEnergyStorage(energy,
                     dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT),

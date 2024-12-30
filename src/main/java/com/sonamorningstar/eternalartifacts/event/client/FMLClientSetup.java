@@ -1,23 +1,19 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
-import com.sonamorningstar.eternalartifacts.capabilities.item.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
-import com.sonamorningstar.eternalartifacts.mixin_helper.RenderOverrides;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
@@ -51,20 +47,20 @@ public class FMLClientSetup {
     }
     private static void setupCharmSprites() {
         var slotTextures = CharmsScreen.slotTextures;
-        slotTextures.put(0 , createSlotSprite(CharmStorage.CharmType.HEAD));
-        slotTextures.put(1 , createSlotSprite(CharmStorage.CharmType.NECKLACE));
-        slotTextures.put(2 , createSlotSprite(CharmStorage.CharmType.RING));
-        slotTextures.put(3 , createSlotSprite(CharmStorage.CharmType.RING));
-        slotTextures.put(4 , createSlotSprite(CharmStorage.CharmType.BELT));
-        slotTextures.put(5 , createSlotSprite(CharmStorage.CharmType.FEET));
-        slotTextures.put(6 , createSlotSprite(CharmStorage.CharmType.HAND));
-        slotTextures.put(7 , createSlotSprite(CharmStorage.CharmType.HAND));
-        slotTextures.put(8 , createSlotSprite(CharmStorage.CharmType.BRACELET));
-        slotTextures.put(9 , createSlotSprite(CharmStorage.CharmType.BACK));
-        slotTextures.put(10, createSlotSprite(CharmStorage.CharmType.CHARM));
-        slotTextures.put(11, createSlotSprite(CharmStorage.CharmType.CHARM));
+        slotTextures.put(0 , createSlotSprite(CharmType.HEAD));
+        slotTextures.put(1 , createSlotSprite(CharmType.NECKLACE));
+        slotTextures.put(2 , createSlotSprite(CharmType.RING));
+        slotTextures.put(3 , createSlotSprite(CharmType.RING));
+        slotTextures.put(4 , createSlotSprite(CharmType.BELT));
+        slotTextures.put(5 , createSlotSprite(CharmType.FEET));
+        slotTextures.put(6 , createSlotSprite(CharmType.HAND));
+        slotTextures.put(7 , createSlotSprite(CharmType.HAND));
+        slotTextures.put(8 , createSlotSprite(CharmType.BRACELET));
+        slotTextures.put(9 , createSlotSprite(CharmType.BACK));
+        slotTextures.put(10, createSlotSprite(CharmType.CHARM));
+        slotTextures.put(11, createSlotSprite(CharmType.CHARM));
     }
-    private static ResourceLocation createSlotSprite(CharmStorage.CharmType type) {
+    private static ResourceLocation createSlotSprite(CharmType type) {
         return new ResourceLocation(MODID, "slots/empty_"+type.getLowerCaseName()+"_slot");
     }
 }

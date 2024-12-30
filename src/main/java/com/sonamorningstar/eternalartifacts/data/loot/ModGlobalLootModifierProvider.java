@@ -8,6 +8,7 @@ import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -41,7 +42,7 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
 
         add("ancient_seeds_from_sniffer_digging", new ReplaceItemWithChanceModifier(
                 new LootItemCondition[]{
-                        LootTableIdCondition.builder(new ResourceLocation("gameplay/sniffer_digging")).build()
+                        LootTableIdCondition.builder(BuiltInLootTables.SNIFFER_DIGGING).build()
                 }, ModItems.ANCIENT_SEED.get(), ConstantValue.exactly(1.0F), 0.2F)
         );
         add("coal_dust_from_coal_blocks", new ReplaceItemModifier(
