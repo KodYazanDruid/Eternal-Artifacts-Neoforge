@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.api.charm;
 
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;

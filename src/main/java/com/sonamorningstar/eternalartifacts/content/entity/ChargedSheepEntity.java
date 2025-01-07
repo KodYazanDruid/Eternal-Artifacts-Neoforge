@@ -31,7 +31,7 @@ public class ChargedSheepEntity extends Sheep implements PowerableMob {
         super(pEntityType, pLevel);
     }
 
-    public ChargedSheepEnergy energy = new ChargedSheepEnergy(this, 5000, 5000);
+    public ChargedSheepEnergy energy = new ChargedSheepEnergy(this, 50000, 5000);
 
     @Override
     public boolean isPowered() {

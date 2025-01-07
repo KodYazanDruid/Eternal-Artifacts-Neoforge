@@ -2,6 +2,9 @@ package com.sonamorningstar.eternalartifacts.loot.function;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
 import com.sonamorningstar.eternalartifacts.core.ModLoots;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -32,16 +35,27 @@ public class KeepFluidsFunction extends LootItemConditionalFunction {
 
     @Override
     protected ItemStack run(ItemStack stack, LootContext ctx) {
-        BlockEntity entity = ctx.getParamOrNull(LootContextParams.BLOCK_ENTITY);
+        BlockEntity entity = ctx.getParam(LootContextParams.BLOCK_ENTITY);
         Level level = ctx.getLevel();
-        IFluidHandlerItem fluidHandlerItem = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        IFluidHandler fluidHandlerEntity = null;
-        if(entity != null)
-            fluidHandlerEntity = level.getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
-        if (fluidHandlerItem != null && fluidHandlerEntity != null) {
-            for (int i = 0; i < fluidHandlerEntity.getTanks(); i++) {
-                FluidStack fluidStack = fluidHandlerEntity.getFluidInTank(i);
-                fluidHandlerItem.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+        IFluidHandlerItem tankStack = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        IFluidHandler tankBe = level.getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
+        if (tankBe != null) {
+            if (tankStack instanceof ModItemMultiFluidTank<? extends ModFluidStorage> mimft) {
+                for (int i = 0; i < tankBe.getTanks(); i++) {
+                    FluidStack fluidStack = tankBe.getFluidInTank(i);
+                    try {
+                        mimft.getTank(i).setFluid(fluidStack, 0);
+                    } catch (IndexOutOfBoundsException e) {
+                        EternalArtifacts.LOGGER.error("Tank index out of bounds: {} for {}", i, stack);
+                    }
+                }
+            } else {
+                if (tankStack != null) {
+                    for (int i = 0; i < tankBe.getTanks(); i++) {
+                        FluidStack fluidStack = tankBe.getFluidInTank(i);
+                        tankStack.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    }
+                }
             }
         }
         return stack;

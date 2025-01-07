@@ -24,7 +24,7 @@ public class FluidInfuserCategory extends EAEmiRecipe {
         FluidIngredient inputFluid = recipe.getInputFluid();
         for (FluidIngredient.Value value : inputFluid.getValues()) {
             if (value instanceof FluidIngredient.TagValue tagValue)
-                inputs.add(EmiIngredient.of(tagValue.tag()));
+                inputs.add(EmiIngredient.of(tagValue.tag(), tagValue.amount()));
             else if (value instanceof FluidIngredient.FluidValue fluidValue) {
                 FluidStack stack = fluidValue.fluidStack();
                 inputs.add(EmiStack.of(stack.getFluid(), stack.getAmount()));

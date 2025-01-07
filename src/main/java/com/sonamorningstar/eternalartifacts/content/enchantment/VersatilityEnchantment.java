@@ -1,21 +1,41 @@
 package com.sonamorningstar.eternalartifacts.content.enchantment;
 
 import com.sonamorningstar.eternalartifacts.content.item.ChiselItem;
+import com.sonamorningstar.eternalartifacts.content.item.ChloroveinPickaxeItem;
+import com.sonamorningstar.eternalartifacts.content.item.HammaxeItem;
+import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class VersatilityEnchantment extends Enchantment {
-    public static final List<Class<?>> acceptedItems = List.of(
+    private static final List<Class<?>> acceptedClasses = List.of(
             PickaxeItem.class,
-            ChiselItem.class
+            ShovelItem.class,
+            AxeItem.class,
+            ChiselItem.class,
+            HammerItem.class,
+            HammaxeItem.class
     );
+    public static final Predicate<Item> acceptedItems = item -> {
+        for (Class<?> aClass : acceptedClasses) {
+            if (aClass.isAssignableFrom(item.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    };
 
     public VersatilityEnchantment() {
         super(Rarity.VERY_RARE, ModEnchantments.ModEnchantmentCategory.VERSATILITY, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    }
+
+    public static boolean has(ItemStack stack) {
+        return stack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0;
     }
 
     @Override

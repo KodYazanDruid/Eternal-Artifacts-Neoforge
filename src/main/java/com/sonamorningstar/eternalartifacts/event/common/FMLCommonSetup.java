@@ -7,12 +7,14 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 
@@ -24,12 +26,14 @@ public class FMLCommonSetup {
     @SubscribeEvent
     public static void event(final FMLCommonSetupEvent event) {
         event.enqueueWork(()-> {
+            ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
+
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.TIGRIS_FLOWER.getId(), ModBlocks.POTTED_TIGRIS);
             registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
             setupCauldronInteractions();
             setupCharmSlots();
-            //cacheCharmTags();
         });
+
     }
 
     private static void registerCauldronContextsForItemFluidHandlers(Item item) {
@@ -60,7 +64,4 @@ public class FMLCommonSetup {
         map.put(11, CharmType.CHARM);
     }
 
-/*    private static void cacheCharmTags() {
-
-    }*/
 }

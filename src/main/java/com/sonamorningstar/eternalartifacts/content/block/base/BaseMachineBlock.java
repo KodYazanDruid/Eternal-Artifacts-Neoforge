@@ -1,26 +1,41 @@
 package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.mojang.serialization.MapCodec;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntityBlock {
     private final BlockEntityType.BlockEntitySupplier<T> supplier;
@@ -89,6 +104,62 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
                 if (be instanceof ITickableClient en) en.tickClient(lvl, pos, st);
             } else if (be instanceof ITickableServer en) en.tickServer(lvl, pos, st);
 
+        }
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        Block block = state.getBlock();
+        Level actualLevel = level.getBlockEntity(pos) != null ? level.getBlockEntity(pos).getLevel() : null;
+        FluidStack fs = FluidStack.EMPTY;
+        ItemStack stack = new ItemStack(block);
+        if (actualLevel != null) {
+            IFluidHandler fluidHandler = actualLevel.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+            if (fluidHandler != null) {
+                fs = fluidHandler.getFluidInTank(0);
+            }
+
+            Optional<IFluidHandlerItem> optionalTankStack = FluidUtil.getFluidHandler(stack);
+            if (optionalTankStack.isPresent()) optionalTankStack.get().fill(fs, IFluidHandler.FluidAction.EXECUTE);
+
+            IEnergyStorage energy = actualLevel.getCapability(Capabilities.EnergyStorage.BLOCK, pos, null);
+            if (energy != null) {
+                IEnergyStorage energyStack = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+                if (energyStack != null) {
+                    if (energyStack instanceof ModItemEnergyStorage mes) mes.setEnergy(energy.getEnergyStored());
+                    else energyStack.receiveEnergy(energy.getEnergyStored(), false);
+                }
+            }
+        }
+        return stack;
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        Optional<IFluidHandlerItem> optionalTankStack = FluidUtil.getFluidHandler(stack);
+        if (optionalTankStack.isPresent()) {
+            IFluidHandlerItem tankStack = optionalTankStack.get();
+            Optional<IFluidHandler> optionalTank = FluidUtil.getFluidHandler(level, pos, null);
+            for (int i = 0; i < tankStack.getTanks(); i++) {
+                FluidStack fluidStack = tankStack.getFluidInTank(i);
+                if (optionalTank.isPresent()) {
+                    IFluidHandler tank = optionalTank.get();
+                    if (tank instanceof MultiFluidTank<?> mft) mft.setFluid(fluidStack, i);
+                    else if (i == 0){
+                        if (tank instanceof ModFluidStorage mfs) mfs.setFluid(fluidStack, 0);
+                        else tank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    }
+                }
+            }
+        }
+        IEnergyStorage energyStack = stack.getCapability(Capabilities.EnergyStorage.ITEM);
+        if (energyStack != null) {
+            IEnergyStorage energy = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, null);
+            if (energy != null) {
+                if (energy instanceof ModEnergyStorage mes) mes.setEnergy(energyStack.getEnergyStored());
+                else energy.receiveEnergy(energyStack.getEnergyStored(), false);
+            }
         }
     }
 }

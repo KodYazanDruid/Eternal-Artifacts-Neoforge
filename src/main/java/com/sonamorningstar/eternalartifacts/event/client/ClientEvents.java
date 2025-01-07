@@ -1,15 +1,18 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -19,16 +22,19 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
@@ -36,17 +42,18 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.TickEvent;
-import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -100,8 +107,42 @@ public class ClientEvents {
     public static void renderTooltipEvent(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
         List<Either<FormattedText, TooltipComponent>> tooltips = event.getTooltipElements();
-
         List<CharmType> types = CharmType.getTypesOfItem(stack.getItem());
+
+        if (stack.is(ModTags.Items.CHARMS) && ItemStack.shouldShowInTooltip(stack.getHideFlags(), ItemStack.TooltipPart.MODIFIERS)) {
+            for (CharmType type : types) {
+                Set<CharmAttributes> allAttributes = CharmStorage.itemAttributes;
+                for (CharmAttributes attr : allAttributes) {
+                    if (attr.isStackCorrect(stack)){
+                        Multimap<Attribute, AttributeModifier> modifierMap = attr.getModifiers();
+                        if (!modifierMap.isEmpty() && attr.getTypes().contains(type)) {
+                            MutableComponent attributeText = ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName())
+                                    .withStyle(ChatFormatting.GRAY);
+                            tooltips.add(tooltips.size() - 1, Either.left(CommonComponents.EMPTY));
+                            tooltips.add(tooltips.size() - 1, Either.left(attributeText));
+                            for (Map.Entry<Attribute, AttributeModifier> entry : modifierMap.entries()) {
+                                Attribute attribute = entry.getKey();
+                                AttributeModifier modifier = entry.getValue();
+                                double formattedAmount = getFormattedAmount(modifier, attribute);
+                                MutableComponent modifierText;
+                                if (modifier.getAmount() < 0) {
+                                    formattedAmount *= -1;
+                                    modifierText = Component.translatable("attribute.modifier.take." + modifier.getOperation().toValue(),
+                                            ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
+                                            Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.RED);
+                                } else {
+                                    modifierText = Component.translatable("attribute.modifier.plus." + modifier.getOperation().toValue(),
+                                            ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
+                                            Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.BLUE);
+                                }
+                                if (formattedAmount != 0) tooltips.add(tooltips.size() - 1, Either.left(modifierText));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         if (!types.isEmpty()) {
             MutableComponent charm = ModConstants.TOOLTIP.withSuffixTranslatable("charm").withStyle(ChatFormatting.DARK_GREEN);
             MutableComponent combined = charm.append(": ");
@@ -113,7 +154,20 @@ public class ClientEvents {
             }
             tooltips.add(tooltips.size() - 1, Either.left(combined));
         }
+    }
 
+    private static double getFormattedAmount(AttributeModifier modifier, Attribute attribute) {
+        double amount = modifier.getAmount();
+        double formattedAmount;
+        if (modifier.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE
+                || modifier.getOperation() == AttributeModifier.Operation.MULTIPLY_TOTAL) {
+            formattedAmount = amount * 100.0;
+        } else if (attribute.equals(Attributes.KNOCKBACK_RESISTANCE)) {
+            formattedAmount = amount * 10.0;
+        } else {
+            formattedAmount = amount;
+        }
+        return formattedAmount;
     }
 
     @SubscribeEvent

@@ -1,4 +1,4 @@
-// 1.20.4	2024-12-22T21:38:55.6246674	Recipes
+// 1.20.4	2025-01-07T21:51:20.7924908	Recipes
 3dda9c7194fb80e5be48c6a526e6e236bab0f1e2 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_slab.json
 07b243e4c363636606d739749024ba8870dfa511 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_stairs.json
 6bc980ccf5cfd81e2ed6d6e4f7073390b5c5d699 data/eternalartifacts/advancements/recipes/building_blocks/obsidian_brick_slab.json
@@ -316,6 +316,7 @@ fd0c22eb6d0b5fab860f4e8424c7be3cb93a00bd data/eternalartifacts/recipes/mob_liqui
 84ac8eb0b0c544814513ce79a3226a4cc2f4f988 data/eternalartifacts/recipes/mob_liquifying/pig.json
 ecb21643b6e8deedd307c0094b9caf896ed72909 data/eternalartifacts/recipes/mob_liquifying/sheep.json
 f7cd80211b5b86c4c210d0539368c5eafb9c24b5 data/eternalartifacts/recipes/mob_liquifying/skeleton.json
+a86b7f22e280ea61f37a4f0714d1839e5a934110 data/eternalartifacts/recipes/mob_liquifying/wither.json
 80b30d6595bbf5489a2ffbebb2144e4410b7beeb data/eternalartifacts/recipes/mob_liquifying/zombies.json
 5c6f982f4fdc301b01f9c2c8955360de03479e76 data/eternalartifacts/recipes/obsidian_bricks.json
 f88ec88db3318b53738f3abe3c1f9531195d7609 data/eternalartifacts/recipes/obsidian_brick_slab.json

@@ -1,7 +1,12 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import lombok.Getter;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +23,12 @@ public class ModLootTables {
     public static final ResourceLocation GOLD_OREBERRY_HARVEST = registerOreBerries("gold");
     public static final ResourceLocation EXPERIENCE_OREBERRY_HARVEST = registerOreBerries("experience");
     public static final ResourceLocation MANGANESE_OREBERRY_HARVEST = registerOreBerries("manganese");
+
+    public static final ResourceLocation HAMMERING_COAL = registerHammering(Tags.Blocks.STORAGE_BLOCKS_COAL);
+    public static final ResourceLocation HAMMERING_CHARCOAL = registerHammering(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL);
+    public static final ResourceLocation HAMMERING_CLAY = registerHammering(Blocks.CLAY);
+    public static final ResourceLocation HAMMERING_SUGAR_CHARCOAL = registerHammering(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
+
     public static final ResourceLocation CHARGED_SHEEP_WHITE = register("entities/charged_sheep/white");
     public static final ResourceLocation CHARGED_SHEEP_ORANGE = register("entities/charged_sheep/orange");
     public static final ResourceLocation CHARGED_SHEEP_MAGENTA = register("entities/charged_sheep/magenta");
@@ -40,11 +51,18 @@ public class ModLootTables {
     private static ResourceLocation registerOreBerries(String material) {
         return register("oreberries/"+material);
     }
+    private static ResourceLocation registerHammering(Block block) {
+        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
+        return register("hammering/blocks/"+id.getNamespace()+"/"+id.getPath());
+    }
+    private static ResourceLocation registerHammering(TagKey<Block> block) {
+        ResourceLocation id = block.location();
+        return register("hammering/tags/"+id.getNamespace()+"/"+id.getPath());
+    }
 
     private static ResourceLocation register(String id) {
         return register(new ResourceLocation(MODID, id));
     }
-
     private static ResourceLocation register(ResourceLocation id) {
         if (MOD_LOOTTABLES.add(id)) {
             return id;

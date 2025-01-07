@@ -1,15 +1,15 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.container.TankKnapsackMenu;
-import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class TankKnapsackItem extends VolumeHolderItem {
+public class TankKnapsackItem extends Item {
     public TankKnapsackItem(Properties props) {
         super(props);
     }

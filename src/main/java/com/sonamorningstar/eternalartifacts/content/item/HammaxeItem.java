@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.core.ModTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,8 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ToolAction;
 import net.neoforged.neoforge.common.ToolActions;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.FakePlayerFactory;
 
 public class HammaxeItem extends DiggerItem {
     public HammaxeItem(Tier tier, Properties props) {
@@ -37,9 +35,6 @@ public class HammaxeItem extends DiggerItem {
                 return ItemStack.EMPTY;
             }
         }
-        //giving null to serverlevel is not working lol
-       /* FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(null);
-        itemStack.hurtAndBreak(1 , fakePlayer, pl -> {});*/
         return copy;
     }
 
@@ -79,7 +74,11 @@ public class HammaxeItem extends DiggerItem {
 
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        if (VersatilityEnchantment.has(stack)) {
+            return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
+                    ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
+                    ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction);
+        }
         return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction);
     }
-
 }

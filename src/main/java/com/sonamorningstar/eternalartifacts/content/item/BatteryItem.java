@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
-import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
+import com.sonamorningstar.eternalartifacts.content.item.base.EnergyRendererItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BatteryItem extends VolumeHolderItem {
+public class BatteryItem extends EnergyRendererItem {
     public BatteryItem(Properties pProperties) {
         super(pProperties);
     }
@@ -92,26 +92,12 @@ public class BatteryItem extends VolumeHolderItem {
     }
 
     @Override
-    public boolean isBarVisible(ItemStack stack) {
-        return true;
+    public int getEnchantmentValue(ItemStack stack) {
+        return 18;
     }
 
     @Override
-    public int getBarWidth(ItemStack stack) {
-        float charge = getChargeLevel(stack);
-        return (int) Math.round(charge * 13.0);
+    public boolean isEnchantable(ItemStack stack) {
+        return getMaxStackSize(stack) == 1;
     }
-
-    @Override
-    public int getBarColor(ItemStack stack) {
-        return 0x880808;
-    }
-
-    private static float getChargeLevel(ItemStack stack) {
-        IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        return energy != null ? energy.getEnergyStored() / (float) energy.getMaxEnergyStored() : 0;
-    }
-
-
-
 }

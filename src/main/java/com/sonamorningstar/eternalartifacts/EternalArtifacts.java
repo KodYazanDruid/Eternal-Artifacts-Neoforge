@@ -1,10 +1,12 @@
 package com.sonamorningstar.eternalartifacts;
 
 import com.mojang.logging.LogUtils;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
+import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.neoforged.bus.api.IEventBus;
@@ -12,6 +14,7 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
 
@@ -42,6 +45,8 @@ public class EternalArtifacts {
 
     public EternalArtifacts(IEventBus modEventBus) {
         enableMilkFluid();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
         ModSpells.SPELLS.register(modEventBus);
         ModMachines.MACHINES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
@@ -67,8 +72,7 @@ public class EternalArtifacts {
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
+        NeoForge.EVENT_BUS.addListener(CharmTickEvent.class, CharmStorage::charmTick);
 
         new ModHooks().construct(modEventBus);
     }

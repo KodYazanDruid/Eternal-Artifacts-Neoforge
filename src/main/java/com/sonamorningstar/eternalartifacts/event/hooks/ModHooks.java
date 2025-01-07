@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.event.hooks;
 
+import com.sonamorningstar.eternalartifacts.compat.appleskin.AppleSkinCompat;
 import com.sonamorningstar.eternalartifacts.compat.mekanism.MekanismCompat;
 import com.sonamorningstar.eternalartifacts.compat.pneumaticcraft.PneumaticCraftCompat;
-import lombok.Getter;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -24,15 +23,18 @@ public final class ModHooks {
     public static final String MEKANISM_ID = "mekanism";
     public static final String MEKANISM_GENERATORS_ID = "mekanismgenerators";
     public static final String PNEUMATICCRAFT_ID = "pneumaticcraft";
+    public static final String APPLESKIN_ID = "appleskin";
 
     public final boolean mekanismLoaded;
     public final boolean mekanismGeneratorsLoaded;
     public final boolean pneumaticcraftLoaded;
+    public final boolean appleskinLoaded;
 
     public ModHooks() {
         mekanismLoaded = check.test(MEKANISM_ID);
         mekanismGeneratorsLoaded = check.test(MEKANISM_GENERATORS_ID);
         pneumaticcraftLoaded = check.test(PNEUMATICCRAFT_ID);
+        appleskinLoaded = check.test(APPLESKIN_ID);
     }
 
     public void construct(final IEventBus modEventBus) {
@@ -47,6 +49,10 @@ public final class ModHooks {
         if (pneumaticcraftLoaded) {
             modEventBus.addListener(PneumaticCraftCompat::registerHeat);
             PneumaticCraftCompat.run(modEventBus);
+        }
+        if (appleskinLoaded) {
+            NeoForge.EVENT_BUS.addListener(AppleSkinCompat::registerFoodValues);
+            AppleSkinCompat.run(modEventBus);
         }
     }
 

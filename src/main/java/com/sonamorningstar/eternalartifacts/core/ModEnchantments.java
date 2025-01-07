@@ -1,11 +1,15 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.content.enchantment.SoulboundEnchantment;
 import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import com.sonamorningstar.eternalartifacts.content.enchantment.VolumeEnchantment;
-import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -16,12 +20,17 @@ public class ModEnchantments {
 
     public static final DeferredHolder<Enchantment, Enchantment> VOLUME = ENCHANTMENTS.register("volume", VolumeEnchantment::new);
     public static final DeferredHolder<Enchantment, Enchantment> VERSATILITY = ENCHANTMENTS.register("versatility", VersatilityEnchantment::new);
-    //generate a autosmelting enchantment
-    //public static final DeferredHolder<Enchantment, Enchantment> AUTOSMELTING = ENCHANTMENTS.register("autosmelting", AutosmeltingEnchantment::new);
-
+    public static final DeferredHolder<Enchantment, Enchantment> SOULBOUND = ENCHANTMENTS.register("soulbound", SoulboundEnchantment::new);
 
     public static class ModEnchantmentCategory{
-        public static final EnchantmentCategory VOLUME_HOLDER = EnchantmentCategory.create("volume_holder", item -> item instanceof VolumeHolderItem);
-        public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("pickaxe", item -> VersatilityEnchantment.acceptedItems.contains(item.getClass()));
+        public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {
+            ItemStack stack = item.getDefaultInstance();
+            return ((stack.getCapability(Capabilities.EnergyStorage.ITEM) != null ||
+                    stack.getCapability(Capabilities.ItemHandler.ITEM) != null ||
+                    stack.getCapability(Capabilities.FluidHandler.ITEM) != null) &&
+                    BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MODID)) || VolumeEnchantment.acceptedItems.contains(item.getClass());
+        });
+        public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("versatility", VersatilityEnchantment.acceptedItems);
+        public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1);
     }
 }

@@ -45,7 +45,12 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                         LootTableIdCondition.builder(BuiltInLootTables.SNIFFER_DIGGING).build()
                 }, ModItems.ANCIENT_SEED.get(), ConstantValue.exactly(1.0F), 0.2F)
         );
-        add("coal_dust_from_coal_blocks", new ReplaceItemModifier(
+        add("hammering", new HammeringModifier(
+                new LootItemCondition[]{
+                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build()
+                }
+        ));
+        /*add("coal_dust_from_coal_blocks", new ReplaceItemModifier(
                 new LootItemCondition[] {
                         LootItemBlockTagCondition.builder(Tags.Blocks.STORAGE_BLOCKS_COAL).build(),
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build(),
@@ -62,7 +67,7 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.CLAY).build(),
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build(),
                 }, ModItems.CLAY_DUST.get(), UniformGenerator.between(2.0F, 4.0F))
-        );
+        );*/
         add("glasscutter", new GlasscutterModifier(
                 new LootItemCondition[] {
                         LootItemBlockTagCondition.builder(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).build(),

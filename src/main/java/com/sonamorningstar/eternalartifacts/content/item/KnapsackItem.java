@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.container.KnapsackMenu;
-import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -9,10 +8,11 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class KnapsackItem extends VolumeHolderItem {
+public class KnapsackItem extends Item {
     public KnapsackItem(Properties pProperties) {
         super(pProperties);
     }

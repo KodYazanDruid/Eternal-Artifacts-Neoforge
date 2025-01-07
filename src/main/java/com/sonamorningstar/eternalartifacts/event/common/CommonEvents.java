@@ -3,10 +3,12 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
-import com.sonamorningstar.eternalartifacts.api.charm.TagReloadListener;
+import com.sonamorningstar.eternalartifacts.event.TagReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.enchantment.SoulboundEnchantment;
+import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -20,7 +22,6 @@ import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
@@ -33,18 +34,15 @@ import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -57,9 +55,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -141,7 +137,7 @@ public class CommonEvents {
                     float health = player.getHealth();
                     float absorption = player.getAbsorptionAmount();
                     float maxHealth = player.getMaxHealth();
-                    if (health + absorption <= damage || health + absorption / maxHealth <= 0.2F) {
+                    if (health + absorption <= damage || health + absorption / maxHealth <= 0.5) {
                         player.addEffect(new MobEffectInstance(ModEffects.DIVINE_PROTECTION.get(), 600, 0));
                         player.getCooldowns().addCooldown(dagger, 6000);
                         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
@@ -172,13 +168,28 @@ public class CommonEvents {
             player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
         }
     }
-
     @SubscribeEvent
     public static void fallEvent(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
         if(entity instanceof Player player && !PlayerCharmManager.findInPlayer(player, ModItems.FROG_LEGS.get()).isEmpty()) {
             event.setDistance(Math.max(event.getDistance() - 3, 0));
             event.setDamageMultiplier(0.5F);
+        }
+    }
+    @SubscribeEvent
+    public static void livingTickEvent(LivingEvent.LivingTickEvent event) {
+        LivingEntity living = event.getEntity();
+
+        var charms = CharmStorage.get(living);
+        for (int i = 0; i < charms.getSlots(); i++) {
+            var stack = charms.getStackInSlot(i);
+            if (stack.isEmpty()) continue;
+            if (living instanceof ServerPlayer sp && stack.getItem().isComplex()) {
+                Packet<?> packet = ((ComplexItem)stack.getItem()).getUpdatePacket(stack, sp.level(), sp);
+                if (packet != null) sp.connection.send(packet);
+            }
+            CharmTickEvent charmEvent = new CharmTickEvent(living, stack, i);
+            NeoForge.EVENT_BUS.post(charmEvent);
         }
     }
 
@@ -253,12 +264,26 @@ public class CommonEvents {
     public static void playerCloneEvent(PlayerEvent.Clone event) {
         Player oldPlayer = event.getOriginal();
         Player newPlayer = event.getEntity();
+        boolean wasDeath = event.isWasDeath();
         var oldCharms = CharmStorage.get(oldPlayer);
-        NonNullList<ItemStack> oldItems = oldCharms.getStacks();
         var newCharms = CharmStorage.get(newPlayer);
-        for (int i = 0; i < oldItems.size(); i++)
-            newCharms.setStackInSlot(i, oldItems.get(i));
-
+        for (int i = 0; i < oldCharms.getSlots(); i++) {
+            ItemStack oldStack = oldCharms.getStackInSlot(i);
+            if (wasDeath) {
+                if (EnchantmentHelper.hasVanishingCurse(oldStack)) oldCharms.setStackInSlot(i, ItemStack.EMPTY);
+                if (SoulboundEnchantment.has(oldStack)) newCharms.setStackInSlot(i, oldStack.copyAndClear());
+                oldPlayer.drop(oldStack, true,false);
+            }
+        }
+        Level level = oldPlayer.level();
+        if (wasDeath && !(level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || oldPlayer.isSpectator())) {
+            Inventory oldInventory = oldPlayer.getInventory();
+            Inventory newInventory = newPlayer.getInventory();
+            for (int i = 0; i < oldInventory.getContainerSize(); i++) {
+                ItemStack stack = oldInventory.getItem(i);
+                if (SoulboundEnchantment.has(stack)) newInventory.setItem(i, oldInventory.getItem(i));
+            }
+        }
     }
     @SubscribeEvent
     public static void entityJoinWorld(EntityJoinLevelEvent event) {
@@ -277,65 +302,6 @@ public class CommonEvents {
         Player player = event.getEntity();
         if (player.level().isClientSide) return;
         CharmStorage.get(player).syncSelf();
-    }
-
-    @SubscribeEvent
-    public static void playerTick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        AttributeInstance stepHeight = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
-        AttributeInstance spellDamage = player.getAttribute(ModAttributes.SPELL_DAMAGE.get());
-
-        if(!(player.hasItemInSlot(EquipmentSlot.FEET) && player.getItemBySlot(EquipmentSlot.FEET).is(ModItems.COMFY_SHOES.get()))) {
-            if(stepHeight != null && stepHeight.hasModifier(ComfyShoesItem.getStepHeight())) {
-                stepHeight.removeModifier(ComfyShoesItem.getStepHeight().getId());
-            }
-        }
-        if (event.phase == TickEvent.Phase.START) {
-            var charms = player.getData(ModDataAttachments.CHARMS);
-            for (int i = 0; i < charms.getSlots(); i++) {
-                var stack = charms.getStackInSlot(i);
-                if (stack.isEmpty()) continue;
-                if (player instanceof ServerPlayer sp && stack.getItem().isComplex()) {
-                    Packet<?> packet = ((ComplexItem)stack.getItem()).getUpdatePacket(stack, sp.level(), sp);
-                    if (packet != null) sp.connection.send(packet);
-                }
-                CharmTickEvent charmEvent = new CharmTickEvent(player, stack, i);
-                NeoForge.EVENT_BUS.post(charmEvent);
-            }
-
-        }
-
-    }
-
-    @SubscribeEvent
-    public static void charmTick(CharmTickEvent event) {
-        Player player = event.getEntity();
-        ItemStack charm = event.getCharm();
-        int slot = event.getSlot();
-        if (charm.getItem() instanceof ComfyShoesItem) {
-            AttributeInstance step = player.getAttribute(NeoForgeMod.STEP_HEIGHT.value());
-            if(step != null){
-                var mod = ComfyShoesItem.getStepHeight();
-                if (step.hasModifier(mod) && player.isCrouching()) step.removeModifier(mod.getId());
-                if (!step.hasModifier(mod) && !player.isCrouching())
-                    step.addTransientModifier(mod);
-            }
-        }
-        if (charm.is(ModItems.MEDKIT)) {
-            if (!player.getCooldowns().isOnCooldown(ModItems.MEDKIT.get()) && !player.hasEffect(MobEffects.REGENERATION)) {
-                player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
-            }
-        }
-        if (charm.getItem() instanceof MapItem mapItem) {
-            mapItem.inventoryTick(charm, player.level(), player, -1, true);
-        }
-        if (charm.getItem() instanceof CompassItem compassItem) {
-            compassItem.inventoryTick(charm, player.level(), player, -1, true);
-        }
-
-        if (charm.getItem() instanceof PortableBatteryItem battery) {
-            battery.chargeSlots(player, charm);
-        }
     }
 
     @SubscribeEvent
@@ -388,6 +354,13 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
+    public static void enderManAngerEvent(EnderManAngerEvent event) {
+        Player player = event.getPlayer();
+        ItemStack carved = PlayerCharmManager.findCharm(player, Items.CARVED_PUMPKIN);
+        if (!carved.isEmpty()) event.setCanceled(true);
+    }
+
+    @SubscribeEvent
     public static void useEvent(UseItemOnBlockEvent event) {
         ItemStack itemStack = event.getItemStack();
         Level level = event.getLevel();
@@ -397,14 +370,11 @@ public class CommonEvents {
         InteractionHand hand = event.getHand();
         ItemStack otherHandStack = player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
         UseOnContext context = event.getUseOnContext();
-        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK &&
-                itemStack.canApplyAtEnchantingTable(ModEnchantments.VERSATILITY.get()) &&
-                itemStack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
-
-            Optional<BlockState> axeModifiedState = calculateStateForAxe(level, blockPos, player, blockState, context);
-            if (axeModifiedState.isPresent()) {
-                level.setBlock(blockPos, axeModifiedState.get(), 11);
-                level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, axeModifiedState.get()));
+        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK && VersatilityEnchantment.has(itemStack)){
+            BlockState axeModifiedState = calculateStateForAxe(level, blockPos, player, blockState, context);
+            if (axeModifiedState != null) {
+                level.setBlock(blockPos, axeModifiedState, 11);
+                level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, axeModifiedState));
 
                 if (player instanceof ServerPlayer) {
                     CriteriaTriggers.ITEM_USED_ON_BLOCK.trigger((ServerPlayer) player, blockPos, itemStack);
@@ -451,25 +421,26 @@ public class CommonEvents {
         }
     }
 
-    private static Optional<BlockState> calculateStateForAxe(Level level, BlockPos pos, @Nullable Player player, BlockState state, UseOnContext context) {
+    @Nullable
+    private static BlockState calculateStateForAxe(Level level, BlockPos pos, @Nullable Player player, BlockState state, UseOnContext context) {
         Optional<BlockState> stripState = Optional.ofNullable(state.getToolModifiedState(context, ToolActions.AXE_STRIP, false));
         if (stripState.isPresent()) {
             level.playSound(player, pos, SoundEvents.AXE_STRIP, SoundSource.BLOCKS, 1.0F, 1.0F);
-            return stripState;
+            return stripState.get();
         } else {
             Optional<BlockState> scrapeState = Optional.ofNullable(state.getToolModifiedState(context, ToolActions.AXE_SCRAPE, false));
             if (scrapeState.isPresent()) {
                 level.playSound(player, pos, SoundEvents.AXE_SCRAPE, SoundSource.BLOCKS, 1.0F, 1.0F);
                 level.levelEvent(player, 3005, pos, 0);
-                return scrapeState;
+                return scrapeState.get();
             } else {
                 Optional<BlockState> wasOffState = Optional.ofNullable(state.getToolModifiedState(context, ToolActions.AXE_WAX_OFF, false));
                 if (wasOffState.isPresent()) {
                     level.playSound(player, pos, SoundEvents.AXE_WAX_OFF, SoundSource.BLOCKS, 1.0F, 1.0F);
                     level.levelEvent(player, 3004, pos, 0);
-                    return wasOffState;
+                    return wasOffState.get();
                 } else {
-                    return Optional.empty();
+                    return null;
                 }
             }
         }

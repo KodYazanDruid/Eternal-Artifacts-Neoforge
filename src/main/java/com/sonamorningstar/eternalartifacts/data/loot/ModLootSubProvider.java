@@ -26,6 +26,11 @@ public class ModLootSubProvider implements LootTableSubProvider {
         generateSingleItem(output, ModLootTables.EXPERIENCE_OREBERRY_HARVEST, ModItems.EXPERIENCE_BERRY, UniformGenerator.between(1, 2));
         generateSingleItem(output, ModLootTables.MANGANESE_OREBERRY_HARVEST, ModItems.MANGANESE_NUGGET, ConstantValue.exactly(1));
 
+        generateSingleItem(output, ModLootTables.HAMMERING_COAL, ModItems.COAL_DUST, UniformGenerator.between(3, 6));
+        generateSingleItem(output, ModLootTables.HAMMERING_CHARCOAL, ModItems.CHARCOAL_DUST, UniformGenerator.between(3, 6));
+        generateSingleItem(output, ModLootTables.HAMMERING_CLAY, ModItems.CLAY_DUST, UniformGenerator.between(2, 4));
+        generateSingleItem(output, ModLootTables.HAMMERING_SUGAR_CHARCOAL, ModItems.SUGAR_CHARCOAL_DUST, UniformGenerator.between(3, 6));
+
         output.accept(ModLootTables.SURVIVALISTS_IGLOO, LootTable.lootTable()
             .withPool(LootPool.lootPool()
                 .setRolls(ConstantValue.exactly(1))

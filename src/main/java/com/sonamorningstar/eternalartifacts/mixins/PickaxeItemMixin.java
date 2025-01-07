@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.mixins;
 
-import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.neoforged.neoforge.common.ToolAction;
@@ -15,8 +15,7 @@ public abstract class PickaxeItemMixin {
 
     @Inject(method = "canPerformAction", at = @At(value = "INVOKE", target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z"), cancellable = true)
     private void canPerformAction(ItemStack stack, ToolAction toolAction, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.canApplyAtEnchantingTable(ModEnchantments.VERSATILITY.get()) &&
-                stack.getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0) {
+        if (VersatilityEnchantment.has(stack)) {
             cir.setReturnValue(ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
                     ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
                     ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction));

@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:hammering",
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "tag": "forge:tools/hammers"
+      }
+    }
+  ]
+}

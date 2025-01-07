@@ -45,15 +45,6 @@ public class NousTankBlock extends MachineFourWayBlock<NousTankBlockEntity> {
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();
-        FluidStack fluidStack = fhi.getFluidInTank(0);
-        IFluidHandler fh = FluidUtil.getFluidHandler(level, pos, null).get();
-        fh.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-    }
-
-    @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         Block block = state.getBlock();
         Level actualLevel = level.getBlockEntity(pos).getLevel();

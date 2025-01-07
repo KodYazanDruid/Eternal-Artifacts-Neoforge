@@ -1,12 +1,18 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.WrappedEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.WrappedFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Contract;
 
@@ -16,7 +22,7 @@ import java.util.List;
 public class CapabilityHelper {
 
     @Contract("_, _, null, _ -> param2")
-    public static @org.jetbrains.annotations.Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
+    public static @Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
             return new WrappedItemStorage(inventory,
@@ -30,7 +36,7 @@ public class CapabilityHelper {
     }
 
     @Contract("_, _, null -> param2")
-    public static @org.jetbrains.annotations.Nullable IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
+    public static @Nullable IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
         if(ctx != null) {
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
             return new WrappedFluidStorage(tank,
@@ -43,7 +49,7 @@ public class CapabilityHelper {
     }
 
     @Contract("_, _, null -> param2")
-    public static @org.jetbrains.annotations.Nullable IEnergyStorage regSidedEnergyCaps(SidedTransferMachineBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
+    public static @Nullable IEnergyStorage regSidedEnergyCaps(SidedTransferMachineBlockEntity<?> be, IEnergyStorage energy, Direction ctx) {
         if(ctx != null) {
             if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE)) return null;
             return new WrappedEnergyStorage(energy,
@@ -51,5 +57,18 @@ public class CapabilityHelper {
                     dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT),
                     ctx);
         }else return energy;
+    }
+
+    public static ModItemEnergyStorage regItemEnergyCap(ItemStack stack, int baseCapability, int maxTransfer) {
+        int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
+        int capacity = (volumeLevel + 1) * baseCapability;
+        int transfer = (volumeLevel + 1) * maxTransfer;
+        return new ModItemEnergyStorage(capacity, transfer, stack);
+    }
+
+    public static IFluidHandlerItem regItemFluidCap(ItemStack stack, int baseCapacity) {
+        int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
+        int capacity = (volumeLevel + 1) * baseCapacity;
+        return new FluidHandlerItemStack(stack, capacity);
     }
 }

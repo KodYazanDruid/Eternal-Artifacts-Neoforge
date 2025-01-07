@@ -98,6 +98,11 @@ public class ModItemMultiFluidTank<T extends ModFluidStorage> implements IFluidH
     }
     //endregion
 
+    public void setTank(int tankNo, FluidStack fluidStack) {
+        tanks.get(tankNo).setFluid(fluidStack, 0);
+        onContentsChange();
+    }
+
     protected void onContentsChange() {
         CompoundTag tag = stack.getOrCreateTag();
         serializeNBT(tag);

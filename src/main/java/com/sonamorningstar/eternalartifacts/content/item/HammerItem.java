@@ -1,11 +1,12 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.FakePlayerFactory;
+import net.neoforged.neoforge.common.ToolAction;
+import net.neoforged.neoforge.common.ToolActions;
 
 public class HammerItem extends DiggerItem {
     public HammerItem(Tier tier, Properties props) {
@@ -26,8 +27,16 @@ public class HammerItem extends DiggerItem {
                 return ItemStack.EMPTY;
             }
         }
-        /*FakePlayer fakePlayer = FakePlayerFactory.getMinecraft(null);
-        itemStack.hurtAndBreak(1 , fakePlayer, pl -> {});*/
         return copy;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        if (VersatilityEnchantment.has(stack)) {
+            return ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) ||
+                    ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction) ||
+                    ToolActions.DEFAULT_SHOVEL_ACTIONS.contains(toolAction);
+        }
+        return super.canPerformAction(stack, toolAction);
     }
 }

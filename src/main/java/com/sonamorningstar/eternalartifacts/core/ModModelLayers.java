@@ -20,6 +20,7 @@ public class ModModelLayers {
     public static final ModelLayerLocation ENERGY_DOCK_LAYER = create("energy_dock_layer");
     public static final ModelLayerLocation MISSILE_LAYER = create("missile_layer");
     public static final ModelLayerLocation PORTABLE_BATTERY_LAYER = create("portable_battery_layer");
+    public static final ModelLayerLocation BUCKET_LAYER = create("bucket_layer");
 
 
     private static ModelLayerLocation create(String name) {

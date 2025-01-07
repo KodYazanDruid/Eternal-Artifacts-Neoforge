@@ -6,7 +6,6 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.neoforged.fml.common.Mod;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -157,6 +156,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Bullets Tome");
                 add(ModItems.METEORITE_TOME.get(), "Meteorite Tome");
                 add(ModItems.PORTABLE_BATTERY.get(), "Portable Battery");
+                add(ModItems.ROBOTIC_GLOVE.get(), "Robotic Glove");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -258,6 +258,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 //region Tabs
                 ModInventoryTabs.INVENTORY_TABS.getEntries().forEach(holder -> add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath())));
                 //endregion
+                //region Enchantments
+                add(ModEnchantments.VOLUME.get(), "Volume");
+                add(ModEnchantments.VERSATILITY.get(), "Versatility");
+                add(ModEnchantments.SOULBOUND.get(), "Soulbound");
+                //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Naming disabled.");
@@ -289,7 +294,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.WARPS.getString(), "Warps:");
                 add(ModConstants.GUI.withSuffix("progress"), "Progress");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Burn Time");
-                add(ModEnchantments.VOLUME.get(), "Volume");
                 add(ModConstants.GUI.withSuffix("up"), "Up");
                 add(ModConstants.GUI.withSuffix("left"), "Left");
                 add(ModConstants.GUI.withSuffix("front"), "Front");
@@ -324,7 +328,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("delete_warp"), "Delete warp.");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Rename");
                 add(ModConstants.GUI.withSuffix("renaming"), "Renaming...");
-                add(ModEnchantments.VERSATILITY.get(), "Versatility");
                 add(ModConstants.GUI.withSuffix("done"), "Done");
                 add(ModConstants.GUI.withSuffix("alpha"), "Alpha");
                 add(ModConstants.GUI.withSuffix("red"), "Red");
@@ -344,6 +347,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("energy_transfer_rate"), "Energy Transfer Rate");
                 add(ModConstants.TOOLTIP.withSuffix("charm"), "Charm");
                 add(ModConstants.GUI.withSuffix("not_found"), "Not Found");
+                add(ModConstants.OVERLAY.withSuffix("hammering_recipe"), "Drops:");
+                add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Nutrition");
+                add(ModConstants.TOOLTIP.withSuffix("saturation"), "Saturation");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -353,6 +359,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 ModMachines.MACHINES.getMachines().forEach(holder -> add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath())));
                 for (CharmType value : CharmType.values()) {
                     add(ModConstants.CHARM_TYPE.withSuffix(value.getLowerCaseName()), prettyName(value.getLowerCaseName()));
+                    add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(value.getLowerCaseName()), "When on " + prettyName(value.getLowerCaseName()) + " Charm:");
                 }
                 //endregion
             }
@@ -502,6 +509,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Mermiler Kitabı");
                 add(ModItems.METEORITE_TOME.get(), "Meteorit Kitabı");
                 add(ModItems.PORTABLE_BATTERY.get(), "Taşınabilir Pil");
+                add(ModItems.ROBOTIC_GLOVE.get(), "Robot Eldiven");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -645,6 +653,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModInventoryTabs.FISH_TAB.get().getDescriptionId(), "Balık");
                 add(ModInventoryTabs.PORTABLE_BATTERY.get().getDescriptionId(), "Taşınabilir Pil");
                 //endregion
+                //region Türkçe Büyüler
+                add(ModEnchantments.VOLUME.get(), "Hacim");
+                add(ModEnchantments.VERSATILITY.get(), "Çeşitlilik");
+                add(ModEnchantments.SOULBOUND.get(), "Ruh Bağı");
+                //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Adlandırma kapalı.");
@@ -676,7 +689,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.WARPS.getString(), "Işınlanmalar:");
                 add(ModConstants.GUI.withSuffix("progress"), "İlerleme");
                 add(ModConstants.GUI.withSuffix("burn_time"), "Yanma Zamanı");
-                add(ModEnchantments.VOLUME.get(), "Hacim");
                 add(ModConstants.GUI.withSuffix("up"), "Yukarı");
                 add(ModConstants.GUI.withSuffix("left"), "Sol");
                 add(ModConstants.GUI.withSuffix("front"), "Ön");
@@ -711,7 +723,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("delete_warp"), "Işınlayıcıyı sil.");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("rename_warp"), "Yeniden Adlandır");
                 add(ModConstants.GUI.withSuffix("renaming"), "Yeniden adlandırılıyor...");
-                add(ModEnchantments.VERSATILITY.get(), "Çok Yönlülük");
                 add(ModConstants.GUI.withSuffix("done"), "Tamamlandı");
                 add(ModConstants.GUI.withSuffix("alpha"), "Alfa");
                 add(ModConstants.GUI.withSuffix("red"), "Kırmızı");
@@ -738,8 +749,21 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHARM_TYPE.withSuffix(CharmType.HAND.getLowerCaseName()), "El");
                 add(ModConstants.CHARM_TYPE.withSuffix(CharmType.FEET.getLowerCaseName()), "Ayak");
                 add(ModConstants.CHARM_TYPE.withSuffix(CharmType.BACK.getLowerCaseName()), "Sırt");
+                add(ModConstants.CHARM_TYPE.withSuffix(CharmType.CHARM.getLowerCaseName()), "Genel");
                 add(ModConstants.TOOLTIP.withSuffix("charm"), "Tılsım");
                 add(ModConstants.GUI.withSuffix("not_found"), "Bulunamadı");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.HEAD.getLowerCaseName()), "Kafa tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.NECKLACE.getLowerCaseName()), "Kolye tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.RING.getLowerCaseName()), "Yüzük tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.BELT.getLowerCaseName()), "Kemer tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.BRACELET.getLowerCaseName()), "Bilezik tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.HAND.getLowerCaseName()), "El tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.FEET.getLowerCaseName()), "Ayak tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.BACK.getLowerCaseName()), "Sırt tılsımında iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.CHARM.getLowerCaseName()), "Genel tılsımda iken:");
+                add(ModConstants.OVERLAY.withSuffix("hammering_recipe"), "Düşürür:");
+                add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Besin");
+                add(ModConstants.TOOLTIP.withSuffix("saturation"), "Doygunluk");
                 //endregion
             }
         }

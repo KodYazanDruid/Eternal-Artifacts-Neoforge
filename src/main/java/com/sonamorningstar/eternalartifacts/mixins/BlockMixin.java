@@ -58,7 +58,7 @@ public abstract class BlockMixin {
             ItemStack offHand = player.getOffhandItem();
             if(!offHand.isEmpty() && offHand.getItem() instanceof BlockItem) blocks.putFirst(offHand);
             eternal_Artifacts_Neoforge$insertItems(player, level, state, pos, blockEntity, tool);
-            eternal_Artifacts_Neoforge$tryPlace(blocks, level, player, state, pos, hitResult);
+            eternal_Artifacts_Neoforge$tryPlace(blocks, player, state, pos, hitResult);
             eternal_Artifacts_Neoforge$isSuccessful = true;
         }
     }
@@ -73,14 +73,14 @@ public abstract class BlockMixin {
     }
 
     @Unique
-    private void eternal_Artifacts_Neoforge$tryPlace(Iterator<ItemStack> iterator, Level level, Player player,
+    private void eternal_Artifacts_Neoforge$tryPlace(Iterator<ItemStack> iterator, Player player,
                                                      BlockState state, BlockPos pos, BlockHitResult hitResult) {
         if (iterator.hasNext()) {
             ItemStack blockItemStack = iterator.next();
             if(!blockItemStack.isEmpty() &&
                     blockItemStack.getItem() instanceof BlockItem blockItem) {
                 if(blockItem.getBlock() == state.getBlock()) {
-                    eternal_Artifacts_Neoforge$tryPlace(iterator, level, player, state, pos, hitResult);
+                    eternal_Artifacts_Neoforge$tryPlace(iterator, player, state, pos, hitResult);
                     return;
                 }
                 ItemStack clientStack = blockItemStack.copy();
@@ -89,7 +89,7 @@ public abstract class BlockMixin {
                 ctx.replaceClicked = true;
                 InteractionResult result = blockItem.place(ctx);
                 Channel.sendToPlayer(new BlockPlaceOnClient(clientStack, pos, InteractionHand.MAIN_HAND, hitResult), (ServerPlayer) player);
-                if(!result.consumesAction()) eternal_Artifacts_Neoforge$tryPlace(iterator, level, player, state, pos, hitResult);
+                if(!result.consumesAction()) eternal_Artifacts_Neoforge$tryPlace(iterator, player, state, pos, hitResult);
             }
         }
     }

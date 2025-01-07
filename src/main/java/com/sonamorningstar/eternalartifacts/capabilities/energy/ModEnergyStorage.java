@@ -46,6 +46,7 @@ public abstract class ModEnergyStorage extends EnergyStorage {
 
     public void setEnergy(int amount) {
         energy = Mth.clamp(amount,0, capacity);
+        onEnergyChanged();
     }
 
     public abstract void onEnergyChanged();

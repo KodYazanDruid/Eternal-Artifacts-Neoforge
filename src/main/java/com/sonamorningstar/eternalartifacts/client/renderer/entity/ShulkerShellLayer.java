@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
 import com.sonamorningstar.eternalartifacts.content.item.ColoredShulkerShellItem;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.*;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
@@ -21,13 +20,12 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 
 public class ShulkerShellLayer<T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> {
-    private static final Minecraft mc = Minecraft.getInstance();
     private static final ResourceLocation SHULKER_LOCATION = new ResourceLocation("textures/entity/shulker/shulker.png");
     private final ShulkerModel<Shulker> model;
-    private final M parent;
+    private final LivingEntityRenderer<T, M> renderer;
     public ShulkerShellLayer(LivingEntityRenderer<T, M> renderer, EntityRendererProvider.Context ctx) {
         super(renderer);
-        this.parent = renderer.getModel();
+        this.renderer = renderer;
         model = new ShulkerModel<>(ctx.bakeLayer(ModelLayers.SHULKER));
     }
 
@@ -37,15 +35,16 @@ public class ShulkerShellLayer<T extends LivingEntity, M extends HumanoidModel<T
 
         ItemStack shell = PlayerCharmManager.findCharm(living, st -> st.is(ModTags.Items.SHULKER_SHELL));
         if (!shell.isEmpty()){
+            pose.pushPose();
+            M parent = renderer.getModel();
             ModelPart shulkerLid = model.getLid();
             ModelPart parentHead = parent.getHead();
+            shulkerLid.setInitialPose(parentHead.getInitialPose());
             parent.copyPropertiesTo((EntityModel<T>) model);
-            pose.pushPose();
-            float babyOff = living.isBaby() ? 1.27F : 0.0F;
-            float crouchOff = living.isCrouching() ? 0.05F : 0.0F;
-            pose.scale(0.64F, 0.64F, 0.64F);
             shulkerLid.copyFrom(parentHead);
-            shulkerLid.y += (babyOff + crouchOff) * 16;
+            shulkerLid.xScale = parentHead.xScale * 0.64F;
+            shulkerLid.yScale = parentHead.yScale * 0.64F;
+            shulkerLid.zScale = parentHead.zScale * 0.64F;
             shulkerLid.render(pose, buff.getBuffer(model.renderType(getTextureLocation(living))), light,
                     LivingEntityRenderer.getOverlayCoords(living, 0.0F), 1.0F, 1.0F, 1.0F, 1.0F);
             if (shell.hasFoil()) renderGlint(pose, buff, light, shulkerLid);

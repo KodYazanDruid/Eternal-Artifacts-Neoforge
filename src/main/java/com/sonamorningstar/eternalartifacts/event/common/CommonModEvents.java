@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
-import com.sonamorningstar.eternalartifacts.api.charm.TagReloadListener;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank;
@@ -11,13 +12,19 @@ import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
+import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -25,7 +32,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
@@ -39,6 +46,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -48,19 +56,9 @@ public class CommonModEvents {
     public static void registerCaps(RegisterCapabilitiesEvent event) {
         ModFluids.FLUIDS.forEachBucketEntry(holder -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), holder.get()));
 
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> {
-            int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
-            int capacity = (volumeLevel + 1) * 50000;
-            int transfer = (volumeLevel + 1) * 2500;
-            return new ModItemEnergyStorage(capacity, transfer, stack);
-        }, ModItems.BATTERY.get());
-
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> {
-            int volumeLevel = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
-            int capacity = (volumeLevel + 1) * 75000;
-            int transfer = (volumeLevel + 1) * 5000;
-            return new ModItemEnergyStorage(capacity, transfer, stack);
-        }, ModItems.PORTABLE_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,50000,2500), ModItems.BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,75000,15000), ModItems.PORTABLE_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,25000,5000), ModItems.LIGHTSABER.get());
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
@@ -137,6 +135,49 @@ public class CommonModEvents {
 
         event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
         event.put(ModEntities.CHARGED_SHEEP.get(), ChargedSheepEntity.createAttributes().build());
+    }
+
+    @SubscribeEvent
+    public static void registerCharmAttributes(RegisterCharmAttributesEvent event) {
+        event.register(
+            CharmAttributes.Builder.of(Items.BUCKET)
+            .addModifier(Attributes.ARMOR, getMod("Bucket Charm Armor", 2))
+            .addType(CharmType.HEAD).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModTags.Items.SHULKER_SHELL)
+            .addModifier(Attributes.ARMOR, getMod("Shulker Shell Charm Armor", 3))
+            .addType(CharmType.HEAD).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(Items.RABBIT_FOOT)
+            .addModifier(Attributes.LUCK, getMod("Rabbit Foot Charm Luck", 1))
+            .addType(CharmType.CHARM).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(Items.TURTLE_HELMET)
+            .addModifier(Attributes.ARMOR, getMod("Turtle Helmet Charm Armor", ((ArmorItem) Items.TURTLE_HELMET).getDefense()))
+            .addType(CharmType.HEAD).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.COMFY_SHOES)
+            .addModifier(NeoForgeMod.STEP_HEIGHT.value(), ComfyShoesItem.getStepHeight())
+            .addType(CharmType.FEET).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.ROBOTIC_GLOVE)
+            .addModifier(Attributes.ATTACK_DAMAGE, getMod("Robotic Glove Charm Attack Damage", 2))
+            .addModifier(Attributes.ATTACK_SPEED, getMod("Robotic Glove Charm Attack Speed", 0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL))
+            .addModifier(NeoForgeMod.BLOCK_REACH.value(), getMod("Robotic Glove Charm Block Reach", -1))
+            .addType(CharmType.HAND).build()
+        );
+    }
+
+    private static AttributeModifier getMod(String name, double amount) {
+        return getMod(name, amount, AttributeModifier.Operation.ADDITION);
+    }
+    private static AttributeModifier getMod(String name, double amount, AttributeModifier.Operation operation) {
+        return new AttributeModifier(UUID.randomUUID(), name, amount, operation);
     }
 
     @SubscribeEvent

@@ -6,9 +6,9 @@ import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.loot.function.KeepContentsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
-import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
@@ -26,9 +26,7 @@ import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunct
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
-import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -88,6 +86,8 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.DEMON_BLOCK.get());
         add(ModBlocks.ENERGY_DOCK.get(), createSinglePropConditionTable(ModBlocks.ENERGY_DOCK.get(), EnergyDockBlock.DOCK_PART, DockPart.CENTER));
         dropSelf(ModBlocks.SHOCK_ABSORBER.get());
+        dropSelf(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
+        dropSelf(ModBlocks.CHARCOAL_BLOCK.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -120,31 +120,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         add(ModBlocks.ANCIENT_CROP.get(), createCropDrops(ModBlocks.ANCIENT_CROP.get(), ModItems.ANCIENT_FRUIT.get(),
                 ModItems.ANCIENT_SEED.get(), ancientCropCondition));
 
-        add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)))
-                        .add(LootItem.lootTableItem(ModItems.SUGAR_CHARCOAL_DUST))
-                        .setRolls(UniformGenerator.between(3.0F, 6.0F))
-                )
-                .withPool(LootPool.lootPool()
-                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).invert())
-                        .add(LootItem.lootTableItem(ModBlocks.SUGAR_CHARCOAL_BLOCK))
-                        .setRolls(ConstantValue.exactly(1.0F))
-                )
-        );
-        add(ModBlocks.CHARCOAL_BLOCK.get(), LootTable.lootTable()
-                .withPool(LootPool.lootPool()
-                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)))
-                        .add(LootItem.lootTableItem(ModItems.CHARCOAL_DUST))
-                        .setRolls(UniformGenerator.between(3.0F, 6.0F))
-                )
-                .withPool(LootPool.lootPool()
-                        .when(MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).invert())
-                        .add(LootItem.lootTableItem(ModBlocks.CHARCOAL_BLOCK))
-                        .setRolls(ConstantValue.exactly(1.0F))
-                )
-        );
-
         add(ModBlocks.PUNJI_STICKS.get(), LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()
@@ -167,7 +142,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
             )
         );
 
-        ModMachines.MACHINES.getMachines().forEach(holder -> dropSelf(holder.getBlock()));
+        ModMachines.MACHINES.getMachines().forEach(holder -> dropSelfWithFunction(holder.getBlockHolder(), KeepContentsFunction.builder()));
         ModBlockFamilies.getAllFamilies().forEach(family -> {
             dropSelf(family.getBaseBlock());
             family.getVariants().values().forEach(this::dropSelf);
@@ -185,7 +160,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         );
     }
 
-    private void addLootPool(DeferredBlock<?> holder, LootPoolEntryContainer.Builder<?> builder) {
+    private void addLootPool(DeferredHolder<Block, ? extends Block> holder, LootPoolEntryContainer.Builder<?> builder) {
         add(holder.get(), LootTable.lootTable()
             .withPool(
                 LootPool.lootPool()
@@ -195,8 +170,8 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         );
     }
 
-    private void dropSelfWithFunction(DeferredBlock<?> holder, LootItemConditionalFunction.Builder<?> builder) {
-        addLootPool(holder, LootItem.lootTableItem(holder).apply(builder));
+    private void dropSelfWithFunction(DeferredHolder<Block, ? extends Block> holder, LootItemConditionalFunction.Builder<?> builder) {
+        addLootPool(holder, LootItem.lootTableItem(holder.get().asItem()).apply(builder));
     }
 
     @Override

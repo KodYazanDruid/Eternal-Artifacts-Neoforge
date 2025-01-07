@@ -218,6 +218,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 new FluidStack(ModFluids.PINK_SLIME.getFluid(), 10),
                 new FluidStack(ModFluids.NOUS.getFluid(), 15)
         ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.WITHER, NonNullList.of(
+                FluidStack.EMPTY,
+                new FluidStack(ModFluids.PINK_SLIME.getFluid(), 25),
+                new FluidStack(ModFluids.NOUS.getFluid(), 50)
+        ));
         //endregion
         createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());

@@ -1,0 +1,16 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity_ingredient": {
+    "id": "minecraft:wither"
+  },
+  "result_fluid_list": [
+    {
+      "Amount": 25,
+      "FluidName": "eternalartifacts:pink_slime"
+    },
+    {
+      "Amount": 50,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

@@ -3,14 +3,14 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "eternalartifacts:keep_contents"
+            }
+          ],
           "name": "eternalartifacts:fluid_infuser"
         }
       ],

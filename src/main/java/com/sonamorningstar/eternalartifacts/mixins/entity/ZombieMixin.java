@@ -14,10 +14,7 @@ public class ZombieMixin {
 
     @WrapOperation(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/Zombie;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack aiStep(Zombie instance, EquipmentSlot equipmentSlot, Operation<ItemStack> original) {
-        /*ItemStack shell = MixinHelper.getShulkerShell(instance);
-        ItemStack turtleHelmet = MixinHelper.getTurtleHelmet(instance);*/
         ItemStack headEquipment = MixinHelper.getHeadEquipment(instance);
-        //return shell.isEmpty() ? turtleHelmet.isEmpty() ? original.call(instance, equipmentSlot) : turtleHelmet : shell;
         return headEquipment.isEmpty() ? original.call(instance, equipmentSlot) : headEquipment;
     }
 }

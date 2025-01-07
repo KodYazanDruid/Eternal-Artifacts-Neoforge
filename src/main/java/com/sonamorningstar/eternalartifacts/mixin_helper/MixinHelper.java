@@ -18,12 +18,6 @@ public class MixinHelper {
     public static ItemStack getPiglinPacifier(LivingEntity living) {
         return PlayerCharmManager.findCharm(living, st -> st.makesPiglinsNeutral(living));
     }
-    public static ItemStack getShulkerShell(LivingEntity living) {
-        return PlayerCharmManager.findCharm(living, st -> st.is(ModTags.Items.SHULKER_SHELL));
-    }
-    public static ItemStack getTurtleHelmet(LivingEntity living) {
-        return PlayerCharmManager.findCharm(living, Items.TURTLE_HELMET);
-    }
     public static ItemStack getHeadEquipment(LivingEntity living) {
         //return PlayerCharmManager.findCharm(living, st -> LivingEntity.getEquipmentSlotForItem(st) == EquipmentSlot.HEAD);
         return PlayerCharmManager.findCharm(living, CharmType.HEAD);

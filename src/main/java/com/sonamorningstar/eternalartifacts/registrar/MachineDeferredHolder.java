@@ -4,12 +4,12 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @RequiredArgsConstructor
-public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends BlockItem> implements ItemLike {
+public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem> implements ItemLike {
     private final DeferredHolder<MenuType<?>, MenuType<M>> menu;
     private final DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntity;
     private final DeferredHolder<Block, MB> block;
@@ -48,6 +48,7 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Mac
         return getBlockHolder().getId();
     }
 
+    //TODO: Complete item capabilities.
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
             if (be instanceof SidedTransferMachineBlockEntity<?> sided) {
@@ -62,6 +63,12 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Mac
             } else return be.tank;
         });
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), (be, ctx) -> be.energy != null ? be.energy : null);
+        /*event.registerItem(Capabilities.ItemHandler.ITEM, (st, ctx)-> {
+            if (st.getItem() == getItem()) return CapabilityHelper.reg(st, ctx);
+            else return null;
+        }, getItem());*/
+        event.registerItem(Capabilities.FluidHandler.ITEM, (st, ctx) -> CapabilityHelper.regItemFluidCap(st,16000), getItem());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (st, ctx) -> CapabilityHelper.regItemEnergyCap(st,50000,2500), getItem());
     }
 
     @Override

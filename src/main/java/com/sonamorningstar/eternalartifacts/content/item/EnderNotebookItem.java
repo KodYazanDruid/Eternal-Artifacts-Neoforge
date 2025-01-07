@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Warp;
-import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.OpenItemStackScreenToClient;
@@ -17,10 +16,11 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class EnderNotebookItem extends VolumeHolderItem {
+public class EnderNotebookItem extends Item {
     public EnderNotebookItem(Properties properties) {
         super(properties);
     }

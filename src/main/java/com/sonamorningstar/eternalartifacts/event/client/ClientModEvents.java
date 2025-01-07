@@ -2,11 +2,9 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
-import com.sonamorningstar.eternalartifacts.client.gui.overlay.ClockOverlay;
-import com.sonamorningstar.eternalartifacts.client.gui.overlay.CompassOverlay;
-import com.sonamorningstar.eternalartifacts.client.gui.overlay.MapOverlay;
-import com.sonamorningstar.eternalartifacts.client.gui.overlay.RecoveryCompassOverlay;
+import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
+import com.sonamorningstar.eternalartifacts.client.renderer.entity.BucketLayer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ShulkerShellLayer;
 import com.sonamorningstar.eternalartifacts.client.renderer.item.PortableBatteryLayer;
@@ -72,6 +70,7 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void registerUnrenderableOverrides(RegisterUnrenderableOverridesEvent event) {
         event.register(EquipmentSlot.HEAD, ModTags.Items.SHULKER_SHELL);
+        event.register(EquipmentSlot.HEAD, Items.BUCKET);
     }
 
     @SubscribeEvent
@@ -110,6 +109,7 @@ public class ClientModEvents {
         event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "recovery_compass_overlay"), new RecoveryCompassOverlay());
         event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "clock_overlay"), new ClockOverlay());
         event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "map_overlay"), new MapOverlay());
+        event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "hammering_recipe_overlay"), new HammeringRecipeOverlay());
     }
 
     @SubscribeEvent
@@ -122,6 +122,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.CHARGED_SHEEP_SWIRL, () -> ChargedSheepRenderer.createFurSwirlLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(ModModelLayers.MISSILE_LAYER, MissileModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.PORTABLE_BATTERY_LAYER, PortableBatteryModel::createLayer);
+        event.registerLayerDefinition(ModModelLayers.BUCKET_LAYER, BucketHeadModel::createLayer);
 
         //event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
@@ -166,16 +167,20 @@ public class ClientModEvents {
         });
     }
 
+    @SuppressWarnings("unchecked")
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachLayers(LivingEntityRenderer<T, M> renderer, EntityRendererProvider.Context ctx) {
         renderer.addLayer(new HolyDaggerLayer<>(renderer));
         renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
-        renderer.addLayer(new PortableBatteryLayer<>(renderer, ctx.getModelSet()));
 
         if (renderer instanceof HumanoidMobRenderer<?, ?> hmr) {
             renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(hmr, ctx));
+            renderer.addLayer((RenderLayer<T, M>) new BucketLayer<>(hmr, ctx));
+            renderer.addLayer((RenderLayer<T, M>) new PortableBatteryLayer<>(hmr, ctx));
         }
         if (renderer instanceof PlayerRenderer pr) {
             renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(pr, ctx));
+            renderer.addLayer((RenderLayer<T, M>) new BucketLayer<>(pr, ctx));
+            renderer.addLayer((RenderLayer<T, M>) new PortableBatteryLayer<>(pr, ctx));
         }
     }
 

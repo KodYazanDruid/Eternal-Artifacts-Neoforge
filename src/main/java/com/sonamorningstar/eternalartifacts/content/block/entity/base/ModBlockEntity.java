@@ -56,7 +56,8 @@ public class ModBlockEntity extends BlockEntity {
 
     public void sendUpdate(){
         setChanged();
-        if(level != null && !isRemoved() && level.hasChunkAt(worldPosition)) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+        if(level != null && !isRemoved() && level.hasChunkAt(worldPosition))
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
 
     protected ModFluidStorage createDefaultTank() {return createBasicTank(16000);}

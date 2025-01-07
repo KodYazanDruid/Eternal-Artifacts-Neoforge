@@ -2,8 +2,8 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.INutritionHandler;
-import com.sonamorningstar.eternalartifacts.content.item.base.VolumeHolderItem;
 import com.sonamorningstar.eternalartifacts.core.ModCapabilities;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -28,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 @Getter
-public class FeedingCanister extends VolumeHolderItem {
+public class FeedingCanister extends Item {
     private final FoodProperties.Builder foodPropertiesBuilder = new FoodProperties.Builder();
 
     public FeedingCanister(Properties props) {
@@ -41,23 +41,24 @@ public class FeedingCanister extends VolumeHolderItem {
         if (nutrition != null && entity instanceof Player player) {
             FoodData foodData = player.getFoodData();
             int missingNut = 20 - foodData.getFoodLevel();
-            if (missingNut <= 0) return stack;
-            float missingSat = Math.max(0, 20 - foodData.getSaturationLevel());
-            eat(level, player, foodData, stack);
-            float netSat = Math.min(missingSat, foodData.getFoodLevel());
-            nutrition.drainNutrition(missingNut, false);
-            nutrition.drainSaturation(netSat, false);
+            float missingSat = 20F - foodData.getSaturationLevel();
+            if (missingNut <= 0 || missingSat <= 0) return stack;
+            float limitedSat = Math.min(missingSat, missingNut);
+            int drainedNut = nutrition.drainNutrition(missingNut, false);
+            float drainedSat = nutrition.drainSaturation(limitedSat, false);
+            eat(level, player, foodData, drainedNut, drainedSat / (drainedNut * 2), stack);
         }
         return stack;
     }
 
-    private void eat(Level level, Player player, FoodData data, ItemStack food) {
+    private void eat(Level level, Player player, FoodData data, int nutrition, float satMod, ItemStack food) {
         BlockPos pos = player.blockPosition();
 
-        data.eat(food.getItem(), food, player);
+        data.eat(nutrition, satMod);
         player.awardStat(Stats.ITEM_USED.get(food.getItem()));
         level.playSound(
-                null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, level.random.nextFloat() * 0.1F + 0.9F
+            null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS,
+            0.5F, level.random.nextFloat() * 0.1F + 0.9F
         );
         if (player instanceof ServerPlayer serverPlayer) CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, food);
 
@@ -104,8 +105,8 @@ public class FeedingCanister extends VolumeHolderItem {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         INutritionHandler nutrition = stack.getCapability(ModCapabilities.NutritionStorage.ITEM);
         if (nutrition != null) {
-            tooltipComponents.add(Component.literal("Stored Nutrition: ").append(nutrition.getNutritionAmount() + " / " + nutrition.getMaxNutritionAmount()).withStyle(ChatFormatting.GRAY));
-            tooltipComponents.add(Component.literal("Stored Saturation: ").append(String.format("%.1f", nutrition.getSaturationAmount())+ " / " + nutrition.getMaxSaturationAmount()).withStyle(ChatFormatting.GRAY));
+            tooltipComponents.add(ModConstants.TOOLTIP.withSuffixTranslatable("nutrition").append(": ").append(nutrition.getNutritionAmount() + " / " + nutrition.getMaxNutritionAmount()).withStyle(ChatFormatting.YELLOW));
+            tooltipComponents.add(ModConstants.TOOLTIP.withSuffixTranslatable("saturation").append(": ").append(String.format("%.1f", nutrition.getSaturationAmount())+ " / " + nutrition.getMaxSaturationAmount()).withStyle(ChatFormatting.YELLOW));
         }
     }
 }

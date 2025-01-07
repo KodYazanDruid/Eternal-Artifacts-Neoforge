@@ -1,4 +1,4 @@
-// 1.20.4	2024-12-22T21:38:55.6316714	Item Models: eternalartifacts
+// 1.20.4	2025-01-04T17:38:57.195747	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
@@ -151,6 +151,7 @@ a82a650b3c02ef68ab64fd1e4a4623566f81f23a assets/eternalartifacts/models/item/pla
 9db8300e78202cce2f106f98cbc979bb3ceeed63 assets/eternalartifacts/models/item/raw_marin.json
 7ac4dd29aa11ab0803cee9120e83cf0c4e56e833 assets/eternalartifacts/models/item/red_shulker_shell.json
 62a008a8d95c366702b9e51a4e1d4c85fd09a5ff assets/eternalartifacts/models/item/resonator.json
+bc0cab50a961323ec25e74842fa0a76be13f9cfa assets/eternalartifacts/models/item/robotic_glove.json
 08a2d746a6f53b410d3c0fa6c4895e19929e07a6 assets/eternalartifacts/models/item/rosy_froglight.json
 0c4ae6a001525a45dcd216ec8a864932fce178f1 assets/eternalartifacts/models/item/shulker_boots.json
 18007d9bf8f4ded6e7985329b61f1bd6b968661a assets/eternalartifacts/models/item/shulker_bullets_tome.json

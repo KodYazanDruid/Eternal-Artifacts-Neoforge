@@ -30,8 +30,8 @@ public class PortableBatteryItem extends BatteryItem implements Equipable {
     }
 
     public void chargeSlots(Player player, ItemStack battery) {
-        if (!(battery.getItem() instanceof PortableBatteryItem pbi)) return;
-        if (!pbi.isCharging(battery)) return;
+        if (!(battery.getItem() instanceof PortableBatteryItem) ||
+                !isCharging(battery) || player.level().isClientSide()) return;
         loop: for (SlotType slotType : SlotType.values()) {
             if (canCharge(battery, slotType)) {
                 int max = Integer.MAX_VALUE;

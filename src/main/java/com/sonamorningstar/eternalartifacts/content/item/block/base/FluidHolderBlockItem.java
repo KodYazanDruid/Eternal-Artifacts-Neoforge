@@ -34,7 +34,7 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
         IFluidHandlerItem fhi = stack.getCapability(Capabilities.FluidHandler.ITEM);
         FluidStack fs = getFluidStack(stack);
         if(!Objects.equals(fluidName, Component.empty()) && fhi != null)
-            tooltip.add(fluidName.copy().append(" ").append(String.valueOf(fs.getAmount())).append(" / ").append(String.valueOf(fhi.getTankCapacity(0))));
+            tooltip.add(fluidName.copy().append(": ").append(String.valueOf(fs.getAmount())).append(" / ").append(String.valueOf(fhi.getTankCapacity(0))));
         super.appendHoverText(stack, level, tooltip, flag);
     }
 

@@ -1,12 +1,14 @@
 package com.sonamorningstar.eternalartifacts.client.resources.model;
 
 import com.google.common.collect.ImmutableList;
+import lombok.Getter;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
+@Getter
 public class PortableBatteryModel<L extends LivingEntity> extends HumanoidModel<L> {
     private final ModelPart battery;
 
@@ -21,9 +23,8 @@ public class PortableBatteryModel<L extends LivingEntity> extends HumanoidModel<
         part.addOrReplaceChild(
                 "battery",
                 CubeListBuilder.create().texOffs(0, 0)
-                        .addBox(0.0F, 0.0F, 0.0F, 12.0F, 22.0F, 12.0F, CubeDeformation.NONE),
+                        .addBox(-3.0F, 1.0F, 2.0F, 6.0F, 11.0F, 6.0F, CubeDeformation.NONE),
                 PartPose.ZERO
-                //PartPose.offset(5.0F, 12.0F, 10.0F)
         );
         return LayerDefinition.create(mesh, 32, 32);
     }
