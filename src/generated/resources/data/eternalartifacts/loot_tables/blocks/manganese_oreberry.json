@@ -10,6 +10,9 @@
           "properties": {
             "age": "3"
           }
+        },
+        {
+          "condition": "minecraft:survives_explosion"
         }
       ],
       "entries": [
@@ -22,6 +25,11 @@
     },
     {
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",

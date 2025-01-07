@@ -24,6 +24,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -154,9 +155,12 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
                 .withPool(LootPool.lootPool()
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(holder.get())
                             .setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(OreBerryBlock.AGE, OreBerryBlock.MAX_AGE)))
+                    .when(ExplosionCondition.survivesExplosion())
                     .add(LootTableReference.lootTableReference(berryLoc)))
                 .withPool(LootPool.lootPool()
-                    .add(LootItem.lootTableItem(holder)))
+                    .add(LootItem.lootTableItem(holder))
+                    .when(ExplosionCondition.survivesExplosion())
+                )
         );
     }
 
@@ -165,6 +169,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
             .withPool(
                 LootPool.lootPool()
                     .setRolls(ConstantValue.exactly(1.0F))
+                    .when(ExplosionCondition.survivesExplosion())
                     .add(builder)
             )
         );
