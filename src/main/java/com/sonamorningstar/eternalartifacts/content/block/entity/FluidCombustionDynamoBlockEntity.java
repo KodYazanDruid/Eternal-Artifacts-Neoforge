@@ -72,6 +72,18 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
         tag.putBoolean("IsWorking", isWorking);
     }
 
+    @Override
+    public void saveContents(CompoundTag additionalTag) {
+        super.saveContents(additionalTag);
+        if(cache != null) cache.writeToNbt(additionalTag);
+    }
+
+    @Override
+    public void loadContents(CompoundTag additionalTag) {
+        super.loadContents(additionalTag);
+        cache = DynamoProcessCache.readFromNbt(additionalTag, energy, this).orElse(null);
+    }
+
     public float getAnimationLerp(float tick) {
         return isWorking ? Mth.lerp((1.0F - Mth.cos((tick + tickCounter) * 0.25F)) / 2F, 4.0F, 9.0F) : 4.0F;
     }

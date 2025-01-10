@@ -156,6 +156,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.SHULKER_BULLETS_TOME.get());
         basicItem(ModItems.METEORITE_TOME.get());
         basicItem(ModItems.ROBOTIC_GLOVE.get());
+        basicItem(ModItems.PORTABLE_BATTERY.get());
 
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

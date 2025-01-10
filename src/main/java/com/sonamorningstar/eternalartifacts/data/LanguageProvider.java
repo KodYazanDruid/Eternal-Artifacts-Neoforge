@@ -350,6 +350,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.OVERLAY.withSuffix("hammering_recipe"), "Drops:");
                 add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Nutrition");
                 add(ModConstants.TOOLTIP.withSuffix("saturation"), "Saturation");
+                add(ModConstants.TOOLTIP.withSuffix("tank"), "%d. Tank");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -764,6 +765,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.OVERLAY.withSuffix("hammering_recipe"), "Düşürür:");
                 add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Besin");
                 add(ModConstants.TOOLTIP.withSuffix("saturation"), "Doygunluk");
+                add(ModConstants.TOOLTIP.withSuffix("tank"), "%d. Tank");
                 //endregion
             }
         }

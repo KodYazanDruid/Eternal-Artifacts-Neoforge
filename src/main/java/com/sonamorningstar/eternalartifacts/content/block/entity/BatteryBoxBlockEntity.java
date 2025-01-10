@@ -44,7 +44,7 @@ public class BatteryBoxBlockEntity extends SidedTransferMachineBlockEntity<Batte
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInputEnergy(lvl, pos, energy);
-        performAutoOutputEnergy(lvl, pos, energy);
+        performAutoInputEnergy(lvl, pos);
+        performAutoOutputEnergy(lvl, pos);
     }
 }

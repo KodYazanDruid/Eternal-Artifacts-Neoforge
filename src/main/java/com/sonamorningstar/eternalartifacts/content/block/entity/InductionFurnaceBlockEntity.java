@@ -51,6 +51,19 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         setMaxProgressForHeat();
     }
 
+    @Override
+    public void saveContents(CompoundTag additionalTag) {
+        super.saveContents(additionalTag);
+        additionalTag.put("HeatValue", heat.serializeNBT());
+    }
+
+    @Override
+    public void loadContents(CompoundTag additionalTag) {
+        super.loadContents(additionalTag);
+        heat.deserializeNBT(additionalTag.getCompound("HeatValue"));
+        setMaxProgressForHeat();
+    }
+
     public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
 
     @Override
@@ -98,8 +111,8 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInputItems(lvl, pos, inventory);
-        performAutoOutputItems(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
+        performAutoInputItems(lvl, pos);
+        performAutoOutputItems(lvl, pos);
 
         Recipe<Container> recipe0 = getValidRecipe(0);
         Recipe<Container> recipe1 = getValidRecipe(1);
@@ -140,10 +153,10 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
             ItemStack remainder0 = ItemStack.EMPTY;
             ItemStack remainder1 = ItemStack.EMPTY;
             if (recipe0 != null) {
-                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0.copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
+                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0.copy(), false, outputSlots).getFirst();
             }
             if (recipe1 != null) {
-                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1.copy(), false, outputSlots.toArray(Integer[]::new)).getFirst();
+                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1.copy(), false, outputSlots).getFirst();
             }
             if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
             if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);

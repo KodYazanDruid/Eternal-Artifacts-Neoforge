@@ -1,5 +1,8 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
+import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.MachineItemFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.MachineItemItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
@@ -63,12 +66,10 @@ public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Mac
             } else return be.tank;
         });
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), (be, ctx) -> be.energy != null ? be.energy : null);
-        /*event.registerItem(Capabilities.ItemHandler.ITEM, (st, ctx)-> {
-            if (st.getItem() == getItem()) return CapabilityHelper.reg(st, ctx);
-            else return null;
-        }, getItem());*/
-        event.registerItem(Capabilities.FluidHandler.ITEM, (st, ctx) -> CapabilityHelper.regItemFluidCap(st,16000), getItem());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (st, ctx) -> CapabilityHelper.regItemEnergyCap(st,50000,2500), getItem());
+
+        event.registerItem(Capabilities.ItemHandler.ITEM, (st, ctx)-> new MachineItemItemStorage(st), getItem());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (st, ctx) -> new MachineItemFluidStorage(st), getItem());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (st, ctx) -> new MachineItemEnergyStorage(st), getItem());
     }
 
     @Override

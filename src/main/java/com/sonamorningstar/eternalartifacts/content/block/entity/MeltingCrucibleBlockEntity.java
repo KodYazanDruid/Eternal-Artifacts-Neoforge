@@ -31,7 +31,7 @@ public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        performAutoOutputFluids(lvl, pos, tank);
+        performAutoOutputFluids(lvl, pos);
         MeltingRecipe recipe = recipeCache.getRecipe();
         if (recipe == null) {
             progress = 0;

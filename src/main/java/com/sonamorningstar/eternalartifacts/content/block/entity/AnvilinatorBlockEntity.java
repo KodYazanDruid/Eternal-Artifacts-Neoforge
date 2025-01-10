@@ -1,40 +1,23 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
+import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Containers;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.Lazy;
@@ -51,48 +34,51 @@ import oshi.util.Util;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
-@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider {
+public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<AnvilinatorMenu> {
+    @Getter
     public String name = "";
     public boolean enableNaming = false;
-    protected final ContainerData DATA;
-    private int progress = 0;
-    private int maxProgress = 100;
-    private int consumePerTick = 10;
     private int cost = 0;
-    private Lazy<FakePlayer> fakePlayer = Lazy.of(() -> FakePlayerHelper.getFakePlayer(level));
+    private final Lazy<FakePlayer> fakePlayer = Lazy.of(() -> FakePlayerHelper.getFakePlayer(level));
     private AnvilUpdateEvent anvilUpdateEvent;
 
+    /*INPUT_SLOT = 0;
+    SECONDARY_SLOT = 1;
+    OUTPUT_SLOT = 2;
+    FLUID_SLOT = 3;*/
+
     public AnvilinatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.ANVILINATOR.get(), pPos, pBlockState);
-        this.DATA = new ContainerData() {
+        super(ModBlockEntities.ANVILINATOR.get(), pPos, pBlockState, AnvilinatorMenu::new);
+        setEnergy(createDefaultEnergy());
+        setTank(createBasicTank(64000, fs-> fs.is(ModTags.Fluids.EXPERIENCE), true, true, Runnables.doNothing()));
+        outputSlots.add(2);
+        setInventory(new ModItemStorage(4) {
             @Override
-            public int get(int pIndex) {
-                return switch (pIndex) {
-                    case 0 -> AnvilinatorBlockEntity.this.progress;
-                    case 1 -> AnvilinatorBlockEntity.this.maxProgress;
-                    default -> 0;
-                };
+            protected void onContentsChanged(int slot) {
+                if(slot != 3 && !outputSlots.contains(slot)) progress = 0;
+                if(slot == 0 && this.getStackInSlot(0).isEmpty()) progress = 0;
+                anvilUpdateEvent = new AnvilUpdateEvent(this.getStackInSlot(0), this.getStackInSlot(1), name, cost, fakePlayer.get());
+                AnvilinatorBlockEntity.this.sendUpdate();
             }
             @Override
-            public void set(int pIndex, int pValue) {
-                switch (pIndex) {
-                    case 0 -> AnvilinatorBlockEntity.this.progress = pValue;
-                    case 1 -> AnvilinatorBlockEntity.this.maxProgress = pValue;
+            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+                switch (slot) {
+                    case 0, 1: return true;
+                    case 2: return false;
+                    case 3 :
+                        IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack).orElse(null);
+                        if(fh == null) return false;
+                        else {
+                            FluidStack fluidStack = fh.getFluidInTank(0);
+                            return !fluidStack.isEmpty() && fh.isFluidValid(0, fluidStack);
+                        }
+                    default:
+                        return super.isItemValid(slot, stack);
                 }
             }
-            @Override
-            public int getCount() {
-                return 2;
-            }
-        };
+        });
     }
 
-    public String getName() {
-        return this.name;
-    }
     public void setName(String name) {
         if(!name.equals(this.name)) {
             this.name = name;
@@ -113,157 +99,30 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
     @Override
     public void onLoad() {
         super.onLoad();
-        anvilUpdateEvent = new AnvilUpdateEvent(ITEM_HANDLER.getStackInSlot(INPUT_SLOT), ITEM_HANDLER.getStackInSlot(SECONDARY_SLOT), name, (int) cost, fakePlayer.get());
-    }
-
-    @SubscribeEvent
-    private static void registerCapability(RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(
-                Capabilities.ItemHandler.BLOCK,
-                ModBlockEntities.ANVILINATOR.get(),
-                (be, context) -> context != null ? new WrappedItemStorage(be.ITEM_HANDLER, i-> i == OUTPUT_SLOT, (i, s) -> i != OUTPUT_SLOT) : be.ITEM_HANDLER);
-
-        event.registerBlockEntity(
-                Capabilities.EnergyStorage.BLOCK,
-                ModBlockEntities.ANVILINATOR.get(),
-                (be, context) -> be.ENERGY_HANDLER);
-
-        event.registerBlockEntity(
-                Capabilities.FluidHandler.BLOCK,
-                ModBlockEntities.ANVILINATOR.get(),
-                (be, context) -> be.FLUID_TANK);
-    }
-
-    private static final int INPUT_SLOT = 0;
-    private static final int SECONDARY_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
-    private static final int FLUID_SLOT = 3;
-    private final ModItemStorage ITEM_HANDLER = new ModItemStorage(4) {
-        @Override
-        protected void onContentsChanged(int slot) {
-            if(slot != FLUID_SLOT && slot != OUTPUT_SLOT) progress = 0;
-            if(slot == INPUT_SLOT && ITEM_HANDLER.getStackInSlot(INPUT_SLOT).isEmpty()) progress = 0;
-            anvilUpdateEvent = new AnvilUpdateEvent(ITEM_HANDLER.getStackInSlot(INPUT_SLOT), ITEM_HANDLER.getStackInSlot(SECONDARY_SLOT), name, cost, fakePlayer.get());
-            AnvilinatorBlockEntity.this.sendUpdate();
-        }
-        @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-            switch (slot) {
-                case 0, 1: return true;
-                case 2: return false;
-                case 3 :
-                    IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack).orElse(null);
-                    if(fh == null) return false;
-                    else {
-                        FluidStack fluidStack = fh.getFluidInTank(0);
-                        return !fluidStack.isEmpty() && fh.isFluidValid(0, fluidStack);
-                    }
-                default:
-                    return super.isItemValid(slot, stack);
-            }
-        }
-    };
-
-    public final ModEnergyStorage ENERGY_HANDLER = new ModEnergyStorage(50000, 2500) {
-        @Override
-        public void onEnergyChanged() { AnvilinatorBlockEntity.this.sendUpdate(); }
-
-        @Override
-        public boolean canExtract() { return false; }
-    };
-
-    private final ModFluidStorage FLUID_TANK = new ModFluidStorage(64000) {
-        @Override
-        protected void onContentsChanged() {
-            AnvilinatorBlockEntity.this.sendUpdate();
-        }
-        @Override
-        public boolean isFluidValid(FluidStack stack) {
-            return stack.getFluid().is(ModTags.Fluids.EXPERIENCE);
-        }
-
-        @Override
-        public FluidStack drain(int maxDrain, FluidAction action) {
-            return FluidStack.EMPTY;
-        }
-    };
-
-    public void drops() {
-        SimpleContainer inventory = new SimpleContainer(ITEM_HANDLER.getSlots());
-        for(int i = 0; i < ITEM_HANDLER.getSlots(); i++) {
-            inventory.setItem(i, ITEM_HANDLER.getStackInSlot(i));
-        }
-
-        Containers.dropContents(this.level, this.worldPosition, inventory);
+        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, cost, fakePlayer.get());
     }
 
     @Override
-    public Component getDisplayName() {
-        return Component.translatable(ModBlocks.ANVILINATOR.get().getDescriptionId());
-    }
-
-    @Nullable
-    @Override
-    public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
-        return new AnvilinatorMenu(pContainerId, pPlayerInventory, this, this.DATA);
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        enableNaming = tag.getBoolean("EnableNaming");
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        CompoundTag tag = super.getUpdateTag();
-        saveAdditional(tag);
-        return tag;
-    }
-
-    @Nullable
-    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        ENERGY_HANDLER.deserializeNBT(pTag.get("Energy"));
-        ITEM_HANDLER.deserializeNBT(pTag.getCompound("Inventory"));
-        FLUID_TANK.deserializeNBT(pTag);
-        progress = pTag.getInt("anvilator_progress");
-        enableNaming = pTag.getBoolean("enable_naming");
-        name = pTag.getString("name");
-    }
-
-    @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
-        pTag.put("Energy", ENERGY_HANDLER.serializeNBT());
-        pTag.put("Inventory", ITEM_HANDLER.serializeNBT());
-        //FLUID_TANK.serializeNBT(pTag);
-        pTag.put("Fluid", FLUID_TANK.serializeNBT());
-        pTag.putInt("anvilator_progress", progress);
-        pTag.putBoolean("enable_naming", enableNaming);
-        pTag.putString("name", name);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putBoolean("EnableNaming", enableNaming);
     }
 
     //This is the where magic happens.
-    public void tick(Level pLevel, BlockPos pPos, BlockState pState) {
-        ItemStack input = ITEM_HANDLER.getStackInSlot(INPUT_SLOT);
-        ItemStack secondary = ITEM_HANDLER.getStackInSlot(SECONDARY_SLOT);
-
-        //Taking fluid from the bucket.
-        ItemStack stack = ITEM_HANDLER.getStackInSlot(FLUID_SLOT);
-        if(!stack.isEmpty() && FLUID_TANK.getFluidAmount() < FLUID_TANK.getCapacity(0)) {
-            IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            if(itemHandler != null && FLUID_TANK.isFluidValid(itemHandler.getFluidInTank(0)) && FLUID_TANK.getFluid(0).getFluid() == itemHandler.getFluidInTank(0).getFluid()) {
-                int amountToDrain = FLUID_TANK.getCapacity(0) - FLUID_TANK.getFluidAmount();
-                int amount = itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.SIMULATE).getAmount();
-                if (amount > 0) {
-                    FLUID_TANK.fill(itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                }
-                if (amount <= amountToDrain) {
-                    ITEM_HANDLER.setStackInSlot(FLUID_SLOT, itemHandler.getContainer());
-                }
-            }
-        }
+    @Override
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        ItemStack input = inventory.getStackInSlot(0);
+        ItemStack secondary = inventory.getStackInSlot(1);
+        performAutoOutputItems(lvl, pos);
+        performAutoInputFluids(lvl, pos);
+        performAutoOutputItems(lvl, pos);
+        fillTankFromSlot(inventory, tank, 3);
 
         //Check if there is an event first.
         if(!onAnvilatorChance(anvilUpdateEvent)) return;
@@ -334,10 +193,10 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private boolean onAnvilatorChance(AnvilUpdateEvent event) {
-        ItemStack input = ITEM_HANDLER.getStackInSlot(INPUT_SLOT);
+        ItemStack input = inventory.getStackInSlot(0);
         if(input.isEmpty()) return true;
-        ItemStack secondary = ITEM_HANDLER.getStackInSlot(SECONDARY_SLOT);
-        ItemStack output = ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT);
+        ItemStack secondary = inventory.getStackInSlot(1);
+        ItemStack output = inventory.getStackInSlot(2);
         if(NeoForge.EVENT_BUS.post(event).isCanceled()) return false;
         ItemStack result = event.getOutput();
         if(result.isEmpty()) return true;
@@ -345,16 +204,16 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
         double reelCost = ExperienceHelper.totalXpForLevel(event.getCost());
         int fluidAmount = (int) (reelCost * 20);
         if(output.getCount() + result.getCount() >= 64) return true;
-        if((output.isEmpty() || ItemHandlerHelper.canItemStacksStack(output, result)) && FLUID_TANK.getFluidAmount() >= fluidAmount) {
+        if((output.isEmpty() || ItemHandlerHelper.canItemStacksStack(output, result)) && tank.getFluidAmount(0) >= fluidAmount) {
             progress++;
-            ENERGY_HANDLER.extractEnergyForced(consumePerTick, false);
+            energy.extractEnergyForced(energyPerTick, false);
             setChanged();
             if (progress >= maxProgress) {
                 input.shrink(1);
                 secondary.shrink(1);
-                FLUID_TANK.drainForced(fluidAmount, IFluidHandler.FluidAction.EXECUTE);
+                tank.drainForced(fluidAmount, IFluidHandler.FluidAction.EXECUTE);
                 //result.setCount(result.getCount() + output.getCount());
-                ITEM_HANDLER.insertItemForced(OUTPUT_SLOT, result, false);
+                inventory.insertItemForced(2, result, false);
                 progress = 0;
                 return false;
             }
@@ -365,11 +224,11 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
     }
 
     private void progressAndCraft(ItemStack input, @Nullable ItemStack secondary, ItemStack result){
-        ItemStack output = ITEM_HANDLER.getStackInSlot(OUTPUT_SLOT);
+        ItemStack output = inventory.getStackInSlot(2);
         if(output.getCount() + result.getCount() >= 64) return;
         if(result.isEmpty() || ( !output.isEmpty() && !ItemHandlerHelper.canItemStacksStack(output, result))) return;
         progress++;
-        ENERGY_HANDLER.extractEnergyForced(consumePerTick, false);
+        energy.extractEnergyForced(energyPerTick, false);
         setChanged();
         if(progress >= maxProgress) {
             input.shrink(1);
@@ -384,29 +243,8 @@ public class AnvilinatorBlockEntity extends BlockEntity implements MenuProvider 
             if(secondary != null) secondary.shrink(1);
             //TODO: Calculate from xp cost instead of level.
             //FLUID_TANK.drainForced( cost * 20, IFluidHandler.FluidAction.EXECUTE);
-            ITEM_HANDLER.insertItemForced(OUTPUT_SLOT, result, false);
+            inventory.insertItemForced(2, result, false);
             progress = 0;
         }
-    }
-
-    private void sendUpdate(){
-        setChanged();
-        if(this.level != null) this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-    }
-
-    public FluidStack getFluidStack() {
-        return FLUID_TANK.getFluid(0);
-    }
-
-    public IFluidHandler getFluidHandler() {
-        return this.FLUID_TANK;
-    }
-
-    public int getStoredEnergy() {
-        return ENERGY_HANDLER.getEnergyStored();
-    }
-
-    public int getEnergyCapacity() {
-        return ENERGY_HANDLER.getMaxEnergyStored();
     }
 }

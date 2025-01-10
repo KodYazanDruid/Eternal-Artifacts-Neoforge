@@ -71,10 +71,10 @@ public class ElectricFurnaceBlockEntity extends GenericMachineBlockEntity {
                 .initOutputSlots(outputSlots)
                 .createCustomCondition(result::isEmpty)
                 .tryInsertForced(result)
-                .tryExtractItemForced(cost);
+                .tryExtractForced(cost, 0);
 
         progress(condition::getResult, () -> {
-            inventory.insertItemForced(outputSlots.get(0), result, false);
+            inventory.insertItemForced(1, result, false);
             inventory.extractItem(0, cost, false);
         }, energy);
     }

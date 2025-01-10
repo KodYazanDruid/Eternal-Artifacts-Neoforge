@@ -88,7 +88,7 @@ public class JarBlockItem extends FluidHolderBlockItem {
                 }
             }
         } else {
-            FluidStack fluidStack = getFluidStack(itemstack);
+            FluidStack fluidStack = getFluidStack(itemstack, 0);
             event = new JarDrinkEvent(fluidStack, player);
             if(isOpen(itemstack)) {
                 if(NeoForge.EVENT_BUS.post(event).isCanceled()) return super.use(level, player, hand);

@@ -5,11 +5,13 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -33,6 +35,7 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -59,14 +62,14 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         if(state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if(blockEntity instanceof MachineBlockEntity<?> machine) {
-                IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
+                /*IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
                 if(inventory != null) {
                     SimpleContainer container = new SimpleContainer(inventory.getSlots());
                     for (int i = 0; i < inventory.getSlots(); i++) {
                         container.setItem(i, inventory.getStackInSlot(i));
                     }
                     Containers.dropContents(level, pos.immutable(), container);
-                }
+                }*/
                 machine.invalidateCapabilities();
             }
         }
@@ -138,6 +141,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         Optional<IFluidHandlerItem> optionalTankStack = FluidUtil.getFluidHandler(stack);
+        BlockEntity be = level.getBlockEntity(pos);
         if (optionalTankStack.isPresent()) {
             IFluidHandlerItem tankStack = optionalTankStack.get();
             Optional<IFluidHandler> optionalTank = FluidUtil.getFluidHandler(level, pos, null);
@@ -145,10 +149,12 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
                 FluidStack fluidStack = tankStack.getFluidInTank(i);
                 if (optionalTank.isPresent()) {
                     IFluidHandler tank = optionalTank.get();
-                    if (tank instanceof MultiFluidTank<?> mft) mft.setFluid(fluidStack, i);
-                    else if (i == 0){
-                        if (tank instanceof ModFluidStorage mfs) mfs.setFluid(fluidStack, 0);
-                        else tank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                    if (i < tank.getTanks()) {
+                        if (tank instanceof MultiFluidTank<?> mft) mft.setFluid(fluidStack, i);
+                        else if (i == 0) {
+                            if (tank instanceof ModFluidStorage mfs) mfs.setFluid(fluidStack, 0);
+                            else tank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+                        }
                     }
                 }
             }
@@ -161,5 +167,25 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
                 else energy.receiveEnergy(energyStack.getEnergyStored(), false);
             }
         }
+        IItemHandler invStack = stack.getCapability(Capabilities.ItemHandler.ITEM);
+        if (invStack != null) {
+            IItemHandler inv = level.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+            if (inv != null) {
+                for (int i = 0; i < invStack.getSlots(); i++) {
+                    if (i < inv.getSlots()) {
+                        ItemStack stackInSlot = invStack.getStackInSlot(i);
+                        if (inv instanceof IItemHandlerModifiable mis) mis.setStackInSlot(i, stackInSlot);
+                        else inv.insertItem(i, stackInSlot, false);
+                    }
+                }
+            }
+        }
+
+        if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
+            CompoundTag nbt = stack.getTag();
+            CompoundTag machineNbt = nbt.getCompound("MachineData");
+            mbe.loadContents(machineNbt);
+        }
+
     }
 }

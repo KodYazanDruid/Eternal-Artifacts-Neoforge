@@ -54,6 +54,7 @@ public class PortableBatteryItem extends BatteryItem implements Equipable {
     }
     private static boolean chargeItem(ItemStack stack, ItemStack battery, int amount) {
         if (stack.isEmpty() || battery.isEmpty()) return false;
+        if (stack.getCount() > 1) return false;
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         IEnergyStorage batteryEnergy = battery.getCapability(Capabilities.EnergyStorage.ITEM);
         if (energy != null && batteryEnergy != null) {
@@ -76,6 +77,7 @@ public class PortableBatteryItem extends BatteryItem implements Equipable {
         return slots.getBoolean(type.getKey());
     }
 
+    @Getter
     public enum SlotType {
         INVENTORY("Inventory"),
         HELD_MAIN("MainHand"),
@@ -84,7 +86,6 @@ public class PortableBatteryItem extends BatteryItem implements Equipable {
         HOTBAR("Hotbar"),
         CHARMS("Charms");
 
-        @Getter
         private final String key;
         public static final String COMPOUND = "ChargeSlots";
 

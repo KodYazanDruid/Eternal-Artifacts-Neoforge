@@ -2,12 +2,15 @@ package com.sonamorningstar.eternalartifacts.loot.function;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.sonamorningstar.eternalartifacts.EternalArtifacts;
-import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModularEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModLoots;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,7 +23,6 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,43 +42,44 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext ctx) {
         BlockEntity entity = ctx.getParam(LootContextParams.BLOCK_ENTITY);
+        if (!(entity instanceof MachineBlockEntity<?> machine)) return stack;
         Level level = ctx.getLevel();
         ItemStack tool = ctx.getParam(LootContextParams.TOOL);
         if (!tool.is(ModTags.Items.TOOLS_WRENCH)) return stack;
-        IFluidHandlerItem tankStack = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        CompoundTag nbt = stack.getOrCreateTag();
         IFluidHandler tankBe = level.getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
-        IEnergyStorage energyStack = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         IEnergyStorage energyBe = level.getCapability(Capabilities.EnergyStorage.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
-        IItemHandler invStack = stack.getCapability(Capabilities.ItemHandler.ITEM);
         IItemHandler invBe = level.getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
-        if (tankBe != null) {
-            if (tankStack instanceof ModItemMultiFluidTank<? extends ModFluidStorage> mimft) {
-                for (int i = 0; i < tankBe.getTanks(); i++) {
-                    FluidStack fluidStack = tankBe.getFluidInTank(i);
-                    try {
-                        mimft.getTank(i).setFluid(fluidStack, 0);
-                    } catch (IndexOutOfBoundsException e) {
-                        EternalArtifacts.LOGGER.error("Tank index out of bounds: {} for {}", i, stack);
-                    }
-                }
-            } else {
-                if (tankStack != null) {
-                    for (int i = 0; i < tankBe.getTanks(); i++) {
-                        FluidStack fluidStack = tankBe.getFluidInTank(i);
-                        tankStack.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
-                    }
-                }
+        if (tankBe instanceof AbstractFluidTank tank) {
+            CompoundTag fluidNbt = new CompoundTag();
+            ListTag listTag = new ListTag();
+            for (int i = 0; i < tank.getTanks(); i++) {
+                AbstractFluidTank tanki = tank.get(i);
+                CompoundTag entry = new CompoundTag();
+                FluidStack fluidStack = tanki.getFluidInTank(0);
+                if (fluidStack.isEmpty()) continue;
+                fluidStack.writeToNBT(entry);
+                entry.putInt("TankNo", i);
+                listTag.add(entry);
             }
+            fluidNbt.put("Tanks", listTag);
+            fluidNbt.putInt("BiggestTankIndex", tank.getTanks());
+            nbt.put("Fluid", fluidNbt);
         }
-        if (energyStack != null && energyBe != null) {
-            if (energyStack instanceof ModItemEnergyStorage mes) mes.setEnergy(energyBe.getEnergyStored());
-            else energyStack.receiveEnergy(energyBe.getEnergyStored(), false);
+        if (energyBe instanceof ModEnergyStorage energy && !(energyBe instanceof ModularEnergyStorage)) {
+            CompoundTag energyNbt = new CompoundTag();
+            energyNbt.put("EnergyAmount", energy.serializeNBT());
+            energyNbt.putInt("MaxExtract", energy.getMaxExtract());
+            energyNbt.putInt("MaxReceive", energy.getMaxReceive());
+            energyNbt.putInt("MaxEnergyStored", energy.getMaxEnergyStored());
+            nbt.put("Energy", energyNbt);
         }
-        if (invStack != null && invBe != null) {
-            for (int i = 0; i < invBe.getSlots(); i++) {
-                invStack.insertItem(i, invBe.extractItem(i, Integer.MAX_VALUE, false), false);
-            }
+        if (invBe instanceof ModItemStorage inventory) {
+            nbt.put("Inventory", inventory.serializeNBT());
         }
+        CompoundTag additionalTag = new CompoundTag();
+        machine.saveContents(additionalTag);
+        nbt.put("MachineData", additionalTag);
         return stack;
     }
 

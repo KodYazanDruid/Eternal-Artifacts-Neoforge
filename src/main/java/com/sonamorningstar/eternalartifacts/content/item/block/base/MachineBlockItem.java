@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -34,9 +33,14 @@ public class MachineBlockItem extends FluidHolderBlockItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if (energy != null) {
+        if (energy != null && energy.getMaxEnergyStored() > 0) {
+            int charge = energy.getEnergyStored();
+            int maxCharge = energy.getMaxEnergyStored();
+            Component chargeValue = charge == maxCharge ?
+                    Component.literal(String.valueOf(charge)) :
+                    Component.literal(String.valueOf(charge)).append(" / ").append(String.valueOf(maxCharge));
             tooltip.add(ModConstants.GUI.withSuffixTranslatable("energy").append(": ")
-                    .append(String.valueOf(energy.getEnergyStored())).append(" / ").append(String.valueOf(energy.getMaxEnergyStored())).withStyle(ChatFormatting.DARK_RED)
+                    .append(chargeValue).withStyle(ChatFormatting.DARK_RED)
             );
         }
     }
@@ -53,17 +57,12 @@ public class MachineBlockItem extends FluidHolderBlockItem {
     public int getBarColor(ItemStack stack) {
         float charge = getChargeLevel(stack);
         float fluidAmount = getFluidLevel(stack);
-        return charge >= fluidAmount ? 0x880808 : BlockHelper.getFluidTintColor(getFluid(stack));
+        return charge >= fluidAmount ? 0x880808 : BlockHelper.getFluidTintColor(getFluid(stack, 0));
     }
 
-    private static float getChargeLevel(ItemStack stack) {
+    protected static float getChargeLevel(ItemStack stack) {
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         return energy != null ? energy.getEnergyStored() / (float) energy.getMaxEnergyStored() : 0;
-    }
-
-    private static float getFluidLevel(ItemStack stack) {
-        IFluidHandlerItem tank = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        return tank != null ? tank.getFluidInTank(0).getAmount() / (float) tank.getTankCapacity(0) : 0;
     }
 
     @Override

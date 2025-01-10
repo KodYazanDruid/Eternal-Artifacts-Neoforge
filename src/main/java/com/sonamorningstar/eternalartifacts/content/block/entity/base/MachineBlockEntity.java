@@ -33,7 +33,9 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
 
@@ -53,6 +55,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     public int fluidTransferRate = 1000;
     @Setter
     public int energyTransferRate = 1000;
+
+    public List<Integer> outputSlots = new ArrayList<>();
 
     @Getter
     @Setter
@@ -84,6 +88,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected ContainerData data;
+    @Setter
     protected int progress;
     @Setter
     protected int maxProgress = 100;
@@ -216,7 +221,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory, Integer... outputSlots) {
+    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory) {
         IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(dir), dir.getOpposite());
         if(targetInv != null) {
             for(int output : outputSlots) {
@@ -282,4 +287,15 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
+    public void saveContents(CompoundTag additionalTag) {
+        additionalTag.putInt("Progress", progress);
+        additionalTag.putInt("MaxProgress", maxProgress);
+        additionalTag.putInt("EnergyPerTick", energyPerTick);
+    }
+
+    public void loadContents(CompoundTag additionalTag) {
+        progress = additionalTag.getInt("Progress");
+        maxProgress = additionalTag.getInt("MaxProgress");
+        energyPerTick = additionalTag.getInt("EnergyPerTick");
+    }
 }

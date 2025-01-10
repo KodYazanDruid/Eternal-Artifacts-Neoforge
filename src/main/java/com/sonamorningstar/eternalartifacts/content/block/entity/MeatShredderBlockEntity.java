@@ -32,8 +32,8 @@ public class MeatShredderBlockEntity extends GenericMachineBlockEntity {
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInputItems(lvl, pos, inventory);
-        performAutoOutputFluids(lvl, pos, tank);
+        performAutoInputItems(lvl, pos);
+        performAutoOutputFluids(lvl, pos);
         if(recipeCache.getRecipe() != null) {
             FluidStack fs = recipeCache.getRecipe().getOutput();
             progress(()-> {

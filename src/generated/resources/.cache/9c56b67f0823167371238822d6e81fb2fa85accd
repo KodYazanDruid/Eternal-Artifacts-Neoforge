@@ -1,4 +1,4 @@
-// 1.20.4	2025-01-04T17:38:57.195747	Item Models: eternalartifacts
+// 1.20.4	2025-01-09T15:16:55.6627952	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
@@ -145,6 +145,7 @@ eac553947dded131497aea667f841552a8f08c69 assets/eternalartifacts/models/item/mel
 aa40d7e814fed9ec3821b5161881c87074002352 assets/eternalartifacts/models/item/pink_slime_ingot.json
 a82a650b3c02ef68ab64fd1e4a4623566f81f23a assets/eternalartifacts/models/item/plant_matter.json
 19762a3b333726bffcd1c6c50808ea5c8c942046 assets/eternalartifacts/models/item/plastic_sheet.json
+aa868d2063c85e78c878980788dd3a2aed54245a assets/eternalartifacts/models/item/portable_battery.json
 94a79bbcf69b4808293feeb6b54f52fd15260cae assets/eternalartifacts/models/item/portable_crafter.json
 83f6f027c0599bd6a9d0af4c0273f0b21a55aff3 assets/eternalartifacts/models/item/purple_shulker_shell.json
 848ea09bf19c94247e4badf808687de5fb7fbe66 assets/eternalartifacts/models/item/raw_manganese.json

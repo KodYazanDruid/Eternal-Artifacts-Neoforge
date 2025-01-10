@@ -379,6 +379,7 @@
   "tooltip.eternalartifacts.charm": "Tılsım",
   "tooltip.eternalartifacts.nutrition": "Besin",
   "tooltip.eternalartifacts.saturation": "Doygunluk",
+  "tooltip.eternalartifacts.tank": "%d. Tank",
   "upgrade.eternalartifacts.chlorophyte_upgrade": "Klorofit Yükseltmesi",
   "warps.eternalartifacts": "Işınlanmalar:"
 }

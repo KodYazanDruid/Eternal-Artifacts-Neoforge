@@ -34,9 +34,9 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInputItems(lvl, pos, inventory);
-        performAutoOutputItems(lvl, pos, inventory, outputSlots.toArray(Integer[]::new));
-        performAutoInputFluids(lvl, pos, tank);
+        performAutoInputItems(lvl, pos);
+        performAutoOutputItems(lvl, pos);
+        performAutoInputFluids(lvl, pos);
         FluidInfuserRecipe recipe = cache.getRecipe();
         if (recipe == null) {
             progress = 0;
@@ -50,7 +50,7 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
                 .tryExtractItemForced(recipe.getInput().getItems()[0].getCount())
                 .tryInsertForced(recipe.getOutput());
         progress(condition::getResult, ()-> {
-            ItemHelper.insertItemStackedForced(inventory, recipe.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new));
+            ItemHelper.insertItemStackedForced(inventory, recipe.getResultItem(lvl.registryAccess()).copy(), false, outputSlots);
             tank.drainForced(recipe.getInputFluid().getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
             inventory.extractItem(0, recipe.getInput().getItems()[0].getCount(), false);
         }, energy);

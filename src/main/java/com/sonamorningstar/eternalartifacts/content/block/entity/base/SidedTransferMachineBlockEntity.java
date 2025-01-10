@@ -1,7 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
-import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
@@ -18,7 +16,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,9 +31,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
     private Map<Integer, TransferType> sideConfigs = new HashMap<>(6);
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
 
-    public List<Integer> outputSlots = new ArrayList<>();
-
-    protected void performAutoInputItems(Level lvl, BlockPos pos, IItemHandlerModifiable inventory) {
+    protected void performAutoInputItems(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;
@@ -50,7 +45,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoOutputItems(Level lvl, BlockPos pos, IItemHandlerModifiable inventory, Integer... outputSlots) {
+    protected void performAutoOutputItems(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
         if(!isAllowedAuto || isDisabled) return;
@@ -60,11 +55,11 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             if(type == TransferType.PUSH || type == TransferType.DEFAULT) outputDirs.add(resolveActualDir(lvl.getBlockState(pos), i));
         }
         for(Direction dir : outputDirs) {
-            outputItemToDir(lvl, pos, dir, inventory, outputSlots);
+            outputItemToDir(lvl, pos, dir, inventory);
         }
     }
 
-    protected void performAutoInputFluids(Level lvl, BlockPos pos, AbstractFluidTank tank) {
+    protected void performAutoInputFluids(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
         if(!isAllowedAuto || isDisabled) return;
@@ -78,7 +73,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoOutputFluids(Level lvl, BlockPos pos, AbstractFluidTank tank) {
+    protected void performAutoOutputFluids(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         boolean isDisabled = autoConfigs.get(3) != null && autoConfigs.get(3);
         if(!isAllowedAuto || isDisabled) return;
@@ -92,7 +87,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoInputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
+    protected void performAutoInputEnergy(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         if(!isAllowedAuto) return;
         List<Direction> inputDirs = new ArrayList<>();
@@ -105,7 +100,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
     }
 
-    protected void performAutoOutputEnergy(Level lvl, BlockPos pos, ModEnergyStorage energy) {
+    protected void performAutoOutputEnergy(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(1) != null && autoConfigs.get(1);
         if(!isAllowedAuto) return;
         List<Direction> outputDirs = new ArrayList<>();

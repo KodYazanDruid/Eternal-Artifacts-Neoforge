@@ -379,6 +379,7 @@
   "tooltip.eternalartifacts.charm": "Charm",
   "tooltip.eternalartifacts.nutrition": "Nutrition",
   "tooltip.eternalartifacts.saturation": "Saturation",
+  "tooltip.eternalartifacts.tank": "%d. Tank",
   "upgrade.eternalartifacts.chlorophyte_upgrade": "Chlorophyte Upgrade",
   "warps.eternalartifacts": "Warps:"
 }

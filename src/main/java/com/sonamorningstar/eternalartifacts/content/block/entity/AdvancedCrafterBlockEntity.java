@@ -123,7 +123,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        performAutoInputFluids(lvl, pos, tank);
+        performAutoInputFluids(lvl, pos);
         CraftingRecipe recipe = recipeCache.getRecipe();
         if (recipe == null) {
             progress = 0;

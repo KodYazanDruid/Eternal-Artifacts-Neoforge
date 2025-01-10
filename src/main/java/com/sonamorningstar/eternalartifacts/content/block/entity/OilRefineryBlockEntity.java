@@ -45,8 +45,8 @@ public class OilRefineryBlockEntity extends GenericMachineBlockEntity {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        performAutoInputFluids(lvl, pos, tank);
-        performAutoOutputFluids(lvl, pos, tank);
+        performAutoInputFluids(lvl, pos);
+        performAutoOutputFluids(lvl, pos);
 
         if (tank.getFluidInTank(0).getAmount() < 50) return;
 

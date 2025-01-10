@@ -34,7 +34,7 @@ public class MaterialSqueezerBlockEntity extends GenericMachineBlockEntity {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        performAutoOutputFluids(lvl, pos, tank);
+        performAutoOutputFluids(lvl, pos);
 
         SqueezingRecipe recipe = cache.getRecipe();
         if (recipe == null) {

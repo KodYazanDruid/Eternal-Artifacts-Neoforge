@@ -34,8 +34,8 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
         ListTag tanksList = new ListTag();
         for(T tank : tanks) {
             CompoundTag entry = new CompoundTag();
-            entry.putString("FluidName", BuiltInRegistries.FLUID.getKey(tank.getFluidInTank(0).getFluid()).toString());
-            entry.putInt("Amount", tank.getFluidInTank(0).getAmount());
+            FluidStack stack = tank.getFluidInTank(0);
+            stack.writeToNBT(entry);
             tanksList.add(entry);
         }
         nbt.put("Tanks", tanksList);
@@ -45,11 +45,8 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
         ListTag tanksList = nbt.getList("Tanks", 10);
         for(int i = 0; i < tanksList.size() ; i++) {
             CompoundTag entry = tanksList.getCompound(i);
-            Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(entry.getString("FluidName")));
-            FluidStack stack;
-            if(fluid == Fluids.EMPTY) stack = FluidStack.EMPTY;
-            else stack = new FluidStack(fluid, entry.getInt("Amount"));
-            tanks.get(i).setFluid(stack, i);
+            FluidStack stack = FluidStack.loadFluidStackFromNBT(entry);
+            tanks.get(i).setFluid(stack, 0);
         }
     }
 

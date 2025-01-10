@@ -56,13 +56,14 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
             }
         });
         outputSlots.add(1);
+        outputSlots.add(3);
     }
 
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         fillTankFromSlot(inventory, tank, 3);
-        performAutoInputFluids(lvl, pos, tank);
-        performAutoInputItems(lvl, pos, inventory);
-        performAutoOutputItems(lvl, pos, inventory, 1, 3);
+        performAutoInputFluids(lvl, pos);
+        performAutoInputItems(lvl, pos);
+        performAutoOutputItems(lvl, pos);
         ItemStack inputBook = inventory.getStackInSlot(0);
         ItemStack output = inventory.getStackInSlot(1);
         ItemStack consumableBook = inventory.getStackInSlot(2);

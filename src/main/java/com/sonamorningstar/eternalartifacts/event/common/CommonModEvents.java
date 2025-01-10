@@ -3,10 +3,12 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
-import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.MachineItemFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.item.MachineItemItemStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModScaleableItemItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
@@ -91,6 +93,12 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SHOCK_ABSORBER.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.CABLE.get(), (be, ctx) -> be.energy);
+        registerMachineItem(event, ModBlocks.SHOCK_ABSORBER);
+        registerMachineItem(event, ModBlocks.FLUID_COMBUSTION_DYNAMO);
+        registerMachineItem(event, ModBlocks.BIOFURNACE);
+        registerMachineItem(event, ModBlocks.BOOK_DUPLICATOR);
+        registerMachineItem(event, ModBlocks.BATTERY_BOX);
+        registerMachineItem(event, ModBlocks.ANVILINATOR);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
@@ -98,6 +106,10 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
+
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ANVILINATOR.get(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.ANVILINATOR.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.ANVILINATOR.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedEnergyCaps(be, be.energy, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, null));
@@ -125,6 +137,11 @@ public class CommonModEvents {
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, holder.get().getCapacity()), holder.asItem());
+    }
+    private static void registerMachineItem(RegisterCapabilitiesEvent event, DeferredBlock<?> holder) {
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new MachineItemEnergyStorage(stack), holder.asItem());
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new MachineItemItemStorage(stack), holder.asItem());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new MachineItemFluidStorage(stack), holder.asItem());
     }
 
     @SubscribeEvent

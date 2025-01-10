@@ -23,7 +23,7 @@ public class NousTankBlockEntity extends SidedTransferMachineBlockEntity<NousTan
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        performAutoInputFluids(lvl, pos, tank);
-        performAutoOutputFluids(lvl, pos, tank);
+        performAutoInputFluids(lvl, pos);
+        performAutoOutputFluids(lvl, pos);
     }
 }

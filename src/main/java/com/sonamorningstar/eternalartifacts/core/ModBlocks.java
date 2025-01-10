@@ -4,6 +4,8 @@ import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -117,13 +119,13 @@ public class ModBlocks {
     public static final DeferredBlock<Block> OBSIDIAN_BRICK_WALL = registerWithItem("obsidian_brick_wall",
             ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
 
-    public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerWithItem("anvilinator",
+    public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerMachineWithItem("anvilinator",
             ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerWithItem("book_duplicator",
+    public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerMachineWithItem("book_duplicator",
             ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerWithBewlr("fluid_combustion_dynamo",
+    public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerMachineWithBewlr("fluid_combustion_dynamo",
             () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
@@ -133,13 +135,13 @@ public class ModBlocks {
     public static final DeferredBlock<CableBlock> COVERED_COPPER_CABLE = registerWithItem("covered_copper_cable",
             ()-> new CableBlock(ModProperties.Blocks.CABLE));
 
-    public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerWithItem("biofurnace",
+    public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
     public static final DeferredBlock<ResonatorBlock> RESONATOR = registerWithItem("resonator",
             ()-> new ResonatorBlock(Blocks.DEEPSLATE.properties().forceSolidOn(), 128));
     public static final DeferredBlock<EnergyDockBlock> ENERGY_DOCK = registerWithBewlr("energy_dock",
             ()-> new EnergyDockBlock(Blocks.DEEPSLATE.properties().forceSolidOn()));
-    public static final DeferredBlock<Block> SHOCK_ABSORBER = registerWithItem("shock_absorber", ShockAbsorberBlock::new);
+    public static final DeferredBlock<Block> SHOCK_ABSORBER = registerMachineWithItem("shock_absorber", ShockAbsorberBlock::new);
 
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
@@ -192,6 +194,11 @@ public class ModBlocks {
     private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier){
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return block;
+    }
+    private static <T extends Block> DeferredBlock<T> registerMachineWithItem(String name, Supplier<T> supplier){
+        DeferredBlock<T> block = BLOCKS.register(name, supplier);
+        ModItems.ITEMS.register(name, () -> new MachineBlockItem(block.get(), new Item.Properties()));
         return block;
     }
 
@@ -255,6 +262,11 @@ public class ModBlocks {
             @Override
             public void initializeClient(Consumer<IClientItemExtensions> consumer) {consumer.accept(new BEWLRProps());}
         });
+        return block;
+    }
+    private static <T extends Block> DeferredBlock<T> registerMachineWithBewlr(String name, Supplier<T> sup) {
+        DeferredBlock<T> block = BLOCKS.register(name, sup);
+        ModItems.ITEMS.register(name, ()-> new BewlrMachineItem(block.get(), new Item.Properties()));
         return block;
     }
 

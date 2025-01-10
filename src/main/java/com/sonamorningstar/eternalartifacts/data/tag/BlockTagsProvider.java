@@ -89,7 +89,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.BOOK_DUPLICATOR.get(),
                 ModBlocks.BATTERY_BOX.get(),
                 ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                ModBlocks.NOUS_TANK.get()
+                ModBlocks.NOUS_TANK.get(),
+                ModBlocks.SHOCK_ABSORBER.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);

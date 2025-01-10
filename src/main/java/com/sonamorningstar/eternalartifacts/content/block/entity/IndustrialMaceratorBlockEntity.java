@@ -43,7 +43,7 @@ public class IndustrialMaceratorBlockEntity extends GenericMachineBlockEntity {
                 .tryExtractItemForced(recipe.getInput().getItems()[0].getCount())
                 .tryInsertForced(recipe.getOutput());
         progress(condition::getResult, () -> {
-            ItemHelper.insertItemStackedForced(inventory, recipe.getOutput().copy(), false, outputSlots.toArray(Integer[]::new));
+            ItemHelper.insertItemStackedForced(inventory, recipe.getOutput().copy(), false, outputSlots);
             inventory.extractItem(0, recipe.getInput().getItems()[0].getCount(), false);
         }, energy);
     }

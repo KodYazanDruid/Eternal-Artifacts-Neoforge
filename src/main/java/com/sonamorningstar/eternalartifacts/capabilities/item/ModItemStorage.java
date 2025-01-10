@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModItemStorage extends ItemStackHandler {
-
     public ModItemStorage(int size) {
         super(size);
     }

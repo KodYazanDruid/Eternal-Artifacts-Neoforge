@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergySto
 import com.sonamorningstar.eternalartifacts.capabilities.energy.WrappedEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.WrappedFluidStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemItemStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
@@ -57,6 +58,10 @@ public class CapabilityHelper {
                     dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT),
                     ctx);
         }else return energy;
+    }
+
+    public static ModItemItemStorage regItemItemCap(ItemStack stack, int baseSlots) {
+        return new ModItemItemStorage(stack, baseSlots);
     }
 
     public static ModItemEnergyStorage regItemEnergyCap(ItemStack stack, int baseCapability, int maxTransfer) {

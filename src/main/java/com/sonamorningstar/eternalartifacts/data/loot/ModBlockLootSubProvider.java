@@ -44,9 +44,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
 
     @Override
     protected void generate() {
-        dropSelf(ModBlocks.ANVILINATOR.get());
-        dropSelf(ModBlocks.BOOK_DUPLICATOR.get());
-        dropSelf(ModBlocks.BIOFURNACE.get());
         dropSelf(ModBlocks.RESONATOR.get());
         dropSelf(ModBlocks.PINK_SLIME_BLOCK.get());
         dropSelf(ModBlocks.ROSY_FROGLIGHT.get());
@@ -70,8 +67,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.CITRUS_WOOD.get());
         dropSelf(ModBlocks.STRIPPED_CITRUS_WOOD.get());
         dropSelf(ModBlocks.CITRUS_PLANKS.get());
-        dropSelf(ModBlocks.BATTERY_BOX.get());
-        dropSelf(ModBlocks.FLUID_COMBUSTION_DYNAMO.get());
         dropSelf(ModBlocks.RAW_MANGANESE_BLOCK.get());
         dropSelf(ModBlocks.RAW_MARIN_BLOCK.get());
         dropSelf(ModBlocks.MARIN_BLOCK.get());
@@ -86,7 +81,6 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropPottedContents(ModBlocks.POTTED_TIGRIS.get());
         dropSelf(ModBlocks.DEMON_BLOCK.get());
         add(ModBlocks.ENERGY_DOCK.get(), createSinglePropConditionTable(ModBlocks.ENERGY_DOCK.get(), EnergyDockBlock.DOCK_PART, DockPart.CENTER));
-        dropSelf(ModBlocks.SHOCK_ABSORBER.get());
         dropSelf(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
         dropSelf(ModBlocks.CHARCOAL_BLOCK.get());
 
@@ -114,6 +108,12 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.STEEL_DRUM, KeepFluidsFunction.builder());
         dropSelfWithFunction(ModBlocks.DIAMOND_DRUM, KeepFluidsFunction.builder());
         dropSelfWithFunction(ModBlocks.NETHERITE_DRUM, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.SHOCK_ABSORBER, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.BATTERY_BOX, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.FLUID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.ANVILINATOR, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.BOOK_DUPLICATOR, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())

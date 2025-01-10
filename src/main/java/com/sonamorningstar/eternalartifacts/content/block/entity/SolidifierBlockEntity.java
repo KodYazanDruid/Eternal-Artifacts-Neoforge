@@ -33,7 +33,7 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        performAutoInputFluids(lvl, pos, tank);
+        performAutoInputFluids(lvl, pos);
 
         SolidifierRecipe recipe = recipeCache.getRecipe();
 
@@ -50,7 +50,7 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
                 .tryInsertForced(recipe.getOutput());
 
         progress(condition::getResult, () -> {
-            ItemHelper.insertItemStackedForced(inventory, recipe.getResultItem(lvl.registryAccess()).copy(), false, outputSlots.toArray(Integer[]::new));
+            ItemHelper.insertItemStackedForced(inventory, recipe.getResultItem(lvl.registryAccess()).copy(), false, outputSlots);
             tank.drainForced(recipe.getInputFluid().getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
         }, energy);
     }

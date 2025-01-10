@@ -28,13 +28,13 @@ public class ItemHelper {
 
         return stack;
     }
-    public static Pair<ItemStack, List<Integer>> insertItemForced(ModItemStorage destination, ItemStack stack, boolean simulate, Integer... slots) {
+    public static Pair<ItemStack, List<Integer>> insertItemForced(ModItemStorage destination, ItemStack stack, boolean simulate, List<Integer> slots) {
         List<Integer> insertedSlots = new ArrayList<>();
         if (destination == null || stack.isEmpty())
             return Pair.of(stack, Collections.emptyList());
 
         for (int i = 0; i < destination.getSlots(); i++) {
-            if(Arrays.stream(slots).toList().contains(i)){
+            if(slots.contains(i)){
                 stack = destination.insertItemForced(i, stack, simulate);
                 if (stack.isEmpty()) {
                     insertedSlots.add(i);
@@ -81,8 +81,8 @@ public class ItemHelper {
         }
         return stack;
     }
-    public static Pair<ItemStack, List<Integer>> insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate, Integer... slots) {
-        List<Integer> slotsList = Arrays.stream(slots).toList();
+    public static Pair<ItemStack, List<Integer>> insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate, List<Integer> slots) {
+        //List<Integer> slotsList = Arrays.stream(slots).toList();
         List<Integer> insertedSlots = new ArrayList<>();
         if (inventory == null || stack.isEmpty())
             return Pair.of(stack, Collections.emptyList());
@@ -94,7 +94,7 @@ public class ItemHelper {
         int sizeInventory = inventory.getSlots();
 
         for (int i = 0; i < sizeInventory; i++) {
-            if(slotsList.contains(i)) {
+            if(slots.contains(i)) {
                 ItemStack slot = inventory.getStackInSlot(i);
                 if (ItemHandlerHelper.canItemStacksStackRelaxed(slot, stack)) {
                     stack = inventory.insertItemForced(i, stack, simulate);
@@ -107,7 +107,7 @@ public class ItemHelper {
         }
         if (!stack.isEmpty()) {
             for (int i = 0; i < sizeInventory; i++) {
-                if (inventory.getStackInSlot(i).isEmpty() && slotsList.contains(i)) {
+                if (inventory.getStackInSlot(i).isEmpty() && slots.contains(i)) {
                     stack = inventory.insertItemForced(i, stack, simulate);
                     if (stack.isEmpty()) {
                         insertedSlots.add(i);

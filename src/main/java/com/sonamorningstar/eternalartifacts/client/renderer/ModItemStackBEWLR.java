@@ -65,6 +65,11 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
+                if (fluidHandlerItem != null) {
+                    oilRefineryBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
+                    oilRefineryBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(1), 1);
+                    oilRefineryBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(2), 2);
+                }
                 blockEntityRenderDispatcher.renderItem(oilRefineryBlockEntity, ps, buff, light, overlay);
             }else if (block instanceof EnergyDockBlock) {
                 blockEntityRenderDispatcher.renderItem(energyDockBlockEntity, ps, buff, light, overlay);
