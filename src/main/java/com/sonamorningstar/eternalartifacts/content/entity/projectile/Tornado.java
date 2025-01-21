@@ -17,6 +17,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,9 +26,11 @@ import net.minecraft.world.phys.*;
 public class Tornado extends AbstractHurtingProjectile {
     private float damage;
     private boolean inGround;
+	private int age;
     @Getter
     @Setter
     private SoundEvent soundEvent = defaultSoundEvent();
+	private static final int MAX_AGE = 200;
     public Tornado(
             Level level,
             LivingEntity shooter,
@@ -43,13 +46,15 @@ public class Tornado extends AbstractHurtingProjectile {
     public Tornado(EntityType<? extends Tornado> type, Level level) {
         super(type, level);
     }
-
-    @Override
+	
+	@Override
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide()) {
             Entity hit = result.getEntity();
             Entity owner = this.getOwner();
             hit.hurt(this.damageSources().mobProjectile(this, owner instanceof LivingEntity living ? living : null), damage);
+            hit.hurtMarked = true;
+            hit.setDeltaMovement(hit.getDeltaMovement().add(0, 0.2, 0));
         }
     }
 
@@ -78,6 +83,7 @@ public class Tornado extends AbstractHurtingProjectile {
         tag.putFloat("damage", damage);
         tag.putBoolean("inGround", inGround);
         tag.putString("SoundEvent", BuiltInRegistries.SOUND_EVENT.getKey(soundEvent).toString());
+		tag.putInt("age", age);
     }
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
@@ -89,14 +95,19 @@ public class Tornado extends AbstractHurtingProjectile {
                     .getOptional(new ResourceLocation(tag.getString("SoundEvent")))
                     .orElse(defaultSoundEvent());
         }
+		age = tag.getInt("age");
     }
     //endregion
 
     @Override
     public void tick() {
         super.tick();
+		this.age++;
+		if (this.age >= MAX_AGE) {
+			this.discard();
+		}
         Vec3 deltaMovement = getDeltaMovement();
-        double y = !this.isNoGravity() && shouldFall() ? -0.2 : 0;
+        double y = !this.isNoGravity() && shouldFall() ? -0.5 : 0;
         setDeltaMovement(deltaMovement.x, y, deltaMovement.z);
     }
 

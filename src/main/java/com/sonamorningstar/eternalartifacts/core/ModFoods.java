@@ -32,4 +32,12 @@ public class ModFoods {
             .effect(()->new MobEffectInstance(MobEffects.ABSORPTION, 2400, 4), 1.0F)
             .alwaysEat()
             .build();
+    public static final FoodProperties ANGELIC_HEART = new FoodProperties.Builder()
+            .nutrition(4)
+            .saturationMod(1.2F)
+            .effect(()->new MobEffectInstance(MobEffects.REGENERATION, 2400, 1), 1.0F)
+            .effect(()->new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 2400, 1), 1.0F)
+            .effect(()->new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 2400, 1), 1.0F)
+            .alwaysEat()
+            .build();
 }

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
@@ -157,6 +158,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.METEORITE_TOME.get(), "Meteorite Tome");
                 add(ModItems.PORTABLE_BATTERY.get(), "Portable Battery");
                 add(ModItems.ROBOTIC_GLOVE.get(), "Robotic Glove");
+                add(ModItems.CONFIGURATION_DRIVE.get(), "Configuration Drive");
+                add(ModItems.HEART_NECKLACE.get(), "Heart Necklace");
+                add(ModItems.ANGELIC_HEART.get(), "Angelic Heart");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -263,6 +267,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.VERSATILITY.get(), "Versatility");
                 add(ModEnchantments.SOULBOUND.get(), "Soulbound");
                 //endregion
+                //region Commands
+                add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
+                add(ModConstants.COMMAND.withSuffix("charm.given"), "Gave %1$s charm to %2$s.");
+                add(ModConstants.COMMAND.withSuffix("charm.removed"), "Removed charm on %d. index from %s.");
+                add(ModConstants.COMMAND.withSuffix("charm.list"), "%s's Charms:");
+                add(ModConstants.COMMAND.withSuffix("charm.wildcard.activated"), "%s's wildcard charm slot has been activated.");
+                add(ModConstants.COMMAND.withSuffix("charm.wildcard.deactivated"), "%s's wildcard charm slot has been deactivated.");
+                //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Naming disabled.");
@@ -285,9 +297,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Add Copper tool");
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Chlorophyte Ingot");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Chlorophyte Upgrade");
-                /*add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Meat Packing");
-                add("emi.category."+MODID+".meat_shredding", "Meat Shredding");
-                add("emi.category."+MODID+".mob_liquifying", "Mob Liquifying");*/
                 add(ModConstants.GUI.withSuffix("energy"), "Energy");
                 add(ModConstants.GUI.withSuffix("fluid"), "Fluid");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("add_warp"), "Add Warp");
@@ -351,6 +360,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Nutrition");
                 add(ModConstants.TOOLTIP.withSuffix("saturation"), "Saturation");
                 add(ModConstants.TOOLTIP.withSuffix("tank"), "%d. Tank");
+                add(ModConstants.OVERLAY.withSuffix("configuration_device_saved"), "Configuration saved.");
+                add(ModConstants.OVERLAY.withSuffix("configuration_device_loaded"), "Configuration loaded.");
+                add(ModConstants.OVERLAY.withSuffix("configuration_device_cleared"), "Configuration cleared.");
+                add(ModConstants.TOOLTIP.withSuffix("configuration_device_tooltip"), "Saved Configurations");
+                add(ModConstants.GUI.withSuffix("ignored"), "Ignored");
+                add(ModConstants.GUI.withSuffix("high"), "High");
+                add(ModConstants.GUI.withSuffix("low"), "Low");
+                add(ModConstants.FILLED_MAP.withSuffix("woodland_mansion"), "Woodland Mansion Map");
+                add(ModConstants.FILLED_MAP.withSuffix("mineshaft"), "Mineshaft Map");
+                add(ModConstants.CHARM_TYPE.withSuffix("wildcard"), "Wildcard");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -363,6 +382,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                     add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(value.getLowerCaseName()), "When on " + prettyName(value.getLowerCaseName()) + " Charm:");
                 }
                 //endregion
+                ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
+                    if("en_us".equals(loc)) add(lang.getFirst(), lang.getSecond());
+                });
             }
             case "tr_tr" -> {
                 //region Türkçe Eşya
@@ -511,6 +533,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.METEORITE_TOME.get(), "Meteorit Kitabı");
                 add(ModItems.PORTABLE_BATTERY.get(), "Taşınabilir Pil");
                 add(ModItems.ROBOTIC_GLOVE.get(), "Robot Eldiven");
+                add(ModItems.CONFIGURATION_DRIVE.get(), "Yapılandırma Sürücüsü");
+                add(ModItems.HEART_NECKLACE.get(), "Kalp Kolyesi");
+                add(ModItems.ANGELIC_HEART.get(), "Melek Kalbi");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -659,6 +684,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.VERSATILITY.get(), "Çeşitlilik");
                 add(ModEnchantments.SOULBOUND.get(), "Ruh Bağı");
                 //endregion
+                //region Türkçe Komutler
+                add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");
+                add(ModConstants.COMMAND.withSuffix("charm.given"), "%2$s'e %1$s tılsımı verildi.");
+                add(ModConstants.COMMAND.withSuffix("charm.removed"), "%s'ten %d. sıradaki tılsım kaldırıldı.");
+                add(ModConstants.COMMAND.withSuffix("charm.list"), "%s'in tılsımları:");
+                add(ModConstants.COMMAND.withSuffix("charm.wildcard.activated"), "%s'in tılsımlarına joker tılsım slotu eklendi.");
+                add(ModConstants.COMMAND.withSuffix("charm.wildcard.deactivated"), "%s'in tılsımlarındaki joker tılsım slotu kaldırıldı.");
+                //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
                 add("key." + MODID + ".anvilinator.disabled_naming", "Adlandırma kapalı.");
@@ -681,9 +714,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHLOROPHYTE_UPGRADE_BASE_SLOT_DESCRIPTION.getString(), "Bakır alet ekleyin.");
                 add(ModConstants.CHLOROPHYTE_UPGRADE_INGREDIENTS.getString(), "Klorofit Külçesi");
                 add(Util.makeDescriptionId("upgrade", new ResourceLocation(MODID,"chlorophyte_upgrade")), "Klorofit Yükseltmesi");
-                /*add("emi.category." + MeatPackerCategory.ID.getNamespace() + "." + MeatPackerCategory.ID.getPath().replace('/', '.'), "Et Paketleme");
-                add("emi.category."+MODID+".meat_shredding", "Et Parçalama");
-                add("emi.category."+MODID+".mob_liquifying", "Yaratık Sıvılaştırma");*/
                 add(ModConstants.GUI.withSuffix("energy"), "Enerji");
                 add(ModConstants.GUI.withSuffix("fluid"), "Sıvı");
                 add(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffix("add_warp"), "Işınlama Ekle");
@@ -766,7 +796,20 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Besin");
                 add(ModConstants.TOOLTIP.withSuffix("saturation"), "Doygunluk");
                 add(ModConstants.TOOLTIP.withSuffix("tank"), "%d. Tank");
+                add(ModConstants.OVERLAY.withSuffix("configuration_device_saved"), "Yapılandırma kaydedildi.");
+                add(ModConstants.OVERLAY.withSuffix("configuration_device_loaded"), "Yapılandırma yüklendi.");
+                add(ModConstants.OVERLAY.withSuffix("configuration_device_cleared"), "Yapılandırma temizlendi.");
+                add(ModConstants.GUI.withSuffix("ignored"), "Yok sayılıyor");
+                add(ModConstants.GUI.withSuffix("high"), "Yüksek");
+                add(ModConstants.GUI.withSuffix("low"), "Düşük");
+                add(ModConstants.TOOLTIP.withSuffix("configuration_device_tooltip"), "Kaydedilen yapılandırmalar");
+                add(ModConstants.FILLED_MAP.withSuffix("woodland_mansion"), "Orman Malikanesi Haritası");
+                add(ModConstants.FILLED_MAP.withSuffix("mineshaft"), "Madenci Tüneli Haritası");
+                add(ModConstants.CHARM_TYPE.withSuffix("wildcard"), "Joker");
                 //endregion
+                ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
+                    if("tr_tr".equals(loc)) add(lang.getFirst(), lang.getSecond());
+                });
             }
         }
     }

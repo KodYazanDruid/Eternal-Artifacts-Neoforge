@@ -1,10 +1,12 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.caches.BlockVeinCache;
+import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
@@ -22,6 +24,12 @@ import java.util.Queue;
 public class SickleItem extends DiggerItem {
     public SickleItem(Tier tier, Properties props) {
         super(-1.0F, -2.0F, tier, ModTags.Blocks.MINEABLE_WITH_SICKLE, props);
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack pStack, LivingEntity target, LivingEntity pAttacker) {
+        target.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 100, 0));
+        return super.hurtEnemy(pStack, target, pAttacker);
     }
 
     private static final List<ItemStack> currentMiners = new ArrayList<>();

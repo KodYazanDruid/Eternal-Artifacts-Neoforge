@@ -10,7 +10,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record UpdateCharmsToClient(int playerId, NonNullList<ItemStack> items) implements CustomPacketPayload {
+public record UpdateCharmsToClient(int entityId, NonNullList<ItemStack> items) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "update_charms");
 
     public static UpdateCharmsToClient create(FriendlyByteBuf buf) {
@@ -23,7 +23,7 @@ public record UpdateCharmsToClient(int playerId, NonNullList<ItemStack> items) i
 
     @Override
     public void write(FriendlyByteBuf buff) {
-        buff.writeVarInt(playerId);
+        buff.writeVarInt(entityId);
         buff.writeCollection(items, FriendlyByteBuf::writeItem);
     }
 

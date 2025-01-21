@@ -12,8 +12,8 @@ import java.util.function.BiConsumer;
 
 public class GiftLootSubProvider implements net.minecraft.data.loot.LootTableSubProvider {
     @Override
-    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> pOutput) {
-        /*pOutput.accept(BuiltInLootTables.SNIFFER_DIGGING,
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
+        /*output.accept(BuiltInLootTables.SNIFFER_DIGGING,
             LootTable.lootTable()
                 .withPool(
                     LootPool.lootPool()

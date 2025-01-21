@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.data.tag;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
-import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
+import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
@@ -159,14 +159,19 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
 
         tag(ModTags.Items.CHARMS_HEAD).add(
-                Items.TURTLE_HELMET,
-                Items.DISPENSER,
-                Items.BUCKET,
-                Items.CARVED_PUMPKIN
+            Items.TURTLE_HELMET,
+            Items.DISPENSER,
+            Items.BUCKET,
+            Items.CARVED_PUMPKIN,
+            Items.OBSERVER
         );
         tag(ModTags.Items.CHARMS_HEAD).addTags(
-                ModTags.Items.SHULKER_SHELL,
-                Tags.Items.GLASS
+            ModTags.Items.SHULKER_SHELL,
+            Tags.Items.GLASS,
+            ItemTags.BANNERS
+        );
+        tag(ModTags.Items.CHARMS_NECKLACE).add(
+            ModItems.HEART_NECKLACE.get()
         );
         tag(ModTags.Items.CHARMS_HAND).add(
                 ModItems.ROBOTIC_GLOVE.get()
@@ -195,7 +200,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Items.BUNDLE
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
-                ModItems.BATTERY.get(),
                 ModItems.MAGIC_FEATHER.get(),
                 ModItems.PORTABLE_CRAFTER.get(),
                 ModItems.HOLY_DAGGER.get(),
@@ -205,10 +209,11 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Items.COD,
                 Items.TOTEM_OF_UNDYING
         );
-
+        /*tag(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED).add(
+        );*/
         tag(ModTags.Items.CHARMS).addTags(
                 ModTags.Items.CHARMS_HEAD,
-                //ModTags.Items.CHARMS_NECKLACE,
+                ModTags.Items.CHARMS_NECKLACE,
                 ModTags.Items.CHARMS_HAND,
                 ModTags.Items.CHARMS_RING,
                 ModTags.Items.CHARMS_BRACELET,

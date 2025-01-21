@@ -19,16 +19,9 @@ public class MaterialSqueezerBlockEntity extends GenericMachineBlockEntity {
         setTank(createBasicTank(16000, true, false));
         outputSlots.add(1);
         setInventory(createRecipeFinderInventory(2, outputSlots));
+        setRecipeTypeAndContainer(ModRecipes.SQUEEZING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
         screenInfo.attachTankToLeft(0);
         screenInfo.setArrowXOffset(-20);
-    }
-
-    private RecipeCache<SqueezingRecipe, SimpleContainer> cache = new RecipeCache<>();
-
-    @Override
-    protected void findRecipe() {
-        super.findRecipe();
-        cache.findRecipe(ModRecipes.SQUEEZING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 
     @Override
@@ -36,7 +29,7 @@ public class MaterialSqueezerBlockEntity extends GenericMachineBlockEntity {
         super.tickServer(lvl, pos, st);
         performAutoOutputFluids(lvl, pos);
 
-        SqueezingRecipe recipe = cache.getRecipe();
+        SqueezingRecipe recipe = recipeCache.getRecipe(SqueezingRecipe.class);
         if (recipe == null) {
             progress = 0;
             return;

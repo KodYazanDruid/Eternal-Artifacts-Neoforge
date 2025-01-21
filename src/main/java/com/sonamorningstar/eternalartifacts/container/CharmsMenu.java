@@ -14,9 +14,10 @@ public class CharmsMenu extends TabMenu {
         super(ModMenuTypes.CHARMS.get(), id);
         this.player = inv.player;
         addPlayerInventoryAndHotbar(inv, 8, 66);
-        CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
+        CharmStorage charms = CharmStorage.get(player);
         for (int i = 0; i < charms.getSlots(); i++) {
-            addSlot(new SlotItemHandler(charms, i, calculateX(i), calculateY(i)));
+            if (i == 12 && CharmStorage.canHaveWildcard(player)) addSlot(new SlotItemHandler(charms, i, 150, 36));
+            else if (i != 12) addSlot(new SlotItemHandler(charms, i, calculateX(i), calculateY(i)));
         }
     }
 

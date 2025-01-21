@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
@@ -13,12 +14,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,32 +42,39 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
+@Setter
 public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
     @Nullable
     private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
-    @Setter
     public ModItemStorage inventory = null;
-    @Setter
     public AbstractFluidTank tank = null;
-    @Setter
     public ModEnergyStorage energy = null;
-    @Setter
     public int itemTransferRate = 1;
-    @Setter
     public int fluidTransferRate = 1000;
-    @Setter
     public int energyTransferRate = 1000;
 
-    public List<Integer> outputSlots = new ArrayList<>();
+    protected final ContainerData data;
+    protected int progress;
+    protected int maxProgress = 100;
+    protected int energyPerTick = 40;
+
+    public final List<Integer> outputSlots = new ArrayList<>();
+    @Getter
+    protected final RecipeCache recipeCache;
+    protected RecipeType<? extends Recipe<? extends Container>> recipeType;
+    protected Supplier<Container> recipeContainer;
 
     @Getter
-    @Setter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
+
+    /* CONSTRUCTOR */
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         this.menuConstructor = quadF;
+        this.recipeCache = new RecipeCache(this);
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -76,7 +87,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             @Override
             public void set(int index, int value) {
                 switch (index) {
-                    case 0 ->  progress = value;
+                    case 0 -> progress = value;
                     case 1 -> maxProgress = value;
                 }
             }
@@ -86,14 +97,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             }
         };
     }
-
-    protected ContainerData data;
-    @Setter
-    protected int progress;
-    @Setter
-    protected int maxProgress = 100;
-    @Setter
-    protected int energyPerTick = 40;
 
     @Override
     protected boolean shouldSyncOnUpdate() {
@@ -114,10 +117,11 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void load(CompoundTag tag) {
         super.load(tag);
         progress = tag.getInt("progress");
-        if(energy != null && shouldSerializeEnergy()) energy.deserializeNBT(tag.get("Energy"));
+        if(energy != null && tag.contains("Energy") && shouldSerializeEnergy()) energy.deserializeNBT(tag.get("Energy"));
         if(inventory != null && shouldSerializeInventory()) inventory.deserializeNBT(tag.getCompound("Inventory"));
         if(tank != null && shouldSerializeTank()) tank.deserializeNBT(tag.getCompound("Fluid"));
     }
@@ -166,6 +170,19 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
+    protected void setRecipeTypeAndContainer(RecipeType<? extends Recipe<? extends Container>> type, Supplier<Container> container) {
+        this.recipeType = type;
+        this.recipeContainer = container;
+    }
+
+    @Override
+    protected void findRecipe() {
+        if (level != null && recipeType != null && recipeContainer != null) {
+            recipeCache.clearRecipe(this);
+            recipeCache.findRecipe(recipeType, recipeContainer.get(), level);
+        }
+    }
+
     protected void progress(BooleanSupplier test, Runnable result, ModEnergyStorage energy) {
         progress(test, Runnables.doNothing(), result, energy);
     }
@@ -202,6 +219,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return energy.getEnergyStored() > 0;
     }
 
+    //region Transfer methods.
     protected void insertItemFromDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory) {
         IItemHandler sourceInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(dir), dir.getOpposite());
         if(sourceInv != null) {
@@ -286,6 +304,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             }
         }
     }
+    //endregion
 
     public void saveContents(CompoundTag additionalTag) {
         additionalTag.putInt("Progress", progress);

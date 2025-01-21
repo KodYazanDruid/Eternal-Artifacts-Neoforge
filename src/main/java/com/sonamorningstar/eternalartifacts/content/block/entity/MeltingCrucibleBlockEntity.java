@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeltingRecipe;
@@ -17,22 +16,16 @@ public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
         super(ModMachines.MELTING_CRUCIBLE, pos, blockState);
         initializeDefaultEnergyAndTank();
         setTank(createBasicTank(16000, true, false));
-        setInventory(createBasicInventory(1, true, i -> findRecipe()));
+        setInventory(createRecipeFinderInventory(1, outputSlots));
+        setRecipeTypeAndContainer(ModRecipes.MELTING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
         screenInfo.attachTankToLeft(0);
-    }
-
-    private final RecipeCache<MeltingRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
-
-    @Override
-    protected void findRecipe() {
-        this.recipeCache.findRecipe(ModRecipes.MELTING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
     }
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoOutputFluids(lvl, pos);
-        MeltingRecipe recipe = recipeCache.getRecipe();
+        MeltingRecipe recipe = recipeCache.getRecipe(MeltingRecipe.class);
         if (recipe == null) {
             progress = 0;
             return;

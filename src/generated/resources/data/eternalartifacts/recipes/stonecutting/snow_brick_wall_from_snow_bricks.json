@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "eternalartifacts:snow_bricks"
+  },
+  "result": "eternalartifacts:snow_brick_wall"
+}

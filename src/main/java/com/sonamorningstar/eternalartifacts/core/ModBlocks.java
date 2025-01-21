@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import net.minecraft.util.valueproviders.ConstantInt;
@@ -179,7 +180,7 @@ public class ModBlocks {
                     .noOcclusion()
                     .strength(0.3F)
             ));
-    public static final DeferredBlock<FlowerBlock> TIGRIS_FLOWER = registerWithItem("tigris_flower", TigrisFlowerBlock::new);
+    public static final DeferredBlock<FlowerBlock> TIGRIS_FLOWER = registerWithItem("tigris_flower", TigrisFlowerBlock::new, TigrisFlowerItem.class);
     public static final DeferredBlock<FlowerPotBlock> POTTED_TIGRIS = registerNoItem("potted_tigris", ()-> flowerPot(TIGRIS_FLOWER));
 
     public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerOreBerryBlock("copper");

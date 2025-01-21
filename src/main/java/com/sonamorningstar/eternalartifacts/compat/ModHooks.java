@@ -1,6 +1,10 @@
-package com.sonamorningstar.eternalartifacts.event.hooks;
+package com.sonamorningstar.eternalartifacts.compat;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.compat.appleskin.AppleSkinCompat;
+import com.sonamorningstar.eternalartifacts.compat.emi.EmiCompat;
 import com.sonamorningstar.eternalartifacts.compat.mekanism.MekanismCompat;
 import com.sonamorningstar.eternalartifacts.compat.pneumaticcraft.PneumaticCraftCompat;
 import net.minecraft.tags.TagKey;
@@ -24,17 +28,20 @@ public final class ModHooks {
     public static final String MEKANISM_GENERATORS_ID = "mekanismgenerators";
     public static final String PNEUMATICCRAFT_ID = "pneumaticcraft";
     public static final String APPLESKIN_ID = "appleskin";
+    public static final String EMI_ID = "emi";
 
     public final boolean mekanismLoaded;
     public final boolean mekanismGeneratorsLoaded;
     public final boolean pneumaticcraftLoaded;
     public final boolean appleskinLoaded;
+    public final boolean emiLoaded;
 
     public ModHooks() {
         mekanismLoaded = check.test(MEKANISM_ID);
         mekanismGeneratorsLoaded = check.test(MEKANISM_GENERATORS_ID);
         pneumaticcraftLoaded = check.test(PNEUMATICCRAFT_ID);
         appleskinLoaded = check.test(APPLESKIN_ID);
+        emiLoaded = check.test(EMI_ID);
     }
 
     public void construct(final IEventBus modEventBus) {
@@ -54,9 +61,13 @@ public final class ModHooks {
             NeoForge.EVENT_BUS.addListener(AppleSkinCompat::registerFoodValues);
             AppleSkinCompat.run(modEventBus);
         }
+        if (emiLoaded) {
+            EmiCompat.runData();
+        }
     }
 
-    public static class ItemTagAppender{
+    public static class ItemTagAppender
+    {
         public static final Map<TagKey<Item>, List<Supplier<Item>>> itemTags = new ConcurrentHashMap<>();
         public static final Map<TagKey<Item>, List<TagKey<Item>>> tagKeyTags = new ConcurrentHashMap<>();
 
@@ -68,6 +79,13 @@ public final class ModHooks {
         public static void appendTagKey(TagKey<Item> tagKey, TagKey<Item>... appended) {
             tagKeyTags.put(tagKey, List.of(appended));
         }
-
+    }
+    
+    public static class LanguageProvider {
+        public static final Multimap<String, Pair<String, String>> langMap = HashMultimap.create();
+        
+        public static void appendLang(String loc, String key, String value) {
+            langMap.put(loc, Pair.of(key, value));
+        }
     }
 }

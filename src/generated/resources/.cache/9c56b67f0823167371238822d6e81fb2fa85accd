@@ -1,8 +1,9 @@
-// 1.20.4	2025-01-09T15:16:55.6627952	Item Models: eternalartifacts
+// 1.20.4	2025-01-21T00:47:59.9615628	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
+c19be92cf04366a84cc5be7c50d5b9094a5ddbb0 assets/eternalartifacts/models/item/angelic_heart.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
 b546b8d9ec294354b8c659a094b58c2bc0ef108f assets/eternalartifacts/models/item/banana.json
@@ -34,6 +35,7 @@ cdc897d603b343e881b0dabb96a42c3ab5da8aab assets/eternalartifacts/models/item/chl
 731a88b67cfec3e767410bddd323fbf328d75c20 assets/eternalartifacts/models/item/coal_dust.json
 bf77f67fd8c990275a3cbb8bc0058da8772af063 assets/eternalartifacts/models/item/comfy_shoes.json
 b5822a0159b1b653b3187d816dafe7752494e44c assets/eternalartifacts/models/item/compressor.json
+e1fc408317bc6ea3827ddc95e03dcf901667f36a assets/eternalartifacts/models/item/configuration_drive.json
 c4b6d532ce2e21a9a09107482c4b2398be18c975 assets/eternalartifacts/models/item/cooked_duck_meat.json
 84fedefcdb1bac4a8f7eb9e315af21790725c4a1 assets/eternalartifacts/models/item/cooked_meat_ingot.json
 606cb4e9d3f2cb5bd17a3ab9ee8e9114ae99ad59 assets/eternalartifacts/models/item/copper_axe.json
@@ -93,6 +95,7 @@ bbc068e61f4ca3d7bb315614a2d2cca1a6d00bdb assets/eternalartifacts/models/item/gra
 f7b570ee102e6034c44a3b6b40ee40bdaf18d3ec assets/eternalartifacts/models/item/gray_shulker_shell.json
 bea8fef3470b4a38d2f75805362ea521579e4467 assets/eternalartifacts/models/item/green_shulker_shell.json
 17cea3c921ca033b040efdb8c0d358402f8ec92f assets/eternalartifacts/models/item/hammaxe.json
+59dc787c520658967dbc687998270ea969a5cbf1 assets/eternalartifacts/models/item/heart_necklace.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
 fc4fce82723f7d09cc6fce17f5bfd223b0b48d13 assets/eternalartifacts/models/item/hot_spring_water_bucket.json
 a9070a20a23138343210ca678b8019924f4169e9 assets/eternalartifacts/models/item/ice_brick_slab.json

@@ -1,0 +1,20 @@
+{
+  "type": "eternalartifacts:add_item_list",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {}
+    },
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/ender_dragon"
+    }
+  ],
+  "itemstack": [
+    {
+      "Count": 1,
+      "id": "eternalartifacts:angelic_heart"
+    }
+  ]
+}

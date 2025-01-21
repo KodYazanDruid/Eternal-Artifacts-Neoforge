@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "eternalartifacts:chlorophyte_debris"
+  },
+  "output": {
+    "Count": 8,
+    "id": "eternalartifacts:plant_matter"
+  }
+}

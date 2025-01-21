@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
-import com.sonamorningstar.eternalartifacts.event.TagReloadListener;
+import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
@@ -137,7 +137,7 @@ public class CommonEvents {
                     float health = player.getHealth();
                     float absorption = player.getAbsorptionAmount();
                     float maxHealth = player.getMaxHealth();
-                    if (health + absorption <= damage || health + absorption / maxHealth <= 0.5) {
+                    if (health + absorption <= damage || (health + absorption) / maxHealth <= 0.5) {
                         player.addEffect(new MobEffectInstance(ModEffects.DIVINE_PROTECTION.get(), 600, 0));
                         player.getCooldowns().addCooldown(dagger, 6000);
                         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
@@ -188,8 +188,10 @@ public class CommonEvents {
                 Packet<?> packet = ((ComplexItem)stack.getItem()).getUpdatePacket(stack, sp.level(), sp);
                 if (packet != null) sp.connection.send(packet);
             }
-            CharmTickEvent charmEvent = new CharmTickEvent(living, stack, i);
-            NeoForge.EVENT_BUS.post(charmEvent);
+            if (i != 12 || CharmStorage.canHaveWildcard(living)) {
+                CharmTickEvent charmEvent = new CharmTickEvent(living, stack, i);
+                NeoForge.EVENT_BUS.post(charmEvent);
+            }
         }
     }
 
@@ -267,21 +269,25 @@ public class CommonEvents {
         boolean wasDeath = event.isWasDeath();
         var oldCharms = CharmStorage.get(oldPlayer);
         var newCharms = CharmStorage.get(newPlayer);
-        for (int i = 0; i < oldCharms.getSlots(); i++) {
-            ItemStack oldStack = oldCharms.getStackInSlot(i);
-            if (wasDeath) {
+
+        if (wasDeath) {
+            Level level = oldPlayer.level();
+            boolean doKeep = level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
+
+            for (int i = 0; i < oldCharms.getSlots(); i++) {
+                ItemStack oldStack = oldCharms.getStackInSlot(i);
                 if (EnchantmentHelper.hasVanishingCurse(oldStack)) oldCharms.setStackInSlot(i, ItemStack.EMPTY);
-                if (SoulboundEnchantment.has(oldStack)) newCharms.setStackInSlot(i, oldStack.copyAndClear());
-                oldPlayer.drop(oldStack, true,false);
+                if (SoulboundEnchantment.has(oldStack) || doKeep) newCharms.setStackInSlot(i, oldStack.copyAndClear());
+                else oldPlayer.drop(oldStack, true,false);
             }
-        }
-        Level level = oldPlayer.level();
-        if (wasDeath && !(level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY) || oldPlayer.isSpectator())) {
-            Inventory oldInventory = oldPlayer.getInventory();
-            Inventory newInventory = newPlayer.getInventory();
-            for (int i = 0; i < oldInventory.getContainerSize(); i++) {
-                ItemStack stack = oldInventory.getItem(i);
-                if (SoulboundEnchantment.has(stack)) newInventory.setItem(i, oldInventory.getItem(i));
+
+            if (!(doKeep || oldPlayer.isSpectator())) {
+                Inventory oldInventory = oldPlayer.getInventory();
+                Inventory newInventory = newPlayer.getInventory();
+                for (int i = 0; i < oldInventory.getContainerSize(); i++) {
+                    ItemStack stack = oldInventory.getItem(i);
+                    if (SoulboundEnchantment.has(stack)) newInventory.setItem(i, oldInventory.getItem(i));
+                }
             }
         }
     }
@@ -448,6 +454,6 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void registerResourceReloadEvent(AddReloadListenerEvent event) {
-        event.addListener(new TagReloadListener());
+        event.addListener(new ModResourceReloadListener());
     }
 }

@@ -9,11 +9,13 @@ import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.network.UpdateEntityEnergyToClient;
+import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -68,12 +70,12 @@ public class ClientProxy {
 
     public static void handleUpdateCharms(UpdateCharmsToClient packet, PlayPayloadContext ctx) {
         mc.executeBlocking(()-> {
-            Entity entity = mc.level.getEntity(packet.playerId());
-            if (entity instanceof Player pl){
-                CharmStorage charms = new CharmStorage(pl);
+            Entity entity = mc.level.getEntity(packet.entityId());
+            if (entity instanceof LivingEntity living){
+                CharmStorage charms = new CharmStorage(living);
                 for (int i = 0; i < packet.items().size(); i++)
                     charms.setStackInSlot(i, packet.items().get(i));
-                pl.setData(ModDataAttachments.CHARMS, charms);
+                living.setData(ModDataAttachments.CHARMS, charms);
                 TabHandler tabs = TabHandler.INSTANCE;
                 if (tabs != null) tabs.reloadTabs();
             }
@@ -91,5 +93,15 @@ public class ClientProxy {
                 }
             }
         }));
+    }
+    
+    public static void handleCycleWildcard(CycleWildcardToClient packet, PlayPayloadContext ctx) {
+        mc.executeBlocking(()-> {
+            Entity entity = mc.level.getEntity(packet.entityId());
+            if (entity instanceof LivingEntity living) {
+                var charms = CharmStorage.get(living);
+                charms.setWildcardNbt(packet.value());
+            }
+        });
     }
 }

@@ -11,6 +11,7 @@ public class ModLootTableProvider extends net.minecraft.data.loot.LootTableProvi
                 new SubProviderEntry(ModBlockLootSubProvider::new, LootContextParamSets.BLOCK),
                 new SubProviderEntry(ModEntityLootSubProvider::new, LootContextParamSets.ENTITY),
                 new SubProviderEntry(GiftLootSubProvider::new, LootContextParamSets.GIFT),
+                new SubProviderEntry(ModChestLootSubProvider::new, LootContextParamSets.CHEST),
                 new SubProviderEntry(ModLootSubProvider::new, LootContextParamSets.EMPTY)
         ));
     }

@@ -34,7 +34,6 @@ public record OpenItemStackScreenToClient(ItemStack stack) implements CustomPack
         if(ctx.flow().isClientbound()){
             ctx.workHandler().execute(() -> {
                 if (ctx.player().isPresent()) {
-                    //ClientProxy.openEnderNotebook(stack);
                     ClientProxy.requestScreen(stack);
                 };
             });

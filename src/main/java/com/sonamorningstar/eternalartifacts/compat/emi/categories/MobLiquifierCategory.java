@@ -84,8 +84,11 @@ public class MobLiquifierCategory extends EAEmiRecipe {
 
     public static void fillRecipes(EmiRegistry registry) {
         for(MobLiquifierRecipe recipe : registry.getRecipeManager().getAllRecipesFor(ModRecipes.MOB_LIQUIFYING.getType()).stream().map(RecipeHolder::value).toList()) {
-            ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(recipe.getEntity().getEntityTypes()[0]);
-            registry.addRecipe(new MobLiquifierCategory(recipe, new ResourceLocation(MODID, ("mob_liquifying/"+id.toString().replace(":", "/")))));
+            ResourceLocation id = BuiltInRegistries.RECIPE_TYPE.getKey(recipe.getType());
+            String path;
+            if (recipe.getEntity().values[0] instanceof EntityIngredient.TagValue tagValue) path = tagValue.tag().location().getPath();
+            else path = BuiltInRegistries.ENTITY_TYPE.getKey(recipe.getEntity().getEntityTypes()[0]).getPath();
+            registry.addRecipe(new MobLiquifierCategory(recipe, new ResourceLocation(id.getNamespace(), "/mob_liquifying/"+path)));
         }
     }
 }

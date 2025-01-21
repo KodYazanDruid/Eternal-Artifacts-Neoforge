@@ -32,7 +32,7 @@ public class ModPlacedFeatures {
         context.register(PLACED_GRAVEL_IRON_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_IRON_ORE), createListWithRarity(350)));
         context.register(PLACED_GRAVEL_GOLD_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_GOLD_ORE), createListWithRarity(500)));
         context.register(PLACED_MANGANESE_ORE_MIDDLE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE),
-                commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-24), VerticalAnchor.absolute(56)))));
+                commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(36)))));
         context.register(PLACED_MANGANESE_ORE_SMALL, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE),
                 commonOrePlacement(10, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72)))));
     }

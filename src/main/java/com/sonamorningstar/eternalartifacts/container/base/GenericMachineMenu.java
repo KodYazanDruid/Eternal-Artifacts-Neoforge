@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class GenericMachineMenu extends AbstractMachineMenu {
@@ -30,15 +31,15 @@ public class GenericMachineMenu extends AbstractMachineMenu {
                 int inputIndex = getBeInventory().getSlots() - outputSlots.size();
                 for (int i = 0; i < beInventory.getSlots(); i++) {
                     if (outputSlots.contains(i))
-                        addSlot(new ModSlotItemHandler((ModItemStorage) beInventory, i, arrowX + 25 + slotArrowPadding + (outputSlots.indexOf(i) * 18), arrowY-1));
+                        addSlot(new SlotItemHandler((ModItemStorage) beInventory, i, arrowX + 25 + slotArrowPadding + (outputSlots.indexOf(i) * 18), arrowY-1));
                     else {
-                        addSlot(new ModSlotItemHandler((ModItemStorage) beInventory, i, arrowX - slotArrowPadding - (inputIndex * 18), arrowY-1));
+                        addSlot(new SlotItemHandler((ModItemStorage) beInventory, i, arrowX - slotArrowPadding - (inputIndex * 18), arrowY-1));
                         inputIndex--;
                     }
                 }
-            } else{
+            } else {
                 screenInfo.getSlotPositions().forEach((slot, pair) -> {
-                    addSlot(new ModSlotItemHandler((ModItemStorage) beInventory, slot, pair.getFirst(), pair.getSecond()));
+                    addSlot(new SlotItemHandler((ModItemStorage) beInventory, slot, pair.getFirst(), pair.getSecond()));
                 });
             }
         }

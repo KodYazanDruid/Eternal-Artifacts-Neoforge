@@ -13,6 +13,27 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 public class PlayerCharmManager {
+    
+    public static ItemStack getHeadEquipment(LivingEntity living) {
+        CharmStorage charms = CharmStorage.get(living);
+        ItemStack itemStack = charms.getStackInSlot(0);
+        return itemStack.isEmpty() ? CharmStorage.canHaveWildcard(living) ? charms.getStackInSlot(12) : itemStack : itemStack;
+    }
+    public static ItemStack getChestEquipment(LivingEntity living) {
+        CharmStorage charms = CharmStorage.get(living);
+        ItemStack itemStack = charms.getStackInSlot(9);
+        return itemStack.isEmpty() ? CharmStorage.canHaveWildcard(living) ? charms.getStackInSlot(12) : itemStack : itemStack;
+    }
+    public static ItemStack getLegsEquipment(LivingEntity living) {
+        CharmStorage charms = CharmStorage.get(living);
+        ItemStack itemStack = charms.getStackInSlot(4);
+        return itemStack.isEmpty() ? CharmStorage.canHaveWildcard(living) ? charms.getStackInSlot(12) : itemStack : itemStack;
+    }
+    public static ItemStack getFeetEquipment(LivingEntity living) {
+        CharmStorage charms = CharmStorage.get(living);
+        ItemStack itemStack = charms.getStackInSlot(5);
+        return itemStack.isEmpty() ? CharmStorage.canHaveWildcard(living) ? charms.getStackInSlot(12) : itemStack : itemStack;
+    }
 
     public static ItemStack findCharm(LivingEntity living, Item charm) {
         CharmStorage charms = living.getData(ModDataAttachments.CHARMS);

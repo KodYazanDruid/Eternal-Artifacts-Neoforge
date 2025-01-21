@@ -50,14 +50,16 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createForParticle(ModBlocks.NOUS_TANK, Blocks.GLASS);
         createForParticle(ModMachines.OIL_REFINERY.getBlockHolder(), Blocks.GLASS);
         createForParticle(ModBlocks.ENERGY_DOCK, new ResourceLocation(MODID, "block/machine_side"));
+        createForParticle(ModBlocks.FLUID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 
-        stateOutput.accept(
+        /*stateOutput.accept(
                 createSimpleBlock(
                         ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                        ModelTemplates.PARTICLE_ONLY.create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), TextureMapping.particle(new ResourceLocation(MODID, "block/machine_side")), modelOutput)
-                ));
+                        ModelTemplates.PARTICLE_ONLY.create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
+                                TextureMapping.particle(new ResourceLocation(MODID, "block/machine_side")), modelOutput)
+                ));*/
 
         cable(ModBlocks.COPPER_CABLE.get(), false);
         cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);

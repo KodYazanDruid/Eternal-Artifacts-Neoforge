@@ -25,7 +25,9 @@ public enum ModConstants {
     CHLOROPHYTE_UPGRADE_ADDITIONS_SLOT_DESCRIPTION(Util.makeDescriptionId("item", new ResourceLocation(MODID,"smithing_template.chlorophyte_upgrade.additions_slot_description"))),
     INVENTORY_TAB("inventory_tab."+MODID),
     CHARM_TYPE("charm_type."+MODID),
-    CHARM_SLOT_MODIFIER("charm_slot."+MODID+".modifier");
+    CHARM_SLOT_MODIFIER("charm_slot."+MODID+".modifier"),
+    COMMAND("command."+MODID),
+    FILLED_MAP("filled_map."+MODID);
 
     final String string;
     ModConstants(String string) {

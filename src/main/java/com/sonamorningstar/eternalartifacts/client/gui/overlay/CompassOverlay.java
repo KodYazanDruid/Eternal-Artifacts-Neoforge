@@ -15,6 +15,10 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 public class CompassOverlay extends ModGuiOverlay{
+    public CompassOverlay() {
+        super(25, 26);
+    }
+    
     @Override
     public void render(ExtendedGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Player player = gui.getMinecraft().player;
@@ -25,6 +29,7 @@ public class CompassOverlay extends ModGuiOverlay{
             int y = 20;
             Component loc = getLocation(compass, player);
             int strWidth = getComponentWidth(loc);
+            setStrWidth(strWidth);
             renderBlankBlack(guiGraphics, x - 3, y - 5, strWidth + 25, 26, 0.5F);
             guiGraphics.renderItem(compass, x, y);
             guiGraphics.drawString(gui.getFont(), loc, x + 20, y + 5, 16777215, false);

@@ -4,7 +4,6 @@ import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
-import mekanism.common.lib.collection.HashList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -22,9 +21,9 @@ import java.util.Objects;
 public class CableBlockEntity extends ModBlockEntity implements ITickableServer {
     public final IEnergyStorage energy;
 
-    private final LinkedHashSet<CableConsumer> sources = new HashList<>();
-    private final LinkedHashSet<CableConsumer> targets = new HashList<>();
-    private final LinkedHashSet<BlockPos> cables = new HashList<>();
+    private final LinkedHashSet<CableConsumer> sources = new LinkedHashSet<>();
+    private final LinkedHashSet<CableConsumer> targets = new LinkedHashSet<>();
+    private final LinkedHashSet<BlockPos> cables = new LinkedHashSet<>();
 
     public CableBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CABLE.get(), pos, state);

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.ShapedRetexturedRecipe;
+import lombok.Getter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +20,7 @@ import java.util.function.Supplier;
 
 public class RecipeDeferredRegister {
     private final String namespace;
+    @Getter
     private final DeferredRegister<RecipeType<?>> recipeType;
     private final DeferredRegister<RecipeSerializer<?>> recipeSerializer;
     private final List<RecipeDeferredHolder<? extends Container, ? extends Recipe<?>>> recipes = new ArrayList<>();

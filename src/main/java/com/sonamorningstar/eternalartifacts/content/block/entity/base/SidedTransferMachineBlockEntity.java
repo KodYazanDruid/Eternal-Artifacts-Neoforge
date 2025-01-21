@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,7 +32,9 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
     }
     private Map<Integer, TransferType> sideConfigs = new HashMap<>(6);
     private Map<Integer, Boolean> autoConfigs = new HashMap<>(4);
+    private final MachineConfiguration configuration = new MachineConfiguration(this);
 
+    //region Transfers
     protected void performAutoInputItems(Level lvl, BlockPos pos) {
         boolean isAllowedAuto = autoConfigs.get(0) != null && autoConfigs.get(0);
         boolean isDisabled = autoConfigs.get(2) != null && autoConfigs.get(2);
@@ -112,6 +116,7 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             outputEnergyToDir(lvl, pos, dir, energy);
         }
     }
+    //endregion
 
     @Override
     public void load(CompoundTag tag) {
@@ -121,16 +126,23 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             CompoundTag entry = sideConfigs.getCompound(i);
             this.sideConfigs.put(entry.getInt("Index"), TransferType.valueOf(entry.getString("Type")));
         }
+        for (int i = 0; i < 6; i++) {
+            this.sideConfigs.putIfAbsent(i, TransferType.DEFAULT);
+        }
         ListTag autoConfigs = tag.getList("AutoConfigs", Tag.TAG_COMPOUND);
         for(int i = 0; i < autoConfigs.size(); i++) {
             CompoundTag entry = autoConfigs.getCompound(i);
             this.autoConfigs.put(entry.getInt("Index"), entry.getBoolean("Enabled"));
+        }
+        for (int i = 0; i < 4; i++) {
+            this.autoConfigs.putIfAbsent(i, false);
         }
         ListTag redstoneConfigs = tag.getList("RedstoneConfigs", Tag.TAG_COMPOUND);
         for(int i = 0; i < redstoneConfigs.size(); i++) {
             CompoundTag entry = redstoneConfigs.getCompound(i);
             this.redstoneConfigs.put(entry.getInt("Index"), RedstoneType.valueOf(entry.getString("Type")));
         }
+        this.redstoneConfigs.putIfAbsent(0, RedstoneType.IGNORED);
     }
 
     @Override
@@ -160,6 +172,113 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             redstoneConfigs.add(entry);
         });
         tag.put("RedstoneConfigs", redstoneConfigs);
+        for (int i = 0; i < 6; i++) {
+            this.sideConfigs.putIfAbsent(i, TransferType.DEFAULT);
+        }
+        for (int i = 0; i < 4; i++) {
+            this.autoConfigs.putIfAbsent(i, false);
+        }
+        this.redstoneConfigs.putIfAbsent(0, RedstoneType.IGNORED);
+        /*ListTag sideConfigs = new ListTag();
+        this.sideConfigs.forEach((k, v) -> {
+            if (v != TransferType.DEFAULT) {
+                CompoundTag entry = new CompoundTag();
+                entry.putInt("Index", k);
+                entry.putString("Type", v.toString());
+                sideConfigs.add(entry);
+            }
+        });
+        tag.put("SideConfigs", sideConfigs);
+        ListTag autoConfigs = new ListTag();
+        this.autoConfigs.forEach((k, v) -> {
+            if (v) {
+                CompoundTag entry = new CompoundTag();
+                entry.putInt("Index", k);
+                entry.putBoolean("Enabled", v);
+                autoConfigs.add(entry);
+            }
+        });
+        tag.put("AutoConfigs", autoConfigs);
+        ListTag redstoneConfigs = new ListTag();
+        this.redstoneConfigs.forEach((k, v) -> {
+            if (v != RedstoneType.IGNORED) {
+                CompoundTag entry = new CompoundTag();
+                entry.putInt("Index", k);
+                entry.putString("Type", v.toString());
+                redstoneConfigs.add(entry);
+            }
+        });
+        tag.put("RedstoneConfigs", redstoneConfigs);*/
+    }
+
+    @Override
+    public void loadContents(CompoundTag additionalTag) {
+        super.loadContents(additionalTag);
+        //configuration.deserializeNBT(additionalTag.getCompound("SidedTransferConfigs"));
+        CompoundTag tag = additionalTag.getCompound("SidedTransferConfigs");
+        ListTag sideConfigs = tag.getList("SideConfigs", Tag.TAG_COMPOUND);
+        this.sideConfigs = new HashMap<>(6);
+        for(int i = 0; i < sideConfigs.size(); i++) {
+            CompoundTag entry = sideConfigs.getCompound(i);
+            this.sideConfigs.put(entry.getInt("Index"), TransferType.valueOf(entry.getString("Type")));
+        }
+        for (int i = 0; i < 6; i++) {
+            this.sideConfigs.putIfAbsent(i, TransferType.DEFAULT);
+        }
+        ListTag autoConfigs = tag.getList("AutoConfigs", Tag.TAG_COMPOUND);
+        this.autoConfigs = new HashMap<>(4);
+        for(int i = 0; i < autoConfigs.size(); i++) {
+            CompoundTag entry = autoConfigs.getCompound(i);
+            this.autoConfigs.put(entry.getInt("Index"), entry.getBoolean("Enabled"));
+        }
+        for (int i = 0; i < 4; i++) {
+            this.autoConfigs.putIfAbsent(i, false);
+        }
+        ListTag redstoneConfigs = tag.getList("RedstoneConfigs", Tag.TAG_COMPOUND);
+        this.redstoneConfigs = new HashMap<>(1);
+        for(int i = 0; i < redstoneConfigs.size(); i++) {
+            CompoundTag entry = redstoneConfigs.getCompound(i);
+            this.redstoneConfigs.put(entry.getInt("Index"), RedstoneType.valueOf(entry.getString("Type")));
+        }
+        this.redstoneConfigs.putIfAbsent(0, RedstoneType.IGNORED);
+    }
+
+    @Override
+    public void saveContents(CompoundTag additionalTag) {
+        super.saveContents(additionalTag);
+        //additionalTag.put("SidedTransferConfigs", configuration.serializeNBT());
+        CompoundTag tag = new CompoundTag();
+        ListTag sideConfigs = new ListTag();
+        this.sideConfigs.forEach((k, v) -> {
+            if (v != TransferType.DEFAULT) {
+                CompoundTag entry = new CompoundTag();
+                entry.putInt("Index", k);
+                entry.putString("Type", v.toString());
+                sideConfigs.add(entry);
+            }
+        });
+        tag.put("SideConfigs", sideConfigs);
+        ListTag autoConfigs = new ListTag();
+        this.autoConfigs.forEach((k, v) -> {
+            if (v) {
+                CompoundTag entry = new CompoundTag();
+                entry.putInt("Index", k);
+                entry.putBoolean("Enabled", v);
+                autoConfigs.add(entry);
+            }
+        });
+        tag.put("AutoConfigs", autoConfigs);
+        ListTag redstoneConfigs = new ListTag();
+        this.redstoneConfigs.forEach((k, v) -> {
+            if (v != RedstoneType.IGNORED) {
+                CompoundTag entry = new CompoundTag();
+                entry.putInt("Index", k);
+                entry.putString("Type", v.toString());
+                redstoneConfigs.add(entry);
+            }
+        });
+        tag.put("RedstoneConfigs", redstoneConfigs);
+        additionalTag.put("SidedTransferConfigs", tag);
     }
 
     public static boolean canPerformTransfer(SidedTransferMachineBlockEntity<?> be, Direction dir, TransferType wanted) {
@@ -197,6 +316,39 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
             case 5 -> facing.getOpposite();
             default -> throw new IllegalStateException("Unexpected value: " + index);
         };
+    }
+
+    public void loadConfiguration(ItemStack drive) {
+        if (drive.hasTag()){
+            CompoundTag tag = drive.getTag();
+            CompoundTag configs = tag.getCompound("SidedTransferConfigs");
+            ListTag sideTag = configs.getList("SideConfigs", Tag.TAG_COMPOUND);
+            this.sideConfigs = new HashMap<>(6);
+            for (int i = 0; i < sideTag.size(); i++) {
+                CompoundTag entry = sideTag.getCompound(i);
+                this.sideConfigs.put(entry.getInt("Index"), TransferType.valueOf(entry.getString("Type")));
+            }
+            for (int i = 0; i < 6; i++) {
+                this.sideConfigs.putIfAbsent(i, TransferType.DEFAULT);
+            }
+            this.autoConfigs = new HashMap<>(4);
+            ListTag autoTag = configs.getList("AutoConfigs", Tag.TAG_COMPOUND);
+            for (int i = 0; i < autoTag.size(); i++) {
+                CompoundTag entry = autoTag.getCompound(i);
+                this.autoConfigs.put(entry.getInt("Index"), entry.getBoolean("Enabled"));
+            }
+            for (int i = 0; i < 4; i++) {
+                this.autoConfigs.putIfAbsent(i, false);
+            }
+            this.redstoneConfigs = new HashMap<>(1);
+            ListTag redstoneTag = configs.getList("RedstoneConfigs", Tag.TAG_COMPOUND);
+            for (int i = 0; i < redstoneTag.size(); i++) {
+                CompoundTag entry = redstoneTag.getCompound(i);
+                this.redstoneConfigs.put(entry.getInt("Index"), RedstoneType.valueOf(entry.getString("Type")));
+            }
+            this.redstoneConfigs.putIfAbsent(0, RedstoneType.IGNORED);
+            sendUpdate();
+        }
     }
 
     public enum TransferType {

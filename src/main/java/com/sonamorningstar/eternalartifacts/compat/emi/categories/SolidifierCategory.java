@@ -12,10 +12,9 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class SolidifierCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory SOLIDIFIER_CATEGORY = createCategory(ModRecipes.SOLIDIFYING, ModMachines.SOLIDIFIER);
@@ -42,8 +41,13 @@ public class SolidifierCategory extends EAEmiRecipe {
 
     public static void fillRecipes(EmiRegistry registry) {
         for(SolidifierRecipe recipe : registry.getRecipeManager().getAllRecipesFor(ModRecipes.SOLIDIFYING.getType()).stream().map(RecipeHolder::value).toList()) {
-            ResourceLocation id = BuiltInRegistries.FLUID.getKey(recipe.getInputFluid().getFluidStacks()[0].getFluid());
-            registry.addRecipe(new SolidifierCategory(recipe, new ResourceLocation(MODID, ("solidifying/"+id.toString().replace(":", "/")))));
+            ResourceLocation id = BuiltInRegistries.RECIPE_TYPE.getKey(recipe.getType());
+            String resultPath = BuiltInRegistries.ITEM.getKey(recipe.getOutput().getItem()).getPath();
+            String path;
+            if (recipe.getInputFluid().values[0] instanceof FluidIngredient.TagValue tagValue) path = tagValue.tag().location().getPath();
+            else path = BuiltInRegistries.FLUID.getKey(recipe.getInputFluid().getFluidStacks()[0].getFluid()).getPath();
+            registry.addRecipe(new SolidifierCategory(recipe,
+                    new ResourceLocation(id.getNamespace(), "/solidifying/"+path+"_to_"+resultPath)));
         }
     }
 }

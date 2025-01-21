@@ -4,7 +4,9 @@
     "minecraft:dispenser",
     "minecraft:bucket",
     "minecraft:carved_pumpkin",
+    "minecraft:observer",
     "#eternalartifacts:shulker_shell",
-    "#forge:glass"
+    "#forge:glass",
+    "#minecraft:banners"
   ]
 }

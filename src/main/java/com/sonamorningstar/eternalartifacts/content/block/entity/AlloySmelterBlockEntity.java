@@ -23,8 +23,6 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
         screenInfo.setArrowXOffset(16);
     }
 
-    private final RecipeCache<AlloyingRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
-
     @Override
     protected void findRecipe() {
         recipeCache.findRecipe(ModRecipes.ALLOYING.getType(), new SimpleContainer(inventory.getStackInSlot(0), inventory.getStackInSlot(1), inventory.getStackInSlot(2)), level);
@@ -34,7 +32,7 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
 
-        AlloyingRecipe recipe = recipeCache.getRecipe();
+        AlloyingRecipe recipe = ((AlloyingRecipe) recipeCache.getRecipe());
         if (recipe == null) {
             progress = 0;
             return;

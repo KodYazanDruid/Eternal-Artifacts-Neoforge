@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:honeycomb_block"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:honeycomb"
+  }
+}

@@ -61,6 +61,7 @@ public class CommonModEvents {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,50000,2500), ModItems.BATTERY.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,75000,15000), ModItems.PORTABLE_BATTERY.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,25000,5000), ModItems.LIGHTSABER.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,10000,500), ModItems.CONFIGURATION_DRIVE.get());
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
@@ -179,6 +180,7 @@ public class CommonModEvents {
         event.register(
             CharmAttributes.Builder.of(ModItems.COMFY_SHOES)
             .addModifier(NeoForgeMod.STEP_HEIGHT.value(), ComfyShoesItem.getStepHeight())
+            .addModifier(Attributes.MOVEMENT_SPEED, getMod("Comfy Shoes Charm Movement Speed", 0.1D, AttributeModifier.Operation.MULTIPLY_TOTAL))
             .addType(CharmType.FEET).build()
         );
         event.register(
@@ -187,6 +189,17 @@ public class CommonModEvents {
             .addModifier(Attributes.ATTACK_SPEED, getMod("Robotic Glove Charm Attack Speed", 0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL))
             .addModifier(NeoForgeMod.BLOCK_REACH.value(), getMod("Robotic Glove Charm Block Reach", -1))
             .addType(CharmType.HAND).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(Items.OBSERVER)
+            .addModifier(NeoForgeMod.ENTITY_REACH.value(), getMod("Observer Charm Entity Reach", 1))
+            .addModifier(NeoForgeMod.BLOCK_REACH.value(), getMod("Observer Charm Block Reach", 1))
+            .addType(CharmType.HEAD).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.HEART_NECKLACE)
+            .addModifier(Attributes.MAX_HEALTH, getMod("Heart Necklace Charm Max Health", 4))
+            .addType(CharmType.NECKLACE).build()
         );
     }
 

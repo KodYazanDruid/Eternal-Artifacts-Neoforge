@@ -12,10 +12,9 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class FluidInfuserCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory FLUID_INFUSER_CATEGORY = createCategory(ModRecipes.FLUID_INFUSING, ModMachines.FLUID_INFUSER);
@@ -44,8 +43,16 @@ public class FluidInfuserCategory extends EAEmiRecipe {
 
     public static void fillRecipes(EmiRegistry registry) {
         for(FluidInfuserRecipe recipe : registry.getRecipeManager().getAllRecipesFor(ModRecipes.FLUID_INFUSING.getType()).stream().map(RecipeHolder::value).toList()) {
-            ResourceLocation id = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem());
-            registry.addRecipe(new FluidInfuserCategory(recipe, new ResourceLocation(MODID, ("fluid_infusion/"+id.toString().replace(":", "/")))));
+            ResourceLocation id = BuiltInRegistries.RECIPE_TYPE.getKey(recipe.getType());
+            String resultPath = BuiltInRegistries.ITEM.getKey(recipe.getOutput().getItem()).getPath();
+            String path;
+            if (recipe.getInput().values[0] instanceof Ingredient.TagValue tagValue) path = tagValue.tag().location().getPath();
+            else path = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem()).getPath();
+            String fluidPath;
+            if (recipe.getInputFluid().getValues()[0] instanceof FluidIngredient.TagValue tagValue) fluidPath = tagValue.tag().location().getPath();
+            else fluidPath = BuiltInRegistries.FLUID.getKey(recipe.getInputFluid().getFluidStacks()[0].getFluid()).getPath();
+            registry.addRecipe(new FluidInfuserCategory(recipe,
+                    new ResourceLocation(id.getNamespace(), "/fluid_infusing/"+path+"_and_"+fluidPath+"_to_"+resultPath)));
         }
     }
 }

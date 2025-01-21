@@ -5,18 +5,17 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
-import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -26,6 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -55,6 +55,25 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if(blockEntity instanceof MachineBlockEntity<?> machine) {
+            if (!(player.getMainHandItem().getItem() instanceof WrenchItem)) {
+                IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
+                if(inventory != null) {
+                    SimpleContainer container = new SimpleContainer(inventory.getSlots());
+                    for (int i = 0; i < inventory.getSlots(); i++) {
+                        container.setItem(i, inventory.getStackInSlot(i));
+                    }
+                    Containers.dropContents(level, pos.immutable(), container);
+                }
+            }
+            machine.invalidateCapabilities();
+        }
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
     @Override
@@ -106,7 +125,6 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
             if (isRemote) {
                 if (be instanceof ITickableClient en) en.tickClient(lvl, pos, st);
             } else if (be instanceof ITickableServer en) en.tickServer(lvl, pos, st);
-
         }
     }
 
@@ -116,7 +134,8 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         Level actualLevel = level.getBlockEntity(pos) != null ? level.getBlockEntity(pos).getLevel() : null;
         FluidStack fs = FluidStack.EMPTY;
         ItemStack stack = new ItemStack(block);
-        if (actualLevel != null) {
+        if (actualLevel != null && stack.hasTag()) {
+            CompoundTag nbt = stack.getTag();
             IFluidHandler fluidHandler = actualLevel.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
             if (fluidHandler != null) {
                 fs = fluidHandler.getFluidInTank(0);
@@ -186,6 +205,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
             CompoundTag machineNbt = nbt.getCompound("MachineData");
             mbe.loadContents(machineNbt);
         }
+
 
     }
 }

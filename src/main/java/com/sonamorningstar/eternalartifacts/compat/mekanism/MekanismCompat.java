@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.compat.mekanism;
 
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
-import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
+import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import mekanism.common.registries.MekanismItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;

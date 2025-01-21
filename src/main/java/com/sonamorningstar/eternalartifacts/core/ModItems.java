@@ -109,6 +109,7 @@ public class ModItems {
     public static final DeferredItem<Item> GREEN_SHULKER_SHELL = register("green_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.GREEN));
     public static final DeferredItem<Item> RED_SHULKER_SHELL = register("red_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.RED));
     public static final DeferredItem<Item> BLACK_SHULKER_SHELL = register("black_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.BLACK));
+    public static final DeferredItem<Item> ANGELIC_HEART = register("angelic_heart", p -> new AngelicHeartItem(p.food(ModFoods.ANGELIC_HEART)));
 
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -136,6 +137,7 @@ public class ModItems {
     public static final DeferredItem<SpellTomeItem<ShulkerBulletsSpell>> SHULKER_BULLETS_TOME = registerTome("shulker_bullets_tome", ModSpells.SHULKER_BULLETS);
     public static final DeferredItem<SpellTomeItem<MeteoriteSpell>> METEORITE_TOME = registerTome("meteorite_tome", ModSpells.METEORITE);
     public static final DeferredItem<Item> ROBOTIC_GLOVE = registerStacksToOne("robotic_glove");
+    public static final DeferredItem<Item> HEART_NECKLACE = registerStacksToOne("heart_necklace");
 
     //Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -182,6 +184,7 @@ public class ModItems {
     public static final DeferredItem<Item> CHLOROPHYTE_SICKLE = registerStacksToOne("chlorophyte_sickle", p -> new SickleItem(ModTiers.CHLOROPHYTE, p));
     public static final DeferredItem<Item> CHISEL = registerStacksToOne("chisel", p -> new ChiselItem(Tiers.DIAMOND, p));
     public static final DeferredItem<Item> PORTABLE_BATTERY = registerStacksToOne("portable_battery", PortableBatteryItem::new);
+    public static final DeferredItem<Item> CONFIGURATION_DRIVE = registerStacksToOne("configuration_drive", ConfigurationDriveItem::new);
 
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

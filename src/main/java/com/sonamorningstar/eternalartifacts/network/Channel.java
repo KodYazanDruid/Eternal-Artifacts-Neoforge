@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
+import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookAddNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.OpenItemStackScreenToClient;
@@ -80,6 +81,9 @@ public class Channel {
         registrar.play(UpdateCharmsToClient.ID,
                 UpdateCharmsToClient::create,
                 handler -> handler.client(UpdateCharmsToClient::handle));
+        registrar.play(CycleWildcardToClient.ID,
+                CycleWildcardToClient::create,
+                handler -> handler.client(CycleWildcardToClient::handle));
         registrar.play(UpdateEntityEnergyToClient.ID,
                 UpdateEntityEnergyToClient::create,
                 handler -> handler.client(UpdateEntityEnergyToClient::handle));
@@ -97,7 +101,11 @@ public class Channel {
         PacketDistributor.ALL.noArg().send(message);
     }
 
-    public static <MSG extends CustomPacketPayload> void sendToSelfAndTracking(MSG message, Entity owner) {
-        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(owner).send(message);
+    public static <MSG extends CustomPacketPayload> void sendToSelfAndTracking(MSG message, Entity tracking) {
+        PacketDistributor.TRACKING_ENTITY_AND_SELF.with(tracking).send(message);
+    }
+    
+    public static <MSG extends CustomPacketPayload> void sendToAllTracking(MSG message, Entity tracked) {
+        PacketDistributor.TRACKING_ENTITY.with(tracked).send(message);
     }
 }

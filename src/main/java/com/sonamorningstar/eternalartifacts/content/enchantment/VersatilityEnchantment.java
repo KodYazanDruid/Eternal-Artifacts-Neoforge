@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.enchantment;
 
 import com.sonamorningstar.eternalartifacts.content.item.ChiselItem;
-import com.sonamorningstar.eternalartifacts.content.item.ChloroveinPickaxeItem;
 import com.sonamorningstar.eternalartifacts.content.item.HammaxeItem;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;

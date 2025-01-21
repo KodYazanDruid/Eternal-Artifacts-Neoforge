@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
@@ -42,6 +41,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
                 createBasicTank(8000, true, false),
                 createBasicTank(8000, true, false)
         ));
+        setRecipeTypeAndContainer(ModRecipes.MOB_LIQUIFYING.getType(), () -> new SimpleEntityContainer(livingList));
         screenInfo.setOverrideArrowPos(true);
         screenInfo.setArrowPos(110, 35);
         screenInfo.setTankPosition(24, 20, 0);
@@ -55,13 +55,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         //buttonConsumerMap.put(0, i -> switchRender());
     }
     List<LivingEntity> livingList = new ArrayList<>();
-    RecipeCache<MobLiquifierRecipe, SimpleEntityContainer> cache = new RecipeCache<>();
     private boolean shouldRenderArea = false;
-
-    @Override
-    protected void findRecipe() {
-        cache.findRecipe(ModRecipes.MOB_LIQUIFYING.getType(), new SimpleEntityContainer(livingList), level);
-    }
 
     public void switchRender() {
         shouldRenderArea = !shouldRenderArea;
@@ -110,7 +104,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
 
         //Entity to hurt
         LivingEntity entityToHurt = null;
-        MobLiquifierRecipe recipe = cache.getRecipe();
+        MobLiquifierRecipe recipe = recipeCache.getRecipe(MobLiquifierRecipe.class);
         //Finding entity to hurt that fits recipe.
         for(LivingEntity living : livingList) {
             findRecipe();

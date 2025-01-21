@@ -1,11 +1,15 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
+import com.sonamorningstar.eternalartifacts.core.ModEffects;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +40,12 @@ public class HammaxeItem extends DiggerItem {
             }
         }
         return copy;
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack pStack, LivingEntity target, LivingEntity pAttacker) {
+        target.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 100, 0));
+        return super.hurtEnemy(pStack, target, pAttacker);
     }
 
     @Override

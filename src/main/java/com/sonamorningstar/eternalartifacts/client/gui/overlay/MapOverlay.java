@@ -21,7 +21,11 @@ import org.joml.Matrix4f;
 public class MapOverlay extends ModGuiOverlay{
     private static final RenderType MAP_BACKGROUND = RenderType.text(new ResourceLocation("textures/map/map_background.png"));
     private static final RenderType MAP_BACKGROUND_CHECKERBOARD = RenderType.text(new ResourceLocation("textures/map/map_background_checkerboard.png"));
-
+    
+    public MapOverlay() {
+        super(92, 92);
+    }
+    
     @Override
     public void render(ExtendedGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Minecraft mc = gui.getMinecraft();

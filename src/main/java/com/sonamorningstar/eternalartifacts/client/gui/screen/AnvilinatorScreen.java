@@ -23,8 +23,8 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMenu> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/gui/anvilator.png");
-    private static final ResourceLocation BARS = new ResourceLocation(MODID, "textures/gui/bars.png");
+    //private static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/gui/anvilator.png");
+    //private static final ResourceLocation BARS = new ResourceLocation(MODID, "textures/gui/bars.png");
     private EditBox name;
     private Button nameSwitchButton;
     private Font switchInfo;
@@ -72,17 +72,14 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     }
 
     @Override
-    protected void renderBg(GuiGraphics pGuiGraphics, float pPartialTick, int pMouseX, int pMouseY) {
-        super.renderBg(pGuiGraphics, pPartialTick, pMouseX, pMouseY);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        pGuiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
-        if(anvilinatorBlockEntity.getEnableNaming()) pGuiGraphics.blit(TEXTURE, x + 70, y + 20, 0, 166, 94, 16);
-        else pGuiGraphics.blit(TEXTURE, x + 70, y + 20, 0, 182, 94, 16);
-        renderProgressArrow(pGuiGraphics, x, y);
-        renderEnergyBar(pGuiGraphics, x, y);
-        renderFluidBar(pGuiGraphics,x, y);
-        renderSwitch(pGuiGraphics, x, y);
+    protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
+        super.renderBg(gui, pPartialTick, mx, my);
+        //gui.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+        /*if(anvilinatorBlockEntity.getEnableNaming()) gui.blit(TEXTURE, leftPos + 70, topPos + 20, 0, 166, 94, 16);
+        else gui.blit(TEXTURE, leftPos + 70, topPos + 20, 0, 182, 94, 16);*/
+        renderDefaultEnergyAndFluidBar(gui);
+        //renderSwitch(gui, leftPos, topPos);
+        renderProgressArrow(gui, leftPos + 122, topPos + 53, mx, my);
     }
 
     // For rendering widgets.
@@ -91,18 +88,12 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     }
 
     //Render misc stuff on the screen.
-    private void renderSwitch(GuiGraphics guiGraphics, int x, int y) {
+    /*private void renderSwitch(GuiGraphics guiGraphics, int x, int y) {
         int offset;
         if(anvilinatorBlockEntity.getEnableNaming()) offset = 0;
         else offset = 5;
         guiGraphics.blit(BARS, x + 69, y + 40, 48, offset, 5, 5);
-    }
-
-    private void renderProgressArrow(GuiGraphics guiGraphics, int x, int y) {
-        if(menu.isWorking()) {
-            guiGraphics.blit(BARS, x + 122, y + 53, 0, 56, menu.getScaledProgress(22), 16);
-        }
-    }
+    }*/
 
     // Returns false when typing on the box.
     @Override

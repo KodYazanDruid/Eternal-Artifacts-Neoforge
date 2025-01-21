@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.SolidifierRecipe;
@@ -19,15 +18,9 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
         setInventory(createBasicInventory(1, false));
         setEnergy(createDefaultEnergy());
         setTank(createRecipeFinderTank(16000,true, true));
+        setRecipeTypeAndContainer(ModRecipes.SOLIDIFYING.getType(), () -> new SimpleFluidContainer(tank.getFluid(0)));
         outputSlots.add(0);
         screenInfo.setArrowXOffset(-40);
-    }
-
-    private final RecipeCache<SolidifierRecipe, SimpleFluidContainer> recipeCache = new RecipeCache<>();
-
-    @Override
-    protected void findRecipe() {
-        recipeCache.findRecipe(ModRecipes.SOLIDIFYING.getType(), new SimpleFluidContainer(tank.getFluid(0)), level);
     }
 
     @Override
@@ -35,7 +28,7 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
         super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
 
-        SolidifierRecipe recipe = recipeCache.getRecipe();
+        SolidifierRecipe recipe = recipeCache.getRecipe(SolidifierRecipe.class);
 
         if (recipe == null) {
             progress = 0;

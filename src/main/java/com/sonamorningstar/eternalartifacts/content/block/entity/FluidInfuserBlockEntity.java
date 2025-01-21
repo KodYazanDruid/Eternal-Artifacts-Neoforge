@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.FluidInfuserRecipe;
@@ -19,17 +18,9 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
         outputSlots.add(1);
         setEnergy(createDefaultEnergy());
         setTank(createBasicTank(16000, this::findRecipe));
-        setInventory(createBasicInventory(2, outputSlots, slot -> {
-            if (!outputSlots.contains(slot)) findRecipe();
-        }));
+        setInventory(createRecipeFinderInventory(2, outputSlots));
+        setRecipeTypeAndContainer(ModRecipes.FLUID_INFUSING.getType(), () -> new ItemFluidContainer(inventory, tank));
         screenInfo.setArrowXOffset(-20);
-    }
-
-    private final RecipeCache<FluidInfuserRecipe, ItemFluidContainer> cache = new RecipeCache<>();
-
-    @Override
-    protected void findRecipe() {
-        this.cache.findRecipe(ModRecipes.FLUID_INFUSING.getType(), new ItemFluidContainer(inventory, tank), level);
     }
 
     @Override
@@ -37,7 +28,7 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
         performAutoInputItems(lvl, pos);
         performAutoOutputItems(lvl, pos);
         performAutoInputFluids(lvl, pos);
-        FluidInfuserRecipe recipe = cache.getRecipe();
+        FluidInfuserRecipe recipe = recipeCache.getRecipe(FluidInfuserRecipe.class);
         if (recipe == null) {
             progress = 0;
             return;

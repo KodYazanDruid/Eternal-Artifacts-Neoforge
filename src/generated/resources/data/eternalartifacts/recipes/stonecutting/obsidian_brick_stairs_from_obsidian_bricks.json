@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "eternalartifacts:obsidian_bricks"
+  },
+  "result": "eternalartifacts:obsidian_brick_stairs"
+}

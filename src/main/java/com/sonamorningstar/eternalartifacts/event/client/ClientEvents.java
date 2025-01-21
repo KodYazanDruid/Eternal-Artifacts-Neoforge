@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -26,10 +27,15 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -50,10 +56,7 @@ import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -108,51 +111,105 @@ public class ClientEvents {
         ItemStack stack = event.getItemStack();
         List<Either<FormattedText, TooltipComponent>> tooltips = event.getTooltipElements();
         List<CharmType> types = CharmType.getTypesOfItem(stack.getItem());
-
-        if (stack.is(ModTags.Items.CHARMS) && ItemStack.shouldShowInTooltip(stack.getHideFlags(), ItemStack.TooltipPart.MODIFIERS)) {
-            for (CharmType type : types) {
-                Set<CharmAttributes> allAttributes = CharmStorage.itemAttributes;
-                for (CharmAttributes attr : allAttributes) {
-                    if (attr.isStackCorrect(stack)){
-                        Multimap<Attribute, AttributeModifier> modifierMap = attr.getModifiers();
-                        if (!modifierMap.isEmpty() && attr.getTypes().contains(type)) {
-                            MutableComponent attributeText = ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName())
-                                    .withStyle(ChatFormatting.GRAY);
-                            tooltips.add(tooltips.size() - 1, Either.left(CommonComponents.EMPTY));
-                            tooltips.add(tooltips.size() - 1, Either.left(attributeText));
-                            for (Map.Entry<Attribute, AttributeModifier> entry : modifierMap.entries()) {
-                                Attribute attribute = entry.getKey();
-                                AttributeModifier modifier = entry.getValue();
-                                double formattedAmount = getFormattedAmount(modifier, attribute);
-                                MutableComponent modifierText;
-                                if (modifier.getAmount() < 0) {
-                                    formattedAmount *= -1;
-                                    modifierText = Component.translatable("attribute.modifier.take." + modifier.getOperation().toValue(),
-                                            ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
-                                            Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.RED);
-                                } else {
-                                    modifierText = Component.translatable("attribute.modifier.plus." + modifier.getOperation().toValue(),
-                                            ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
-                                            Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.BLUE);
-                                }
-                                if (formattedAmount != 0) tooltips.add(tooltips.size() - 1, Either.left(modifierText));
+        
+        if (ItemStack.shouldShowInTooltip(stack.getHideFlags(), ItemStack.TooltipPart.MODIFIERS)) {
+            if (stack.is(ModTags.Items.CHARMS)) {
+                for (CharmType type : types) {
+                    Set<CharmAttributes> allAttributes = CharmStorage.itemAttributes;
+                    for (CharmAttributes attr : allAttributes) {
+                        if (attr.isStackCorrect(stack)) {
+                            Multimap<Attribute, AttributeModifier> modifierMap = attr.getModifiers();
+                            if (!modifierMap.isEmpty() && attr.getTypes().contains(type)) {
+                                addModifierTooltip(tooltips, type, modifierMap);
                             }
                         }
                     }
                 }
             }
+            if (stack.hasTag()) {
+                ListTag charmAttrNBT = stack.getTag().getList(CharmAttributes.ATTR_KEY, 10);
+				Multimap<CharmType, Multimap<Attribute, AttributeModifier>> typeAttrMap = HashMultimap.create();
+				for (int i = 0; i < charmAttrNBT.size(); i++) {
+					CompoundTag compoundtag = charmAttrNBT.getCompound(i);
+					Optional<Attribute> optional = BuiltInRegistries.ATTRIBUTE.getOptional(ResourceLocation.tryParse(compoundtag.getString("AttributeName")));
+					String typeName = "";
+					CharmType nbtType = null;
+					if (compoundtag.contains("Slot")) typeName = compoundtag.getString("Slot");
+					try {
+						nbtType = CharmType.valueOf(typeName.toUpperCase());
+					} catch (IllegalArgumentException e) {
+						//Do nothing
+					}
+					if (optional.isPresent() && nbtType != null) {
+						AttributeModifier attributemodifier = AttributeModifier.load(compoundtag);
+						if (attributemodifier != null && attributemodifier.getId().getLeastSignificantBits() != 0L
+							&& attributemodifier.getId().getMostSignificantBits() != 0L) {
+							Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
+							multimap.put(optional.get(), attributemodifier);
+							typeAttrMap.put(nbtType, multimap);
+						}
+					}
+				}
+                typeAttrMap.asMap().forEach((type, modifierMaps) -> {
+                    Multimap<Attribute, AttributeModifier> mergedMap = HashMultimap.create();
+                    modifierMaps.forEach(mergedMap::putAll);
+                    if (!mergedMap.isEmpty()) addModifierTooltip(tooltips, type, mergedMap);
+                });
+			}
         }
-
-        if (!types.isEmpty()) {
+        
+        if (!types.isEmpty() || (stack.hasTag() && stack.getTag().contains(CharmType.CHARM_KEY))) {
             MutableComponent charm = ModConstants.TOOLTIP.withSuffixTranslatable("charm").withStyle(ChatFormatting.DARK_GREEN);
             MutableComponent combined = charm.append(": ");
+            MutableComponent charmTypes = Component.empty();
             for (int i = 0; i < types.size(); i++) {
                 CharmType type = types.get(i);
                 MutableComponent name = type.getDisplayName().withStyle(ChatFormatting.GREEN);
-                combined.append(name);
-                if (i < types.size() - 1) combined.append(", ").withStyle(ChatFormatting.DARK_GREEN);
+                charmTypes.append(name);
+                if (i < types.size() - 1) charmTypes.append(", ").withStyle(ChatFormatting.DARK_GREEN);
             }
+            if (stack.hasTag()) {
+                ListTag nbtType = stack.getTag().getList(CharmType.CHARM_KEY, 10);
+                for (Tag tag : nbtType) {
+                    CompoundTag compound = (CompoundTag) tag;
+                    String typeName = compound.getString("CharmType");
+                    try {
+                        CharmType type = CharmType.valueOf(typeName.toUpperCase());
+                        MutableComponent name = type.getDisplayName().withStyle(ChatFormatting.GREEN);
+                        if (charmTypes.getSiblings().contains(name)) continue;
+                        if (!charmTypes.getString().isEmpty()) charmTypes.append(", ").append(name);
+                        else charmTypes.append(name);
+                    } catch (IllegalArgumentException e){
+                        //Do nothing
+                    }
+                }
+            }
+            combined.append(charmTypes);
             tooltips.add(tooltips.size() - 1, Either.left(combined));
+        }
+    }
+    
+    private static void addModifierTooltip(List<Either<FormattedText, TooltipComponent>> tooltips, CharmType type, Multimap<Attribute, AttributeModifier> modifierMap) {
+        MutableComponent attributeText = ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName())
+            .withStyle(ChatFormatting.GRAY);
+        tooltips.add(tooltips.size() - 1, Either.left(CommonComponents.EMPTY));
+        tooltips.add(tooltips.size() - 1, Either.left(attributeText));
+        for (Map.Entry<Attribute, AttributeModifier> entry : modifierMap.entries()) {
+            Attribute attribute = entry.getKey();
+            AttributeModifier modifier = entry.getValue();
+            double formattedAmount = getFormattedAmount(modifier, attribute);
+            MutableComponent modifierText;
+            if (modifier.getAmount() < 0) {
+                formattedAmount *= -1;
+                modifierText = Component.translatable("attribute.modifier.take." + modifier.getOperation().toValue(),
+                    ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
+                    Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.RED);
+            } else {
+                modifierText = Component.translatable("attribute.modifier.plus." + modifier.getOperation().toValue(),
+                    ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
+                    Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.BLUE);
+            }
+            if (formattedAmount != 0) tooltips.add(tooltips.size() - 1, Either.left(modifierText));
         }
     }
 

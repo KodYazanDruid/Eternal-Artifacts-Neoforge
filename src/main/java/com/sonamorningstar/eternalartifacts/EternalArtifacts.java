@@ -7,7 +7,7 @@ import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
-import com.sonamorningstar.eternalartifacts.event.hooks.ModHooks;
+import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
@@ -35,9 +35,8 @@ public class EternalArtifacts {
      * TODO: Shulker armor.
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
-     * <p>
-     * TODO: CLEAN UP CODE OMG ANVILINATOR BLOCK ENTITY IS A MESS
-     *
+     * TODO: Machine configuration copy-paste.
+     * TODO: Add solar helmet.
     */
 
     public static final String MODID = "eternalartifacts";
@@ -73,6 +72,7 @@ public class EternalArtifacts {
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);
         NeoForge.EVENT_BUS.addListener(CharmTickEvent.class, CharmStorage::charmTick);
+        ModCommands.addListener();
 
         new ModHooks().construct(modEventBus);
     }

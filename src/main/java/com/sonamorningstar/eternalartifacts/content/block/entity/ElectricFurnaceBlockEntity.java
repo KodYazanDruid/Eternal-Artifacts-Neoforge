@@ -20,32 +20,36 @@ public class ElectricFurnaceBlockEntity extends GenericMachineBlockEntity {
         setInventory(createRecipeFinderInventory(2, outputSlots));
     }
 
-    private final RecipeCache<BlastingRecipe, Container> blastingCache = new RecipeCache<>();
-    private final RecipeCache<SmokingRecipe, Container> smokingCache = new RecipeCache<>();
-    private final RecipeCache<CampfireCookingRecipe, Container> campfireCache = new RecipeCache<>();
-    private final RecipeCache<SmeltingRecipe, Container> smeltingCache = new RecipeCache<>();
+    private final RecipeCache blastingCache = new RecipeCache(this);
+    private final RecipeCache smokingCache = new RecipeCache(this);
+    private final RecipeCache campfireCache = new RecipeCache(this);
+    private final RecipeCache smeltingCache = new RecipeCache(this);
     private SimpleContainer recipeContainer = null;
     private Recipe<Container> recipe = null;
     private Recipe<Container> previousRecipe = null;
 
     @Override
     protected void findRecipe() {
+        blastingCache.clearRecipe(this);
+        smokingCache.clearRecipe(this);
+        campfireCache.clearRecipe(this);
+        smeltingCache.clearRecipe(this);
         recipeContainer = new SimpleContainer(inventory.getStackInSlot(0));
         blastingCache.findRecipe(RecipeType.BLASTING, recipeContainer, level);
         if (blastingCache.getRecipe() != null) {
-            recipe = blastingCache.getRecipe();
+            recipe = blastingCache.getRecipe(BlastingRecipe.class);
         } else {
             smokingCache.findRecipe(RecipeType.SMOKING, recipeContainer, level);
             if (smokingCache.getRecipe() != null) {
-                recipe = smokingCache.getRecipe();
+                recipe = smokingCache.getRecipe(SmokingRecipe.class);
             } else {
                 campfireCache.findRecipe(RecipeType.CAMPFIRE_COOKING, recipeContainer, level);
                 if (campfireCache.getRecipe() != null) {
-                    recipe = campfireCache.getRecipe();
+                    recipe = campfireCache.getRecipe(CampfireCookingRecipe.class);
                 } else {
                     smeltingCache.findRecipe(RecipeType.SMELTING, recipeContainer, level);
                     if (smeltingCache.getRecipe() != null) {
-                        recipe = smeltingCache.getRecipe();
+                        recipe = smeltingCache.getRecipe(SmeltingRecipe.class);
                     }
                 }
             }
@@ -59,7 +63,7 @@ public class ElectricFurnaceBlockEntity extends GenericMachineBlockEntity {
             progress = 0;
             return;
         }
-        if (previousRecipe != recipe) {
+        if (previousRecipe != null && previousRecipe != recipe) {
             progress = 0;
         }
         previousRecipe = recipe;

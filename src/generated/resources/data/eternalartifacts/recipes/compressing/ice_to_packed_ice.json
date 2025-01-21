@@ -1,0 +1,13 @@
+{
+  "type": "eternalartifacts:compressing",
+  "input": {
+    "item_stack": {
+      "Count": 4,
+      "id": "minecraft:ice"
+    }
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:packed_ice"
+  }
+}

@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.container.FluidCombustionMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
@@ -24,20 +23,13 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     public FluidCombustionDynamoBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), pos, blockState, FluidCombustionMenu::new);
         setEnergy(createBasicEnergy(50000, 2500, false, true));
-        setTank(new ModFluidStorage(16000) {
-            @Override
-            protected void onContentsChanged() {
-                FluidCombustionDynamoBlockEntity.this.sendUpdate();
-                findRecipeAndSet();
-            }
-        });
+        setTank(createRecipeFinderTank(16000, false, true));
     }
 
     private int tickCounter = 0;
     public boolean isWorking = false;
     @Getter
     private DynamoProcessCache cache;
-    private final RecipeCache<FluidCombustionRecipe, SimpleFluidContainer> recipeCache = new RecipeCache<>();
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
@@ -53,16 +45,12 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
-        findRecipeAndSet();
-    }
-
-    private void findRecipeAndSet() {
-        recipeCache.findRecipe(ModRecipes.FLUID_COMBUSTING.getType(), new SimpleFluidContainer(tank.getFluid(0)), level);
+    protected void findRecipe() {
+        super.findRecipe();
         if(recipeCache.getRecipe() != null) {
-            setEnergyPerTick(recipeCache.getRecipe().getGeneration());
-            setMaxProgress(recipeCache.getRecipe().getDuration());
+            FluidCombustionRecipe recipe = (FluidCombustionRecipe) recipeCache.getRecipe();
+            setEnergyPerTick(recipe.getGeneration());
+            setMaxProgress(recipe.getDuration());
         }
     }
 

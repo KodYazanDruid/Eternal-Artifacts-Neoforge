@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.mixin_helper;
 
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,6 +12,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/**
+ * This class handles the rendering overrides for items with custom render layers.
+ * It ensures that these items won't be rendered as normal items in the head or cancels the armor rendering of other parts.
+ */
 public class RenderOverrides {
     private static final Map<EquipmentSlot, Set<Predicate<ItemStack>>> PREDICATES_TO_SKIP = new HashMap<>();
     private static final Map<EquipmentSlot, Set<Item>> ITEMS_TO_SKIP = new HashMap<>();

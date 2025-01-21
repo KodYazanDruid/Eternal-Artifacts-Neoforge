@@ -59,6 +59,7 @@ public class FMLClientSetup {
         slotTextures.put(9 , createSlotSprite(CharmType.BACK));
         slotTextures.put(10, createSlotSprite(CharmType.CHARM));
         slotTextures.put(11, createSlotSprite(CharmType.CHARM));
+        slotTextures.put(12, new ResourceLocation(MODID, "slots/empty_wildcard_slot"));
     }
     private static ResourceLocation createSlotSprite(CharmType type) {
         return new ResourceLocation(MODID, "slots/empty_"+type.getLowerCaseName()+"_slot");

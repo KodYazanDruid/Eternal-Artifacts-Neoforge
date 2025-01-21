@@ -30,7 +30,7 @@ public abstract class AbstractInventoryTab implements MenuProvider {
     @Nullable
     public Consumer<FriendlyByteBuf> getBytes(Player player) {
         return null;
-    };
+    }
 
     @Override
     public Component getDisplayName() {

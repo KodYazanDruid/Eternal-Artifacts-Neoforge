@@ -143,7 +143,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 ModBlocks.GRAVEL_GOLD_ORE.get(),
                 ModBlocks.MANGANESE_ORE.get(),
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
-                ModBlocks.MARIN_ORE.get()
+                ModBlocks.MARIN_ORE.get(),
+                ModBlocks.CHLOROPHYTE_DEBRIS.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE).add(
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
@@ -154,13 +155,18 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
                 ModBlocks.MARIN_ORE.get()
         );
+        tag(ModTags.Blocks.ORE_BEARING_GROUND_MOSS).add(
+                ModBlocks.CHLOROPHYTE_DEBRIS.get()
+        );
         tag(Tags.Blocks.ORES).add(
                 ModBlocks.MANGANESE_ORE.get(),
+                ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
                 ModBlocks.GRAVEL_COAL_ORE.get(),
                 ModBlocks.GRAVEL_COPPER_ORE.get(),
                 ModBlocks.GRAVEL_IRON_ORE.get(),
                 ModBlocks.GRAVEL_GOLD_ORE.get(),
-                ModBlocks.MARIN_ORE.get()
+                ModBlocks.MARIN_ORE.get(),
+                ModBlocks.CHLOROPHYTE_DEBRIS.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),

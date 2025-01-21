@@ -25,12 +25,24 @@ public class ModEnchantments {
     public static class ModEnchantmentCategory{
         public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {
             ItemStack stack = item.getDefaultInstance();
-            return ((stack.getCapability(Capabilities.EnergyStorage.ITEM) != null ||
-                    stack.getCapability(Capabilities.ItemHandler.ITEM) != null ||
-                    stack.getCapability(Capabilities.FluidHandler.ITEM) != null) &&
-                    BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MODID)) || VolumeEnchantment.acceptedItems.contains(item.getClass());
+            return ((hasAnyCapability(stack) && BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MODID))
+                    || VolumeEnchantment.isAcceptedItem.test(stack))/* &&
+                    BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MODID) */&& !VolumeEnchantment.isBlacklistedItem.test(stack);
         });
         public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("versatility", VersatilityEnchantment.acceptedItems);
         public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1);
+
+        private static boolean hasAnyCapability(ItemStack stack) {
+            return hasEnergy(stack) || hasInventory(stack) || hasTank(stack);
+        }
+        private static boolean hasEnergy(ItemStack stack) {
+            return stack.getCapability(Capabilities.EnergyStorage.ITEM) != null;
+        }
+        private static boolean hasInventory(ItemStack stack) {
+            return stack.getCapability(Capabilities.ItemHandler.ITEM) != null;
+        }
+        private static boolean hasTank(ItemStack stack) {
+            return stack.getCapability(Capabilities.FluidHandler.ITEM) != null;
+        }
     }
 }

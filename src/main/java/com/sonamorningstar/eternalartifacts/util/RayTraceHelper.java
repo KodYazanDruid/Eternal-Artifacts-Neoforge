@@ -41,7 +41,7 @@ public class RayTraceHelper {
 
     public static EntityHitResult retraceEntity(LivingEntity entity) {
         return ProjectileUtil.getEntityHitResult(entity.level(), entity, getStartVec(entity), getEndVec(entity), entity.getBoundingBox(),
-                (e) -> !e.isSpectator() /*&& !e.isPickable()*/, (float) getBlockReachDistance(entity));
+                (e) -> !e.isSpectator(), (float) getBlockReachDistance(entity));
     }
 
     public static HitResult retraceGeneric(LivingEntity living) {
@@ -52,6 +52,27 @@ public class RayTraceHelper {
         return ProjectileUtil.getHitResultOnViewVector(living, e -> !e.isSpectator(), reach);
     }
 
+    public static HitResult retraceGenericForPlayer(Player player) {
+        return retraceGenericForPlayer(player, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY);
+    }
+
+    public static HitResult retraceGenericForPlayer(Player player, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
+        double entityReach = getEntityReachDistance(player);
+        double blockReach = getBlockReachDistance(player);
+        HitResult entityHit = ProjectileUtil.getHitResultOnViewVector(player, e -> !e.isSpectator(), entityReach);
+        if (entityHit.getType() != HitResult.Type.MISS) {
+            return entityHit;
+        }
+        return player.level().clip(new ClipContext(getStartVec(player), getEndVec(player, blockReach), blockMode, fluidMode, player));
+    }
+
+    public static HitResult retraceGenericForPlayer(Player player, double reach, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {
+        HitResult entityHit = ProjectileUtil.getHitResultOnViewVector(player, e -> !e.isSpectator(), reach);
+        if (entityHit.getType() != HitResult.Type.MISS) {
+            return entityHit;
+        }
+        return player.level().clip(new ClipContext(getStartVec(player), getEndVec(player, reach), blockMode, fluidMode, player));
+    }
 
 
     public static Vec3 getStartVec(LivingEntity player) {
@@ -85,17 +106,20 @@ public class RayTraceHelper {
 
 
     private static double getBlockReachDistanceServer(LivingEntity entity) {
+        double base = entity instanceof Player player ? player.isCreative() ? 5.0D : 4.5D : 5.0D;
         AttributeInstance attribute = entity.getAttribute(NeoForgeMod.BLOCK_REACH.value());
-        return attribute == null ? 5.0D : attribute.getValue();
+        return attribute == null ? base : attribute.getValue();
     }
 
     private static double getEntityReachDistance(LivingEntity entity) {
+        double base = entity instanceof Player player ? player.isCreative() ? 5.0D : 4.5D : 5.0D;
         AttributeInstance attribute = entity.getAttribute(NeoForgeMod.ENTITY_REACH.value());
-        return attribute == null ? 5.0D : attribute.getValue();
+        return attribute == null ? base: attribute.getValue();
     }
 
     private static double getBlockReachDistanceClient() {
-        MultiPlayerGameMode gamemode = Minecraft.getInstance().gameMode;
-        return gamemode == null ? 5.0 : gamemode.getPickRange();
+        Minecraft mc = Minecraft.getInstance();
+        MultiPlayerGameMode gamemode = mc.gameMode;
+        return gamemode == null ? mc.player.isCreative() ? 5.0 : 4.5D : gamemode.getPickRange();
     }
 }

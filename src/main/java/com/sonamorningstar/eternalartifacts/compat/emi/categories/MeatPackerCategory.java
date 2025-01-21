@@ -18,7 +18,7 @@ public class MeatPackerCategory extends BasicEmiRecipe {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "fake_recipe/meat_packer");
     public static final EmiRecipeCategory MEAT_PACKER_CATEGORY = new EmiRecipeCategory(ID, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
     public MeatPackerCategory() {
-        super(MEAT_PACKER_CATEGORY, MEAT_PACKER_CATEGORY.id, 72, 18);
+        super(MEAT_PACKER_CATEGORY, new ResourceLocation(MODID, "/fake_recipe/meat_packer"), 72, 18);
     }
 
     @Override

@@ -11,9 +11,8 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class MelterCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory MELTER_CATEGORY = createCategory(ModRecipes.MELTING, ModMachines.MELTING_CRUCIBLE);
@@ -32,8 +31,14 @@ public class MelterCategory extends EAEmiRecipe {
 
     public static void fillRecipes(EmiRegistry registry) {
         for(MeltingRecipe recipe : registry.getRecipeManager().getAllRecipesFor(ModRecipes.MELTING.getType()).stream().map(RecipeHolder::value).toList()) {
-            ResourceLocation id = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem());
-            registry.addRecipe(new MelterCategory(recipe, new ResourceLocation(MODID, ("melting/"+id.toString().replace(":", "/")))));
+            ResourceLocation id = BuiltInRegistries.RECIPE_TYPE.getKey(recipe.getType());
+            String resultPath = BuiltInRegistries.FLUID.getKey(recipe.getOutput().getFluid()).getPath();
+            String path;
+            if (recipe.getInput().values[0] instanceof Ingredient.TagValue tagValue) path = tagValue.tag().location().getPath();
+            else path = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem()).getPath();
+            registry.addRecipe(new MelterCategory(recipe,
+                    new ResourceLocation(id.getNamespace(), "/melting/"+path+"_to_"+resultPath)));
+
         }
     }
 }

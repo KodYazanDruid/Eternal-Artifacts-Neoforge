@@ -13,6 +13,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DoublePlantBlock;
@@ -28,11 +29,14 @@ import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,7 +45,23 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
     public ModBlockLootSubProvider() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());
     }
-
+    
+    @Override
+    public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
+        super.generate(output);
+        generateSingleItem(output, ModLootTables.COPPER_OREBERRY_HARVEST, ModItems.COPPER_NUGGET, UniformGenerator.between(1, 3));
+        generateSingleItem(output, ModLootTables.IRON_OREBERRY_HARVEST, Items.IRON_NUGGET, ConstantValue.exactly(1));
+        generateSingleItem(output, ModLootTables.GOLD_OREBERRY_HARVEST, Items.GOLD_NUGGET, ConstantValue.exactly(1));
+        generateSingleItem(output, ModLootTables.EXPERIENCE_OREBERRY_HARVEST, ModItems.EXPERIENCE_BERRY, UniformGenerator.between(1, 2));
+        generateSingleItem(output, ModLootTables.MANGANESE_OREBERRY_HARVEST, ModItems.MANGANESE_NUGGET, ConstantValue.exactly(1));
+        
+        
+        generateSingleItem(output, ModLootTables.HAMMERING_COAL, ModItems.COAL_DUST, UniformGenerator.between(3, 6));
+        generateSingleItem(output, ModLootTables.HAMMERING_CHARCOAL, ModItems.CHARCOAL_DUST, UniformGenerator.between(3, 6));
+        generateSingleItem(output, ModLootTables.HAMMERING_CLAY, ModItems.CLAY_DUST, UniformGenerator.between(2, 4));
+        generateSingleItem(output, ModLootTables.HAMMERING_SUGAR_CHARCOAL, ModItems.SUGAR_CHARCOAL_DUST, UniformGenerator.between(3, 6));
+    }
+    
     @Override
     protected void generate() {
         dropSelf(ModBlocks.RESONATOR.get());
@@ -162,6 +182,14 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
                     .when(ExplosionCondition.survivesExplosion())
                 )
         );
+    }
+    
+    private void generateSingleItem(BiConsumer<ResourceLocation, LootTable.Builder> output, ResourceLocation location, ItemLike generated, NumberProvider provider) {
+        output.accept(location, LootTable.lootTable()
+            .withPool(LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(generated)).apply(SetItemCountFunction.setCount(provider))
+            ));
     }
 
     private void addLootPool(DeferredHolder<Block, ? extends Block> holder, LootPoolEntryContainer.Builder<?> builder) {

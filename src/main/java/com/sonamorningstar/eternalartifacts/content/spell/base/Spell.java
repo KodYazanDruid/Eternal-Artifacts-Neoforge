@@ -67,10 +67,10 @@ public class Spell {
      * @param caster The entity casting the spell.
      * @return The amplified damage value.
      * @deprecated This method is deprecated because you shouldn't be calling it.
-     *             Instead, use the argument from the {@link Spell#cast(LivingEntity, InteractionHand, Level, RandomSource, float)} method.
+     *             Instead, use the argument from the {@link Spell#cast(ItemStack, LivingEntity, InteractionHand, Level, RandomSource, float)} method.
      *             It is fine to override this method if you need to change the spell damage calculation logic.
      */
-    @Deprecated
+    @Deprecated()
     public float getAmplifiedDamage(LivingEntity caster) {
         AttributeInstance spellDamage = caster.getAttribute(ModAttributes.SPELL_DAMAGE.get());
         if (spellDamage == null) return baseDamage;

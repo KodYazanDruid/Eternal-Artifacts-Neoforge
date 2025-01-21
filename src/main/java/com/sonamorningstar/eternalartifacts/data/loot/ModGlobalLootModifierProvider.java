@@ -4,16 +4,15 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTagCondition;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.*;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
 import java.util.List;
@@ -50,24 +49,6 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build()
                 }
         ));
-        /*add("coal_dust_from_coal_blocks", new ReplaceItemModifier(
-                new LootItemCondition[] {
-                        LootItemBlockTagCondition.builder(Tags.Blocks.STORAGE_BLOCKS_COAL).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build(),
-                }, ModItems.COAL_DUST.get(), UniformGenerator.between(3.0F, 6.0F))
-        );
-        add("charcoal_dust_from_charcoal_blocks", new ReplaceItemModifier(
-                new LootItemCondition[] {
-                        LootItemBlockTagCondition.builder(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build(),
-                }, ModItems.CHARCOAL_DUST.get(), UniformGenerator.between(3.0F, 6.0F))
-        );
-        add("clay_dust_from_clay", new ReplaceItemModifier(
-                new LootItemCondition[] {
-                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(Blocks.CLAY).build(),
-                        MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build(),
-                }, ModItems.CLAY_DUST.get(), UniformGenerator.between(2.0F, 4.0F))
-        );*/
         add("glasscutter", new GlasscutterModifier(
                 new LootItemCondition[] {
                         LootItemBlockTagCondition.builder(ModTags.Blocks.MINEABLE_WITH_GLASSCUTTER).build(),
@@ -80,7 +61,12 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModItems.GRAFTER.get())).build()
                 }
         ));
-
+        add("ender_dragon_angelic_heart", new AddItemListModifier(
+                new LootItemCondition[]{
+                    LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS).build(),
+                    LootTableIdCondition.builder(EntityType.ENDER_DRAGON.getDefaultLootTable()).build(),
+                }, List.of(ModItems.ANGELIC_HEART.get().getDefaultInstance()))
+        );
         add("cutlass", new CutlassModifier(new LootItemCondition[] {}));
     }
 }

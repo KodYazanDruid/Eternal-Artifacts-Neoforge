@@ -92,13 +92,13 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
         super.load(tag);
     }
 
-    private final RecipeCache<CraftingRecipe, CraftingContainer> recipeCache = new RecipeCache<>();
     @Nullable
     private CraftingContainer craftingContainer;
     private CraftingRecipe previousRecipe = null;
     @Override
     protected void findRecipe() {
         ItemStack blueprint = inventory.getStackInSlot(10);
+        recipeCache.clearRecipe(this);
         if (!blueprint.isEmpty()) {
             SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
             NonNullList<ItemStack> pattern = BlueprintItem.getFakeItems(blueprint);
@@ -124,7 +124,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
-        CraftingRecipe recipe = recipeCache.getRecipe();
+        CraftingRecipe recipe = ((CraftingRecipe) recipeCache.getRecipe());
         if (recipe == null) {
             progress = 0;
             return;

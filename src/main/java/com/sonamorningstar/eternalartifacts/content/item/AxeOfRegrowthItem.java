@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.caches.BlockVeinCache;
+import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModTiers;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -12,6 +13,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
@@ -35,6 +37,12 @@ import java.util.Queue;
 public class AxeOfRegrowthItem extends AxeItem {
     public AxeOfRegrowthItem(Properties properties) {
         super(ModTiers.CHLOROPHYTE, 5.0F, -3.0F, properties);
+    }
+
+    @Override
+    public boolean hurtEnemy(ItemStack pStack, LivingEntity target, LivingEntity pAttacker) {
+        target.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 100, 0));
+        return super.hurtEnemy(pStack, target, pAttacker);
     }
 
     @Override
@@ -68,7 +76,8 @@ public class AxeOfRegrowthItem extends AxeItem {
             cache.scanForBlocks();
             Queue<BlockPos> queuedPos = cache.getCache();
             if (player instanceof ServerPlayer serverPlayer) {
-                while (!queuedPos.isEmpty() && !stack.isEmpty()) {
+                while (!queuedPos.isEmpty() && !stack.isEmpty() &&
+                        stack.isCorrectToolForDrops(level.getBlockState(queuedPos.peek()))) {
                     if (!currentMiners.contains(stack)) currentMiners.add(stack);
                     cache.mine(queuedPos, serverPlayer);
                 }

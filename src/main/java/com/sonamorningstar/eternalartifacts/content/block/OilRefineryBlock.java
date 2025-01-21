@@ -22,6 +22,7 @@ public class OilRefineryBlock<T extends OilRefineryBlockEntity> extends MachineF
                 .mapColor(MapColor.COLOR_LIGHT_GRAY)
                 .requiresCorrectToolForDrops()
                 .strength(4.0F, 3.0F)
+                .noOcclusion()
                 .sound(SoundType.GLASS), supplier);
     }
 

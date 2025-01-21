@@ -27,6 +27,7 @@ public class ModTags {
         public static final TagKey<Block> GLASS_HARDENED = forgeTag("glass/hardened");
         public static final TagKey<Block> HARDENED_GLASS = forgeTag("hardened_glass");
         public static final TagKey<Block> VERSATILITY_MINEABLES = modTag("mineable/versatility");
+        public static final TagKey<Block> ORE_BEARING_GROUND_MOSS = modTag("ore_bearing_ground/moss");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
@@ -73,6 +74,7 @@ public class ModTags {
         public static final TagKey<Item> CHARMS_CHARM = modTag("charms/charm");
         public static final TagKey<Item> CHARMS_BELT = modTag("charms/belt");
         public static final TagKey<Item> CHARMS_BRACELET = modTag("charms/bracelet");
+        public static final TagKey<Item> CHARMS_WILDCARD_BLACKLISTED = modTag("charms/wildcard_blacklisted");
         public static final TagKey<Item> SHULKER_SHELL = modTag("shulker_shell");
 
         private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }

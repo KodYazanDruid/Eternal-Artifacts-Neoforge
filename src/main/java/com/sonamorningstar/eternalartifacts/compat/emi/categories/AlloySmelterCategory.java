@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.base.EAEmiRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.AlloyingRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -12,10 +13,14 @@ import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -39,21 +44,12 @@ public class AlloySmelterCategory extends EAEmiRecipe {
     }
 
     public static void fillRecipes(EmiRegistry registry) {
-        Map<Item, Integer> alloyingTrackedItems = new HashMap<>();
         for(AlloyingRecipe recipe : registry.getRecipeManager().getAllRecipesFor(ModRecipes.ALLOYING.getType()).stream().map(RecipeHolder::value).toList()) {
-            Item item = recipe.getOutput().getItem();
-            int encounter = 0;
-            ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
-            StringBuilder inputId = new StringBuilder();
-            inputId.append("alloying/").append(id.toString().replace(":", "/"));
-            if (alloyingTrackedItems.containsKey(item)) {
-                encounter = alloyingTrackedItems.get(item);
-                inputId.append("_").append(encounter);
-                encounter++;
-                alloyingTrackedItems.put(item, encounter);
-            } else alloyingTrackedItems.put(item, encounter);
-            ResourceLocation recipeId = new ResourceLocation(MODID, inputId.toString());
-            registry.addRecipe(new AlloySmelterCategory(recipe, recipeId));
+            ResourceLocation id = registry.getRecipeManager().recipes.get(recipe.getType())
+                    .values().stream()
+                    .filter(holder ->  holder.value().equals(recipe)).findFirst().map(RecipeHolder::id).orElse(null);
+
+            registry.addRecipe(new AlloySmelterCategory(recipe, new ResourceLocation(id.getNamespace(), "/" + id.getPath())));
         }
     }
 }

@@ -24,13 +24,14 @@ public enum CharmType {
     CHARM(ModTags.Items.CHARMS_CHARM);
 
     public static final Map<Item, List<CharmType>> itemCharmTypes = new HashMap<>();
+    public static final String CHARM_KEY = "StackCharmType";
 
     private final TagKey<Item> tag;
 
     CharmType(TagKey<Item> tag) {
         this.tag = tag;
     }
-
+    
     public boolean test(ItemStack stack) {
         return stack.is(tag);
     }
@@ -55,5 +56,9 @@ public enum CharmType {
 
     public MutableComponent getDisplayName() {
         return ModConstants.CHARM_TYPE.withSuffixTranslatable(getLowerCaseName());
+    }
+    
+    public static MutableComponent getWildcardDisplayName() {
+        return ModConstants.CHARM_TYPE.withSuffixTranslatable("wildcard");
     }
 }

@@ -45,9 +45,12 @@ public class PortableBatteryItem extends BatteryItem implements Equipable {
                     });
                     case HELD_OFF -> chargeItem(player.getOffhandItem(), battery, max);
                     case HOTBAR -> player.getInventory().items.subList(0, 9).forEach(stack -> chargeItem(stack, battery, max));
-                    case CHARMS -> CharmStorage.get(player).getStacks().forEach(stack -> {
-                        if (stack != battery) chargeItem(stack, battery, max);
-                    });
+                    case CHARMS -> {
+                        for (int i = 0; i < CharmStorage.get(player).getSlots(); i++) {
+                            ItemStack stack = CharmStorage.get(player).getStackInSlot(i);
+                            if (stack != battery) chargeItem(stack, battery, max);
+                        }
+                    }
                 }
             }
         }

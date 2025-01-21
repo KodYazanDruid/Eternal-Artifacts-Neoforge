@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.CompressorRecipe;
@@ -17,19 +16,13 @@ public class CompressorBlockEntity extends GenericMachineBlockEntity {
         outputSlots.add(1);
         setInventory(createRecipeFinderInventory(2, outputSlots));
         setEnergy(createDefaultEnergy());
-    }
-
-    private final RecipeCache<CompressorRecipe, SimpleContainer> recipeCache = new RecipeCache<>();
-
-    @Override
-    protected void findRecipe() {
-        recipeCache.findRecipe(ModRecipes.COMPRESSING.getType(), new SimpleContainer(inventory.getStackInSlot(0)), level);
+        setRecipeTypeAndContainer(ModRecipes.COMPRESSING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
     }
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        CompressorRecipe recipe = recipeCache.getRecipe();
+        CompressorRecipe recipe = (CompressorRecipe) recipeCache.getRecipe();
         if (recipe == null) {
             progress = 0;
             return;

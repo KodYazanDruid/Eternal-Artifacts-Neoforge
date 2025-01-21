@@ -30,7 +30,7 @@ public class ModBlockEntity extends BlockEntity {
         return false;
     }
 
-    protected void findRecipe() {};
+    protected void findRecipe() {}
 
     @Nullable
     @Override

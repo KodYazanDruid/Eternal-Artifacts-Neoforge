@@ -16,9 +16,7 @@ public class SwordOfTheGreenEarthItem extends SwordItem {
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        //target.addEffect(new MobEffectInstance(MobEffects.POISON, 100, 0));
         target.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 100, 0));
-
         return super.hurtEnemy(stack, target, attacker);
     }
 }

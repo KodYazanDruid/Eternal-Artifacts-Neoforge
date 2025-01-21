@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:prismarine"
+  },
+  "output": {
+    "Count": 4,
+    "id": "minecraft:prismarine_shard"
+  }
+}

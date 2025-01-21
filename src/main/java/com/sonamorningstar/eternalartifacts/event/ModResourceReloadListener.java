@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.HammeringRecipeOverlay;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.HammeringModifier;
@@ -16,11 +17,12 @@ import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class TagReloadListener implements ResourceManagerReloadListener {
+public class ModResourceReloadListener implements ResourceManagerReloadListener {
 
     @Override
     public void onResourceManagerReload(ResourceManager manager) {
         CharmType.itemCharmTypes.clear();
+        RecipeCache.clearCache();
 
         ResourceLocation hammeringTags = new ResourceLocation(MODID, "loot_tables/hammering/tags");
         ResourceLocation hammeringBlocks = new ResourceLocation(MODID, "loot_tables/hammering/blocks");

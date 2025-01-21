@@ -11,9 +11,8 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class MaceratingCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory MACERATING_CATEGORY = createCategory(ModRecipes.MACERATING, ModMachines.INDUSTRIAL_MACERATOR);
@@ -32,8 +31,13 @@ public class MaceratingCategory extends EAEmiRecipe {
 
     public static void fillRecipes(EmiRegistry registry) {
         for(MaceratingRecipe recipe : registry.getRecipeManager().getAllRecipesFor(ModRecipes.MACERATING.getType()).stream().map(RecipeHolder::value).toList()) {
-            ResourceLocation id = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem());
-            registry.addRecipe(new MaceratingCategory(recipe, new ResourceLocation(MODID, ("macerating/"+id.toString().replace(":", "/")))));
+            ResourceLocation id = BuiltInRegistries.RECIPE_TYPE.getKey(recipe.getType());
+            String resultPath = BuiltInRegistries.ITEM.getKey(recipe.getOutput().getItem()).getPath();
+            String path;
+            if (recipe.getInput().values[0] instanceof Ingredient.TagValue tagValue) path = tagValue.tag().location().getPath();
+            else path = BuiltInRegistries.ITEM.getKey(recipe.getInput().getItems()[0].getItem()).getPath();
+            registry.addRecipe(new MaceratingCategory(recipe,
+                    new ResourceLocation(id.getNamespace(), "/macerating/"+path+"_to_"+resultPath)));
         }
     }
 }

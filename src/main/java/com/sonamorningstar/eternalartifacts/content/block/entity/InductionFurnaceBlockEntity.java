@@ -68,6 +68,14 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
     @Override
     protected void findRecipe() {
+        blastingCache0.clearRecipe(this);
+        blastingCache1.clearRecipe(this);
+        smokingCache0.clearRecipe(this);
+        smokingCache1.clearRecipe(this);
+        campfireCookingCache0.clearRecipe(this);
+        campfireCookingCache1.clearRecipe(this);
+        smeltingCache0.clearRecipe(this);
+        smeltingCache1.clearRecipe(this);
         recipeCon0 = new SimpleContainer(inventory.getStackInSlot(0));
         blastingCache0.findRecipe(RecipeType.BLASTING, recipeCon0, level);
         if (blastingCache0.getRecipe() == null) {
@@ -98,14 +106,14 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
     //putting these on map might be better IDK.
     //Make them optional for handling nulls easier.
-    private final RecipeCache<SmeltingRecipe, Container> smeltingCache0 = new RecipeCache<>();
-    private final RecipeCache<SmeltingRecipe, Container> smeltingCache1 = new RecipeCache<>();
-    private final RecipeCache<BlastingRecipe, Container> blastingCache0 = new RecipeCache<>();
-    private final RecipeCache<BlastingRecipe, Container> blastingCache1 = new RecipeCache<>();
-    private final RecipeCache<SmokingRecipe, Container> smokingCache0 = new RecipeCache<>();
-    private final RecipeCache<SmokingRecipe, Container> smokingCache1 = new RecipeCache<>();
-    private final RecipeCache<CampfireCookingRecipe, Container> campfireCookingCache0 = new RecipeCache<>();
-    private final RecipeCache<CampfireCookingRecipe, Container> campfireCookingCache1 = new RecipeCache<>();
+    private final RecipeCache smeltingCache0 = new RecipeCache(this);
+    private final RecipeCache smeltingCache1 = new RecipeCache(this);
+    private final RecipeCache blastingCache0 = new RecipeCache(this);
+    private final RecipeCache blastingCache1 = new RecipeCache(this);
+    private final RecipeCache smokingCache0 = new RecipeCache(this);
+    private final RecipeCache smokingCache1 = new RecipeCache(this);
+    private final RecipeCache campfireCookingCache0 = new RecipeCache(this);
+    private final RecipeCache campfireCookingCache1 = new RecipeCache(this);
     private SimpleContainer recipeCon0 = null;
     private SimpleContainer recipeCon1 = null;
 
@@ -192,16 +200,16 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     private Recipe<Container> getValidRecipe(int slot) {
         switch (slot) {
             case 0 -> {
-                if (blastingCache0.getRecipe() != null) return blastingCache0.getRecipe();
-                else if(smokingCache0.getRecipe() != null) return smokingCache0.getRecipe();
-                else if(campfireCookingCache0.getRecipe() != null) return campfireCookingCache0.getRecipe();
-                else if(smeltingCache0.getRecipe() != null) return smeltingCache0.getRecipe();
+                if (blastingCache0.getRecipe() != null) return blastingCache0.getRecipe(BlastingRecipe.class);
+                else if(smokingCache0.getRecipe() != null) return smokingCache0.getRecipe(SmokingRecipe.class);
+                else if(campfireCookingCache0.getRecipe() != null) return campfireCookingCache0.getRecipe(CampfireCookingRecipe.class);
+                else if(smeltingCache0.getRecipe() != null) return smeltingCache0.getRecipe(SmeltingRecipe.class);
             }
             case 1 -> {
-                if (blastingCache1.getRecipe() != null) return blastingCache1.getRecipe();
-                else if(smokingCache1.getRecipe() != null) return smokingCache1.getRecipe();
-                else if(campfireCookingCache1.getRecipe() != null) return campfireCookingCache1.getRecipe();
-                else if(smeltingCache1.getRecipe() != null) return smeltingCache1.getRecipe();
+                if (blastingCache1.getRecipe() != null) return blastingCache1.getRecipe(BlastingRecipe.class);
+                else if(smokingCache1.getRecipe() != null) return smokingCache1.getRecipe(SmokingRecipe.class);
+                else if(campfireCookingCache1.getRecipe() != null) return campfireCookingCache1.getRecipe(CampfireCookingRecipe.class);
+                else if(smeltingCache1.getRecipe() != null) return smeltingCache1.getRecipe(SmeltingRecipe.class);
             }
         }
         return null;

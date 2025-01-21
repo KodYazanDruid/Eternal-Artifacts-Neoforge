@@ -47,6 +47,8 @@ public class ModLootTables {
     public static final ResourceLocation CHARGED_SHEEP_BLACK = register("entities/charged_sheep/black");
 
     public static final ResourceLocation SURVIVALISTS_IGLOO = register("chests/survivalists_igloo");
+    public static final ResourceLocation PLAINS_HOUSE_ENTRANCE = register("chests/plains_house_entrance");
+    public static final ResourceLocation PLAINS_HOUSE_DESK = register("chests/plains_house_desk");
 
     private static ResourceLocation registerOreBerries(String material) {
         return register("oreberries/"+material);
