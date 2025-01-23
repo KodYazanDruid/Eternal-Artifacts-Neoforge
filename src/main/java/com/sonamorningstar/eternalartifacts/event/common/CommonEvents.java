@@ -33,6 +33,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;
@@ -146,7 +147,6 @@ public class CommonEvents {
                 }
             }
         }
-
     }
 
     @SubscribeEvent
@@ -273,7 +273,8 @@ public class CommonEvents {
         if (wasDeath) {
             Level level = oldPlayer.level();
             boolean doKeep = level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
-
+            boolean oldWildcard = CharmStorage.canHaveWildcard(oldPlayer);
+            newCharms.setWildcardNbt(oldWildcard);
             for (int i = 0; i < oldCharms.getSlots(); i++) {
                 ItemStack oldStack = oldCharms.getStackInSlot(i);
                 if (EnchantmentHelper.hasVanishingCurse(oldStack)) oldCharms.setStackInSlot(i, ItemStack.EMPTY);
@@ -364,6 +365,17 @@ public class CommonEvents {
         Player player = event.getPlayer();
         ItemStack carved = PlayerCharmManager.findCharm(player, Items.CARVED_PUMPKIN);
         if (!carved.isEmpty()) event.setCanceled(true);
+    }
+    
+    @SubscribeEvent
+    public static void livingAttackEvent(LivingAttackEvent event) {
+        LivingEntity entity = event.getEntity();
+        DamageSource source = event.getSource();
+        ItemStack tool = source.getDirectEntity() instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
+        int lvl = tool.getEnchantmentLevel(ModEnchantments.MELTING_TOUCH.get());
+        if (lvl > 0) {
+            entity.setSecondsOnFire(lvl * 4);
+        }
     }
 
     @SubscribeEvent

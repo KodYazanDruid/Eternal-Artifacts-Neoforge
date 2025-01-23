@@ -1,4 +1,4 @@
-// 1.20.4	2025-01-11T13:35:48.3465452	Recipes
+// 1.20.4	2025-01-24T00:27:52.7760455	Recipes
 3dda9c7194fb80e5be48c6a526e6e236bab0f1e2 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_slab.json
 07b243e4c363636606d739749024ba8870dfa511 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_stairs.json
 6bc980ccf5cfd81e2ed6d6e4f7073390b5c5d699 data/eternalartifacts/advancements/recipes/building_blocks/obsidian_brick_slab.json
@@ -211,7 +211,7 @@ fa90ed5b3a311d313de6963d5025e59e58034298 data/eternalartifacts/recipes/campfire_
 c4d19147ecbc6dcbf16fe4e219bbfe0143eb2dfb data/eternalartifacts/recipes/campfire_cooking/meat_ingot_to_cooked_meat_ingot.json
 30e70a42e5f3f27159182c46c883e4db9d00fc8b data/eternalartifacts/recipes/capacitor.json
 bd7e5997074093bbbc6c04d085231e0163959566 data/eternalartifacts/recipes/charcoal.json
-77f22aeef7a7d36b820edb71899fd69acb4a452a data/eternalartifacts/recipes/charcoal_block.json
+6b1e1227d6ed07536fc03501a654e0257013e2af data/eternalartifacts/recipes/charcoal_block.json
 fd4bcfc96b28f3e6c22649bf07a6ef78ce953034 data/eternalartifacts/recipes/chlorophyte_tablet.json
 5a923562df18424ef9bd796bb42bb8b0190292e8 data/eternalartifacts/recipes/chlorophyte_upgrade_smithing_template.json
 b0369b75857e520bda5cbc792a71d5aec1e3ad95 data/eternalartifacts/recipes/compressing/flowers_to_plant_matter.json

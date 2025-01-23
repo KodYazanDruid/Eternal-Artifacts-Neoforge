@@ -43,7 +43,8 @@ public class SickleItem extends DiggerItem {
                 !currentMiners.contains(stack)) {
             Block block = state.getBlock();
             int range = state.isSolid() ? 3 : 5;
-            BlockVeinCache cache = new BlockVeinCache(block, level, pos, range, stack,null);
+            int searchRange = state.isSolid() ? 1 : 2;
+            BlockVeinCache cache = new BlockVeinCache(block, level, pos, range, searchRange);
             cache.addMineableTag(BlockTags.FLOWERS);
             cache.addMineableBlock(Blocks.SHORT_GRASS);
             cache.addMineableBlock(Blocks.TALL_GRASS);

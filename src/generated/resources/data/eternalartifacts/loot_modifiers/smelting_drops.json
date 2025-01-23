@@ -1,0 +1,18 @@
+{
+  "type": "eternalartifacts:smelt_drops",
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "enchantments": [
+          {
+            "enchantment": "eternalartifacts:melting_touch",
+            "levels": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

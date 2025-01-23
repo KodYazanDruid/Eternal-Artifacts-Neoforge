@@ -4,15 +4,12 @@
   "key": {
     "N": {
       "item": "minecraft:charcoal"
-    },
-    "T": {
-      "tag": "forge:charcoal"
     }
   },
   "pattern": [
-    "TTT",
-    "TNT",
-    "TTT"
+    "NNN",
+    "NNN",
+    "NNN"
   ],
   "result": {
     "item": "eternalartifacts:charcoal_block"

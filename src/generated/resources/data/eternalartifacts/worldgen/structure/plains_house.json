@@ -1,0 +1,6 @@
+{
+  "type": "eternalartifacts:plains_house",
+  "biomes": "#forge:is_plains",
+  "spawn_overrides": {},
+  "step": "surface_structures"
+}

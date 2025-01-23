@@ -12,11 +12,12 @@ import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 
 import java.util.Optional;
 
 public class SurvivalistsIglooStructure extends Structure {
-    public static final Codec<SurvivalistsIglooStructure> CODEC = RecordCodecBuilder.create(inst -> inst.group(settingsCodec(inst)).apply(inst, SurvivalistsIglooStructure::new));
+    public static final Codec<SurvivalistsIglooStructure> CODEC = simpleCodec(SurvivalistsIglooStructure::new);
 
     public SurvivalistsIglooStructure(StructureSettings settings) {
         super(settings);
@@ -34,7 +35,9 @@ public class SurvivalistsIglooStructure extends Structure {
         int z = Mth.randomBetweenInclusive(worldgenrandom, chunkPos.getMinBlockZ(), chunkPos.getMaxBlockZ());
         int y = adjustForTerrain(ctx, x, z);
         Rotation rotation = Rotation.getRandom(worldgenrandom);
-        builder.addPiece(new SurvivalistsIglooPiece(ctx.structureTemplateManager(), new BlockPos(x, y, z), rotation));
+        StructureTemplate template = ctx.structureTemplateManager().getOrCreate(SurvivalistsIglooPiece.STRUCTURE);
+        BlockPos pivotPos = new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2);
+        builder.addPiece(new SurvivalistsIglooPiece(ctx.structureTemplateManager(), new BlockPos(x, y, z), rotation, pivotPos));
     }
 
     private int adjustForTerrain(Structure.GenerationContext context, int x, int z) {

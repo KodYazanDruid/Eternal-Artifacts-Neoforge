@@ -34,6 +34,7 @@ public class ModLoots {
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<GrafterModifier>> GRAFTER_SERIALIZER = register("grafter", GrafterModifier.CODEC);
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<CutlassModifier>> CUTLASS_SERIALIZER = register("cutlass", CutlassModifier.CODEC);
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<HammeringModifier>> HAMMERING_SERIALIZER = register("hammering", HammeringModifier.CODEC);
+    public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<SmeltDropsModifier>> SMELT_DROPS_SERIALIZER = register("smelt_drops", SmeltDropsModifier.CODEC);
 
     public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_TAG_CONDITION = CONDITIONS.register("block_tag_condition", ()-> new LootItemConditionType(LootItemBlockTagCondition.CODEC));
 

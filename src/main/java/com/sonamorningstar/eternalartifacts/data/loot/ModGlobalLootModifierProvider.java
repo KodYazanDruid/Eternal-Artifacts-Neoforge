@@ -1,11 +1,13 @@
 package com.sonamorningstar.eternalartifacts.data.loot;
 
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTagCondition;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.*;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
@@ -68,5 +70,12 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 }, List.of(ModItems.ANGELIC_HEART.get().getDefaultInstance()))
         );
         add("cutlass", new CutlassModifier(new LootItemCondition[] {}));
+        add("smelting_drops", new SmeltDropsModifier(
+            new LootItemCondition[]{
+                MatchTool.toolMatches(ItemPredicate.Builder.item()
+                    .hasEnchantment(new EnchantmentPredicate(ModEnchantments.MELTING_TOUCH.get(), MinMaxBounds.Ints.atLeast(1)))
+                ).build()
+            }
+        ));
     }
 }

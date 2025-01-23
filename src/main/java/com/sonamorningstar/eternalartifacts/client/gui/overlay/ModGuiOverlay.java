@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
-import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

@@ -16,6 +16,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ModStructureSets {
 
     public static final ResourceKey<StructureSet> SURVIVALISTS_IGLOO = register("survivalists_igloo");
+    public static final ResourceKey<StructureSet> PLAINS_HOUSE = register("plains_house");
 
     private static ResourceKey<StructureSet> register(String name) {
         return ResourceKey.create(Registries.STRUCTURE_SET, new ResourceLocation(MODID, name));
@@ -25,12 +26,17 @@ public class ModStructureSets {
         HolderGetter<Structure> structureGetter = ctx.lookup(Registries.STRUCTURE);
         HolderGetter<Biome> biomeGetter = ctx.lookup(Registries.BIOME);
 
-        ctx.register(
-                SURVIVALISTS_IGLOO,
-                new StructureSet(
-                        structureGetter.getOrThrow(ModStructures.SURVIVALISTS_IGLOO),
-                        new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357615)
-                )
+        ctx.register(SURVIVALISTS_IGLOO,
+            new StructureSet(
+                structureGetter.getOrThrow(ModStructures.SURVIVALISTS_IGLOO),
+                new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357615)
+            )
+        );
+        ctx.register(PLAINS_HOUSE,
+            new StructureSet(
+                structureGetter.getOrThrow(ModStructures.PLAINS_HOUSE),
+                new RandomSpreadStructurePlacement(32, 8, RandomSpreadType.LINEAR, 14357616)
+            )
         );
     }
 }

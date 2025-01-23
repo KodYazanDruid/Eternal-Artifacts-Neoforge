@@ -342,8 +342,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('N', ModItems.RAW_MANGANESE)
                 .unlockedBy("has_item", has(ModItems.RAW_MANGANESE)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.CHARCOAL_BLOCK)
-                .pattern("TTT").pattern("TNT").pattern("TTT")
-                .define('T', ModTags.Items.CHARCOAL)
+                .pattern("NNN").pattern("NNN").pattern("NNN")
                 .define('N', Items.CHARCOAL)
                 .unlockedBy("has_item", has(Items.CHARCOAL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RAW_MARIN_BLOCK)

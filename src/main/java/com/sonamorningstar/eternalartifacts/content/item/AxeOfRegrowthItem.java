@@ -68,16 +68,19 @@ public class AxeOfRegrowthItem extends AxeItem {
 
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-        if (BlockHelper.isLog(level, pos) && living instanceof Player player && !currentMiners.contains(stack)) {
+        if (BlockHelper.isLog(level, pos) &&
+                living instanceof Player player &&
+                !living.isShiftKeyDown() &&
+                !currentMiners.contains(stack)) {
             Block block = state.getBlock();
-            BlockVeinCache cache = new BlockVeinCache(block, level, pos, 4, 10, stack, null);
+            BlockVeinCache cache = new BlockVeinCache(block, level, pos, 4, 10);
             cache.addMineableTag(BlockTags.LOGS);
             cache.addMineableTag(BlockTags.LEAVES);
             cache.scanForBlocks();
             Queue<BlockPos> queuedPos = cache.getCache();
             if (player instanceof ServerPlayer serverPlayer) {
                 while (!queuedPos.isEmpty() && !stack.isEmpty() &&
-                        stack.isCorrectToolForDrops(level.getBlockState(queuedPos.peek()))) {
+                        serverPlayer.hasCorrectToolForDrops(level.getBlockState(queuedPos.peek()))) {
                     if (!currentMiners.contains(stack)) currentMiners.add(stack);
                     cache.mine(queuedPos, serverPlayer);
                 }

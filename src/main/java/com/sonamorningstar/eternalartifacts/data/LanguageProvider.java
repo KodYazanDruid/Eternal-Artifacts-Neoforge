@@ -266,6 +266,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.VOLUME.get(), "Volume");
                 add(ModEnchantments.VERSATILITY.get(), "Versatility");
                 add(ModEnchantments.SOULBOUND.get(), "Soulbound");
+                add(ModEnchantments.MELTING_TOUCH.get(), "Melting Touch");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -683,6 +684,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.VOLUME.get(), "Hacim");
                 add(ModEnchantments.VERSATILITY.get(), "Çeşitlilik");
                 add(ModEnchantments.SOULBOUND.get(), "Ruh Bağı");
+                add(ModEnchantments.MELTING_TOUCH.get(), "Eriten Dokunuş");
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");

@@ -25,7 +25,6 @@ public class GlasscutterModifier extends LootModifier {
 
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        for(LootItemCondition condition : conditions) if(!condition.test(context)) return generatedLoot;
         BlockState minedBlockState = context.getParam(LootContextParams.BLOCK_STATE);
         ItemStack stack = minedBlockState.getBlock().asItem().getDefaultInstance();
         if (!generatedLoot.contains(stack)) return ObjectArrayList.of(stack);

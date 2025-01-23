@@ -64,9 +64,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
         tag(ModTags.Items.DUSTS_SUGAR_CHARCOAL).add(ModItems.SUGAR_CHARCOAL_DUST.get());
-        tag(ModTags.Items.CHARCOAL).add(
-                ModItems.SUGAR_CHARCOAL.get()
-        );
         tag(Tags.Items.RAW_MATERIALS).add(
                 ModItems.RAW_MANGANESE.get(),
                 ModItems.RAW_MARIN.get()

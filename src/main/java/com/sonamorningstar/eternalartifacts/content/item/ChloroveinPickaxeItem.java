@@ -45,12 +45,12 @@ public class ChloroveinPickaxeItem extends PickaxeItem {
                 !living.isShiftKeyDown() &&
                 !currentMiners.contains(stack)) {
             Block block = state.getBlock();
-            BlockVeinCache cache = new BlockVeinCache(block, level, pos,4, stack, null);
+            BlockVeinCache cache = new BlockVeinCache(block, level, pos, 4);
             cache.scanForBlocks();
             Queue<BlockPos> queuedPos = cache.getCache();
             if (player instanceof ServerPlayer serverPlayer) {
                 while (!queuedPos.isEmpty() && !stack.isEmpty() &&
-                        stack.isCorrectToolForDrops(level.getBlockState(queuedPos.peek()))) {
+                        serverPlayer.hasCorrectToolForDrops(level.getBlockState(queuedPos.peek()))) {
                     if (!currentMiners.contains(stack)) currentMiners.add(stack);
                     cache.mine(queuedPos, serverPlayer);
                 }

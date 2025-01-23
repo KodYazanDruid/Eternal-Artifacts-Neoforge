@@ -18,52 +18,42 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class SurvivalistsIglooPiece extends TemplateStructurePiece {
-    private boolean placedMainChest;
-    private static final ResourceLocation STRUCTURE = new ResourceLocation(MODID, "survivalists_igloo");
+    public static final ResourceLocation STRUCTURE = new ResourceLocation(MODID, "survivalists_igloo");
 
-    public SurvivalistsIglooPiece(StructureTemplateManager manager, BlockPos pos,  Rotation rot) {
+    public SurvivalistsIglooPiece(StructureTemplateManager manager, BlockPos pos,  Rotation rot, BlockPos pivotPos) {
         super(ModStructurePieces.SURVIVALISTS_IGLOO_PIECE.get(),
-                0,
-                manager,
-                STRUCTURE, STRUCTURE.toString(),
-                makeSettings(rot),
-                pos
+            0,
+            manager,
+            STRUCTURE, STRUCTURE.toString(),
+            makeSettings(rot, pivotPos),
+            pos
         );
     }
 
     public SurvivalistsIglooPiece(StructurePieceSerializationContext ctx, CompoundTag tag) {
-        super(ModStructurePieces.SURVIVALISTS_IGLOO_PIECE.get(), tag, ctx.structureTemplateManager(), rl -> makeSettings(Rotation.valueOf(tag.getString("Rot"))));
-        placedMainChest = tag.getBoolean("placedMainChest");
+        super(ModStructurePieces.SURVIVALISTS_IGLOO_PIECE.get(), tag, ctx.structureTemplateManager(), rl -> {
+            var template = ctx.structureTemplateManager().getOrCreate(rl);
+            return makeSettings(Rotation.valueOf(tag.getString("Rotation")),
+                new BlockPos(template.getSize().getX() / 2, 0, template.getSize().getZ() / 2)
+            );
+        });
     }
 
-    private static StructurePlaceSettings makeSettings(Rotation rot) {
+    private static StructurePlaceSettings makeSettings(Rotation rot, BlockPos pivotPos) {
         return new StructurePlaceSettings()
-                .setRotation(rot)
-                .setMirror(Mirror.NONE)
-                .setRotationPivot(new BlockPos(4, 2, 3))
-                .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
+            .setRotation(rot)
+            .setMirror(Mirror.NONE)
+            .setRotationPivot(pivotPos)
+            .addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK);
     }
-
+    
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext ctx, CompoundTag tag) {
         super.addAdditionalSaveData(ctx, tag);
-        tag.putBoolean("placedMainChest", placedMainChest);
-        tag.putString("Rot", this.placeSettings.getRotation().name());
+        tag.putString("Rotation", this.placeSettings.getRotation().name());
+        tag.putString("Mirror", this.placeSettings.getMirror().name());
     }
 
     @Override
-    protected void handleDataMarker(String pName, BlockPos pos, ServerLevelAccessor level, RandomSource rand, BoundingBox box) {
-/*        System.out.println("0");
-        if ("chest".equals(pName)) {
-            System.out.println("1");
-            level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-            BlockEntity blockentity = level.getBlockEntity(pos.below());
-            if (blockentity instanceof ChestBlockEntity) {
-                System.out.println("2");
-                ((ChestBlockEntity)blockentity).setLootTable(ModLootTables.SURVIVALISTS_IGLOO, rand.nextLong());
-            }
-        }*/
-    }
-
-
+    protected void handleDataMarker(String pName, BlockPos pos, ServerLevelAccessor level, RandomSource rand, BoundingBox box) {}
 }

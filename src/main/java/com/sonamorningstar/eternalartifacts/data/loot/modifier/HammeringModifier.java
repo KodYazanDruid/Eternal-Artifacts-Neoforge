@@ -41,7 +41,6 @@ public class HammeringModifier extends LootModifier {
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         if (context.params.hasParam(ModLootContextParams.HAMMERED) && context.getParam(ModLootContextParams.HAMMERED)) return generatedLoot;
-        for(LootItemCondition condition : conditions) if(!condition.test(context)) return generatedLoot;
         ItemStack tool = context.getParam(LootContextParams.TOOL);
         if (tool.isEmpty() || EnchantmentHelper.hasSilkTouch(tool)) return generatedLoot;
         BlockState blockState = context.getParam(LootContextParams.BLOCK_STATE);
