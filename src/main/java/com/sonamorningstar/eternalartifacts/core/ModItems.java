@@ -136,8 +136,11 @@ public class ModItems {
     public static final DeferredItem<Item> SHULKER_BOOTS = registerStacksToOne("shulker_boots", p -> new ShulkerArmorItem(ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<SpellTomeItem<ShulkerBulletsSpell>> SHULKER_BULLETS_TOME = registerTome("shulker_bullets_tome", ModSpells.SHULKER_BULLETS);
     public static final DeferredItem<SpellTomeItem<MeteoriteSpell>> METEORITE_TOME = registerTome("meteorite_tome", ModSpells.METEORITE);
-    public static final DeferredItem<Item> ROBOTIC_GLOVE = registerStacksToOne("robotic_glove");
+    public static final DeferredItem<Item> POWER_GAUNTLET = registerStacksToOne("power_gauntlet");
     public static final DeferredItem<Item> HEART_NECKLACE = registerStacksToOne("heart_necklace");
+    public static final DeferredItem<Item> SAGES_TALISMAN = registerStacksToOne("sages_talisman");
+    public static final DeferredItem<Item> BAND_OF_ARCANE = registerStacksToOne("band_of_arcane");
+    public static final DeferredItem<Item> EMERALD_SIGNET = registerStacksToOne("emerald_signet");
 
     //Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));

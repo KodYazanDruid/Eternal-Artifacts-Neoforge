@@ -31,7 +31,7 @@ public class MagicalBookRenderer extends EntityRenderer<MagicalBookEntity> {
     public void render(MagicalBookEntity book, float yaw, float partialTick, PoseStack poseStack, MultiBufferSource buff, int light) {
         VertexConsumer consumer = buff.getBuffer(RenderType.entitySolid(getTextureLocation(book)));
         poseStack.pushPose();
-        setupRotations(book, poseStack, partialTick);
+        setupRotations(book, poseStack, partialTick, yaw);
         poseStack.translate(0, 0.5f, 0);
         model.setupAnim(book.tickCount + partialTick, 0.9F, 0.1F, book.getBookOpenAmount(partialTick));
         model.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
@@ -39,7 +39,7 @@ public class MagicalBookRenderer extends EntityRenderer<MagicalBookEntity> {
         super.render(book, yaw, partialTick, poseStack, buff, light);
     }
 
-    private void setupRotations(MagicalBookEntity book, PoseStack poseStack, float partialTick) {
+    private void setupRotations(MagicalBookEntity book, PoseStack poseStack, float partialTick, float yaw) {
         if (book.deathTime > 0) {
             float f = ((float)book.deathTime + partialTick - 1.0F) / 20.0F * 1.6F;
             f = Mth.sqrt(f);
@@ -49,7 +49,8 @@ public class MagicalBookRenderer extends EntityRenderer<MagicalBookEntity> {
             poseStack.translate(0.0F, book.getBbHeight() + 0.1F, 0.0F);
             poseStack.mulPose(Axis.XP.rotationDegrees(180.0F));
         }
-        poseStack.mulPose(Axis.YP.rotationDegrees(book.getYRot() * (180.F / (float) Math.PI)));
+        //poseStack.mulPose(Axis.YP.rotationDegrees(book.getYRot() * (180.F / (float) Math.PI)));
+        poseStack.mulPose(Axis.YP.rotationDegrees(180.0F - yaw));
         poseStack.mulPose(Axis.ZN.rotationDegrees(45F));
         poseStack.translate(-0.5F, -0.25F, 0.0F);
     }

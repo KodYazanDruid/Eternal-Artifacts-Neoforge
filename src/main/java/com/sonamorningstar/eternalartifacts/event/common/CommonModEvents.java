@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
+import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
@@ -15,18 +16,26 @@ import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
+import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
+import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -38,6 +47,7 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
@@ -48,6 +58,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -184,7 +195,7 @@ public class CommonModEvents {
             .addType(CharmType.FEET).build()
         );
         event.register(
-            CharmAttributes.Builder.of(ModItems.ROBOTIC_GLOVE)
+            CharmAttributes.Builder.of(ModItems.POWER_GAUNTLET)
             .addModifier(Attributes.ATTACK_DAMAGE, getMod("Robotic Glove Charm Attack Damage", 2))
             .addModifier(Attributes.ATTACK_SPEED, getMod("Robotic Glove Charm Attack Speed", 0.2D, AttributeModifier.Operation.MULTIPLY_TOTAL))
             .addModifier(NeoForgeMod.BLOCK_REACH.value(), getMod("Robotic Glove Charm Block Reach", -1))
@@ -201,6 +212,12 @@ public class CommonModEvents {
             .addModifier(Attributes.MAX_HEALTH, getMod("Heart Necklace Charm Max Health", 4))
             .addType(CharmType.NECKLACE).build()
         );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.BAND_OF_ARCANE)
+            .addModifier(ModAttributes.SPELL_POWER.get(), getMod("Band of Arcane Charm Spell Power", 10))
+            .addModifier(ModAttributes.SPELL_COOLDOWN_REDUCTION.get(), getMod("Band of Arcane Charm Cooldown Reduction", 10))
+            .addType(CharmType.RING).build()
+        );
     }
 
     private static AttributeModifier getMod(String name, double amount) {
@@ -213,6 +230,7 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(ModEntities.DUCK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(ModEntities.DEMON_EYE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
     }
 
     @SubscribeEvent
@@ -222,8 +240,8 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void addAttributes(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER, ModAttributes.SPELL_DAMAGE.get());
-        event.add(EntityType.PLAYER, ModAttributes.COOLDOWN_REDUCTION.get());
+        event.add(EntityType.PLAYER, ModAttributes.SPELL_POWER.get());
+        event.add(EntityType.PLAYER, ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
     }
 
     @SubscribeEvent
@@ -231,5 +249,4 @@ public class CommonModEvents {
         event.register(ModRegistries.SPELL);
         event.register(ModRegistries.TAB_TYPE);
     }
-
 }

@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.BodyRotationControl;
+import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -27,7 +27,9 @@ public class MagicalBookEntity extends FlyingMob implements Enemy {
     public MagicalBookEntity(EntityType<? extends FlyingMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
         moveControl = new MagicalBookEntity.BookMoveControl(this);
+        lookControl = new MagicalBookEntity.BookLookControl(this);
         setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -40,18 +42,13 @@ public class MagicalBookEntity extends FlyingMob implements Enemy {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new FloatGoal(this));
+        goalSelector.addGoal(5, new FloatGoal(this));
         goalSelector.addGoal(1, new BookAttackGoal(this));
-        goalSelector.addGoal(2, new RandomFloatAroundGoal(this));
-        goalSelector.addGoal(3, new RandomLookAroundGoal(this));
+        goalSelector.addGoal(5, new RandomFloatAroundGoal(this));
+        goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
         goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
-    }
-
-    @Override
-    protected BodyRotationControl createBodyControl() {
-        return new MagicalBookEntity.BookBodyRotationControl(this);
     }
 
     @Override
@@ -65,17 +62,20 @@ public class MagicalBookEntity extends FlyingMob implements Enemy {
     public float getBookOpenAmount(float partialTick) {
         return Mth.lerp((1.0F - Mth.cos((tickCount + partialTick) * 0.25F)) / 2F, 0.0F, 1.0F);
     }
+    
+    static class BookLookControl extends LookControl {
+        private final MagicalBookEntity book;
 
-    class BookBodyRotationControl extends BodyRotationControl {
-        public BookBodyRotationControl(Mob mob) {
-            super(mob);
+        public BookLookControl(MagicalBookEntity book) {
+            super(book);
+            this.book = book;
         }
-
+        
         @Override
-        public void clientTick() {
-            MagicalBookEntity.this.yHeadRot = MagicalBookEntity.this.yBodyRot;
-            MagicalBookEntity.this.yBodyRot = MagicalBookEntity.this.getYRot();
-        }
+        public void tick() {
+            super.tick();
+            this.book.setYRot(-((float) Mth.atan2(this.book.getDeltaMovement().x, this.book.getDeltaMovement().z)) * (180F / (float)Math.PI));
+         }
     }
 
     static class BookMoveControl extends MoveControl {
@@ -259,5 +259,4 @@ public class MagicalBookEntity extends FlyingMob implements Enemy {
             return this.book.getAttributeValue(Attributes.FOLLOW_RANGE);
         }
     }
-
 }

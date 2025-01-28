@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "minecraft:crimson_forest",
+  "spawners": {
+    "type": "eternalartifacts:demon_eye",
+    "maxCount": 6,
+    "minCount": 2,
+    "weight": 10
+  }
+}

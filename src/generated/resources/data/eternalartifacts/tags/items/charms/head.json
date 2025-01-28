@@ -7,6 +7,7 @@
     "minecraft:observer",
     "#eternalartifacts:shulker_shell",
     "#forge:glass",
-    "#minecraft:banners"
+    "#minecraft:banners",
+    "#forge:heads"
   ]
 }

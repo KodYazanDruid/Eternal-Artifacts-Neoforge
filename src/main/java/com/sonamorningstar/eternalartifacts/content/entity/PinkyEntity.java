@@ -53,8 +53,7 @@ public class PinkyEntity extends Slime {
     }
 
     @Override
-    public void setSize(int pSize, boolean pResetHealth) {
-    }
+    public void setSize(int pSize, boolean pResetHealth) {}
 
     @Override
     public int getSize() {

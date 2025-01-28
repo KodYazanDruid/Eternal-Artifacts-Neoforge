@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.entity;
 
-import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.*;
@@ -17,18 +17,19 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
 
-//This entity is dumb. Need fixing.
 public class DemonEyeEntity extends FlyingMob implements Enemy {
 
     public DemonEyeEntity(EntityType<? extends FlyingMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);
-        //moveControl = new DemonEyeMoveControl(this);
-        //lookControl = new DemonEyeLookControl(this);
+        this.moveControl = new DemonEyeMoveControl(this);
+        this.lookControl = new DemoneEyeLookControl(this);
         setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -1.0F);
+        setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
     }
 
     public final AnimationState idleState = new AnimationState();
@@ -44,10 +45,10 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(0, new FloatGoal(this));
-        goalSelector.addGoal(1, new RandomFloatAroundGoal(this));
-        goalSelector.addGoal(2, new RandomLookAroundGoal(this));
-        goalSelector.addGoal(3, new FlyTowardsTargetGoal(this));
+        goalSelector.addGoal(2, new FlyTowardsTargetGoal(this));
+        goalSelector.addGoal(3, new FloatGoal(this));
+        goalSelector.addGoal(4, new RandomFloatAroundGoal(this));
+        goalSelector.addGoal(5, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
@@ -71,6 +72,79 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
             idleState.start(tickCount);
         } else {
             --idleAnimationTimeout;
+        }
+    }
+    
+    @Override
+    public void playerTouch(Player player) {
+        if (this.isAlive() && this.hasLineOfSight(player) &&
+                player.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
+            this.playSound(SoundEvents.PLAYER_ATTACK_WEAK,
+                1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+            this.doEnchantDamageEffects(this, player);
+            
+        }
+    }
+    
+    protected float getAttackDamage() {
+        return (float)this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    }
+    
+    static class DemoneEyeLookControl extends LookControl {
+        private final DemonEyeEntity demonEye;
+        
+        public DemoneEyeLookControl(DemonEyeEntity demonEye) {
+            super(demonEye);
+            this.demonEye = demonEye;
+        }
+        
+        @Override
+        public void tick() {
+            super.tick();
+            this.demonEye.setYRot(-((float) Mth.atan2(this.demonEye.getDeltaMovement().x,
+                this.demonEye.getDeltaMovement().z)) * (180F / (float)Math.PI));
+            this.demonEye.setXRot(-((float) Mth.atan2(this.demonEye.getDeltaMovement().y,
+                Math.sqrt(this.demonEye.getDeltaMovement().x * this.demonEye.getDeltaMovement().x + this.demonEye.getDeltaMovement().z * this.demonEye.getDeltaMovement().z))) * (180F / (float)Math.PI));
+        }
+    }
+    
+    static class DemonEyeMoveControl extends MoveControl {
+        private final DemonEyeEntity demonEye;
+        private int floatDuration;
+        
+        public DemonEyeMoveControl(DemonEyeEntity demonEye) {
+            super(demonEye);
+            this.demonEye = demonEye;
+        }
+        
+        @Override
+        public void tick() {
+            if (this.operation == MoveControl.Operation.MOVE_TO) {
+                if (this.floatDuration-- <= 0) {
+                    this.floatDuration += this.demonEye.getRandom().nextInt(5) + 2;
+                    Vec3 vec3 = new Vec3(this.wantedX - this.demonEye.getX(), this.wantedY - this.demonEye.getY(), this.wantedZ - this.demonEye.getZ());
+                    double d0 = vec3.length();
+                    vec3 = vec3.normalize();
+                    if (this.canReach(vec3, Mth.ceil(d0))) {
+                        this.demonEye.setDeltaMovement(this.demonEye.getDeltaMovement().add(vec3.scale(0.1)));
+                    } else {
+                        this.operation = MoveControl.Operation.WAIT;
+                    }
+                }
+            }
+        }
+        
+        private boolean canReach(Vec3 pPos, int pLength) {
+            AABB aabb = this.demonEye.getBoundingBox();
+            
+            for(int i = 1; i < pLength; ++i) {
+                aabb = aabb.move(pPos);
+                if (!this.demonEye.level().noCollision(this.demonEye, aabb)) {
+                    return false;
+                }
+            }
+            
+            return true;
         }
     }
 
@@ -134,67 +208,7 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
         public void start() {
             LivingEntity target = demonEye.getTarget();
             if (target != null)
-                demonEye.getMoveControl().setWantedPosition(target.getX(), target.getY(), target.getZ(), 0.5F);
+                demonEye.getMoveControl().setWantedPosition(target.getX(), target.getEyeY(), target.getZ(), 1F);
         }
     }
-
-    class DemonEyeLookControl extends LookControl {
-        public DemonEyeLookControl(Mob pMob) {
-            super(pMob);
-        }
-
-        @Override
-        public void tick() {
-        }
-    }
-
-    class DemonEyeMoveControl extends MoveControl {
-        private float speed = 0.1F;
-
-        public DemonEyeMoveControl(Mob pMob) {
-            super(pMob);
-        }
-
-        @Override
-        public void tick() {
-            if (DemonEyeEntity.this.horizontalCollision) {
-                DemonEyeEntity.this.setYRot(DemonEyeEntity.this.getYRot() + 180.0F);
-                this.speed = 0.1F;
-            }
-
-            double d0 = this.wantedX - DemonEyeEntity.this.getX();
-            double d1 = this.wantedY - DemonEyeEntity.this.getY();
-            double d2 = this.wantedZ - DemonEyeEntity.this.getZ();
-            double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-            if (Math.abs(d3) > 1.0E-5F) {
-                double d4 = 1.0 - Math.abs(d1 * 0.7F) / d3;
-                d0 *= d4;
-                d2 *= d4;
-                d3 = Math.sqrt(d0 * d0 + d2 * d2);
-                double d5 = Math.sqrt(d0 * d0 + d2 * d2 + d1 * d1);
-                float f = DemonEyeEntity.this.getYRot();
-                float f1 = (float)Mth.atan2(d2, d0);
-                float f2 = Mth.wrapDegrees(DemonEyeEntity.this.getYRot() + 90.0F);
-                float f3 = Mth.wrapDegrees(f1 * (180.0F / (float)Math.PI));
-                DemonEyeEntity.this.setYRot(Mth.approachDegrees(f2, f3, 4.0F) - 90.0F);
-                DemonEyeEntity.this.yBodyRot = DemonEyeEntity.this.getYRot();
-
-                if (Mth.degreesDifferenceAbs(f, DemonEyeEntity.this.getYRot()) < 3.0F) this.speed = Mth.approach(this.speed, 1.8F, 0.005F * (1.8F / this.speed));
-                else this.speed = Mth.approach(this.speed, 0.2F, 0.025F);
-
-
-                float f4 = (float)(-(Mth.atan2(-d1, d3) * 180.0F / (float)Math.PI));
-                DemonEyeEntity.this.setXRot(f4);
-
-                DemonEyeEntity.this.lookAt(EntityAnchorArgument.Anchor.EYES, new Vec3(d0, d1, d2));
-                /*float f5 = DemonEyeEntity.this.getYRot() + 90.0F;
-                double d6 = (double)(this.speed * Mth.cos(f5 * (float) (Math.PI / 180.0))) * Math.abs(d0 / d5);
-                double d7 = (double)(this.speed * Mth.sin(f5 * (float) (Math.PI / 180.0))) * Math.abs(d2 / d5);
-                double d8 = (double)(this.speed * Mth.sin(f4 * (float) (Math.PI / 180.0))) * Math.abs(d1 / d5);
-                Vec3 vec3 = DemonEyeEntity.this.getDeltaMovement();
-                DemonEyeEntity.this.setDeltaMovement(vec3.add(new Vec3(d6, d8, d7).subtract(vec3).scale(0.2)));*/
-            }
-        }
-    }
-
 }

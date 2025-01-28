@@ -17,6 +17,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
+import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -26,12 +27,15 @@ import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -44,6 +48,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -69,9 +74,12 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -377,6 +385,17 @@ public class CommonEvents {
             entity.setSecondsOnFire(lvl * 4);
         }
     }
+    
+    @SubscribeEvent
+    public static void experienceDropEvent(LivingExperienceDropEvent event) {
+        Player player = event.getAttackingPlayer();
+        if (player != null) {
+            ItemStack talisman = PlayerCharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
+            if (!talisman.isEmpty()) {
+                event.setDroppedExperience(Mth.ceil(event.getDroppedExperience() * 1.2));
+            }
+        }
+    }
 
     @SubscribeEvent
     public static void useEvent(UseItemOnBlockEvent event) {
@@ -467,5 +486,25 @@ public class CommonEvents {
     @SubscribeEvent
     public static void registerResourceReloadEvent(AddReloadListenerEvent event) {
         event.addListener(new ModResourceReloadListener());
+    }
+    
+    @SubscribeEvent
+    public static void serverStartingEvent(ServerStartingEvent event) {
+        rollHammeringTables(event.getServer().overworld());
+    }
+    
+    private static void rollHammeringTables(ServerLevel level) {
+        for (TagKey<Block> tag : HammerItem.gatheredTags) {
+            ResourceLocation tableId = HammerItem.getTableForTag(tag);
+            Map<Item, Pair<Float, Float>> results = LootTableHelper.getItemsWithCounts(level, tableId);
+            results.forEach((item, pair) -> HammerItem.tagDropRates.put(tag, Pair.of(item, pair)));
+            
+        }
+        for (Block block : HammerItem.gatheredBlocks) {
+            ResourceLocation tableId = HammerItem.getTableForBlock(block);
+            Map<Item, Pair<Float, Float>> results = LootTableHelper.getItemsWithCounts(level, tableId);
+            results.forEach((item, pair) -> HammerItem.blockDropRates.put(block, Pair.of(item, pair)));
+        }
+        
     }
 }

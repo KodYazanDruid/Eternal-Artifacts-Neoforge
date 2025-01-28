@@ -17,7 +17,6 @@ public class CustomHeadLayerMixin {
     @WrapOperation(method = "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
     at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack renderHead(LivingEntity instance, EquipmentSlot equipmentSlot, Operation<ItemStack> original) {
-        //ItemStack headEquipment = PlayerCharmManager.getHeadEquipment(instance);
         //Ignoring the wildcard slot.
         ItemStack headEquipment = CharmStorage.get(instance).getStackInSlot(0);
         headEquipment = RenderOverrides.shouldRender(equipmentSlot, headEquipment) ?

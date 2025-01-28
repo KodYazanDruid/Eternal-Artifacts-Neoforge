@@ -1,14 +1,14 @@
-// 1.20.4	2025-01-23T18:59:49.1465101	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-01-27T23:59:33.2467771	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 ed100bf617106ca16d56ad83350f486940af2940 data/eternalartifacts/tags/items/charms/back.json
 fbcd0d7bc9ccd1dce9fa14867e7f66c06f434a14 data/eternalartifacts/tags/items/charms/belt.json
 5a60d4d6defde1d77adad4959c5d4aac661e4a5f data/eternalartifacts/tags/items/charms/bracelet.json
 177bd8ba380abb9bb917323e23123b67d51accac data/eternalartifacts/tags/items/charms/charm.json
 d613f71114ab2701c883292c2acdf914026a87e8 data/eternalartifacts/tags/items/charms/feet.json
-b69eb46571daa6bfbc57dc99de4b37ada34330ae data/eternalartifacts/tags/items/charms/hand.json
-c6f436489094161dd5ae12141fbc19515fb7117a data/eternalartifacts/tags/items/charms/head.json
-112287a51ac0d0899332e18952f6fe78403ecfff data/eternalartifacts/tags/items/charms/necklace.json
-b71cc5723036c3c57ac0aa555bf4f8c968b22ff4 data/eternalartifacts/tags/items/charms/ring.json
+2f3f07c106703626e90f1695d9ca1853086254ea data/eternalartifacts/tags/items/charms/hand.json
+e0109eb09f59f0a4788202ab76a010170faa32b4 data/eternalartifacts/tags/items/charms/head.json
+600363108b6a7ae3ba1f543638aabd5af8e0987a data/eternalartifacts/tags/items/charms/necklace.json
+d429de6cd6ef9b3a62721ef02325f191827b29e3 data/eternalartifacts/tags/items/charms/ring.json
 cd40b2c4f0e4714c52bb7abbe39a8e26f9feb65d data/eternalartifacts/tags/items/gardening_pot_suitable.json
 4d5a856cfddb256d28a3f63c15763ee25a51820b data/eternalartifacts/tags/items/shulker_shell.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json

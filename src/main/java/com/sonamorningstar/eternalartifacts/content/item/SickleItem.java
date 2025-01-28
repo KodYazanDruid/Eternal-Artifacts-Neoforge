@@ -46,6 +46,7 @@ public class SickleItem extends DiggerItem {
             int searchRange = state.isSolid() ? 1 : 2;
             BlockVeinCache cache = new BlockVeinCache(block, level, pos, range, searchRange);
             cache.addMineableTag(BlockTags.FLOWERS);
+            cache.addMineableTag(BlockTags.CAVE_VINES);
             cache.addMineableBlock(Blocks.SHORT_GRASS);
             cache.addMineableBlock(Blocks.TALL_GRASS);
             cache.addMineableBlock(Blocks.FERN);
@@ -55,8 +56,6 @@ public class SickleItem extends DiggerItem {
             cache.addMineableBlock(Blocks.CRIMSON_ROOTS);
             cache.addMineableBlock(Blocks.TWISTING_VINES);
             cache.addMineableBlock(Blocks.TWISTING_VINES_PLANT);
-            cache.addMineableBlock(Blocks.FERN);
-            cache.addMineableTag(BlockTags.CAVE_VINES);
             cache.scanForBlocks();
             Queue<BlockPos> queuedPos = cache.getCache();
             if (player instanceof ServerPlayer serverPlayer) {

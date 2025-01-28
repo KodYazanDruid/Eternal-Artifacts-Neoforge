@@ -16,6 +16,6 @@ public class ModJsonResourceReloadListener extends SimpleJsonResourceReloadListe
 
     @Override
     protected void apply(Map<ResourceLocation, JsonElement> pObject, ResourceManager pResourceManager, ProfilerFiller pProfiler) {
-
+    
     }
 }

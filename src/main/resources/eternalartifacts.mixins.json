@@ -18,6 +18,7 @@
     "entity.LivingEntityMixin",
     "entity.PiglinAiMixin",
     "entity.PlayerMixin",
+    "entity.VillagerMixin",
     "entity.ZombieMixin"
   ],
   "injectors": {
@@ -26,6 +27,7 @@
   "client": [
     "AbstractContainerScreenMixin",
     "ClientPacketListenerMixin",
+    "entity.AbstractClientPlayerMixin",
     "entity.LocalPlayerMixin",
     "render.CustomHeadLayerMixin",
     "render.ElytraLayerMixin",

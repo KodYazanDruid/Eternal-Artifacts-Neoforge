@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
-import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.*;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
@@ -9,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import dev.emi.emi.api.EmiEntrypoint;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
+import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,7 +16,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.IEventBus;
 
 import java.util.*;
 
@@ -41,6 +40,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addCategory(SqueezingCategory.SQUEEZING_CATEGORY);
         registry.addCategory(MelterCategory.MELTER_CATEGORY);
         registry.addCategory(SolidifierCategory.SOLIDIFIER_CATEGORY);
+        registry.addCategory(HammeringCategory.HAMMERING_CATEGORY);
 
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModMachines.ADVANCED_CRAFTER.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModItems.PORTABLE_CRAFTER));
@@ -63,8 +63,10 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(SqueezingCategory.SQUEEZING_CATEGORY, EmiStack.of(ModMachines.MATERIAL_SQUEEZER.getItem()));
         registry.addWorkstation(MelterCategory.MELTER_CATEGORY, EmiStack.of(ModMachines.MELTING_CRUCIBLE.getItem()));
         registry.addWorkstation(SolidifierCategory.SOLIDIFIER_CATEGORY, EmiStack.of(ModMachines.SOLIDIFIER.getItem()));
+        registry.addWorkstation(HammeringCategory.HAMMERING_CATEGORY, EmiIngredient.of(ModTags.Items.TOOLS_HAMMER));
 
         registry.addRecipe(new MeatPackerCategory());
+        HammeringCategory.fillRecipes(registry);
 
         MeatShredderCategory.fillRecipes(registry);
         MobLiquifierCategory.fillRecipes(registry);

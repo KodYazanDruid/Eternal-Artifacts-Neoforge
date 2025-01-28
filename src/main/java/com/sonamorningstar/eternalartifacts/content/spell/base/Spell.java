@@ -72,7 +72,7 @@ public class Spell {
      */
     @Deprecated()
     public float getAmplifiedDamage(LivingEntity caster) {
-        AttributeInstance spellDamage = caster.getAttribute(ModAttributes.SPELL_DAMAGE.get());
+        AttributeInstance spellDamage = caster.getAttribute(ModAttributes.SPELL_POWER.get());
         if (spellDamage == null) return baseDamage;
         double amp = spellDamage.getValue();
         return (float) (baseDamage * amp / 100);

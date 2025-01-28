@@ -160,64 +160,69 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             Items.DISPENSER,
             Items.BUCKET,
             Items.CARVED_PUMPKIN,
-            Items.OBSERVER
+            Items.OBSERVER,
+            Items.PIGLIN_HEAD
         );
         tag(ModTags.Items.CHARMS_HEAD).addTags(
             ModTags.Items.SHULKER_SHELL,
             Tags.Items.GLASS,
-            ItemTags.BANNERS
+            ItemTags.BANNERS,
+            Tags.Items.HEADS
         );
         tag(ModTags.Items.CHARMS_NECKLACE).add(
-            ModItems.HEART_NECKLACE.get()
+            ModItems.HEART_NECKLACE.get(),
+            ModItems.SAGES_TALISMAN.get()
         );
         tag(ModTags.Items.CHARMS_HAND).add(
-                ModItems.ROBOTIC_GLOVE.get()
+            ModItems.POWER_GAUNTLET.get()
         );
         tag(ModTags.Items.CHARMS_RING).add(
-                ModItems.GOLD_RING.get()
+            ModItems.GOLD_RING.get(),
+            ModItems.BAND_OF_ARCANE.get(),
+            ModItems.EMERALD_SIGNET.get()
         );
         tag(ModTags.Items.CHARMS_BRACELET).add(
-                Items.CLOCK,
-                Items.COMPASS,
-                Items.RECOVERY_COMPASS
+            Items.CLOCK,
+            Items.COMPASS,
+            Items.RECOVERY_COMPASS
         );
         tag(ModTags.Items.CHARMS_BACK).add(
-                ModItems.KNAPSACK.get(),
-                ModItems.TANK_KNAPSACK.get(),
-                ModItems.ENDER_KNAPSACK.get(),
-                Items.ELYTRA,
-                ModItems.PORTABLE_BATTERY.get()
+            ModItems.KNAPSACK.get(),
+            ModItems.TANK_KNAPSACK.get(),
+            ModItems.ENDER_KNAPSACK.get(),
+            Items.ELYTRA,
+            ModItems.PORTABLE_BATTERY.get()
         );
         tag(ModTags.Items.CHARM_FEET).add(
-                ModItems.COMFY_SHOES.get(),
-                ModItems.FROG_LEGS.get()
+            ModItems.COMFY_SHOES.get(),
+            ModItems.FROG_LEGS.get()
         );
         tag(ModTags.Items.CHARMS_BELT).add(
-                Items.FILLED_MAP,
-                Items.BUNDLE
+            Items.FILLED_MAP,
+            Items.BUNDLE
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
-                ModItems.MAGIC_FEATHER.get(),
-                ModItems.PORTABLE_CRAFTER.get(),
-                ModItems.HOLY_DAGGER.get(),
-                ModItems.ENCUMBATOR.get(),
-                ModItems.MEDKIT.get(),
-                Items.RABBIT_FOOT,
-                Items.COD,
-                Items.TOTEM_OF_UNDYING
+            ModItems.MAGIC_FEATHER.get(),
+            ModItems.PORTABLE_CRAFTER.get(),
+            ModItems.HOLY_DAGGER.get(),
+            ModItems.ENCUMBATOR.get(),
+            ModItems.MEDKIT.get(),
+            Items.RABBIT_FOOT,
+            Items.COD,
+            Items.TOTEM_OF_UNDYING
         );
         /*tag(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED).add(
         );*/
         tag(ModTags.Items.CHARMS).addTags(
-                ModTags.Items.CHARMS_HEAD,
-                ModTags.Items.CHARMS_NECKLACE,
-                ModTags.Items.CHARMS_HAND,
-                ModTags.Items.CHARMS_RING,
-                ModTags.Items.CHARMS_BRACELET,
-                ModTags.Items.CHARMS_BELT,
-                ModTags.Items.CHARMS_BACK,
-                ModTags.Items.CHARM_FEET,
-                ModTags.Items.CHARMS_CHARM
+            ModTags.Items.CHARMS_HEAD,
+            ModTags.Items.CHARMS_NECKLACE,
+            ModTags.Items.CHARMS_HAND,
+            ModTags.Items.CHARMS_RING,
+            ModTags.Items.CHARMS_BRACELET,
+            ModTags.Items.CHARMS_BELT,
+            ModTags.Items.CHARMS_BACK,
+            ModTags.Items.CHARM_FEET,
+            ModTags.Items.CHARMS_CHARM
         );
 
         tag(ModTags.Items.SHULKER_SHELL).add(

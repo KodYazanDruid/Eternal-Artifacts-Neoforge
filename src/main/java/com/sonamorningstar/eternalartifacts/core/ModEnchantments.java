@@ -27,8 +27,7 @@ public class ModEnchantments {
         public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {
             ItemStack stack = item.getDefaultInstance();
             return ((hasAnyCapability(stack) && BuiltInRegistries.ITEM.getKey(item).getNamespace().equals(MODID))
-                    || VolumeEnchantment.isAcceptedItem.test(stack)) &&
-                !VolumeEnchantment.isBlacklistedItem.test(stack);
+                || VolumeEnchantment.isAcceptedItem.test(stack)) && !VolumeEnchantment.isBlacklistedItem.test(stack);
         });
         public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("versatility", VersatilityEnchantment.acceptedItems);
         public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1);

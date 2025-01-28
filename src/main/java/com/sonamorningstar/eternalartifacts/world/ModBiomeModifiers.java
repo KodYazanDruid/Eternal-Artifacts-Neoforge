@@ -9,10 +9,12 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -30,6 +32,7 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_SMALL = registerKey("feature", "add_manganese_ore_small");
 
     public static final ResourceKey<BiomeModifier> SPAWN_DUCK = registerKey("spawn", "spawn_duck");
+    public static final ResourceKey<BiomeModifier> SPAWN_DEMON_EYE = registerKey("spawn", "spawn_demon_eye");
 
     private static ResourceKey<BiomeModifier> registerKey(String type, String name) {
         return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MODID, type+"/"+name));
@@ -68,6 +71,10 @@ public class ModBiomeModifiers {
         context.register(SPAWN_DUCK, new BiomeModifiers.AddSpawnsBiomeModifier(
                 biome.getOrThrow(BiomeTags.IS_FOREST),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.DUCK.get(), 10, 4, 4))
+        ));
+        context.register(SPAWN_DEMON_EYE, new BiomeModifiers.AddSpawnsBiomeModifier(
+                HolderSet.direct(biome.getOrThrow(Biomes.CRIMSON_FOREST)),
+                List.of(new MobSpawnSettings.SpawnerData(ModEntities.DEMON_EYE.get(), 10, 2, 6))
         ));
     }
 }

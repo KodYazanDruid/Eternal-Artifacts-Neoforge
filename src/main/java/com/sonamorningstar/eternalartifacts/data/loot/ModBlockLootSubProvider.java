@@ -187,18 +187,18 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
     private void generateSingleItem(BiConsumer<ResourceLocation, LootTable.Builder> output, ResourceLocation location, ItemLike generated, NumberProvider provider) {
         output.accept(location, LootTable.lootTable()
             .withPool(LootPool.lootPool()
+                .when(ExplosionCondition.survivesExplosion())
                 .setRolls(ConstantValue.exactly(1))
-                .add(LootItem.lootTableItem(generated)).apply(SetItemCountFunction.setCount(provider))
+                .add(LootItem.lootTableItem(generated).apply(SetItemCountFunction.setCount(provider)))
             ));
     }
 
     private void addLootPool(DeferredHolder<Block, ? extends Block> holder, LootPoolEntryContainer.Builder<?> builder) {
         add(holder.get(), LootTable.lootTable()
-            .withPool(
-                LootPool.lootPool()
-                    .setRolls(ConstantValue.exactly(1.0F))
-                    .when(ExplosionCondition.survivesExplosion())
-                    .add(builder)
+            .withPool(LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1.0F))
+                .when(ExplosionCondition.survivesExplosion())
+                .add(builder)
             )
         );
     }

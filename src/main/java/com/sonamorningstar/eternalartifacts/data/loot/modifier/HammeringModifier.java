@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.data.loot.modifier;
 import com.google.common.base.Suppliers;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.data.loot.ModLootContextParams;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -22,14 +23,9 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.function.Supplier;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
 public class HammeringModifier extends LootModifier {
-    public static Set<TagKey<Block>> gatheredTags = new HashSet<>();
 
     public static final Supplier<Codec<HammeringModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(instance ->
             codecStart(instance).apply(instance, HammeringModifier::new)));
@@ -45,14 +41,12 @@ public class HammeringModifier extends LootModifier {
         if (tool.isEmpty() || EnchantmentHelper.hasSilkTouch(tool)) return generatedLoot;
         BlockState blockState = context.getParam(LootContextParams.BLOCK_STATE);
         ServerLevel level = context.getLevel();
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(blockState.getBlock());
-        ResourceLocation targetTable = new ResourceLocation(MODID, "hammering/blocks/" + id.getNamespace() + "/" + id.getPath());
+        ResourceLocation targetTable = HammerItem.getTableForBlock(blockState.getBlock());
         LootTable table = LootTableHelper.getTable(level, targetTable);
         if (table == LootTable.EMPTY) {
-            for (TagKey<Block> tag : gatheredTags) {
+            for (TagKey<Block> tag : HammerItem.gatheredTags) {
                 if (blockState.is(tag)) {
-                    ResourceLocation loc = tag.location();
-                    table = LootTableHelper.getTable(level, new ResourceLocation(MODID, "hammering/tags/"+loc.getNamespace()+"/"+loc.getPath()));
+                    table = LootTableHelper.getTable(level, HammerItem.getTableForTag(tag));
                     break;
                 }
             }

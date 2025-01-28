@@ -155,11 +155,14 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.SHULKER_BOOTS.get());
         basicItem(ModItems.SHULKER_BULLETS_TOME.get());
         basicItem(ModItems.METEORITE_TOME.get());
-        basicItem(ModItems.ROBOTIC_GLOVE.get());
+        basicItem(ModItems.POWER_GAUNTLET.get());
         basicItem(ModItems.PORTABLE_BATTERY.get());
         basicItem(ModItems.CONFIGURATION_DRIVE.get());
         basicItem(ModItems.HEART_NECKLACE.get());
         basicItem(ModItems.ANGELIC_HEART.get());
+        basicItem(ModItems.SAGES_TALISMAN.get());
+        basicItem(ModItems.BAND_OF_ARCANE.get());
+        basicItem(ModItems.EMERALD_SIGNET.get());
 
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

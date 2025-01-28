@@ -10,6 +10,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -20,33 +21,30 @@ public class HumanoidArmorLayerMixin {
     private ItemStack renderArmorPiece(LivingEntity instance, EquipmentSlot equipmentSlot, Operation<ItemStack> original) {
         return switch (equipmentSlot) {
             case HEAD -> {
-                //ItemStack headEquipment = PlayerCharmManager.getHeadEquipment(instance);
-                ItemStack headEquipment = CharmStorage.get(instance).getStackInSlot(0);
-                yield headEquipment.isEmpty() ? original.call(instance, equipmentSlot) : headEquipment;
+                //ItemStack head = PlayerCharmManager.getHeadEquipment(instance);
+                ItemStack head = CharmStorage.get(instance).getStackInSlot(0);
+                yield head.isEmpty() || head.is(Items.PLAYER_HEAD) ? original.call(instance, equipmentSlot) : head;
             }
             case CHEST -> {
-                //ItemStack chestEquipment = PlayerCharmManager.getChestEquipment(instance);
-                ItemStack chestEquipment = CharmStorage.get(instance).getStackInSlot(9);
-                chestEquipment = RenderOverrides.shouldRender(equipmentSlot, chestEquipment) ?
-                        chestEquipment : ItemStack.EMPTY;
-                yield chestEquipment.isEmpty() ? original.call(instance, equipmentSlot) :
-                        chestEquipment.getItem() instanceof ArmorItem ? chestEquipment : original.call(instance, equipmentSlot);
+                //ItemStack chest = PlayerCharmManager.getChestEquipment(instance);
+                ItemStack chest = CharmStorage.get(instance).getStackInSlot(9);
+                chest = RenderOverrides.shouldRender(equipmentSlot, chest) ? chest : ItemStack.EMPTY;
+                yield chest.isEmpty() ? original.call(instance, equipmentSlot) :
+                        chest.getItem() instanceof ArmorItem ? chest : original.call(instance, equipmentSlot);
             }
             case LEGS -> {
-                //ItemStack legsEquipment = PlayerCharmManager.getLegsEquipment(instance);
-                ItemStack legsEquipment = CharmStorage.get(instance).getStackInSlot(4);
-                legsEquipment = RenderOverrides.shouldRender(equipmentSlot, legsEquipment) ?
-                        legsEquipment : ItemStack.EMPTY;
-                yield legsEquipment.isEmpty() ? original.call(instance, equipmentSlot) :
-                        legsEquipment.getItem() instanceof ArmorItem ? legsEquipment : original.call(instance, equipmentSlot);
+                //ItemStack legs = PlayerCharmManager.getLegsEquipment(instance);
+                ItemStack legs = CharmStorage.get(instance).getStackInSlot(4);
+                legs = RenderOverrides.shouldRender(equipmentSlot, legs) ? legs : ItemStack.EMPTY;
+                yield legs.isEmpty() ? original.call(instance, equipmentSlot) :
+                        legs.getItem() instanceof ArmorItem ? legs : original.call(instance, equipmentSlot);
             }
             case FEET -> {
-                //ItemStack feetEquipment = PlayerCharmManager.getFeetEquipment(instance);
-                ItemStack feetEquipment = CharmStorage.get(instance).getStackInSlot(5);
-                feetEquipment = RenderOverrides.shouldRender(equipmentSlot, feetEquipment) ?
-                        feetEquipment : ItemStack.EMPTY;
-                yield feetEquipment.isEmpty() ? original.call(instance, equipmentSlot) :
-                        feetEquipment.getItem() instanceof ArmorItem ? feetEquipment : original.call(instance, equipmentSlot);
+                //ItemStack feet = PlayerCharmManager.getFeetEquipment(instance);
+                ItemStack feet = CharmStorage.get(instance).getStackInSlot(5);
+                feet = RenderOverrides.shouldRender(equipmentSlot, feet) ? feet : ItemStack.EMPTY;
+                yield feet.isEmpty() ? original.call(instance, equipmentSlot) :
+                        feet.getItem() instanceof ArmorItem ? feet : original.call(instance, equipmentSlot);
             }
             default -> original.call(instance, equipmentSlot);
         };

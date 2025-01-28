@@ -157,10 +157,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Bullets Tome");
                 add(ModItems.METEORITE_TOME.get(), "Meteorite Tome");
                 add(ModItems.PORTABLE_BATTERY.get(), "Portable Battery");
-                add(ModItems.ROBOTIC_GLOVE.get(), "Robotic Glove");
+                add(ModItems.POWER_GAUNTLET.get(), "Power Gauntlet");
                 add(ModItems.CONFIGURATION_DRIVE.get(), "Configuration Drive");
                 add(ModItems.HEART_NECKLACE.get(), "Heart Necklace");
                 add(ModItems.ANGELIC_HEART.get(), "Angelic Heart");
+                add(ModItems.SAGES_TALISMAN.get(), "Sage's Talisman");
+                add(ModItems.BAND_OF_ARCANE.get(), "Band of Arcane");
+                add(ModItems.EMERALD_SIGNET.get(), "Emerald Signet");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -533,10 +536,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHULKER_BULLETS_TOME.get(), "Shulker Mermiler Kitabı");
                 add(ModItems.METEORITE_TOME.get(), "Meteorit Kitabı");
                 add(ModItems.PORTABLE_BATTERY.get(), "Taşınabilir Pil");
-                add(ModItems.ROBOTIC_GLOVE.get(), "Robot Eldiven");
+                add(ModItems.POWER_GAUNTLET.get(), "Güç Eldiveni");
                 add(ModItems.CONFIGURATION_DRIVE.get(), "Yapılandırma Sürücüsü");
                 add(ModItems.HEART_NECKLACE.get(), "Kalp Kolyesi");
                 add(ModItems.ANGELIC_HEART.get(), "Melek Kalbi");
+                add(ModItems.SAGES_TALISMAN.get(), "Bilge'nin Tılsımı");
+                add(ModItems.BAND_OF_ARCANE.get(), "Gizem Yüzüğü");
+                add(ModItems.EMERALD_SIGNET.get(), "Zümrüt Mührü");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -667,8 +673,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEffects.MALADY.get(), "İllet");
                 //endregion
                 //region Türkçe Özellikler
-                add(ModAttributes.SPELL_DAMAGE.get().getDescriptionId(), "Büyü Gücü");
-                add(ModAttributes.COOLDOWN_REDUCTION.get().getDescriptionId(), "Bekleme Süresi Azaltması");
+                add(ModAttributes.SPELL_POWER.get().getDescriptionId(), "Büyü Gücü");
+                add(ModAttributes.SPELL_COOLDOWN_REDUCTION.get().getDescriptionId(), "Büyü Bekleme Süresi Azaltması");
                 //endregion
                 //region Türkçe Sekmeler
                 add(ModInventoryTabs.INVENTORY.get().getDescriptionId(), "Envanter");

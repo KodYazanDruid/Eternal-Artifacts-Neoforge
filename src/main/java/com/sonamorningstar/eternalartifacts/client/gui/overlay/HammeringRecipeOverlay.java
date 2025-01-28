@@ -1,15 +1,18 @@
 package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
+import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.HammeringModifier;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.Block;
@@ -18,11 +21,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class HammeringRecipeOverlay extends ModGuiOverlay {
-    public static final Set<Block> gatheredBlocks = new HashSet<>();
     
     public HammeringRecipeOverlay() {
         super(4, 18);
@@ -50,12 +52,27 @@ public class HammeringRecipeOverlay extends ModGuiOverlay {
                 int spriteX = x + 3 + strWidth;
                 guiGraphics.renderItem(bi.getDefaultInstance(), spriteX, y + 1);
                 GuiDrawer.drawEmptyArrow(guiGraphics, spriteX + 18, y + 2);
-                guiGraphics.renderItem(Items.BEEF.getDefaultInstance(), spriteX + 42, y + 1);
+                guiGraphics.renderItem(getResult(state), spriteX + 42, y + 1);
             }
         }
     }
 
     private boolean checkBlock(BlockState state) {
-        return gatheredBlocks.contains(state.getBlock()) || HammeringModifier.gatheredTags.stream().anyMatch(state::is);
+        return HammerItem.gatheredBlocks.contains(state.getBlock()) || HammerItem.gatheredTags.stream().anyMatch(state::is);
+    }
+    
+    private ItemStack getResult(BlockState state) {
+        ItemStack result = ItemStack.EMPTY;
+        for (Map.Entry<TagKey<Block>, Pair<Item, Pair<Float, Float>>> entry : HammerItem.tagDropRates.entrySet()) {
+            if (state.is(entry.getKey())) {
+                return new ItemStack(entry.getValue().getFirst(), entry.getValue().getSecond().getSecond().intValue());
+            }
+        }
+        for (Map.Entry<Block, Pair<Item, Pair<Float, Float>>> entry : HammerItem.blockDropRates.entrySet()) {
+            if (state.getBlock() == entry.getKey()) {
+                return new ItemStack(entry.getValue().getFirst(), entry.getValue().getSecond().getSecond().intValue());
+            }
+        }
+        return result;
     }
 }

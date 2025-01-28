@@ -21,7 +21,7 @@ import java.util.*;
  * Example usage:
  * <pre>
  *     {@code
- *        BlockVeinCache cache = new BlockVeinCache(Blocks.DIAMOND_ORE, level, pos, 5);
+ *        BlockVeinCache cache = new BlockVeinCache(level, pos, 5);
  *        // add mineable blocks and tags
  *        cache.addMineableTag(BlockTags.BASE_STONE_OVERWORLD);
  *        cache.addMineableBlock(Blocks.DIRT);
@@ -47,8 +47,12 @@ public class BlockVeinCache {
     private final int rangeX;
     private final int rangeY;
     private final int searchRange;
-    private final List<Block> mineableBlocks = new ArrayList<>();
-    private final List<TagKey<Block>> mineableTags = new ArrayList<>();
+    private final Set<Block> mineableBlocks = new HashSet<>();
+    private final Set<TagKey<Block>> mineableTags = new HashSet<>();
+    
+    public BlockVeinCache(Level level, BlockPos start, int range) {
+        this(level.getBlockState(start).getBlock(), level, start, range, range, 1);
+    }
     
     public BlockVeinCache(Block minedBlock, Level level, BlockPos start, int range) {
         this(minedBlock, level, start, range, range, 1);
@@ -77,11 +81,11 @@ public class BlockVeinCache {
 
     private boolean canMine(BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        for (TagKey<Block> mineableTag : mineableTags) {
-            if (state.is(mineableTag)) return true;
-        }
         for (Block mineableBlock : mineableBlocks) {
             if (state.is(mineableBlock)) return true;
+        }
+        for (TagKey<Block> mineableTag : mineableTags) {
+            if (state.is(mineableTag)) return true;
         }
         return false;
     }

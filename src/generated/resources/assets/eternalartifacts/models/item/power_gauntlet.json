@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "eternalartifacts:item/robotic_glove"
+    "layer0": "eternalartifacts:item/power_gauntlet"
   }
 }

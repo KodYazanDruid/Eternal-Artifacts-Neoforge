@@ -71,6 +71,7 @@ public class ClientModEvents {
     public static void registerUnrenderableOverrides(RegisterUnrenderableOverridesEvent event) {
         event.register(EquipmentSlot.HEAD, ModTags.Items.SHULKER_SHELL);
         event.register(EquipmentSlot.HEAD, Items.BUCKET);
+        event.register(EquipmentSlot.HEAD, Items.PLAYER_HEAD);
     }
 
     @SubscribeEvent
