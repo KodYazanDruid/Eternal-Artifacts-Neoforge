@@ -6,6 +6,10 @@ import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButt
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -42,7 +46,7 @@ public class GenericScreenInfo {
     @Setter
     private boolean shouldDrawInventoryTitle = true;
 
-    private final Map<AbstractFluidTank, Pair<Integer, Integer>> tankPositions = new HashMap<>();
+    private final Int2ObjectMap<Pair<Integer, Integer>> tankPositions = new Int2ObjectOpenHashMap<>();
     private final Map<Integer, Pair<Integer, Integer>> slotPositions = new HashMap<>();
     private final Map<Component, ComponentInfo> components = new HashMap<>();
     private final List<CustomRenderButtonInfo> buttons = new ArrayList<>();
@@ -51,8 +55,7 @@ public class GenericScreenInfo {
     public static final int defaultTankY = 20;
 
     public void setTankPosition(int x, int y, int tankNo) {
-        AbstractFluidTank tank = machine.tank.get(tankNo);
-        tankPositions.put(tank, Pair.of(x, y));
+        tankPositions.put(tankNo, Pair.of(x, y));
     }
     public void setArrowPos(int x, int y) {
         overrideArrowPos = true;
@@ -72,8 +75,7 @@ public class GenericScreenInfo {
         attachTankToLeft(tankNo, 20);
     }
     public void attachTankToLeft(int tankNo, int y) {
-        AbstractFluidTank tank = machine.tank.get(tankNo);
-        tankPositions.put(tank, Pair.of(imageWidth - 24, y));
+        tankPositions.put(tankNo, Pair.of(imageWidth - 24, y));
     }
 
     public void setSlotPosition(int x, int y, int slot) {
