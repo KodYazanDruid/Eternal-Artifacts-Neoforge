@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModLoots;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -37,6 +38,10 @@ public class KeepFluidsFunction extends LootItemConditionalFunction {
     protected ItemStack run(ItemStack stack, LootContext ctx) {
         BlockEntity entity = ctx.getParam(LootContextParams.BLOCK_ENTITY);
         Level level = ctx.getLevel();
+        if (entity instanceof ModBlockEntity mbe) {
+            var enchantments = mbe.enchantments;
+            enchantments.forEach(stack::enchant);
+        }
         IFluidHandlerItem tankStack = stack.getCapability(Capabilities.FluidHandler.ITEM);
         IFluidHandler tankBe = level.getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
         if (tankBe != null) {

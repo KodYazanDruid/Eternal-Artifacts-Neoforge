@@ -16,9 +16,9 @@ public class FluidInfuserBlockEntity extends GenericMachineBlockEntity {
     public FluidInfuserBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.FLUID_INFUSER, pos, blockState);
         outputSlots.add(1);
-        setEnergy(createDefaultEnergy());
-        setTank(createBasicTank(16000, this::findRecipe));
-        setInventory(createRecipeFinderInventory(2, outputSlots));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(16000, this::findRecipe));
+        setInventory(() -> createRecipeFinderInventory(2, outputSlots));
         setRecipeTypeAndContainer(ModRecipes.FLUID_INFUSING.getType(), () -> new ItemFluidContainer(inventory, tank));
         screenInfo.setArrowXOffset(-20);
     }

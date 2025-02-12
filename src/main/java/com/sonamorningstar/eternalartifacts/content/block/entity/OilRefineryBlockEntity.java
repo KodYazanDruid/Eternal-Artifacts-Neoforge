@@ -20,12 +20,12 @@ public class OilRefineryBlockEntity extends GenericMachineBlockEntity {
     public OilRefineryBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.OIL_REFINERY, pos, blockState);
         setMaxProgress(20);
-        setEnergy(createDefaultEnergy());
+        setEnergy(this::createDefaultEnergy);
         outputSlots.add(0);
         outputSlots.add(1);
         outputSlots.add(2);
-        setInventory(createBasicInventory(3, false));
-        setTank(new MultiFluidTank<>(
+        setInventory(() -> createBasicInventory(3, false));
+        setTank(() -> new MultiFluidTank<>(
                 createBasicTank(16000, fs -> fs.is(ModTags.Fluids.CRUDE_OIL), false, true),
                 createBasicTank(16000, Predicates.alwaysFalse(), true, false),
                 createBasicTank(16000, Predicates.alwaysFalse(), true, false)

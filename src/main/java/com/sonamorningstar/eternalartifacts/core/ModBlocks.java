@@ -166,7 +166,9 @@ public class ModBlocks {
             ()-> new JarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
     public static final DeferredBlock<FancyChestBlock> FANCY_CHEST = registerNoItem("fancy_chest",
             ()-> new FancyChestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)));
-
+    public static final DeferredBlock<TesseractBlock> TESSERACT = registerNoItem("tesseract",
+            ()-> new TesseractBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).noOcclusion()));
+    
     public static final DeferredBlock<AncientCropBlock> ANCIENT_CROP = registerNoItem("ancient_crop",
             ()-> new AncientCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
     public static final DeferredBlock<TallFlowerBlock> FORSYTHIA = registerDoublePlant("forsythia",
@@ -261,7 +263,7 @@ public class ModBlocks {
         DeferredBlock<T> block = BLOCKS.register(name, sup);
         ModItems.ITEMS.register(name, ()-> new BlockItem(block.get(), new Item.Properties()) {
             @Override
-            public void initializeClient(Consumer<IClientItemExtensions> consumer) {consumer.accept(new BEWLRProps());}
+            public void initializeClient(Consumer<IClientItemExtensions> consumer) {consumer.accept(BEWLRProps.INSTANCE);}
         });
         return block;
     }

@@ -35,6 +35,7 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         createBEWLRTransforms(ModBlocks.FLUID_COMBUSTION_DYNAMO);
         createBEWLRTransforms(ModMachines.OIL_REFINERY.getItem());
         createBEWLRTransforms(ModBlocks.ENERGY_DOCK);
+        //createBEWLRTransforms(ModBlocks.TESSERACT);
 
         createBEWLRTransforms(ModItems.FIREBALL_TOME);
 

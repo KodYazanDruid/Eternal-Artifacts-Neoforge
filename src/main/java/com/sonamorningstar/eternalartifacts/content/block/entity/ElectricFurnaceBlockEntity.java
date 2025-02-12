@@ -15,9 +15,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ElectricFurnaceBlockEntity extends GenericMachineBlockEntity {
     public ElectricFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.ELECTRIC_FURNACE, pos, blockState);
-        setEnergy(createDefaultEnergy());
+        setEnergy(this::createDefaultEnergy);
         outputSlots.add(1);
-        setInventory(createRecipeFinderInventory(2, outputSlots));
+        setInventory(() -> createRecipeFinderInventory(2, outputSlots));
     }
 
     private final RecipeCache blastingCache = new RecipeCache(this);

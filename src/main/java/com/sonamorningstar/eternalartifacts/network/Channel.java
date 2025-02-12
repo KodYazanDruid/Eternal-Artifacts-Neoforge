@@ -6,6 +6,8 @@ import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookA
 import com.sonamorningstar.eternalartifacts.network.endernotebook.OpenItemStackScreenToClient;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRemoveNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRenameWarpToServer;
+import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
+import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
@@ -73,6 +75,12 @@ public class Channel {
         registrar.play(OpenMenuToServer.ID,
                 OpenMenuToServer::create,
                 handler -> handler.server(OpenMenuToServer::handle));
+        registrar.play(ConsumeJumpTokenToServer.ID,
+            ConsumeJumpTokenToServer::create,
+                handler -> handler.server(ConsumeJumpTokenToServer::handle));
+        registrar.play(ConsumeDashTokenToServer.ID,
+            ConsumeDashTokenToServer::create,
+            handler -> handler.server(ConsumeDashTokenToServer::handle));
 
         registrar.play(BlockEntityButtonPress.ID,
                 BlockEntityButtonPress::create,
@@ -87,6 +95,12 @@ public class Channel {
         registrar.play(UpdateEntityEnergyToClient.ID,
                 UpdateEntityEnergyToClient::create,
                 handler -> handler.client(UpdateEntityEnergyToClient::handle));
+        registrar.play(SavePlayerDataToClient.ID,
+                SavePlayerDataToClient::create,
+                handler -> handler.client(SavePlayerDataToClient::handle));
+        registrar.play(RebuildTesseractPanelToClient.ID,
+            RebuildTesseractPanelToClient::create,
+            handler -> handler.client(RebuildTesseractPanelToClient::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {

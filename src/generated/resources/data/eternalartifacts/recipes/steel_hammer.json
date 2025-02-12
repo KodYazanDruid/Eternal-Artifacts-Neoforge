@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    },
+    "S": {
+      "tag": "forge:storage_blocks/steel"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FSF",
+    " R "
+  ],
+  "result": {
+    "item": "eternalartifacts:steel_hammer"
+  }
+}

@@ -22,7 +22,8 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 @RequiredArgsConstructor
-public class MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem> implements ItemLike {
+public class
+MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem> implements ItemLike {
     private final DeferredHolder<MenuType<?>, MenuType<M>> menu;
     private final DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntity;
     private final DeferredHolder<Block, MB> block;

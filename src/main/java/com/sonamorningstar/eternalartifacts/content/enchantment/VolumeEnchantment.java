@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.enchantment;
 
 import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -13,12 +14,13 @@ import java.util.function.Predicate;
 
 public class VolumeEnchantment extends Enchantment {
     private static final Set<Class<?>> acceptedItems = Set.of(
-            FeedingCanister.class,
-            EnderNotebookItem.class
+        FeedingCanister.class,
+        EnderNotebookItem.class
     );
     private static final Set<Class<?>> blacklistedItems = Set.of(
-            BucketItem.class,
-            TigrisFlowerItem.class
+        BucketItem.class,
+        TigrisFlowerItem.class,
+        JarBlockItem.class
     );
 
     public static Predicate<ItemStack> isAcceptedItem = stack -> {

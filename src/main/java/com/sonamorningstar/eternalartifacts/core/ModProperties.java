@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -73,6 +74,10 @@ public class ModProperties {
                 .requiresCorrectToolForDrops()
                 .strength(5.0F, 7200000.0F)
                 .sound(SoundType.METAL);
+        public static final BlockBehaviour.Properties TESSERACT = BlockBehaviour.Properties
+                .ofFullCopy(net.minecraft.world.level.block.Blocks.OBSIDIAN)
+                .noOcclusion()
+                .strength(4.0F, 3600F);
 
         private static Boolean never(BlockState st, BlockGetter lvl, BlockPos pos, EntityType<?> type) {return false;}
         private static Boolean always(BlockState st, BlockGetter lvl, BlockPos pos, EntityType<?> type) {return true;}

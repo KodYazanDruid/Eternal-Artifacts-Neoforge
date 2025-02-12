@@ -11,11 +11,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public class ShockAbsorberBlockEntity extends MachineBlockEntity<AbstractMachineMenu> {
     public ShockAbsorberBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SHOCK_ABSORBER.get(), pos, state, null);
-        setEnergy(createBasicEnergy(100000, 100000, false, true));
+        setEnergy(() -> createBasicEnergy(100000, 100000, false, true));
     }
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         for (Direction value : Direction.values()) {
             if (hasAnyEnergy(energy)) outputEnergyToDir(lvl, pos, value, energy);
         }

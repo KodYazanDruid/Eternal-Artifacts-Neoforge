@@ -16,9 +16,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class MeatShredderBlockEntity extends GenericMachineBlockEntity {
     public MeatShredderBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.MEAT_SHREDDER, pos, blockState);
-        setInventory(createRecipeFinderInventory(1, outputSlots));
-        setEnergy(createDefaultEnergy());
-        setTank(createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, false));
+        setInventory(() -> createRecipeFinderInventory(1, outputSlots));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, false));
         setRecipeTypeAndContainer(ModRecipes.MEAT_SHREDDING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
         screenInfo.attachTankToLeft(0);
     }

@@ -77,17 +77,17 @@ public class OilRefineryRenderer implements BlockEntityRenderer<OilRefineryBlock
 
         //Input tank.
         RendererHelper.renderFluidCube(poseStack, buff, refinery.tank.get(0),
-                new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.allExcept(Direction.DOWN), true),
+                new RendererHelper.RenderCubeInfo(RendererHelper.RenderCubeInfo.allExcept(Direction.DOWN), true),
                 light, overlay, 12, 5, 5, 2, 3, 10);
 
         //Right tank.
         RendererHelper.renderFluidCube(poseStack, buff, refinery.tank.get(1),
-                new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.allExcept(Direction.DOWN), true),
+                new RendererHelper.RenderCubeInfo(RendererHelper.RenderCubeInfo.allExcept(Direction.DOWN), true),
                 light, overlay, 5, 12, 5, 10, 3, 1);
 
         //Left tank.
         RendererHelper.renderFluidCube(poseStack, buff, refinery.tank.get(2),
-                new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.allExcept(Direction.DOWN), true),
+                new RendererHelper.RenderCubeInfo(RendererHelper.RenderCubeInfo.allExcept(Direction.DOWN), true),
                 light, overlay, 5, 12, 5, 1, 3, 1);
 
         poseStack.popPose();

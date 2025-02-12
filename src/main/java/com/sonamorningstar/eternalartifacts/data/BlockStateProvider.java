@@ -111,6 +111,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createStateForModelWithProperty(ModBlocks.RESONATOR, BlockStateProperties.FACING);
         createStateForModelWithProperty(ModBlocks.FANCY_CHEST, BlockStateProperties.HORIZONTAL_FACING);
         createStateForModel(ModBlocks.GARDENING_POT);
+        createStateForModel(ModBlocks.TESSERACT);
         createDrums(ModBlocks.COPPER_DRUM, Blocks.COPPER_BLOCK);
         createDrums(ModBlocks.IRON_DRUM, Blocks.IRON_BLOCK);
         createDrums(ModBlocks.GOLD_DRUM, Blocks.GOLD_BLOCK);

@@ -55,6 +55,7 @@ public class ClientModEvents {
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
         event.register(ModMenuTypes.TANK_KNAPSACK.get(), TankKnapsackScreen::new);
+        event.register(ModMenuTypes.TESSERACT.get(), TesseractScreen::new);
     }
 
     @SubscribeEvent
@@ -141,6 +142,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.NOUS_TANK.get(), NousTankRenderer::new);
         event.registerBlockEntityRenderer(ModMachines.OIL_REFINERY.getBlockEntity(), OilRefineryRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntityRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.TESSERACT.get(), ctx -> new TesseractRenderer());
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
 

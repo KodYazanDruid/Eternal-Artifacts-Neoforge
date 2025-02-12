@@ -15,9 +15,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class SolidifierBlockEntity extends GenericMachineBlockEntity {
     public SolidifierBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.SOLIDIFIER, pos, blockState);
-        setInventory(createBasicInventory(1, false));
-        setEnergy(createDefaultEnergy());
-        setTank(createRecipeFinderTank(16000,true, true));
+        setInventory(() -> createBasicInventory(1, false));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createRecipeFinderTank(16000,true, true));
         setRecipeTypeAndContainer(ModRecipes.SOLIDIFYING.getType(), () -> new SimpleFluidContainer(tank.getFluid(0)));
         outputSlots.add(0);
         screenInfo.setArrowXOffset(-40);

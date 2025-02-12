@@ -28,6 +28,7 @@ public abstract class GenericMachineBlockEntity extends SidedTransferMachineBloc
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         if (inventory != null) {
             if (inventory.getSlots() - outputSlots.size() > 0) performAutoInputItems(lvl, pos);
             if (!outputSlots.isEmpty()) performAutoOutputItems(lvl, pos);

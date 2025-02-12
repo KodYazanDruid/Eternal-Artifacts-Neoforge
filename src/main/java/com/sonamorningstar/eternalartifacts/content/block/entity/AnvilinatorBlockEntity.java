@@ -49,10 +49,10 @@ public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<Anvi
 
     public AnvilinatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.ANVILINATOR.get(), pPos, pBlockState, AnvilinatorMenu::new);
-        setEnergy(createDefaultEnergy());
-        setTank(createBasicTank(64000, fs-> fs.is(ModTags.Fluids.EXPERIENCE), true, true, Runnables.doNothing()));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(64000, fs-> fs.is(ModTags.Fluids.EXPERIENCE), true, true, Runnables.doNothing()));
         outputSlots.add(2);
-        setInventory(new ModItemStorage(4) {
+        setInventory(() -> new ModItemStorage(4) {
             @Override
             protected void onContentsChanged(int slot) {
                 if(slot != 3 && !outputSlots.contains(slot)) progress = 0;
@@ -117,6 +117,7 @@ public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<Anvi
     //This is the where magic happens.
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         ItemStack input = inventory.getStackInSlot(0);
         ItemStack secondary = inventory.getStackInSlot(1);
         performAutoOutputItems(lvl, pos);

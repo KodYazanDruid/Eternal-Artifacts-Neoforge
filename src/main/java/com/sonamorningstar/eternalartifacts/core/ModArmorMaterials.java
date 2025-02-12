@@ -21,7 +21,9 @@ public enum ModArmorMaterials implements ArmorMaterial {
     COMFY("comfy", 6, createDefenceMap(2, 5, 6, 2), 15,
             SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER)),
     SHULKER("shulker", 9, createDefenceMap(4, 6, 8, 4), 25,
-            SoundEvents.SHULKER_BOX_OPEN, 1.5F, 0.1F, () -> Ingredient.of(ModTags.Items.SHULKER_SHELL));
+            SoundEvents.SHULKER_BOX_OPEN, 1.5F, 0.1F, () -> Ingredient.of(ModTags.Items.SHULKER_SHELL)),
+    STEEL("steel", 22, createDefenceMap(3, 7, 6, 2), 16,
+            SoundEvents.ARMOR_EQUIP_IRON, 1.0F, 0.05F, () -> Ingredient.of(ModTags.Items.INGOTS_STEEL));
 
     private final String name;
     @Getter(AccessLevel.NONE)

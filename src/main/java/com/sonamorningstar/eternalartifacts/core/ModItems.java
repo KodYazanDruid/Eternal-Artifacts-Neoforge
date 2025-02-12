@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.TesseractItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.content.spell.*;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
@@ -15,6 +16,7 @@ import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -130,10 +132,6 @@ public class ModItems {
     public static final DeferredItem<SpellTomeItem<EvokerFangsSpell>> EVOKERS_TOME = registerTome("evokers_tome", ModSpells.EVOKER_FANGS);
     public static final DeferredItem<AnimatedSpellTomeItem<FireballSpell>> FIREBALL_TOME = registerAnimatedTome("fireball_tome", ModSpells.FIREBALL);
     public static final DeferredItem<SpellTomeItem<TornadoSpell>> TORNADO_TOME = registerTome("tornado_tome", ModSpells.TORNADO);
-    public static final DeferredItem<Item> SHULKER_HELMET = registerStacksToOne("shulker_helmet", p -> new ShulkerArmorItem(ArmorItem.Type.HELMET, p));
-    public static final DeferredItem<Item> SHULKER_CHESTPLATE = registerStacksToOne("shulker_chestplate", p -> new ShulkerArmorItem(ArmorItem.Type.CHESTPLATE, p));
-    public static final DeferredItem<Item> SHULKER_LEGGINGS = registerStacksToOne("shulker_leggings", p -> new ShulkerArmorItem(ArmorItem.Type.LEGGINGS, p));
-    public static final DeferredItem<Item> SHULKER_BOOTS = registerStacksToOne("shulker_boots", p -> new ShulkerArmorItem(ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<SpellTomeItem<ShulkerBulletsSpell>> SHULKER_BULLETS_TOME = registerTome("shulker_bullets_tome", ModSpells.SHULKER_BULLETS);
     public static final DeferredItem<SpellTomeItem<MeteoriteSpell>> METEORITE_TOME = registerTome("meteorite_tome", ModSpells.METEORITE);
     public static final DeferredItem<Item> POWER_GAUNTLET = registerStacksToOne("power_gauntlet");
@@ -141,6 +139,8 @@ public class ModItems {
     public static final DeferredItem<Item> SAGES_TALISMAN = registerStacksToOne("sages_talisman");
     public static final DeferredItem<Item> BAND_OF_ARCANE = registerStacksToOne("band_of_arcane");
     public static final DeferredItem<Item> EMERALD_SIGNET = registerStacksToOne("emerald_signet");
+    public static final DeferredItem<Item> SKYBOUND_TREADS = registerStacksToOne("skybound_treads");
+    public static final DeferredItem<Item> GALE_SASH = registerStacksToOne("gale_sash");
 
     //Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -186,12 +186,29 @@ public class ModItems {
     public static final DeferredItem<Item> NETHERITE_SICKLE = registerStacksToOne("netherite_sickle", p -> new SickleItem(Tiers.NETHERITE, p.fireResistant()));
     public static final DeferredItem<Item> CHLOROPHYTE_SICKLE = registerStacksToOne("chlorophyte_sickle", p -> new SickleItem(ModTiers.CHLOROPHYTE, p));
     public static final DeferredItem<Item> CHISEL = registerStacksToOne("chisel", p -> new ChiselItem(Tiers.DIAMOND, p));
+    public static final DeferredItem<Item> SHULKER_HELMET = registerStacksToOne("shulker_helmet", p -> new ShulkerArmorItem(ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> SHULKER_CHESTPLATE = registerStacksToOne("shulker_chestplate", p -> new ShulkerArmorItem(ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> SHULKER_LEGGINGS = registerStacksToOne("shulker_leggings", p -> new ShulkerArmorItem(ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> SHULKER_BOOTS = registerStacksToOne("shulker_boots", p -> new ShulkerArmorItem(ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<Item> PORTABLE_BATTERY = registerStacksToOne("portable_battery", PortableBatteryItem::new);
     public static final DeferredItem<Item> CONFIGURATION_DRIVE = registerStacksToOne("configuration_drive", ConfigurationDriveItem::new);
-
+    public static final DeferredItem<Item> STEEL_SWORD = registerStacksToOne("steel_sword", p -> new SwordItem(ModTiers.STEEL, 3, -2.4f, p));
+    public static final DeferredItem<Item> STEEL_PICKAXE = registerStacksToOne("steel_pickaxe", p -> new PickaxeItem(ModTiers.STEEL, 1, -2.8f, p));
+    public static final DeferredItem<Item> STEEL_AXE = registerStacksToOne("steel_axe", p -> new AxeItem(ModTiers.STEEL, 7, -3.2f, p));
+    public static final DeferredItem<Item> STEEL_SHOVEL = registerStacksToOne("steel_shovel", p -> new ShovelItem(ModTiers.STEEL, 1.5F, -3.0f, p));
+    public static final DeferredItem<Item> STEEL_HOE = registerStacksToOne("steel_hoe", p -> new HoeItem(ModTiers.STEEL, -1, -2.0f, p));
+    public static final DeferredItem<Item> STEEL_HAMMER = registerStacksToOne("steel_hammer", p -> new HammerItem(ModTiers.STEEL, p));
+    public static final DeferredItem<Item> STEEL_SICKLE = registerStacksToOne("steel_sickle", p -> new SickleItem(ModTiers.STEEL, p));
+    public static final DeferredItem<Item> STEEL_CUTLASS = registerStacksToOne("steel_cutlass", p -> new CutlassItem(ModTiers.STEEL, p));
+    public static final DeferredItem<Item> STEEL_HELMET = registerStacksToOne("steel_helmet", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> STEEL_CHESTPLATE = registerStacksToOne("steel_chestplate", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> STEEL_LEGGINGS = registerStacksToOne("steel_leggings", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> STEEL_BOOTS = registerStacksToOne("steel_boots", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.BOOTS, p));
+    
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<JarBlockItem> JAR = register("jar", JarBlockItem::new);
+    public static final DeferredItem<TesseractItem> TESSERACT = register("tesseract", TesseractItem::new);
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));

@@ -72,6 +72,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());
         tag(ModTags.Items.NUGGETS_MANGANESE).add(ModItems.MANGANESE_NUGGET.get());
         tag(ModTags.Items.NUGGETS_STEEL).add(ModItems.STEEL_NUGGET.get());
+        copy(ModTags.Blocks.STORAGE_BLOCKS_STEEL, ModTags.Items.STORAGE_BLOCKS_STEEL);
 
         tag(Tags.Items.ORES_COAL).add(ModBlocks.GRAVEL_COAL_ORE.asItem());
         tag(Tags.Items.ORES_COPPER).add(ModBlocks.GRAVEL_COPPER_ORE.asItem());
@@ -97,62 +98,70 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ItemTags.PIGLIN_LOVED).add(ModItems.GOLD_RING.get());
 
         tag(ItemTags.SWORDS).add(
-                ModItems.COPPER_SWORD.get(),
-                ModItems.SWORD_OF_THE_GREEN_EARTH.get()
+            ModItems.COPPER_SWORD.get(),
+            ModItems.SWORD_OF_THE_GREEN_EARTH.get(),
+            ModItems.STEEL_SWORD.get()
         );
         tag(ItemTags.SWORDS).addTags(ModTags.Items.TOOLS_CUTLASS);
         tag(ItemTags.PICKAXES).add(
-                ModItems.COPPER_PICKAXE.get(),
-                ModItems.CHLOROVEIN_PICKAXE.get()
+            ModItems.COPPER_PICKAXE.get(),
+            ModItems.CHLOROVEIN_PICKAXE.get(),
+            ModItems.STEEL_PICKAXE.get()
         );
         tag(ItemTags.AXES).add(
-                ModItems.COPPER_AXE.get(),
-                ModItems.AXE_OF_REGROWTH.get()
+            ModItems.COPPER_AXE.get(),
+            ModItems.AXE_OF_REGROWTH.get(),
+            ModItems.STEEL_AXE.get()
         );
         tag(ItemTags.SHOVELS).add(
-                ModItems.COPPER_SHOVEL.get(),
-                ModItems.NATURAL_SPADE.get()
+            ModItems.COPPER_SHOVEL.get(),
+            ModItems.NATURAL_SPADE.get(),
+            ModItems.STEEL_SHOVEL.get()
         );
         tag(ItemTags.HOES).add(
-                ModItems.COPPER_HOE.get(),
-                ModItems.LUSH_GRUBBER.get()
+            ModItems.COPPER_HOE.get(),
+            ModItems.LUSH_GRUBBER.get(),
+            ModItems.STEEL_HOE.get()
         );
         tag(ModTags.Items.TOOLS_WRENCH).add(ModItems.WRENCH.get());
         tag(ModTags.Items.TOOLS_HAMMER).add(
-                ModItems.WOODEN_HAMMER.get(),
-                ModItems.STONE_HAMMER.get(),
-                ModItems.COPPER_HAMMER.get(),
-                ModItems.IRON_HAMMER.get(),
-                ModItems.GOLDEN_HAMMER.get(),
-                ModItems.DIAMOND_HAMMER.get(),
-                ModItems.NETHERITE_HAMMER.get(),
-                ModItems.HAMMAXE.get()
-        );
+            ModItems.WOODEN_HAMMER.get(),
+            ModItems.STONE_HAMMER.get(),
+            ModItems.COPPER_HAMMER.get(),
+            ModItems.IRON_HAMMER.get(),
+            ModItems.GOLDEN_HAMMER.get(),
+            ModItems.DIAMOND_HAMMER.get(),
+            ModItems.NETHERITE_HAMMER.get(),
+            ModItems.HAMMAXE.get(),
+            ModItems.STEEL_HAMMER.get()
+    );
         tag(ModTags.Items.TOOLS_CUTLASS).add(
-                ModItems.WOODEN_CUTLASS.get(),
-                ModItems.STONE_CUTLASS.get(),
-                ModItems.COPPER_CUTLASS.get(),
-                ModItems.IRON_CUTLASS.get(),
-                ModItems.GOLDEN_CUTLASS.get(),
-                ModItems.DIAMOND_CUTLASS.get(),
-                ModItems.NETHERITE_CUTLASS.get(),
-                ModItems.CHLOROPHYTE_CUTLASS.get()
+            ModItems.WOODEN_CUTLASS.get(),
+            ModItems.STONE_CUTLASS.get(),
+            ModItems.COPPER_CUTLASS.get(),
+            ModItems.IRON_CUTLASS.get(),
+            ModItems.GOLDEN_CUTLASS.get(),
+            ModItems.DIAMOND_CUTLASS.get(),
+            ModItems.NETHERITE_CUTLASS.get(),
+            ModItems.CHLOROPHYTE_CUTLASS.get(),
+            ModItems.STONE_CUTLASS.get()
         );
         tag(ModTags.Items.TOOLS_SICKLE).add(
-                ModItems.WOODEN_SICKLE.get(),
-                ModItems.STONE_SICKLE.get(),
-                ModItems.COPPER_SICKLE.get(),
-                ModItems.IRON_SICKLE.get(),
-                ModItems.GOLDEN_SICKLE.get(),
-                ModItems.DIAMOND_SICKLE.get(),
-                ModItems.NETHERITE_SICKLE.get(),
-                ModItems.CHLOROPHYTE_SICKLE.get()
+            ModItems.WOODEN_SICKLE.get(),
+            ModItems.STONE_SICKLE.get(),
+            ModItems.COPPER_SICKLE.get(),
+            ModItems.IRON_SICKLE.get(),
+            ModItems.GOLDEN_SICKLE.get(),
+            ModItems.DIAMOND_SICKLE.get(),
+            ModItems.NETHERITE_SICKLE.get(),
+            ModItems.CHLOROPHYTE_SICKLE.get(),
+            ModItems.STEEL_SICKLE.get()
         );
         tag(ModTags.Items.TABLETS).add(
-                ModItems.STONE_TABLET.get(),
-                ModItems.ENDER_TABLET.get(),
-                ModItems.CHLOROPHYTE_TABLET.get(),
-                ModItems.COPPER_TABLET.get()
+            ModItems.STONE_TABLET.get(),
+            ModItems.ENDER_TABLET.get(),
+            ModItems.CHLOROPHYTE_TABLET.get(),
+            ModItems.COPPER_TABLET.get()
         );
 
         tag(ModTags.Items.CHARMS_HEAD).add(
@@ -195,11 +204,13 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
         tag(ModTags.Items.CHARM_FEET).add(
             ModItems.COMFY_SHOES.get(),
-            ModItems.FROG_LEGS.get()
+            ModItems.FROG_LEGS.get(),
+            ModItems.SKYBOUND_TREADS.get()
         );
         tag(ModTags.Items.CHARMS_BELT).add(
             Items.FILLED_MAP,
-            Items.BUNDLE
+            Items.BUNDLE,
+            ModItems.GALE_SASH.get()
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
             ModItems.MAGIC_FEATHER.get(),

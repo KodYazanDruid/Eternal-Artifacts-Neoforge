@@ -9,6 +9,8 @@ import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -51,9 +53,9 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
         super.renderBg(gui, tick, mx, my);
         if (menu.getBeEnergy() != null) renderDefaultEnergyBar(gui);
         if (menu.getBeTank() != null) {
+            Int2ObjectMap<Pair<Integer, Integer>> tankLocations = screenInfo.getTankPositions();
             for (int i = 0; i < machine.tank.getTanks(); i++) {
-                Map<AbstractFluidTank, Pair<Integer, Integer>> tankLocations = screenInfo.getTankPositions();
-                Pair<Integer, Integer> loc = tankLocations.get(machine.tank.get(i));
+                Pair<Integer, Integer> loc = tankLocations.get(i);
                 if (loc != null) renderFluidBar(gui, x + loc.getFirst(), y + loc.getSecond(), i);
                 else renderDefaultFluidBar(gui);
             }

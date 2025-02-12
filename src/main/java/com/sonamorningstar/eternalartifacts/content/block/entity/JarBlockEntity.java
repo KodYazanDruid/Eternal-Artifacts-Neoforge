@@ -9,21 +9,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.Supplier;
+
 public class JarBlockEntity extends ModBlockEntity {
     public boolean isOpen = false;
+    @Getter
+    public ModFluidStorage tank;
     public JarBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.JAR.get(), pPos, pBlockState);
+        this.tank = new ModFluidStorage(1000) {
+			@Override
+			protected void onContentsChanged() {
+				JarBlockEntity.this.requestModelDataUpdate();
+				JarBlockEntity.this.sendUpdate();
+			}
+		};
     }
-
-    @Getter
-    public ModFluidStorage tank = new ModFluidStorage(1000) {
-        @Override
-        protected void onContentsChanged() {
-            JarBlockEntity.this.requestModelDataUpdate();
-            JarBlockEntity.this.sendUpdate();
-        }
-    };
-
+    
     @Override
     protected boolean shouldSyncOnUpdate() {
         return true;

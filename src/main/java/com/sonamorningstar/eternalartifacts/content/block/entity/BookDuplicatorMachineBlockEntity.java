@@ -28,9 +28,9 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
     public BookDuplicatorMachineBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
-        setEnergy(createDefaultEnergy());
-        setTank(createBasicTank(10000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true));
-        setInventory(new ModItemStorage(4) {
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(10000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true));
+        setInventory(() -> new ModItemStorage(4) {
             @Override
             protected void onContentsChanged(int slot) {
                 if(slot != 1) progress = 0;
@@ -60,6 +60,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
     }
 
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         fillTankFromSlot(inventory, tank, 3);
         performAutoInputFluids(lvl, pos);
         performAutoInputItems(lvl, pos);

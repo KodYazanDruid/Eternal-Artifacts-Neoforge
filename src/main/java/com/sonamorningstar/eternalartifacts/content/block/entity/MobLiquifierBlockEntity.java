@@ -23,10 +23,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -34,8 +31,8 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
 
     public MobLiquifierBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
-        setEnergy(createDefaultEnergy());
-        setTank(new MultiFluidTank<>(
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> new MultiFluidTank<>(
                 createBasicTank(8000, true, false),
                 createBasicTank(8000, true, false),
                 createBasicTank(8000, true, false),
@@ -52,7 +49,6 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, (b, i) -> {
             switchRender();
         });
-        //buttonConsumerMap.put(0, i -> switchRender());
     }
     List<LivingEntity> livingList = new ArrayList<>();
     private boolean shouldRenderArea = false;

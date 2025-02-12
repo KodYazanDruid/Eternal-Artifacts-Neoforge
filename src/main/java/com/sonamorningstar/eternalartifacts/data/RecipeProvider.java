@@ -358,12 +358,34 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('T', ModTags.Items.INGOTS_STEEL)
                 .define('S', ModItems.STEEL_INGOT)
                 .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_SWORD)
+            .pattern("I").pattern("I").pattern("S")
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_PICKAXE)
+            .pattern("III").pattern(" S ").pattern(" S ")
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_AXE)
+            .pattern("II").pattern("IS").pattern(" S")
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_SHOVEL)
+            .pattern("I").pattern("S").pattern("S")
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_HOE)
+            .pattern("II").pattern(" S").pattern(" S")
+            .define('I', ModTags.Items.INGOTS_STEEL)
+            .define('S', Items.STICK)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
         createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Tags.Items.COBBLESTONE, Tags.Items.STONE);
         createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
         createHammerRecipe(recipeOutput, ModItems.IRON_HAMMER, Tags.Items.INGOTS_IRON, Tags.Items.STORAGE_BLOCKS_IRON);
         createHammerRecipe(recipeOutput, ModItems.GOLDEN_HAMMER, Tags.Items.INGOTS_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
         createHammerRecipe(recipeOutput, ModItems.DIAMOND_HAMMER, Tags.Items.GEMS_DIAMOND, Tags.Items.STORAGE_BLOCKS_DIAMOND);
+        createHammerRecipe(recipeOutput, ModItems.STEEL_HAMMER, ModTags.Items.INGOTS_STEEL, ModTags.Items.STORAGE_BLOCKS_STEEL);
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.ICE_BRICKS)
                 .pattern("II").pattern("II")
                 .define('I', Blocks.ICE)
@@ -401,12 +423,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createCutlassRecipe(recipeOutput, ModItems.IRON_CUTLASS, Tags.Items.INGOTS_IRON);
         createCutlassRecipe(recipeOutput, ModItems.GOLDEN_CUTLASS, Tags.Items.INGOTS_GOLD);
         createCutlassRecipe(recipeOutput, ModItems.DIAMOND_CUTLASS, Tags.Items.GEMS_DIAMOND);
+        createCutlassRecipe(recipeOutput, ModItems.STEEL_CUTLASS, ModTags.Items.INGOTS_STEEL);
         createSickleRecipe(recipeOutput, ModItems.WOODEN_SICKLE, ItemTags.PLANKS);
         createSickleRecipe(recipeOutput, ModItems.STONE_SICKLE, Tags.Items.COBBLESTONE);
         createSickleRecipe(recipeOutput, ModItems.COPPER_SICKLE, Tags.Items.INGOTS_COPPER);
         createSickleRecipe(recipeOutput, ModItems.IRON_SICKLE, Tags.Items.INGOTS_IRON);
         createSickleRecipe(recipeOutput, ModItems.GOLDEN_SICKLE, Tags.Items.INGOTS_GOLD);
         createSickleRecipe(recipeOutput, ModItems.DIAMOND_SICKLE, Tags.Items.GEMS_DIAMOND);
+        createSickleRecipe(recipeOutput, ModItems.STEEL_SICKLE, ModTags.Items.INGOTS_STEEL);
         createColoredShulkerBoxRecipe(recipeOutput, Items.WHITE_SHULKER_BOX, ModItems.WHITE_SHULKER_SHELL.get());
         createColoredShulkerBoxRecipe(recipeOutput, Items.ORANGE_SHULKER_BOX, ModItems.ORANGE_SHULKER_SHELL.get());
         createColoredShulkerBoxRecipe(recipeOutput, Items.MAGENTA_SHULKER_BOX, ModItems.MAGENTA_SHULKER_SHELL.get());

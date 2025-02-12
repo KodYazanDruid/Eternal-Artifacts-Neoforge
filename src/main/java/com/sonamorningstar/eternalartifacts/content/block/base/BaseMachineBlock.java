@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -76,25 +77,6 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        if(state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = level.getBlockEntity(pos);
-            if(blockEntity instanceof MachineBlockEntity<?> machine) {
-                /*IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
-                if(inventory != null) {
-                    SimpleContainer container = new SimpleContainer(inventory.getSlots());
-                    for (int i = 0; i < inventory.getSlots(); i++) {
-                        container.setItem(i, inventory.getStackInSlot(i));
-                    }
-                    Containers.dropContents(level, pos.immutable(), container);
-                }*/
-                machine.invalidateCapabilities();
-            }
-        }
-        super.onRemove(state, level, pos, newState, movedByPiston);
-    }
-
     @Nullable
     @Override
     public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level level, BlockState pState, BlockEntityType<B> pBlockEntityType) {
@@ -135,6 +117,11 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         FluidStack fs = FluidStack.EMPTY;
         ItemStack stack = new ItemStack(block);
         if (actualLevel != null && stack.hasTag()) {
+            BlockEntity be = actualLevel.getBlockEntity(pos);
+            if (be instanceof ModBlockEntity mbe) {
+                mbe.loadEnchants(stack.getEnchantmentTags());
+            }
+            
             CompoundTag nbt = stack.getTag();
             IFluidHandler fluidHandler = actualLevel.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
             if (fluidHandler != null) {
@@ -161,6 +148,10 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         super.setPlacedBy(level, pos, state, placer, stack);
         Optional<IFluidHandlerItem> optionalTankStack = FluidUtil.getFluidHandler(stack);
         BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
+            mbe.loadEnchants(stack.getEnchantmentTags());
+            mbe.onEnchanted();
+        }
         if (optionalTankStack.isPresent()) {
             IFluidHandlerItem tankStack = optionalTankStack.get();
             Optional<IFluidHandler> optionalTank = FluidUtil.getFluidHandler(level, pos, null);
@@ -205,7 +196,5 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
             CompoundTag machineNbt = nbt.getCompound("MachineData");
             mbe.loadContents(machineNbt);
         }
-
-
     }
 }

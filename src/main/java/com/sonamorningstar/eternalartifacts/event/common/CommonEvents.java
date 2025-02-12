@@ -12,20 +12,26 @@ import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEncha
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.event.client.ClientEvents;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
+import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
+import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
+import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -74,7 +80,6 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
-import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -169,17 +174,17 @@ public class CommonEvents {
     @SubscribeEvent
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof Player player &&
-                !PlayerCharmManager.findInPlayer(player, ModItems.FROG_LEGS.get()).isEmpty() &&
-                !player.isCrouching()) {
-            player.hurtMarked = true;
-            player.setDeltaMovement(player.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
+        if (!PlayerCharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty() &&
+                !entity.isCrouching()) {
+            entity.hurtMarked = true;
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
         }
+        entity.getPersistentData().putInt(ILivingDasher.KEY, 1);
     }
     @SubscribeEvent
     public static void fallEvent(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
-        if(entity instanceof Player player && !PlayerCharmManager.findInPlayer(player, ModItems.FROG_LEGS.get()).isEmpty()) {
+        if(!PlayerCharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty()) {
             event.setDistance(Math.max(event.getDistance() - 3, 0));
             event.setDamageMultiplier(0.5F);
         }
@@ -187,7 +192,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void livingTickEvent(LivingEvent.LivingTickEvent event) {
         LivingEntity living = event.getEntity();
-
+        
         var charms = CharmStorage.get(living);
         for (int i = 0; i < charms.getSlots(); i++) {
             var stack = charms.getStackInSlot(i);
@@ -199,6 +204,15 @@ public class CommonEvents {
             if (i != 12 || CharmStorage.canHaveWildcard(living)) {
                 CharmTickEvent charmEvent = new CharmTickEvent(living, stack, i);
                 NeoForge.EVENT_BUS.post(charmEvent);
+            }
+        }
+        
+        if(living.onGround() && !(living instanceof AbstractClientPlayer)) {
+            if (living instanceof ServerPlayer sp) {
+                living.getPersistentData().putInt(ILivingJumper.KEY, 1);
+                Channel.sendToPlayer(new SavePlayerDataToClient(ILivingJumper.KEY, 1), sp);
+            } else {
+                living.getPersistentData().putInt(ILivingJumper.KEY, 1);
             }
         }
     }
@@ -333,6 +347,7 @@ public class CommonEvents {
         LevelAccessor level = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState blockState = event.getState();
+        int expDrop = event.getExpToDrop();
         if (blockState.is(ModBlocks.POTTED_TIGRIS) && level instanceof Level realLevel) {
             realLevel.invalidateCapabilities(event.getPos());
         }
@@ -344,6 +359,12 @@ public class CommonEvents {
         }
         if (itemStack.getItem() instanceof ChiselItem) {
             eternal_Artifacts_Neoforge$cachedRay = RayTraceHelper.retrace(player, ClipContext.Fluid.NONE);
+        }
+        if (expDrop > 0) {
+            ItemStack talisman = PlayerCharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
+            if (!talisman.isEmpty()) {
+                event.setExpToDrop(Mth.ceil(expDrop * 1.2));
+            }
         }
     }
 

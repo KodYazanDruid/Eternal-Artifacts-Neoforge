@@ -13,18 +13,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
-import java.util.Collections;
 import java.util.List;
 
 public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> {
 
     public BioFurnaceEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState, BioFurnaceMenu::new);
-        setInventory(createBasicInventory(1, List.of()));
-        setEnergy(createDefaultEnergy());
+        setInventory(() -> createBasicInventory(1, List.of()));
+        setEnergy(this::createDefaultEnergy);
     }
 
     public void tickServer(Level pLevel, BlockPos pPos, BlockState pState) {
+        super.tickServer(pLevel, pPos, pState);
         generatePower();
         distributePower();
     }

@@ -30,21 +30,22 @@ import java.util.function.Supplier;
 public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     public static final Supplier<ModItemStackBEWLR> INSTANCE = Suppliers.memoize(ModItemStackBEWLR::new);
     static Minecraft minecraft = Minecraft.getInstance();
-    private static final BlockEntityRenderDispatcher blockEntityRenderDispatcher = minecraft.getBlockEntityRenderDispatcher();
+    private static final BlockEntityRenderDispatcher beRenderer = minecraft.getBlockEntityRenderDispatcher();
     private static final EntityModelSet entityModelSet = minecraft.getEntityModels();
     EntityRendererProvider.Context entityrendererprovider$context = new EntityRendererProvider.Context(
             minecraft.getEntityRenderDispatcher(), minecraft.getItemRenderer(), minecraft.getBlockRenderer(), minecraft.gameRenderer.itemInHandRenderer, minecraft.getResourceManager(), entityModelSet, minecraft.font
     );
 
     private ModItemStackBEWLR() {
-        super(blockEntityRenderDispatcher, entityModelSet);
+        super(beRenderer, entityModelSet);
     }
 
-    private final JarBlockEntity jarBlockEntity = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
-    private final FluidCombustionDynamoBlockEntity fluidCombustionBlockEntity = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
-    private final NousTankBlockEntity nousTankBlockEntity = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
-    private final OilRefineryBlockEntity oilRefineryBlockEntity = new OilRefineryBlockEntity(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
-    private final EnergyDockBlockEntity energyDockBlockEntity = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
+    private final JarBlockEntity jar = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
+    private final FluidCombustionDynamoBlockEntity fcDynamo = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
+    private final NousTankBlockEntity nousTank = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
+    private final OilRefineryBlockEntity refinery = new OilRefineryBlockEntity(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
+    private final EnergyDockBlockEntity energyDock = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
+    private final TesseractBlockEntity tesseract = new TesseractBlockEntity(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());
 
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
@@ -53,26 +54,28 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             IFluidHandlerItem fluidHandlerItem = FluidUtil.getFluidHandler(stack).orElse(null);
             Block block = blockItem.getBlock();
             if(block instanceof JarBlock) {
-                if(fluidHandlerItem != null) jarBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
+                if(fluidHandlerItem != null) jar.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 CompoundTag tag = stack.getTag();
                 boolean isOpen = false;
                 if (tag != null) isOpen = tag.getBoolean(JarBlockItem.KEY_OPEN);
-                jarBlockEntity.isOpen = isOpen;
-                blockEntityRenderDispatcher.renderItem(jarBlockEntity, ps, buff, light, overlay);
+                jar.isOpen = isOpen;
+                beRenderer.renderItem(jar, ps, buff, light, overlay);
             }else if(block instanceof FluidCombustionDynamoBlock) {
-                blockEntityRenderDispatcher.renderItem(fluidCombustionBlockEntity, ps, buff, light, overlay);
+                beRenderer.renderItem(fcDynamo, ps, buff, light, overlay);
             }else if(block instanceof NousTankBlock) {
-                if(fluidHandlerItem != null) nousTankBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
-                blockEntityRenderDispatcher.renderItem(nousTankBlockEntity, ps, buff, light, overlay);
+                if(fluidHandlerItem != null) nousTank.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
+                beRenderer.renderItem(nousTank, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
                 if (fluidHandlerItem != null) {
-                    oilRefineryBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
-                    oilRefineryBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(1), 1);
-                    oilRefineryBlockEntity.tank.setFluid(fluidHandlerItem.getFluidInTank(2), 2);
+                    refinery.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
+                    refinery.tank.setFluid(fluidHandlerItem.getFluidInTank(1), 1);
+                    refinery.tank.setFluid(fluidHandlerItem.getFluidInTank(2), 2);
                 }
-                blockEntityRenderDispatcher.renderItem(oilRefineryBlockEntity, ps, buff, light, overlay);
+                beRenderer.renderItem(refinery, ps, buff, light, overlay);
             }else if (block instanceof EnergyDockBlock) {
-                blockEntityRenderDispatcher.renderItem(energyDockBlockEntity, ps, buff, light, overlay);
+                beRenderer.renderItem(energyDock, ps, buff, light, overlay);
+            }else if (block instanceof TesseractBlock) {
+                beRenderer.renderItem(tesseract, ps, buff, light, overlay);
             }
         } else {
             if (item instanceof AnimatedSpellTomeItem<?> tome) {

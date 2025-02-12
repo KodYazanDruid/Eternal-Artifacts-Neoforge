@@ -15,9 +15,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class MeatPackerBlockEntity extends GenericMachineBlockEntity {
     public MeatPackerBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.MEAT_PACKER, pos, blockState);
-        setInventory(createBasicInventory(1, false));
-        setEnergy(createDefaultEnergy());
-        setTank(createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, true));
+        setInventory(() -> createBasicInventory(1, false));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(16000, fs -> fs.is(ModTags.Fluids.MEAT), true, true));
         outputSlots.add(0);
         screenInfo.setArrowXOffset(-40);
     }

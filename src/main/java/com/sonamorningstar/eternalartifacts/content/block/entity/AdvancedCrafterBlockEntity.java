@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
@@ -33,10 +32,10 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
     public AdvancedCrafterBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.ADVANCED_CRAFTER, pos, blockState);
         setMaxProgress(10);
-        setEnergy(createDefaultEnergy());
-        setTank(createRecipeFinderTank(16000));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createRecipeFinderTank(16000));
         outputSlots.add(9);
-        setInventory(new ModItemStorage(11) {
+        setInventory(() -> new ModItemStorage(11) {
             @Override
             public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
                 if (slot == 10 && !(stack.getItem() instanceof BlueprintItem)) return stack;

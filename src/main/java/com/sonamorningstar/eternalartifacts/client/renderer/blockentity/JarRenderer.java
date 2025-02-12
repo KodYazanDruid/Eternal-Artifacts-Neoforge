@@ -55,7 +55,7 @@ public class JarRenderer implements BlockEntityRenderer<JarBlockEntity> {
 
     public static void renderWhole(JarBlockEntity jar, PoseStack pose, MultiBufferSource buff, Material material, int light, int overlay, boolean isOpen) {
         renderJar(pose, buff, material, light, overlay, isOpen);
-        RendererHelper.renderFluidCube(pose, buff, jar.tank, new RendererHelper.FluidRenderCubeInfo(RendererHelper.FluidRenderCubeInfo.all(), isOpen),
+        RendererHelper.renderFluidCube(pose, buff, jar.tank, new RendererHelper.RenderCubeInfo(RendererHelper.RenderCubeInfo.all(), isOpen),
                 light, overlay, 6, 9, 6, 5, 1, 5);
     }
 

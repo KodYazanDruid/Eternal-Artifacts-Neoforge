@@ -11,7 +11,6 @@ import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlock
 import com.sonamorningstar.eternalartifacts.registrar.GenericMachineHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredRegister;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;

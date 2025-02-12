@@ -14,9 +14,9 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
     public MeltingCrucibleBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.MELTING_CRUCIBLE, pos, blockState);
-        initializeDefaultEnergyAndTank();
-        setTank(createBasicTank(16000, true, false));
-        setInventory(createRecipeFinderInventory(1, outputSlots));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(16000, true, false));
+        setInventory(() -> createRecipeFinderInventory(1, outputSlots));
         setRecipeTypeAndContainer(ModRecipes.MELTING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
         screenInfo.attachTankToLeft(0);
     }

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.base;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -8,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -25,6 +27,12 @@ public abstract class FluidTankEntityBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof ModBlockEntity mbe) {
+            mbe.loadEnchants(stack.getEnchantmentTags());
+            mbe.onEnchanted();
+        }
+        
         IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();
         FluidStack fluidStack = fhi.getFluidInTank(0);
         IFluidHandler fh = FluidUtil.getFluidHandler(level, pos, null).get();
@@ -35,7 +43,12 @@ public abstract class FluidTankEntityBlock extends BaseEntityBlock {
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         Block block = state.getBlock();
+        ItemStack stack = new ItemStack(block);
         Level actualLevel = level.getBlockEntity(pos).getLevel();
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof ModBlockEntity mbe) {
+            mbe.enchantments.forEach(stack::enchant);
+        }
         FluidStack fs = FluidStack.EMPTY;
         if(actualLevel != null) {
             IFluidHandler fluidHandler = actualLevel.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
@@ -43,9 +56,9 @@ public abstract class FluidTankEntityBlock extends BaseEntityBlock {
                 fs = fluidHandler.getFluidInTank(0);
             }
         }
-        ItemStack stack = new ItemStack(block);
         IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();
         fhi.fill(fs, IFluidHandler.FluidAction.EXECUTE);
+        
         return stack;
     }
 }

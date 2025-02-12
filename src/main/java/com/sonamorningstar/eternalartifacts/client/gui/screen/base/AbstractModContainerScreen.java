@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -29,6 +30,8 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     protected int y;
     @Setter
     private boolean isModular = false;
+    @Setter
+    private int guiTint = 0xFFFFFFFF;
 
     public AbstractModContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -43,8 +46,11 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     protected void renderBg(GuiGraphics gui, float tick, int mX, int mY) {
         this.x = (width - imageWidth) / 2;
         this.y = (height - imageHeight) / 2;
+        gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,
+            FastColor.ARGB32.blue(guiTint) / 255.0F, FastColor.ARGB32.alpha(guiTint) / 255.0F);
         if(!isModular) gui.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
         else GuiDrawer.drawBackground(gui, x, y, imageWidth, imageHeight);
+        gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         for(Slot slot : menu.slots) {
             gui.blitSprite(new ResourceLocation("container/slot"), x + slot.x-1, y + slot.y-1, 0, 18, 18);
         }

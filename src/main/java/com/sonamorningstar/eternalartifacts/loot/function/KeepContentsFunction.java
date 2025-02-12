@@ -80,6 +80,11 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
         CompoundTag additionalTag = new CompoundTag();
         machine.saveContents(additionalTag);
         nbt.put("MachineData", additionalTag);
+        /*ListTag enchants = new ListTag();
+        machine.saveEnchants(enchants);
+        nbt.put("Enchants", enchants);*/
+        var enchantments = machine.enchantments;
+        enchantments.forEach(stack::enchant);
         return stack;
     }
 

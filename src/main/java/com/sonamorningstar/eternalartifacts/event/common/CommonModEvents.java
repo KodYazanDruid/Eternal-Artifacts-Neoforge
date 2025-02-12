@@ -148,7 +148,10 @@ public class CommonModEvents {
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, holder.get().getCapacity()), holder.asItem());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
+            int volume = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());
+            return new FluidHandlerItemStack(stack, holder.get().getCapacity() * (1 + volume));
+        }, holder.asItem());
     }
     private static void registerMachineItem(RegisterCapabilitiesEvent event, DeferredBlock<?> holder) {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new MachineItemEnergyStorage(stack), holder.asItem());

@@ -22,8 +22,8 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCombustionMenu> implements ITickableClient {
     public FluidCombustionDynamoBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), pos, blockState, FluidCombustionMenu::new);
-        setEnergy(createBasicEnergy(50000, 2500, false, true));
-        setTank(createRecipeFinderTank(16000, false, true));
+        setEnergy(() -> createBasicEnergy(50000, 2500, false, true));
+        setTank(() -> createRecipeFinderTank(16000, false, true));
     }
 
     private int tickCounter = 0;
@@ -84,6 +84,7 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         if(hasAnyEnergy(energy)) outputEnergyToDir(lvl, pos, getBlockState().getValue(BlockStateProperties.FACING), energy);
 
         //TODO: Create parent DynamoBlockEntity class and move this to there.

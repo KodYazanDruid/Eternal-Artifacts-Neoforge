@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -23,6 +24,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -49,16 +51,23 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     @Nullable
     private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
+    @Setter(value = AccessLevel.NONE)
     public ModItemStorage inventory = null;
+    private Supplier<? extends ModItemStorage> inventorySetter = null;
+    @Setter(value = AccessLevel.NONE)
     public AbstractFluidTank tank = null;
+    private Supplier<? extends AbstractFluidTank> tankSetter = null;
+    @Setter(value = AccessLevel.NONE)
     public ModEnergyStorage energy = null;
+    private Supplier<? extends ModEnergyStorage> energySetter = null;
     public int itemTransferRate = 1;
     public int fluidTransferRate = 1000;
     public int energyTransferRate = 1000;
-
+    
     protected final ContainerData data;
     protected int progress;
     protected int maxProgress = 100;
+    protected final int defaultMaxProgress = 100;
     protected int energyPerTick = 40;
 
     public final List<Integer> outputSlots = new ArrayList<>();
@@ -106,7 +115,55 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected boolean shouldSerializeEnergy() {return true;}
     protected boolean shouldSerializeInventory() {return true;}
     protected boolean shouldSerializeTank() {return true;}
-
+    
+    public <ENERGY extends ModEnergyStorage> void setEnergy(Supplier<ENERGY> energySetter) {
+        this.energySetter = energySetter;
+        this.energy = energySetter.get();
+    }
+    
+    public <ITEM extends ModItemStorage> void setInventory(Supplier<ITEM> inventorySetter) {
+        this.inventorySetter = inventorySetter;
+        this.inventory = inventorySetter.get();
+    }
+    
+    public <TANK extends AbstractFluidTank> void setTank(Supplier<TANK> tankSetter) {
+        this.tankSetter = tankSetter;
+        this.tank = tankSetter.get();
+    }
+    
+    @Override
+    public void onEnchanted() {
+        if (energySetter != null) {
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Energy", energy.serializeNBT());
+            this.energy = energySetter.get();
+            energy.deserializeNBT(oldData.get("Energy"));
+        }
+        if (inventorySetter != null) {
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Inventory", inventory.serializeNBT());
+            this.inventory = inventorySetter.get();
+            inventory.deserializeNBT(oldData.getCompound("Inventory"));
+        }
+        if (tankSetter != null) {
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Fluid", tank.serializeNBT());
+            this.tank = tankSetter.get();
+            tank.deserializeNBT(oldData.getCompound("Fluid"));
+        }
+        
+        int effLevel = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+        int reduction = 10;
+        double reductionFactor = (100 - reduction) / 100.0;
+        int newMaxProgress = (int) Math.max(1, Math.round(defaultMaxProgress * Math.pow(reductionFactor, effLevel)));
+        setMaxProgress(newMaxProgress);
+    }
+    
+    @Override
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    
+    }
+    
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
@@ -147,11 +204,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         return menuConstructor != null;
     }
 
-    protected void initializeDefaultEnergyAndTank() {
-        this.energy = createDefaultEnergy();
-        this.tank = createDefaultTank();
-    }
-
     protected void fillTankFromSlot(ModItemStorage inventory, AbstractFluidTank tank, int fluidSlot) {
         ItemStack stack = inventory.getStackInSlot(fluidSlot);
         if(!stack.isEmpty() && tank.getFluidAmount(0) < tank.getCapacity(0)) {
@@ -182,7 +234,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             recipeCache.findRecipe(recipeType, recipeContainer.get(), level);
         }
     }
-
+    
     protected void progress(BooleanSupplier test, Runnable result, ModEnergyStorage energy) {
         progress(test, Runnables.doNothing(), result, energy);
     }
@@ -195,10 +247,15 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                 progress = 0;
                 return;
             }
-            energy.extractEnergyForced(energyPerTick, false);
-            progress++;
+            int lvl = getEnchantmentLevel(Enchantments.UNBREAKING);
+            if (lvl > 0) {
+                float chance = 1.0f / (lvl + 1);
+                if (level.random.nextFloat() > chance) {
+                    energy.extractEnergyForced(energyPerTick, false);
+                }
+            } else energy.extractEnergyForced(energyPerTick, false);
             running.run();
-            if (progress >= maxProgress) {
+            if (progress++ >= maxProgress) {
                 result.run();
                 progress = 0;
             }
@@ -212,7 +269,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     protected boolean hasEnergy(int amount, ModEnergyStorage energy) {
-        return energy.extractEnergyForced(amount, true) >= amount;
+        if (amount <= 0) return true;
+        return hasAnyEnergy(energy) || energy.extractEnergyForced(amount, true) == amount;
     }
 
     protected boolean hasAnyEnergy(ModEnergyStorage energy) {

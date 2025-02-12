@@ -14,6 +14,6 @@ public class AnimatedSpellTomeItem<S extends Spell> extends SpellTomeItem<S> {
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        consumer.accept(new BEWLRProps());
+        consumer.accept(BEWLRProps.INSTANCE);
     }
 }

@@ -15,10 +15,10 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class MaterialSqueezerBlockEntity extends GenericMachineBlockEntity {
     public MaterialSqueezerBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.MATERIAL_SQUEEZER, pos, blockState);
-        setEnergy(createDefaultEnergy());
-        setTank(createBasicTank(16000, true, false));
+        setEnergy(this::createDefaultEnergy);
+        setTank(() -> createBasicTank(16000, true, false));
         outputSlots.add(1);
-        setInventory(createRecipeFinderInventory(2, outputSlots));
+        setInventory(() -> createRecipeFinderInventory(2, outputSlots));
         setRecipeTypeAndContainer(ModRecipes.SQUEEZING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
         screenInfo.attachTankToLeft(0);
         screenInfo.setArrowXOffset(-20);

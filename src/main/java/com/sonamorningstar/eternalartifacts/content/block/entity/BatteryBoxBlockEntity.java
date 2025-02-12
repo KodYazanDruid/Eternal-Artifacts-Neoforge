@@ -13,7 +13,7 @@ import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 public class BatteryBoxBlockEntity extends SidedTransferMachineBlockEntity<BatteryBoxMenu> {
     public BatteryBoxBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.BATTERY_BOX.get(), pos, blockState, BatteryBoxMenu::new);
-        setInventory(new ModItemStorage(4) {
+        setInventory(() -> new ModItemStorage(4) {
             @Override
             protected void onContentsChanged(int slot) {
                 ((ModularEnergyStorage) energy).reloadEnergyHandlers(new RecipeWrapper(this));
@@ -21,7 +21,7 @@ public class BatteryBoxBlockEntity extends SidedTransferMachineBlockEntity<Batte
                 BatteryBoxBlockEntity.this.invalidateCapabilities();
             }
         });
-        setEnergy(new ModularEnergyStorage(new RecipeWrapper(inventory)) {
+        setEnergy(() -> new ModularEnergyStorage(new RecipeWrapper(inventory)) {
             @Override
             public void onEnergyChanged() {
                 BatteryBoxBlockEntity.this.sendUpdate();
@@ -44,6 +44,7 @@ public class BatteryBoxBlockEntity extends SidedTransferMachineBlockEntity<Batte
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         performAutoInputEnergy(lvl, pos);
         performAutoOutputEnergy(lvl, pos);
     }

@@ -24,6 +24,8 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
             ()-> IMenuTypeExtension.create(NousTankMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<TesseractMenu>> TESSERACT = MENUS.register("tesseract",
+        ()-> IMenuTypeExtension.create(TesseractMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<ScreenWrapperMenu>> SCREEN_WRAPPER = MENUS.register("screen_wrapper",
             ()-> IMenuTypeExtension.create(ScreenWrapperMenu::new));

@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.EnderNotebookScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.LightSaberScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.TesseractScreen;
 import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
@@ -103,5 +104,18 @@ public class ClientProxy {
                 charms.setWildcardNbt(packet.value());
             }
         });
+    }
+    
+    public static void setJumpTokens(int entityId, int jumps) {
+        Entity entity = getPlayerFromId(entityId);
+        if (entity instanceof Player player) {
+            player.getPersistentData().putInt("JumpTokens", jumps);
+        }
+    }
+    
+    public static void rebuildTesseractPanel() {
+        if (mc.screen instanceof TesseractScreen screen) {
+            screen.rebuildNetworkPanel();
+        }
     }
 }

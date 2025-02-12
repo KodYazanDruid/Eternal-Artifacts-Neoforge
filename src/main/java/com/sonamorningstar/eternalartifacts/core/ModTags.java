@@ -76,8 +76,9 @@ public class ModTags {
         public static final TagKey<Item> CHARMS_BRACELET = modTag("charms/bracelet");
         public static final TagKey<Item> CHARMS_WILDCARD_BLACKLISTED = modTag("charms/wildcard_blacklisted");
         public static final TagKey<Item> SHULKER_SHELL = modTag("shulker_shell");
-
-        private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
+        public static final TagKey<Item> STORAGE_BLOCKS_STEEL = forgeTag("storage_blocks/steel");
+		
+		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }
     }
 

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "forge:ingots/steel"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    " FF",
+    " F ",
+    "R  "
+  ],
+  "result": {
+    "item": "eternalartifacts:steel_cutlass"
+  }
+}

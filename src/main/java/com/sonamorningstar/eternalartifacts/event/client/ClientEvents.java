@@ -9,12 +9,17 @@ import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
+import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
+import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
@@ -48,6 +53,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.client.event.ScreenEvent;
@@ -295,5 +301,34 @@ public class ClientEvents {
             if (instance != null) instance.renderTabs(event.getGuiGraphics(), left, top);
         }
     }
-
+    
+    @SubscribeEvent
+    public static void keyInputEvent(InputEvent.Key event) {
+        int key = event.getKey();
+        Minecraft mc = Minecraft.getInstance();
+        Player player = mc.player;
+        if (player == null) return;
+        CompoundTag tag = player.getPersistentData();
+        if (key == mc.options.keyJump.getKey().getValue() && !player.onGround()) {
+            ItemStack charm = PlayerCharmManager.findCharm(player, ModItems.SKYBOUND_TREADS.get());
+            int jumps = tag.getInt(ILivingJumper.KEY);
+            if (!charm.isEmpty() && player instanceof ILivingJumper jumper && jumps > 0 && player.noJumpDelay == 0) {
+                jumper.jumpGround();
+                Channel.sendToServer(new ConsumeJumpTokenToServer());
+                tag.putInt(ILivingJumper.KEY, jumps - 1);
+                player.noJumpDelay = 10;
+            }
+        }
+        if (key == mc.options.keySprint.getKey().getValue() && !player.onGround()) {
+            ItemStack charm = PlayerCharmManager.findCharm(player, ModItems.GALE_SASH.get());
+            int dashes = tag.getInt(ILivingDasher.KEY);
+            if (!charm.isEmpty() && player instanceof ILivingDasher dasher && dashes > 0 && dasher.dashCooldown() == 0) {
+                dasher.dashAir(player);
+                Channel.sendToServer(new ConsumeDashTokenToServer());
+                tag.putInt(ILivingDasher.KEY, dashes - 1);
+                dasher.setDashCooldown(10);
+            }
+        }
+        
+    }
 }

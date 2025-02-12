@@ -3,12 +3,19 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,6 +29,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class ModBlockEntity extends BlockEntity {
+    public final Object2IntMap<Enchantment> enchantments = new Object2IntOpenHashMap<>();
+    
     public ModBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
@@ -39,7 +48,9 @@ public class ModBlockEntity extends BlockEntity {
     }
 
     protected void saveSynced(CompoundTag tag) {}
-
+    
+    public void onEnchanted() {}
+    
     @Override
     public CompoundTag getUpdateTag() {
         CompoundTag tag = super.getUpdateTag();
@@ -52,17 +63,58 @@ public class ModBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         saveSynced(tag);
+        ListTag listTag = new ListTag();
+        for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
+            CompoundTag enchTag = EnchantmentHelper.storeEnchantment(
+                EnchantmentHelper.getEnchantmentId(entry.getKey()),
+                (byte) entry.getIntValue()
+            );
+            listTag.add(enchTag);
+        }
+        tag.put("Enchantments", listTag);
     }
-
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        onEnchanted();
+    }
+    
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        loadEnchants(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+    }
+    
     public void sendUpdate(){
         setChanged();
         if(level != null && !isRemoved() && level.hasChunkAt(worldPosition))
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
+    
+    public void enchant(Enchantment enchantment, int level) {
+        enchantments.put(enchantment, level);
+        onEnchanted();
+        sendUpdate();
+    }
+    
+    public void loadEnchants(ListTag listTag) {
+        enchantments.clear();
+        enchantments.putAll(EnchantmentHelper.deserializeEnchantments(listTag));
+    }
+    
+    public int getEnchantmentLevel(Enchantment enchantment) {
+        return enchantments.getInt(enchantment);
+    }
+    
+    public int getVolumeLevel() {
+        return getEnchantmentLevel(ModEnchantments.VOLUME.get());
+    }
 
     protected ModFluidStorage createDefaultTank() {return createBasicTank(16000);}
     protected ModFluidStorage createBasicTank(int size, Runnable... run) {
-        return new ModFluidStorage(size) {
+        int volume = getVolumeLevel();
+        return new ModFluidStorage(size * (volume + 1)) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
@@ -71,7 +123,8 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModFluidStorage createRecipeFinderTank(int size) {
-        return new ModFluidStorage(size) {
+        int volume = getVolumeLevel();
+        return new ModFluidStorage(size * (volume + 1)) {
             @Override
             protected void onContentsChanged() {
                 findRecipe();
@@ -80,7 +133,8 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModFluidStorage createBasicTank(int size, boolean canDrain, boolean canFill, Runnable... run) {
-        return new ModFluidStorage(size) {
+        int volume = getVolumeLevel();
+        return new ModFluidStorage(size * (volume + 1)) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
@@ -97,7 +151,8 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModFluidStorage createRecipeFinderTank(int size, boolean canDrain, boolean canFill) {
-        return new ModFluidStorage(size) {
+        int volume = getVolumeLevel();
+        return new ModFluidStorage(size * (volume + 1)) {
             @Override
             protected void onContentsChanged() {
                 findRecipe();
@@ -114,7 +169,8 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModFluidStorage createBasicTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill, Runnable... run) {
-        return new ModFluidStorage(size, validator) {
+        int volume = getVolumeLevel();
+        return new ModFluidStorage(size * (volume + 1), validator) {
             @Override
             protected void onContentsChanged() {
                 sendUpdate();
@@ -131,7 +187,8 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModFluidStorage createRecipeFinderTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill) {
-        return new ModFluidStorage(size, validator) {
+        int volume = getVolumeLevel();
+        return new ModFluidStorage(size * (volume + 1), validator) {
             @Override
             protected void onContentsChanged() {
                 findRecipe();
@@ -153,7 +210,8 @@ public class ModBlockEntity extends BlockEntity {
         return createBasicEnergy(size, transfer, transfer, canReceive, canExtract);
     }
     protected ModEnergyStorage createBasicEnergy(int size, int maxReceive, int maxExtract, boolean canReceive, boolean canExtract) {
-        return new ModEnergyStorage(size, maxReceive, maxExtract) {
+        int volume = getVolumeLevel();
+        return new ModEnergyStorage(size * (volume + 1), maxReceive, maxExtract) {
             @Override
             public void onEnergyChanged() {
                 sendUpdate();

@@ -6,6 +6,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +22,7 @@ public class RendererHelper {
 
     public static void renderFluidCube(
             PoseStack poseStack, MultiBufferSource buff,
-            IFluidHandler fluidHandler, FluidRenderCubeInfo info,
+            IFluidHandler fluidHandler, RenderCubeInfo info,
             int light, int overlay,
             float xLen, float yLen, float zLen,
             float xOff, float yOff, float zOff) {
@@ -74,21 +75,47 @@ public class RendererHelper {
 
             //Draws bottom overlay,
             if(info.shouldRender(Direction.DOWN)) {
-                poseStack.pushPose();
-                poseStack.mulPose(Axis.XP.rotationDegrees(180));
-                poseStack.translate(0, 0/*-2 / 16f*/, -1);
+                //poseStack.pushPose();
+                /*poseStack.mulPose(Axis.XP.rotationDegrees(180));
+                poseStack.translate(0, 0*//*-2 / 16f*//*, -1);*/
                 drawQuad(
                         vertexConsumer, poseStack,
                         x0, y0, z0, x1, y0, z1,
                         uTop0, vTop0, uTop1, vTop1,
                         tintColor, light, overlay, /*level, jar.getBlockPos().below(),*/
-                        1, 1, 1 /*0, -1, 0*/, true
+                        1, 1, 1 /*0, -1, 0*/, false
                 );
-                poseStack.popPose();
+                //poseStack.popPose();
             }
         }
     }
+    
+    public static void drawCube(VertexConsumer consumer, PoseStack poseStack, float xLen, float yLen, float zLen, float xOff, float yOff, float zOff) {
+        drawCube(consumer, poseStack, new RenderCubeInfo(RenderCubeInfo.all(), false), xLen, yLen, zLen, xOff, yOff, zOff, 0, 0, 0xFFFFFFFF, 0, OverlayTexture.NO_OVERLAY);
+    }
 
+    public static void drawCube(VertexConsumer consumer, PoseStack poseStack, RenderCubeInfo info,
+                                float xLen, float yLen, float zLen, float xOff, float yOff, float zOff,
+                                float u, float v, int tintColor, int light, int overlay) {
+        float x0 = xOff / 16;
+        float y0 = yOff / 16;
+        float z0 = zOff / 16;
+        float x1 = (xOff + xLen) / 16;
+        float y1 = (yOff + yLen) / 16;
+        float z1 = (zOff + zLen) / 16;
+        
+        float u0 = u;
+        float u1 = u;
+        float v0 = v;
+        float v1 = v;
+        
+        if (info.shouldRender(Direction.UP)) drawQuad(consumer, poseStack, x0, y1, z0, x1, y1, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, true);
+        if (info.shouldRender(Direction.NORTH)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y1, z0, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, true);
+        if (info.shouldRender(Direction.EAST)) drawQuad(consumer, poseStack, x1, y0, z0, x1, y1, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, false);
+        if (info.shouldRender(Direction.SOUTH)) drawQuad(consumer, poseStack, x1, y0, z1, x0, y1, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, true);
+        if (info.shouldRender(Direction.WEST)) drawQuad(consumer, poseStack, x0, y0, z1, x0, y1, z0, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, false);
+        if (info.shouldRender(Direction.DOWN)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y0, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, false);
+    }
 
     public static void drawQuad(
             VertexConsumer vertexConsumer,
@@ -121,7 +148,7 @@ public class RendererHelper {
         vertexConsumer.vertex(pose.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
  */   }
 
-    public record FluidRenderCubeInfo(ArrayList<Direction> renderedFaces, boolean forceRenderUp) {
+    public record RenderCubeInfo(ArrayList<Direction> renderedFaces, boolean forceRenderUp) {
 
         public boolean shouldRender(Direction face) {
             return renderedFaces.contains(face);

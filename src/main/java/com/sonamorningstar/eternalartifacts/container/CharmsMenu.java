@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

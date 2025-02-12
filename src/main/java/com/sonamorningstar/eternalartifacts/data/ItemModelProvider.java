@@ -163,7 +163,21 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.SAGES_TALISMAN.get());
         basicItem(ModItems.BAND_OF_ARCANE.get());
         basicItem(ModItems.EMERALD_SIGNET.get());
-
+        basicItem(ModItems.SKYBOUND_TREADS.get());
+        handheld(ModItems.STEEL_SWORD);
+        handheld(ModItems.STEEL_PICKAXE);
+        handheld(ModItems.STEEL_AXE);
+        handheld(ModItems.STEEL_SHOVEL);
+        handheld(ModItems.STEEL_HOE);
+        handheld(ModItems.STEEL_HAMMER);
+        handheld(ModItems.STEEL_CUTLASS);
+        handheld(ModItems.STEEL_SICKLE);
+        basicItem(ModItems.STEEL_HELMET.get());
+        basicItem(ModItems.STEEL_CHESTPLATE.get());
+        basicItem(ModItems.STEEL_LEGGINGS.get());
+        basicItem(ModItems.STEEL_BOOTS.get());
+        basicItem(ModItems.GALE_SASH.get());
+        
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 
         withParentBlock(ModBlocks.RESONATOR);

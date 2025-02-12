@@ -14,9 +14,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class IndustrialMaceratorBlockEntity extends GenericMachineBlockEntity {
     public IndustrialMaceratorBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.INDUSTRIAL_MACERATOR, pos, blockState);
-        setEnergy(createDefaultEnergy());
+        setEnergy(this::createDefaultEnergy);
         outputSlots.add(1);
-        setInventory(createRecipeFinderInventory(2, outputSlots));
+        setInventory(() -> createRecipeFinderInventory(2, outputSlots));
         setRecipeTypeAndContainer(ModRecipes.MACERATING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
     }
 

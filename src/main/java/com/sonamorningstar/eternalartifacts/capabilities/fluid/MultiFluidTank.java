@@ -1,12 +1,8 @@
 package com.sonamorningstar.eternalartifacts.capabilities.fluid;
 
 import lombok.Setter;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.*;
@@ -21,12 +17,12 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
     }
     @Override
     public int getCapacity(int tank) {
-        return getTankCapacity(0);
+        return getTankCapacity(tank);
     }
 
     @Override
     public int getFluidAmount(int tank) {
-        return getFluidInTank(0).getAmount();
+        return getFluidInTank(tank).getAmount();
     }
 
     public CompoundTag serializeNBT() {

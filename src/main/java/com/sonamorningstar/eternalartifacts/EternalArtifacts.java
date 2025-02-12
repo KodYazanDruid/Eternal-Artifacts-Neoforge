@@ -37,6 +37,7 @@ public class EternalArtifacts {
      * TODO: Colored flower pots.
      * TODO: Machine configuration copy-paste.
      * TODO: Add solar helmet.
+     * TODO: Tessearact.
     */
 
     public static final String MODID = "eternalartifacts";

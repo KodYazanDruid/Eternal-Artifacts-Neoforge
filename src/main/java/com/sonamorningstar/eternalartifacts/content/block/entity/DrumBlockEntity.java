@@ -8,13 +8,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.function.Supplier;
+
 public class DrumBlockEntity extends ModBlockEntity {
     public ModFluidStorage tank;
+    public Supplier<ModFluidStorage> tankSetter;
     public DrumBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.DRUM.get(), pos, state);
-        this.tank = createBasicTank(((DrumBlock) state.getBlock()).getCapacity());
+        this.tankSetter = () -> createBasicTank(((DrumBlock) state.getBlock()).getCapacity());
+        this.tank = tankSetter.get();
     }
-
+    
+    @Override
+    public void onEnchanted() {
+        CompoundTag oldData = new CompoundTag();
+        oldData.put("Fluid", tank.serializeNBT());
+        this.tank = tankSetter.get();
+        this.tank.deserializeNBT(oldData.getCompound("Fluid"));
+    }
+    
     @Override
     protected boolean shouldSyncOnUpdate() { return true; }
 

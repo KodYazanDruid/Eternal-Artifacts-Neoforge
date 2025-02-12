@@ -22,6 +22,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     @Getter
@@ -120,6 +122,4 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         if (!(blockEntity instanceof MenuProvider prov)) return OptionalInt.empty();
         return player.openMenu(prov, pos);
     }
-
-
 }

@@ -14,8 +14,8 @@ public class CompressorBlockEntity extends GenericMachineBlockEntity {
     public CompressorBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.COMPRESSOR, pos, blockState);
         outputSlots.add(1);
-        setInventory(createRecipeFinderInventory(2, outputSlots));
-        setEnergy(createDefaultEnergy());
+        setInventory(() -> createRecipeFinderInventory(2, outputSlots));
+        setEnergy(this::createDefaultEnergy);
         setRecipeTypeAndContainer(ModRecipes.COMPRESSING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
     }
 

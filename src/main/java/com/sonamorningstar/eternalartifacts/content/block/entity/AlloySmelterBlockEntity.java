@@ -17,9 +17,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
     public AlloySmelterBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.ALLOY_SMELTER, pos, blockState);
-        setEnergy(createDefaultEnergy());
+        setEnergy(this::createDefaultEnergy);
         outputSlots.add(3);
-        setInventory(createRecipeFinderInventory(4, outputSlots));
+        setInventory(() -> createRecipeFinderInventory(4, outputSlots));
         screenInfo.setArrowXOffset(16);
     }
 

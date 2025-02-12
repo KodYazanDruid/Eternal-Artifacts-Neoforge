@@ -164,6 +164,20 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SAGES_TALISMAN.get(), "Sage's Talisman");
                 add(ModItems.BAND_OF_ARCANE.get(), "Band of Arcane");
                 add(ModItems.EMERALD_SIGNET.get(), "Emerald Signet");
+                add(ModItems.SKYBOUND_TREADS.get(), "Skybound Treads");
+                add(ModItems.STEEL_SWORD.get(), "Steel Sword");
+                add(ModItems.STEEL_PICKAXE.get(), "Steel Pickaxe");
+                add(ModItems.STEEL_AXE.get(), "Steel Axe");
+                add(ModItems.STEEL_SHOVEL.get(), "Steel Shovel");
+                add(ModItems.STEEL_HOE.get(), "Steel Hoe");
+                add(ModItems.STEEL_HAMMER.get(), "Steel Hammer");
+                add(ModItems.STEEL_CUTLASS.get(), "Steel Cutlass");
+                add(ModItems.STEEL_SICKLE.get(), "Steel Sickle");
+                add(ModItems.STEEL_HELMET.get(), "Steel Helmet");
+                add(ModItems.STEEL_CHESTPLATE.get(), "Steel Chestplate");
+                add(ModItems.STEEL_LEGGINGS.get(), "Steel Leggings");
+                add(ModItems.STEEL_BOOTS.get(), "Steel Boots");
+                add(ModItems.GALE_SASH.get(), "Gale Sash");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -245,6 +259,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ICE_BRICK_WALL.get(), "Ice Brick Wall");
                 add(ModBlocks.ENERGY_DOCK.get(), "Energy Dock");
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Shock Absorber");
+                add(ModBlocks.TESSERACT.get(), "Tesseract");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -278,6 +293,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.COMMAND.withSuffix("charm.list"), "%s's Charms:");
                 add(ModConstants.COMMAND.withSuffix("charm.wildcard.activated"), "%s's wildcard charm slot has been activated.");
                 add(ModConstants.COMMAND.withSuffix("charm.wildcard.deactivated"), "%s's wildcard charm slot has been deactivated.");
+                add(ModConstants.COMMAND.withSuffix("network.list"), "Networks:");
+                add(ModConstants.COMMAND.withSuffix("network.removed"), "Removed network with UUID %s.");
+                add(ModConstants.COMMAND.withSuffix("network.not_found"), "Network with UUID %s not found.");
                 //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -543,6 +561,20 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SAGES_TALISMAN.get(), "Bilge'nin Tılsımı");
                 add(ModItems.BAND_OF_ARCANE.get(), "Gizem Yüzüğü");
                 add(ModItems.EMERALD_SIGNET.get(), "Zümrüt Mührü");
+                add(ModItems.SKYBOUND_TREADS.get(), "Gökyüzü Ayakkabıları");
+                add(ModItems.STEEL_SWORD.get(), "Çelik Kılıç");
+                add(ModItems.STEEL_PICKAXE.get(), "Çelik Kazma");
+                add(ModItems.STEEL_AXE.get(), "Çelik Balta");
+                add(ModItems.STEEL_SHOVEL.get(), "Çelik Kürek");
+                add(ModItems.STEEL_HOE.get(), "Çelik Çapa");
+                add(ModItems.STEEL_HAMMER.get(), "Çelik Balyoz");
+                add(ModItems.STEEL_CUTLASS.get(), "Çelik Pala");
+                add(ModItems.STEEL_SICKLE.get(), "Çelik Orak");
+                add(ModItems.STEEL_HELMET.get(), "Çelik Kask");
+                add(ModItems.STEEL_CHESTPLATE.get(), "Çelik Göğüslük");
+                add(ModItems.STEEL_LEGGINGS.get(), "Çelik Pantolon");
+                add(ModItems.STEEL_BOOTS.get(), "Çelik Botlar");
+                add(ModItems.GALE_SASH.get(), "Fırtına Kuşağı");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -658,6 +690,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.ADVANCED_CRAFTER.getBlockTranslationKey(), "Gelişmiş Üretim Masası");
                 add(ModMachines.ELECTRIC_FURNACE.getBlockTranslationKey(), "Elektrikli Fırın");
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Şok Emici");
+                add(ModBlocks.TESSERACT.get(), "Tesseract");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -699,6 +732,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.COMMAND.withSuffix("charm.list"), "%s'in tılsımları:");
                 add(ModConstants.COMMAND.withSuffix("charm.wildcard.activated"), "%s'in tılsımlarına joker tılsım slotu eklendi.");
                 add(ModConstants.COMMAND.withSuffix("charm.wildcard.deactivated"), "%s'in tılsımlarındaki joker tılsım slotu kaldırıldı.");
+                add(ModConstants.COMMAND.withSuffix("network.list"), "Ağlar:");
+                add(ModConstants.COMMAND.withSuffix("network.removed"), "%s UUID'li ağ kaldırıldı.");
+                add(ModConstants.COMMAND.withSuffix("network.not_found"), "%s UUID'li ağ bulunamadı.");
+                
                 //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class NousTankBlockEntity extends SidedTransferMachineBlockEntity<NousTankMenu> {
     public NousTankBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.NOUS_TANK.get(), pos, blockState, NousTankMenu::new);
-        setTank(new ModFluidStorage(Integer.MAX_VALUE, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
+        setTank(() -> new ModFluidStorage(Integer.MAX_VALUE, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
             @Override
             protected void onContentsChanged() {
                 NousTankBlockEntity.this.requestModelDataUpdate();
@@ -23,6 +23,7 @@ public class NousTankBlockEntity extends SidedTransferMachineBlockEntity<NousTan
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
         performAutoOutputFluids(lvl, pos);
     }

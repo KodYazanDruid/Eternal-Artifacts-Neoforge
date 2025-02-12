@@ -27,8 +27,8 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new InductionFurnaceMenu(ModMachines.INDUCTION_FURNACE.getMenu(), a, b, c, d));
         outputSlots.add(2);
         outputSlots.add(3);
-        setEnergy(createDefaultEnergy());
-        setInventory(createRecipeFinderInventory(4, outputSlots));
+        setEnergy(this::createDefaultEnergy);
+        setInventory(() -> createRecipeFinderInventory(4, outputSlots));
     }
 
     public HeatStorage heat = new HeatStorage(20000) {
@@ -119,6 +119,7 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         performAutoInputItems(lvl, pos);
         performAutoOutputItems(lvl, pos);
 
