@@ -112,7 +112,9 @@ public class ModItems {
     public static final DeferredItem<Item> RED_SHULKER_SHELL = register("red_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.RED));
     public static final DeferredItem<Item> BLACK_SHULKER_SHELL = register("black_shulker_shell", p -> new ColoredShulkerShellItem(p, DyeColor.BLACK));
     public static final DeferredItem<Item> ANGELIC_HEART = register("angelic_heart", p -> new AngelicHeartItem(p.food(ModFoods.ANGELIC_HEART)));
-
+    public static final DeferredItem<Item> GREEN_APPLE = register("green_apple", p -> new Item(p.food(ModFoods.GREEN_APPLE)));
+    public static final DeferredItem<Item> YELLOW_APPLE = register("yellow_apple", p -> new Item(p.food(ModFoods.YELLOW_APPLE)));
+    
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
     public static final DeferredItem<DeferredSpawnEggItem> MAGICAL_BOOK_SPAWN_EGG = registerSpawnEgg("magical_book_spawn_egg", ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802);

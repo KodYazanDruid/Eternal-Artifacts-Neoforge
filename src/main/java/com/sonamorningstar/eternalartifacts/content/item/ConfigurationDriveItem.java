@@ -90,11 +90,16 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         tooltipComponents.add(CommonComponents.EMPTY);
-        tooltipComponents.add(ModConstants.TOOLTIP.withSuffixTranslatable("configuration_device_tooltip").append(":"));
         if (stack.hasTag()) {
             CompoundTag stackTag = stack.getTag();
             CompoundTag nbt = stackTag.getCompound("SidedTransferConfigs");
-            if (nbt.contains("SideConfigs")) {
+            boolean containsSide = nbt.contains("SideConfigs");
+            boolean containsAuto = nbt.contains("AutoConfigs");
+            boolean containsRedstone = nbt.contains("RedstoneConfigs");
+            if (containsSide || containsAuto || containsRedstone) {
+                tooltipComponents.add(ModConstants.TOOLTIP.withSuffixTranslatable("configuration_device_tooltip").append(":"));
+            }
+            if (containsSide) {
                 ListTag sideConfigs = nbt.getList("SideConfigs", 10);
                 sideConfigs.forEach(tag -> {
                     CompoundTag entry = (CompoundTag) tag;
@@ -123,7 +128,7 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                     tooltipComponents.add(side);
                 });
             }
-            if (nbt.contains("AutoConfigs")) {
+            if (containsAuto) {
                 ListTag autoConfigs = nbt.getList("AutoConfigs", 10);
                 autoConfigs.forEach(tag -> {
                     CompoundTag entry = (CompoundTag) tag;
@@ -144,7 +149,7 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                     tooltipComponents.add(auto);
                 });
             }
-            if (nbt.contains("RedstoneConfigs")) {
+            if (containsRedstone) {
                 ListTag redstoneConfigs = nbt.getList("RedstoneConfigs", 10);
                 redstoneConfigs.forEach(tag -> {
                     CompoundTag entry = (CompoundTag) tag;

@@ -517,10 +517,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .requires(ModBlocks.STEEL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.STEEL_BLOCK)).save(recipeOutput, makeID("steel_ingots_from_steel_block"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.APPLE_PIE, 1)
-                .requires(Items.APPLE)
+                .requires(ModTags.Items.FRUITS_APPLE)
                 .requires(Items.SUGAR)
                 .requires(Tags.Items.EGGS)
-                .unlockedBy("has_item", has(Items.APPLE)).save(recipeOutput);
+                .unlockedBy("has_item", has(ModTags.Items.FRUITS_APPLE)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.BANANA_CREAM_PIE, 1)
                 .requires(ModTags.Items.FRUITS_BANANA)
                 .requires(Items.SUGAR)

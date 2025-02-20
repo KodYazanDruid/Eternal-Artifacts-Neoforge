@@ -145,6 +145,10 @@ public class CommonModEvents {
             boolean flag = level.getBlockState(pos.above()).is(ModBlocks.TIGRIS_FLOWER);
             return flag ? InfiniteWaterTank.INSTANCE : null;
         }, ModBlocks.GARDENING_POT.get());
+        
+        event.registerBlock(Capabilities.FluidHandler.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
+        event.registerBlock(Capabilities.EnergyStorage.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {

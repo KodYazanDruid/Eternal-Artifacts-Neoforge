@@ -10,11 +10,8 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.inventory.CraftingContainer;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -97,7 +94,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
     @Override
     protected void findRecipe() {
         ItemStack blueprint = inventory.getStackInSlot(10);
-        recipeCache.clearRecipe(this);
+        recipeCache.clearRecipes(this);
         if (!blueprint.isEmpty()) {
             SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
             NonNullList<ItemStack> pattern = BlueprintItem.getFakeItems(blueprint);

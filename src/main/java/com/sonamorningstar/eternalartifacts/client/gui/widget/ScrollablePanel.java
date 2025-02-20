@@ -1,8 +1,8 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractScrollWidget;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -13,9 +13,9 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrollablePanel extends AbstractScrollWidget {
+public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWidget {
 	@Getter
-	private final List<AbstractWidget> children = new ArrayList<>();
+	private final List<W> children = new ArrayList<>();
 	@Getter
 	protected int innerHeight;
 	protected double scrollRate;
@@ -30,13 +30,13 @@ public class ScrollablePanel extends AbstractScrollWidget {
 		return scrollRate;
 	}
 	
-	public void addChild(AbstractWidget widget) {
+	public void addChild(W widget) {
 		children.add(widget);
 	}
-	public void addChild(QuadFunction<Integer, Integer, Integer, Integer, AbstractWidget> widgetGetter) {
+	public void addChild(QuadFunction<Integer, Integer, Integer, Integer, W> widgetGetter) {
 		children.add(widgetGetter.apply(getX(), getY(), getWidth(), getHeight()));
 	}
-	public void removeChild(AbstractWidget widget) {
+	public void removeChild(W widget) {
 		children.remove(widget);
 	}
 	public void removeChild(int index) {
@@ -47,8 +47,8 @@ public class ScrollablePanel extends AbstractScrollWidget {
 	}
 	
 	@Nullable
-	public AbstractWidget getChildUnderCursor(double mouseX, double mouseY) {
-		for (AbstractWidget child : children) {
+	public W getChildUnderCursor(double mouseX, double mouseY) {
+		for (W child : children) {
 			if (child.isMouseOver(mouseX, mouseY + scrollAmount())) {
 				return child;
 			}
@@ -57,8 +57,20 @@ public class ScrollablePanel extends AbstractScrollWidget {
 	}
 	
 	@Override
+	public boolean mouseClicked(double mx, double my, int button) {
+		if (visible && withinContentAreaPoint(mx, my)) {
+			for (W child : children) {
+				if (child.mouseClicked(mx, my + scrollAmount(), button)) {
+					return true;
+				}
+			}
+		}
+		return super.mouseClicked(mx, my, button);
+	}
+	
+	@Override
 	protected void renderContents(GuiGraphics gui, int mX, int mY, float deltaTick) {
-		for (AbstractWidget child : children) {
+		for (W child : children) {
 			child.render(gui, mX, mY, deltaTick);
 		}
 	}
@@ -66,6 +78,10 @@ public class ScrollablePanel extends AbstractScrollWidget {
 	@Override
 	public double scrollAmount() {
 		return super.scrollAmount();
+	}
+	
+	public void setScrollAmount(double scrollAmount) {
+		super.setScrollAmount(scrollAmount);
 	}
 	
 	@Override

@@ -309,7 +309,7 @@ public class ClientEvents {
         Player player = mc.player;
         if (player == null) return;
         CompoundTag tag = player.getPersistentData();
-        if (key == mc.options.keyJump.getKey().getValue() && !player.onGround()) {
+        if (key == mc.options.keyJump.getKey().getValue() && !player.onGround() && !player.isPassenger()) {
             ItemStack charm = PlayerCharmManager.findCharm(player, ModItems.SKYBOUND_TREADS.get());
             int jumps = tag.getInt(ILivingJumper.KEY);
             if (!charm.isEmpty() && player instanceof ILivingJumper jumper && jumps > 0 && player.noJumpDelay == 0) {
@@ -319,7 +319,7 @@ public class ClientEvents {
                 player.noJumpDelay = 10;
             }
         }
-        if (key == mc.options.keySprint.getKey().getValue() && !player.onGround()) {
+        if (key == mc.options.keySprint.getKey().getValue() && !player.onGround() && !player.isPassenger()) {
             ItemStack charm = PlayerCharmManager.findCharm(player, ModItems.GALE_SASH.get());
             int dashes = tag.getInt(ILivingDasher.KEY);
             if (!charm.isEmpty() && player instanceof ILivingDasher dasher && dashes > 0 && dasher.dashCooldown() == 0) {

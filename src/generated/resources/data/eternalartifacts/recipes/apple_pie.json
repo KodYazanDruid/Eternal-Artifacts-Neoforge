@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "minecraft:apple"
+      "tag": "forge:fruits/apple"
     },
     {
       "item": "minecraft:sugar"

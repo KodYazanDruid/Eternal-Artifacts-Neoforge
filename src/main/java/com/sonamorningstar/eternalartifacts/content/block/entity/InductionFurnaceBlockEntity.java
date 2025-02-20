@@ -68,14 +68,14 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
 
     @Override
     protected void findRecipe() {
-        blastingCache0.clearRecipe(this);
-        blastingCache1.clearRecipe(this);
-        smokingCache0.clearRecipe(this);
-        smokingCache1.clearRecipe(this);
-        campfireCookingCache0.clearRecipe(this);
-        campfireCookingCache1.clearRecipe(this);
-        smeltingCache0.clearRecipe(this);
-        smeltingCache1.clearRecipe(this);
+        blastingCache0.clearRecipes(this);
+        blastingCache1.clearRecipes(this);
+        smokingCache0.clearRecipes(this);
+        smokingCache1.clearRecipes(this);
+        campfireCookingCache0.clearRecipes(this);
+        campfireCookingCache1.clearRecipes(this);
+        smeltingCache0.clearRecipes(this);
+        smeltingCache1.clearRecipes(this);
         recipeCon0 = new SimpleContainer(inventory.getStackInSlot(0));
         blastingCache0.findRecipe(RecipeType.BLASTING, recipeCon0, level);
         if (blastingCache0.getRecipe() == null) {

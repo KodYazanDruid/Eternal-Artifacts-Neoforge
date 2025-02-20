@@ -1,8 +1,13 @@
 package com.sonamorningstar.eternalartifacts.compat.mekanism;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
+import mekanism.api.Action;
+import mekanism.api.chemical.gas.GasStack;
+import mekanism.api.chemical.gas.IGasHandler;
+import mekanism.common.capabilities.Capabilities;
 import mekanism.common.registries.MekanismItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -10,6 +15,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import mekanism.common.tags.MekanismTags;
 import mekanism.generators.common.GeneratorTags;
@@ -38,10 +45,50 @@ public class MekanismCompat {
             });
         }
     }
+    
+    private static void registerMekCaps(RegisterCapabilitiesEvent event) {
+        event.registerBlock(Capabilities.GAS.block(), (a, b, c, d, e) -> new IGasHandler() {
+			@Override
+			public int getTanks() {
+				return 1;
+			}
+			
+			@Override
+			public GasStack getChemicalInTank(int i) {
+				return GasStack.EMPTY;
+			}
+			
+			@Override
+			public void setChemicalInTank(int i, GasStack stack) {
+			
+			}
+			
+			@Override
+			public long getTankCapacity(int i) {
+				return 16000;
+			}
+			
+			@Override
+			public boolean isValid(int i, GasStack stack) {
+				return true;
+			}
+			
+			@Override
+			public GasStack insertChemical(int i, GasStack stack, Action action) {
+				return GasStack.EMPTY;
+			}
+			
+			@Override
+			public GasStack extractChemical(int i, long l, Action action) {
+				return GasStack.EMPTY;
+			}
+		}, ModBlocks.TRASH_CAN.get());
+    }
 
 
     public static void runMek(IEventBus modEventBus) {
         addTag(ModTags.Items.CHARMS_BACK, MekanismItems.HDPE_REINFORCED_ELYTRA::get);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, MekanismCompat::registerMekCaps);
     }
 
     public static void runMekGens(IEventBus modEventBus) {

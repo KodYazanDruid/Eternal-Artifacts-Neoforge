@@ -9,6 +9,7 @@ import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
@@ -40,12 +41,18 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                         LootItemRandomChanceCondition.randomChance(0.05f).build()
                 }, List.of(ModItems.BANANA.get().getDefaultInstance()))
         );
-
         add("ancient_seeds_from_sniffer_digging", new ReplaceItemWithChanceModifier(
                 new LootItemCondition[]{
                         LootTableIdCondition.builder(BuiltInLootTables.SNIFFER_DIGGING).build()
                 }, ModItems.ANCIENT_SEED.get(), ConstantValue.exactly(1.0F), 0.2F)
         );
+        add("replace_vanilla_apple", new ReplaceVanillaAppleModifier(
+                new LootItemCondition[] {
+                        LootItemBlockTagCondition.builder(BlockTags.LEAVES).build()
+                }
+        ));
+        
+        
         add("hammering", new HammeringModifier(
                 new LootItemCondition[]{
                         MatchTool.toolMatches(ItemPredicate.Builder.item().of(ModTags.Items.TOOLS_HAMMER)).build()

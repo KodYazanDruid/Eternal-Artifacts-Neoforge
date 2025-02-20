@@ -1,4 +1,4 @@
-// 1.20.4	2025-02-01T17:53:09.4828598	Loot Tables
+// 1.20.4	2025-02-15T22:42:59.9473623	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 5cdbfe04b08c9f529ff4b380190c0481143a16b5 data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
@@ -92,6 +92,7 @@ c1bc5e28cf5db7bcd682ba3f629a120acfefc497 data/eternalartifacts/loot_tables/block
 c11f341ee1ea31eb97953ab066aed44ae28c95ee data/eternalartifacts/loot_tables/blocks/tempered_glass.json
 b9bdab8b92c61dbc047133dd35ab57d27284bb11 data/eternalartifacts/loot_tables/blocks/tesseract.json
 0e22ab1bbe5eae86e56859e0e6ddc45e51a0ca1b data/eternalartifacts/loot_tables/blocks/tigris_flower.json
+97cc5f560077b2f5d3ac7e2a9d6a23c6852fd20f data/eternalartifacts/loot_tables/blocks/trash_can.json
 2b0c80370322d176412e5576155075e7e626bdd6 data/eternalartifacts/loot_tables/blocks/very_sandy_dark_prismarine.json
 4dc8e7bc72dfbc99f2e1e1703cfd2ef673108379 data/eternalartifacts/loot_tables/blocks/very_sandy_prismarine.json
 002196bc27b28ffb6eecedf4e4cfe7e2af787b02 data/eternalartifacts/loot_tables/chests/plains_house_desk.json

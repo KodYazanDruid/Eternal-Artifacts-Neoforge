@@ -82,6 +82,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.ENERGY_DOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SHOCK_ABSORBER.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.TESSERACT.get(), "diamond", "pickaxe");
+        tierAndTool(ModBlocks.TRASH_CAN.get(), "stone", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
                 ModBlocks.MACHINE_BLOCK.get(),

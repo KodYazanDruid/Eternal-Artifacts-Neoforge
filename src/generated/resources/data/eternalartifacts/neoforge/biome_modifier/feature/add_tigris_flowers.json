@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#forge:is_swamp",
+  "features": "eternalartifacts:placed_tigris_flower",
+  "step": "vegetal_decoration"
+}

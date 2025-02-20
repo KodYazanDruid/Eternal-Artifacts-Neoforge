@@ -230,7 +230,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     @Override
     protected void findRecipe() {
         if (level != null && recipeType != null && recipeContainer != null) {
-            recipeCache.clearRecipe(this);
+            recipeCache.clearRecipes(this);
             recipeCache.findRecipe(recipeType, recipeContainer.get(), level);
         }
     }

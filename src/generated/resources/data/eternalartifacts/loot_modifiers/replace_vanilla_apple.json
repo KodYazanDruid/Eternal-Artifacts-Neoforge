@@ -1,0 +1,9 @@
+{
+  "type": "eternalartifacts:replace_vanilla_apple",
+  "conditions": [
+    {
+      "condition": "eternalartifacts:block_tag_condition",
+      "tag": "minecraft:leaves"
+    }
+  ]
+}

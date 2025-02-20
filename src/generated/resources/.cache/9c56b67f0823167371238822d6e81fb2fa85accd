@@ -1,4 +1,4 @@
-// 1.20.4	2025-02-10T21:37:23.3024076	Item Models: eternalartifacts
+// 1.20.4	2025-02-15T22:42:59.9603632	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
@@ -96,6 +96,7 @@ df2644d1984cf0b62f3bdc77fde033a2e0818907 assets/eternalartifacts/models/item/gol
 20d21c39c19c51e80328abe3103e4c9229641fee assets/eternalartifacts/models/item/gold_ring.json
 bbc068e61f4ca3d7bb315614a2d2cca1a6d00bdb assets/eternalartifacts/models/item/grafter.json
 f7b570ee102e6034c44a3b6b40ee40bdaf18d3ec assets/eternalartifacts/models/item/gray_shulker_shell.json
+5aec3f2bb7b2a941267e55eb9d4821d1ca14483f assets/eternalartifacts/models/item/green_apple.json
 bea8fef3470b4a38d2f75805362ea521579e4467 assets/eternalartifacts/models/item/green_shulker_shell.json
 17cea3c921ca033b040efdb8c0d358402f8ec92f assets/eternalartifacts/models/item/hammaxe.json
 59dc787c520658967dbc687998270ea969a5cbf1 assets/eternalartifacts/models/item/heart_necklace.json
@@ -196,10 +197,12 @@ d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/swo
 c0f27d555175892c0bc4b0fda57cd6ec842b5c9d assets/eternalartifacts/models/item/tank_knapsack.json
 2b895ccad63794c5e49b10dfd58c6e99a05f6b3e assets/eternalartifacts/models/item/tar_ball.json
 562a02ef8990e3147473c1874c1720349cbc197d assets/eternalartifacts/models/item/tigris_flower.json
+7174e60861b4a6d89959e35e065edbc27e4d8279 assets/eternalartifacts/models/item/trash_can.json
 6a6b415b1c67194bab37480a24f34547b50f568b assets/eternalartifacts/models/item/white_shulker_shell.json
 cc8abe6c0bc099bb8b46cbb52306bc83c959fd5c assets/eternalartifacts/models/item/withering_sword.json
 3382de9f97e8d789fbb67c48255c8beac3995347 assets/eternalartifacts/models/item/wooden_cutlass.json
 5273157c9d8533d4f449f6e89c37a45e8364e596 assets/eternalartifacts/models/item/wooden_hammer.json
 4654fb9744fbbbde8710f60db2094c51279074bb assets/eternalartifacts/models/item/wooden_sickle.json
 a9146648aea7d322f14ca73f9e69bcf44f71dac1 assets/eternalartifacts/models/item/wrench.json
+047715fe92bfa4c3de99857e71fecc37423170fc assets/eternalartifacts/models/item/yellow_apple.json
 1ef4cd299a8e6420904b2129436c6d52e11636c7 assets/eternalartifacts/models/item/yellow_shulker_shell.json

@@ -1,4 +1,4 @@
-// 1.20.4	2025-02-10T21:37:23.2944077	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-02-14T23:01:58.9252999	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 ed100bf617106ca16d56ad83350f486940af2940 data/eternalartifacts/tags/items/charms/back.json
 9b2c93d4150a8e166cddc320c1991280b2faf36c data/eternalartifacts/tags/items/charms/belt.json
@@ -23,8 +23,9 @@ a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 875349ab7998b6fcd8ee78a023f991b0c1500269 data/forge/tags/items/dusts/sugar_charcoal.json
 8aea35b9fb43e978f8582edfa4c0feec4018b3a3 data/forge/tags/items/feathers.json
 c7f00a4501c05f582b1ac98cbd8a3bbd15948538 data/forge/tags/items/flour/wheat.json
-28c2f9209bde6aac38a44aeb9f557059cf5cd1e6 data/forge/tags/items/fruits.json
+e1cf68f17ccd8c14fa601cf15a14a279e8cd1394 data/forge/tags/items/fruits.json
 c6c66e730827f409622e82c9dc0a843c22bb8094 data/forge/tags/items/fruits/ancient.json
+f36fd97d0265cc281f068806274db8d78e53ca1a data/forge/tags/items/fruits/apple.json
 ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.json
 91aab86753deb913a975f3639150d05d0706b6fd data/forge/tags/items/fruits/orange.json
 18931c61a3941211d43d6c098acb50d690c87af0 data/forge/tags/items/ingots.json

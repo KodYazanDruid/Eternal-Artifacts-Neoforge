@@ -30,43 +30,49 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
     @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.Items.FRUITS).add(
-                ModItems.ORANGE.get(),
-                ModItems.ANCIENT_FRUIT.get(),
-                ModItems.BANANA.get()
+            ModItems.ORANGE.get(),
+            ModItems.ANCIENT_FRUIT.get(),
+            ModItems.BANANA.get()
         );
+        tag(ModTags.Items.FRUITS).addTag(ModTags.Items.FRUITS_APPLE);
         tag(ModTags.Items.FRUITS_ORANGE).add(ModItems.ORANGE.get());
         tag(ModTags.Items.FRUITS_ANCIENT).add(ModItems.ANCIENT_FRUIT.get());
         tag(ModTags.Items.FRUITS_BANANA).add(ModItems.BANANA.get());
+        tag(ModTags.Items.FRUITS_APPLE).add(
+            Items.APPLE,
+            ModItems.GREEN_APPLE.get(),
+            ModItems.YELLOW_APPLE.get()
+        );
 
         tag(Tags.Items.INGOTS).add(
-                ModItems.RAW_MEAT_INGOT.get(),
-                ModItems.COOKED_MEAT_INGOT.get(),
-                ModItems.CHLOROPHYTE_INGOT.get(),
-                ModItems.MANGANESE_INGOT.get(),
-                ModItems.STEEL_INGOT.get(),
-                ModItems.MARIN_INGOT.get()
+            ModItems.RAW_MEAT_INGOT.get(),
+            ModItems.COOKED_MEAT_INGOT.get(),
+            ModItems.CHLOROPHYTE_INGOT.get(),
+            ModItems.MANGANESE_INGOT.get(),
+            ModItems.STEEL_INGOT.get(),
+            ModItems.MARIN_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.COOKED_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
         tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
         tag(Tags.Items.NUGGETS).add(
-                ModItems.COPPER_NUGGET.get(),
-                ModItems.EXPERIENCE_BERRY.get(),
-                ModItems.MANGANESE_NUGGET.get(),
-                ModItems.STEEL_NUGGET.get()
+            ModItems.COPPER_NUGGET.get(),
+            ModItems.EXPERIENCE_BERRY.get(),
+            ModItems.MANGANESE_NUGGET.get(),
+            ModItems.STEEL_NUGGET.get()
         );
         tag(Tags.Items.DUSTS).add(
-                ModItems.COAL_DUST.get(),
-                ModItems.CHARCOAL_DUST.get(),
-                ModItems.SUGAR_CHARCOAL_DUST.get()
+            ModItems.COAL_DUST.get(),
+            ModItems.CHARCOAL_DUST.get(),
+            ModItems.SUGAR_CHARCOAL_DUST.get()
         );
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
         tag(ModTags.Items.DUSTS_SUGAR_CHARCOAL).add(ModItems.SUGAR_CHARCOAL_DUST.get());
         tag(Tags.Items.RAW_MATERIALS).add(
-                ModItems.RAW_MANGANESE.get(),
-                ModItems.RAW_MARIN.get()
+            ModItems.RAW_MANGANESE.get(),
+            ModItems.RAW_MARIN.get()
         );
         tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
         tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());

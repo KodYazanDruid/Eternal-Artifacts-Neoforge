@@ -2,6 +2,7 @@
   "values": [
     "eternalartifacts:orange",
     "eternalartifacts:ancient_fruit",
-    "eternalartifacts:banana"
+    "eternalartifacts:banana",
+    "#forge:fruits/apple"
   ]
 }

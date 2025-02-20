@@ -35,9 +35,9 @@ public class EternalArtifacts {
      * TODO: Shulker armor.
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
-     * TODO: Machine configuration copy-paste.
      * TODO: Add solar helmet.
-     * TODO: Tessearact.
+     * TODO: Trash can.
+     * TODO: Block pattern copy paste.
     */
 
     public static final String MODID = "eternalartifacts";

@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.registries.datamaps.builtin.Compostable;
 import net.neoforged.neoforge.registries.datamaps.builtin.FurnaceFuel;
 import net.neoforged.neoforge.registries.datamaps.builtin.NeoForgeDataMaps;
 
@@ -21,5 +22,9 @@ public class DataMapProvider extends net.neoforged.neoforge.common.data.DataMapP
             .add(ModBlocks.SUGAR_CHARCOAL_BLOCK.getId(), new FurnaceFuel(4000), false)
             .add(ModItems.TAR_BALL.getId(), new FurnaceFuel(1600), false)
             .add(ModItems.BITUMEN.getId(), new FurnaceFuel(1600), false);
+        
+        builder(NeoForgeDataMaps.COMPOSTABLES)
+            .add(ModItems.GREEN_APPLE.getId(), new Compostable(0.65F), false)
+            .add(ModItems.YELLOW_APPLE.getId(), new Compostable(0.65F), false);
     }
 }

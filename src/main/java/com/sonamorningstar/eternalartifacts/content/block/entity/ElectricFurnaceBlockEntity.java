@@ -30,11 +30,12 @@ public class ElectricFurnaceBlockEntity extends GenericMachineBlockEntity {
 
     @Override
     protected void findRecipe() {
-        blastingCache.clearRecipe(this);
-        smokingCache.clearRecipe(this);
-        campfireCache.clearRecipe(this);
-        smeltingCache.clearRecipe(this);
+        blastingCache.clearRecipes(this);
+        smokingCache.clearRecipes(this);
+        campfireCache.clearRecipes(this);
+        smeltingCache.clearRecipes(this);
         recipeContainer = new SimpleContainer(inventory.getStackInSlot(0));
+        
         blastingCache.findRecipe(RecipeType.BLASTING, recipeContainer, level);
         if (blastingCache.getRecipe() != null) {
             recipe = blastingCache.getRecipe(BlastingRecipe.class);
@@ -50,6 +51,8 @@ public class ElectricFurnaceBlockEntity extends GenericMachineBlockEntity {
                     smeltingCache.findRecipe(RecipeType.SMELTING, recipeContainer, level);
                     if (smeltingCache.getRecipe() != null) {
                         recipe = smeltingCache.getRecipe(SmeltingRecipe.class);
+                    } else {
+                        recipe = null;
                     }
                 }
             }

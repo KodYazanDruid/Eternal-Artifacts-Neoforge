@@ -32,7 +32,7 @@ public class TesseractNetwork extends AbstractWidget {
 	
 	@Override
 	public void onClick(double mouseX, double mouseY, int button) {
-		if (isFocused()) action.accept(index);
+		action.accept(index);
 	}
 	
 	@Override

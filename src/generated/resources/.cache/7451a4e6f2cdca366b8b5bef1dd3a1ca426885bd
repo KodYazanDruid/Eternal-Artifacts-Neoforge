@@ -1,4 +1,4 @@
-// 1.20.4	2025-02-01T17:53:09.4728599	Block States: eternalartifacts
+// 1.20.4	2025-02-15T22:45:18.4560486	Block States: eternalartifacts
 ae5d7d8961636384acc838e9736f9d3d6d02a1c6 assets/eternalartifacts/blockstates/advanced_crafter.json
 053efb4f980c56896c644a5cccb1c98017ba22b4 assets/eternalartifacts/blockstates/alloy_smelter.json
 c73574a469063d77d34e80285eedd4b4d20a5147 assets/eternalartifacts/blockstates/ancient_crop.json
@@ -74,6 +74,7 @@ f9825724d03d480cce9f01e5f52c958c9782d8ef assets/eternalartifacts/blockstates/str
 76cf573d20b006fb5b5091fcd05c5eabb5e51a81 assets/eternalartifacts/blockstates/tempered_glass.json
 5ff4b1c0f8b8139eb7abb2788955967127748efa assets/eternalartifacts/blockstates/tesseract.json
 7b840bcbe2109deddb0f8507f8c7e9672aae408e assets/eternalartifacts/blockstates/tigris_flower.json
+6f2a5ed18135df1b3fbd0edb65c90feb0a391414 assets/eternalartifacts/blockstates/trash_can.json
 9d1eec8e85797e4661a894b14583f4a7bd43ea05 assets/eternalartifacts/blockstates/very_sandy_dark_prismarine.json
 06f810cb03259392b94b54b67e190976266b230a assets/eternalartifacts/blockstates/very_sandy_prismarine.json
 8083a33ebd67de3baddf3a39c7e9b1437431c974 assets/eternalartifacts/models/block/advanced_crafter.json

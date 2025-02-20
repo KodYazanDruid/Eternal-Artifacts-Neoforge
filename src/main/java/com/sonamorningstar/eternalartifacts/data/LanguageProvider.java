@@ -178,6 +178,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.STEEL_LEGGINGS.get(), "Steel Leggings");
                 add(ModItems.STEEL_BOOTS.get(), "Steel Boots");
                 add(ModItems.GALE_SASH.get(), "Gale Sash");
+                add(ModItems.GREEN_APPLE.get(), "Green Apple");
+                add(ModItems.YELLOW_APPLE.get(), "Yellow Apple");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -260,6 +262,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ENERGY_DOCK.get(), "Energy Dock");
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Shock Absorber");
                 add(ModBlocks.TESSERACT.get(), "Tesseract");
+                add(ModBlocks.TRASH_CAN.get(), "Trash Can");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -575,6 +578,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.STEEL_LEGGINGS.get(), "Çelik Pantolon");
                 add(ModItems.STEEL_BOOTS.get(), "Çelik Botlar");
                 add(ModItems.GALE_SASH.get(), "Fırtına Kuşağı");
+                add(ModItems.GREEN_APPLE.get(), "Yeşil Elma");
+                add(ModItems.YELLOW_APPLE.get(), "Sarı Elma");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -691,6 +696,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.ELECTRIC_FURNACE.getBlockTranslationKey(), "Elektrikli Fırın");
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Şok Emici");
                 add(ModBlocks.TESSERACT.get(), "Tesseract");
+                add(ModBlocks.TRASH_CAN.get(), "Çöp Kutusu");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

@@ -118,6 +118,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createDrums(ModBlocks.STEEL_DRUM, ModBlocks.STEEL_BLOCK.get());
         createDrums(ModBlocks.DIAMOND_DRUM, Blocks.DIAMOND_BLOCK);
         createDrums(ModBlocks.NETHERITE_DRUM, Blocks.NETHERITE_BLOCK);
+        createStateForModel(ModBlocks.TRASH_CAN);
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);

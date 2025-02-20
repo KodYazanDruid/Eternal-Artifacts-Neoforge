@@ -1,0 +1,10 @@
+{
+  "values": {
+    "eternalartifacts:green_apple": {
+      "chance": 0.65
+    },
+    "eternalartifacts:yellow_apple": {
+      "chance": 0.65
+    }
+  }
+}

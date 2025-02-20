@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -32,7 +33,7 @@ public class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
 
     public static final DeferredBlock<Block> MACHINE_BLOCK = registerWithItem("machine_block",
-            () -> new Block(Blocks.IRON_BLOCK.properties().mapColor(MapColor.STONE)));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.STONE)));
     public static final DeferredBlock<RotatedPillarBlock> ROSY_FROGLIGHT = registerWithItem("rosy_froglight",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(0.3F).lightLevel(p_220869_ -> 15).sound(SoundType.FROGLIGHT)));
     public static final DeferredBlock<Block> GRAVEL_COAL_ORE = registerGravelOres("gravel_coal_ore", UniformInt.of(0, 2));
@@ -130,6 +131,8 @@ public class ModBlocks {
             () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
+    public static final DeferredBlock<TrashCanBlock> TRASH_CAN = registerWithItem("trash_can",
+        () -> new TrashCanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
             ()-> new UncoveredCableBlock(ModProperties.Blocks.CABLE));
