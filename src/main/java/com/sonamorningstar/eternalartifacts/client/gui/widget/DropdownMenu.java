@@ -1,78 +1,88 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
-import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.Consumer;
 
+@Getter
 public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget {
 	private static final WidgetSprites SPRITES = new WidgetSprites(
 		new ResourceLocation("widget/text_field"), new ResourceLocation("widget/text_field_highlighted")
 	);
-	@Getter
-	private ScrollablePanel<W> dropPanel;
+	private final ScrollablePanel<W> dropPanel;
 	private final Font font;
 	@Nullable
-	private Component value = null;
-	private final Component UNSELECTED = ModConstants.GUI.withSuffixTranslatable("dropdown_menu.unselected");
-	private final List<Component> components = new ArrayList<>();
+	private W value = null;
+	private int index = 0;
+	private final Component unselectedText;
 	private boolean isMenuOpen = false;
 	
-	public DropdownMenu(int x, int y, int width, int height, int panelHeight, /*int buttonWidth,*/ Font font) {
+	public DropdownMenu(int x, int y, int width, int height, int panelHeight,
+					Font font, Consumer<PanelBuilder<W>> panelBuilder, Component unselectedText) {
 		super(x, y, width, height, Component.empty());
 		this.font = font;
-		this.dropPanel = new ScrollablePanel<>(x, y + height, width, panelHeight, 200, 10);
+		this.unselectedText = unselectedText;
+		this.dropPanel = new ScrollablePanel<>(x, y + height, width,panelHeight, 10);
 		dropPanel.visible = this.isMenuOpen;
-		components.add(Component.literal("test1"));
-		components.add(Component.literal("test2"));
-		components.add(Component.literal("test3"));
-		components.add(Component.literal("test4"));
-		components.add(Component.literal("test5"));
-		components.add(Component.literal("test6"));
-		components.add(Component.literal("test7"));
-		components.add(Component.literal("test8"));
-		components.add(Component.literal("test9"));
-		for (int i = 0; i < components.size(); i++) {
-			Component component = components.get(i);
-			int finalI = i;
-			dropPanel.addChild((x1, y1, width1, height1) -> {
-				Button btn = Button.builder(component, b -> {
-					value = component;
-					isMenuOpen = false;
-					dropPanel.visible = false;
-				}).bounds(x1, y1 + finalI * 10, width1, 10).build();
-				//btn.
-				return (W) btn;
-			});
-		}
+		panelBuilder.accept(getPanelBuilder());
+		dropPanel.reCalcInnerHeight();
+	}
+	
+	public void select(int index) {
+		value = dropPanel.getChildren().get(index);
+		this.index = index;
+		closeMenu();
+	}
+	
+	public void closeMenu() {
+		isMenuOpen = false;
+		dropPanel.visible = false;
 	}
 	
 	@Override
 	protected void renderWidget(GuiGraphics gui, int mX, int mY, float deltaTick) {
 		if (visible) {
 			ResourceLocation tex = SPRITES.get(isActive(), isFocused());
-			gui.blitSprite(tex, getX(), getY(), getWidth(), getHeight());
-			gui.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
+			gui.pose().translate(0, 0, 1);
+			gui.blitSprite(tex, getX(), getY(), getFieldWidth(), getFieldHeight());
+			gui.enableScissor(getX(), getY(), getX() + getFieldWidth(), getY() + getFieldHeight());
+			gui.pose().translate(0, 0, 1);
 			if (value != null) {
-				gui.drawString(font, value, getX() + 4, getY() + (getHeight() - 8) / 2, 0xffffff);
+				gui.drawString(font, value.getMessage(), getX() + 4, getY() + (getFieldHeight() - 8) / 2, 0xffffff);
 			} else {
-				gui.drawString(font, UNSELECTED, getX() + 4, getY() + (getHeight() - 8) / 2, 0xffaaaa);
+				gui.drawString(font, Component.literal("<").append(unselectedText).append(">"), getX() + 4, getY() + (getFieldHeight() - 8) / 2, 0xffaaaa);
 			}
 			gui.disableScissor();
-			if (isMenuOpen && dropPanel.visible) {
+			if (isMenuOpen) {
 				dropPanel.render(gui, mX, mY, deltaTick);
 			}
 		}
+	}
+	
+	public int getFieldWidth() {
+		return super.getWidth();
+	}
+	
+	public int getFieldHeight() {
+		return super.getHeight();
+	}
+	
+	@Override
+	public int getWidth() {
+		return super.getWidth() + (isMenuOpen ? dropPanel.getWidth() : 0);
+	}
+	
+	@Override
+	public int getHeight() {
+		return super.getHeight() + (isMenuOpen ? dropPanel.getHeight() : 0);
 	}
 	
 	@Override
@@ -105,12 +115,13 @@ public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget {
 		}
 		return super.mouseReleased(pMouseX, pMouseY, pButton);
 	}
-	@Override
-	public void mouseMoved(double pMouseX, double pMouseY) {
+	public boolean mouseMoveConsumer(double mx, double my) {
 		if (isMenuOpen) {
-			dropPanel.mouseMoved(pMouseX, pMouseY);
+			dropPanel.mouseMoved(mx, my);
+			return true;
 		}
-		super.mouseMoved(pMouseX, pMouseY);
+		super.mouseMoved(mx, my);
+		return false;
 	}
 	
 	@Override
@@ -136,6 +147,13 @@ public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget {
 		dropPanel.visible = isMenuOpen;
 	}
 	
+	public boolean updateHover(double mx, double my) {
+		if (isMenuOpen) {
+			return dropPanel.updateHover(mx, my);
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean isMouseOver(double pMouseX, double pMouseY) {
 		if (isMenuOpen) {
@@ -145,12 +163,29 @@ public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget {
 	}
 	
 	private boolean isOverWithScroll(double mx, double my) {
-		return mx >= dropPanel.getX() && mx <= dropPanel.getX() + dropPanel.getWidth() + dropPanel.scrollbarWidth() &&
+		boolean panelOver = mx >= dropPanel.getX() && mx <= dropPanel.getX() + dropPanel.getWidth() &&
 			my >= dropPanel.getY() && my <= dropPanel.getY() + dropPanel.getHeight();
+		boolean barOver = mx >= dropPanel.getX() + dropPanel.getWidth() &&
+			mx <= dropPanel.getX() + dropPanel.getWidth() + dropPanel.scrollbarWidth() &&
+			my >= dropPanel.getY() + dropPanel.scrollAmount() &&
+			my <= dropPanel.getY() + dropPanel.getHeight() + dropPanel.scrollAmount();
+		return panelOver || barOver;
 	}
 	
 	@Override
 	protected void updateWidgetNarration(NarrationElementOutput narration) {
 	
+	}
+	
+	public PanelBuilder<W> getPanelBuilder() {
+		return new PanelBuilder<>(this);
+	}
+	
+	public record PanelBuilder<W extends AbstractWidget>(DropdownMenu<W> menu) {
+	
+		public W add(W widget) {
+			menu.dropPanel.addChild(widget);
+			return widget;
+		}
 	}
 }

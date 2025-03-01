@@ -29,6 +29,9 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -42,21 +45,22 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.InputEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
-import net.neoforged.neoforge.client.event.RenderTooltipEvent;
-import net.neoforged.neoforge.client.event.ScreenEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
@@ -329,6 +333,36 @@ public class ClientEvents {
                 dasher.setDashCooldown(10);
             }
         }
-        
+    }
+    private static Zombie dummy;
+    @SubscribeEvent
+    public static void playerRenderPre(RenderPlayerEvent.Pre event) {
+        Player player = event.getEntity();
+        ItemStack headCharm = PlayerCharmManager.getHeadEquipment(player);
+        if (!headCharm.isEmpty()) {
+            if (headCharm.is(Items.ZOMBIE_HEAD)) {
+                event.setCanceled(true);
+                Minecraft mc = Minecraft.getInstance();
+                if (dummy == null) dummy = EntityType.ZOMBIE.create(mc.level);
+                dummy.setXRot(player.getXRot());
+                dummy.setYRot(player.getYRot());
+                dummy.yBodyRot = player.yBodyRot;
+                dummy.yHeadRot = player.yHeadRot;
+                dummy.setInvisible(player.isInvisible());
+                dummy.setItemSlot(EquipmentSlot.HEAD, player.getItemBySlot(EquipmentSlot.HEAD));
+                dummy.setItemSlot(EquipmentSlot.CHEST, player.getItemBySlot(EquipmentSlot.CHEST));
+                dummy.setItemSlot(EquipmentSlot.LEGS, player.getItemBySlot(EquipmentSlot.LEGS));
+                dummy.setItemSlot(EquipmentSlot.FEET, player.getItemBySlot(EquipmentSlot.FEET));
+                dummy.setItemSlot(EquipmentSlot.MAINHAND, player.getItemBySlot(EquipmentSlot.MAINHAND));
+                dummy.setItemSlot(EquipmentSlot.OFFHAND, player.getItemBySlot(EquipmentSlot.OFFHAND));
+                dummy.setPose(player.getPose());
+                float yaw = Mth.lerp(event.getPartialTick(), player.yRotO, player.getYRot());
+                PoseStack pose = event.getPoseStack();
+                pose.pushPose();
+                mc.getEntityRenderDispatcher().render(dummy, 0, 0, 0, yaw,
+                    event.getPartialTick(), pose, event.getMultiBufferSource(), event.getPackedLight());
+                pose.popPose();
+            }
+        }
     }
 }

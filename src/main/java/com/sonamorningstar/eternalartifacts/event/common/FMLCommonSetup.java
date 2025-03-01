@@ -4,12 +4,13 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInterac
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.cauldron.CauldronInteraction;
-import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -18,6 +19,9 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -28,11 +32,14 @@ public class FMLCommonSetup {
     public static void event(final FMLCommonSetupEvent event) {
         event.enqueueWork(()-> {
             ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
-
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.TIGRIS_FLOWER.getId(), ModBlocks.POTTED_TIGRIS);
             registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
             setupCauldronInteractions();
             setupCharmSlots();
+            
+            Network.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
+            Network.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
+            Network.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
         });
 
     }

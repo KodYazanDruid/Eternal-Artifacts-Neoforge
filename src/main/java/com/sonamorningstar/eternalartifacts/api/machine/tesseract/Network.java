@@ -1,30 +1,34 @@
 package com.sonamorningstar.eternalartifacts.api.machine.tesseract;
 
+import com.mojang.authlib.GameProfile;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Getter
 @RequiredArgsConstructor
 public class Network<C> implements Comparable<Network<?>> {
+	public static final Map<Class<?>, Component> CAPABILITY_NAMES = new TreeMap<>(
+		Comparator.<Class<?>, String>comparing(Class::getSimpleName).thenComparing(Class::getName)
+	);
 	private final List<UUID> whitelistedPlayers = new ArrayList<>();
 	@Setter
 	private Access access = Access.PUBLIC;
 	
 	private final String name;
 	private final UUID uuid;
-	private final UUID ownerUUID;
+	private final GameProfile owner;
 	private final Class<C> capabilityClass;
 	
 	@Override
@@ -50,13 +54,15 @@ public class Network<C> implements Comparable<Network<?>> {
 	}
 	
 	public void addWhiteList(Player player) {
-		if (!player.getUUID().equals(ownerUUID)) whitelistedPlayers.add(player.getUUID());
+		if (!player.getUUID().equals(owner.getId())) whitelistedPlayers.add(player.getUUID());
 	}
 	
 	public void writeToNBT(CompoundTag networkTag) {
 		networkTag.putString("Name", name);
 		networkTag.putUUID("UUID", uuid);
-		networkTag.putUUID("OwnerUUID", ownerUUID);
+		CompoundTag gameProfile = new CompoundTag();
+		NbtUtils.writeGameProfile(gameProfile, owner);
+		networkTag.put("Owner", gameProfile);
 		networkTag.putString("Access", access.name());
 		ListTag whitelist = new ListTag();
 		for (UUID playerId : whitelistedPlayers) {
@@ -77,10 +83,11 @@ public class Network<C> implements Comparable<Network<?>> {
 		} catch (ClassNotFoundException e) {
 			EternalArtifacts.LOGGER.error("Failed to load capability class for network: {}.", networkTag.getString("Name"));
 		}
+		GameProfile gameProfile = NbtUtils.readGameProfile(networkTag.getCompound("Owner"));
 		Network<?> network = new Network<>(
 				networkTag.getString("Name"),
 				networkTag.getUUID("UUID"),
-				networkTag.getUUID("OwnerUUID"),
+				gameProfile,
 				capClass);
 		network.setAccess(Access.valueOf(networkTag.getString("Access")));
 		ListTag whitelist = networkTag.getList("Whitelist", 10);

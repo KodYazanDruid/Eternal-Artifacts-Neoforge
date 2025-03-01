@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractScrollWidget;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -12,22 +11,45 @@ import net.minecraft.network.chat.Component;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWidget {
 	@Getter
 	private final List<W> children = new ArrayList<>();
 	@Getter
-	protected int innerHeight;
+	private int innerHeight;
 	protected double scrollRate;
-	public ScrollablePanel(int x, int y, int width, int height, int innerHeight, int scrollRate) {
+	public ScrollablePanel(int x, int y, int width, int height, int scrollRate) {
 		super(x, y, width, height, Component.empty());
-		this.innerHeight = innerHeight;
 		this.scrollRate = scrollRate;
 	}
 	
 	@Override
 	protected double scrollRate() {
 		return scrollRate;
+	}
+	
+	public void reCalcInnerHeight() {
+		if (children.isEmpty()) {
+			innerHeight = 0;
+			return;
+		}
+		if (children.size() == 1){
+			W child = children.get(0);
+			innerHeight = child.getHeight();
+		} else {
+			AtomicInteger topY = new AtomicInteger();
+			AtomicInteger bottomY = new AtomicInteger();
+			children.stream().mapToInt(AbstractWidget::getY).min().ifPresentOrElse(
+				topY::set,
+				() -> topY.set(0)
+			);
+			children.stream().mapToInt(w -> w.getY() + w.getHeight()).max().ifPresentOrElse(
+				bottomY::set,
+				() -> bottomY.set(0)
+			);
+			innerHeight = bottomY.get() - topY.get();
+		}
 	}
 	
 	public void addChild(W widget) {
@@ -59,20 +81,43 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	@Override
 	public boolean mouseClicked(double mx, double my, int button) {
 		if (visible && withinContentAreaPoint(mx, my)) {
-			for (W child : children) {
-				if (child.mouseClicked(mx, my + scrollAmount(), button)) {
-					return true;
-				}
+			W child = getChildUnderCursor(mx, my);
+			if (child != null) {
+				return child.mouseClicked(mx, my + scrollAmount(), button);
 			}
 		}
 		return super.mouseClicked(mx, my, button);
 	}
 	
 	@Override
+	public void mouseMoved(double mx, double my) {
+		if (visible) {
+			for (W child : children) {
+				child.mouseMoved(mx, my);
+			}
+		}
+		super.mouseMoved(mx, my);
+	}
+	
+	public boolean updateHover(double mx, double my) {
+		if (visible) {
+			for (W child : children) {
+				if (child instanceof AbstractScrollPanelComponent aspc) {
+					aspc.updateHover(mx, my);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
 	protected void renderContents(GuiGraphics gui, int mX, int mY, float deltaTick) {
+		gui.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
 		for (W child : children) {
 			child.render(gui, mX, mY, deltaTick);
 		}
+		gui.disableScissor();
 	}
 	
 	@Override

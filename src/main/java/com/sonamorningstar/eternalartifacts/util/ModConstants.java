@@ -8,6 +8,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 
+import javax.annotation.Nullable;
+
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Getter
@@ -27,14 +29,36 @@ public enum ModConstants {
     CHARM_TYPE("charm_type."+MODID),
     CHARM_SLOT_MODIFIER("charm_slot."+MODID+".modifier"),
     COMMAND("command."+MODID),
-    FILLED_MAP("filled_map."+MODID);
-
+    FILLED_MAP("filled_map."+MODID),
+    DROPDOWN_MENU("widget."+MODID, "dropdown_menu"),
+    SCROLLABLE_PANEL("widget."+MODID, "scrollable_panel"),
+    SCROLLABLE_PANEL_COMPONENT("widget."+MODID, "scrollable_panel_component"),
+    NETWORK_COMPONENT("widget."+MODID, "network_component"),
+    ITEM_CAPABILITY("capability."+MODID, "item"),
+    FLUID_CAPABILITY("capability."+MODID, "fluid"),
+    ENERGY_CAPABILITY("capability."+MODID, "energy"),
+    GAS_CAPABILITY("capability."+MODID, "gas"),;
+    
+    
     final String string;
+    @Nullable
+    String subType;
     ModConstants(String string) {
         this.string = string;
     }
-
+    
+    ModConstants(String string, String subType) {
+        this.string = string;
+        this.subType = subType;
+    }
+    
+    @Override
+    public String toString() {
+        return string + (subType != null ? "."+subType : "");
+    }
+    
     public String withSuffix(String suffix) {
+        if (subType != null) return string+"."+subType+"."+suffix;
         return string+"."+suffix;
     }
 
@@ -48,6 +72,7 @@ public enum ModConstants {
     }
 
     public MutableComponent translatable() {
+        if (subType != null) return Component.translatable(string+"."+subType);
         return Component.translatable(string);
     }
 

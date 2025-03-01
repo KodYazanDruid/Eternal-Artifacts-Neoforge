@@ -11,6 +11,8 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
 import java.util.List;
@@ -46,8 +48,11 @@ public final class ModHooks {
 
     public void construct(final IEventBus modEventBus) {
         if (mekanismLoaded) {
+            modEventBus.addListener(RegisterCapabilitiesEvent.class, MekanismCompat::registerMekCaps);
+            modEventBus.addListener(FMLCommonSetupEvent.class, MekanismCompat::fmlCommonSetup);
             NeoForge.EVENT_BUS.addListener(MekanismCompat::drinkEventMekanism);
             MekanismCompat.runMek(modEventBus);
+            
         }
         if (mekanismGeneratorsLoaded) {
             NeoForge.EVENT_BUS.addListener(MekanismCompat::drinkEventMekanismGenerators);

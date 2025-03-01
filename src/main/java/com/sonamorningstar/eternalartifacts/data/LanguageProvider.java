@@ -395,6 +395,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.FILLED_MAP.withSuffix("woodland_mansion"), "Woodland Mansion Map");
                 add(ModConstants.FILLED_MAP.withSuffix("mineshaft"), "Mineshaft Map");
                 add(ModConstants.CHARM_TYPE.withSuffix("wildcard"), "Wildcard");
+                add(ModConstants.DROPDOWN_MENU.withSuffix("unselected_security"), "Security");
+                add(ModConstants.DROPDOWN_MENU.withSuffix("unselected_capability"), "Capability");
+                add(ModConstants.ITEM_CAPABILITY.toString(), "Item");
+                add(ModConstants.FLUID_CAPABILITY.toString(), "Fluid");
+                add(ModConstants.ENERGY_CAPABILITY.toString(), "Energy");
+                add(ModConstants.GAS_CAPABILITY.toString(), "Gas");
+                add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("public"), "Public");
+                add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("private"), "Private");
+                add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("protected"), "Protected");
+                add(ModConstants.GUI.withSuffix("add"), "Add");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -857,6 +867,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.FILLED_MAP.withSuffix("woodland_mansion"), "Orman Malikanesi Haritası");
                 add(ModConstants.FILLED_MAP.withSuffix("mineshaft"), "Madenci Tüneli Haritası");
                 add(ModConstants.CHARM_TYPE.withSuffix("wildcard"), "Joker");
+                add(ModConstants.DROPDOWN_MENU.withSuffix("unselected_security"), "Güvenlik Seviyesi");
+                add(ModConstants.DROPDOWN_MENU.withSuffix("unselected_capability"), "Kabiliyet");
+                add(ModConstants.ITEM_CAPABILITY.toString(), "Eşya");
+                add(ModConstants.FLUID_CAPABILITY.toString(), "Sıvı");
+                add(ModConstants.ENERGY_CAPABILITY.toString(), "Enerji");
+                add(ModConstants.GAS_CAPABILITY.toString(), "Gaz");
+                add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("private"), "Özel");
+                add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("public"), "Genel");
+                add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("protected"), "Korumalı");
+                add(ModConstants.GUI.withSuffix("add"), "Ekle");
+                
                 //endregion
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
                     if("tr_tr".equals(loc)) add(lang.getFirst(), lang.getSecond());

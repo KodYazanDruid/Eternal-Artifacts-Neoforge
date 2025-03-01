@@ -99,8 +99,11 @@ public class Channel {
                 SavePlayerDataToClient::create,
                 handler -> handler.client(SavePlayerDataToClient::handle));
         registrar.play(RebuildTesseractPanelToClient.ID,
-            RebuildTesseractPanelToClient::create,
-            handler -> handler.client(RebuildTesseractPanelToClient::handle));
+                RebuildTesseractPanelToClient::create,
+                handler -> handler.client(RebuildTesseractPanelToClient::handle));
+        registrar.play(AddTesseractNetworkToServer.ID,
+                AddTesseractNetworkToServer::create,
+                handler -> handler.server(AddTesseractNetworkToServer::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {

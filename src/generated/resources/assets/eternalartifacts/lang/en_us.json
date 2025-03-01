@@ -106,6 +106,10 @@
   "block.eternalartifacts.trash_can": "Trash Can",
   "block.eternalartifacts.very_sandy_dark_prismarine": "Very Sandy Dark Prismarine",
   "block.eternalartifacts.very_sandy_prismarine": "Very Sandy Prismarine",
+  "capability.eternalartifacts.energy": "Energy",
+  "capability.eternalartifacts.fluid": "Fluid",
+  "capability.eternalartifacts.gas": "Gas",
+  "capability.eternalartifacts.item": "Item",
   "charm_slot.eternalartifacts.modifier.back": "When on Back Charm:",
   "charm_slot.eternalartifacts.modifier.belt": "When on Belt Charm:",
   "charm_slot.eternalartifacts.modifier.bracelet": "When on Bracelet Charm:",
@@ -171,6 +175,7 @@
   "fluid_type.eternalartifacts.liquid_plastic": "Liquid Plastic",
   "fluid_type.eternalartifacts.nous": "Nous",
   "fluid_type.eternalartifacts.pink_slime": "Pink Slime",
+  "gui.eternalartifacts.add": "Add",
   "gui.eternalartifacts.alpha": "Alpha",
   "gui.eternalartifacts.armor": "Armor",
   "gui.eternalartifacts.auto_input": "Auto-Input",
@@ -436,5 +441,10 @@
   "tooltip.eternalartifacts.saturation": "Saturation",
   "tooltip.eternalartifacts.tank": "%d. Tank",
   "upgrade.eternalartifacts.chlorophyte_upgrade": "Chlorophyte Upgrade",
-  "warps.eternalartifacts": "Warps:"
+  "warps.eternalartifacts": "Warps:",
+  "widget.eternalartifacts.dropdown_menu.unselected_capability": "Capability",
+  "widget.eternalartifacts.dropdown_menu.unselected_security": "Security",
+  "widget.eternalartifacts.scrollable_panel_component.private": "Private",
+  "widget.eternalartifacts.scrollable_panel_component.protected": "Protected",
+  "widget.eternalartifacts.scrollable_panel_component.public": "Public"
 }

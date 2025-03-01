@@ -9,12 +9,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.animal.Cow;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -23,10 +25,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -53,7 +57,22 @@ public class JarBlockItem extends FluidHolderBlockItem {
         ItemStack itemstack = ctx.getItemInHand();
         return player == null || canPickupFluid(itemstack) ? InteractionResult.PASS : super.useOn(ctx);
     }
-
+    
+    @Override
+    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
+        FluidStack fluidStack = getFluidStack(stack, 0);
+        if (target instanceof Cow && fluidStack.isEmpty() || fluidStack.is(NeoForgeMod.MILK.get())) {
+            FluidStack milk = new FluidStack(NeoForgeMod.MILK, 1000);
+            IFluidHandlerItem jarTank = stack.getCapability(Capabilities.FluidHandler.ITEM);
+            if (jarTank != null) {
+                jarTank.fill(milk, IFluidHandler.FluidAction.EXECUTE);
+                player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
+                return InteractionResult.sidedSuccess(player.level().isClientSide());
+            }
+        }
+        return super.interactLivingEntity(stack, player, target, hand);
+    }
+    
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);

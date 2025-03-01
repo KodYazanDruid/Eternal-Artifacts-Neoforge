@@ -10,6 +10,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.saveddata.SavedData;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 @Getter
 public class TesseractNetworks extends SavedData {
-	private final Set<Network<?>> networks = new ConcurrentSkipListSet<>();
+	private final Set<Network<?>> networks = new HashSet<>();
 	
 	@Override
 	public CompoundTag save(CompoundTag tag) {
@@ -76,7 +77,7 @@ public class TesseractNetworks extends SavedData {
 	
 	public List<Network<?>> getNetworksForPlayer(Player player) {
 		return networks.stream().filter(network -> {
-			UUID ownerUUID = network.getOwnerUUID();
+			UUID ownerUUID = network.getOwner().getId();
 			if (ownerUUID.equals(player.getUUID())) return true;
 			var whitelist = network.getWhitelistedPlayers();
 			return whitelist.contains(ownerUUID);

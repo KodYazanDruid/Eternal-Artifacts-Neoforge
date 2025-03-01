@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,35 +43,36 @@ public class TesseractMenu extends AbstractModContainerMenu {
 		return stillValid(ContainerLevelAccess.create(level, tesseract.getBlockPos()), player, tesseract.getBlockState().getBlock());
 	}
 	
+	public void addNetwork(String name, Player owner, int secIdx, int capIdx) {
+		Network<?> network = new Network<>(name, UUID.randomUUID(), owner.getGameProfile(), Network.CAPABILITY_NAMES.keySet().stream().toList().get(capIdx));
+		network.setAccess(Network.Access.values()[secIdx]);
+		TesseractNetworks.get(level).addNetwork(network);
+		gatheredNetworks = TesseractNetworks.get(level).getNetworksForPlayer(owner);
+		rebuildPanel((ServerPlayer) owner);
+	}
+	
 	@Override
 	public boolean clickMenuButton(Player player, int id) {
 		Level level = player.level();
 		TesseractNetworks networks = TesseractNetworks.get(level);
 		if (networks == null || !(player instanceof ServerPlayer sp)) { return false; }
-		if (id == 0) {
-			Network<IEnergyStorage> network = new Network<>(gatheredNetworks.size() + 1 + ". Network",
-				UUID.randomUUID(), player.getUUID(), IEnergyStorage.class);
-			networks.addNetwork(network);
-			gatheredNetworks = networks.getNetworksForPlayer(player);
-			rebuildPanel(sp);
-			return true;
-		}
-		if (id == 1) {
+		if (id >= 1000 && id < 2000) {
 			if (!gatheredNetworks.isEmpty()) {
-				Network<?> network = gatheredNetworks.get(gatheredNetworks.size() - 1);
-				networks.removeNetwork(network);
-				gatheredNetworks = networks.getNetworksForPlayer(player);
-				rebuildPanel(sp);
+				int networkIdx = id - 1000;
+				Network<?> network = gatheredNetworks.get(networkIdx);
+				if (network != null) {
+					networks.removeNetwork(network);
+					gatheredNetworks = networks.getNetworksForPlayer(player);
+					rebuildPanel(sp);
+				}
 			}
 			return true;
-		}
-		if (id == 2) {
+		} else if (id == 2000) {
 			tesseract.setNetworkId(null);
 			rebuildPanel(sp);
 			return true;
-		}
-		if (id >= 50) {
-			int index = id - 50;
+		} else if (id >= 5000) {
+			int index = id - 5000;
 			if (index < gatheredNetworks.size()) {
 				Network<?> network = gatheredNetworks.get(index);
 				tesseract.setNetworkId(network.getUuid());

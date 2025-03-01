@@ -1,9 +1,12 @@
 package com.sonamorningstar.eternalartifacts.compat.mekanism;
 
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.event.common.FMLCommonSetup;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import mekanism.api.Action;
 import mekanism.api.chemical.gas.GasStack;
 import mekanism.api.chemical.gas.IGasHandler;
@@ -15,6 +18,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -45,8 +49,14 @@ public class MekanismCompat {
             });
         }
     }
+	
+	public static void fmlCommonSetup(FMLCommonSetupEvent event) {
+		event.enqueueWork(() -> {
+			Network.CAPABILITY_NAMES.put(IGasHandler.class, ModConstants.GAS_CAPABILITY.translatable());
+		});
+	}
     
-    private static void registerMekCaps(RegisterCapabilitiesEvent event) {
+    public static void registerMekCaps(RegisterCapabilitiesEvent event) {
         event.registerBlock(Capabilities.GAS.block(), (a, b, c, d, e) -> new IGasHandler() {
 			@Override
 			public int getTanks() {
@@ -88,7 +98,6 @@ public class MekanismCompat {
 
     public static void runMek(IEventBus modEventBus) {
         addTag(ModTags.Items.CHARMS_BACK, MekanismItems.HDPE_REINFORCED_ELYTRA::get);
-        modEventBus.addListener(RegisterCapabilitiesEvent.class, MekanismCompat::registerMekCaps);
     }
 
     public static void runMekGens(IEventBus modEventBus) {

@@ -1,10 +1,15 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.AbstractScrollPanelComponent;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.DropdownMenu;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +19,8 @@ import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
+
+import java.util.Optional;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -69,5 +76,34 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         FluidStack stack = slot.getFluid();
         int percentage = stack.getAmount() * 12 / slot.getMaxSize();
         GuiDrawer.drawFluidWithSmallTank(gui, x + slot.x, y + slot.y, stack, percentage);
+    }
+    
+    @Override
+    public boolean mouseDragged(double mx, double my, int button, double dragX, double dragY) {
+        super.mouseDragged(mx, my, button, dragX, dragY);
+        return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mx, my, button, dragX, dragY);
+    }
+    
+    @Override
+    public Optional<GuiEventListener> getChildAt(double mx, double my) {
+        return super.getChildAt(mx, my);
+    }
+    
+    @Override
+    public void render(GuiGraphics gui, int mx, int my, float delta) {
+        super.render(gui, mx, my, delta);
+        boolean foundOpenMenu = false;
+        for (GuiEventListener child : children) {
+            if (child instanceof DropdownMenu<?> dropMenu && dropMenu.isMenuOpen()) {
+                if (!foundOpenMenu && dropMenu.isMouseOver(mx, my)) {
+                    dropMenu.updateHover(mx, my);
+                    foundOpenMenu = true;
+                } else {
+                    dropMenu.updateHover(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+                }
+            } else if (child instanceof ScrollablePanel<?> scrollPanel) {
+                scrollPanel.updateHover(mx, my);
+            }
+        }
     }
 }
