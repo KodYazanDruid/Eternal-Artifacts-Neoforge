@@ -263,6 +263,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Shock Absorber");
                 add(ModBlocks.TESSERACT.get(), "Tesseract");
                 add(ModBlocks.TRASH_CAN.get(), "Trash Can");
+                add(ModBlocks.DROWNED_HEAD.get(), "Drowned Head");
+                add(ModBlocks.HUSK_HEAD.get(), "Husk Head");
+                add(ModBlocks.STRAY_SKULL.get(), "Stray Skull");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -707,6 +710,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Şok Emici");
                 add(ModBlocks.TESSERACT.get(), "Tesseract");
                 add(ModBlocks.TRASH_CAN.get(), "Çöp Kutusu");
+                add(ModBlocks.DROWNED_HEAD.get(), "Boğulmuş Kafası");
+                add(ModBlocks.HUSK_HEAD.get(), "Kurumuş Kafası");
+                add(ModBlocks.STRAY_SKULL.get(), "Kaybolmuş Kafatası");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

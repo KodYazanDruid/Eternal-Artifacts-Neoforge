@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts;
 
 import com.mojang.logging.LogUtils;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
+import com.sonamorningstar.eternalartifacts.client.renderer.util.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
@@ -14,6 +15,7 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
@@ -36,8 +38,9 @@ public class EternalArtifacts {
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
      * TODO: Add solar helmet.
-     * TODO: Trash can.
      * TODO: Block pattern copy paste.
+     * TODO: Add fluid hopper.
+     * TODO: Add block placer/breaker.
     */
 
     public static final String MODID = "eternalartifacts";
@@ -74,6 +77,7 @@ public class EternalArtifacts {
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);
         NeoForge.EVENT_BUS.addListener(CharmTickEvent.class, CharmStorage::charmTick);
         ModCommands.addListener();
+        NeoForge.EVENT_BUS.addListener(RenderPlayerEvent.Pre.class, MobModelRenderer::playerRenderPre);
 
         new ModHooks().construct(modEventBus);
     }

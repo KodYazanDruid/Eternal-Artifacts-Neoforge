@@ -23,7 +23,8 @@ public class HumanoidArmorLayerMixin {
             case HEAD -> {
                 //ItemStack head = PlayerCharmManager.getHeadEquipment(instance);
                 ItemStack head = CharmStorage.get(instance).getStackInSlot(0);
-                yield head.isEmpty() || head.is(Items.PLAYER_HEAD) ? original.call(instance, equipmentSlot) : head;
+                boolean shouldRender = RenderOverrides.shouldRender(equipmentSlot, head);
+                yield head.isEmpty() || !shouldRender ? original.call(instance, equipmentSlot) : head;
             }
             case CHEST -> {
                 //ItemStack chest = PlayerCharmManager.getChestEquipment(instance);

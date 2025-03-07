@@ -5,6 +5,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -29,15 +31,19 @@ public class CutlassModifier extends LootModifier {
     public static final Supplier<Codec<CutlassModifier>> CODEC = Suppliers.memoize(() -> RecordCodecBuilder.create(instance ->
             codecStart(instance).apply(instance, CutlassModifier::new)));
 
-    public static final Map<EntityType<?>, Item> ENTITY_HEAD_MAP = Map.of(
+    public static final Map<EntityType<? extends LivingEntity>, Item> ENTITY_HEAD_MAP = new HashMap<>();
+    
+    static {
+        ENTITY_HEAD_MAP.putAll(Map.of(
             EntityType.ZOMBIE, Items.ZOMBIE_HEAD,
             EntityType.SKELETON, Items.SKELETON_SKULL,
             EntityType.CREEPER, Items.CREEPER_HEAD,
             EntityType.WITHER_SKELETON, Items.WITHER_SKELETON_SKULL,
             EntityType.PIGLIN, Items.PIGLIN_HEAD,
             EntityType.ENDER_DRAGON, Items.DRAGON_HEAD
-    );
-
+        ));
+    }
+    
     public CutlassModifier(LootItemCondition[] conditionsIn) {
         super(conditionsIn);
     }

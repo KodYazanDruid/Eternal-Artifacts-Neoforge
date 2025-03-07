@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.api.charm;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.client.renderer.util.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -96,6 +97,9 @@ public class CharmStorage extends ItemStackHandler {
         if (owner != null) {
             if (!owner.level().isClientSide){
                 syncSelfAndTracking(owner);
+                if (slot == 0) {
+                    MobModelRenderer.dummy = null;
+                }
                 listeners.forEach(listener -> listener.accept(slot));
             }
         }

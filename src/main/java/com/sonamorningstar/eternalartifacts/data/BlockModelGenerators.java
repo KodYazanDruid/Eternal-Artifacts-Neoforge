@@ -54,18 +54,23 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 
-        /*stateOutput.accept(
-                createSimpleBlock(
-                        ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                        ModelTemplates.PARTICLE_ONLY.create(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                                TextureMapping.particle(new ResourceLocation(MODID, "block/machine_side")), modelOutput)
-                ));*/
-
         cable(ModBlocks.COPPER_CABLE.get(), false);
         cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);
 
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
 
+        blockEntityModels(ModelLocationUtils.decorateBlockModelLocation("skull"), Blocks.SOUL_SAND)
+            .createWithCustomBlockItemModel(
+                ModelTemplates.SKULL_INVENTORY,
+                ModBlocks.DROWNED_HEAD.get(),
+                ModBlocks.HUSK_HEAD.get(),
+                ModBlocks.STRAY_SKULL.get()
+            )
+            .createWithoutBlockItem(
+                ModBlocks.DROWNED_WALL_HEAD.get(),
+                ModBlocks.HUSK_WALL_HEAD.get(),
+                ModBlocks.STRAY_WALL_SKULL.get()
+            );
     }
     //region Functions for block models...
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {

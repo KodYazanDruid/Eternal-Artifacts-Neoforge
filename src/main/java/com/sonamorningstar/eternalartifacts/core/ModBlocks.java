@@ -14,7 +14,6 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -193,6 +192,19 @@ public class ModBlocks {
     public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerOreBerryBlock("gold");
     public static final DeferredBlock<OreBerryBlock> EXPERIENCE_ORE_BERRY = registerOreBerryBlock("experience");
     public static final DeferredBlock<OreBerryBlock> MANGANESE_ORE_BERRY = registerOreBerryBlock("manganese");
+    
+    public static final DeferredBlock<SkullBlock> DROWNED_HEAD = registerNoItem("drowned_head",
+            ()-> new ModSkullBlock(ModSkullType.DROWNED, BlockBehaviour.Properties.ofFullCopy(Blocks.ZOMBIE_HEAD)));
+    public static final DeferredBlock<WallSkullBlock> DROWNED_WALL_HEAD = registerNoItem("drowned_wall_head",
+            ()-> new ModWallSkullBlock(ModSkullType.DROWNED, BlockBehaviour.Properties.ofFullCopy(Blocks.ZOMBIE_WALL_HEAD).lootFrom(DROWNED_HEAD)));
+    public static final DeferredBlock<SkullBlock> HUSK_HEAD = registerNoItem("husk_head",
+            ()-> new ModSkullBlock(ModSkullType.HUSK, BlockBehaviour.Properties.ofFullCopy(Blocks.ZOMBIE_HEAD)));
+    public static final DeferredBlock<WallSkullBlock> HUSK_WALL_HEAD = registerNoItem("husk_wall_head",
+            ()-> new ModWallSkullBlock(ModSkullType.HUSK, BlockBehaviour.Properties.ofFullCopy(Blocks.ZOMBIE_WALL_HEAD).lootFrom(HUSK_HEAD)));
+    public static final DeferredBlock<SkullBlock> STRAY_SKULL = registerNoItem("stray_skull",
+            ()-> new ModSkullBlock(ModSkullType.STRAY, BlockBehaviour.Properties.ofFullCopy(Blocks.SKELETON_SKULL)));
+    public static final DeferredBlock<WallSkullBlock> STRAY_WALL_SKULL = registerNoItem("stray_wall_skull",
+            ()-> new ModWallSkullBlock(ModSkullType.STRAY, BlockBehaviour.Properties.ofFullCopy(Blocks.SKELETON_WALL_SKULL).lootFrom(STRAY_SKULL)));
 
     //region Registry functions.
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }

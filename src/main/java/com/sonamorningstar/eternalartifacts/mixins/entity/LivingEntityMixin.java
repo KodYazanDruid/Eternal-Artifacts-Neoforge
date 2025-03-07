@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.mixin_helper.MixinHelper;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.EntityJumpFactor;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
+import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -19,18 +20,40 @@ import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.gen.Accessor;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher {
+public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher, LivingEntityExposer {
     @Shadow protected abstract void jumpFromGround();
     @Shadow public abstract double getAttributeValue(Attribute pAttribute);
-    @Shadow public abstract float getJumpBoostPower();
     
+    @Shadow protected int fallFlyTicks;
+    
+    @Shadow private float swimAmount;
+    @Shadow private float swimAmountO;
+    
+    @Shadow protected abstract void setLivingEntityFlag(int pKey, boolean pValue);
+    
+    @Shadow protected int autoSpinAttackTicks;
+    
+    @Shadow protected abstract void updateUsingItem(ItemStack pUsingItem);
+    
+    @Shadow protected ItemStack useItem;
+    @Shadow protected int useItemRemaining;
     @Unique
     public int dashCooldown = 0;
+    
+    @Unique
+    public Vec3 prevDeltaMovement = Vec3.ZERO;
+    
+    @Inject(method = "baseTick", at = @At(value = "HEAD"))
+    private void tick(CallbackInfo ci) {
+        LivingEntity living = (LivingEntity) (Object) this;
+        prevDeltaMovement = living.getDeltaMovement();
+    }
     
     @Inject(method = "aiStep", at = @At(value = "HEAD"))
     private void aiStep(CallbackInfo ci) {
@@ -78,5 +101,57 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher 
     @Override
     public void setDashCooldown(int dashCooldown) {
         this.dashCooldown = dashCooldown;
+    }
+    
+    @Override
+    public void setFallFlyTicks(int fallFlyTicks) {
+        this.fallFlyTicks = fallFlyTicks;
+    }
+    
+    @Override
+    public void setLivingEntityFlagExp(int key, boolean value) {
+        this.setLivingEntityFlag(key, value);
+    }
+    
+    @Override
+    public float getSwimAmountExp() {
+        return this.swimAmount;
+    }
+    @Override
+    public float getSwimAmount0Exp() {
+        return swimAmountO;
+    }
+    @Override
+    public void setSwimAmountExp(float amount) {
+        this.swimAmount = amount;
+    }
+    @Override
+    public void setSwimAmount0Exp(float amount) {
+        this.swimAmountO = amount;
+    }
+    
+    @Override
+    public int getAutoSpinAttackTicks() {
+        return this.autoSpinAttackTicks;
+    }
+    
+    @Override
+    public void setAutoSpinAttackTicks(int autoSpinAttackTicks) {
+        this.autoSpinAttackTicks = autoSpinAttackTicks;
+    }
+    
+    @Override
+    public void setUseItemExp(ItemStack stack) {
+        this.useItem = stack;
+    }
+    
+    @Override
+    public void setUseItemRemainingTicksExp(int ticks) {
+        this.useItemRemaining = ticks;
+    }
+    
+    @Override
+    public void updateUsingItemExp(ItemStack stack) {
+        this.updateUsingItem(stack);
     }
 }

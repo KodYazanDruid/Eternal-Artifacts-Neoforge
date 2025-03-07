@@ -21,7 +21,11 @@ public class ModModelLayers {
     public static final ModelLayerLocation MISSILE_LAYER = create("missile_layer");
     public static final ModelLayerLocation PORTABLE_BATTERY_LAYER = create("portable_battery_layer");
     public static final ModelLayerLocation BUCKET_LAYER = create("bucket_layer");
-
+    public static final ModelLayerLocation DROWNED_HEAD = create("drowned_head");
+    public static final ModelLayerLocation DROWNED_HEAD_OVERLAY = create("drowned_head_overlay");
+    public static final ModelLayerLocation HUSK_HEAD = create("husk_head");
+    public static final ModelLayerLocation STRAY_SKULL = create("stray_skull");
+    public static final ModelLayerLocation STRAY_SKULL_OVERLAY = create("stray_skull_overlay");
 
     private static ModelLayerLocation create(String name) {
         return create(name, "main");

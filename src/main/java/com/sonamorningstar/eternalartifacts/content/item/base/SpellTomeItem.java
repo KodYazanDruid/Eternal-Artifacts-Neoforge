@@ -34,7 +34,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
     /**
      *
      * If you want to change spell casting logic (giving tome an energy/xp cost etc.) override
-     * {@link #castSpell(Level, LivingEntity, InteractionHand, RandomSource, float)} instead. <br><br>
+     * {@link #castSpell(ItemStack, Level, LivingEntity, InteractionHand, RandomSource, float)} instead. <br><br>
      *
      * Overriding this method is fine but make sure to call {@code super} for this method so spell will cast.
      */

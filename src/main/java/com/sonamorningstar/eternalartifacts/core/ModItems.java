@@ -13,10 +13,10 @@ import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -214,7 +214,17 @@ public class ModItems {
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));
-
+    
+    public static final DeferredItem<Item> DROWNED_HEAD = register("drowned_head", () ->
+        new StandingAndWallBlockItem(ModBlocks.DROWNED_HEAD.get(), ModBlocks.DROWNED_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+    );
+    public static final DeferredItem<Item> HUSK_HEAD = register("husk_head", () ->
+        new StandingAndWallBlockItem(ModBlocks.HUSK_HEAD.get(), ModBlocks.HUSK_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+    );
+    public static final DeferredItem<Item> STRAY_SKULL = register("stray_skull", () ->
+        new StandingAndWallBlockItem(ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+    );
+    
     //region Register methods.
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> supplier) {
         return ITEMS.register(name, supplier);

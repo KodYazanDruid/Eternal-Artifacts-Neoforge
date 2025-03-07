@@ -8,13 +8,22 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.cauldron.CauldronInteraction;
+import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
@@ -36,6 +45,11 @@ public class FMLCommonSetup {
             registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
             setupCauldronInteractions();
             setupCharmSlots();
+            registerDispenserBehaviours();
+            
+            CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.DROWNED, ModItems.DROWNED_HEAD.get());
+            CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.HUSK, ModItems.HUSK_HEAD.get());
+            CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.STRAY, ModItems.STRAY_SKULL.get());
             
             Network.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
             Network.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
@@ -54,6 +68,17 @@ public class FMLCommonSetup {
         ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, ModCauldronDrainInteraction.PLASTIC);
         CauldronInteraction.EMPTY.map().put(ModFluids.LIQUID_PLASTIC.getBucketItem(), ModCauldronInteraction.EMPTY);
         ModCauldronInteraction.PLASTIC.map().put(Items.BLUE_DYE, ModCauldronInteraction.DYE_PLASTIC);
+    }
+    private static void registerDispenserBehaviours() {
+        DispenseItemBehavior dispenseitembehavior = new OptionalDispenseItemBehavior() {
+            @Override
+            protected ItemStack execute(BlockSource src, ItemStack stack) {
+                this.setSuccess(ArmorItem.dispenseArmor(src, stack));
+                return stack;
+            }
+        };
+        
+        DispenserBlock.registerBehavior(ModItems.DROWNED_HEAD, dispenseitembehavior);
     }
 
     private static void setupCharmSlots() {

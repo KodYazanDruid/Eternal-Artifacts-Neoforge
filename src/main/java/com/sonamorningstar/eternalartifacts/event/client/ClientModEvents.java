@@ -13,10 +13,13 @@ import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.SkullModel;
+import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.*;
@@ -73,6 +76,9 @@ public class ClientModEvents {
         event.register(EquipmentSlot.HEAD, ModTags.Items.SHULKER_SHELL);
         event.register(EquipmentSlot.HEAD, Items.BUCKET);
         event.register(EquipmentSlot.HEAD, Items.PLAYER_HEAD);
+        CutlassModifier.ENTITY_HEAD_MAP.values().forEach(item -> {
+            if(item != Items.DRAGON_HEAD) event.register(EquipmentSlot.HEAD, item);
+        });
     }
 
     @SubscribeEvent
@@ -113,6 +119,24 @@ public class ClientModEvents {
         event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "map_overlay"), new MapOverlay());
         event.registerAbove(VanillaGuiOverlay.HOTBAR.id(), new ResourceLocation(MODID, "hammering_recipe_overlay"), new HammeringRecipeOverlay());
     }
+    
+    @SubscribeEvent
+    public static void registerSkullModelLayers(EntityRenderersEvent.CreateSkullModels event) {
+        EntityModelSet modelSet = event.getEntityModelSet();
+        event.registerSkullModel(ModSkullType.DROWNED,
+            new TwoLayerSkullModel(
+                modelSet.bakeLayer(ModModelLayers.DROWNED_HEAD),
+                modelSet.bakeLayer(ModModelLayers.DROWNED_HEAD_OVERLAY)
+            )
+        );
+        event.registerSkullModel(ModSkullType.HUSK, new SkullModel(modelSet.bakeLayer(ModModelLayers.HUSK_HEAD)));
+        event.registerSkullModel(ModSkullType.STRAY,
+            new TwoLayerSkullModel(
+                modelSet.bakeLayer(ModModelLayers.STRAY_SKULL),
+                modelSet.bakeLayer(ModModelLayers.STRAY_SKULL_OVERLAY)
+            )
+        );
+    }
 
     @SubscribeEvent
     public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -132,6 +156,12 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.NOUS_TANK_LAYER, NousTankRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.OIL_REFINERY_LAYER, OilRefineryRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ENERGY_DOCK_LAYER, EnergyDockBlockEntityRenderer::createSingleBodyLayer);
+        
+        event.registerLayerDefinition(ModModelLayers.DROWNED_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 64));
+        event.registerLayerDefinition(ModModelLayers.DROWNED_HEAD_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 64));
+        event.registerLayerDefinition(ModModelLayers.HUSK_HEAD, SkullModel::createHumanoidHeadLayer);
+        event.registerLayerDefinition(ModModelLayers.STRAY_SKULL, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
+        event.registerLayerDefinition(ModModelLayers.STRAY_SKULL_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 32));
     }
 
     @SubscribeEvent
@@ -143,6 +173,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModMachines.OIL_REFINERY.getBlockEntity(), OilRefineryRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.TESSERACT.get(), ctx -> new TesseractRenderer());
+        event.registerBlockEntityRenderer(ModBlockEntities.SKULL.get(), ModSkullBlockRenderer::new);
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
 

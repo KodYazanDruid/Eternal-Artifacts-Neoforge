@@ -102,6 +102,12 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.DOUGH).addTag(ModTags.Items.DOUGH_WHEAT);
         tag(ModTags.Items.DUSTS_CLAY).add(ModItems.CLAY_DUST.get());
         tag(ItemTags.PIGLIN_LOVED).add(ModItems.GOLD_RING.get());
+        
+        tag(Tags.Items.HEADS).add(
+            ModItems.DROWNED_HEAD.get(),
+            ModItems.HUSK_HEAD.get(),
+            ModItems.STRAY_SKULL.get()
+        );
 
         tag(ItemTags.SWORDS).add(
             ModItems.COPPER_SWORD.get(),

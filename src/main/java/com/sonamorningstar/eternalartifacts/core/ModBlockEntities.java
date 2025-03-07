@@ -2,7 +2,9 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -59,5 +61,15 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FancyChestBlockEntity>> FANCY_CHEST = BLOCK_ENTITIES.register("fancy_chest", () ->
             BlockEntityType.Builder.of(FancyChestBlockEntity::new, ModBlocks.FANCY_CHEST.get()).build(null));
+    
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ModSkullBlockEntity>> SKULL = BLOCK_ENTITIES.register("skull", () ->
+            BlockEntityType.Builder.of(ModSkullBlockEntity::new,
+                ModBlocks.DROWNED_HEAD.get(),
+                ModBlocks.DROWNED_WALL_HEAD.get(),
+                ModBlocks.HUSK_HEAD.get(),
+                ModBlocks.HUSK_WALL_HEAD.get(),
+                ModBlocks.STRAY_SKULL.get(),
+                ModBlocks.STRAY_WALL_SKULL.get()
+            ).build(null));
 
 }

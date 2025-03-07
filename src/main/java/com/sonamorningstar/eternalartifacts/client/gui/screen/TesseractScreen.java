@@ -80,9 +80,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		if (selectedId != null) {
 			TesseractMenu.gatheredNetworks.stream()
 				.filter(n -> n.getUuid().equals(selectedId))
-				.findFirst().ifPresent(network ->
-					constructSelected(leftPos + 30, topPos + 10, imageWidth - 40, 28, network)
-				);
+				.findFirst().ifPresent(this::constructSelected);
 		}
 	}
 	
@@ -131,21 +129,26 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 			if (widget != null && widget.isFocused()) {
 				Network<?> network = TesseractMenu.gatheredNetworks.get(index);
 				menu.tesseract.setNetworkId(network.getUuid());
-				constructSelected(leftPos + 30, topPos + 10, imageWidth - 40, 28, network);
+				constructSelected(network);
 				minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 5000 + index);
 			} else if (widget != null) {
-				widget.setFocused(true);
-				children.stream().filter(w -> w != widget).forEach(w -> w.setFocused(false));
+				focusNetwork(widget);
 			}
 		}
 	}
 	
-	private void constructSelected(int x, int y, int width, int height, Network<?> network) {
+	private void focusNetwork(TesseractNetwork widget) {
+		widget.setFocused(true);
+		panel.getChildren().stream().filter(w -> w != widget).forEach(w -> w.setFocused(false));
+	}
+	
+	private void constructSelected(Network<?> network) {
 		if (selectedNetwork != null) {
 			removeWidget(selectedNetwork);
 		}
-		selectedNetwork = new TesseractNetwork(x, y, width, height, network, panel, b -> {}, -1, font,
-			Component.empty(), 0xFF007A6D, 0xFF005F54, 0xFF004A42);
+		selectedNetwork = new TesseractNetwork(leftPos + 10, topPos + 9, imageWidth - 40, 26, network,
+			panel, b -> this.focusNetwork(selectedNetwork), -1, font, Component.empty(),
+			0xFF007A6D, 0xFF005F54, 0xFF004A42);
 		addRenderableWidget(selectedNetwork);
 	}
 	

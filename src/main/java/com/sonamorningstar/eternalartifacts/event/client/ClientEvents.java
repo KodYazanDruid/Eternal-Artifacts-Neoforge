@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
@@ -29,9 +30,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.AbstractZombieRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -57,6 +55,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -72,14 +71,14 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public class ClientEvents {
+    private static final Minecraft mc = Minecraft.getInstance();
     private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
 
     @SubscribeEvent
     public static void renderLevelStage(final RenderLevelStageEvent event) {
         PoseStack pose = event.getPoseStack();
-        Minecraft minecraft = Minecraft.getInstance();
-        BakedModel model = minecraft.getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
-        MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
+        BakedModel model = mc.getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
+        MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         LivingEntity living = Minecraft.getInstance().player;
 
         /**
@@ -102,7 +101,7 @@ public class ClientEvents {
                 pose.translate(-0.5, -0.65, -0.5);
                 pose.translate(0F, 0F, -1.5F);
                 for (Direction dir : DIRS) {
-                    minecraft.getItemRenderer().renderQuadList(
+                    mc.getItemRenderer().renderQuadList(
                             pose,
                             buffer.getBuffer(Sheets.translucentCullBlockSheet()),
                             model.getQuads(null, dir, living.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
@@ -148,7 +147,7 @@ public class ClientEvents {
 					try {
 						nbtType = CharmType.valueOf(typeName.toUpperCase());
 					} catch (IllegalArgumentException e) {
-						//Do nothing
+                        EternalArtifacts.LOGGER.error("Invalid CharmType: {}", typeName, e);
 					}
 					if (optional.isPresent() && nbtType != null) {
 						AttributeModifier attributemodifier = AttributeModifier.load(compoundtag);
@@ -334,35 +333,67 @@ public class ClientEvents {
             }
         }
     }
+    
     private static Zombie dummy;
-    @SubscribeEvent
+    private static UUID lastPlayerUUID = null;
+    private static int equipmentUpdateCounter = 0;
+    
     public static void playerRenderPre(RenderPlayerEvent.Pre event) {
         Player player = event.getEntity();
+        Minecraft mc = Minecraft.getInstance();
+        
+        if (mc.getConnection() == null ||
+            mc.getConnection().getPlayerInfo(player.getUUID()) == null ||
+            mc.getConnection().getPlayerInfo(player.getUUID()).getGameMode() == GameType.SPECTATOR)
+            return;
+        
         ItemStack headCharm = PlayerCharmManager.getHeadEquipment(player);
-        if (!headCharm.isEmpty()) {
-            if (headCharm.is(Items.ZOMBIE_HEAD)) {
-                event.setCanceled(true);
-                Minecraft mc = Minecraft.getInstance();
-                if (dummy == null) dummy = EntityType.ZOMBIE.create(mc.level);
-                dummy.setXRot(player.getXRot());
-                dummy.setYRot(player.getYRot());
-                dummy.yBodyRot = player.yBodyRot;
-                dummy.yHeadRot = player.yHeadRot;
-                dummy.setInvisible(player.isInvisible());
-                dummy.setItemSlot(EquipmentSlot.HEAD, player.getItemBySlot(EquipmentSlot.HEAD));
-                dummy.setItemSlot(EquipmentSlot.CHEST, player.getItemBySlot(EquipmentSlot.CHEST));
-                dummy.setItemSlot(EquipmentSlot.LEGS, player.getItemBySlot(EquipmentSlot.LEGS));
-                dummy.setItemSlot(EquipmentSlot.FEET, player.getItemBySlot(EquipmentSlot.FEET));
-                dummy.setItemSlot(EquipmentSlot.MAINHAND, player.getItemBySlot(EquipmentSlot.MAINHAND));
-                dummy.setItemSlot(EquipmentSlot.OFFHAND, player.getItemBySlot(EquipmentSlot.OFFHAND));
-                dummy.setPose(player.getPose());
-                float yaw = Mth.lerp(event.getPartialTick(), player.yRotO, player.getYRot());
-                PoseStack pose = event.getPoseStack();
-                pose.pushPose();
-                mc.getEntityRenderDispatcher().render(dummy, 0, 0, 0, yaw,
-                    event.getPartialTick(), pose, event.getMultiBufferSource(), event.getPackedLight());
-                pose.popPose();
+        if (!headCharm.isEmpty() && headCharm.is(Items.ZOMBIE_HEAD)) {
+            event.setCanceled(true);
+            
+            if (dummy == null) {
+                dummy = EntityType.ZOMBIE.create(mc.level);
+                dummy.setBaby(false);
             }
+            
+            boolean isNewPlayer = !player.getUUID().equals(lastPlayerUUID);
+            lastPlayerUUID = player.getUUID();
+            
+            dummy.setPos(player.getX(), player.getY(), player.getZ());
+            dummy.setPose(player.getPose());
+            dummy.xOld = player.xOld;
+            dummy.yOld = player.yOld;
+            dummy.zOld = player.zOld;
+            dummy.xo = player.xo;
+            dummy.yo = player.yo;
+            dummy.zo = player.zo;
+            dummy.setXRot(player.getXRot());
+            dummy.setYRot(player.getYRot());
+            dummy.yBodyRot = player.yBodyRot;
+            dummy.yBodyRotO = player.yBodyRotO;
+            dummy.yHeadRot = player.yHeadRot;
+            dummy.yHeadRotO = player.yHeadRotO;
+            dummy.setOnGround(player.onGround());
+            dummy.setSwimming(player.isSwimming());
+            dummy.setSprinting(player.isSprinting());
+            dummy.hurtTime = player.hurtTime;
+            dummy.deathTime = player.deathTime;
+            dummy.swingTime = player.swingTime;
+            
+            if (isNewPlayer || equipmentUpdateCounter++ % 20 == 0) {
+                for (EquipmentSlot slot : EquipmentSlot.values()) {
+                    dummy.setItemSlot(slot, player.getItemBySlot(slot));
+                }
+                dummy.setInvisible(player.isInvisible());
+            }
+            
+            float yaw = Mth.lerp(event.getPartialTick(), player.yRotO, player.getYRot());
+            PoseStack pose = event.getPoseStack();
+            pose.pushPose();
+            mc.getEntityRenderDispatcher().render(dummy, 0, 0, 0, yaw,
+                event.getPartialTick(), pose, event.getMultiBufferSource(), event.getPackedLight());
+            pose.popPose();
         }
     }
+    
 }

@@ -6,11 +6,13 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModSkullType;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -39,6 +41,10 @@ public class FMLClientSetup {
         });
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());
+        
+        SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.DROWNED, new ResourceLocation("textures/entity/zombie/drowned.png"));
+        SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.HUSK, new ResourceLocation("textures/entity/zombie/husk.png"));
+        SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.STRAY, new ResourceLocation("textures/entity/skeleton/stray.png"));
     }
 
     private static void registerItemProperty(DeferredHolder<Item, ? extends Item> holder, String prefix) {
