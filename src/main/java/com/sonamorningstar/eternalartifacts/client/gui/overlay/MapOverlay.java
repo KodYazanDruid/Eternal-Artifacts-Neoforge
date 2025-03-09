@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.MapRenderer;
@@ -31,7 +31,7 @@ public class MapOverlay extends ModGuiOverlay{
         Minecraft mc = gui.getMinecraft();
         Player player = mc.player;
         if (shouldReturn(gui.getMinecraft())) return;
-        ItemStack map = PlayerCharmManager.findCharm(player, Items.FILLED_MAP);
+        ItemStack map = CharmManager.findCharm(player, Items.FILLED_MAP);
         if (!map.isEmpty()) {
             gui.setupOverlayRenderState(true, true);
             int x = 15;

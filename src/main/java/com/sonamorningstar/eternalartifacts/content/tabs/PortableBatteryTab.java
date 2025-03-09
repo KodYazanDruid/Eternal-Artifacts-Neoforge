@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.container.PortableBatteryMenu;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
@@ -21,12 +21,12 @@ public class PortableBatteryTab extends AbstractInventoryTab {
     @Nullable
     @Override
     public Consumer<FriendlyByteBuf> getBytes(Player player) {
-        return wr -> wr.writeItem(PlayerCharmManager.findCharm(player, PortableBatteryItem.class));
+        return wr -> wr.writeItem(CharmManager.findCharm(player, PortableBatteryItem.class));
     }
 
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
-        return new PortableBatteryMenu(id, inv, PlayerCharmManager.findCharm(player, PortableBatteryItem.class));
+        return new PortableBatteryMenu(id, inv, CharmManager.findCharm(player, PortableBatteryItem.class));
     }
 }

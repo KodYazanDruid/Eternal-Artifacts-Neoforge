@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "N": {
+      "tag": "forge:nuggets/iron"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    " PN",
+    "PRP",
+    " P "
+  ],
+  "result": {
+    "item": "eternalartifacts:configuration_drive"
+  }
+}

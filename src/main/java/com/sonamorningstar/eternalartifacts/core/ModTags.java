@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.*;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
@@ -98,7 +99,6 @@ public class ModTags {
     }
 
     public static class Spells {
-
         public static final TagKey<Spell> FIRE = forgeTag("fire");
         public static final TagKey<Spell> LIGHTNING = forgeTag("lightning");
         public static final TagKey<Spell> EARTH = forgeTag("earth");
@@ -117,9 +117,16 @@ public class ModTags {
         private static TagKey<Spell> forgeTag(String name) { return TagKey.create(ModRegistries.Keys.SPELL, new ResourceLocation("forge", name)); }
         private static TagKey<Spell> modTag(String name) { return TagKey.create(ModRegistries.Keys.SPELL, new ResourceLocation(MODID, name)); }
     }
+    
+    public static class Entities {
+        public static final TagKey<EntityType<?>> CUTLASS_BEHEADING_BLACKLISTED = modTag("cutlass_beheading_blacklisted");
+        public static final TagKey<EntityType<?>> CUTLASS_SPAWN_EGG_BLACKLISTED = modTag("cutlass_spawn_egg_blacklisted");
+
+        private static TagKey<EntityType<?>> forgeTag(String name) { return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name)); }
+        private static TagKey<EntityType<?>> modTag(String name) { return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MODID, name)); }
+    }
 
     public static class Biomes {
-
         public static final TagKey<Biome> VALID_SURVIVALISTS_IGLOO_BIOMES = modTag("can_survivalists_igloo_spawn");
 
         private static TagKey<Biome> forgeTag(String name) { return TagKey.create(Registries.BIOME, new ResourceLocation("forge", name)); }

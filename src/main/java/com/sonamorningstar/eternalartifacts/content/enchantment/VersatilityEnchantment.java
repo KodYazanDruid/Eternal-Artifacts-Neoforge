@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.enchantment;
 
 import com.sonamorningstar.eternalartifacts.content.item.ChiselItem;
+import com.sonamorningstar.eternalartifacts.content.item.CutlassItem;
 import com.sonamorningstar.eternalartifacts.content.item.HammaxeItem;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
@@ -13,12 +14,13 @@ import java.util.function.Predicate;
 
 public class VersatilityEnchantment extends Enchantment {
     private static final List<Class<?>> acceptedClasses = List.of(
-            PickaxeItem.class,
-            ShovelItem.class,
-            AxeItem.class,
-            ChiselItem.class,
-            HammerItem.class,
-            HammaxeItem.class
+        PickaxeItem.class,
+        ShovelItem.class,
+        AxeItem.class,
+        ChiselItem.class,
+        HammerItem.class,
+        HammaxeItem.class,
+        CutlassItem.class
     );
     public static final Predicate<Item> acceptedItems = item -> {
         for (Class<?> aClass : acceptedClasses) {

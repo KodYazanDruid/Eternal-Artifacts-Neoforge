@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -33,6 +34,7 @@ public class ModSkullBlock extends SkullBlock {
 				new ResourceLocation("textures/entity/skeleton/stray_overlay.png")
 			));
 	});
+	
 	public ModSkullBlock(Type p_56318_, Properties p_56319_) {
 		super(p_56318_, p_56319_);
 	}

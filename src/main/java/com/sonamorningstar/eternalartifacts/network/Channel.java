@@ -72,9 +72,9 @@ public class Channel {
         registrar.play(TankKnapsackTransferToServer.ID,
                 TankKnapsackTransferToServer::create,
                 handler -> handler.server(TankKnapsackTransferToServer::handle));
-        registrar.play(OpenMenuToServer.ID,
-                OpenMenuToServer::create,
-                handler -> handler.server(OpenMenuToServer::handle));
+        registrar.play(OpenTabMenuToServer.ID,
+                OpenTabMenuToServer::create,
+                handler -> handler.server(OpenTabMenuToServer::handle));
         registrar.play(ConsumeJumpTokenToServer.ID,
             ConsumeJumpTokenToServer::create,
                 handler -> handler.server(ConsumeJumpTokenToServer::handle));

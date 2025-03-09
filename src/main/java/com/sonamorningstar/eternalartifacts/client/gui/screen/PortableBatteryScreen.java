@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
@@ -93,7 +93,7 @@ public class PortableBatteryScreen extends AbstractModContainerScreen<PortableBa
 
     private void setupSprites(SpriteButton button, String key, int u, int v) {
         var ctx = new ButtonDrawContent(button.getWidth(), button.getHeight());
-        ItemStack stack = PlayerCharmManager.findCharm(Minecraft.getInstance().player, PortableBatteryItem.class);
+        ItemStack stack = CharmManager.findCharm(Minecraft.getInstance().player, PortableBatteryItem.class);
         boolean flag = stack.hasTag();
         if (flag) {
             if (PortableBatteryItem.KEY_CHARGE.equals(key)){
@@ -127,7 +127,7 @@ public class PortableBatteryScreen extends AbstractModContainerScreen<PortableBa
     }
 
     private void renderEnergyBar(GuiGraphics gui, int mx, int my) {
-        ItemStack stack = PlayerCharmManager.findCharm(Minecraft.getInstance().player, PortableBatteryItem.class);
+        ItemStack stack = CharmManager.findCharm(Minecraft.getInstance().player, PortableBatteryItem.class);
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         if (energy != null) {
             GuiDrawer.drawEnergyBar(gui, stack, leftPos + 8, topPos + 16);

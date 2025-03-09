@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.content.item.ColoredShulkerShellItem;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.client.model.*;
@@ -33,7 +33,7 @@ public class ShulkerShellLayer<T extends LivingEntity, M extends HumanoidModel<T
     public void render(PoseStack pose, MultiBufferSource buff, int light, T living,
                        float limbSwing, float limbSwingAmount, float deltaTick, float ageInTicks, float yaw, float pitch) {
 
-        ItemStack shell = PlayerCharmManager.findCharm(living, st -> st.is(ModTags.Items.SHULKER_SHELL));
+        ItemStack shell = CharmManager.findCharm(living, st -> st.is(ModTags.Items.SHULKER_SHELL));
         if (!shell.isEmpty()){
             pose.pushPose();
             M parent = renderer.getModel();
@@ -59,7 +59,7 @@ public class ShulkerShellLayer<T extends LivingEntity, M extends HumanoidModel<T
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        ItemStack shell = PlayerCharmManager.findCharm(entity, st -> st.is(ModTags.Items.SHULKER_SHELL));
+        ItemStack shell = CharmManager.findCharm(entity, st -> st.is(ModTags.Items.SHULKER_SHELL));
         DyeColor color = null;
         if (shell.getItem() instanceof ColoredShulkerShellItem) color = ColoredShulkerShellItem.getColor(shell);
         return color != null ? getByColor(color) : SHULKER_LOCATION;

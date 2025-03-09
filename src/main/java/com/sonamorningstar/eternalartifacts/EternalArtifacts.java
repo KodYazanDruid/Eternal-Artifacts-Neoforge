@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts;
 
 import com.mojang.logging.LogUtils;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.client.renderer.util.MobModelRenderer;
+import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;

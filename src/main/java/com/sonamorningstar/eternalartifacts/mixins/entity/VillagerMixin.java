@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.mixins.entity;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.npc.Villager;
@@ -17,7 +17,7 @@ public abstract class VillagerMixin {
 	
 	@Inject(method = "updateSpecialPrices", at = @At(value = "TAIL"))
 	private void updatePrices(Player player, CallbackInfo ci) {
-		ItemStack signet = PlayerCharmManager.findCharm(player, ModItems.EMERALD_SIGNET.get());
+		ItemStack signet = CharmManager.findCharm(player, ModItems.EMERALD_SIGNET.get());
 		if (!signet.isEmpty()) {
 			Villager villager = (Villager) (Object) this;
 			for (MerchantOffer offer : villager.getOffers()) {

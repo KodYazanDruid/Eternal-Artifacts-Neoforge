@@ -12,16 +12,16 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record OpenMenuToServer(TabType<? extends AbstractInventoryTab> type) implements CustomPacketPayload {
+public record OpenTabMenuToServer(TabType<? extends AbstractInventoryTab> type) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "open_menu");
 
-    public static OpenMenuToServer create(FriendlyByteBuf buf) {
-        return new OpenMenuToServer(ModRegistries.TAB_TYPE.get(buf.readResourceLocation()));
+    public static OpenTabMenuToServer create(FriendlyByteBuf buf) {
+        return new OpenTabMenuToServer(ModRegistries.TAB_TYPE.get(buf.readResourceLocation()));
     }
 
-    public static OpenMenuToServer create(TabType<? extends AbstractInventoryTab> type) {
-        return new OpenMenuToServer(type);
+    public static OpenTabMenuToServer create(TabType<? extends AbstractInventoryTab> type) {
+        return new OpenTabMenuToServer(type);
     }
 
     @Override

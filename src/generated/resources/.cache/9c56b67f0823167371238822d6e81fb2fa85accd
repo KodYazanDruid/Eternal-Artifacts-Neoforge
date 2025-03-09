@@ -1,4 +1,4 @@
-// 1.20.4	2025-02-15T22:42:59.9603632	Item Models: eternalartifacts
+// 1.20.4	2025-03-08T16:26:54.7560425	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
@@ -170,6 +170,7 @@ ae6c73b7eb0852e18e0949431504f95e0f77f1ea assets/eternalartifacts/models/item/shu
 993fed1f8f5d7d8c000649033a13cbed4a56ab62 assets/eternalartifacts/models/item/skybound_treads.json
 e14b4423cf36a1c875ff676f1bfaf45bf664d7cc assets/eternalartifacts/models/item/slot_lock.json
 63c28d2923f588f9e51a8c915ce1347f6cfa3990 assets/eternalartifacts/models/item/solidifier.json
+3f1bd3a631b7acf049d3ea439ee9ad44237c29d0 assets/eternalartifacts/models/item/spawner_extractor.json
 fec69b9a62595a26fcde1ba8a78d05e4aa1e3c02 assets/eternalartifacts/models/item/steel_axe.json
 3525981a615456e36093ef41728a3e5a718816ea assets/eternalartifacts/models/item/steel_boots.json
 347765b92e91dc7c5bc295dcc90906157065ef58 assets/eternalartifacts/models/item/steel_chestplate.json

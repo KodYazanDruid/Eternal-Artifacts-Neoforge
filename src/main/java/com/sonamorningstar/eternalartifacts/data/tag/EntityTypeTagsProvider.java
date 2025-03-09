@@ -1,9 +1,11 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.EntityTypeTags;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,5 +22,6 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
     protected void addTags(HolderLookup.Provider pProvider) {
         tag(EntityTypeTags.FROG_FOOD).add(ModEntities.PINKY.get());
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModEntities.DUCK.get());
+        tag(ModTags.Entities.CUTLASS_SPAWN_EGG_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
     }
 }

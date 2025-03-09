@@ -156,7 +156,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.DIAMOND_CUTLASS.get(),
             ModItems.NETHERITE_CUTLASS.get(),
             ModItems.CHLOROPHYTE_CUTLASS.get(),
-            ModItems.STONE_CUTLASS.get()
+            ModItems.STONE_CUTLASS.get(),
+            ModItems.STEEL_CUTLASS.get()
         );
         tag(ModTags.Items.TOOLS_SICKLE).add(
             ModItems.WOODEN_SICKLE.get(),

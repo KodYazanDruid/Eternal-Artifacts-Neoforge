@@ -7,13 +7,16 @@ import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.world.level.block.SkullBlock;
 
 @Getter
 public class TwoLayerSkullModel extends SkullModelBase {
+	final SkullBlock.Type type;
 	final ModelPart head;
 	final ModelPart overlay;
 	
-	public TwoLayerSkullModel(ModelPart head, ModelPart overlay) {
+	public TwoLayerSkullModel(SkullBlock.Type type, ModelPart head, ModelPart overlay) {
+		this.type = type;
 		this.head = head;
 		this.overlay = overlay;
 	}
@@ -51,5 +54,9 @@ public class TwoLayerSkullModel extends SkullModelBase {
 	public void renderToBuffer(PoseStack pPoseStack, VertexConsumer pBuffer, int pPackedLight, int pPackedOverlay, float pRed, float pGreen, float pBlue, float pAlpha) {
 		this.head.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
 		this.overlay.render(pPoseStack, pBuffer, pPackedLight, pPackedOverlay, pRed, pGreen, pBlue, pAlpha);
+	}
+	
+	public SkullBlock.Type getSkullType() {
+		return this.type;
 	}
 }

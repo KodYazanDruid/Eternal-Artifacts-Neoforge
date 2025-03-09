@@ -1,10 +1,10 @@
-package com.sonamorningstar.eternalartifacts.client.renderer.util;
+package com.sonamorningstar.eternalartifacts.api.morph;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.EntityExposer;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
@@ -40,12 +40,11 @@ public class MobModelRenderer {
 			mc.getConnection().getPlayerInfo(player.getUUID()).getGameMode() == GameType.SPECTATOR)
 			return;
 		
-		ItemStack headCharm = PlayerCharmManager.findCharm(player, st -> !st.is(Items.DRAGON_HEAD) && HEADS.contains(st.getItem()));
+		ItemStack headCharm = CharmManager.findCharm(player, st -> !st.is(Items.DRAGON_HEAD) && HEADS.contains(st.getItem()));
 		if (!headCharm.isEmpty()) {
 			EntityType<? extends LivingEntity> entityType = getEntityType(headCharm);
 			
 			if (entityType != null) {
-				dummy = entityType.create(player.level());
 				renderEntityModel(entityType, player, event);
 				event.setCanceled(true);
 			}
@@ -62,14 +61,16 @@ public class MobModelRenderer {
 		return entityType;
 	}
 	
-	public static LivingEntity dummy = null;
-	private static <T extends LivingEntity> void renderEntityModel(EntityType<T> entityType, Player player, RenderPlayerEvent event) {
+	private static void renderEntityModel(EntityType<? extends LivingEntity> entityType, Player player, RenderPlayerEvent event) {
 		PoseStack pose = event.getPoseStack();
 		MultiBufferSource buffer = event.getMultiBufferSource();
 		int packedLight = event.getPackedLight();
 		float partialTick = event.getPartialTick();
 		
-		if (dummy == null) dummy = entityType.create(player.level());
+		LivingEntity dummy = PlayerMorphUtil.MORPH_MAP.get(player);
+		if (dummy == null) {
+			dummy = PlayerMorphUtil.MORPH_MAP.put(player, entityType.create(player.level()));
+		}
 		if (dummy == null) return;
 		Class<? extends LivingEntity> entityClass = dummy.getClass();
 		
@@ -111,6 +112,8 @@ public class MobModelRenderer {
 		dummy.setCustomName(player.getCustomName());
 		dummy.setOnGround(player.onGround());
 		dummy.setIsInPowderSnow(player.isInPowderSnow);
+		dummy.setInvisible(player.isInvisible());
+		dummy.setInvulnerable(player.isInvulnerable());
 		
 		dummy.setItemSlot(EquipmentSlot.MAINHAND, player.getMainHandItem());
 		dummy.setItemSlot(EquipmentSlot.OFFHAND, player.getOffhandItem());
@@ -126,7 +129,6 @@ public class MobModelRenderer {
 			Field dummyAnimField = entityClass.getField("walkAnimation");
 			dummyAnimField.setAccessible(true);
 			dummyAnimField.set(dummy, player.walkAnimation);
-			
 		} catch (NoSuchFieldException e) {
 			EternalArtifacts.LOGGER.error("Could not find field walkAnimation in {}", entityClass.getName(), e);
 		} catch (IllegalAccessException e) {
@@ -151,15 +153,10 @@ public class MobModelRenderer {
 		if (dummy instanceof EntityExposer exp) {
 			exp.setWasTouchingWater(player.isInWater());
 			exp.setSharedFlagExp(7, player.isFallFlying());
+			exp.forceVehicle(player.getVehicle());
 		}
 		
 		player.getSleepingPos().ifPresent(dummy::setSleepingPos);
-		if (player.getVehicle() != null) dummy.startRiding(player.getVehicle());
-		else dummy.stopRiding();
-		
-		if (Minecraft.getInstance().player != null) {
-			dummy.setInvisible(player.isInvisibleTo(Minecraft.getInstance().player));
-		}
 		
 		if (dummy instanceof Mob mob) {
 			mob.setAggressive(player.isUsingItem());
@@ -172,17 +169,18 @@ public class MobModelRenderer {
 		if (player != mc.player) {
 			dummy.setCustomName(player.getCustomName());
 		}
-		float yaw = Mth.lerp(partialTick, player.yRotO, player.getYRot());
-		pose.pushPose();
+		float yaw = Mth.rotLerp(partialTick, player.yBodyRotO, player.yBodyRot);
 		assert player instanceof AbstractClientPlayer;
-		setupRotations((AbstractClientPlayer) player, dummy, pose, partialTick);
+		setupDummyRotations((AbstractClientPlayer) player, dummy, pose, partialTick);
 		mc.getEntityRenderDispatcher().render(dummy, 0, 0, 0, yaw, partialTick, pose, buffer, packedLight);
-		pose.popPose();
 	}
 	
-	private static void setupRotations(AbstractClientPlayer host, LivingEntity dummy, PoseStack pose, float partialTick) {
+	public static void setupDummyRotations(AbstractClientPlayer host, LivingEntity dummy, PoseStack pose, float partialTick) {
 		float swimAmount = dummy.getSwimAmount(partialTick);
 		float viewXRot = dummy.getViewXRot(partialTick);
+		
+		pose.mulPose(Axis.YP.rotationDegrees(180.0F - Mth.rotLerp(partialTick, dummy.yBodyRotO, dummy.yBodyRot)));
+		
 		if (dummy.isFallFlying()) {
 			float fallFlyTicks = (float) dummy.getFallFlyingTicks() + partialTick;
 			float f3 = Mth.clamp(fallFlyTicks * fallFlyTicks / 100.0F, 0.0F, 1.0F);
@@ -211,5 +209,7 @@ public class MobModelRenderer {
 				pose.translate(0.0F, -1.0F, 0.3F);
 			}
 		}
+		
+		pose.mulPose(Axis.YP.rotationDegrees(180.0F + Mth.rotLerp(partialTick, dummy.yBodyRotO, dummy.yBodyRot)));
 	}
 }

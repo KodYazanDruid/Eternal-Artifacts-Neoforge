@@ -8,6 +8,8 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModModelTemplates;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.models.model.ModelLocationUtils;
+import net.minecraft.data.models.model.ModelTemplate;
+import net.minecraft.data.models.model.ModelTemplates;
 import net.minecraft.data.models.model.TextureMapping;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -35,18 +37,23 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         createBEWLRTransforms(ModBlocks.FLUID_COMBUSTION_DYNAMO);
         createBEWLRTransforms(ModMachines.OIL_REFINERY.getItem());
         createBEWLRTransforms(ModBlocks.ENERGY_DOCK);
-        //createBEWLRTransforms(ModBlocks.TESSERACT);
+        useParent(ModBlocks.DROWNED_HEAD, ModelTemplates.SKULL_INVENTORY);
+        useParent(ModBlocks.HUSK_HEAD, ModelTemplates.SKULL_INVENTORY);
+        useParent(ModBlocks.STRAY_SKULL, ModelTemplates.SKULL_INVENTORY);
 
         createBEWLRTransforms(ModItems.FIREBALL_TOME);
-
         createSpellTome(ModItems.EVOKERS_TOME);
-        //createSpellTome(ModItems.FIREBALL_TOME);
         createSpellTome(ModItems.TORNADO_TOME);
     }
 
     private void createBEWLRTransforms(ItemLike itemLike) {
         ResourceLocation texture = BuiltInRegistries.ITEM.getKey(itemLike.asItem()).withPrefix("item/");
         ModModelTemplates.ENTITY_RENDER_TRANSFORMS.create(ModelLocationUtils.getModelLocation(itemLike.asItem()), TextureMapping.defaultTexture(texture), output);
+    }
+    
+    private void useParent(ItemLike itemLike, ModelTemplate parent) {
+        ResourceLocation texture = BuiltInRegistries.ITEM.getKey(itemLike.asItem()).withPrefix("item/");
+        parent.create(ModelLocationUtils.getModelLocation(itemLike.asItem()), TextureMapping.defaultTexture(texture), output);
     }
 
     private void createSpellTome(DeferredHolder<Item, ? extends SpellTomeItem<?>> holder) {

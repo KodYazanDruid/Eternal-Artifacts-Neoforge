@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.mixins.entity;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.resources.PlayerSkin;
@@ -19,7 +19,7 @@ public class AbstractClientPlayerMixin {
 	@WrapOperation(method = "getSkin", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerInfo;getSkin()Lnet/minecraft/client/resources/PlayerSkin;"))
 	private PlayerSkin getSkin(PlayerInfo instance, Operation<PlayerSkin> original) {
 		AbstractClientPlayer player = (AbstractClientPlayer) (Object) this;
-		ItemStack head = PlayerCharmManager.findCharm(player, PlayerHeadItem.class);
+		ItemStack head = CharmManager.findCharm(player, PlayerHeadItem.class);
 		if (!head.isEmpty() && head.hasTag()) {
 			GameProfile profile = NbtUtils.readGameProfile(head.getTag().getCompound("SkullOwner"));
 			if (profile != null) {

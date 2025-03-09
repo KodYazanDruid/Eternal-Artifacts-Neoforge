@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
@@ -18,7 +18,7 @@ public class ClockOverlay extends ModGuiOverlay{
         Minecraft minecraft = gui.getMinecraft();
         Player player = minecraft.player;
         if (shouldReturn(minecraft)) return;
-        ItemStack clock = PlayerCharmManager.findCharm(player, Items.CLOCK);
+        ItemStack clock = CharmManager.findCharm(player, Items.CLOCK);
         if (!clock.isEmpty()) {
             int x = 20;
             int y = 20;

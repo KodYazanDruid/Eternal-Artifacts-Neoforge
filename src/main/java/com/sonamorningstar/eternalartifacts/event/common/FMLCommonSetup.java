@@ -79,6 +79,8 @@ public class FMLCommonSetup {
         };
         
         DispenserBlock.registerBehavior(ModItems.DROWNED_HEAD, dispenseitembehavior);
+        DispenserBlock.registerBehavior(ModItems.HUSK_HEAD, dispenseitembehavior);
+        DispenserBlock.registerBehavior(ModItems.STRAY_SKULL, dispenseitembehavior);
     }
 
     private static void setupCharmSlots() {

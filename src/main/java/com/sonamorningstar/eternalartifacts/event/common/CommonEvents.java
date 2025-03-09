@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -12,7 +12,6 @@ import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEncha
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.event.client.ClientEvents;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
@@ -31,7 +30,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -145,7 +143,7 @@ public class CommonEvents {
             cooldowns.addCooldown(ModItems.MEDKIT.get(), 160);
 
             Item dagger = ModItems.HOLY_DAGGER.get();
-            if(!PlayerCharmManager.findInPlayer(player, dagger).isEmpty()) {
+            if(!CharmManager.findInPlayer(player, dagger).isEmpty()) {
                 if(!cooldowns.isOnCooldown(dagger)){
                     float damage = event.getAmount();
                     float health = player.getHealth();
@@ -167,14 +165,14 @@ public class CommonEvents {
         Player player = event.getEntity();
         CompoundTag tag = new CompoundTag();
         tag.putBoolean(EncumbatorItem.ACTIVE, true);
-        if(!PlayerCharmManager.findInPlayerWithTag(player, ModItems.ENCUMBATOR.get(), tag).isEmpty())
+        if(!CharmManager.findInPlayerWithTag(player, ModItems.ENCUMBATOR.get(), tag).isEmpty())
             event.setCanceled(true);
     }
 
     @SubscribeEvent
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!PlayerCharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty() &&
+        if (!CharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty() &&
                 !entity.isCrouching()) {
             entity.hurtMarked = true;
             entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
@@ -184,7 +182,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void fallEvent(LivingFallEvent event) {
         LivingEntity entity = event.getEntity();
-        if(!PlayerCharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty()) {
+        if(!CharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty()) {
             event.setDistance(Math.max(event.getDistance() - 3, 0));
             event.setDamageMultiplier(0.5F);
         }
@@ -247,7 +245,7 @@ public class CommonEvents {
         Player player = event.getPlayer();
         Level level = event.getPlayer().level();
         ItemCooldowns cd = player.getCooldowns();
-        ItemStack dispenser = PlayerCharmManager.findCharm(player, Items.DISPENSER);
+        ItemStack dispenser = CharmManager.findCharm(player, Items.DISPENSER);
         if (!dispenser.isEmpty() && !player.isCrouching() && level instanceof ServerLevel sl && !cd.isOnCooldown(Items.DISPENSER)) {
             ItemEntity itemEntity = event.getEntity();
             ItemStack thrown = itemEntity.getItem();
@@ -361,7 +359,7 @@ public class CommonEvents {
             eternal_Artifacts_Neoforge$cachedRay = RayTraceHelper.retrace(player, ClipContext.Fluid.NONE);
         }
         if (expDrop > 0) {
-            ItemStack talisman = PlayerCharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
+            ItemStack talisman = CharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
             if (!talisman.isEmpty()) {
                 event.setExpToDrop(Mth.ceil(expDrop * 1.2));
             }
@@ -392,7 +390,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void enderManAngerEvent(EnderManAngerEvent event) {
         Player player = event.getPlayer();
-        ItemStack carved = PlayerCharmManager.findCharm(player, Items.CARVED_PUMPKIN);
+        ItemStack carved = CharmManager.findCharm(player, Items.CARVED_PUMPKIN);
         if (!carved.isEmpty()) event.setCanceled(true);
     }
     
@@ -411,7 +409,7 @@ public class CommonEvents {
     public static void experienceDropEvent(LivingExperienceDropEvent event) {
         Player player = event.getAttackingPlayer();
         if (player != null) {
-            ItemStack talisman = PlayerCharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
+            ItemStack talisman = CharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
             if (!talisman.isEmpty()) {
                 event.setDroppedExperience(Mth.ceil(event.getDroppedExperience() * 1.2));
             }

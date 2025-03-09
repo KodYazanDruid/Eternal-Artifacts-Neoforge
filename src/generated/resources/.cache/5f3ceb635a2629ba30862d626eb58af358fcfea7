@@ -1,4 +1,4 @@
-// 1.20.4	2025-03-04T21:09:04.5574116	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-03-08T17:42:33.0656956	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 ed100bf617106ca16d56ad83350f486940af2940 data/eternalartifacts/tags/items/charms/back.json
 9b2c93d4150a8e166cddc320c1991280b2faf36c data/eternalartifacts/tags/items/charms/belt.json
@@ -12,7 +12,7 @@ d429de6cd6ef9b3a62721ef02325f191827b29e3 data/eternalartifacts/tags/items/charms
 cd40b2c4f0e4714c52bb7abbe39a8e26f9feb65d data/eternalartifacts/tags/items/gardening_pot_suitable.json
 4d5a856cfddb256d28a3f63c15763ee25a51820b data/eternalartifacts/tags/items/shulker_shell.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
-921a196d309436ae4984f6290a177a71971f5c65 data/eternalartifacts/tags/items/tools/cutlasses.json
+0e39dbf7b4ae88e14b7d2b48a312ade6fe39c998 data/eternalartifacts/tags/items/tools/cutlasses.json
 a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 8b5cea59f396e1e2df266fab2db65e27e0d091e5 data/forge/tags/items/dough/wheat.json
 9af9f891b3169d8d7827827c0f61ed7dedffb474 data/forge/tags/items/dusts.json

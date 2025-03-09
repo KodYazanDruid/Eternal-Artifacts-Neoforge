@@ -43,7 +43,7 @@ public class SimpleBackgroundDrawable implements IDrawable {
 
     @Override
     public void draw(GuiGraphics guiGraphics, int xOff, int yOff) {
-        GuiDrawer.drawBackground(guiGraphics, xOff, yOff, getWidth(), getHeight());
+        GuiDrawer.drawDefaultBackground(guiGraphics, xOff, yOff, getWidth(), getHeight());
         for (Pair<Integer, Integer> itemSlot : itemSlots) {
             GuiDrawer.drawItemSlot(guiGraphics, itemSlot.getFirst() + xOff, itemSlot.getSecond() + yOff);
         }

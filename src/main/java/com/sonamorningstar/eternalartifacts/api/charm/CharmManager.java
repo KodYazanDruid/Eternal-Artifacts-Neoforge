@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class PlayerCharmManager {
+public class CharmManager {
     
     public static ItemStack getHeadEquipment(LivingEntity living) {
         CharmStorage charms = CharmStorage.get(living);

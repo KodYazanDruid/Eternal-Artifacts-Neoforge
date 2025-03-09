@@ -125,6 +125,7 @@ public class ClientModEvents {
         EntityModelSet modelSet = event.getEntityModelSet();
         event.registerSkullModel(ModSkullType.DROWNED,
             new TwoLayerSkullModel(
+                ModSkullType.DROWNED,
                 modelSet.bakeLayer(ModModelLayers.DROWNED_HEAD),
                 modelSet.bakeLayer(ModModelLayers.DROWNED_HEAD_OVERLAY)
             )
@@ -132,6 +133,7 @@ public class ClientModEvents {
         event.registerSkullModel(ModSkullType.HUSK, new SkullModel(modelSet.bakeLayer(ModModelLayers.HUSK_HEAD)));
         event.registerSkullModel(ModSkullType.STRAY,
             new TwoLayerSkullModel(
+                ModSkullType.STRAY,
                 modelSet.bakeLayer(ModModelLayers.STRAY_SKULL),
                 modelSet.bakeLayer(ModModelLayers.STRAY_SKULL_OVERLAY)
             )

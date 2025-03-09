@@ -118,7 +118,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createDrums(ModBlocks.STEEL_DRUM, ModBlocks.STEEL_BLOCK.get());
         createDrums(ModBlocks.DIAMOND_DRUM, Blocks.DIAMOND_BLOCK);
         createDrums(ModBlocks.NETHERITE_DRUM, Blocks.NETHERITE_BLOCK);
-        createStateForModel(ModBlocks.TRASH_CAN);
 
         makeAncientCrop(ModBlocks.ANCIENT_CROP.get(), "ancient_crop");
         tallFlower(ModBlocks.FORSYTHIA);
@@ -292,6 +291,18 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
     private void createStateForModel(DeferredBlock<?> holder) {
         String path = holder.getId().getPath();
         simpleBlock(holder.get(), new ModelFile.ExistingModelFile(modLoc("block/"+path), models().existingFileHelper));
+    }
+    
+    private void createStateForModel(DeferredBlock<?> holder, Block model) {
+        ResourceLocation rl = BuiltInRegistries.BLOCK.getKey(model);
+        String namespace = rl.getNamespace();
+        String path = rl.getPath();
+        simpleBlock(holder.get(), new ModelFile.ExistingModelFile(new ResourceLocation(namespace, "block/"+path), models().existingFileHelper));
+    }
+    private void createStateForModel(DeferredBlock<?> holder, ResourceLocation rl) {
+        String namespace = rl.getNamespace();
+        String path = rl.getPath();
+        simpleBlock(holder.get(), new ModelFile.ExistingModelFile(new ResourceLocation(namespace, "block/"+path), models().existingFileHelper));
     }
 
     private void createStateForModelWithProperty(DeferredBlock<?> holder, Property<Direction> property) {

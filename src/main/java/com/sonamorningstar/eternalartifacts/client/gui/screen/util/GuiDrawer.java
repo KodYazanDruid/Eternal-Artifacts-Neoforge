@@ -5,11 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -17,15 +19,46 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class GuiDrawer {
+public final class GuiDrawer {
     private static final ResourceLocation texture = new ResourceLocation(MODID, "textures/gui/template.png");
-    protected static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
+    public static final ResourceLocation default_edge = new ResourceLocation(MODID, "textures/gui/default_edge.png");
+    public static final ResourceLocation dark_edge = new ResourceLocation(MODID, "textures/gui/dark_edge.png");
+    private static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
 
-    public static void drawBackground(GuiGraphics gui, int x, int y, int width, int height) {
-        blitCorners(gui, x, y, width, height);
-        blitSides(gui, x, y, width, height);
-        blitInside(gui, x, y, width, height);
+    public static void drawDefaultBackground(GuiGraphics gui, int x, int y, int width, int height) {
+        drawBackground(gui, texture, x, y, width, height, 176, 166, 5);
     }
+    
+    public static void drawBackground(
+            GuiGraphics gui, ResourceLocation texture, int x, int y,
+            int width, int height, int textureWidth, int textureHeight, int edgeWidth
+    ) {
+        blitCorners(gui, texture, x, y, width, height, textureWidth, textureHeight, 256, 256, edgeWidth);
+        blitSides(gui, texture, x, y, width, height, textureWidth, textureHeight, 256, 256, edgeWidth);
+        blitInside(gui, texture, x + edgeWidth, y + edgeWidth,
+            width - 2 * edgeWidth, height - 2 * edgeWidth,
+            textureWidth - 2 * edgeWidth, textureHeight - 2 * edgeWidth,
+            256, 256, edgeWidth);
+    }
+    
+    public static void drawTiledBackground(GuiGraphics gui, Block texture, int x, int y, int width, int height) {
+        ResourceLocation blockRL = BuiltInRegistries.BLOCK.getKey(texture);
+        ResourceLocation textureRL = new ResourceLocation(blockRL.getNamespace(), "textures/block/" + blockRL.getPath() + ".png");
+        drawTiledBackground(gui, dark_edge, textureRL, x, y, width, height, 16, 16, 16, 16, 3);
+    }
+    
+    public static void drawTiledBackground(
+        GuiGraphics gui, ResourceLocation edgeTexture, ResourceLocation insideTexture,
+        int x, int y, int width, int height, int textureWidth, int textureHeight,
+        int totalSpriteWidth, int totalSpriteHeight, int edgeWidth
+    ) {
+        blitCorners(gui, edgeTexture, x, y, width, height, 3 * edgeWidth, 3 * edgeWidth, 3 * edgeWidth, 3 * edgeWidth, edgeWidth);
+        blitSides(gui, edgeTexture, x, y, width, height, 3 * edgeWidth, 3 * edgeWidth, 3 * edgeWidth, 3 * edgeWidth, edgeWidth);
+        blitInside(gui, insideTexture, x + edgeWidth, y + edgeWidth,
+            width - 2 * edgeWidth, height - 2 * edgeWidth, textureWidth, textureHeight,
+            totalSpriteWidth, totalSpriteHeight, 0);
+    }
+    
     public static void drawItemSlot(GuiGraphics gui, int x, int y) {
         gui.blitSprite(new ResourceLocation("container/slot"), x, y, 0, 18, 18);
     }
@@ -81,91 +114,116 @@ public class GuiDrawer {
     }
 
     //region Background drawing.
-    private static void blitCorners(GuiGraphics gui, int x, int y, int width, int height) {
-        gui.blit(texture, x, y, 0, 0, 5, 5);
-        gui.blit(texture, x + width - 5, y, 171, 0, 5, 5);
-        gui.blit(texture, x, y + height - 5, 0, 161, 5, 5);
-        gui.blit(texture, x + width - 5, y + height - 5, 171, 161, 5, 5);
+    private static void blitCorners(
+        GuiGraphics gui, ResourceLocation texture, int x, int y,
+        int width, int height, int textureWidth, int textureHeight,
+        int totalSpriteWidth, int totalSpriteHeight, int edgeWidth
+    ) {
+        gui.blit(texture, x, y, 0, 0, edgeWidth, edgeWidth, totalSpriteWidth, totalSpriteHeight);
+        gui.blit(texture, x + width - edgeWidth, y, textureWidth - edgeWidth, 0, edgeWidth, edgeWidth, totalSpriteWidth, totalSpriteHeight);
+        gui.blit(texture, x, y + height - edgeWidth, 0, textureHeight - edgeWidth, edgeWidth, edgeWidth, totalSpriteWidth, totalSpriteHeight);
+        gui.blit(texture, x + width - edgeWidth, y + height - edgeWidth, textureWidth - edgeWidth, textureHeight - edgeWidth, edgeWidth, edgeWidth, totalSpriteWidth, totalSpriteHeight);
     }
-    private static void blitSides(GuiGraphics gui, int x, int y, int width, int height) {
-        iterateXSide(gui, x, y, width, height);
-        iterateYSide(gui, x, y, width, height);
+    private static void blitSides(
+        GuiGraphics gui, ResourceLocation texture, int x, int y,
+        int width, int height, int textureWidth, int textureHeight,
+        int totalSpriteWidth, int totalSpriteHeight, int edgeWidth
+    ) {
+        iterateXSide(gui, texture, x, y, width, height, textureWidth, textureHeight, totalSpriteWidth, totalSpriteHeight, edgeWidth);
+        iterateYSide(gui, texture, x, y, width, height, textureWidth, textureHeight, totalSpriteWidth, totalSpriteHeight, edgeWidth);
     }
-    private static void iterateXSide(GuiGraphics gui, int x, int y, int width, int height) {
-        int totalWidth = width - 10;
-        int iteration = totalWidth / 166;
-        int remaining = totalWidth % 166;
+    
+    private static void iterateXSide(
+        GuiGraphics gui, ResourceLocation texture, int x, int y,
+        int width, int height, int textureWidth, int textureHeight,
+        int totalSpriteWidth, int totalSpriteHeight, int edgeHeight
+    ) {
+        int padding = 2 * edgeHeight;
+        int totalWidth = width - padding;
+        int reelWidth = textureWidth - padding;
+        int iteration = totalWidth / reelWidth;
+        int remaining = totalWidth % reelWidth;
         if(iteration > 0) {
             for(int i = 0; i < iteration; i++) {
-                gui.blit(texture, x + 5 + (166 * i), y, 5, 0, 166, 5);
-                gui.blit(texture, x + 5 + (166 * i), y + height - 5, 5, 161, 166, 5);
+                gui.blit(texture, x + edgeHeight + (reelWidth * i), y, edgeHeight, 0, reelWidth, edgeHeight, totalSpriteWidth, totalSpriteHeight);
+                gui.blit(texture, x + edgeHeight + (reelWidth * i), y + height - edgeHeight, edgeHeight, textureHeight - edgeHeight, reelWidth, edgeHeight, totalSpriteWidth, totalSpriteHeight);
             }
             if(remaining > 0) {
-                gui.blit(texture, x + 5 + (166 * iteration), y, 5, 0, remaining, 5);
-                gui.blit(texture, x + 5 + (166 * iteration), y + height - 5, 5, 161, remaining, 5);
+                gui.blit(texture, x + edgeHeight + (reelWidth * iteration), y, edgeHeight, 0, remaining, edgeHeight, totalSpriteWidth, totalSpriteHeight);
+                gui.blit(texture, x + edgeHeight + (reelWidth * iteration), y + height - edgeHeight, edgeHeight, textureHeight - edgeHeight, remaining, edgeHeight, totalSpriteWidth, totalSpriteHeight);
             }
         } else {
-            gui.blit(texture, x + 5, y, 5, 0, remaining, 5);
-            gui.blit(texture, x + 5, y + height - 5, 5, 161, remaining, 5);
+            gui.blit(texture, x + edgeHeight, y, edgeHeight, 0, remaining, edgeHeight, totalSpriteWidth, totalSpriteHeight);
+            gui.blit(texture, x + edgeHeight, y + height - edgeHeight, edgeHeight, textureHeight - edgeHeight, remaining, edgeHeight, totalSpriteWidth, totalSpriteHeight);
         }
     }
-    private static void iterateYSide(GuiGraphics gui, int x, int y, int width, int height) {
-        int totalHeight = height - 10;
-        int iteration = totalHeight / 156;
-        int remaining = totalHeight % 156;
+    private static void iterateYSide(
+        GuiGraphics gui, ResourceLocation texture, int x, int y,
+        int width, int height, int textureWidth, int textureHeight,
+        int totalSpriteWidth, int totalSpriteHeight, int edgeWidth
+    ) {
+        int padding = 2 * edgeWidth;
+        int reelHeight = textureHeight - padding;
+        int totalHeight = height - padding;
+        int iteration = totalHeight / reelHeight;
+        int remaining = totalHeight % reelHeight;
         if(iteration > 0) {
             for(int i = 0; i < iteration; i++) {
-                gui.blit(texture, x, y + 5 + (156 * i), 0, 5, 5, 156);
-                gui.blit(texture, x + width - 5, y + 5 + (156 * i), 171, 5, 5, 156);
+                gui.blit(texture, x, y + edgeWidth + (reelHeight * i), 0, edgeWidth, edgeWidth, reelHeight, totalSpriteWidth, totalSpriteHeight);
+                gui.blit(texture, x + width - edgeWidth, y + edgeWidth + (reelHeight * i), textureWidth - edgeWidth, edgeWidth, edgeWidth, reelHeight, totalSpriteWidth, totalSpriteHeight);
             }
             if (remaining > 0) {
-                gui.blit(texture, x, y + 5 + (156 * iteration), 0, 5, 5, remaining);
-                gui.blit(texture, x + width - 5, y + 5 + (156 * iteration), 171, 5, 5, remaining);
+                gui.blit(texture, x, y + edgeWidth + (reelHeight * iteration), 0, edgeWidth, edgeWidth, remaining, totalSpriteWidth, totalSpriteHeight);
+                gui.blit(texture, x + width - edgeWidth, y + edgeWidth + (reelHeight * iteration), textureWidth - edgeWidth, edgeWidth, edgeWidth, remaining, totalSpriteWidth, totalSpriteHeight);
             }
         }else {
-            gui.blit(texture, x, y + 5, 0, 5, 5, remaining);
-            gui.blit(texture, x + width - 5, y + 5, 171, 5, 5, remaining);
+            gui.blit(texture, x, y + edgeWidth, 0, edgeWidth, edgeWidth, remaining, totalSpriteWidth, totalSpriteHeight);
+            gui.blit(texture, x + width - edgeWidth, y + edgeWidth, textureWidth - edgeWidth, edgeWidth, edgeWidth, remaining, totalSpriteWidth, totalSpriteHeight);
         }
     }
-    private static void blitInside(GuiGraphics gui, int x, int y, int width, int height) {
-        int totalWidth = width - 10;
-        int iterationX = totalWidth / 166;
-        int remainingX = totalWidth % 166;
-        int totalHeight = height - 10;
-        int iterationY = totalHeight / 156;
-        int remainingY = totalHeight % 156;
+    private static void blitInside(
+            GuiGraphics gui, ResourceLocation texture,
+            int x, int y, int width, int height,
+            int textureWidth, int textureHeight,
+            int totalSpriteWidth, int totalSpriteHeight,
+            int edgeWidth
+    ) {
+		int iterationX = width / textureWidth;
+        int remainingX = width % textureWidth;
+		int iterationY = height / textureHeight;
+        int remainingY = height % textureHeight;
 
-        if(iterationX <= 0 && iterationY <= 0) gui.blit(texture, x + 5, y + 5, 5, 5, remainingX, remainingY);
+        if(iterationX <= 0 && iterationY <= 0) gui.blit(texture, x, y, edgeWidth, edgeWidth, remainingX, remainingY);
 
         if (iterationX > 0 && iterationY <= 0) {
-            for (int i = 0; i < iterationX; i++) gui.blit(texture, x + 5 + (166 * i), y + 5, 5, 5, 166, remainingY);
-            if (remainingX > 0) gui.blit(texture, x + 5 + (166 * iterationX), y + 5, 5, 5, remainingX, remainingY);
+            for (int i = 0; i < iterationX; i++) gui.blit(texture, x + (textureWidth * i), y, edgeWidth, edgeWidth, textureWidth, remainingY, totalSpriteWidth, totalSpriteHeight);
+            if (remainingX > 0) gui.blit(texture, x + (textureWidth * iterationX), y, 0, 0, remainingX, remainingY, totalSpriteWidth, totalSpriteHeight);
         }
 
         if (iterationX <= 0 && iterationY > 0) {
-            for (int i = 0; i < iterationY; i++) gui.blit(texture, x + 5, y + 5 + (156 * i), 5, 5, remainingX, 156);
-            if (remainingY > 0) gui.blit(texture, x + 5, y + 5 + (156 * iterationY), 5, 5, remainingX, remainingY);
+            for (int i = 0; i < iterationY; i++) gui.blit(texture, x, y + (textureHeight * i), edgeWidth, edgeWidth, remainingX, textureHeight, totalSpriteWidth, totalSpriteHeight);
+            if (remainingY > 0) gui.blit(texture, x, y + (textureHeight * iterationY), edgeWidth, edgeWidth, remainingX, remainingY, totalSpriteWidth, totalSpriteHeight);
         }
 
         if (iterationX > 0 && iterationY > 0) {
             for (int i = 0; i < iterationX; i++) {
                 for (int j = 0; j < iterationY; j++) {
-                    gui.blit(texture, x + 5 + (166 * i), y + 5 + (156 * j), 5, 5, 166, 156);
+                    gui.blit(texture, x + (textureWidth * i), y + (textureHeight * j), edgeWidth, edgeWidth, textureWidth, textureHeight, totalSpriteWidth, totalSpriteHeight);
                 }
             }
 
             if (remainingX > 0) {
                 for (int i = 0; i < iterationY; i++)
-                    gui.blit(texture, x + 5 + (166 * iterationX), y + 5 + (156 * i), 5, 5, remainingX, 156);
+                    gui.blit(texture, x + (textureWidth * iterationX), y + (textureHeight * i), edgeWidth, edgeWidth, remainingX, textureHeight, totalSpriteWidth, totalSpriteHeight);
             }
 
             if (remainingY > 0) {
                 for (int i = 0; i < iterationX; i++)
-                    gui.blit(texture, x + 5 + (166 * i), y + 5 + (156 * iterationY), 5, 5, 166, remainingY);
+                    gui.blit(texture, x + (textureWidth * i), y + (textureHeight * iterationY), edgeWidth, edgeWidth, textureWidth, remainingY, totalSpriteWidth, totalSpriteHeight);
             }
 
             if (remainingX > 0 && remainingY > 0) {
-                gui.blit(texture, x + 5 + (166 * iterationX), y + 5 + (156 * iterationY), 5, 5, remainingX, remainingY);
+                gui.blit(texture, x + (textureWidth * iterationX), y + (textureHeight * iterationY), edgeWidth, edgeWidth, remainingX, remainingY, totalSpriteWidth, totalSpriteHeight);
             }
         }
     }

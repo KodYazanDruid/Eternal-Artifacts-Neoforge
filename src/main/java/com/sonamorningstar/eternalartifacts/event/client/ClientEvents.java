@@ -8,9 +8,9 @@ import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
@@ -43,19 +43,14 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.GameType;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -313,7 +308,7 @@ public class ClientEvents {
         if (player == null) return;
         CompoundTag tag = player.getPersistentData();
         if (key == mc.options.keyJump.getKey().getValue() && !player.onGround() && !player.isPassenger()) {
-            ItemStack charm = PlayerCharmManager.findCharm(player, ModItems.SKYBOUND_TREADS.get());
+            ItemStack charm = CharmManager.findCharm(player, ModItems.SKYBOUND_TREADS.get());
             int jumps = tag.getInt(ILivingJumper.KEY);
             if (!charm.isEmpty() && player instanceof ILivingJumper jumper && jumps > 0 && player.noJumpDelay == 0) {
                 jumper.jumpGround();
@@ -323,7 +318,7 @@ public class ClientEvents {
             }
         }
         if (key == mc.options.keySprint.getKey().getValue() && !player.onGround() && !player.isPassenger()) {
-            ItemStack charm = PlayerCharmManager.findCharm(player, ModItems.GALE_SASH.get());
+            ItemStack charm = CharmManager.findCharm(player, ModItems.GALE_SASH.get());
             int dashes = tag.getInt(ILivingDasher.KEY);
             if (!charm.isEmpty() && player instanceof ILivingDasher dasher && dashes > 0 && dasher.dashCooldown() == 0) {
                 dasher.dashAir(player);
@@ -333,67 +328,4 @@ public class ClientEvents {
             }
         }
     }
-    
-    private static Zombie dummy;
-    private static UUID lastPlayerUUID = null;
-    private static int equipmentUpdateCounter = 0;
-    
-    public static void playerRenderPre(RenderPlayerEvent.Pre event) {
-        Player player = event.getEntity();
-        Minecraft mc = Minecraft.getInstance();
-        
-        if (mc.getConnection() == null ||
-            mc.getConnection().getPlayerInfo(player.getUUID()) == null ||
-            mc.getConnection().getPlayerInfo(player.getUUID()).getGameMode() == GameType.SPECTATOR)
-            return;
-        
-        ItemStack headCharm = PlayerCharmManager.getHeadEquipment(player);
-        if (!headCharm.isEmpty() && headCharm.is(Items.ZOMBIE_HEAD)) {
-            event.setCanceled(true);
-            
-            if (dummy == null) {
-                dummy = EntityType.ZOMBIE.create(mc.level);
-                dummy.setBaby(false);
-            }
-            
-            boolean isNewPlayer = !player.getUUID().equals(lastPlayerUUID);
-            lastPlayerUUID = player.getUUID();
-            
-            dummy.setPos(player.getX(), player.getY(), player.getZ());
-            dummy.setPose(player.getPose());
-            dummy.xOld = player.xOld;
-            dummy.yOld = player.yOld;
-            dummy.zOld = player.zOld;
-            dummy.xo = player.xo;
-            dummy.yo = player.yo;
-            dummy.zo = player.zo;
-            dummy.setXRot(player.getXRot());
-            dummy.setYRot(player.getYRot());
-            dummy.yBodyRot = player.yBodyRot;
-            dummy.yBodyRotO = player.yBodyRotO;
-            dummy.yHeadRot = player.yHeadRot;
-            dummy.yHeadRotO = player.yHeadRotO;
-            dummy.setOnGround(player.onGround());
-            dummy.setSwimming(player.isSwimming());
-            dummy.setSprinting(player.isSprinting());
-            dummy.hurtTime = player.hurtTime;
-            dummy.deathTime = player.deathTime;
-            dummy.swingTime = player.swingTime;
-            
-            if (isNewPlayer || equipmentUpdateCounter++ % 20 == 0) {
-                for (EquipmentSlot slot : EquipmentSlot.values()) {
-                    dummy.setItemSlot(slot, player.getItemBySlot(slot));
-                }
-                dummy.setInvisible(player.isInvisible());
-            }
-            
-            float yaw = Mth.lerp(event.getPartialTick(), player.yRotO, player.getYRot());
-            PoseStack pose = event.getPoseStack();
-            pose.pushPose();
-            mc.getEntityRenderDispatcher().render(dummy, 0, 0, 0, yaw,
-                event.getPartialTick(), pose, event.getMultiBufferSource(), event.getPackedLight());
-            pose.popPose();
-        }
-    }
-    
 }

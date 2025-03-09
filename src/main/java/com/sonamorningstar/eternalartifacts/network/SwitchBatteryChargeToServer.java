@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -31,7 +31,7 @@ public record SwitchBatteryChargeToServer(Item item) implements CustomPacketPayl
     public void handle(PlayPayloadContext ctx) {
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             if (item instanceof PortableBatteryItem battery) {
-                ItemStack stack = PlayerCharmManager.findCharm(player, battery);
+                ItemStack stack = CharmManager.findCharm(player, battery);
                 battery.switchCharge(stack, player.level(), player.blockPosition());
             }
         }));

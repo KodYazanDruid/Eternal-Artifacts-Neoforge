@@ -283,24 +283,24 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .unlockedBy("has_item", has(ModItems.STONE_TABLET)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_SWORD)
                 .pattern("I").pattern("I").pattern("S")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_PICKAXE)
                 .pattern("III").pattern(" S ").pattern(" S ")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_AXE)
                 .pattern("II").pattern("IS").pattern(" S")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_SHOVEL)
                 .pattern("I").pattern("S").pattern("S")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Items.STICK)
+                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_HOE)
                 .pattern("II").pattern(" S").pattern(" S")
                 .define('I', Tags.Items.INGOTS_COPPER)
-                .define('S', Items.STICK)
+                .define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CHLOROPHYTE_TABLET)
                 .pattern("ESE")
@@ -360,24 +360,24 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_SWORD)
             .pattern("I").pattern("I").pattern("S")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_PICKAXE)
             .pattern("III").pattern(" S ").pattern(" S ")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_AXE)
             .pattern("II").pattern("IS").pattern(" S")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_SHOVEL)
             .pattern("I").pattern("S").pattern("S")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Items.STICK)
+            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_HOE)
             .pattern("II").pattern(" S").pattern(" S")
             .define('I', ModTags.Items.INGOTS_STEEL)
-            .define('S', Items.STICK)
+            .define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
         createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Tags.Items.COBBLESTONE, Tags.Items.STONE);
@@ -484,6 +484,20 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("OO").pattern("OO")
                 .define('O', Items.OBSIDIAN)
                 .unlockedBy("has_item", has(Items.OBSIDIAN)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CHISEL.get())
+                .pattern("G").pattern("N").pattern("S")
+                .define('G', Tags.Items.GEMS_DIAMOND)
+                .define('N', Tags.Items.NUGGETS_IRON).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(Tags.Items.GEMS_DIAMOND)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CONFIGURATION_DRIVE.get())
+                .pattern(" PN").pattern("PRP").pattern(" P ")
+                .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE)
+                .define('N', Tags.Items.NUGGETS_IRON)
+                .unlockedBy("has_item", has(ModItems.PLASTIC_SHEET)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.SPAWNER_EXTRACTOR.get())
+                .pattern(" AA").pattern(" SA").pattern("S  ")
+                .define('A', Tags.Items.GEMS_AMETHYST).define('S', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(Tags.Items.GEMS_AMETHYST)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

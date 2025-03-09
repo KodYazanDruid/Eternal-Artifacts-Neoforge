@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.renderer.item;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.client.resources.model.PortableBatteryModel;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
@@ -54,6 +54,6 @@ public class PortableBatteryLayer<L extends LivingEntity, H extends HumanoidMode
     }
 
     private ItemStack getBattery(L living) {
-        return PlayerCharmManager.findCharm(living, ModItems.PORTABLE_BATTERY.get());
+        return CharmManager.findCharm(living, ModItems.PORTABLE_BATTERY.get());
     }
 }

@@ -1,14 +1,12 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.AbstractScrollPanelComponent;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.DropdownMenu;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -56,7 +54,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,
             FastColor.ARGB32.blue(guiTint) / 255.0F, FastColor.ARGB32.alpha(guiTint) / 255.0F);
         if(!isModular) gui.blit(texture, x, y, 0, 0, imageWidth, imageHeight);
-        else GuiDrawer.drawBackground(gui, x, y, imageWidth, imageHeight);
+        else GuiDrawer.drawDefaultBackground(gui, x, y, imageWidth, imageHeight);
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
         for(Slot slot : menu.slots) {
             gui.blitSprite(new ResourceLocation("container/slot"), x + slot.x-1, y + slot.y-1, 0, 18, 18);

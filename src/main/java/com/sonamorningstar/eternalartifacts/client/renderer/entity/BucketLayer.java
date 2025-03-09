@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.client.resources.model.BucketHeadModel;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.model.HumanoidModel;
@@ -34,7 +34,7 @@ public class BucketLayer<L extends LivingEntity, M extends HumanoidModel<L>> ext
     public void render(PoseStack pose, MultiBufferSource buff, int light, L living,
                        float limbSwing, float limbSwingAmount, float deltaTick, float ageInTicks, float yaw, float pitch) {
 
-        ItemStack bucketStack = PlayerCharmManager.findCharm(living, st -> st.is(Items.BUCKET));
+        ItemStack bucketStack = CharmManager.findCharm(living, st -> st.is(Items.BUCKET));
         if (!bucketStack.isEmpty()){
             pose.pushPose();
             M parent = renderer.getModel();

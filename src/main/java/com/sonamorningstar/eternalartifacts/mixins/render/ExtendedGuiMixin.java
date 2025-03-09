@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.mixins.render;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -19,7 +19,7 @@ public abstract class ExtendedGuiMixin {
 
     @WrapOperation(method = "renderHelmet", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;getArmor(I)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack renderHelmet(Inventory instance, int pSlot, Operation<ItemStack> original) {
-        ItemStack carved = PlayerCharmManager.findCharm(getMinecraft().player, Items.CARVED_PUMPKIN);
+        ItemStack carved = CharmManager.findCharm(getMinecraft().player, Items.CARVED_PUMPKIN);
         return carved.isEmpty() ? original.call(instance, pSlot) : carved;
     }
 }

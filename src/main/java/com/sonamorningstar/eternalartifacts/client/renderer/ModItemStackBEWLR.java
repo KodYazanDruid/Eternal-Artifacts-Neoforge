@@ -2,7 +2,10 @@ package com.sonamorningstar.eternalartifacts.client.renderer;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.ModSkullBlockRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.item.SpellTomeRenderer;
+import com.sonamorningstar.eternalartifacts.client.resources.model.TwoLayerSkullModel;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
@@ -10,21 +13,27 @@ import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.SkullModel;
+import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SkullBlock;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
+import java.util.Map;
 import java.util.function.Supplier;
 
 public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
@@ -35,6 +44,8 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     EntityRendererProvider.Context entityrendererprovider$context = new EntityRendererProvider.Context(
             minecraft.getEntityRenderDispatcher(), minecraft.getItemRenderer(), minecraft.getBlockRenderer(), minecraft.gameRenderer.itemInHandRenderer, minecraft.getResourceManager(), entityModelSet, minecraft.font
     );
+    
+    private Map<SkullBlock.Type, SkullModelBase> skullModels = SkullBlockRenderer.createSkullRenderers(entityModelSet);
 
     private ModItemStackBEWLR() {
         super(beRenderer, entityModelSet);
@@ -46,7 +57,12 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final OilRefineryBlockEntity refinery = new OilRefineryBlockEntity(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
     private final EnergyDockBlockEntity energyDock = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
     private final TesseractBlockEntity tesseract = new TesseractBlockEntity(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());
-
+    
+    @Override
+    public void onResourceManagerReload(ResourceManager manager) {
+        skullModels = SkullBlockRenderer.createSkullRenderers(entityModelSet);
+    }
+    
     @Override
     public void renderByItem(ItemStack stack, ItemDisplayContext ctx, PoseStack ps, MultiBufferSource buff, int light, int overlay) {
         Item item = stack.getItem();
@@ -76,6 +92,13 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 beRenderer.renderItem(energyDock, ps, buff, light, overlay);
             }else if (block instanceof TesseractBlock) {
                 beRenderer.renderItem(tesseract, ps, buff, light, overlay);
+            }else if (block instanceof ModSkullBlock msb) {
+                SkullModelBase skullModel = this.skullModels.get(msb.getType());
+                if (skullModel instanceof TwoLayerSkullModel tlsm) {
+                    ModSkullBlockRenderer.renderModSkull(null, 180, 0, ps, buff, light, tlsm);
+                } else if (skullModel != null) {
+                    SkullBlockRenderer.renderSkull(null, 180, 0, ps, buff, light, skullModel, SkullBlockRenderer.getRenderType(msb.getType(), null));
+                }
             }
         } else {
             if (item instanceof AnimatedSpellTomeItem<?> tome) {

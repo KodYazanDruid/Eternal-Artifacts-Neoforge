@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,7 +27,7 @@ public class PortableBatteryMenu extends TabMenu {
     }
 
     public void toggle(Player player, int id) {
-        ItemStack stack = PlayerCharmManager.findCharm(player, PortableBatteryItem.class);
+        ItemStack stack = CharmManager.findCharm(player, PortableBatteryItem.class);
         PortableBatteryItem.SlotType.values()[id].toggle(stack);
     }
 }

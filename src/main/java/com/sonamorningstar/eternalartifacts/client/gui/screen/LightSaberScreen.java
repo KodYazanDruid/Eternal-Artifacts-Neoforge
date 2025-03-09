@@ -72,7 +72,7 @@ public class LightSaberScreen extends ItemStackScreen {
     @Override
     public void renderBackground(GuiGraphics gui, int mx, int my, float partTick) {
         super.renderBackground(gui, mx, my, partTick);
-        GuiDrawer.drawBackground(gui, leftPos, topPos, 256, 192);
+        GuiDrawer.drawDefaultBackground(gui, leftPos, topPos, 256, 192);
         //gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("alpha"), leftPos + 10, topPos + 38, alphaSlider.getValueInt() << 24, false);
         gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("red"), leftPos + 10, topPos + 38, redSlider.getValueInt() << 16, false);
         gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("green"), leftPos + 10, topPos + 63, greenSlider.getValueInt() << 8, false);

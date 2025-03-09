@@ -3,7 +3,8 @@ package com.sonamorningstar.eternalartifacts.api.charm;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.sonamorningstar.eternalartifacts.Config;
-import com.sonamorningstar.eternalartifacts.client.renderer.util.MobModelRenderer;
+import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
+import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -61,6 +62,7 @@ public class CharmStorage extends ItemStackHandler {
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
+        if (!Config.CHARMS_ENABLED.getAsBoolean()) return false;
         if (contains(stack.getItem())) return false;
         if (hasNBTType(stack, slot)) return true;
         if (slot == 12 && stack.is(ModTags.Items.CHARMS) && !stack.is(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED)) return true;
@@ -87,19 +89,11 @@ public class CharmStorage extends ItemStackHandler {
     }
     
     @Override
-    protected void onLoad() {
-        super.onLoad();
-        //updateCharmAttributes();
-    }
-    
-    @Override
     protected void onContentsChanged(int slot) {
         if (owner != null) {
+            if (owner instanceof Player) PlayerMorphUtil.MORPH_MAP.remove(owner);
             if (!owner.level().isClientSide){
                 syncSelfAndTracking(owner);
-                if (slot == 0) {
-                    MobModelRenderer.dummy = null;
-                }
                 listeners.forEach(listener -> listener.accept(slot));
             }
         }
@@ -152,14 +146,23 @@ public class CharmStorage extends ItemStackHandler {
         }
     }
     //endregion
-
+    
+    
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        if (!Config.CHARMS_ENABLED.getAsBoolean()) return ItemStack.EMPTY;
+        return super.getStackInSlot(slot);
+    }
+    
     public boolean contains(Item item) {
+        if (!Config.CHARMS_ENABLED.getAsBoolean()) return false;
         for (int i = 0; i < getSlots(); i++) {
             if (getStackInSlot(i).is(item)) return true;
         }
         return false;
     }
     public boolean containsStack(ItemStack stack) {
+        if (!Config.CHARMS_ENABLED.getAsBoolean()) return false;
         for (int i = 0; i < getSlots(); i++) {
             ItemStack s = getStackInSlot(i);
             if (ItemStack.isSameItemSameTags(stack, s)) return true;
@@ -253,6 +256,7 @@ public class CharmStorage extends ItemStackHandler {
     //endregion
 
     public static void charmTick(CharmTickEvent event) {
+        if (!Config.CHARMS_ENABLED.getAsBoolean()) return;
         LivingEntity living = event.getEntity();
         ItemStack charm = event.getCharm();
         int slot = event.getSlot();

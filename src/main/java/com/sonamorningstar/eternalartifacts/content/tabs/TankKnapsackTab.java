@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
 import com.sonamorningstar.eternalartifacts.container.TankKnapsackMenu;
 import com.sonamorningstar.eternalartifacts.content.item.TankKnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
@@ -24,7 +24,7 @@ public class TankKnapsackTab extends AbstractInventoryTab {
     @Nullable
     @Override
     public Consumer<FriendlyByteBuf> getBytes(Player player) {
-        ItemStack stack = PlayerCharmManager.findCharm(player, TankKnapsackItem.class);
+        ItemStack stack = CharmManager.findCharm(player, TankKnapsackItem.class);
         return wr -> wr.writeItem(stack);
     }
 
@@ -32,7 +32,7 @@ public class TankKnapsackTab extends AbstractInventoryTab {
     @Override
     public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
         CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
-        ItemStack stack = PlayerCharmManager.findCharm(player, TankKnapsackItem.class);
+        ItemStack stack = CharmManager.findCharm(player, TankKnapsackItem.class);
         if (stack.getItem() instanceof TankKnapsackItem) {
             return new TankKnapsackMenu(id, inv, stack) {
                 @Override

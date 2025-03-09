@@ -7,7 +7,7 @@ import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryT
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModInventoryTabs;
 import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.OpenMenuToServer;
+import com.sonamorningstar.eternalartifacts.network.OpenTabMenuToServer;
 import com.sonamorningstar.eternalartifacts.registrar.TabType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,7 +35,7 @@ public class TabHandler {
 
     public boolean requested = false;
 
-    public TabHandler() { }
+    private TabHandler() { }
 
     public static final ResourceLocation UNSELECTED = new ResourceLocation("container/creative_inventory/tab_top_unselected_2");
     public static final ResourceLocation SELECTED = new ResourceLocation("container/creative_inventory/tab_top_selected_2");
@@ -100,7 +100,7 @@ public class TabHandler {
                         instance.getTutorial().onOpenInventory();
                         instance.setScreen(new InventoryScreen(player));
                     }
-                } else Channel.sendToServer(new OpenMenuToServer(tab));
+                } else Channel.sendToServer(new OpenTabMenuToServer(tab));
             }
         }
         return Minecraft.getInstance().screen != oldScreen;

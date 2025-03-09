@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.*;
@@ -13,9 +12,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WallBlock;
-import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
-import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
@@ -51,6 +47,12 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createForParticle(ModMachines.OIL_REFINERY.getBlockHolder(), Blocks.GLASS);
         createForParticle(ModBlocks.ENERGY_DOCK, new ResourceLocation(MODID, "block/machine_side"));
         createForParticle(ModBlocks.FLUID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
+        createForParticle(ModBlocks.DROWNED_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.DROWNED_WALL_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.HUSK_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.HUSK_WALL_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.STRAY_SKULL, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.STRAY_WALL_SKULL, Blocks.SOUL_SAND);
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 
@@ -58,19 +60,6 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);
 
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
-
-        blockEntityModels(ModelLocationUtils.decorateBlockModelLocation("skull"), Blocks.SOUL_SAND)
-            .createWithCustomBlockItemModel(
-                ModelTemplates.SKULL_INVENTORY,
-                ModBlocks.DROWNED_HEAD.get(),
-                ModBlocks.HUSK_HEAD.get(),
-                ModBlocks.STRAY_SKULL.get()
-            )
-            .createWithoutBlockItem(
-                ModBlocks.DROWNED_WALL_HEAD.get(),
-                ModBlocks.HUSK_WALL_HEAD.get(),
-                ModBlocks.STRAY_WALL_SKULL.get()
-            );
     }
     //region Functions for block models...
     private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {

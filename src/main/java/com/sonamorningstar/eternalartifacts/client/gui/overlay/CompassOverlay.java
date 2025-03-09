@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.overlay;
 
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -23,7 +23,7 @@ public class CompassOverlay extends ModGuiOverlay{
     public void render(ExtendedGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Player player = gui.getMinecraft().player;
         if (shouldReturn(gui.getMinecraft())) return;
-        ItemStack compass = PlayerCharmManager.findCharm(player, Items.COMPASS);
+        ItemStack compass = CharmManager.findCharm(player, Items.COMPASS);
         if (!compass.isEmpty()) {
             int x = 20;
             int y = 20;

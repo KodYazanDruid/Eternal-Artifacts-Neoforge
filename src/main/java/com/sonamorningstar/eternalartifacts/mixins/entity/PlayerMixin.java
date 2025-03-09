@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.mixins.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.mixin_helper.MixinHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
@@ -21,7 +21,7 @@ public class PlayerMixin {
             ))
     private ItemStack turtleHelmetTick(Player instance, EquipmentSlot pSlot1, Operation<ItemStack> original) {
         Player player = (Player) (Object) this;
-        ItemStack helmet = PlayerCharmManager.findCharm(player, Items.TURTLE_HELMET);
+        ItemStack helmet = CharmManager.findCharm(player, Items.TURTLE_HELMET);
         return helmet.isEmpty() ? original.call(instance, pSlot1) : helmet;
     }
 

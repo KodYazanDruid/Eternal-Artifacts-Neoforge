@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.mixins;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.api.charm.PlayerCharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.item.MagicFeatherItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
@@ -46,7 +46,7 @@ public abstract class BeaconEntityMixin {
     private static boolean eternal_Artifacts_Neoforge$findFeather(Player player, int ticks){
         MagicFeatherItem feather = (MagicFeatherItem) ModItems.MAGIC_FEATHER.get();
         CharmStorage charms = player.getData(ModDataAttachments.CHARMS);
-        if(!PlayerCharmManager.findInPlayer(player, feather).isEmpty()) {
+        if(!CharmManager.findInPlayer(player, feather).isEmpty()) {
             MagicFeatherItem.activeTicks = Pair.of(true, ticks);
             return true;
         }else {

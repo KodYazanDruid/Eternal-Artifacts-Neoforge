@@ -180,6 +180,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GALE_SASH.get(), "Gale Sash");
                 add(ModItems.GREEN_APPLE.get(), "Green Apple");
                 add(ModItems.YELLOW_APPLE.get(), "Yellow Apple");
+                add(ModItems.SPAWNER_EXTRACTOR.get(), "Spawner Extractor");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -593,6 +594,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GALE_SASH.get(), "Fırtına Kuşağı");
                 add(ModItems.GREEN_APPLE.get(), "Yeşil Elma");
                 add(ModItems.YELLOW_APPLE.get(), "Sarı Elma");
+                add(ModItems.SPAWNER_EXTRACTOR.get(), "Yaratıcı Çıkarıcı");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
