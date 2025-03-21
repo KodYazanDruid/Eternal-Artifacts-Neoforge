@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/machine_workbench",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/machine_workbench"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/machine_workbench",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/machine_workbench",
+      "y": 270
+    }
+  }
+}

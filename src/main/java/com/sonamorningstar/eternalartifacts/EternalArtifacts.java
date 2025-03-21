@@ -72,6 +72,7 @@ public class EternalArtifacts {
         ModStructurePieces.PIECE_TYPE.register(modEventBus);
         ModInventoryTabs.INVENTORY_TABS.register(modEventBus);
         ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
+        ModPotions.POTIONS.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);

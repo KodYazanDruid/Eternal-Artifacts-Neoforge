@@ -13,6 +13,7 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -25,6 +26,9 @@ import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -52,6 +56,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
@@ -297,6 +302,20 @@ public class ClientEvents {
             int top = acs.getGuiTop();
             TabHandler instance = TabHandler.INSTANCE;
             if (instance != null) instance.renderTabs(event.getGuiGraphics(), left, top);
+        }
+    }
+    
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void renderScreenLowPrio(ScreenEvent.Render.Post event) {
+        Screen screen = event.getScreen();
+        GuiGraphics gui = event.getGuiGraphics();
+        int mx = event.getMouseX();
+        int my = event.getMouseY();
+        float deltaTick = event.getPartialTick();
+        if (screen instanceof AbstractModContainerScreen<?> amcs) {
+            for (GuiEventListener upperLayerChild : amcs.upperLayerChildren) {
+                if (upperLayerChild instanceof Renderable renderable) renderable.render(gui, mx, my, deltaTick);
+            }
         }
     }
     

@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.WrappedEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.WrappedFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemItemStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
@@ -25,26 +24,26 @@ public class CapabilityHelper {
     @Contract("_, _, null, _ -> param2")
     public static @Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachineBlockEntity<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
-            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isItemsAllowed()) return null;
+            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.areItemsAllowed()) return null;
             return new WrappedItemStorage(inventory,
                     i -> (outputSlots != null && outputSlots.contains(i)) &&
                             SidedTransferMachineBlockEntity.canPerformTransfers(be, ctx, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isItemsAllowed(),
+                            be.areItemsAllowed(),
                     (i, s) -> (outputSlots == null || !outputSlots.contains(i)) &&
                             SidedTransferMachineBlockEntity.canPerformTransfers(be ,ctx, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isItemsAllowed());
+                            be.areItemsAllowed());
         } else return inventory;
     }
 
     @Contract("_, _, null -> param2")
     public static @Nullable IFluidHandler regSidedFluidCaps(SidedTransferMachineBlockEntity<?> be, IFluidHandler tank, Direction ctx) {
         if(ctx != null) {
-            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.isFluidsAllowed()) return null;
+            if(SidedTransferMachineBlockEntity.canPerformTransfer(be, ctx, SidedTransferMachineBlockEntity.TransferType.NONE) || !be.areFluidsAllowed()) return null;
             return new WrappedFluidStorage(tank,
                     dir -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PUSH, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isFluidsAllowed(),
+                            be.areFluidsAllowed(),
                     (dir, fs) -> SidedTransferMachineBlockEntity.canPerformTransfers(be, dir, SidedTransferMachineBlockEntity.TransferType.PULL, SidedTransferMachineBlockEntity.TransferType.DEFAULT) &&
-                            be.isFluidsAllowed(),
+                            be.areFluidsAllowed(),
                     ctx);
         } else return tank;
     }

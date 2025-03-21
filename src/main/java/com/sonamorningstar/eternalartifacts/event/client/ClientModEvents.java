@@ -138,6 +138,7 @@ public class ClientModEvents {
                 modelSet.bakeLayer(ModModelLayers.STRAY_SKULL_OVERLAY)
             )
         );
+        event.registerSkullModel(ModSkullType.BLAZE, new SkullModel(modelSet.bakeLayer(ModModelLayers.BLAZE_HEAD)));
     }
 
     @SubscribeEvent
@@ -164,6 +165,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.HUSK_HEAD, SkullModel::createHumanoidHeadLayer);
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 32));
+        event.registerLayerDefinition(ModModelLayers.BLAZE_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
     }
 
     @SubscribeEvent
@@ -176,6 +178,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntityRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.TESSERACT.get(), ctx -> new TesseractRenderer());
         event.registerBlockEntityRenderer(ModBlockEntities.SKULL.get(), ModSkullBlockRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.MACHINE_WORKBENCH.get(), MachineWorkbenchRenderer::new);
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
 

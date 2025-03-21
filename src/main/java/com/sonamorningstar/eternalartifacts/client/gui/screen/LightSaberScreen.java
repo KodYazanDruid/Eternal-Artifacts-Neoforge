@@ -123,7 +123,7 @@ public class LightSaberScreen extends ItemStackScreen {
             rendered, ItemDisplayContext.NONE,
             15728880, OverlayTexture.NO_OVERLAY,
             pose, gui.bufferSource(), mc.level,
-            mc.player.getId() + ItemDisplayContext.FIXED.ordinal()
+            mc.player.getId() + ItemDisplayContext.NONE.ordinal()
         );
         gui.flush();
         if (blockLight) Lighting.setupFor3DItems();

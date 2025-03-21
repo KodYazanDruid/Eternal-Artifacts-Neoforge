@@ -7,6 +7,9 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -181,6 +184,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GREEN_APPLE.get(), "Green Apple");
                 add(ModItems.YELLOW_APPLE.get(), "Yellow Apple");
                 add(ModItems.SPAWNER_EXTRACTOR.get(), "Spawner Extractor");
+                addPotion(ModPotions.ANGLERS_LUCK.get(), "Potion of Angler's Luck");
+                addPotion(ModPotions.LURING.get(), "Potion of Luring");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -267,6 +272,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.DROWNED_HEAD.get(), "Drowned Head");
                 add(ModBlocks.HUSK_HEAD.get(), "Husk Head");
                 add(ModBlocks.STRAY_SKULL.get(), "Stray Skull");
+                add(ModBlocks.BLAZE_HEAD.get(), "Blaze Head");
+                add(ModBlocks.MACHINE_WORKBENCH.get(), "Machine Workbench");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -280,6 +287,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEffects.FLIGHT.get(), "Flight");
                 add(ModEffects.DIVINE_PROTECTION.get(), "Divine Protection");
                 add(ModEffects.MALADY.get(), "Malady");
+                add(ModEffects.ANGLERS_LUCK.get(), "Angler's Luck");
+                add(ModEffects.LURING.get(), "Luring");
                 //endregion
                 //region Attributes
                 ModAttributes.ATTRIBUTES.getEntries().forEach(holder -> add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath())));
@@ -292,6 +301,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.VERSATILITY.get(), "Versatility");
                 add(ModEnchantments.SOULBOUND.get(), "Soulbound");
                 add(ModEnchantments.MELTING_TOUCH.get(), "Melting Touch");
+                add(ModEnchantments.EVERLASTING.get(), "Everlasting");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -594,7 +604,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GALE_SASH.get(), "Fırtına Kuşağı");
                 add(ModItems.GREEN_APPLE.get(), "Yeşil Elma");
                 add(ModItems.YELLOW_APPLE.get(), "Sarı Elma");
-                add(ModItems.SPAWNER_EXTRACTOR.get(), "Yaratıcı Çıkarıcı");
+                add(ModItems.SPAWNER_EXTRACTOR.get(), "Çağırıcı Çıkarıcı");
+                addPotion(ModPotions.ANGLERS_LUCK.get(), "Balıkçı Şansı İksiri");
+                addPotion(ModPotions.LURING.get(), "Yemleme İksiri");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -712,9 +724,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.SHOCK_ABSORBER.get(), "Şok Emici");
                 add(ModBlocks.TESSERACT.get(), "Tesseract");
                 add(ModBlocks.TRASH_CAN.get(), "Çöp Kutusu");
-                add(ModBlocks.DROWNED_HEAD.get(), "Boğulmuş Kafası");
-                add(ModBlocks.HUSK_HEAD.get(), "Kurumuş Kafası");
-                add(ModBlocks.STRAY_SKULL.get(), "Kaybolmuş Kafatası");
+                add(ModBlocks.DROWNED_HEAD.get(), "Boğuk Kafası");
+                add(ModBlocks.HUSK_HEAD.get(), "Zombi Kurusu Kafası");
+                add(ModBlocks.STRAY_SKULL.get(), "Serseri Kafatası");
+                add(ModBlocks.BLAZE_HEAD.get(), "Blaze Kafası");
+                add(ModBlocks.MACHINE_WORKBENCH.get(), "Makine Tezgahı");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -728,6 +742,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEffects.FLIGHT.get(), "Uçuş");
                 add(ModEffects.DIVINE_PROTECTION.get(), "Kutsal Koruma");
                 add(ModEffects.MALADY.get(), "İllet");
+                add(ModEffects.ANGLERS_LUCK.get(), "Balıkçı Şansı");
+                add(ModEffects.LURING.get(), "Yemleme");
                 //endregion
                 //region Türkçe Özellikler
                 add(ModAttributes.SPELL_POWER.get().getDescriptionId(), "Büyü Gücü");
@@ -748,6 +764,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.VERSATILITY.get(), "Çeşitlilik");
                 add(ModEnchantments.SOULBOUND.get(), "Ruh Bağı");
                 add(ModEnchantments.MELTING_TOUCH.get(), "Eriten Dokunuş");
+                add(ModEnchantments.EVERLASTING.get(), "Ebedi");
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");
@@ -892,5 +909,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 });
             }
         }
+    }
+    
+    private void addPotion(Potion potion, String name) {
+        add(potion.getName(Items.POTION.getDescriptionId() + ".effect."), name);
+        add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), name);
+        add(potion.getName(Items.LINGERING_POTION.getDescriptionId() + ".effect."), name);
     }
 }

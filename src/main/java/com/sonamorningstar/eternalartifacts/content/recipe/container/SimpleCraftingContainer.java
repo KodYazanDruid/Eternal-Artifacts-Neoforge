@@ -76,8 +76,8 @@ public class SimpleCraftingContainer implements CraftingContainer {
 
     @Override
     public void setItem(int pSlot, ItemStack pStack) {
-        setChanged();
         inventory.setStackInSlot(pSlot, pStack);
+        setChanged();
     }
 
     @Override
@@ -93,9 +93,9 @@ public class SimpleCraftingContainer implements CraftingContainer {
     @Override
     public void clearContent() {
         for (int i = 0; i < getContainerSize(); i++) {
-            setChanged();
             inventory.setStackInSlot(i, ItemStack.EMPTY);
         }
+        setChanged();
     }
 
     @Override

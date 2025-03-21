@@ -208,6 +208,14 @@ public class ModItems {
     public static final DeferredItem<Item> STEEL_LEGGINGS = registerStacksToOne("steel_leggings", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> STEEL_BOOTS = registerStacksToOne("steel_boots", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<Item> SPAWNER_EXTRACTOR = registerStacksToOne("spawner_extractor", SpawnerExtractorItem::new);
+    public static final DeferredItem<Item> BONE_SWORD = registerStacksToOne("bone_sword", p -> new SwordItem(ModTiers.BONE, 3, -2.4f, p));
+    //public static final DeferredItem<Item> BONE_PICKAXE = registerStacksToOne("bone_pickaxe", p -> new PickaxeItem(ModTiers.BONE, 1, -2.8f, p));
+    //public static final DeferredItem<Item> BONE_AXE = registerStacksToOne("bone_axe", p -> new AxeItem(ModTiers.BONE, 7, -3.2f, p));
+    //public static final DeferredItem<Item> BONE_SHOVEL = registerStacksToOne("bone_shovel", p -> new ShovelItem(ModTiers.BONE, 1.5F, -3.0f, p));
+    //public static final DeferredItem<Item> BONE_HOE = registerStacksToOne("bone_hoe", p -> new HoeItem(ModTiers.BONE, -1, -2.0f, p));
+    //public static final DeferredItem<Item> BONE_HAMMER = registerStacksToOne("bone_hammer", p -> new HammerItem(ModTiers.BONE, p));
+    //public static final DeferredItem<Item> BONE_SICKLE = registerStacksToOne("bone_sickle", p -> new SickleItem(ModTiers.BONE, p));
+    //public static final DeferredItem<Item> BONE_CUTLASS = registerStacksToOne("bone_cutlass", p -> new CutlassItem(ModTiers.BONE, p));
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
@@ -225,6 +233,9 @@ public class ModItems {
     );
     public static final DeferredItem<Item> STRAY_SKULL = register("stray_skull", () ->
         new BewlrStandingAndWallBlockItem(ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+    );
+    public static final DeferredItem<Item> BLAZE_HEAD = register("blaze_head", () ->
+        new BewlrStandingAndWallBlockItem(ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
     );
     
     //region Register methods.

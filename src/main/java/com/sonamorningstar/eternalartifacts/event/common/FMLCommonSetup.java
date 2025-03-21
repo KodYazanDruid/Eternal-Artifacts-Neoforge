@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.core.ModPotions;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -20,6 +21,9 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -46,10 +50,12 @@ public class FMLCommonSetup {
             setupCauldronInteractions();
             setupCharmSlots();
             registerDispenserBehaviours();
+            registerPotions();
             
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.DROWNED, ModItems.DROWNED_HEAD.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.HUSK, ModItems.HUSK_HEAD.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.STRAY, ModItems.STRAY_SKULL.get());
+            CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.BLAZE, ModItems.BLAZE_HEAD.get());
             
             Network.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
             Network.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
@@ -81,6 +87,18 @@ public class FMLCommonSetup {
         DispenserBlock.registerBehavior(ModItems.DROWNED_HEAD, dispenseitembehavior);
         DispenserBlock.registerBehavior(ModItems.HUSK_HEAD, dispenseitembehavior);
         DispenserBlock.registerBehavior(ModItems.STRAY_SKULL, dispenseitembehavior);
+        DispenserBlock.registerBehavior(ModItems.BLAZE_HEAD, dispenseitembehavior);
+    }
+    
+    private static void registerPotions() {
+        addPotionMix(ModPotions.ANGLERS_LUCK.get(), ModItems.ANCIENT_FRUIT.get(), ModPotions.LONG_ANGLERS_LUCK.get(), ModPotions.STRONG_ANGLERS_LUCK.get());
+        addPotionMix(ModPotions.LURING.get(), ModItems.FROG_LEGS.get(), ModPotions.LONG_LURING.get(), ModPotions.STRONG_LURING.get());
+    }
+    
+    private static void addPotionMix(Potion potion, Item input, Potion longV, Potion strongV) {
+        PotionBrewing.addMix(Potions.AWKWARD, input, potion);
+        PotionBrewing.addMix(potion, Items.REDSTONE, longV);
+        PotionBrewing.addMix(potion, Items.GLOWSTONE_DUST, strongV);
     }
 
     private static void setupCharmSlots() {

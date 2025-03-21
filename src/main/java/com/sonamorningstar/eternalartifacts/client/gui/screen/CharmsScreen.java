@@ -20,8 +20,6 @@ public class CharmsScreen extends AbstractModContainerScreen<CharmsMenu> {
 
     public CharmsScreen(CharmsMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        setModular(true);
-        setImageSize(176, 166);
         this.inventoryLabelY = this.imageHeight - 92;
     }
 

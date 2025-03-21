@@ -11,6 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -67,7 +68,7 @@ public final class ModHooks {
             AppleSkinCompat.run(modEventBus);
         }
         if (emiLoaded) {
-            EmiCompat.runData();
+            if(ModLoader.isDataGenRunning()) EmiCompat.runData();
         }
     }
 

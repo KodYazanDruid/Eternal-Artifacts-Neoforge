@@ -45,6 +45,7 @@ public class FMLClientSetup {
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.DROWNED, new ResourceLocation("textures/entity/zombie/drowned.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.HUSK, new ResourceLocation("textures/entity/zombie/husk.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.STRAY, new ResourceLocation("textures/entity/skeleton/stray.png"));
+        SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.BLAZE, new ResourceLocation("textures/entity/blaze.png"));
     }
 
     private static void registerItemProperty(DeferredHolder<Item, ? extends Item> holder, String prefix) {

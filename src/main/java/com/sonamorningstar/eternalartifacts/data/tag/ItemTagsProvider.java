@@ -106,7 +106,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(Tags.Items.HEADS).add(
             ModItems.DROWNED_HEAD.get(),
             ModItems.HUSK_HEAD.get(),
-            ModItems.STRAY_SKULL.get()
+            ModItems.STRAY_SKULL.get(),
+            ModItems.BLAZE_HEAD.get()
         );
 
         tag(ItemTags.SWORDS).add(

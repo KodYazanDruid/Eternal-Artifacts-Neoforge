@@ -40,6 +40,7 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         useParent(ModBlocks.DROWNED_HEAD, ModelTemplates.SKULL_INVENTORY);
         useParent(ModBlocks.HUSK_HEAD, ModelTemplates.SKULL_INVENTORY);
         useParent(ModBlocks.STRAY_SKULL, ModelTemplates.SKULL_INVENTORY);
+        useParent(ModBlocks.BLAZE_HEAD, ModelTemplates.SKULL_INVENTORY);
 
         createBEWLRTransforms(ModItems.FIREBALL_TOME);
         createSpellTome(ModItems.EVOKERS_TOME);

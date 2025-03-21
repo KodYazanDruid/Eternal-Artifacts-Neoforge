@@ -62,6 +62,9 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FancyChestBlockEntity>> FANCY_CHEST = BLOCK_ENTITIES.register("fancy_chest", () ->
             BlockEntityType.Builder.of(FancyChestBlockEntity::new, ModBlocks.FANCY_CHEST.get()).build(null));
     
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MachineWorkbenchBlockEntity>> MACHINE_WORKBENCH = BLOCK_ENTITIES.register("machine_workbench", () ->
+            BlockEntityType.Builder.of(MachineWorkbenchBlockEntity::new, ModBlocks.MACHINE_WORKBENCH.get()).build(null));
+    
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ModSkullBlockEntity>> SKULL = BLOCK_ENTITIES.register("skull", () ->
             BlockEntityType.Builder.of(ModSkullBlockEntity::new,
                 ModBlocks.DROWNED_HEAD.get(),
@@ -69,7 +72,9 @@ public class ModBlockEntities {
                 ModBlocks.HUSK_HEAD.get(),
                 ModBlocks.HUSK_WALL_HEAD.get(),
                 ModBlocks.STRAY_SKULL.get(),
-                ModBlocks.STRAY_WALL_SKULL.get()
+                ModBlocks.STRAY_WALL_SKULL.get(),
+                ModBlocks.BLAZE_HEAD.get(),
+                ModBlocks.BLAZE_WALL_HEAD.get()
             ).build(null));
 
 }

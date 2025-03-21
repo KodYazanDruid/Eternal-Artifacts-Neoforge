@@ -16,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
     public BlueprintScreen(BlueprintMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
+        renderEffects = false;
     }
 
     @Override

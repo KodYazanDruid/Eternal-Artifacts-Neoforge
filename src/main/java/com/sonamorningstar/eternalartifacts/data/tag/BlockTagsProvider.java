@@ -29,8 +29,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.BOOK_DUPLICATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BIOFURNACE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RESONATOR.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.GARDENING_POT.get(), "", "pickaxe");
-        tierAndTool(ModBlocks.GARDENING_POT.get(), "", "axe");
         tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "", "pickaxe");
         tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "", "shovel");
@@ -83,16 +81,18 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.SHOCK_ABSORBER.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.TESSERACT.get(), "diamond", "pickaxe");
         tierAndTool(ModBlocks.TRASH_CAN.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.MACHINE_WORKBENCH.get(), "stone", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
-                ModBlocks.MACHINE_BLOCK.get(),
-                ModBlocks.RESONATOR.get(),
-                ModBlocks.ANVILINATOR.get(),
-                ModBlocks.BOOK_DUPLICATOR.get(),
-                ModBlocks.BATTERY_BOX.get(),
-                ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
-                ModBlocks.NOUS_TANK.get(),
-                ModBlocks.SHOCK_ABSORBER.get()
+            ModBlocks.MACHINE_BLOCK.get(),
+            ModBlocks.RESONATOR.get(),
+            ModBlocks.ANVILINATOR.get(),
+            ModBlocks.BOOK_DUPLICATOR.get(),
+            ModBlocks.BATTERY_BOX.get(),
+            ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
+            ModBlocks.NOUS_TANK.get(),
+            ModBlocks.SHOCK_ABSORBER.get(),
+            ModBlocks.MACHINE_WORKBENCH.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);

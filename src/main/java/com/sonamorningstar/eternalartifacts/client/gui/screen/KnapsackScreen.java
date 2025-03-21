@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Inventory;
 public class KnapsackScreen extends AbstractModContainerScreen<KnapsackMenu> {
     public KnapsackScreen(KnapsackMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        setModular(true);
         int column = Config.KNAPSACK_SLOT_IN_ROW.get();
         int knapsackSize = menu.slots.size() - 36;
         int rowSize = 4;

@@ -47,6 +47,12 @@ public final class GuiDrawer {
         drawTiledBackground(gui, dark_edge, textureRL, x, y, width, height, 16, 16, 16, 16, 3);
     }
     
+    public static void drawTiledBackground(GuiGraphics gui, String textureName, int x, int y, int width, int height) {
+        String[] split = textureName.split(":");
+        ResourceLocation textureRL = new ResourceLocation(split[0], "textures/" + split[1] + ".png");
+        drawTiledBackground(gui, dark_edge, textureRL, x, y, width, height, 16, 16, 16, 16, 3);
+    }
+    
     public static void drawTiledBackground(
         GuiGraphics gui, ResourceLocation edgeTexture, ResourceLocation insideTexture,
         int x, int y, int width, int height, int textureWidth, int textureHeight,
@@ -57,6 +63,19 @@ public final class GuiDrawer {
         blitInside(gui, insideTexture, x + edgeWidth, y + edgeWidth,
             width - 2 * edgeWidth, height - 2 * edgeWidth, textureWidth, textureHeight,
             totalSpriteWidth, totalSpriteHeight, 0);
+    }
+    
+    public static void drawFramedBackground(GuiGraphics gui, int x, int y, int width, int height, int edgeThickness,
+                                            int insideColor, int edgeColor) {
+        drawFramedBackground(gui, x, y, width, height, edgeThickness, insideColor, edgeColor, edgeColor);
+    }
+    public static void drawFramedBackground(GuiGraphics gui, int x, int y, int width, int height, int edgeThickness,
+                                    int insideColor, int edgeColor1, int edgeColor2) {
+        gui.fillGradient(x, y, x + width - edgeThickness, y + edgeThickness, edgeColor1, edgeColor1);
+        gui.fillGradient(x, y, x + edgeThickness, y + height, edgeColor1, edgeColor1);
+        gui.fillGradient(x + width - edgeThickness, y, x + width, y + height, edgeColor2, edgeColor2);
+        gui.fillGradient(x + edgeThickness, y + height - edgeThickness, x + width, y + height, edgeColor2, edgeColor2);
+        gui.fillGradient(x + edgeThickness, y + edgeThickness, x + width - edgeThickness, y + height - edgeThickness, insideColor, insideColor);
     }
     
     public static void drawItemSlot(GuiGraphics gui, int x, int y) {

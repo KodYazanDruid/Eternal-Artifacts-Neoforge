@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
+import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -34,6 +35,12 @@ public class WrenchItem extends DiggerItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        
+        var map = PlayerMorphUtil.MORPH_MAP;
+        
+        if (!level.isClientSide) {
+            map.forEach((sp, et) -> System.out.println(sp + " " + et));
+        }
         
         return super.use(level, player, hand);
     }

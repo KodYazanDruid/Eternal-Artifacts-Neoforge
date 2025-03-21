@@ -37,8 +37,6 @@ public class PortableBatteryScreen extends AbstractModContainerScreen<PortableBa
 
     public PortableBatteryScreen(PortableBatteryMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
-        setModular(true);
-        setImageSize(176, 166);
         this.inventoryLabelY = this.imageHeight - 92;
     }
 

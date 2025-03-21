@@ -79,6 +79,7 @@ public class ClientProxy {
                 living.setData(ModDataAttachments.CHARMS, charms);
                 TabHandler tabs = TabHandler.INSTANCE;
                 if (tabs != null) tabs.reloadTabs();
+                charms.invalidateMorph();
             }
         });
     }

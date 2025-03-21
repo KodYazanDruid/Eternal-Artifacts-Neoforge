@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.api.morph;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
-import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.EntityExposer;
@@ -29,7 +28,6 @@ import java.util.Map;
 
 public class MobModelRenderer {
 	private static final Minecraft mc = Minecraft.getInstance();
-	private static final Collection<Item> HEADS = CutlassModifier.ENTITY_HEAD_MAP.values();
 	
 	@SubscribeEvent
 	public static void playerRenderPre(RenderPlayerEvent.Pre event) {
@@ -40,18 +38,14 @@ public class MobModelRenderer {
 			mc.getConnection().getPlayerInfo(player.getUUID()).getGameMode() == GameType.SPECTATOR)
 			return;
 		
-		ItemStack headCharm = CharmManager.findCharm(player, st -> !st.is(Items.DRAGON_HEAD) && HEADS.contains(st.getItem()));
-		if (!headCharm.isEmpty()) {
-			EntityType<? extends LivingEntity> entityType = getEntityType(headCharm);
-			
-			if (entityType != null) {
-				renderEntityModel(entityType, player, event);
-				event.setCanceled(true);
-			}
+		mc.getEntityRenderDispatcher().setRenderShadow(false);
+		if (renderEntityModel(player, event)) {
+			event.setCanceled(true);
+			mc.getEntityRenderDispatcher().setRenderShadow(true);
 		}
 	}
 	
-	private static @Nullable EntityType<? extends LivingEntity> getEntityType(ItemStack headCharm) {
+	public static @Nullable EntityType<? extends LivingEntity> getEntityType(ItemStack headCharm) {
 		EntityType<? extends LivingEntity> entityType = null;
 		for (Map.Entry<EntityType<? extends LivingEntity>, Item> entry : CutlassModifier.ENTITY_HEAD_MAP.entrySet()) {
 			if (!headCharm.is(Items.DRAGON_HEAD) && headCharm.is(entry.getValue())) {
@@ -61,18 +55,15 @@ public class MobModelRenderer {
 		return entityType;
 	}
 	
-	private static void renderEntityModel(EntityType<? extends LivingEntity> entityType, Player player, RenderPlayerEvent event) {
+	@Nullable
+	public static LivingEntity dummy = null;
+	private static boolean renderEntityModel(Player player, RenderPlayerEvent event) {
+		if (dummy == null) return false;
+		
 		PoseStack pose = event.getPoseStack();
 		MultiBufferSource buffer = event.getMultiBufferSource();
 		int packedLight = event.getPackedLight();
 		float partialTick = event.getPartialTick();
-		
-		LivingEntity dummy = PlayerMorphUtil.MORPH_MAP.get(player);
-		if (dummy == null) {
-			dummy = PlayerMorphUtil.MORPH_MAP.put(player, entityType.create(player.level()));
-		}
-		if (dummy == null) return;
-		Class<? extends LivingEntity> entityClass = dummy.getClass();
 		
 		dummy.tickCount = player.tickCount;
 		dummy.deathTime = player.deathTime;
@@ -100,7 +91,7 @@ public class MobModelRenderer {
 		dummy.walkDistO = player.walkDistO;
 		dummy.moveDist = player.moveDist;
 		dummy.nextStep = player.nextStep;
-		dummy.setPos(player.getX(), player.getY(), player.getZ());
+		dummy.setPosRaw(player.getX(), player.getY(), player.getZ());
 		dummy.setPose(player.getPose());
 		dummy.setDeltaMovement(player.getDeltaMovement());
 		dummy.setXRot(player.getXRot());
@@ -125,6 +116,7 @@ public class MobModelRenderer {
 			CharmStorage.get(dummy).setStackInSlot(i, CharmStorage.get(player).getStackInSlot(i));
 		}
 		
+		Class<? extends LivingEntity> entityClass = dummy.getClass();
 		try {
 			Field dummyAnimField = entityClass.getField("walkAnimation");
 			dummyAnimField.setAccessible(true);
@@ -173,6 +165,7 @@ public class MobModelRenderer {
 		assert player instanceof AbstractClientPlayer;
 		setupDummyRotations((AbstractClientPlayer) player, dummy, pose, partialTick);
 		mc.getEntityRenderDispatcher().render(dummy, 0, 0, 0, yaw, partialTick, pose, buffer, packedLight);
+		return true;
 	}
 	
 	public static void setupDummyRotations(AbstractClientPlayer host, LivingEntity dummy, PoseStack pose, float partialTick) {

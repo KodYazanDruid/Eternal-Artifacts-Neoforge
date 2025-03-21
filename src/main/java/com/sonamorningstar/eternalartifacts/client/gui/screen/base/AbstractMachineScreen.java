@@ -25,20 +25,23 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
 
     public AbstractMachineScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
+        renderEffects = false;
     }
+    
+    protected void renderExtra(GuiGraphics gui, int mx, int my, float partialTick) {}
 
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         inventoryLabelX = 46;
         super.render(gui, mx, my, partialTick);
-        renderEnergyTooltip(gui, mx, my);
-        renderFluidTooltip(gui, mx, my);
+        if (menu.getBeEnergy() != null) renderEnergyTooltip(gui, mx, my);
+        if (menu.getBeTank() != null) renderFluidTooltip(gui, mx, my);
+        renderExtra(gui, mx, my, partialTick);
         renderTooltip(gui, mx, my);
     }
 
     private void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
-        if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my) &&
-                menu.getBeEnergy() != null) {
+        if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my)) {
             gui.renderTooltip(font,
                     Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
                             .append(String.valueOf(menu.getBeEnergy().getEnergyStored())).append("/").append(String.valueOf(menu.getBeEnergy().getMaxEnergyStored())),
@@ -47,8 +50,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     }
     private void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
         fluidLocs.forEach( (tank, fluidLoc) -> {
-            if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my) &&
-                    menu.getBeTank() != null) {
+            if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
                 gui.renderTooltip(font,
                         Component.translatable(ModConstants.GUI.withSuffix("fluid")).append(": ").append(menu.getBeTank().getFluidInTank(tank).getDisplayName()).append(" ")
                                 .append(String.valueOf(menu.getBeTank().getFluidInTank(tank).getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))),

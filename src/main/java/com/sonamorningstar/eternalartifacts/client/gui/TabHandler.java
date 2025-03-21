@@ -32,6 +32,8 @@ public class TabHandler {
     public List<TabType<?>> activeTabs = new ArrayList<>();
     @Nullable
     public TabType<?> currentTab = ModInventoryTabs.INVENTORY.get();
+    public int xOff = 4;
+    public int yOff = -28;
 
     public boolean requested = false;
 
@@ -64,11 +66,11 @@ public class TabHandler {
 
     public void renderTabs(GuiGraphics gui, int x, int y) {
         for (int i = 0; i < activeTabs.size(); i++) {
-            int yPos = y - 28;
+            int yPos = y + yOff;
             TabType<?> inventoryTab = activeTabs.get(i);
             ResourceLocation sprite = inventoryTab == currentTab ? SELECTED : UNSELECTED;
             int height = inventoryTab == currentTab ? 32 : 28;
-            gui.blitSprite(sprite, x + 4 + 27 * i, yPos, 26, height);
+            gui.blitSprite(sprite, x + xOff + 27 * i, yPos, 26, height);
             renderItemAndDecorations(gui, inventoryTab.getIcon().get().getDefaultInstance(), x + 9 + (27 * i), yPos + 8);
         }
     }

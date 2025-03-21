@@ -3,6 +3,8 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
+import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -43,11 +45,15 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -157,6 +163,7 @@ public class CommonEvents {
                     }
                 }
             }
+            
         }
     }
 
@@ -249,6 +256,7 @@ public class CommonEvents {
         if (!dispenser.isEmpty() && !player.isCrouching() && level instanceof ServerLevel sl && !cd.isOnCooldown(Items.DISPENSER)) {
             ItemEntity itemEntity = event.getEntity();
             ItemStack thrown = itemEntity.getItem();
+            if (thrown.getCount() > 1) return;
             DispenseItemBehavior dispenseMethod = DispenserBlock.DISPENSER_REGISTRY.get(thrown.getItem());
             if (dispenseMethod != DispenseItemBehavior.NOOP) {
                 Direction playerFacing = PlayerHelper.getFacingDirection(player);
@@ -315,8 +323,42 @@ public class CommonEvents {
     @SubscribeEvent
     public static void entityJoinWorld(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
+        
         if (entity instanceof Player player && !player.level().isClientSide)
             CharmStorage.get(player).syncSelf();
+        
+        if (entity instanceof AbstractArrow arrow) {
+            Entity owner = arrow.getOwner();
+            if (owner instanceof ServerPlayer sp) {
+                EntityType<?> morph = PlayerMorphUtil.MORPH_MAP.get(sp);
+                if (morph == EntityType.WITHER_SKELETON) {
+                    arrow.setSecondsOnFire(100);
+                } else if (morph == EntityType.STRAY && arrow instanceof Arrow arr) {
+                    arr.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600));
+                    arr.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                }
+            }
+        }
+        
+        if (entity instanceof FishingHook hook) {
+            Entity owner = hook.getOwner();
+            if (owner instanceof LivingEntity living) {
+                if (living.hasEffect(ModEffects.ANGLERS_LUCK.get())) {
+                    hook.luck += living.getEffect(ModEffects.ANGLERS_LUCK.get()).getAmplifier() + 1;
+                }
+                if (living.hasEffect(ModEffects.LURING.get())) {
+                    hook.lureSpeed += living.getEffect(ModEffects.LURING.get()).getAmplifier() + 1;
+                }
+            }
+        }
+        
+        if (entity instanceof ItemEntity itemEntity) {
+            ItemStack stack = itemEntity.getItem();
+            if (stack.getEnchantmentLevel(ModEnchantments.EVERLASTING.get()) > 0) {
+                itemEntity.setUnlimitedLifetime();
+            }
+        }
+        
     }
     @SubscribeEvent
     public static void playerChangeDimensionsEvent(PlayerEvent.PlayerChangedDimensionEvent event) {
@@ -398,10 +440,14 @@ public class CommonEvents {
     public static void livingAttackEvent(LivingAttackEvent event) {
         LivingEntity entity = event.getEntity();
         DamageSource source = event.getSource();
-        ItemStack tool = source.getDirectEntity() instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
+        Entity attacker = source.getDirectEntity();
+        ItemStack tool = attacker instanceof LivingEntity living ? living.getMainHandItem() : ItemStack.EMPTY;
         int lvl = tool.getEnchantmentLevel(ModEnchantments.MELTING_TOUCH.get());
         if (lvl > 0) {
             entity.setSecondsOnFire(lvl * 4);
+        }
+        if (attacker instanceof ServerPlayer sp && PlayerMorphUtil.MORPH_MAP.get(sp) == EntityType.WITHER_SKELETON) {
+            entity.addEffect(new MobEffectInstance(MobEffects.WITHER, 200), attacker);
         }
     }
     
@@ -415,6 +461,18 @@ public class CommonEvents {
             }
         }
     }
+    
+    /*@SubscribeEvent
+    public static void getProjectileEvent(LivingGetProjectileEvent event) {
+        LivingEntity entity = event.getEntity();
+        ItemStack projectile = event.getProjectileItemStack();
+        if (entity instanceof ServerPlayer sp) {
+            EntityType<?> morph = PlayerMorphUtil.MORPH_MAP.get(sp);
+            if (morph == EntityType.WITHER_SKELETON) {
+            
+            }
+        }
+    }*/
 
     @SubscribeEvent
     public static void useEvent(UseItemOnBlockEvent event) {

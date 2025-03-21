@@ -1,9 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.content.enchantment.MeltingTouchEnchantment;
-import com.sonamorningstar.eternalartifacts.content.enchantment.SoulboundEnchantment;
-import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
-import com.sonamorningstar.eternalartifacts.content.enchantment.VolumeEnchantment;
+import com.sonamorningstar.eternalartifacts.content.enchantment.*;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +20,7 @@ public class ModEnchantments {
     public static final DeferredHolder<Enchantment, VersatilityEnchantment> VERSATILITY = ENCHANTMENTS.register("versatility", VersatilityEnchantment::new);
     public static final DeferredHolder<Enchantment, SoulboundEnchantment> SOULBOUND = ENCHANTMENTS.register("soulbound", SoulboundEnchantment::new);
     public static final DeferredHolder<Enchantment, MeltingTouchEnchantment> MELTING_TOUCH = ENCHANTMENTS.register("melting_touch", MeltingTouchEnchantment::new);
+    public static final DeferredHolder<Enchantment, EverlastingEnchantment> EVERLASTING = ENCHANTMENTS.register("everlasting", EverlastingEnchantment::new);
 
     public static class ModEnchantmentCategory{
         public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {
@@ -30,8 +29,9 @@ public class ModEnchantments {
                 || VolumeEnchantment.isAcceptedItem.test(stack)) && !VolumeEnchantment.isBlacklistedItem.test(stack);
         });
         public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("versatility", VersatilityEnchantment.acceptedItems);
-        public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1);
-
+        public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1 || item instanceof MachineBlockItem);
+        public static final EnchantmentCategory EVERLASTING = EnchantmentCategory.create("everlasting", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1 || item instanceof MachineBlockItem);
+        
         private static boolean hasAnyCapability(ItemStack stack) {
             return hasEnergy(stack) || hasInventory(stack) || hasTank(stack);
         }

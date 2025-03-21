@@ -1,8 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.content.effect.DivineProtectionEffect;
-import com.sonamorningstar.eternalartifacts.content.effect.FlightEffect;
-import com.sonamorningstar.eternalartifacts.content.effect.MaladyEffect;
+import com.sonamorningstar.eternalartifacts.content.effect.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -25,4 +23,7 @@ public class ModEffects {
                     .addAttributeModifier(Attributes.MAX_ABSORPTION, "e1b4a353-c7a2-4d4d-b696-09948785c84d", 20, AttributeModifier.Operation.ADDITION)
                     .addAttributeModifier(Attributes.MOVEMENT_SPEED, "af11528e-ace4-4f6d-83f6-fcc76d279b7f", 0.3, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final DeferredHolder<MobEffect, MobEffect> MALADY = EFFECTS.register("malady", ()-> new MaladyEffect(MobEffectCategory.HARMFUL, 0x525c49));
+    public static final DeferredHolder<MobEffect, MobEffect> ANGLERS_LUCK = EFFECTS.register("anglers_luck", ()-> new AnglersLuckEffect(MobEffectCategory.BENEFICIAL, 0x22293b));
+    public static final DeferredHolder<MobEffect, MobEffect> LURING = EFFECTS.register("luring", ()-> new LuringEffect(MobEffectCategory.BENEFICIAL, 0x226e8c));
+
 }

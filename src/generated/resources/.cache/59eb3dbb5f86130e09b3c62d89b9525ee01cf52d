@@ -1,4 +1,4 @@
-// 1.20.4	2025-03-04T21:09:04.5554109	Loot Tables
+// 1.20.4	2025-03-17T21:38:26.8203098	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 5cdbfe04b08c9f529ff4b380190c0481143a16b5 data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
@@ -6,6 +6,7 @@ acfc4d4639ec935c4783404ede72c985f5b780dd data/eternalartifacts/loot_tables/block
 2c5af1b1d184584de696c7ef1f523c7632141761 data/eternalartifacts/loot_tables/blocks/asphalt_block.json
 36ca95d5a27e4973bb62b7fa8a8bb30ca07c612c data/eternalartifacts/loot_tables/blocks/battery_box.json
 4594d509f40e399f22164eb84b091f336ac3d90a data/eternalartifacts/loot_tables/blocks/biofurnace.json
+d56d083c76065cf84c9bfd5b1e2585259c5044b2 data/eternalartifacts/loot_tables/blocks/blaze_head.json
 9017b5701129d4acebbb6526d527fc6b75af385e data/eternalartifacts/loot_tables/blocks/blue_plastic_cauldron.json
 c2687d765bf9bbf3552b94a01f47b222a6d54050 data/eternalartifacts/loot_tables/blocks/book_duplicator.json
 9d01bcc4e1a29b5bb7b531fab8a6555e2266a468 data/eternalartifacts/loot_tables/blocks/charcoal_block.json
@@ -49,6 +50,7 @@ a709af7db8afbcad6df2b635fb76c314cd37f548 data/eternalartifacts/loot_tables/block
 f8fae0081f4b1e76be661983cf1e472e47ec89c4 data/eternalartifacts/loot_tables/blocks/jar.json
 aa1c0b1a5edffd2b76901862d04388f9b6b2cefe data/eternalartifacts/loot_tables/blocks/layered_prismarine.json
 7083b03ba6d338c8ea57d3f694a207337198a836 data/eternalartifacts/loot_tables/blocks/machine_block.json
+5d84b840b6fde0b410f3257a169232ef61be7251 data/eternalartifacts/loot_tables/blocks/machine_workbench.json
 9aa6bec51d6f13d2cc99bdea00559005452c61c6 data/eternalartifacts/loot_tables/blocks/manganese_ore.json
 31a42aea2f0147181c097fe15f8a12b2ca883f49 data/eternalartifacts/loot_tables/blocks/manganese_oreberry.json
 252e1fbe6e66b8dd41eb993d4d1d7545b363018e data/eternalartifacts/loot_tables/blocks/marin_block.json

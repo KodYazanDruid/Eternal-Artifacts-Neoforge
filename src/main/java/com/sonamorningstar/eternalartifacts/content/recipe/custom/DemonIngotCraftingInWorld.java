@@ -18,7 +18,7 @@ import java.util.Map;
 public class DemonIngotCraftingInWorld {
     private static final Map<Item, ItemStack> candidates = Map.of(
             Items.GOLD_INGOT, ModItems.DEMON_INGOT.toStack(),
-            Items.GOLD_BLOCK, ModBlocks.DEEPSLATE_MANGANESE_ORE.toStack()
+            Items.GOLD_BLOCK, ModBlocks.DEMON_BLOCK.toStack()
     );
 
     public static boolean isInCorrectEnvironment(BlockPos pos, Level level) {

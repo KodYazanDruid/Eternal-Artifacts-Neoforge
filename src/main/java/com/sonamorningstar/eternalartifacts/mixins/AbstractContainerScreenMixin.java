@@ -22,7 +22,7 @@ public class AbstractContainerScreenMixin<T extends AbstractContainerMenu> exten
         super(pTitle);
     }
 
-    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseClicked", at = @At("TAIL"), cancellable = true)
     private void mouseClicked(double mx, double my, int button, CallbackInfoReturnable<Boolean> cir) {
         if (Config.CHARMS_ENABLED.getAsBoolean()){
             TabHandler instance = TabHandler.INSTANCE;

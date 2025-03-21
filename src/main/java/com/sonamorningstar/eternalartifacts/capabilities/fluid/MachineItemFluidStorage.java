@@ -48,7 +48,7 @@ public class MachineItemFluidStorage extends AbstractFluidTank implements IFluid
             CompoundTag entry = tanksList.getCompound(i);
             FluidStack stack = FluidStack.loadFluidStackFromNBT(entry);
             int tankNo = entry.getInt("TankNo");
-            AbstractFluidTank tank = new ModFluidStorage(stack.getAmount());
+            AbstractFluidTank tank = new ModFluidStorage(entry.getInt("TankSize"));
             tank.setFluid(stack, 0);
             tanks.add(tankNo, tank);
         }
@@ -62,6 +62,7 @@ public class MachineItemFluidStorage extends AbstractFluidTank implements IFluid
             FluidStack stack = tank.getFluidInTank(0);
             stack.writeToNBT(entry);
             entry.putInt("TankNo", i);
+            entry.putInt("TankSize", tank.getCapacity(0));
             tanksList.add(entry);
         }
         fluids.put("Tanks", tanksList);

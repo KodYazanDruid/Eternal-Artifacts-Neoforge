@@ -145,7 +145,8 @@ public class ModBlocks {
     public static final DeferredBlock<EnergyDockBlock> ENERGY_DOCK = registerWithBewlr("energy_dock",
             ()-> new EnergyDockBlock(Blocks.DEEPSLATE.properties().forceSolidOn()));
     public static final DeferredBlock<Block> SHOCK_ABSORBER = registerMachineWithItem("shock_absorber", ShockAbsorberBlock::new);
-
+    public static final DeferredBlock<Block> MACHINE_WORKBENCH = registerMachineWithItem("machine_workbench", MachineWorkbench::new);
+    
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
     public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 128000);
@@ -205,6 +206,10 @@ public class ModBlocks {
             ()-> new ModSkullBlock(ModSkullType.STRAY, BlockBehaviour.Properties.ofFullCopy(Blocks.SKELETON_SKULL)));
     public static final DeferredBlock<WallSkullBlock> STRAY_WALL_SKULL = registerNoItem("stray_wall_skull",
             ()-> new ModWallSkullBlock(ModSkullType.STRAY, BlockBehaviour.Properties.ofFullCopy(Blocks.SKELETON_WALL_SKULL).lootFrom(STRAY_SKULL)));
+    public static final DeferredBlock<SkullBlock> BLAZE_HEAD = registerNoItem("blaze_head",
+        ()-> new ModSkullBlock(ModSkullType.BLAZE, BlockBehaviour.Properties.ofFullCopy(Blocks.WITHER_SKELETON_SKULL)));
+    public static final DeferredBlock<WallSkullBlock> BLAZE_WALL_HEAD = registerNoItem("blaze_wall_head",
+        ()-> new ModWallSkullBlock(ModSkullType.BLAZE, BlockBehaviour.Properties.ofFullCopy(Blocks.WITHER_SKELETON_WALL_SKULL).lootFrom(BLAZE_HEAD)));
 
     //region Registry functions.
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }

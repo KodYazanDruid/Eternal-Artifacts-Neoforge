@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.*;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
@@ -29,6 +30,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
     public void register(EmiRegistry registry) {
         registry.addGenericDragDropHandler(new EADragDropHandler());
         registry.addRecipeHandler(ModMenuTypes.BLUEPRINT.get(), new BlueprintRecipeHandler());
+        registry.addGenericExclusionArea(new EAExclusionHandler());
 
         registry.addCategory(MeatPackerCategory.MEAT_PACKER_CATEGORY);
         registry.addCategory(MeatShredderCategory.MEAT_SHREDDER_CATEGORY);

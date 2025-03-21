@@ -53,6 +53,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createForParticle(ModBlocks.HUSK_WALL_HEAD, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.STRAY_SKULL, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.STRAY_WALL_SKULL, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.BLAZE_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.BLAZE_WALL_HEAD, Blocks.SOUL_SAND);
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 

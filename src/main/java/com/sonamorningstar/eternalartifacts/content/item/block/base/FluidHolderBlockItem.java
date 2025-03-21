@@ -84,6 +84,21 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
         if (fluidHandlerItem != null) return fluidHandlerItem.getFluidInTank(tank);
         return FluidStack.EMPTY;
     }
+    
+    protected FluidStack getMostAmountFluidStack(ItemStack stack) {
+        IFluidHandlerItem fluidHandlerItem = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (fluidHandlerItem != null) {
+            FluidStack mostAmountFluid = FluidStack.EMPTY;
+            for (int i = 0; i < fluidHandlerItem.getTanks(); i++) {
+                FluidStack tankFluid = fluidHandlerItem.getFluidInTank(i);
+                if (tankFluid.getAmount() >= mostAmountFluid.getAmount()) {
+                    mostAmountFluid = tankFluid;
+                }
+            }
+            return mostAmountFluid;
+        }
+        return FluidStack.EMPTY;
+    }
 
     protected MutableComponent getFluidName(ItemStack stack, int tank, boolean doColor) {
         Fluid fluid = getFluid(stack, tank);
@@ -109,21 +124,30 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        IFluidHandlerItem fluidHandlerItem = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        if (fluidHandlerItem != null) {
-            return (int) ((fluidHandlerItem.getFluidInTank(0).getAmount() / (float) fluidHandlerItem.getTankCapacity(0)) * 13);
+        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (handler != null) {
+            FluidStack fluid = FluidStack.EMPTY;
+            int index = 0;
+            for (int i = 0; i < handler.getTanks(); i++) {
+                FluidStack tankFluid = handler.getFluidInTank(i);
+                if (tankFluid.getAmount() >= fluid.getAmount()) {
+                    fluid = tankFluid;
+                    index = i;
+                }
+            }
+            return (handler.getFluidInTank(index).getAmount() / handler.getTankCapacity(index)) * 13;
         }
         return 0;
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return getFluidStack(stack, 0).getAmount() > 0 && !(stack.getCount() > 1);
+        return getMostAmountFluidStack(stack).getAmount() > 0 && !(stack.getCount() > 1);
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return BlockHelper.getFluidTintColor(getFluid(stack, 0));
+        return BlockHelper.getFluidTintColor(getMostAmountFluidStack(stack).getFluid());
     }
 
     @Override
@@ -138,7 +162,7 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
 
     protected static float getFluidLevel(ItemStack stack) {
         IFluidHandlerItem tank = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        return tank != null && tank.getTanks() > 0 ? tank.getFluidInTank(0).getAmount() / (float) tank.getTankCapacity(0) : 0;
+        return tank != null && tank.getTanks() > 0 ? ((float) tank.getFluidInTank(0).getAmount()) / tank.getTankCapacity(0) : 0;
     }
 
     @Override

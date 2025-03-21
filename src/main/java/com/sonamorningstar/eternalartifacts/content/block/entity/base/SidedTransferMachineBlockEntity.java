@@ -297,11 +297,11 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         return false;
     }
 
-    public boolean isItemsAllowed() {
+    public boolean areItemsAllowed() {
         return autoConfigs.get(2) == null || !autoConfigs.get(2);
     }
 
-    public boolean isFluidsAllowed() {
+    public boolean areFluidsAllowed() {
         return autoConfigs.get(3) == null || !autoConfigs.get(3);
     }
 

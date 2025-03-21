@@ -5,8 +5,11 @@ import com.google.common.collect.Multimap;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
+import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
+import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
@@ -14,6 +17,7 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import lombok.Getter;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -22,6 +26,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -34,11 +39,11 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 @Getter
 public class CharmStorage extends ItemStackHandler {
-    private final List<Consumer<Integer>> listeners = new ArrayList<>();
+    private final List<BiConsumer<LivingEntity, Integer>> listeners = new ArrayList<>();
     private final LivingEntity owner;
     public static final String WILDCARD_NBT = "CharmWildcard";
     // 12. slot is wildcard slot. Can hold any charm.
@@ -89,18 +94,30 @@ public class CharmStorage extends ItemStackHandler {
     }
     
     @Override
-    protected void onContentsChanged(int slot) {
+    public void onContentsChanged(int slot) {
         if (owner != null) {
-            if (owner instanceof Player) PlayerMorphUtil.MORPH_MAP.remove(owner);
+            invalidateMorph();
+            listeners.forEach(listener -> listener.accept(owner, slot));
             if (!owner.level().isClientSide){
                 syncSelfAndTracking(owner);
-                listeners.forEach(listener -> listener.accept(slot));
             }
         }
     }
 
-    public void addListener(Consumer<Integer> listener) {
+    public void addListener(BiConsumer<LivingEntity, Integer> listener) {
         listeners.add(listener);
+    }
+    
+    public void invalidateMorph() {
+        if (owner instanceof Player player) {
+            if(player instanceof AbstractClientPlayer) {
+                MobModelRenderer.dummy = PlayerMorphUtil.getMorphEntity(player);
+            } else if (player instanceof ServerPlayer sp) {
+                PlayerMorphUtil.MORPH_MAP.remove(sp);
+                var type = PlayerMorphUtil.getMorphType(player);
+                if (type != null) PlayerMorphUtil.MORPH_MAP.put(sp, type);
+            }
+        }
     }
 
     //region Sync
@@ -146,7 +163,6 @@ public class CharmStorage extends ItemStackHandler {
         }
     }
     //endregion
-    
     
     @Override
     public ItemStack getStackInSlot(int slot) {
@@ -265,6 +281,11 @@ public class CharmStorage extends ItemStackHandler {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
             }
         }
+        if(charm.getItem() instanceof KnapsackItem knapsack) {
+            if (VersatilityEnchantment.has(charm))
+                knapsack.inventoryTick(charm, living.level(), living, -1, false);
+        }
+        
         if (charm.getItem() instanceof MapItem mapItem) {
             mapItem.inventoryTick(charm, living.level(), living, -1, true);
         }

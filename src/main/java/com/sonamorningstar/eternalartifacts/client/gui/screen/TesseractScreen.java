@@ -29,9 +29,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	private DropdownMenu<ScrollablePanelComponent> capMenu;
 	public TesseractScreen(TesseractMenu menu, Inventory inv, Component title) {
 		super(menu, inv, title);
-		setModular(true);
 		setImageSize(240, 200);
 		setGuiTint(0x002f29);
+		renderEffects = false;
 	}
 	
 	@Override

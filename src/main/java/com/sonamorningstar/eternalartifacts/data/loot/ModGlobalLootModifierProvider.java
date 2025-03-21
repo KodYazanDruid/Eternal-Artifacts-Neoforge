@@ -76,7 +76,9 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                     LootTableIdCondition.builder(EntityType.ENDER_DRAGON.getDefaultLootTable()).build(),
                 }, List.of(ModItems.ANGELIC_HEART.get().getDefaultInstance()))
         );
-        add("cutlass", new CutlassModifier(new LootItemCondition[] {}));
+        add("cutlass", new CutlassModifier(new LootItemCondition[] {
+            LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS).build(),
+        }));
         add("smelting_drops", new SmeltDropsModifier(
             new LootItemCondition[]{
                 MatchTool.toolMatches(ItemPredicate.Builder.item()

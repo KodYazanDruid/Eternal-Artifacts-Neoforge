@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.BlockPos;
@@ -100,7 +101,8 @@ public class ModBlockEntity extends BlockEntity {
     
     public void loadEnchants(ListTag listTag) {
         enchantments.clear();
-        enchantments.putAll(EnchantmentHelper.deserializeEnchantments(listTag));
+        var enchs = EnchantmentHelper.deserializeEnchantments(listTag);
+        if (!enchs.isEmpty()) enchantments.putAll(enchs);
     }
     
     public int getEnchantmentLevel(Enchantment enchantment) {
@@ -264,6 +266,9 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
+        return createBasicInventory(size, isValid, slot -> 64);
+    }
+    protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid, Int2IntFunction slotLimit) {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -273,6 +278,11 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {
                 return isValid.test(slot, stack);
+            }
+            
+            @Override
+            public int getSlotLimit(int slot) {
+                return slotLimit.get(slot);
             }
         };
     }

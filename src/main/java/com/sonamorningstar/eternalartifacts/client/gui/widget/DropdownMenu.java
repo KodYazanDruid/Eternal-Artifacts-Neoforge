@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 @Getter
-public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget {
+public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget implements Overlapping {
 	private static final WidgetSprites SPRITES = new WidgetSprites(
 		new ResourceLocation("widget/text_field"), new ResourceLocation("widget/text_field_highlighted")
 	);
@@ -147,6 +147,7 @@ public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget {
 		dropPanel.visible = isMenuOpen;
 	}
 	
+	@Override
 	public boolean updateHover(double mx, double my) {
 		if (isMenuOpen) {
 			return dropPanel.updateHover(mx, my);

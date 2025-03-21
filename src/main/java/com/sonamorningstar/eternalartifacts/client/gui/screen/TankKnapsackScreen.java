@@ -25,7 +25,6 @@ import java.util.Optional;
 public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackMenu> {
     public TankKnapsackScreen(TankKnapsackMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
-        setModular(true);
         int knapsackSize = menu.fluidSlots.size();
         int rowSize = 4;
         rowSize += Mth.ceil((float) knapsackSize / menu.column);

@@ -4,7 +4,10 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -18,7 +21,17 @@ public class MachineFourWayBlock<T extends MachineBlockEntity<? extends Abstract
     public MachineFourWayBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> supplier) {
         super(pProperties, supplier);
     }
-
+    
+    @Override
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
+        return super.mirror(pState, pMirror);
+    }
+    
+    @Override
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
+        return super.rotate(pState, pRotation);
+    }
+    
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {

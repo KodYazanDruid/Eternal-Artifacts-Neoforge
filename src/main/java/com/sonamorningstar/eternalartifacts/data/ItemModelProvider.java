@@ -180,6 +180,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.GREEN_APPLE.get());
         basicItem(ModItems.YELLOW_APPLE.get());
         handheld(ModItems.SPAWNER_EXTRACTOR);
+        handheld(ModItems.BONE_SWORD);
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 
@@ -212,6 +213,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.ICE_BRICK_STAIRS);
         withExistingParent(ModBlocks.ICE_BRICK_WALL.getId().getPath(), modLoc("block/ice_brick_wall_inventory"));
         withParentBlock(ModBlocks.TRASH_CAN);
+        withParentBlock(ModBlocks.MACHINE_WORKBENCH);
 
         ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {

@@ -1,4 +1,4 @@
-// 1.20.4	2025-03-08T16:26:54.7560425	Item Models: eternalartifacts
+// 1.20.4	2025-03-20T13:39:21.9651028	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
@@ -19,6 +19,7 @@ c43326db2f6ef314a41073641fbed9216f9ed163 assets/eternalartifacts/models/item/bit
 1ffc3427c887c5d5c465a7e723f7a91153047c2b assets/eternalartifacts/models/item/blueprint.json
 4f3f04bd8fe76afcc7ef40bf91ea8543534c7b2b assets/eternalartifacts/models/item/blueprint_filled.json
 97c8edd3885a1a66a113fd397ebfd3371d838472 assets/eternalartifacts/models/item/blue_shulker_shell.json
+96b27d4376a39cb9393932cb873bdc28f44b91f8 assets/eternalartifacts/models/item/bone_sword.json
 99b2120fbccd04d0be8a7d1646939253c1873aa8 assets/eternalartifacts/models/item/brown_shulker_shell.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 6d52c2a913b67814033c91dc8ce2c6443b549d12 assets/eternalartifacts/models/item/charcoal_dust.json
@@ -121,6 +122,7 @@ e4acf132a04aa99a0cc05469c339029d09f9c091 assets/eternalartifacts/models/item/lig
 d608f92e218c867ca956bd52da4235eba06b49c2 assets/eternalartifacts/models/item/liquid_plastic_bucket.json
 96ceecf7541e5c363e94df98ec3b72b6921fac2f assets/eternalartifacts/models/item/lush_grubber.json
 9664ad295d909582390420bb3d51770238f428ad assets/eternalartifacts/models/item/machine_block.json
+d57e2fab6dd28b1bf8a7d82ce7a97b18d244da62 assets/eternalartifacts/models/item/machine_workbench.json
 e1e5614b7b7738e4dc34e48d69862a79ffacd30f assets/eternalartifacts/models/item/magenta_shulker_shell.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/magical_book_spawn_egg.json
 6afd025c41261b45f50dac602bcfc9762a50ff3c assets/eternalartifacts/models/item/magic_feather.json

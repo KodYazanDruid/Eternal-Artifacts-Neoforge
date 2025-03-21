@@ -5,7 +5,8 @@ import net.minecraft.world.level.block.SkullBlock;
 public enum ModSkullType implements SkullBlock.Type{
 	DROWNED("drowned"),
 	HUSK("husk"),
-	STRAY("stray");
+	STRAY("stray"),
+	BLAZE("blaze");
 	
 	private final String name;
 	

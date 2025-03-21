@@ -82,6 +82,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 if(fluidHandlerItem != null) nousTank.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 beRenderer.renderItem(nousTank, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
+                stack.getAllEnchantments().forEach(refinery::enchant);
                 if (fluidHandlerItem != null) {
                     refinery.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                     refinery.tank.setFluid(fluidHandlerItem.getFluidInTank(1), 1);

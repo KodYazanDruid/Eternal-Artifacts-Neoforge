@@ -45,6 +45,8 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
         if (!(entity instanceof MachineBlockEntity<?> machine)) return stack;
         Level level = ctx.getLevel();
         ItemStack tool = ctx.getParam(LootContextParams.TOOL);
+        var enchantments = machine.enchantments;
+        enchantments.forEach(stack::enchant);
         if (!tool.is(ModTags.Items.TOOLS_WRENCH)) return stack;
         CompoundTag nbt = stack.getOrCreateTag();
         IFluidHandler tankBe = level.getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);
@@ -60,6 +62,7 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
                 if (fluidStack.isEmpty()) continue;
                 fluidStack.writeToNBT(entry);
                 entry.putInt("TankNo", i);
+                entry.putInt("TankSize", tanki.getCapacity(0));
                 listTag.add(entry);
             }
             fluidNbt.put("Tanks", listTag);
@@ -80,11 +83,6 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
         CompoundTag additionalTag = new CompoundTag();
         machine.saveContents(additionalTag);
         nbt.put("MachineData", additionalTag);
-        /*ListTag enchants = new ListTag();
-        machine.saveEnchants(enchants);
-        nbt.put("Enchants", enchants);*/
-        var enchantments = machine.enchantments;
-        enchantments.forEach(stack::enchant);
         return stack;
     }
 

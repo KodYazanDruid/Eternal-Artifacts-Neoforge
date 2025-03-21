@@ -19,7 +19,7 @@ public class CharmsMenu extends TabMenu {
             else if (i != 12) addSlot(new SlotItemHandler(charms, i, calculateX(i), calculateY(i)));
         }
     }
-
+    
     private static int calculateX(int index) {
         int slide = index < 6 ? 0 : 87;
         return 27 + slide + (index % 2) * 18;

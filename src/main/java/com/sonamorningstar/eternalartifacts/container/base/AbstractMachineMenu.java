@@ -2,10 +2,7 @@ package com.sonamorningstar.eternalartifacts.container.base;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
 import lombok.Getter;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -17,20 +14,21 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalInt;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     @Getter
+    @Nullable
     protected final IItemHandler beInventory;
     @Getter
+    @Nullable
     protected final IEnergyStorage beEnergy;
     @Getter
+    @Nullable
     protected final IFluidHandler beTank;
     protected final Level level;
     @Getter

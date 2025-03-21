@@ -149,6 +149,8 @@ public class CommonModEvents {
         event.registerBlock(Capabilities.FluidHandler.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
         event.registerBlock(Capabilities.ItemHandler.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
         event.registerBlock(Capabilities.EnergyStorage.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
+        
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MACHINE_WORKBENCH.get(), (be, ctx) -> be.inventory);
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
