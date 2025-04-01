@@ -1,43 +1,41 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import lombok.Getter;
+import net.minecraft.Util;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
+import javax.annotation.Nullable;
+import java.util.*;
 
 @Getter
 public class RecipeCache {
-    private final MachineBlockEntity<?> machine;
-    //private static final Map<MachineBlockEntity<?>, Recipe<? extends Container>> recipeMap = new ConcurrentHashMap<>();
-    private static final Multimap<MachineBlockEntity<?>, Recipe<? extends Container>> recipeMap = HashMultimap.create();
-
-    public RecipeCache(MachineBlockEntity<?> machine) {
-        this.machine = machine;
+    private static final Map<MachineBlockEntity<?>, ArrayList<Recipe<? extends Container>>> recipeMap = new HashMap<>();
+    private static final Object2IntMap<MachineBlockEntity<?>> maxRecipeCounts = Util.make(new Object2IntOpenHashMap<>(),
+        map -> map.defaultReturnValue(1));
+    
+    public static void findRecipeFor(MachineBlockEntity<?> machine, RecipeType<? extends Recipe<? extends Container>> recipeType,
+                                     Container container, Level level, boolean allowDuplicate) {
+        findRecipeFor(machine, recipeType, container, level, allowDuplicate, -1);
     }
-
-    protected Recipe<? extends Container> recipe = null;
-    protected Container container = null;
-
-    @SuppressWarnings("unchecked")
-    public void findRecipe(RecipeType<? extends Recipe<? extends Container>> recipeType, Container container, Level level) {
+        
+        @SuppressWarnings("unchecked")
+    public static void findRecipeFor(MachineBlockEntity<?> machine, RecipeType<? extends Recipe<? extends Container>> recipeType,
+                                     Container container, Level level, boolean allowDuplicate, int index) {
         if(level == null || container.isEmpty()) {
-            recipe = null;
             return;
         }
 
-        if(recipeMap.containsKey(machine)) {
-            var recipes = recipeMap.get(machine);
-            for(var r : recipes) {
-                if(r.getType() == recipeType) {
-                    this.recipe = r;
-                    this.container = container;
+        var recipes = getCachedRecipes(machine);
+        if (!allowDuplicate){
+            for (var r : recipes) {
+                if (r.getType() == recipeType) {
                     return;
                 }
             }
@@ -48,22 +46,61 @@ public class RecipeCache {
 
         for(var r : recipeList) {
             if(r.matches(container, level)) {
-                this.recipe = r;
-                this.container = container;
-                recipeMap.put(machine, r);
+                ArrayList<Recipe<? extends Container>> machineRecipes = recipeMap.get(machine);
+                if (machineRecipes == null) {
+                    machineRecipes = new ArrayList<>();
+                    if (index >= 0 && index < maxRecipeCounts.getInt(machine)) {
+                        while (machineRecipes.size() <= index) {
+                            machineRecipes.add(null);
+                        }
+                        machineRecipes.set(index, r);
+                    } else if (index < 0) machineRecipes.add(r);
+                    recipeMap.put(machine, machineRecipes);
+                } else {
+                    if (index >= 0 && index < maxRecipeCounts.getInt(machine)) {
+                        while (machineRecipes.size() <= index) {
+                            machineRecipes.add(null);
+                        }
+                        machineRecipes.set(index, r);
+                    } else if (index < 0) machineRecipes.add(r);
+                }
                 return;
             }
         }
-
-        recipe = null;
+    }
+    
+    public static void setRecipeCount(MachineBlockEntity<?> machine, int count) {
+        maxRecipeCounts.put(machine, count);
     }
 
-    public <C extends Container,R extends Recipe<C>> R getRecipe(Class<R> recipeClass) {
-        return recipeClass.cast(recipe);
+    public static void clearRecipes(MachineBlockEntity<?> machine) {
+        recipeMap.remove(machine);
     }
-
-    public void clearRecipes(MachineBlockEntity<?> machine) {
-        recipeMap.removeAll(machine);
+    
+    public static void removeRecipe(MachineBlockEntity<?> machine, Recipe<? extends Container> recipe) {
+        var recipeArr = recipeMap.get(machine);
+        if (recipeArr != null) recipeArr.remove(recipe);
+    }
+    
+    public static void removeRecipe(MachineBlockEntity<?> machine, int index) {
+        var recipeArr = recipeMap.get(machine);
+        if (recipeArr != null && recipeArr.size() > index) recipeArr.set(index, null);
+    }
+    
+    @Nullable
+    public static Recipe<? extends Container> getCachedRecipe(MachineBlockEntity<?> machine) {
+        var recipeArr = recipeMap.get(machine);
+        return recipeArr != null && !recipeArr.isEmpty() ? recipeArr.get(0) : null;
+    }
+    
+    @Nullable
+    public static Recipe<? extends Container> getCachedRecipe(MachineBlockEntity<?> machine, int index) {
+        var recipeArr = recipeMap.get(machine);
+        return recipeArr != null && recipeArr.size() > index ? recipeMap.get(machine).get(index) : null;
+    }
+    
+    public static List<Recipe<? extends Container>> getCachedRecipes(MachineBlockEntity<?> machine) {
+        return recipeMap.get(machine) != null ? recipeMap.get(machine) : Collections.unmodifiableList(new ArrayList<>());
     }
 
     public static void clearCache() {

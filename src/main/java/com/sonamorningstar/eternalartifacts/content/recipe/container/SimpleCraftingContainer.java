@@ -31,8 +31,8 @@ public class SimpleCraftingContainer implements CraftingContainer {
     @Override
     public List<ItemStack> getItems() {
         List<ItemStack> items = new ArrayList<>();
-        for (int i = 0; i < inventory.getSlots(); i++) {
-            if (outputSlots.contains(i)) continue;
+        for (int i = 0; i < 9; i++) {
+            if (outputSlots.contains(i) || inventory.getSlots() > 9) continue;
             items.add(inventory.getStackInSlot(i));
         }
         return items;
@@ -49,16 +49,16 @@ public class SimpleCraftingContainer implements CraftingContainer {
     }
 
     @Override
-    public ItemStack getItem(int pSlot) {
-        return inventory.getStackInSlot(pSlot);
+    public ItemStack getItem(int slot) {
+        return slot >= 0 && slot < 9 ? inventory.getStackInSlot(slot) : ItemStack.EMPTY;
     }
 
     @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {
-        ItemStack extracted = inventory.getStackInSlot(pSlot);
+    public ItemStack removeItem(int slot, int amount) {
+        ItemStack extracted = getItem(slot);
         if (!extracted.isEmpty()) {
             setChanged();
-            inventory.setStackInSlot(pSlot, ItemStack.EMPTY);
+            inventory.setStackInSlot(slot, ItemStack.EMPTY);
             return extracted;
         }
         return ItemStack.EMPTY;

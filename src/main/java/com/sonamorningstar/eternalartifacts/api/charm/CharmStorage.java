@@ -9,7 +9,6 @@ import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEncha
 import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
-import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
@@ -26,7 +25,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;

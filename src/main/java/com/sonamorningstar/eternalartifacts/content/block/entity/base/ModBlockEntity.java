@@ -50,6 +50,9 @@ public class ModBlockEntity extends BlockEntity {
 
     protected void saveSynced(CompoundTag tag) {}
     
+    /**
+     * Used to update some variables like max progress, capacity etc.
+     */
     public void onEnchanted() {}
     
     @Override
@@ -257,7 +260,9 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                if (!outputSlots.contains(slot)) findRecipe();
+                if (!outputSlots.contains(slot)) {
+                    findRecipe();
+                }
                 ModBlockEntity.this.sendUpdate();
             }
 

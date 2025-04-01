@@ -1,10 +1,12 @@
 package com.sonamorningstar.eternalartifacts.network;
 
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
+import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
@@ -37,7 +39,7 @@ public record BlueprintUpdateSlotToServer(int containerId, int index, ItemStack 
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             AbstractContainerMenu menu = player.containerMenu;
             if (menu.containerId == containerId && menu instanceof BlueprintMenu blueprintMenu) {
-                blueprintMenu.getFakeItems().setItem(index, slotItem);
+                blueprintMenu.getPattern().getFakeItems().setItem(index, slotItem);
             }
         }));
     }

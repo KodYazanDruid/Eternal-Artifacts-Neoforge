@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.util;
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;

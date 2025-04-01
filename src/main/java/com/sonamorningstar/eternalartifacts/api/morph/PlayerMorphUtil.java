@@ -1,11 +1,9 @@
 package com.sonamorningstar.eternalartifacts.api.morph;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;

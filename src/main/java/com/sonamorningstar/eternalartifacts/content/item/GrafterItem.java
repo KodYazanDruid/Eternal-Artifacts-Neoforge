@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.core.ModTiers;
 import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.Tier;
 

@@ -1,15 +1,19 @@
 package com.sonamorningstar.eternalartifacts.container;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.container.slot.BlueprintFakeSlot;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
-import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleContainerCrafterWrapped;
+import com.sonamorningstar.eternalartifacts.content.recipe.blueprint.BlueprintPattern;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
+import com.sonamorningstar.eternalartifacts.network.BlueprintIngredientsToClient;
+import com.sonamorningstar.eternalartifacts.network.Channel;
 import lombok.Getter;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -17,17 +21,15 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.GameRules;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 
-import java.util.Optional;
+import java.util.List;
 
 @Getter
 public class BlueprintMenu extends AbstractModContainerMenu {
     private final ItemStack blueprint;
-    private final SimpleContainerCrafterWrapped fakeItems;
+    private BlueprintPattern pattern;
     private final SimpleContainer fakeResult;
     private final Player player;
     public BlueprintMenu(int id, Inventory inv, ItemStack blueprint) {
@@ -35,20 +37,19 @@ public class BlueprintMenu extends AbstractModContainerMenu {
         this.blueprint = blueprint;
         this.player = inv.player;
         addPlayerInventoryAndHotbar(inv, 8, 66);
-        NonNullList<ItemStack> fakeItemList = BlueprintItem.getFakeItems(blueprint);
-        fakeItems = new SimpleContainerCrafterWrapped(fakeItemList.toArray(ItemStack[]::new)) {
-            @Override
-            public void setChanged() {
-                super.setChanged();
-                BlueprintMenu.this.slotsChanged(this);
-            }
-        };
+        pattern = BlueprintItem.getPattern(blueprint);
+        pattern.getFakeItems().addListener(this::slotsChanged);
         addFakeSlots(30, 17);
         fakeResult = new SimpleContainer(1);
-        addSlot(new FakeSlot(fakeResult,0, 124, 35, true));
+        addSlot(new FakeSlot(fakeResult, 0, 124, 35, true));
         findRecipe();
     }
-
+    
+    @Override
+    public void initializeContents(int pStateId, List<ItemStack> pItems, ItemStack pCarried) {
+        super.initializeContents(pStateId, pItems, pCarried);
+    }
+    
     public static BlueprintMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf extraData) {
         return new BlueprintMenu(id, inv, extraData.readItem());
     }
@@ -57,20 +58,33 @@ public class BlueprintMenu extends AbstractModContainerMenu {
     public boolean stillValid(Player player) {
         return !player.isDeadOrDying();
     }
-
+    
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id == 0) {
+            BlueprintItem.toggleUseTags(blueprint);
+        }
+        return false;
+    }
+    
     private void addFakeSlots(int xOff, int yOff) {
         if (blueprint.getItem() instanceof BlueprintItem) {
-            for (int i = 0; i < fakeItems.getContainerSize(); i++) {
-                addSlot(new FakeSlot(fakeItems, i, xOff + (i % 3) * 18, yOff + (i / 3) * 18, false));
+            for (int i = 0; i < 9; i++) {
+                addSlot(new BlueprintFakeSlot(pattern, i, xOff + (i % 3) * 18, yOff + (i / 3) * 18, false));
             }
         }
     }
-
+    
     @Override
     public void slotsChanged(Container con) {
         super.slotsChanged(con);
-        if (con == fakeItems) {
-            BlueprintItem.updateFakeItems(blueprint, fakeItems.getItems());
+        if (con == pattern.getFakeItems()) {
+            BlueprintItem.updateFakeItems(blueprint, pattern.getFakeItems().getItems());
+            pattern = BlueprintItem.getPattern(blueprint);
+            pattern.getFakeItems().addListener(this::slotsChanged);
+            slots.stream().filter(s -> s instanceof BlueprintFakeSlot).forEach(s -> {
+                ((BlueprintFakeSlot) s).pattern = pattern;
+            });
             findRecipe();
         }
     }
@@ -78,28 +92,46 @@ public class BlueprintMenu extends AbstractModContainerMenu {
     private void findRecipe() {
         if (player instanceof ServerPlayer serverPlayer) {
             Level level = serverPlayer.level();
-            ItemStack result = ItemStack.EMPTY;
-            MinecraftServer server = level.getServer();
-            if (server == null) return;
-            Optional<RecipeHolder<CraftingRecipe>> optional = server.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, fakeItems, level);
-            if (optional.isPresent()) {
-                RecipeHolder<CraftingRecipe> recipeholder = optional.get();
-                CraftingRecipe craftingrecipe = recipeholder.value();
-                if (recipeChecks(level, recipeholder)) {
-                    ItemStack assembled = craftingrecipe.assemble(fakeItems, level.registryAccess());
-                    if (assembled.isItemEnabled(level.enabledFeatures())) {
-                        result = assembled;
+            if (!(level instanceof ServerLevel sl)) return;
+            ItemStack stack = ItemStack.EMPTY;
+			pattern.findRecipe(serverPlayer);
+            CraftingRecipe recipe = pattern.getRecipe();
+            if (recipe != null) {
+                ItemStack result = recipe.assemble(pattern.getFakeItems(), sl.registryAccess());
+                if (result.isItemEnabled(sl.enabledFeatures())) {
+                    stack = result;
+                }
+            }
+            if (!stack.isEmpty()) {
+                CompoundTag tag = blueprint.getOrCreateTag();
+                CompoundTag resultTag = new CompoundTag();
+                stack.save(resultTag);
+                tag.put("CachedResult", resultTag);
+            } else if (blueprint.hasTag()){
+                blueprint.removeTagKey("CachedResult");
+            }
+            synchIngredients(serverPlayer);
+            fakeResult.setItem(0, stack);
+            setRemoteSlot(slots.size() - 1, stack);
+            serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), slots.size() - 1, stack));
+        }
+    }
+    
+    public void synchIngredients(ServerPlayer serverPlayer) {
+        NonNullList<Ingredient> sorted = NonNullList.withSize(9, Ingredient.EMPTY);
+        NonNullList<Ingredient> ingredients = pattern.getIngredients();
+        for (int i = 0; i < 9; i++) {
+            ItemStack item = pattern.getFakeItems().getItem(i);
+            if (!item.isEmpty()) {
+                for (Ingredient ingredient : ingredients) {
+                    if (ingredient.test(item)) {
+                        sorted.set(i, ingredient);
+                        break;
                     }
                 }
             }
-            fakeResult.setItem(0, result);
-            setRemoteSlot(44, result);
-            serverPlayer.connection.send(new ClientboundContainerSetSlotPacket(containerId, incrementStateId(), 44, result));
         }
-    }
-
-    private boolean recipeChecks(Level level, RecipeHolder<?> recipe) {
-        return !(!recipe.value().isSpecial() && level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING));
+        Channel.sendToPlayer(new BlueprintIngredientsToClient(containerId, sorted), serverPlayer);
     }
 
     @Override

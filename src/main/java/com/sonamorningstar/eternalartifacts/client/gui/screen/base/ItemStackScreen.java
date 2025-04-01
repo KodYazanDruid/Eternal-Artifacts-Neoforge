@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class ItemStackScreen extends Screen {

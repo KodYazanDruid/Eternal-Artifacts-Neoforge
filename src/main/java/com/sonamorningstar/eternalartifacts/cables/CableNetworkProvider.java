@@ -9,8 +9,8 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class CableNetworkProvider {
     public static IEnergyStorage getCapability(Level lvl, BlockPos pos, BlockState state, Direction requested) {
-        if (!(state.getBlock() instanceof CableBlock cable) || requested == null) return null;
-        //CableNetwork network = new CableNetwork(lvl);
+		CableBlock cable = (CableBlock) state.getBlock();
+		//CableNetwork network = new CableNetwork(lvl);
         /*for (Direction direction : cable.getConnections(pos, lvl)) {
             BlockPos relative = pos.relative(direction);
             BlockState relativeState = lvl.getBlockState(relative);

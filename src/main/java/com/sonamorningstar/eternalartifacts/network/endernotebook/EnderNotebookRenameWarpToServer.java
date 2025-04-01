@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.network.endernotebook;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;

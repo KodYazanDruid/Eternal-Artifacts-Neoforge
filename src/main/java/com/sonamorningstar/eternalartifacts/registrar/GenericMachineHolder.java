@@ -5,12 +5,10 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMac
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
 
 public class GenericMachineHolder<BE extends GenericMachineBlockEntity> extends MachineDeferredHolder<GenericMachineMenu, BE, MachineFourWayBlock<BE>, MachineBlockItem>{
     public GenericMachineHolder(DeferredHolder<MenuType<?>, MenuType<GenericMachineMenu>> menu, DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntity,

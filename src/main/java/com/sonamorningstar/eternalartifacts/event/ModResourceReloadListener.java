@@ -1,12 +1,8 @@
 package com.sonamorningstar.eternalartifacts.event;
 
-import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
-import com.sonamorningstar.eternalartifacts.client.gui.overlay.HammeringRecipeOverlay;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.HammeringModifier;
-import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -14,7 +10,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Map;

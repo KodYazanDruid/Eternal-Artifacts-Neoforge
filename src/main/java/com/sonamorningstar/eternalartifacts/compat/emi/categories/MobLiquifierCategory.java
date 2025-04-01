@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
 public class MobLiquifierCategory extends EAEmiRecipe {
     private final EntityIngredient entityIngredient;
     private LivingEntity living;

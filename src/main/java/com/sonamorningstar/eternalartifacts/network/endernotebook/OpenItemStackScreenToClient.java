@@ -35,8 +35,8 @@ public record OpenItemStackScreenToClient(ItemStack stack) implements CustomPack
             ctx.workHandler().execute(() -> {
                 if (ctx.player().isPresent()) {
                     ClientProxy.requestScreen(stack);
-                };
-            });
+                }
+			});
         }
     }
 }

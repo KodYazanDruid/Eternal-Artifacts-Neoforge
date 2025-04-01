@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
-import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;

@@ -1,8 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.entity.projectile;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;

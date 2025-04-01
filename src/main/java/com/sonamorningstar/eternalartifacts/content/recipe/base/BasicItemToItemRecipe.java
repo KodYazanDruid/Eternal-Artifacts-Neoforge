@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.content.recipe.base;
 
 import com.sonamorningstar.eternalartifacts.registrar.RecipeDeferredHolder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.Container;

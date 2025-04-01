@@ -9,8 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.function.Supplier;
-
 public class JarBlockEntity extends ModBlockEntity {
     public boolean isOpen = false;
     @Getter

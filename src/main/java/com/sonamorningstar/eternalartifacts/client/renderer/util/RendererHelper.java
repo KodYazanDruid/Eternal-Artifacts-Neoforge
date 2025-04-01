@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.renderer.util;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -103,18 +102,13 @@ public class RendererHelper {
         float x1 = (xOff + xLen) / 16;
         float y1 = (yOff + yLen) / 16;
         float z1 = (zOff + zLen) / 16;
-        
-        float u0 = u;
-        float u1 = u;
-        float v0 = v;
-        float v1 = v;
-        
-        if (info.shouldRender(Direction.UP)) drawQuad(consumer, poseStack, x0, y1, z0, x1, y1, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, true);
-        if (info.shouldRender(Direction.NORTH)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y1, z0, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, true);
-        if (info.shouldRender(Direction.EAST)) drawQuad(consumer, poseStack, x1, y0, z0, x1, y1, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, false);
-        if (info.shouldRender(Direction.SOUTH)) drawQuad(consumer, poseStack, x1, y0, z1, x0, y1, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, true);
-        if (info.shouldRender(Direction.WEST)) drawQuad(consumer, poseStack, x0, y0, z1, x0, y1, z0, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, false);
-        if (info.shouldRender(Direction.DOWN)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y0, z1, u0, v0, u1, v1, tintColor, light, overlay, 1, 1, 1, false);
+		
+		if (info.shouldRender(Direction.UP)) drawQuad(consumer, poseStack, x0, y1, z0, x1, y1, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, true);
+        if (info.shouldRender(Direction.NORTH)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y1, z0, u, v, u, v, tintColor, light, overlay, 1, 1, 1, true);
+        if (info.shouldRender(Direction.EAST)) drawQuad(consumer, poseStack, x1, y0, z0, x1, y1, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
+        if (info.shouldRender(Direction.SOUTH)) drawQuad(consumer, poseStack, x1, y0, z1, x0, y1, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, true);
+        if (info.shouldRender(Direction.WEST)) drawQuad(consumer, poseStack, x0, y0, z1, x0, y1, z0, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
+        if (info.shouldRender(Direction.DOWN)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y0, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
     }
 
     public static void drawQuad(

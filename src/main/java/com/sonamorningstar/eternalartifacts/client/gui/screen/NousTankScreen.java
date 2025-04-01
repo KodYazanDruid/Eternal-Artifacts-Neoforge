@@ -54,7 +54,7 @@ public class NousTankScreen extends AbstractSidedMachineScreen<NousTankMenu> {
     @Override
     protected void renderBg(GuiGraphics gui, float pPartialTick, int pMouseX, int pMouseY) {
         super.renderBg(gui, pPartialTick, pMouseX, pMouseY);
-        renderFluidBar(gui, x + 5, y + 20);
+        renderFluidBar(gui, leftPos + 5, topPos + 20);
         IFluidHandler tank = menu.getBeTank();
         if (tank != null) {
             int xp = tank.getFluidInTank(0).getAmount() / 20;

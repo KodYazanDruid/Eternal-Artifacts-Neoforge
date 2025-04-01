@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.AnvilinatorBlockEntity;
@@ -10,15 +9,8 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.fluids.FluidStack;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 

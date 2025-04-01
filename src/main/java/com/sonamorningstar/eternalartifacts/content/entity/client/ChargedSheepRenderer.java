@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.content.entity.client;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.ChargedSheepFurLayer;
 import com.sonamorningstar.eternalartifacts.client.renderer.entity.SheepPowerLayer;
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
-import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.model.geom.PartPose;

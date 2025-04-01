@@ -4,7 +4,6 @@ import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryT
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 
 import javax.annotation.Nullable;

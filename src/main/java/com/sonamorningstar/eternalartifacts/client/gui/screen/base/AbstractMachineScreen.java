@@ -72,7 +72,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         renderDefaultFluidBar(gui);
     }
     protected void renderDefaultEnergyBar(GuiGraphics gui) {
-        renderEnergyBar(gui, x + 5, y + 20);
+        renderEnergyBar(gui, leftPos + 5, topPos + 20);
     }
 
     protected void renderEnergyBar(GuiGraphics guiGraphics, int x, int y) {
@@ -85,7 +85,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     }
 
     protected void renderDefaultFluidBar(GuiGraphics gui) { renderDefaultFluidBar(gui, 0); }
-    protected void renderDefaultFluidBar(GuiGraphics gui, int tankSlot) { renderFluidBar(gui, x + 24, y + 20, tankSlot); }
+    protected void renderDefaultFluidBar(GuiGraphics gui, int tankSlot) { renderFluidBar(gui, leftPos + 24, topPos + 20, tankSlot); }
     protected void renderFluidBar(GuiGraphics guiGraphics, int x, int y) { renderFluidBar(guiGraphics,  x,  y, 0); }
     protected void renderFluidBar(GuiGraphics guiGraphics, int x, int y, int tankSlot) {
         Map<String, Integer> fluidLoc = new HashMap<>();

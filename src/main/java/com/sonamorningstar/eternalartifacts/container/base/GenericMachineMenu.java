@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
-import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;

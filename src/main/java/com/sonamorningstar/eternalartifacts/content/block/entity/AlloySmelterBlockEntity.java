@@ -20,19 +20,15 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
         setEnergy(this::createDefaultEnergy);
         outputSlots.add(3);
         setInventory(() -> createRecipeFinderInventory(4, outputSlots));
+        setRecipeTypeAndContainer(ModRecipes.ALLOYING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0), inventory.getStackInSlot(1), inventory.getStackInSlot(2)));
         screenInfo.setArrowXOffset(16);
-    }
-
-    @Override
-    protected void findRecipe() {
-        recipeCache.findRecipe(ModRecipes.ALLOYING.getType(), new SimpleContainer(inventory.getStackInSlot(0), inventory.getStackInSlot(1), inventory.getStackInSlot(2)), level);
     }
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
 
-        AlloyingRecipe recipe = ((AlloyingRecipe) recipeCache.getRecipe());
+        AlloyingRecipe recipe = ((AlloyingRecipe) RecipeCache.getCachedRecipe(this));
         if (recipe == null) {
             progress = 0;
             return;

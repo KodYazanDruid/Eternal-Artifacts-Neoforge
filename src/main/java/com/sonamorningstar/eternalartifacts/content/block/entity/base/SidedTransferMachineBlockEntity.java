@@ -210,7 +210,14 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         });
         tag.put("RedstoneConfigs", redstoneConfigs);*/
     }
-
+    
+    /**
+     * Method used to load machine data when a machine that was mined with a wrench is placed again.
+     * Reads machine data from an NBT tag and saves it to the dropped machine item.
+     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
+     *
+     * @param additionalTag The NBT tag containing the machine contents to load
+     */
     @Override
     public void loadContents(CompoundTag additionalTag) {
         super.loadContents(additionalTag);
@@ -242,7 +249,14 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         }
         this.redstoneConfigs.putIfAbsent(0, RedstoneType.IGNORED);
     }
-
+    
+    /**
+     * Method used to save machine data when the machine is mined with a wrench.
+     * Machine data is saved to an NBT tag which can later be restored when the machine is placed again.
+     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
+     *
+     * @param additionalTag The NBT tag used to store the machine contents
+     */
     @Override
     public void saveContents(CompoundTag additionalTag) {
         super.saveContents(additionalTag);

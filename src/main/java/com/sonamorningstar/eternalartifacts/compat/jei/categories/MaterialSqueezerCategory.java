@@ -53,6 +53,6 @@ public class MaterialSqueezerCategory implements IRecipeCategory<SqueezingRecipe
         FluidStack output = recipe.getOutputFluid();
         layout.addSlot(RecipeIngredientRole.OUTPUT, 91, 18)
                 .addFluidStack(output.getFluid(), output.getAmount())
-                .addTooltipCallback((slotView, components) -> components.add(Component.literal(output.getAmount() + " MB")));;
+                .addTooltipCallback((slotView, components) -> components.add(Component.literal(output.getAmount() + " MB")));
     }
 }

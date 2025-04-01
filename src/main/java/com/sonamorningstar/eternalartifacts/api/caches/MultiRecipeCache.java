@@ -1,12 +1,7 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
 import lombok.Getter;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
-
-import java.util.List;
 
 @Getter
 public class MultiRecipeCache {

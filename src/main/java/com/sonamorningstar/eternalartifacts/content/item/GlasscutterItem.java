@@ -2,12 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.world.item.DiggerItem;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.state.BlockState;
 
 public class GlasscutterItem extends DiggerItem {
     public GlasscutterItem(Tier tier, Properties pProperties) {

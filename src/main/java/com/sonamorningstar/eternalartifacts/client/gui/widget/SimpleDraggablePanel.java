@@ -13,21 +13,27 @@ import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 public class SimpleDraggablePanel extends AbstractWidget implements IParentalWidget, Draggable, Overlapping {
 	private final List<GuiEventListener> children = new ArrayList<>();
 	@Setter
 	private Bounds bounds;
+	private final List<Bounds> undragAreas = new ArrayList<>();
 	public SimpleDraggablePanel(int pX, int pY, int pWidth, int pHeight, Bounds bounds) {
 		super(pX, pY, pWidth, pHeight, Component.empty());
 		this.bounds = bounds;
 	}
 	
+	public void addUndragArea(Bounds bounds) {
+		undragAreas.add(bounds);
+	}
+	
 	@Override
 	protected void renderWidget(GuiGraphics gui, int mx, int my, float delta) {
 		gui.pose().pushPose();
-		gui.pose().translate(0, 0, 2000);
+		gui.pose().translate(0, 0, 360);
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		GuiDrawer.drawDefaultBackground(gui, this.getX(), this.getY(), this.width, this.height);
@@ -39,6 +45,12 @@ public class SimpleDraggablePanel extends AbstractWidget implements IParentalWid
 	
 	@Override
 	protected void onDrag(double mx, double my, double dragX, double dragY) {
+		for (Bounds undragArea : undragAreas) {
+			if (undragArea.x() <= mx && undragArea.x() + undragArea.width() >= mx &&
+				undragArea.y() <= my && undragArea.y() + undragArea.height() >= my) {
+				return;
+			}
+		}
 		int oldX = this.getX();
 		int oldY = this.getY();
 		int boundsX = bounds.x();
@@ -104,6 +116,19 @@ public class SimpleDraggablePanel extends AbstractWidget implements IParentalWid
 		
 		public static Bounds of(int x, int y, int width, int height) {
 			return new Bounds(x, y, width, height);
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			Bounds bounds = (Bounds) o;
+			return x == bounds.x && y == bounds.y && width == bounds.width && height == bounds.height;
+		}
+		
+		@Override
+		public int hashCode() {
+			return Objects.hash(x, y, width, height);
 		}
 	}
 }

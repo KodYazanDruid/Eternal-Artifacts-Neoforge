@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;

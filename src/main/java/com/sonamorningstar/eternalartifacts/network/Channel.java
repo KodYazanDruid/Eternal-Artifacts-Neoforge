@@ -104,6 +104,10 @@ public class Channel {
         registrar.play(AddTesseractNetworkToServer.ID,
                 AddTesseractNetworkToServer::create,
                 handler -> handler.server(AddTesseractNetworkToServer::handle));
+        
+        registrar.play(BlueprintIngredientsToClient.ID,
+            BlueprintIngredientsToClient::create,
+            handler -> handler.client(BlueprintIngredientsToClient::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {

@@ -22,7 +22,7 @@ public class EADragDropHandler implements EmiDragDropHandler<Screen> {
             ItemStack stack = emiStacks.get(0).getItemStack();
             if (stack.isEmpty()) return false;
             int playerInvSize = bs.getMenu().getPlayer().getInventory().items.size();
-            int containerSize = bs.getMenu().getFakeItems().getContainerSize();
+            int containerSize = bs.getMenu().getPattern().getFakeItems().getContainerSize();
             for (int i = playerInvSize; i < playerInvSize + containerSize; i++) {
                 FakeSlot fakeSlot = ((FakeSlot) bs.getMenu().getSlot(i));
                 Rect2i area = new Rect2i(bs.getGuiLeft() + fakeSlot.x, bs.getGuiTop() + fakeSlot.y, 16, 16);
@@ -43,7 +43,7 @@ public class EADragDropHandler implements EmiDragDropHandler<Screen> {
             ItemStack stack = emiStacks.get(0).getItemStack();
             if (stack.isEmpty()) return;
             int playerInvSize = bs.getMenu().getPlayer().getInventory().items.size();
-            int containerSize = bs.getMenu().getFakeItems().getContainerSize();
+            int containerSize = bs.getMenu().getPattern().getFakeItems().getContainerSize();
             for (int i = playerInvSize; i < playerInvSize + containerSize; i++) {
                 FakeSlot fakeSlot = ((FakeSlot) bs.getMenu().getSlot(i));
                 Rect2i area = new Rect2i(bs.getGuiLeft() + fakeSlot.x, bs.getGuiTop() + fakeSlot.y, 16, 16);

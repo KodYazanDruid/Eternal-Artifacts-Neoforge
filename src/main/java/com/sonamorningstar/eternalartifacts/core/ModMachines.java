@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
@@ -30,8 +31,9 @@ public class ModMachines {
     public static final GenericMachineHolder<SolidifierBlockEntity> SOLIDIFIER = registerGeneric("solidifier", SolidifierBlockEntity::new);
     public static final GenericMachineHolder<CompressorBlockEntity> COMPRESSOR = registerGeneric("compressor", CompressorBlockEntity::new);
     public static final GenericMachineHolder<AdvancedCrafterBlockEntity> ADVANCED_CRAFTER = registerGeneric("advanced_crafter", AdvancedCrafterBlockEntity::new);
-    public static final GenericMachineHolder<ElectricFurnaceBlockEntity> ELECTRIC_FURNACE = registerGeneric("electric_furnace", ElectricFurnaceBlockEntity::new);
-
+    
+    public static final MachineDeferredHolder<ElectricFurnaceMenu, ElectricFurnaceBlockEntity, MachineFourWayBlock<ElectricFurnaceBlockEntity>, MachineBlockItem>
+        ELECTRIC_FURNACE = MACHINES.register("electric_furnace", ElectricFurnaceMenu::new, ElectricFurnaceBlockEntity::new);
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefineryBlockEntity, OilRefineryBlock<OilRefineryBlockEntity>, BewlrMachineItem>
             OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefineryBlockEntity::new, OilRefineryBlock::new, BewlrMachineItem::new, true, true);
 

@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.google.common.collect.Maps;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.world.level.block.Block;
 

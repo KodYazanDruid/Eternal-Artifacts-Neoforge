@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
@@ -24,6 +23,7 @@ import static net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid;
 
 @Mod(EternalArtifacts.MODID)
 public class EternalArtifacts {
+    
     /**
      * TODO: Add proper power generation system (like biodiesel engine from IE, peat generator from cyclic(originally from forestry)) instead of burning oranges.
      * TODO: Add disenchanter and other enchantment related blocks.

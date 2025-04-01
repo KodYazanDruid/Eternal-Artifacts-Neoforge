@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

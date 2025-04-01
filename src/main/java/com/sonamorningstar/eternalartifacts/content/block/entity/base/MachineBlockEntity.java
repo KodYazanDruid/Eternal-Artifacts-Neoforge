@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
@@ -39,10 +40,7 @@ import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
@@ -71,10 +69,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected int energyPerTick = 40;
 
     public final List<Integer> outputSlots = new ArrayList<>();
-    @Getter
-    protected final RecipeCache recipeCache;
     protected RecipeType<? extends Recipe<? extends Container>> recipeType;
-    protected Supplier<Container> recipeContainer;
+    protected Supplier<? extends Container> recipeContainer;
 
     @Getter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
@@ -83,7 +79,6 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         this.menuConstructor = quadF;
-        this.recipeCache = new RecipeCache(this);
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -221,17 +216,52 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
             }
         }
     }
-
-    protected void setRecipeTypeAndContainer(RecipeType<? extends Recipe<? extends Container>> type, Supplier<Container> container) {
+    
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        RecipeCache.clearRecipes(this);
+    }
+    
+    protected void setRecipeTypeAndContainer(RecipeType<? extends Recipe<? extends Container>> type, Supplier<? extends Container> container) {
         this.recipeType = type;
         this.recipeContainer = container;
     }
-
+    
+    @Nullable
+    protected Recipe<? extends Container> getCachedRecipe() {
+        return RecipeCache.getCachedRecipe(this);
+    }
+    
     @Override
     protected void findRecipe() {
-        if (level != null && recipeType != null && recipeContainer != null) {
-            recipeCache.clearRecipes(this);
-            recipeCache.findRecipe(recipeType, recipeContainer.get(), level);
+        findRecipeFor(recipeType, recipeContainer);
+    }
+    
+    protected void findRecipeFor(RecipeType<? extends Recipe<? extends Container>> type, Supplier<? extends Container> container) {
+        findRecipeFor(type, container, -1, false);
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected void findRecipeFor(RecipeType<? extends Recipe<? extends Container>> type, Supplier<? extends Container> container, int index, boolean allowDuplicate) {
+        if (level != null && type != null && container != null) {
+            boolean indexed = index >= 0;
+            Recipe<? extends Container> cachedRecipe = indexed ? RecipeCache.getCachedRecipe(this, index) : getCachedRecipe();
+            if (cachedRecipe != null) {
+                if (cachedRecipe.getType() != type || !((Recipe<Container>) cachedRecipe).matches(container.get(), level)) {
+                    if (indexed){
+                        RecipeCache.removeRecipe(this, index);
+                        RecipeCache.findRecipeFor(this, type, container.get(), level, allowDuplicate, index);
+                    }
+                    else {
+                        RecipeCache.removeRecipe(this, cachedRecipe);
+                        RecipeCache.findRecipeFor(this, type, container.get(), level, allowDuplicate);
+                    }
+                }
+            } else {
+                if (indexed) RecipeCache.findRecipeFor(this, type, container.get(), level, allowDuplicate, index);
+                else RecipeCache.findRecipeFor(this, type, container.get(), level, allowDuplicate);
+            }
         }
     }
     

@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.content.item;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
@@ -21,8 +20,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.function.BiFunction;
 
 public class PortableCrafterItem extends ArtifactItem{
     public PortableCrafterItem(Properties pProperties) {

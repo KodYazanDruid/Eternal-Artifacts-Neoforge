@@ -23,7 +23,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.Map;
 
 public class MobModelRenderer {

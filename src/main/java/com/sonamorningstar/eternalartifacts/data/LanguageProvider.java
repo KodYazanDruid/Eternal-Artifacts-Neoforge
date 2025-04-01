@@ -7,7 +7,6 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 

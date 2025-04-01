@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.world.structure;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;

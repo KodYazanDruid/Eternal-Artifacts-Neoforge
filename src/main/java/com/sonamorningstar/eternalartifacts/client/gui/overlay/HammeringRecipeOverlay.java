@@ -22,7 +22,6 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class HammeringRecipeOverlay extends ModGuiOverlay {
     

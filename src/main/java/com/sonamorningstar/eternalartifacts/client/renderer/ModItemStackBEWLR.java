@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.renderer;
 
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.ModSkullBlockRenderer;
 import com.sonamorningstar.eternalartifacts.client.renderer.item.SpellTomeRenderer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.TwoLayerSkullModel;
@@ -13,7 +12,6 @@ import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

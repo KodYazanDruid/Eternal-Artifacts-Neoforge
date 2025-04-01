@@ -4,15 +4,9 @@ import com.sonamorningstar.eternalartifacts.core.ModSounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.registries.DeferredHolder;
-
-import javax.annotation.Nullable;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 

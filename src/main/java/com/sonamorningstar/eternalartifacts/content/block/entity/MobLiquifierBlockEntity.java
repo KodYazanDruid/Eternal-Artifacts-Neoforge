@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
@@ -100,7 +101,7 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
 
         //Entity to hurt
         LivingEntity entityToHurt = null;
-        MobLiquifierRecipe recipe = recipeCache.getRecipe(MobLiquifierRecipe.class);
+        MobLiquifierRecipe recipe = (MobLiquifierRecipe) RecipeCache.getCachedRecipe(this);
         //Finding entity to hurt that fits recipe.
         for(LivingEntity living : livingList) {
             findRecipe();

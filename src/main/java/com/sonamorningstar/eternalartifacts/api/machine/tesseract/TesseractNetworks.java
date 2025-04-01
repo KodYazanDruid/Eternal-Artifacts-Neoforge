@@ -10,11 +10,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.saveddata.SavedData;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.*;
 
 @Getter
 public class TesseractNetworks extends SavedData {
@@ -86,7 +82,7 @@ public class TesseractNetworks extends SavedData {
 	
 	public static TesseractNetworks get(LevelAccessor levelAcc) {
 		if (levelAcc instanceof ServerLevelAccessor severLevelAcc) {
-			return severLevelAcc.getServer().overworld().getDataStorage().computeIfAbsent(
+			return Objects.requireNonNull(severLevelAcc.getServer()).overworld().getDataStorage().computeIfAbsent(
 				new SavedData.Factory<>(TesseractNetworks::new, TesseractNetworks::load, DataFixTypes.LEVEL),
 				"tesseract_networks"
 			);

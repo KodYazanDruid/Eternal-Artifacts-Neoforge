@@ -16,8 +16,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
 public class EncumbatorItem extends ArtifactItem implements IActiveStack {
 
     public static final String ACTIVE = "Active";

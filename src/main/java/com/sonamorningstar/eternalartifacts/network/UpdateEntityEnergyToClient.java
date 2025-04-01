@@ -1,17 +1,9 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;

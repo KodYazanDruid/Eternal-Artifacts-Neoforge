@@ -16,17 +16,12 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,8 +61,8 @@ public class MobLiquifierCategory implements IRecipeCategory<MobLiquifierRecipe>
             FluidStack output = recipe.getResultFluidList().get(i);
             layout.addSlot(RecipeIngredientRole.OUTPUT, 57 + 18 * i, 18)
                     .addFluidStack(output.getFluid(), output.getAmount())
-                    .addTooltipCallback((slotView, components) -> components.add(Component.literal(output.getAmount() + " MB")));;
-        }
+                    .addTooltipCallback((slotView, components) -> components.add(Component.literal(output.getAmount() + " MB")));
+		}
     }
 
     @Override

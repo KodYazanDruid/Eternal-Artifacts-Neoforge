@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.*;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;

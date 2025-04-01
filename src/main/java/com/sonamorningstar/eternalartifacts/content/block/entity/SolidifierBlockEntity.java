@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.SolidifierRecipe;
@@ -28,7 +29,7 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
         super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
 
-        SolidifierRecipe recipe = recipeCache.getRecipe(SolidifierRecipe.class);
+        SolidifierRecipe recipe = (SolidifierRecipe) RecipeCache.getCachedRecipe(this);
 
         if (recipe == null) {
             progress = 0;

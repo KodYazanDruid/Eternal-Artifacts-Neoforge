@@ -20,15 +20,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity<InductionFurnaceMenu> {
     private int heatKeepCost = 10;
+    protected Supplier<? extends Container> recipeContainer2;
     public InductionFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new InductionFurnaceMenu(ModMachines.INDUCTION_FURNACE.getMenu(), a, b, c, d));
         outputSlots.add(2);
         outputSlots.add(3);
         setEnergy(this::createDefaultEnergy);
         setInventory(() -> createRecipeFinderInventory(4, outputSlots));
+        setRecipeContainer(() -> new SimpleContainer(inventory.getStackInSlot(0)));
+        recipeContainer2 = () -> new SimpleContainer(inventory.getStackInSlot(1));
+        RecipeCache.setRecipeCount(this, 2);
     }
 
     public HeatStorage heat = new HeatStorage(20000) {
@@ -42,6 +47,7 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     protected void saveSynced(CompoundTag tag) {
         super.saveSynced(tag);
         tag.put("HeatValue", heat.serializeNBT());
+        tag.putShort("RecipeType", recipeTypeId);
     }
 
     @Override
@@ -49,12 +55,14 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         super.load(tag);
         heat.deserializeNBT(tag.getCompound("HeatValue"));
         setMaxProgressForHeat();
+        recipeTypeId = tag.getShort("RecipeType");
     }
 
     @Override
     public void saveContents(CompoundTag additionalTag) {
         super.saveContents(additionalTag);
         additionalTag.put("HeatValue", heat.serializeNBT());
+        additionalTag.putShort("RecipeType", recipeTypeId);
     }
 
     @Override
@@ -62,60 +70,37 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         super.loadContents(additionalTag);
         heat.deserializeNBT(additionalTag.getCompound("HeatValue"));
         setMaxProgressForHeat();
+        recipeTypeId = additionalTag.getShort("RecipeType");
     }
 
     public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
+    
+    public short recipeTypeId = 0;
+    public RecipeType<? extends Recipe<? extends Container>> getSelectedRecipeType() {
+        return switch (recipeTypeId) {
+            case 1 -> RecipeType.BLASTING;
+            case 2 -> RecipeType.SMOKING;
+            case 3 -> RecipeType.CAMPFIRE_COOKING;
+            default -> RecipeType.SMELTING;
+        };
+    }
+    
+    public void setRecipeTypeId(short id) {
+        recipeTypeId = id;
+        sendUpdate();
+        findRecipe();
+    }
 
     @Override
     protected void findRecipe() {
-        blastingCache0.clearRecipes(this);
-        blastingCache1.clearRecipes(this);
-        smokingCache0.clearRecipes(this);
-        smokingCache1.clearRecipes(this);
-        campfireCookingCache0.clearRecipes(this);
-        campfireCookingCache1.clearRecipes(this);
-        smeltingCache0.clearRecipes(this);
-        smeltingCache1.clearRecipes(this);
-        recipeCon0 = new SimpleContainer(inventory.getStackInSlot(0));
-        blastingCache0.findRecipe(RecipeType.BLASTING, recipeCon0, level);
-        if (blastingCache0.getRecipe() == null) {
-            smokingCache0.findRecipe(RecipeType.SMOKING, recipeCon0, level);
-            if (smokingCache0.getRecipe() == null) {
-                campfireCookingCache0.findRecipe(RecipeType.CAMPFIRE_COOKING, recipeCon0, level);
-                if (campfireCookingCache0.getRecipe() == null) {
-                    smeltingCache0.findRecipe(RecipeType.SMELTING, recipeCon0, level);
-                }
-            }
-        }
-        recipeCon1 = new SimpleContainer(inventory.getStackInSlot(1));
-        blastingCache1.findRecipe(RecipeType.BLASTING, recipeCon1, level);
-        if (blastingCache1.getRecipe() == null) {
-            smokingCache1.findRecipe(RecipeType.SMOKING, recipeCon1, level);
-            if (smokingCache1.getRecipe() == null) {
-                campfireCookingCache1.findRecipe(RecipeType.CAMPFIRE_COOKING, recipeCon1, level);
-                if (campfireCookingCache1.getRecipe() == null) {
-                    smeltingCache1.findRecipe(RecipeType.SMELTING, recipeCon1, level);
-                }
-            }
-        }
+        recipeType = getSelectedRecipeType();
+        findRecipeFor(recipeType, recipeContainer, 0, true);
+        findRecipeFor(recipeType, recipeContainer2, 1, true);
     }
 
     private void setMaxProgressForHeat() {
         setMaxProgress(500 - (int)(490 * getHeatPercentage() / 100D));
     }
-
-    //putting these on map might be better IDK.
-    //Make them optional for handling nulls easier.
-    private final RecipeCache smeltingCache0 = new RecipeCache(this);
-    private final RecipeCache smeltingCache1 = new RecipeCache(this);
-    private final RecipeCache blastingCache0 = new RecipeCache(this);
-    private final RecipeCache blastingCache1 = new RecipeCache(this);
-    private final RecipeCache smokingCache0 = new RecipeCache(this);
-    private final RecipeCache smokingCache1 = new RecipeCache(this);
-    private final RecipeCache campfireCookingCache0 = new RecipeCache(this);
-    private final RecipeCache campfireCookingCache1 = new RecipeCache(this);
-    private SimpleContainer recipeCon0 = null;
-    private SimpleContainer recipeCon1 = null;
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
@@ -123,8 +108,9 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         performAutoInputItems(lvl, pos);
         performAutoOutputItems(lvl, pos);
 
-        Recipe<Container> recipe0 = getValidRecipe(0);
-        Recipe<Container> recipe1 = getValidRecipe(1);
+        var recipes = RecipeCache.getCachedRecipes(this);
+        Recipe<Container> recipe0 = recipes != null && !recipes.isEmpty() ? (Recipe<Container>) recipes.get(0) : null;
+        Recipe<Container> recipe1 = recipes != null && recipes.size() > 1 ? (Recipe<Container>) recipes.get(1) : null;
 
         if (recipe0 == null && recipe1 == null) {
             progress = 0;
@@ -137,12 +123,14 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
         ItemStack resultItem0;
         ItemStack resultItem1;
         if (recipe0 != null) {
-            resultItem0 = recipe0.assemble(recipeCon0, lvl.registryAccess());
+            resultItem0 = recipe0.assemble(recipeContainer.get(), lvl.registryAccess());
+            resultItem0.onCraftedBySystem(lvl);
             condition.queueItemStack(resultItem0);
         } else resultItem0 = ItemStack.EMPTY;
 
         if (recipe1 != null) {
-            resultItem1 = recipe1.assemble(recipeCon1, lvl.registryAccess());
+            resultItem1 = recipe1.assemble(recipeContainer2.get(), lvl.registryAccess());
+            resultItem1.onCraftedBySystem(lvl);
             condition.queueItemStack(resultItem1);
         } else resultItem1 = ItemStack.EMPTY;
 
@@ -162,16 +150,16 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
             ItemStack remainder0 = ItemStack.EMPTY;
             ItemStack remainder1 = ItemStack.EMPTY;
             if (recipe0 != null) {
-                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0.copy(), false, outputSlots).getFirst();
+                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0, false, outputSlots).getFirst();
             }
             if (recipe1 != null) {
-                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1.copy(), false, outputSlots).getFirst();
+                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1, false, outputSlots).getFirst();
             }
             if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
             if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
         }, energy);
 
-        boolean isThereACoil = isThereACoil(pos);
+        boolean isThereACoil = isThereACoil(lvl, pos);
         boolean isEnergyEnough = energy.getEnergyStored() >= heatKeepCost;
 
         if(isEnergyEnough) {
@@ -182,37 +170,19 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
                 if (isThereACoil) energy.extractEnergyForced(heatKeepCost, false);
                 else heat.cool(1, false);
             }
-        }else {
+        } else {
             if (heat.getHeat() > 0) heat.cool(1, false);
         }
     }
 
-    private boolean isThereACoil(BlockPos pos) {
+    private boolean isThereACoil(Level level, BlockPos pos) {
         for(Direction dir : Direction.values()) {
-            BlockState state = level != null ? level.getBlockState(pos.relative(dir)) : Blocks.AIR.defaultBlockState();
+            BlockState state = level.getBlockState(pos.relative(dir));
             if (state.is(Blocks.LIGHTNING_ROD)) {
                 Direction stateFacing = state.getValue(BlockStateProperties.FACING);
-                return stateFacing == dir;
+                if (stateFacing == dir) return true;
             }
         }
         return false;
-    }
-
-    private Recipe<Container> getValidRecipe(int slot) {
-        switch (slot) {
-            case 0 -> {
-                if (blastingCache0.getRecipe() != null) return blastingCache0.getRecipe(BlastingRecipe.class);
-                else if(smokingCache0.getRecipe() != null) return smokingCache0.getRecipe(SmokingRecipe.class);
-                else if(campfireCookingCache0.getRecipe() != null) return campfireCookingCache0.getRecipe(CampfireCookingRecipe.class);
-                else if(smeltingCache0.getRecipe() != null) return smeltingCache0.getRecipe(SmeltingRecipe.class);
-            }
-            case 1 -> {
-                if (blastingCache1.getRecipe() != null) return blastingCache1.getRecipe(BlastingRecipe.class);
-                else if(smokingCache1.getRecipe() != null) return smokingCache1.getRecipe(SmokingRecipe.class);
-                else if(campfireCookingCache1.getRecipe() != null) return campfireCookingCache1.getRecipe(CampfireCookingRecipe.class);
-                else if(smeltingCache1.getRecipe() != null) return smeltingCache1.getRecipe(SmeltingRecipe.class);
-            }
-        }
-        return null;
     }
 }

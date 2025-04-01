@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.DropdownMenu;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Overlapping;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
@@ -11,23 +10,17 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.fluids.FluidStack;
-
-import javax.annotation.Nonnull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends EffectRenderingInventoryScreen<T> {
     //Margin: 5px
@@ -35,8 +28,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     //Sides: 5px * -px
     //Inside of Template: 166px * 156px
     //Total Size: 176px * 166px
-    protected int x;
-    protected int y;
     @Setter
     private int guiTint = 0xFFFFFFFF;
     protected boolean renderEffects = true;
@@ -62,17 +53,36 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         upperLayerChildren.clear();
     }
     
+    protected void drawExtraBg(GuiGraphics gui, float tickDelta, int x, int y) {
+        applyGuiTint(gui);
+        renderSlots(gui);
+        clearGuiTint(gui);
+    }
+    
+    protected void renderSlots(GuiGraphics gui) {
+        for(Slot slot : menu.slots) {
+            gui.blitSprite(new ResourceLocation("container/slot"), leftPos + slot.x-1, topPos + slot.y-1, 0, 18, 18);
+        }
+    }
+    
     @Override
-    protected void renderBg(GuiGraphics gui, float tick, int mX, int mY) {
-        this.x = (width - imageWidth) / 2;
-        this.y = (height - imageHeight) / 2;
+    protected void renderBg(GuiGraphics gui, float tickDelta, int mX, int mY) {
+        applyGuiTint(gui);
+        GuiDrawer.drawDefaultBackground(gui, leftPos, topPos, imageWidth, imageHeight);
+        drawExtraBg(gui, tickDelta, leftPos, topPos);
+        clearGuiTint(gui);
+    }
+    
+    public void applyGuiTint(GuiGraphics gui) {
         gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,
             FastColor.ARGB32.blue(guiTint) / 255.0F, FastColor.ARGB32.alpha(guiTint) / 255.0F);
-        GuiDrawer.drawDefaultBackground(gui, x, y, imageWidth, imageHeight);
+    }
+    public void applyGuiTint(GuiGraphics gui, int alpha) {
+        gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,
+            FastColor.ARGB32.blue(guiTint) / 255.0F, alpha / 255.0F);
+    }
+    public void clearGuiTint(GuiGraphics gui) {
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-        for(Slot slot : menu.slots) {
-            gui.blitSprite(new ResourceLocation("container/slot"), x + slot.x-1, y + slot.y-1, 0, 18, 18);
-        }
     }
     
     @Override

@@ -4,7 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
-import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
+import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -54,6 +54,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -369,8 +370,13 @@ public class CommonEvents {
     @SubscribeEvent
     public static void playerOpenContainerEvent(PlayerContainerEvent.Open event) {
         Player player = event.getEntity();
+        AbstractContainerMenu menu = event.getContainer();
         if (player.level().isClientSide) return;
         CharmStorage.get(player).syncSelf();
+        
+        if (menu instanceof BlueprintMenu bpMenu && player instanceof ServerPlayer sp) {
+            bpMenu.synchIngredients(sp);
+        }
     }
 
     @SubscribeEvent

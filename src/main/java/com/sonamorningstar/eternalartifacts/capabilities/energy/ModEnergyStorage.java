@@ -10,9 +10,9 @@ public abstract class ModEnergyStorage extends EnergyStorage {
 
     public ModEnergyStorage(int capacity, int maxReceive, int maxExtract){
         super(capacity, maxReceive, maxExtract);
-    };
-
-    public int getMaxReceive() {
+    }
+	
+	public int getMaxReceive() {
         return maxReceive;
     }
     public int getMaxExtract() {

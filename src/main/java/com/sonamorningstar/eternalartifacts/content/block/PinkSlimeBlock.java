@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlimeBlock;
 import net.minecraft.world.level.block.state.BlockState;
 

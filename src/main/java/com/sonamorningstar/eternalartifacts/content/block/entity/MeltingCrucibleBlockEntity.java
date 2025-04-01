@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeltingRecipe;
@@ -25,7 +26,7 @@ public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoOutputFluids(lvl, pos);
-        MeltingRecipe recipe = recipeCache.getRecipe(MeltingRecipe.class);
+        MeltingRecipe recipe = (MeltingRecipe) RecipeCache.getCachedRecipe(this);
         if (recipe == null) {
             progress = 0;
             return;

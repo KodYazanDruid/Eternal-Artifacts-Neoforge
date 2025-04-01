@@ -1,11 +1,9 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
-import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 

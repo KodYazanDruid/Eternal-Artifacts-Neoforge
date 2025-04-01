@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.compat.jei.categories;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.compat.jei.SimpleBackgroundDrawable;
-import com.sonamorningstar.eternalartifacts.content.recipe.MaceratingRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.SolidifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;

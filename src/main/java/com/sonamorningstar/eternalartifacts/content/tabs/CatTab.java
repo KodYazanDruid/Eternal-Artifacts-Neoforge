@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.tabs;
 
-import com.sonamorningstar.eternalartifacts.content.item.PortableCrafterItem;
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
 import com.sonamorningstar.eternalartifacts.core.ModInventoryTabs;
 import net.minecraft.network.FriendlyByteBuf;

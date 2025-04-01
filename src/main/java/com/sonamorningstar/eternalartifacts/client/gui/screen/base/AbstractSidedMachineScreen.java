@@ -107,7 +107,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
-        sidedTransferBarActive = isCursorInBounds(x + 5, y - 29, 94, 32, mx, my);
+        sidedTransferBarActive = isCursorInBounds(leftPos + 5, topPos - 29, 94, 32, mx, my);
         renderButtonTooltips(gui, mx, my);
     }
 
@@ -179,8 +179,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     }
 
     protected void renderSidedTransferTab(GuiGraphics guiGraphics, SidedTransferMachineBlockEntity<?> sided) {
-        int sidedX = x + 5;
-        int sidedY = y - 29;
+        int sidedX = leftPos + 5;
+        int sidedY = topPos - 29;
         Map<Integer, SidedTransferMachineBlockEntity.TransferType> side = sided.getSideConfigs();
         Map<Integer, Boolean> auto = sided.getAutoConfigs();
         Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstone = sided.getRedstoneConfigs();

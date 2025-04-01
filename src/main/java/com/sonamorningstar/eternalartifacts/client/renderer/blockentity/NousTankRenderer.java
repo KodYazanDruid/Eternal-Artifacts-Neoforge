@@ -64,8 +64,8 @@ public class NousTankRenderer implements BlockEntityRenderer<NousTankBlockEntity
         poseStack.pushPose();
 
         Direction facing = tank.hasLevel() ? tank.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING) : Direction.NORTH;
-        float yRot = facing.toYRot();;
-        poseStack.translate(0.5F, 0.5F, 0.5F);
+        float yRot = facing.toYRot();
+		poseStack.translate(0.5F, 0.5F, 0.5F);
         poseStack.mulPose(Axis.YP.rotationDegrees(-yRot));
         poseStack.translate(-0.5F, -0.5F, -0.5F);
 

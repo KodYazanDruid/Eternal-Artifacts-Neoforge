@@ -15,9 +15,9 @@ public class BioFurnaceScreen extends AbstractMachineScreen<BioFurnaceMenu> {
     protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
         super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyBar(gui);
-        renderBurn(gui, x + 81, y + 55, mx, my);
-        renderFluidBar(gui, x + 24, y + 20, 0);
-        renderFluidBar(gui, x + 44, y + 20, 1);
+        renderBurn(gui, leftPos + 81, topPos + 55, mx, my);
+        renderFluidBar(gui, leftPos + 24, topPos + 20, 0);
+        renderFluidBar(gui, leftPos + 44, topPos + 20, 1);
     }
 
 }

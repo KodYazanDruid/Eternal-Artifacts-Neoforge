@@ -23,7 +23,7 @@ public class IndustrialMaceratorBlockEntity extends GenericMachineBlockEntity {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        MaceratingRecipe recipe = recipeCache.getRecipe(MaceratingRecipe.class);
+        MaceratingRecipe recipe = (MaceratingRecipe) getCachedRecipe();
         if (recipe == null) {
             progress = 0;
             return;

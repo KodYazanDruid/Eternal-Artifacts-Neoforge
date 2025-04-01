@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -42,6 +43,7 @@ public final class GuiDrawer {
     }
     
     public static void drawTiledBackground(GuiGraphics gui, Block texture, int x, int y, int width, int height) {
+        //TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(texture.defaultBlockState()).getParticleIcon(ModelData.EMPTY);
         ResourceLocation blockRL = BuiltInRegistries.BLOCK.getKey(texture);
         ResourceLocation textureRL = new ResourceLocation(blockRL.getNamespace(), "textures/block/" + blockRL.getPath() + ".png");
         drawTiledBackground(gui, dark_edge, textureRL, x, y, width, height, 16, 16, 16, 16, 3);

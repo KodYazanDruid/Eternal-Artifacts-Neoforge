@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.compat.jei.IJeiMeatPackerRecipe;
 import com.sonamorningstar.eternalartifacts.compat.jei.SimpleBackgroundDrawable;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
-import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.Getter;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;

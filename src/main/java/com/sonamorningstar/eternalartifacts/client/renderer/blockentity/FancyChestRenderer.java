@@ -5,34 +5,16 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.RetexturedModel;
 import com.sonamorningstar.eternalartifacts.client.resources.model.util.ModelHelper;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FancyChestBlockEntity;
-import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
-import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.Material;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.RenderTypeHelper;
-import org.joml.Quaternionf;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class FancyChestRenderer implements BlockEntityRenderer<FancyChestBlockEntity> {
     private static final BlockColors blockColors = BlockColors.createDefault();

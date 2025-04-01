@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.client.renderer.util.GhostVertexCons
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -24,19 +25,28 @@ import net.minecraft.world.item.ItemStack;
 public final class ItemRendererHelper {
     private static final RenderType TRANSLUCENT = RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS);
 
-    public static void renderFakeItemTransparent(PoseStack pose, ItemStack stack, int x, int y, int alpha) {
+    public static void renderFakeItemTransparent(GuiGraphics gui, ItemStack stack, int x, int y, int alpha) {
+        renderFakeItemTransparent(gui, stack, x, y, alpha, 1, 1, 1, 150F);
+    }
+    
+    public static void renderFakeItemTransparent(GuiGraphics gui, ItemStack stack, int x, int y, int alpha,
+                                                 float scaleX, float scaleY, float scaleZ, float zIdx) {
         if(stack.isEmpty()) return;
         ItemRenderer renderer = Minecraft.getInstance().getItemRenderer();
         BakedModel baked = renderer.getModel(stack, null, Minecraft.getInstance().player, 0);
-        renderItemModel(pose, stack, x, y, alpha, baked, renderer);
+        renderItemModel(gui, stack, x, y, scaleX, scaleY, scaleZ, zIdx, alpha, baked, renderer);
     }
-
-    public static void renderItemModel(PoseStack pose, ItemStack stack, int x, int y, int alpha, BakedModel model, ItemRenderer renderer) {
+    
+    
+    public static void renderItemModel(GuiGraphics gui, ItemStack stack, int x, int y,
+                                       float scaleX, float scaleY, float scaleZ, float zIdx, int alpha, BakedModel model, ItemRenderer renderer) {
+        PoseStack pose = gui.pose();
         pose.pushPose();
-        pose.translate(x, y, 100f);
-        pose.translate(8d, 8d, 0d);
+        pose.translate(x, y, zIdx);
+        pose.translate((16 * scaleX) / 2, (16 * scaleY) / 2, 0d);
         pose.scale(1f, -1f, 1f);
         pose.scale(16f, 16f, 16f);
+        pose.scale(scaleX, scaleY, scaleZ);
 
         PoseStack modelView = RenderSystem.getModelViewStack();
         modelView.pushPose();
@@ -45,18 +55,22 @@ public final class ItemRendererHelper {
 
         boolean flatLight = !model.usesBlockLight();
         if(flatLight) Lighting.setupForFlatItems();
-
+		
+		RenderSystem.disableDepthTest();
+		RenderSystem.enableBlend();
+		RenderSystem.defaultBlendFunc();
+		
         MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-        renderer.render(
-                stack,
-                ItemDisplayContext.GUI,
-                false,
-                new PoseStack(),
-                wrapBuffer(buffer, alpha, alpha < 255),
-                LightTexture.FULL_BRIGHT,
-                OverlayTexture.NO_OVERLAY,
-                model
-        );
+        gui.drawManaged(() -> renderer.render(
+			stack,
+			ItemDisplayContext.GUI,
+			false,
+			new PoseStack(),
+			wrapBuffer(buffer, alpha, alpha < 255),
+			LightTexture.FULL_BRIGHT,
+			OverlayTexture.NO_OVERLAY,
+			model
+		));
         buffer.endBatch();
 
         RenderSystem.enableDepthTest();

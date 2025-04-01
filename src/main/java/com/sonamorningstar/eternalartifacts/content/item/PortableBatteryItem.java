@@ -110,6 +110,6 @@ public class PortableBatteryItem extends BatteryItem implements Equipable {
                 slots.putBoolean(key, true);
                 tag.put(COMPOUND, slots);
             }
-        };
-    }
+        }
+	}
 }

@@ -22,7 +22,7 @@ public class CableNetwork {
         cableGraph.putIfAbsent(pos, new HashSet<>());
         for (Direction direction : Direction.values()) {
             BlockPos neighborPos = pos.relative(direction);
-            if (cable.connectsTo(neighborPos, level, direction)) {
+            if (CableBlock.connectsTo(neighborPos, level, direction)) {
                 cableGraph.putIfAbsent(neighborPos, new HashSet<>());
                 connect(pos, neighborPos);
             }

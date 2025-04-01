@@ -6,9 +6,11 @@ import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.EnderNotebookScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.LightSaberScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.TesseractScreen;
+import com.sonamorningstar.eternalartifacts.container.slot.BlueprintFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
+import com.sonamorningstar.eternalartifacts.network.BlueprintIngredientsToClient;
 import com.sonamorningstar.eternalartifacts.network.UpdateEntityEnergyToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
@@ -117,6 +119,19 @@ public class ClientProxy {
     public static void rebuildTesseractPanel() {
         if (mc.screen instanceof TesseractScreen screen) {
             screen.rebuildNetworkPanel();
+        }
+    }
+    
+    public static void handleBlueprintIngredientsToClient(BlueprintIngredientsToClient packet) {
+        Player player = mc.player;
+        if (player == null) return;
+        if (player.containerMenu.containerId == packet.containerId() && packet.containerId() != 0) {
+            player.containerMenu.slots.stream().filter(s -> s instanceof BlueprintFakeSlot).forEach(s -> {
+                BlueprintFakeSlot fakeSlot = (BlueprintFakeSlot) s;
+                if (fakeSlot.getSlotIndex() < packet.ingredients().size()) {
+                    fakeSlot.ingredient = packet.ingredients().get(fakeSlot.getSlotIndex());
+                }
+            });
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
+import com.sonamorningstar.eternalartifacts.content.recipe.blueprint.BlueprintPattern;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleContainerCrafterWrapped;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleCraftingContainer;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -26,6 +28,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
+    @Nullable
+    BlueprintPattern pattern = null;
+    
+    // 0-8: Inputs, 9: Output, 10: Blueprint
     public AdvancedCrafterBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModMachines.ADVANCED_CRAFTER, pos, blockState);
         setMaxProgress(10);
@@ -56,20 +62,24 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (!outputSlots.contains(slot) || slot != 10) findRecipe();
+                if (slot == 10) {
+                    if (getStackInSlot(10).getItem() instanceof BlueprintItem) {
+                        pattern = BlueprintItem.getPattern(getStackInSlot(10));
+                    } else pattern = null;
+                }
                 AdvancedCrafterBlockEntity.this.sendUpdate();
             }
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {
                 if (slot == 10) return stack.getItem() instanceof BlueprintItem;
                 ItemStack blueprint = getStackInSlot(10);
-                if (slot < 9 && !blueprint.isEmpty()) {
-                    var fh = stack.getCapability(Capabilities.FluidHandler.ITEM);
-                    boolean flag = ItemStack.isSameItemSameTags(stack.copyWithCount(1), BlueprintItem.getFakeItems(blueprint).get(slot));
-                    return flag && fh == null;
+                if (slot < 9 && !blueprint.isEmpty() && pattern != null) {
+                    return pattern.testForPattern(stack, slot);
                 }
                 return !outputSlots.contains(slot);
             }
         });
+        setRecipeContainer(() -> new SimpleCraftingContainer(inventory, outputSlots));
         for (int i = 0; i < 9; i++) {
             screenInfo.setSlotPosition(44 + (i % 3) * 18, 18 + (i / 3) * 18, i);
         }
@@ -87,16 +97,14 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
     public void load(CompoundTag tag) {
         super.load(tag);
     }
-
-    @Nullable
-    private CraftingContainer craftingContainer;
+    
     private CraftingRecipe previousRecipe = null;
     @Override
     protected void findRecipe() {
         ItemStack blueprint = inventory.getStackInSlot(10);
-        recipeCache.clearRecipes(this);
+        RecipeCache.clearRecipes(this);
         if (!blueprint.isEmpty()) {
-            SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
+            /*SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
             NonNullList<ItemStack> pattern = BlueprintItem.getFakeItems(blueprint);
             for (int i = 0; i < 9; i++) {
                 ItemStack patternStack = pattern.get(i);
@@ -108,11 +116,16 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
                     }
                 } else container.setItem(i, inventory.getStackInSlot(i));
             }
-            recipeCache.findRecipe(RecipeType.CRAFTING, container, level);
-
+            recipeCache.findRecipe(RecipeType.CRAFTING, container, level);*/
+            SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
+            for (int i = 0; i < 9; i++) {
+                ItemStack stack = inventory.getStackInSlot(i);
+                container.setItem(i, stack);
+            }
+            pattern = new BlueprintPattern(container);
+            RecipeCache.findRecipeFor(this, RecipeType.CRAFTING, container, level, false);
         } else {
-            craftingContainer = new SimpleCraftingContainer(inventory, outputSlots);
-            recipeCache.findRecipe(RecipeType.CRAFTING, craftingContainer, level);
+            super.findRecipe();
         }
     }
 
@@ -120,7 +133,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
-        CraftingRecipe recipe = ((CraftingRecipe) recipeCache.getRecipe());
+        CraftingRecipe recipe = ((CraftingRecipe) RecipeCache.getCachedRecipe(this));
         if (recipe == null) {
             progress = 0;
             return;
@@ -130,9 +143,8 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
         }
         previousRecipe = recipe;
 
-        ItemStack result = craftingContainer != null ? recipe.assemble(craftingContainer, lvl.registryAccess()) : ItemStack.EMPTY;
-        result.onCraftedBySystem(lvl);
-        NonNullList<ItemStack> remainders = craftingContainer != null ? lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, craftingContainer, lvl) : NonNullList.create();
+        ItemStack result = recipe.assemble((CraftingContainer) recipeContainer.get(), lvl.registryAccess());
+        NonNullList<ItemStack> remainders = lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, (CraftingContainer) recipeContainer.get(), lvl);
         ProcessCondition condition = new ProcessCondition()
                 .initInventory(inventory)
                 .initInputTank(tank)
@@ -141,7 +153,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
                 .tryInsertForced(result);
 
 
-        condition.createCustomCondition(() -> {
+        /*condition.createCustomCondition(() -> {
             ItemStack blueprint = inventory.getStackInSlot(10);
             if (blueprint.isEmpty()) return false;
             NonNullList<ItemStack> pattern = BlueprintItem.getFakeItems(blueprint);
@@ -154,7 +166,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
                 if (!areTheyEqual) return true;
             }
             return false;
-        });
+        });*/
 
         List<ItemStack> containers = getContainers();
         for (ItemStack container : containers) {
@@ -167,6 +179,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
         }
 
         progress(condition::getResult, () -> {
+            result.onCraftedBySystem(lvl);
             inventory.insertItemForced(outputSlots.get(0), result.copy(), false);
             for (int i = 0; i < 9; i++) {
                 ItemStack stack = inventory.getStackInSlot(i);

@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
-import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.base.EAEmiRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.AlloyingRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -10,19 +9,8 @@ import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeHolder;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class AlloySmelterCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory ALLOYING_CATEGORY = createCategory(ModRecipes.ALLOYING, ModMachines.ALLOY_SMELTER);

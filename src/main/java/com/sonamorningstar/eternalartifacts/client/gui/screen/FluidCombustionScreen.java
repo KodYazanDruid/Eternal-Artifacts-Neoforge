@@ -18,7 +18,7 @@ public class FluidCombustionScreen extends AbstractMachineScreen<FluidCombustion
     protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
         super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
-        renderBurn(gui, x+81, y+55, mx, my);
+        renderBurn(gui, leftPos + 81, topPos + 55, mx, my);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class FluidCombustionScreen extends AbstractMachineScreen<FluidCombustion
                 gui.drawString(font,
                         ModConstants.GUI.withSuffixTranslatable("dynamo_produce_rate")
                                 .append(": " + cache.getGeneration()+"RF/T"),
-                        x + 44, y + 46, labelColor, false);
+                        leftPos + 44, topPos + 46, labelColor, false);
             }
         }
     }

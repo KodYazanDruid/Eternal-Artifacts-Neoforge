@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.MeatShredderRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -7,7 +8,6 @@ import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -27,7 +27,7 @@ public class MeatShredderBlockEntity extends GenericMachineBlockEntity {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoInputItems(lvl, pos);
         performAutoOutputFluids(lvl, pos);
-        MeatShredderRecipe recipe = recipeCache.getRecipe(MeatShredderRecipe.class);
+        MeatShredderRecipe recipe = (MeatShredderRecipe) RecipeCache.getCachedRecipe(this);
         if(recipe != null) {
             FluidStack fs = recipe.getOutput();
             progress(()-> {

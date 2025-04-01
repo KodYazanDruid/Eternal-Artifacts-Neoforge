@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.base.EAEmiRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.SqueezingRecipe;
-import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import dev.emi.emi.api.EmiRegistry;

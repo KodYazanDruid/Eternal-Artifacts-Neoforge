@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.api.machine;
 
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
