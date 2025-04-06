@@ -16,21 +16,23 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implements IAreaRenderer, IButtonHolder {
+public class MobLiquifier extends GenericMachineBlockEntity implements IAreaRenderer, IButtonHolder {
 
-    public MobLiquifierBlockEntity(BlockPos blockPos, BlockState blockState) {
+    public MobLiquifier(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
         setEnergy(this::createDefaultEnergy);
         setTank(() -> new MultiFluidTank<>(
@@ -85,9 +87,20 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
         Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
         return new AABB(pos.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        if (recipe instanceof MobLiquifierRecipe liq) {
+            condition.initOutputTank(tank);
+            for (FluidStack stack : liq.getResultFluidList()) condition.queueImport(stack);
+            condition.commitQueuedFluidStackImports();
+        }
+        super.setProcessCondition(condition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         livingList = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos, st))
                         .stream().filter(living -> {
                     EntityType<?> type = living.getType();
@@ -101,11 +114,13 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
 
         //Entity to hurt
         LivingEntity entityToHurt = null;
-        MobLiquifierRecipe recipe = (MobLiquifierRecipe) RecipeCache.getCachedRecipe(this);
+        MobLiquifierRecipe recipe = null;
         //Finding entity to hurt that fits recipe.
         for(LivingEntity living : livingList) {
             findRecipe();
+            recipe = (MobLiquifierRecipe) RecipeCache.getCachedRecipe(this);
             if(recipe == null) continue;
+            setProcessCondition(new ProcessCondition(this), recipe);
             //Found entity to hurt.
             if(recipe.getEntity().test(living.getType())) {
                 entityToHurt = living;
@@ -117,14 +132,11 @@ public class MobLiquifierBlockEntity extends GenericMachineBlockEntity implement
             NonNullList<FluidStack> outputs = recipe.getResultFluidList();
             LivingEntity finalEntityToHurt = entityToHurt;
 
-            ProcessCondition condition = new ProcessCondition().initOutputTank(tank);
-            for (FluidStack stack : outputs) condition.queueFluidStack(stack);
-            condition.commitQueuedFluidStacks();
-            progress(condition::getResult, ()-> {
+            progress(()-> {
                 finalEntityToHurt.addEffect(new MobEffectInstance(ModEffects.MALADY.get(), 200));
                 finalEntityToHurt.hurt(lvl.damageSources().cramming(), 1);
-                for(FluidStack stack : outputs) tank.fillForced(stack, IFluidHandler.FluidAction.EXECUTE);
-            }, energy);
+                for(FluidStack stack : outputs) tank.fillForced(stack.copy(), IFluidHandler.FluidAction.EXECUTE);
+            });
         }
 
     }

@@ -193,4 +193,14 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
         tag.put("RedstoneConfigs", redstoneConfigs);
         nbt.put("SidedTransferConfigs", tag);
     }
+    
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 18;
+    }
+    
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return getMaxStackSize(stack) == 1;
+    }
 }

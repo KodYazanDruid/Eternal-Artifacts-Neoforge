@@ -2,9 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
-import com.sonamorningstar.eternalartifacts.content.block.entity.InductionFurnaceBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

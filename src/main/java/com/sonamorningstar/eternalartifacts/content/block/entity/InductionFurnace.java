@@ -14,21 +14,25 @@ import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity<InductionFurnaceMenu> {
+public class InductionFurnace extends SidedTransferMachineBlockEntity<InductionFurnaceMenu> {
     private int heatKeepCost = 10;
     protected Supplier<? extends Container> recipeContainer2;
-    public InductionFurnaceBlockEntity(BlockPos pos, BlockState blockState) {
+    public InductionFurnace(BlockPos pos, BlockState blockState) {
         super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new InductionFurnaceMenu(ModMachines.INDUCTION_FURNACE.getMenu(), a, b, c, d));
         outputSlots.add(2);
         outputSlots.add(3);
+        setMaxProgress(500);
         setEnergy(this::createDefaultEnergy);
         setInventory(() -> createRecipeFinderInventory(4, outputSlots));
         setRecipeContainer(() -> new SimpleContainer(inventory.getStackInSlot(0)));
@@ -87,8 +91,9 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     
     public void setRecipeTypeId(short id) {
         recipeTypeId = id;
-        sendUpdate();
         findRecipe();
+        setProcessCondition(new ProcessCondition(this), null);
+        sendUpdate();
     }
 
     @Override
@@ -99,12 +104,42 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
     }
 
     private void setMaxProgressForHeat() {
-        setMaxProgress(500 - (int)(490 * getHeatPercentage() / 100D));
+        maxProgress = defaultMaxProgress - (int)(490 * getHeatPercentage() / 100D);
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        Recipe<Container> recipe0 = (Recipe<Container>) RecipeCache.getCachedRecipe(this, 0);
+        Recipe<Container> recipe1 = (Recipe<Container>) RecipeCache.getCachedRecipe(this, 1);
+        ItemStack result0;
+        ItemStack result1;
+        if (recipe0 != null) {
+            result0 = recipe0.assemble(recipeContainer.get(), level.registryAccess());
+            result0.onCraftedBySystem(level);
+        } else result0 = ItemStack.EMPTY;
+        if (recipe1 != null) {
+            result1 = recipe1.assemble(recipeContainer2.get(), level.registryAccess());
+            result1.onCraftedBySystem(level);
+        } else result1 = ItemStack.EMPTY;
+        condition.createCustomCondition(() -> result0.isEmpty() && result1.isEmpty());
+        condition.createCustomCondition(() -> recipe0 != null && result0.isEmpty() && recipe1 == null);
+        condition.createCustomCondition(() -> recipe0 == null && recipe1 != null && result1.isEmpty());
+        condition.createCustomCondition(() -> {
+            if (!result0.isEmpty()) {
+                ItemStack remainder = ItemHelper.insertItemStackedForced(inventory, result0, true, outputSlots).getFirst();
+                if (remainder.isEmpty()) return false;
+            }
+            if (!result1.isEmpty()) {
+                ItemStack remainder = ItemHelper.insertItemStackedForced(inventory, result1, true, outputSlots).getFirst();
+				return !remainder.isEmpty();
+            }
+            return true;
+        });
+        super.setProcessCondition(condition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        super.tickServer(lvl, pos, st);
         performAutoInputItems(lvl, pos);
         performAutoOutputItems(lvl, pos);
 
@@ -116,62 +151,55 @@ public class InductionFurnaceBlockEntity extends SidedTransferMachineBlockEntity
             progress = 0;
         }
 
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initOutputSlots(outputSlots);
-
         ItemStack resultItem0;
         ItemStack resultItem1;
         if (recipe0 != null) {
             resultItem0 = recipe0.assemble(recipeContainer.get(), lvl.registryAccess());
             resultItem0.onCraftedBySystem(lvl);
-            condition.queueItemStack(resultItem0);
         } else resultItem0 = ItemStack.EMPTY;
 
         if (recipe1 != null) {
             resultItem1 = recipe1.assemble(recipeContainer2.get(), lvl.registryAccess());
             resultItem1.onCraftedBySystem(lvl);
-            condition.queueItemStack(resultItem1);
         } else resultItem1 = ItemStack.EMPTY;
-
-        condition.commitQueuedItemStacks().createCustomCondition(() -> resultItem0.isEmpty() && resultItem1.isEmpty());
 
         setMaxProgressForHeat();
 
         AtomicBoolean shouldHeat = new AtomicBoolean();
         shouldHeat.set(false);
-        progress(
-                //Condition for machine to run
-                condition::getResult,
-                //This executes while machine running.
+        if (processCondition != null) {
+            progress(processCondition::getResult,
                 () -> shouldHeat.set(true),
-                //This executes when progress reaches max progress.
-                () ->  {
-            ItemStack remainder0 = ItemStack.EMPTY;
-            ItemStack remainder1 = ItemStack.EMPTY;
-            if (recipe0 != null) {
-                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0, false, outputSlots).getFirst();
-            }
-            if (recipe1 != null) {
-                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1, false, outputSlots).getFirst();
-            }
-            if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
-            if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
-        }, energy);
-
-        boolean isThereACoil = isThereACoil(lvl, pos);
-        boolean isEnergyEnough = energy.getEnergyStored() >= heatKeepCost;
-
-        if(isEnergyEnough) {
-            if (shouldHeat.get()) {
-                heat.heat(1, false);
-                energy.extractEnergyForced(heatKeepCost, false);
-            } else {
-                if (isThereACoil) energy.extractEnergyForced(heatKeepCost, false);
-                else heat.cool(1, false);
-            }
+                () -> {
+                    ItemStack remainder0 = ItemStack.EMPTY;
+                    ItemStack remainder1 = ItemStack.EMPTY;
+                    if (recipe0 != null) {
+                        remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0, false, outputSlots).getFirst();
+                    }
+                    if (recipe1 != null) {
+                        remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1, false, outputSlots).getFirst();
+                    }
+                    if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
+                    if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
+                }, energy);
         } else {
-            if (heat.getHeat() > 0) heat.cool(1, false);
+            progress = 0;
+        }
+        
+        boolean isEnergyEnough = energy.getEnergyStored() >= heatKeepCost;
+        int currentHeat = heat.getHeat();
+
+        if (shouldHeat.get() && isEnergyEnough) {
+            heat.heat(1, false);
+            energy.extractEnergyForced(heatKeepCost, false);
+        } else {
+            if (isThereACoil(lvl, pos) && isEnergyEnough && currentHeat > 0) {
+                int energyToExtract = (int)(heatKeepCost * (currentHeat / (float)heat.getMaxHeat()));
+                energy.extractEnergyForced(Math.max(1, energyToExtract), false);
+            }
+            else if (currentHeat > 0) {
+                heat.cool(1, false);
+            }
         }
     }
 

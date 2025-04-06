@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -19,6 +20,8 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
+
 public abstract class FluidTankEntityBlock extends BaseEntityBlock {
     protected FluidTankEntityBlock(Properties pProperties) {
         super(pProperties);
@@ -30,7 +33,9 @@ public abstract class FluidTankEntityBlock extends BaseEntityBlock {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof ModBlockEntity mbe) {
             mbe.loadEnchants(stack.getEnchantmentTags());
-            mbe.onEnchanted();
+            for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
+                mbe.onEnchanted(entry.getKey(), entry.getValue());
+            }
         }
         
         IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();

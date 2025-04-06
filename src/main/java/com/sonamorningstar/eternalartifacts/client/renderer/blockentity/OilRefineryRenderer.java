@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.client.renderer.util.RendererHelper;
-import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefinery;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class OilRefineryRenderer implements BlockEntityRenderer<OilRefineryBlockEntity> {
+public class OilRefineryRenderer implements BlockEntityRenderer<OilRefinery> {
 
     public static final Material REFINERY = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(MODID, "block/oil_refinery"));
     private static ModelPart modelPart;
@@ -63,7 +63,7 @@ public class OilRefineryRenderer implements BlockEntityRenderer<OilRefineryBlock
     }
 
     @Override
-    public void render(OilRefineryBlockEntity refinery, float tick, PoseStack poseStack, MultiBufferSource buff, int light, int overlay) {
+    public void render(OilRefinery refinery, float tick, PoseStack poseStack, MultiBufferSource buff, int light, int overlay) {
         poseStack.pushPose();
 
         Direction facing = refinery.hasLevel() ? refinery.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING) : Direction.NORTH;

@@ -21,36 +21,6 @@ public class ModularEnergyStorage extends ModEnergyStorage {
         }
     }
 
-/*    @Override
-    public int receiveEnergy(int maxReceive, boolean simulate) {
-        if (!canReceive()) return 0;
-        int energyReceived = 0;
-        for(IEnergyStorage handler : energyHandlers) {
-            energyReceived = handler.receiveEnergy(maxReceive, true);
-            if(energyReceived > 0 ) {
-                energyReceived = handler.receiveEnergy(maxReceive, simulate);
-                onEnergyChanged();
-                return energyReceived;
-            }
-        }
-        return energyReceived;
-    }
-
-    @Override
-    public int extractEnergy(int maxExtract, boolean simulate) {
-        if (!canExtract()) return 0;
-        int energyExtracted = 0;
-        for(IEnergyStorage handler : energyHandlers) {
-            energyExtracted = handler.extractEnergy(maxExtract, true);
-            if(energyExtracted > 0) {
-                energyExtracted = handler.extractEnergy(maxExtract, simulate);
-                onEnergyChanged();
-                return energyExtracted;
-            }
-        }
-        return energyExtracted;
-    }*/
-
     @Override
     public int receiveEnergy(int maxReceive, boolean simulate) {
         if (!canReceive()) return 0;

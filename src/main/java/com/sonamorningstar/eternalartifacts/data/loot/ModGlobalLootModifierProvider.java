@@ -86,5 +86,10 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 ).build()
             }
         ));
+        add("shulker_shell_coloring", new ShulkerShellColoringModifier(
+            new LootItemCondition[]{
+                LootTableIdCondition.builder(EntityType.SHULKER.getDefaultLootTable()).build()
+            }
+        ));
     }
 }

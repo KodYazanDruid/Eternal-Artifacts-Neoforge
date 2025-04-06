@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
@@ -36,6 +37,10 @@ public class SpawnerExtractorItem extends Item {
 			if (entityType.isPresent()) {
 				SpawnEggItem spawnEgg = DeferredSpawnEggItem.byId(entityType.get());
 				if (spawnEgg != null) {
+					if (ctx.getPlayer() != null )
+						ctx.getItemInHand().hurtAndBreak(1, ctx.getPlayer(), p -> p.broadcastBreakEvent(ctx.getHand()));
+					else
+						ctx.getItemInHand().hurt(1, level.random, null);
 					Direction clickedFace = ctx.getClickedFace();
 					SpawnerBlock.popResourceFromFace(level, blockPos, clickedFace, spawnEgg.getDefaultInstance());
 					entityTag.remove("id");

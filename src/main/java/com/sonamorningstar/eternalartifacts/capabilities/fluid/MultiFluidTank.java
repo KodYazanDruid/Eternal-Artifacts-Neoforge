@@ -9,11 +9,14 @@ import java.util.*;
 
 @Setter
 public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTank {
-    protected List<T> tanks = new ArrayList<>();
+    protected final List<T> tanks;
 
     @SafeVarargs
     public MultiFluidTank(T... tanks) {
-            this.tanks.addAll(Arrays.asList(tanks));
+            this.tanks = Arrays.asList(tanks);
+    }
+    public MultiFluidTank(List<T> tanks) {
+        this.tanks = tanks;
     }
     @Override
     public int getCapacity(int tank) {
@@ -50,14 +53,6 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
         return tanks.get(tank);
     }
 
-    public List<T> getTanksAsList() { return tanks; }
-
-    public int getEmptyTankCount() {
-        int counter = 0;
-        for(T tank : tanks) if(tank.getFluidInTank(0).isEmpty()) counter++;
-        return counter;
-    }
-
     @Override
     public int getTanks() {
         return tanks.size();
@@ -65,7 +60,7 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
 
     @Override
     public FluidStack getFluidInTank(int tank) {
-    return tanks.get(tank).getFluid(tank);
+    return tanks.get(tank).getFluid(0);
 }
 
     @Override
@@ -78,107 +73,283 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
         return tanks.get(tank).isFluidValid(0, stack);
     }
 
-    //TODO: Prioritize most filled tank first.
     //region Transfer Methods
     @Override
     public int fill(FluidStack resource, FluidAction action) {
-        /*List<Integer> existingTanks = new ArrayList<>();
-        for (int i = 0; i < getTanks(); i++) {
-            T tank = tanks.get(i);
-            Fluid fluid = tank.getFluid(0).getFluid();
-            if (fluid.isSame(resource.getFluid())) existingTanks.add(i);
-        }
-        if (!existingTanks.isEmpty()) {
-            int filled;
-            for (Integer tankNo : existingTanks) {
-                T tank = tanks.get(tankNo);
-                filled = tank.fill(resource, FluidAction.SIMULATE);
-                if (filled > 0) filled = filled - tank.fill(resource, action);
-                if (filled == 0) return 0;
-            }
-        }*/
-        for(T tank : tanks) {
-            int filled;
-            filled = tank.fill(resource, FluidAction.SIMULATE);
-            if(filled > 0) {
-                filled = tank.fill(resource, action);
-                return filled;
+        if (resource.isEmpty()) return 0;
+        
+        FluidStack resourceCopy = resource.copy();
+        int totalFilled = 0;
+        
+        List<T> compatibleTanks = new ArrayList<>();
+        for (T tank : tanks) {
+            FluidStack tankStack = tank.getFluid(0);
+            if (!tankStack.isEmpty() && tankStack.isFluidEqual(resourceCopy) && tank.isFluidValid(0, resourceCopy)) {
+                compatibleTanks.add(tank);
             }
         }
-        return 0;
+        
+        compatibleTanks.sort((t1, t2) -> {
+            double fillRate1 = (double) t1.getFluidAmount(0) / t1.getTankCapacity(0);
+            double fillRate2 = (double) t2.getFluidAmount(0) / t2.getTankCapacity(0);
+            return Double.compare(fillRate2, fillRate1);
+        });
+        
+        for (T tank : compatibleTanks) {
+            int filled = tank.fill(resourceCopy, action);
+            totalFilled += filled;
+            resourceCopy.shrink(filled);
+            
+            if (resourceCopy.isEmpty()) return totalFilled;
+        }
+        
+        for (T tank : tanks) {
+            if (tank.getFluid(0).isEmpty() && tank.isFluidValid(0, resourceCopy)) {
+                int filled = tank.fill(resourceCopy, action);
+                totalFilled += filled;
+                resourceCopy.shrink(filled);
+                
+                if (resourceCopy.isEmpty()) return totalFilled;
+            }
+        }
+        
+        return totalFilled;
     }
-
+    
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {
-        FluidStack drained;
-        for(T tank : tanks) {
-            drained = tank.drain(resource, FluidAction.SIMULATE);
-            if(!drained.isEmpty()) {
-                drained = tank.drain(resource, action);
-                return drained;
+        if (resource.isEmpty()) return FluidStack.EMPTY;
+        
+        FluidStack resourceCopy = resource.copy();
+        FluidStack result = FluidStack.EMPTY;
+        
+        List<T> compatibleTanks = new ArrayList<>();
+        for (T tank : tanks) {
+            FluidStack tankStack = tank.getFluid(0);
+            if (!tankStack.isEmpty() && tankStack.isFluidEqual(resourceCopy)) {
+                compatibleTanks.add(tank);
             }
         }
-        return FluidStack.EMPTY;
+        
+        compatibleTanks.sort((t1, t2) -> {
+            double fillRate1 = (double) t1.getFluidAmount(0) / t1.getTankCapacity(0);
+            double fillRate2 = (double) t2.getFluidAmount(0) / t2.getTankCapacity(0);
+            return Double.compare(fillRate1, fillRate2);
+        });
+        
+        for (T tank : compatibleTanks) {
+            FluidStack drained = tank.drain(resourceCopy, action);
+            
+            if (!drained.isEmpty()) {
+                resourceCopy.shrink(drained.getAmount());
+                
+                if (result.isEmpty()) result = drained;
+                else result.grow(drained.getAmount());
+                
+                if (resourceCopy.isEmpty()) return result;
+                
+            }
+        }
+        
+        return result;
     }
-
+    
     @Override
     public FluidStack drain(int maxDrain, FluidAction action) {
-        FluidStack drained;
-        for(T tank : tanks) {
-            drained = tank.drain(maxDrain, FluidAction.SIMULATE);
-            if(!drained.isEmpty()) {
-                drained = tank.drain(maxDrain, action);
-                return drained;
+        if (maxDrain <= 0) return FluidStack.EMPTY;
+        
+        FluidStack targetFluid = null;
+        List<T> compatibleTanks = new ArrayList<>();
+        
+        for (T tank : tanks) {
+            FluidStack fluid = tank.getFluid(0);
+            if (!fluid.isEmpty()) {
+                FluidStack simulatedDrain = tank.drain(maxDrain, FluidAction.SIMULATE);
+                if (!simulatedDrain.isEmpty()) {
+                    if (targetFluid == null) {
+                        targetFluid = simulatedDrain.copy();
+                        compatibleTanks.add(tank);
+                    } else if (simulatedDrain.isFluidEqual(targetFluid)) {
+                        compatibleTanks.add(tank);
+                    }
+                }
             }
         }
-        return FluidStack.EMPTY;
+        
+        if (targetFluid == null) return FluidStack.EMPTY;
+        
+        compatibleTanks.sort((t1, t2) -> {
+            double fillRate1 = (double) t1.getFluidAmount(0) / t1.getTankCapacity(0);
+            double fillRate2 = (double) t2.getFluidAmount(0) / t2.getTankCapacity(0);
+            return Double.compare(fillRate1, fillRate2);
+        });
+        
+        int remaining = maxDrain;
+        FluidStack result = FluidStack.EMPTY;
+        
+        for (T tank : compatibleTanks) {
+            FluidStack drained = tank.drain(remaining, action);
+            
+            if (!drained.isEmpty()) {
+                remaining -= drained.getAmount();
+                
+                if (result.isEmpty()) result = drained;
+                else result.grow(drained.getAmount());
+                
+                if (remaining <= 0) break;
+            }
+        }
+        
+        return result;
     }
     //endregion
     //region Transfer stuff forced
     @Override
-    public FluidStack drainForced(int i, FluidAction fluidAction) {
-        FluidStack drained;
-        for(T tank : tanks) {
-            drained = tank.drainForced(i, FluidAction.SIMULATE);
-            if(!drained.isEmpty()) {
-                drained = tank.drainForced(i, fluidAction);
-                return drained;
+    public FluidStack drainForced(int maxDrain, FluidAction action) {
+        if (maxDrain <= 0) return FluidStack.EMPTY;
+        
+        FluidStack targetFluid = null;
+        List<T> compatibleTanks = new ArrayList<>();
+        
+        for (T tank : tanks) {
+            FluidStack fluid = tank.getFluid(0);
+            if (!fluid.isEmpty()) {
+                FluidStack simulatedDrain = tank.drainForced(maxDrain, FluidAction.SIMULATE);
+                if (!simulatedDrain.isEmpty()) {
+                    if (targetFluid == null) {
+                        targetFluid = simulatedDrain.copy();
+                        compatibleTanks.add(tank);
+                    } else if (simulatedDrain.isFluidEqual(targetFluid)) {
+                        compatibleTanks.add(tank);
+                    }
+                }
             }
         }
-        return FluidStack.EMPTY;
+        
+        if (targetFluid == null) return FluidStack.EMPTY;
+        
+        compatibleTanks.sort((t1, t2) -> {
+            double fillRate1 = (double) t1.getFluidAmount(0) / t1.getTankCapacity(0);
+            double fillRate2 = (double) t2.getFluidAmount(0) / t2.getTankCapacity(0);
+            return Double.compare(fillRate1, fillRate2);
+        });
+        
+        int remaining = maxDrain;
+        FluidStack result = FluidStack.EMPTY;
+        
+        for (T tank : compatibleTanks) {
+            FluidStack drained = tank.drainForced(remaining, action);
+            
+            if (!drained.isEmpty()) {
+                remaining -= drained.getAmount();
+                
+                if (result.isEmpty()) result = drained;
+                else result.grow(drained.getAmount());
+                
+                if (remaining <= 0) break;
+            }
+        }
+        
+        return result;
+    }
+    
+    @Override
+    public FluidStack drainForced(FluidStack resource, FluidAction action) {
+        if (resource.isEmpty()) return FluidStack.EMPTY;
+        
+        FluidStack resourceCopy = resource.copy();
+        FluidStack result = FluidStack.EMPTY;
+        
+        List<T> compatibleTanks = new ArrayList<>();
+        for (T tank : tanks) {
+            FluidStack tankStack = tank.getFluid(0);
+            if (!tankStack.isEmpty() && tankStack.isFluidEqual(resourceCopy)) {
+                compatibleTanks.add(tank);
+            }
+        }
+        
+        compatibleTanks.sort((t1, t2) -> {
+            double fillRate1 = (double) t1.getFluidAmount(0) / t1.getTankCapacity(0);
+            double fillRate2 = (double) t2.getFluidAmount(0) / t2.getTankCapacity(0);
+            return Double.compare(fillRate1, fillRate2);
+        });
+        
+        for (T tank : compatibleTanks) {
+            FluidStack drained = tank.drainForced(resourceCopy, action);
+            
+            if (!drained.isEmpty()) {
+                resourceCopy.shrink(drained.getAmount());
+                
+                if (result.isEmpty()) result = drained;
+                else result.grow(drained.getAmount());
+                
+                if (resourceCopy.isEmpty()) return result;
+                
+            }
+        }
+        
+        return result;
     }
 
-    @Override
-    public FluidStack drainForced(FluidStack stack, FluidAction fluidAction) {
-        FluidStack drained;
-        for(T tank : tanks) {
-            drained = tank.drainForced(stack, FluidAction.SIMULATE);
-            if(!drained.isEmpty()) {
-                drained = tank.drainForced(stack, fluidAction);
-                return drained;
-            }
-        }
-        return FluidStack.EMPTY;
-    }
 
     @Override
-    public int fillForced(FluidStack stack, FluidAction fluidAction) {
-        int filled;
-        for(T tank : tanks) {
-            filled = tank.fillForced(stack, FluidAction.SIMULATE);
-            if(filled > 0) {
-                filled = tank.fillForced(stack, fluidAction);
-                return filled;
+    public int fillForced(FluidStack resource, FluidAction action) {
+        if (resource.isEmpty()) return 0;
+        
+        FluidStack resourceCopy = resource.copy();
+        int totalFilled = 0;
+        
+        List<T> compatibleTanks = new ArrayList<>();
+        for (T tank : tanks) {
+            FluidStack tankStack = tank.getFluid(0);
+            if (!tankStack.isEmpty() && tankStack.isFluidEqual(resourceCopy) && tank.isFluidValid(0, resourceCopy)) {
+                compatibleTanks.add(tank);
             }
         }
-        return 0;
+        
+        compatibleTanks.sort((t1, t2) -> {
+            double fillRate1 = (double) t1.getFluidAmount(0) / t1.getTankCapacity(0);
+            double fillRate2 = (double) t2.getFluidAmount(0) / t2.getTankCapacity(0);
+            return Double.compare(fillRate2, fillRate1);
+        });
+        
+        for (T tank : compatibleTanks) {
+            int filled = tank.fillForced(resourceCopy, action);
+            totalFilled += filled;
+            resourceCopy.shrink(filled);
+            
+            if (resourceCopy.isEmpty()) {
+                return totalFilled;
+            }
+        }
+        
+        for (T tank : tanks) {
+            if (tank.getFluid(0).isEmpty() && tank.isFluidValid(0, resourceCopy)) {
+                int filled = tank.fillForced(resourceCopy, action);
+                totalFilled += filled;
+                resourceCopy.shrink(filled);
+                
+                if (resourceCopy.isEmpty()) {
+                    return totalFilled;
+                }
+            }
+        }
+        
+        return totalFilled;
     }
     //endregion
-
+    
+    public T getTank(int tankNo) {
+        return tanks.get(tankNo);
+    }
+    
+    public void setTank(int tankNo, FluidStack fluidStack) {
+        tanks.get(tankNo).setFluid(fluidStack, 0);
+    }
+    
     @Override
     public void setFluid(FluidStack stack, int tank) {
-        tanks.get(tank).setFluid(stack, tank);
-
+        tanks.get(tank).setFluid(stack, 0);
     }
 
     @Override

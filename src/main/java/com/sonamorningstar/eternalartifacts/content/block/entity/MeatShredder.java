@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class MeatShredderBlockEntity extends GenericMachineBlockEntity {
-    public MeatShredderBlockEntity(BlockPos pos, BlockState blockState) {
+public class MeatShredder extends GenericMachineBlockEntity {
+    public MeatShredder(BlockPos pos, BlockState blockState) {
         super(ModMachines.MEAT_SHREDDER, pos, blockState);
         setInventory(() -> createRecipeFinderInventory(1, outputSlots));
         setEnergy(this::createDefaultEnergy);
@@ -25,6 +25,7 @@ public class MeatShredderBlockEntity extends GenericMachineBlockEntity {
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         performAutoInputItems(lvl, pos);
         performAutoOutputFluids(lvl, pos);
         MeatShredderRecipe recipe = (MeatShredderRecipe) RecipeCache.getCachedRecipe(this);

@@ -11,11 +11,12 @@ import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
-    public AlloySmelterBlockEntity(BlockPos pos, BlockState blockState) {
+public class AlloySmelter extends GenericMachineBlockEntity {
+    public AlloySmelter(BlockPos pos, BlockState blockState) {
         super(ModMachines.ALLOY_SMELTER, pos, blockState);
         setEnergy(this::createDefaultEnergy);
         outputSlots.add(3);
@@ -23,7 +24,17 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
         setRecipeTypeAndContainer(ModRecipes.ALLOYING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0), inventory.getStackInSlot(1), inventory.getStackInSlot(2)));
         screenInfo.setArrowXOffset(16);
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition processCondition, Recipe<?> recipe) {
+        if (recipe instanceof AlloyingRecipe alloying) {
+            processCondition
+                .queueImport(alloying.getResultItem(level.registryAccess()))
+                .commitQueuedImports();
+        }
+        super.setProcessCondition(processCondition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
@@ -34,12 +45,7 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
             return;
         }
 
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initOutputSlots(outputSlots)
-                .tryInsertForced(recipe.getResultItem(lvl.registryAccess()));
-
-        progress(condition::getResult, () -> {
+        progress(() -> {
             inventory.insertItemForced(3, recipe.getResultItem(lvl.registryAccess()).copy(), false);
             for (int i = 0; i < 3; i++) {
                 ItemStack inputItem = inventory.getStackInSlot(i);
@@ -53,6 +59,6 @@ public class AlloySmelterBlockEntity extends GenericMachineBlockEntity {
                     }
                 }
             }
-        }, energy);
+        });
     }
 }

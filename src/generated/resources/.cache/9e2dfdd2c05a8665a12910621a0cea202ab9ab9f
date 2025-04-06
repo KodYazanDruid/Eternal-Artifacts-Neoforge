@@ -1,4 +1,4 @@
-// 1.20.4	2025-03-13T20:11:47.3886852	Global Loot Modifiers : eternalartifacts
+// 1.20.4	2025-04-02T12:47:49.9477626	Global Loot Modifiers : eternalartifacts
 5982312b9d94f340d514c94fd8b9d862702714f9 data/eternalartifacts/loot_modifiers/ancient_seeds_from_sniffer_digging.json
 c78fb6b1d20764653873816d61d2ac4d97d16804 data/eternalartifacts/loot_modifiers/banana_from_jungle_leaves.json
 3ae0bb15d5dd02c6d55138174393e973fed15eee data/eternalartifacts/loot_modifiers/cutlass.json
@@ -8,5 +8,6 @@ d16edb1324d19d9d53ba3caa08ae3adf8690d008 data/eternalartifacts/loot_modifiers/en
 3c44ae7c7ec20b05c65ea754476bd5a03f8c9e9f data/eternalartifacts/loot_modifiers/hammering.json
 26dfd041193f0d289b059ac48cd48946103ca0e0 data/eternalartifacts/loot_modifiers/orange_from_acacia_leaves.json
 f3b6ad5db4ece5b43c5a124ef4c0d3914a96062d data/eternalartifacts/loot_modifiers/replace_vanilla_apple.json
+3cb3d74c65574799bb585f119545ec509d7c3d78 data/eternalartifacts/loot_modifiers/shulker_shell_coloring.json
 7746be427def52160a70503a4d249cdfb563cc40 data/eternalartifacts/loot_modifiers/smelting_drops.json
-8bbe28f5bc01ae2463f52825f88952a5602b1b7d data/neoforge/loot_modifiers/global_loot_modifiers.json
+ed9b15bc77d4a3dd79484bafef695a0d9fe440e1 data/neoforge/loot_modifiers/global_loot_modifiers.json

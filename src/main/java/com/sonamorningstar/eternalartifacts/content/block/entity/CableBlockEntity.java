@@ -13,122 +13,142 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.Objects;
+import java.util.Map;
 
 public class CableBlockEntity extends ModBlockEntity implements ITickableServer {
-    public final IEnergyStorage energy;
-
-    private final LinkedHashSet<CableConsumer> sources = new LinkedHashSet<>();
-    private final LinkedHashSet<CableConsumer> targets = new LinkedHashSet<>();
-    private final LinkedHashSet<BlockPos> cables = new LinkedHashSet<>();
-
+    public final Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> sources = new LinkedHashMap<>();
+    public final Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> targets = new LinkedHashMap<>();
+    public final LinkedHashSet<BlockPos> cables = new LinkedHashSet<>();
+    private final CableBlock.CableTier tier;
+    public boolean isDirty = false;
+    private boolean isUpdatingConnections = false;
+    
     public CableBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CABLE.get(), pos, state);
-        this.energy = new CableEnergyProvider();
+        this.tier = ((CableBlock) state.getBlock()).getTier();
     }
-
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        if (level != null) updateConnections(level);
+    }
+    
+    @Override
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        if (isDirty) updateConnections(lvl);
+        
+        if (sources.isEmpty()) return;
+        
+        LinkedHashSet<BlockPos> visitedCables = new LinkedHashSet<>();
+        Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> allSources = new LinkedHashMap<>();
+        Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> allTargets = new LinkedHashMap<>();
+        
+        collectNetworkDevices(visitedCables, allSources, allTargets, lvl);
+        
+        if (allSources.isEmpty() || allTargets.isEmpty()) {
+            return;
+        }
+        
+        transferEnergy(allSources, allTargets);
+    }
+    
     public void updateConnections(Level lvl) {
-        if (!lvl.isClientSide()) {
+        if (lvl.isClientSide() || isUpdatingConnections) return;
+        
+        try {
+            isUpdatingConnections = true;
+            
             sources.clear();
             targets.clear();
             cables.clear();
+            
             for (Direction dir : Direction.values()) {
                 BlockPos offset = getBlockPos().relative(dir);
-                if (lvl.getBlockEntity(offset) instanceof CableBlockEntity) cables.add(offset);
-                else {
-                    CableConsumer consumer = new CableConsumer(this, offset, dir.getOpposite(), ((ServerLevel) lvl));
-                    IEnergyStorage storage = consumer.getEnergyStorage();
-                    if (storage != null) {
-                        if (storage.canExtract()) {
-                            if(!targets.contains(consumer)) sources.add(consumer);
-                        }
-                        if (storage.canReceive()) {
-                            if (!sources.contains(consumer)) targets.add(consumer);
-                        }
+                BlockState neighborState = lvl.getBlockState(offset);
+                BlockState state = getBlockState();
+                
+                if (neighborState.getBlock() instanceof CableBlock cable && tier == cable.getTier()) {
+                    cables.add(offset);
+                    if (lvl.isAreaLoaded(getBlockPos(), 1) && state.getBlock() instanceof CableBlock) {
+                        lvl.setBlockAndUpdate(getBlockPos(), state.setValue(CableBlock.PROPERTY_BY_DIRECTION.get(dir), true));
+                    }
+                    continue;
+                }
+                
+                BlockCapabilityCache<IEnergyStorage, Direction> cache =
+                    BlockCapabilityCache.create(Capabilities.EnergyStorage.BLOCK, (ServerLevel) level, offset, dir.getOpposite(),
+                        () -> !this.isRemoved(),
+                        () -> this.isDirty = true
+                    );
+                
+                IEnergyStorage storage = cache.getCapability();
+                boolean canConnect = false;
+                if (storage != null) {
+                    if (storage.canExtract()) {
+                        sources.put(offset, cache);
+                        canConnect = true;
+                    }
+                    
+                    if (storage.canReceive()) {
+                        targets.put(offset, cache);
+                        canConnect = true;
+                    }
+                }
+                
+                if (lvl.isAreaLoaded(getBlockPos(), 1) && state.getBlock() instanceof CableBlock) {
+                    lvl.setBlockAndUpdate(getBlockPos(), state.setValue(CableBlock.PROPERTY_BY_DIRECTION.get(dir), canConnect));
+                }
+            }
+        } finally {
+            isUpdatingConnections = false;
+        }
+    }
+    
+    private void collectNetworkDevices(LinkedHashSet<BlockPos> visitedCables,
+                                       Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> allSources,
+                                       Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> allTargets,
+                                       Level lvl) {
+        visitedCables.add(getBlockPos());
+        
+        allSources.putAll(sources);
+        allTargets.putAll(targets);
+        
+        if (visitedCables.size() < tier.getMaxConnections()) {
+            for (BlockPos cablePos : cables) {
+                if (!visitedCables.contains(cablePos)) {
+                    BlockEntity entity = lvl.getBlockEntity(cablePos);
+                    if (entity instanceof CableBlockEntity adjCable) {
+                        adjCable.collectNetworkDevices(visitedCables, allSources, allTargets, lvl);
                     }
                 }
             }
         }
     }
-
-    @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        //updateConnections(lvl);
-        traverseConsumers(sources, targets);
-        for (BlockPos cable : cables) {
-            BlockEntity adj = lvl.getBlockEntity(cable);
-            if (adj instanceof CableBlockEntity adjCable) traverseConsumers(adjCable.sources, adjCable.targets);
-        }
-    }
-
-    private static void traverseConsumers(LinkedHashSet<CableConsumer> sources, LinkedHashSet<CableConsumer> targets) {
-        for (CableConsumer source : sources) {
-            IEnergyStorage sourceES = source.getEnergyStorage();
+    
+    private void transferEnergy(Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> sources,
+                                Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> targets) {
+        for (var sourceEntry : sources.entrySet()) {
+            BlockPos sourcePos = sourceEntry.getKey();
+            IEnergyStorage sourceES = sourceEntry.getValue().getCapability();
             if (sourceES == null) continue;
-            for (CableConsumer target : targets) {
-                IEnergyStorage targetES = target.getEnergyStorage();
+            
+            for (var targetEntry : targets.entrySet()) {
+                BlockPos targetPos = targetEntry.getKey();
+                if (sourcePos.equals(targetPos)) continue;
+                
+                IEnergyStorage targetES = targetEntry.getValue().getCapability();
                 if (targetES == null) continue;
-                int transfer = Math.min(sourceES.extractEnergy(Integer.MAX_VALUE, true), targetES.receiveEnergy(Integer.MAX_VALUE, true));
-                sourceES.extractEnergy(transfer, false);
-                targetES.receiveEnergy(transfer, false);
+                
+                int transfer = Math.min(sourceES.extractEnergy(tier.getTransferRate(), true), targetES.receiveEnergy(tier.getTransferRate(), true));
+                if (transfer > 0) {
+                    sourceES.extractEnergy(transfer, false);
+                    targetES.receiveEnergy(transfer, false);
+                }
             }
         }
-    }
-
-    private static class CableConsumer{
-        private final CableBlockEntity cable;
-        private final BlockPos pos;
-        private final Direction direction;
-        private final ServerLevel level;
-        private final BlockCapabilityCache<IEnergyStorage, Direction> cache;
-
-        public CableConsumer(CableBlockEntity cable, BlockPos pos, Direction direction, ServerLevel level) {
-            this.cable = cable;
-            this.pos = pos;
-            this.direction = direction;
-            this.level = level;
-            this.cache = BlockCapabilityCache.create(Capabilities.EnergyStorage.BLOCK, level, pos, direction, () -> !cable.isRemoved(), () -> {
-                BlockState state = cable.getBlockState();
-                if (state.getBlock() instanceof CableBlock cableBlock) cableBlock.updateConnections(state, level, cable.getBlockPos());
-            });
-        }
-
-        @Nullable
-        public IEnergyStorage getEnergyStorage() {
-            //return level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction);
-            return cache.getCapability();
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof CableConsumer that)) return false;
-            return Objects.equals(level, that.level) && Objects.equals(pos, that.pos) && direction == that.direction;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(pos, direction, level);
-        }
-    }
-
-    private static class CableEnergyProvider implements IEnergyStorage {
-        @Override
-        public int receiveEnergy(int maxReceive, boolean simulate) {return 0;}
-        @Override
-        public int extractEnergy(int maxExtract, boolean simulate) {return 0;}
-
-        @Override
-        public int getEnergyStored() {return 0;}
-        @Override
-        public int getMaxEnergyStored() {return 0;}
-
-        @Override
-        public boolean canExtract() {return false;}
-        @Override
-        public boolean canReceive() {return false;}
     }
 }

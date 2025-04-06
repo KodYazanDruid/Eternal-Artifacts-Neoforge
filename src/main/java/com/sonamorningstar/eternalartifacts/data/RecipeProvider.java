@@ -116,7 +116,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Either.left(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
         createFluidInfusingRecipe(recipeOutput, Fluids.WATER, 125, Either.right(ModTags.Items.DUSTS_FLOUR), ModItems.DOUGH.toStack());
-
+        
         createMeltingRecipe(recipeOutput, Items.NETHERRACK.getDefaultInstance(), new FluidStack(Fluids.LAVA, 1000));
         createMeltingRecipe(recipeOutput, Items.ICE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
         createMeltingRecipe(recipeOutput, ModItems.PINK_SLIME.toStack(), new FluidStack(ModFluids.PINK_SLIME.getFluid(), 250));
@@ -257,6 +257,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createCompressingRecipe(recipeOutput, Tags.Items.SEEDS, 16, ModItems.PLANT_MATTER.toStack());
         createCompressingRecipe(recipeOutput, new ItemStack(Items.ICE, 4), Items.PACKED_ICE.getDefaultInstance());
         createCompressingRecipe(recipeOutput, new ItemStack(Items.PACKED_ICE, 4), Items.BLUE_ICE.getDefaultInstance());
+        
+        createFluidMixingRecipe(recipeOutput, FluidIngredient.of(ModTags.Fluids.NAPHTHA, 250), FluidIngredient.EMPTY,
+            SizedIngredient.of(ModTags.Items.DUSTS_COAL, 1), ModFluids.LIQUID_PLASTIC.getFluidStack(250), "from_coal_dust");
+        createFluidMixingRecipe(recipeOutput, FluidIngredient.of(ModTags.Fluids.NAPHTHA, 100), FluidIngredient.EMPTY,
+            SizedIngredient.of(ItemTags.SAND, 1), ModFluids.LIQUID_PLASTIC.getFluidStack(100), "from_sand");
     }
 
     private void craftingRecipes(RecipeOutput recipeOutput) {
@@ -793,6 +798,17 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         String resultPath = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
         SpecialRecipeBuilder.special(category -> new CompressorRecipe(SizedIngredient.of(input, amount), result))
                 .save(output, new ResourceLocation(MODID, "compressing/"+path+"_to_"+resultPath));
+    }
+    private void createFluidMixingRecipe(RecipeOutput output, FluidIngredient input1, FluidIngredient input2,
+                                         SizedIngredient itemInput, FluidStack result) {
+        createFluidMixingRecipe(output, input1, input2, itemInput, result, "");
+    }
+    private void createFluidMixingRecipe(RecipeOutput output, FluidIngredient input1, FluidIngredient input2,
+                                         SizedIngredient itemInput, FluidStack result, String suffix) {
+        String fluidPath = BuiltInRegistries.FLUID.getKey(result.getFluid()).getPath();
+        String path = suffix.isBlank() ? "fluid_mixing/"+fluidPath : "fluid_mixing/"+fluidPath+"_"+suffix;
+        SpecialRecipeBuilder.special(category -> new FluidMixingRecipe(input1, input2, itemInput, result))
+            .save(output, new ResourceLocation(MODID, path));
     }
 
 

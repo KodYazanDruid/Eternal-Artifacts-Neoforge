@@ -8,12 +8,14 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
-public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
-    public MeltingCrucibleBlockEntity(BlockPos pos, BlockState blockState) {
+public class MeltingCrucible extends GenericMachineBlockEntity {
+    public MeltingCrucible(BlockPos pos, BlockState blockState) {
         super(ModMachines.MELTING_CRUCIBLE, pos, blockState);
         setEnergy(this::createDefaultEnergy);
         setTank(() -> createBasicTank(16000, true, false));
@@ -21,7 +23,18 @@ public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
         setRecipeTypeAndContainer(ModRecipes.MELTING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
         screenInfo.attachTankToLeft(0);
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        if (recipe instanceof MeltingRecipe melting) {
+            condition
+                .initOutputTank(tank)
+                .queueImport(melting.getOutput())
+                .commitQueuedImports();
+        }
+        super.setProcessCondition(condition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
@@ -32,15 +45,9 @@ public class MeltingCrucibleBlockEntity extends GenericMachineBlockEntity {
             return;
         }
 
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initOutputTank(tank)
-                .tryExtractItemForced(recipe.getInput().getItems()[0].getCount())
-                .tryInsertForced(recipe.getOutput());
-
-        progress(condition::getResult, () -> {
+        progress(() -> {
             tank.fillForced(recipe.getOutput(), IFluidHandler.FluidAction.EXECUTE);
             inventory.extractItem(0, recipe.getInput().getItems()[0].getCount(), false);
-        }, energy);
+        });
     }
 }

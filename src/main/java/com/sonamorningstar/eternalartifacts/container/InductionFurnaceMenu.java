@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.container;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.InductionFurnaceBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.InductionFurnace;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
@@ -23,7 +23,7 @@ public class InductionFurnaceMenu extends AbstractMachineMenu {
     
     @Override
     public boolean clickMenuButton(Player pPlayer, int pId) {
-        if (blockEntity instanceof InductionFurnaceBlockEntity furnace) {
+        if (blockEntity instanceof InductionFurnace furnace) {
             furnace.setRecipeTypeId((short) pId);
             return true;
         }

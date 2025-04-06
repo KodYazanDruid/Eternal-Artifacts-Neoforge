@@ -7,13 +7,15 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
 @Getter
-public class MeatPackerBlockEntity extends GenericMachineBlockEntity {
-    public MeatPackerBlockEntity(BlockPos pos, BlockState blockState) {
+public class MeatPacker extends GenericMachineBlockEntity {
+    public MeatPacker(BlockPos pos, BlockState blockState) {
         super(ModMachines.MEAT_PACKER, pos, blockState);
         setInventory(() -> createBasicInventory(1, false));
         setEnergy(this::createDefaultEnergy);
@@ -21,23 +23,26 @@ public class MeatPackerBlockEntity extends GenericMachineBlockEntity {
         outputSlots.add(0);
         screenInfo.setArrowXOffset(-40);
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        condition
+            .queueImport(ModItems.RAW_MEAT_INGOT.toStack())
+            .initInputTank(tank)
+            .tryExtractFluidForced(250)
+            .commitQueuedImports();
+        super.setProcessCondition(condition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         performAutoOutputItems(lvl, pos);
         performAutoInputFluids(lvl, pos);
 
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initOutputSlots(outputSlots)
-                .tryInsertForced(ModItems.RAW_MEAT_INGOT.toStack())
-                .initInputTank(tank)
-                .tryExtractFluidForced(250);
-
-        progress(condition::getResult, ()-> {
+        progress(()-> {
             tank.drainForced(250, IFluidHandler.FluidAction.EXECUTE);
             inventory.insertItemForced(0, ModItems.RAW_MEAT_INGOT.toStack(), false);
-        }, energy);
+        });
     }
 
 }

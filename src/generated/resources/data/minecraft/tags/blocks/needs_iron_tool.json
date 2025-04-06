@@ -16,6 +16,8 @@
     "eternalartifacts:diamond_drum",
     "eternalartifacts:steel_block",
     "eternalartifacts:demon_block",
-    "eternalartifacts:energy_dock"
+    "eternalartifacts:energy_dock",
+    "eternalartifacts:gold_cable",
+    "eternalartifacts:covered_gold_cable"
   ]
 }

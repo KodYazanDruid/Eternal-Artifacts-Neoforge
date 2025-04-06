@@ -47,7 +47,9 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CableBlockEntity>> CABLE = BLOCK_ENTITIES.register("cable", ()->
             BlockEntityType.Builder.of(CableBlockEntity::new,
                     ModBlocks.COPPER_CABLE.get(),
-                    ModBlocks.COVERED_COPPER_CABLE.get()
+                    ModBlocks.COVERED_COPPER_CABLE.get(),
+                    ModBlocks.GOLD_CABLE.get(),
+                    ModBlocks.COVERED_GOLD_CABLE.get()
             ).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->

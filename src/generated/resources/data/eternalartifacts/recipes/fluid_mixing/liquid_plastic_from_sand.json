@@ -1,0 +1,16 @@
+{
+  "type": "eternalartifacts:fluid_mixing",
+  "fluidInput1": {
+    "amount": 100,
+    "tag": "forge:naphtha"
+  },
+  "fluidInput2": [],
+  "itemInput": {
+    "amount": 1,
+    "tag": "minecraft:sand"
+  },
+  "output": {
+    "Amount": 100,
+    "FluidName": "eternalartifacts:liquid_plastic"
+  }
+}

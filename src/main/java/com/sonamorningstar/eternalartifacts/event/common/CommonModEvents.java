@@ -96,7 +96,6 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SHOCK_ABSORBER.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.CABLE.get(), (be, ctx) -> be.energy);
         registerMachineItem(event, ModBlocks.SHOCK_ABSORBER);
         registerMachineItem(event, ModBlocks.FLUID_COMBUSTION_DYNAMO);
         registerMachineItem(event, ModBlocks.BIOFURNACE);

@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:block/cable_inventory",
+  "textures": {
+    "texture": "eternalartifacts:block/gold_cable"
+  }
+}

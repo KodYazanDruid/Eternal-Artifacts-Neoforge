@@ -1,0 +1,9 @@
+{
+  "type": "eternalartifacts:shulker_shell_coloring",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/shulker"
+    }
+  ]
+}

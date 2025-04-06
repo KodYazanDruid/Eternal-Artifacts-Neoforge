@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.CableBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSources;
@@ -7,6 +8,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -21,8 +23,8 @@ public class UncoveredCableBlock extends CableBlock{
     private static final VoxelShape SHAPE_UP = BlockHelper.generateByArea(4, 6, 4, 6, 10, 6);
     private static final VoxelShape SHAPE_DOWN = BlockHelper.generateByArea(4, 6, 4, 6, 0, 6);
 
-    public UncoveredCableBlock(Properties props) {
-        super(props);
+    public UncoveredCableBlock(CableTier tier, Properties props) {
+        super(tier, props);
     }
 
     @Override
@@ -48,6 +50,10 @@ public class UncoveredCableBlock extends CableBlock{
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         if (entity instanceof LivingEntity living) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof CableBlockEntity cable) {
+            
+            }
             DamageSources source = new DamageSources(living.level().registryAccess());
             living.hurt(source.lightningBolt(), 1.0F);
         }

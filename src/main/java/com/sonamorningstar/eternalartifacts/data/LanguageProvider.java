@@ -273,6 +273,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.STRAY_SKULL.get(), "Stray Skull");
                 add(ModBlocks.BLAZE_HEAD.get(), "Blaze Head");
                 add(ModBlocks.MACHINE_WORKBENCH.get(), "Machine Workbench");
+                add(ModBlocks.GOLD_CABLE.get(), "Gold Cable");
+                add(ModBlocks.COVERED_GOLD_CABLE.get(), "Covered Gold Cable");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -301,6 +303,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.SOULBOUND.get(), "Soulbound");
                 add(ModEnchantments.MELTING_TOUCH.get(), "Melting Touch");
                 add(ModEnchantments.EVERLASTING.get(), "Everlasting");
+                add(ModEnchantments.CELERITY.get(), "Celerity");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -606,6 +609,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SPAWNER_EXTRACTOR.get(), "Çağırıcı Çıkarıcı");
                 addPotion(ModPotions.ANGLERS_LUCK.get(), "Balıkçı Şansı İksiri");
                 addPotion(ModPotions.LURING.get(), "Yemleme İksiri");
+                add(ModFluids.NAPHTHA.getBucketItem(), "Nafta Kovası");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -728,6 +732,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.STRAY_SKULL.get(), "Serseri Kafatası");
                 add(ModBlocks.BLAZE_HEAD.get(), "Blaze Kafası");
                 add(ModBlocks.MACHINE_WORKBENCH.get(), "Makine Tezgahı");
+                add(ModFluids.NAPHTHA.getTranslationKey(), "Nafta");
+                add(ModFluids.NAPHTHA.getFluidBlock(), "Nafta");
+                add(ModMachines.FLUID_MIXER.getBlockTranslationKey(), "Sıvı Karıştırıcı");
+                add(ModBlocks.GOLD_CABLE.get(), "Altın Kablo");
+                add(ModBlocks.COVERED_GOLD_CABLE.get(), "İzole Altın Kablo");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -764,6 +773,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.SOULBOUND.get(), "Ruh Bağı");
                 add(ModEnchantments.MELTING_TOUCH.get(), "Eriten Dokunuş");
                 add(ModEnchantments.EVERLASTING.get(), "Ebedi");
+                add(ModEnchantments.CELERITY.get(), "Sürat");
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");

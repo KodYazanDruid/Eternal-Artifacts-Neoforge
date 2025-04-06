@@ -1,13 +1,18 @@
 package com.sonamorningstar.eternalartifacts.world;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
 
 import java.util.List;
@@ -22,6 +27,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> PLACED_MANGANESE_ORE_MIDDLE = registerKey("placed_manganese_ore_middle");
     public static final ResourceKey<PlacedFeature> PLACED_MANGANESE_ORE_SMALL = registerKey("placed_manganese_ore_small");
     public static final ResourceKey<PlacedFeature> PLACED_TIGRIS_FLOWER = registerKey("placed_tigris_flower");
+    public static final ResourceKey<PlacedFeature> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("crude_oil_deposit");
     
     public static ResourceKey<PlacedFeature> registerKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(MODID, name));
@@ -34,10 +40,21 @@ public class ModPlacedFeatures {
         context.register(PLACED_GRAVEL_GOLD_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_GOLD_ORE), createListWithRarity(500)));
         context.register(PLACED_MANGANESE_ORE_MIDDLE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE),
                 commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(36)))));
-        context.register(PLACED_MANGANESE_ORE_SMALL, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE),
+        context.register(PLACED_MANGANESE_ORE_SMALL, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE_SMALL),
                 commonOrePlacement(10, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72)))));
         context.register(PLACED_TIGRIS_FLOWER, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.TIGRIS_FLOWER),
                 List.of(RarityFilter.onAverageOnceEvery(16), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())));
+        context.register(CRUDE_OIL_LAKE_DEEPSLATE,
+            new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.CRUDE_OIL_LAKE_DEEPSLATE),
+                List.of(RarityFilter.onAverageOnceEvery(12),
+                InSquarePlacement.spread(), HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))),
+                EnvironmentScanPlacement.scanningFor(
+                    Direction.DOWN,
+                    BlockPredicate.allOf(BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), BlockPredicate.insideWorld(new BlockPos(0, -5, 0))),
+                    32
+                ), SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5),
+                BiomeFilter.biome())
+            ));
     }
     private static List<PlacementModifier> createListWithRarity(int rarity) {
         return List.of(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());

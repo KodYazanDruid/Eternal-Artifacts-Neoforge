@@ -49,7 +49,7 @@ public class KeepFluidsFunction extends LootItemConditionalFunction {
                 for (int i = 0; i < tankBe.getTanks(); i++) {
                     FluidStack fluidStack = tankBe.getFluidInTank(i);
                     try {
-                        mimft.getTank(i).setFluid(fluidStack, 0);
+                        mimft.setTank(i, fluidStack);
                     } catch (IndexOutOfBoundsException e) {
                         EternalArtifacts.LOGGER.error("Tank index out of bounds: {} for {}", i, stack);
                     }

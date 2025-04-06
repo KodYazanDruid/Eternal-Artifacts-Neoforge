@@ -17,6 +17,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -42,6 +43,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntityBlock {
@@ -158,12 +160,14 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
-        Optional<IFluidHandlerItem> optionalTankStack = FluidUtil.getFluidHandler(stack);
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
             mbe.loadEnchants(stack.getEnchantmentTags());
-            mbe.onEnchanted();
+            for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
+                mbe.onEnchanted(entry.getKey(), entry.getValue());
+            }
         }
+        Optional<IFluidHandlerItem> optionalTankStack = FluidUtil.getFluidHandler(stack);
         if (optionalTankStack.isPresent()) {
             IFluidHandlerItem tankStack = optionalTankStack.get();
             Optional<IFluidHandler> optionalTank = FluidUtil.getFluidHandler(level, pos, null);
@@ -205,8 +209,9 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
 
         if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
             CompoundTag nbt = stack.getTag();
-            CompoundTag machineNbt = nbt.getCompound("MachineData");
-            mbe.loadContents(machineNbt);
+            if (nbt.contains("MachineData")) {
+                mbe.loadContents(nbt.getCompound("MachineData"));
+            }
         }
     }
 }

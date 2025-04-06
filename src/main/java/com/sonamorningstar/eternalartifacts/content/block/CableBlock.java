@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.sonamorningstar.eternalartifacts.content.block.entity.CableBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import lombok.Getter;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.RenderShape;
@@ -28,15 +30,15 @@ import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.common.IExtensibleEnum;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
+@Getter
+@SuppressWarnings({"deprecation"})
 public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityBlock {
+    private final CableTier tier;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final BooleanProperty NORTH = BooleanProperty.create("north");
     public static final BooleanProperty SOUTH = BooleanProperty.create("south");
@@ -60,8 +62,9 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
     private static final VoxelShape SHAPE_UP = BlockHelper.generateByArea(6, 5, 6, 5, 11, 5);
     private static final VoxelShape SHAPE_DOWN = BlockHelper.generateByArea(6, 5, 6, 5, 0, 5);
 
-    public CableBlock(Properties props) {
+    public CableBlock(CableTier tier, Properties props) {
         super(props);
+        this.tier = tier;
         registerDefaultState(defaultBlockState()
             .setValue(WATERLOGGED, false)
             .setValue(NORTH, false)
@@ -104,79 +107,31 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
         builder.add(WATERLOGGED, NORTH, SOUTH, WEST, EAST, UP, DOWN);
     }
 
-    public static boolean connectsTo(BlockPos pos, Level level, Direction direction) {
-        BlockState state = level.getBlockState(pos);
-        IEnergyStorage energyStorage = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, direction);
-        return energyStorage != null || state.getBlock() instanceof CableBlock;
-    }
-
-    public List<Direction> getConnections(BlockPos pos, Level level) {
-        List<Direction> connected = new ArrayList<>();
-        BlockState state = level.getBlockState(pos);
-        if (!(state.getBlock() instanceof CableBlock)) return connected;
-
-        var north = state.getValue(NORTH);
-        var east = state.getValue(EAST);
-        var south = state.getValue(SOUTH);
-        var west = state.getValue(WEST);
-        var up = state.getValue(UP);
-        var down = state.getValue(DOWN);
-
-        if (north) connected.add(Direction.NORTH);
-        if (east) connected.add(Direction.EAST);
-        if (south) connected.add(Direction.SOUTH);
-        if (west) connected.add(Direction.WEST);
-        if (up) connected.add(Direction.UP);
-        if (down) connected.add(Direction.DOWN);
-
-        return connected;
-    }
-
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext ctx) {
         Level level = ctx.getLevel();
         BlockPos pos = ctx.getClickedPos();
         FluidState fluidState = level.getFluidState(pos);
-
-        BlockPos north = pos.north();
-        BlockPos east = pos.east();
-        BlockPos south = pos.south();
-        BlockPos west = pos.west();
-        BlockPos up = pos.above();
-        BlockPos down = pos.below();
-
-        return defaultBlockState()
-                .setValue(NORTH, connectsTo(north, level, Direction.NORTH.getOpposite()))
-                .setValue(EAST, connectsTo(east, level, Direction.EAST.getOpposite()))
-                .setValue(SOUTH, connectsTo(south, level, Direction.SOUTH.getOpposite()))
-                .setValue(WEST, connectsTo(west, level, Direction.WEST.getOpposite()))
-                .setValue(UP, connectsTo(up, level, Direction.UP.getOpposite()))
-                .setValue(DOWN, connectsTo(down, level, Direction.DOWN.getOpposite()))
-                .setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
+        
+        return defaultBlockState().setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
     }
 
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighState, LevelAccessor accessor, BlockPos pos, BlockPos neighPos) {
         if(state.getValue(WATERLOGGED)) accessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(accessor));
-        boolean canConnect = accessor instanceof Level level && connectsTo(neighPos, level, direction.getOpposite());
-        //return state.setValue(PROPERTY_BY_DIRECTION.get(direction), canConnect);
-        if (accessor instanceof Level level) {
-            //updateConnection(state, level, neighPos, direction);
-            BlockEntity be = accessor.getBlockEntity(pos);
-            if (be instanceof CableBlockEntity cable) cable.updateConnections(level);
+        if (accessor instanceof Level level && level.getBlockEntity(pos) instanceof CableBlockEntity cable) {
+            cable.updateConnections(level);
         }
-        return state.setValue(PROPERTY_BY_DIRECTION.get(direction), canConnect);
-        //return state;
+        return state;
     }
-
-    public void updateConnections(BlockState state, Level level, BlockPos pos) {
-        for (Direction direction : Direction.values()) updateConnection(state, level, pos, direction);
-    }
-    public void updateConnection(BlockState state, Level level, BlockPos pos, Direction direction) {
-        //BlockState state = level.getBlockState(pos);
-        boolean canConnect = connectsTo(pos, level, direction.getOpposite());
-        state.setValue(PROPERTY_BY_DIRECTION.get(direction), canConnect);
+    
+    @Override
+    public void onNeighborChange(BlockState state, LevelReader reader, BlockPos pos, BlockPos neighbor) {
+        super.onNeighborChange(state, reader, pos, neighbor);
+        if (reader instanceof Level level && reader.getBlockEntity(pos) instanceof CableBlockEntity cable) {
+            cable.updateConnections(level);
+        }
     }
 
     @Override
@@ -194,5 +149,23 @@ public class CableBlock extends Block implements SimpleWaterloggedBlock, EntityB
         return pLevel.isClientSide() ? null : (lvl, pos, state, be) -> {
             if (be instanceof CableBlockEntity cable) cable.tickServer(lvl, pos, state);
         };
+    }
+    
+    @Getter
+    public enum CableTier implements IExtensibleEnum {
+        COPPER(16, 1000),
+        GOLD(32, 4000);
+        
+        private final int maxConnections;
+        private final int transferRate;
+        
+        CableTier(int maxConnections, int transferRate) {
+            this.maxConnections = maxConnections;
+            this.transferRate = transferRate;
+        }
+        
+        public static CableTier create(String name, int maxConnections, int transferRate) {
+            throw new IllegalStateException("Enum not extended");
+        }
     }
 }

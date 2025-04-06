@@ -109,6 +109,7 @@ public class ItemFluidContainer implements Container {
 
     //region Fluid Stuff
     public FluidStack getFluidstack(int index) {
+        if (!isInBounds(index)) return FluidStack.EMPTY;
         return fluidStacks.get(index);
     }
     public FluidStack shrinkFluidStack(int index, int amount) {

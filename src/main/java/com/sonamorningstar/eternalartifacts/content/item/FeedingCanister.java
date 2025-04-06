@@ -109,4 +109,14 @@ public class FeedingCanister extends Item {
             tooltipComponents.add(ModConstants.TOOLTIP.withSuffixTranslatable("saturation").append(": ").append(String.format("%.1f", nutrition.getSaturationAmount())+ " / " + nutrition.getMaxSaturationAmount()).withStyle(ChatFormatting.YELLOW));
         }
     }
+    
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 18;
+    }
+    
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return getMaxStackSize(stack) == 1;
+    }
 }

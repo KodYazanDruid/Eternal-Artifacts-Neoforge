@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
-import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
@@ -19,20 +18,18 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
+public class AdvancedCrafter extends GenericMachineBlockEntity {
     @Nullable
     BlueprintPattern pattern = null;
     
     // 0-8: Inputs, 9: Output, 10: Blueprint
-    public AdvancedCrafterBlockEntity(BlockPos pos, BlockState blockState) {
+    public AdvancedCrafter(BlockPos pos, BlockState blockState) {
         super(ModMachines.ADVANCED_CRAFTER, pos, blockState);
         setMaxProgress(10);
         setEnergy(this::createDefaultEnergy);
@@ -67,7 +64,7 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
                         pattern = BlueprintItem.getPattern(getStackInSlot(10));
                     } else pattern = null;
                 }
-                AdvancedCrafterBlockEntity.this.sendUpdate();
+                AdvancedCrafter.this.sendUpdate();
             }
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {
@@ -145,53 +142,8 @@ public class AdvancedCrafterBlockEntity extends GenericMachineBlockEntity {
 
         ItemStack result = recipe.assemble((CraftingContainer) recipeContainer.get(), lvl.registryAccess());
         NonNullList<ItemStack> remainders = lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, (CraftingContainer) recipeContainer.get(), lvl);
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initInputTank(tank)
-                .initOutputSlots(outputSlots)
-                .createCustomCondition(result::isEmpty)
-                .tryInsertForced(result);
-
-
-        /*condition.createCustomCondition(() -> {
-            ItemStack blueprint = inventory.getStackInSlot(10);
-            if (blueprint.isEmpty()) return false;
-            NonNullList<ItemStack> pattern = BlueprintItem.getFakeItems(blueprint);
-            for (int i = 0; i < 9; i++) {
-                ItemStack patternStack = pattern.get(i);
-                if (patternStack.isEmpty()) continue;
-                ItemStack stack = inventory.getStackInSlot(i);
-                if (stack.isEmpty()) return true;
-                boolean areTheyEqual = ItemStack.isSameItemSameTags(stack.copyWithCount(1), patternStack);
-                if (!areTheyEqual) return true;
-            }
-            return false;
-        });*/
-
-        List<ItemStack> containers = getContainers();
-        for (ItemStack container : containers) {
-            IFluidHandlerItem fluidHandler = container.getCapability(Capabilities.FluidHandler.ITEM);
-            if (fluidHandler == null) continue;
-            FluidStack drained = fluidHandler.drain(1000, IFluidHandler.FluidAction.SIMULATE);
-            if (drained.getAmount() > 0) {
-                condition.tryExtractForced(drained.copyWithAmount(1000));
-            }
-        }
-
-        progress(condition::getResult, () -> {
-            result.onCraftedBySystem(lvl);
-            inventory.insertItemForced(outputSlots.get(0), result.copy(), false);
-            for (int i = 0; i < 9; i++) {
-                ItemStack stack = inventory.getStackInSlot(i);
-                if (!inventory.getStackInSlot(10).isEmpty() && containers.contains(stack)) {
-                    tank.drainForced(1000, IFluidHandler.FluidAction.EXECUTE);
-                } else inventory.extractItem(i, 1, false);
-            }
-            for (int i = 0; i < remainders.size(); i++) {
-                ItemStack remainder = remainders.get(i).copy();
-                inventory.insertItemForced(i, remainder, false);
-            }
-        }, energy);
+ 
+ 
     }
 
     private List<ItemStack> getContainers() {

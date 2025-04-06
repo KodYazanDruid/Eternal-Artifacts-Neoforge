@@ -32,7 +32,7 @@ public class MobLiquifierRecipe extends NoResultItemRecipe<SimpleEntityContainer
         }
         return false;
     }
-
+    
     @Override
     public RecipeSerializer<?> getSerializer() {return ModRecipes.MOB_LIQUIFYING.getSerializer();}
     @Override

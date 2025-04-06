@@ -4,8 +4,10 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.function.Supplier;
@@ -20,11 +22,13 @@ public class DrumBlockEntity extends ModBlockEntity {
     }
     
     @Override
-    public void onEnchanted() {
-        CompoundTag oldData = new CompoundTag();
-        oldData.put("Fluid", tank.serializeNBT());
-        this.tank = tankSetter.get();
-        this.tank.deserializeNBT(oldData.getCompound("Fluid"));
+    public void onEnchanted(Enchantment enchantment, int level) {
+        if (enchantment == ModEnchantments.VOLUME.get()){
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Fluid", tank.serializeNBT());
+            this.tank = tankSetter.get();
+            this.tank.deserializeNBT(oldData.getCompound("Fluid"));
+        }
     }
     
     @Override

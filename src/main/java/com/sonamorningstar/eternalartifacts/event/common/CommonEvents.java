@@ -43,12 +43,14 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -79,10 +81,7 @@ import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.entity.player.UseItemOnBlockEvent;
+import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -589,5 +588,23 @@ public class CommonEvents {
             results.forEach((item, pair) -> HammerItem.blockDropRates.put(block, Pair.of(item, pair)));
         }
         
+    }
+    
+    @SubscribeEvent
+    public static void interactEntityEvent(PlayerInteractEvent.EntityInteract event) {
+        ItemStack stack = event.getItemStack();
+        Entity target = event.getTarget();
+        Player player = event.getEntity();
+        if (stack.getItem() instanceof DyeItem dye && target instanceof Shulker shulker && shulker.isAlive() &&
+                shulker.getColor() != dye.getDyeColor()) {
+            DyeColor color = dye.getDyeColor();
+            shulker.level().playSound(player, shulker, SoundEvents.DYE_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+            if (!player.level().isClientSide()) {
+                shulker.setVariant(Optional.of(color));
+                stack.shrink(1);
+                player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
+            }
+            player.swing(event.getHand());
+        }
     }
 }

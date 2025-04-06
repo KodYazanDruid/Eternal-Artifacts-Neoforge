@@ -52,7 +52,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final JarBlockEntity jar = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
     private final FluidCombustionDynamoBlockEntity fcDynamo = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
     private final NousTankBlockEntity nousTank = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
-    private final OilRefineryBlockEntity refinery = new OilRefineryBlockEntity(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
+    private final OilRefinery refinery = new OilRefinery(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
     private final EnergyDockBlockEntity energyDock = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
     private final TesseractBlockEntity tesseract = new TesseractBlockEntity(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());
     
@@ -79,7 +79,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             }else if(block instanceof NousTankBlock) {
                 if(fluidHandlerItem != null) nousTank.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 beRenderer.renderItem(nousTank, ps, buff, light, overlay);
-            }else if(block instanceof OilRefineryBlock<? extends OilRefineryBlockEntity>) {
+            }else if(block instanceof OilRefineryBlock<? extends OilRefinery>) {
                 stack.getAllEnchantments().forEach(refinery::enchant);
                 if (fluidHandlerItem != null) {
                     refinery.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);

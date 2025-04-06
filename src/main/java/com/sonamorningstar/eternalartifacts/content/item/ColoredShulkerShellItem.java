@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -116,5 +117,26 @@ public class ColoredShulkerShellItem extends Item {
             return ((ColoredShulkerShellItem) stack.getItem()).color;
         }
         return null;
+    }
+    
+    public static Item getItemByColor(@Nullable DyeColor color) {
+        return color != null ? switch (color) {
+            case WHITE -> ModItems.WHITE_SHULKER_SHELL.get();
+            case ORANGE -> ModItems.ORANGE_SHULKER_SHELL.get();
+            case MAGENTA -> ModItems.MAGENTA_SHULKER_SHELL.get();
+            case LIGHT_BLUE -> ModItems.LIGHT_BLUE_SHULKER_SHELL.get();
+            case YELLOW -> ModItems.YELLOW_SHULKER_SHELL.get();
+            case LIME -> ModItems.LIME_SHULKER_SHELL.get();
+            case PINK -> ModItems.PINK_SHULKER_SHELL.get();
+            case GRAY -> ModItems.GRAY_SHULKER_SHELL.get();
+            case LIGHT_GRAY -> ModItems.LIGHT_GRAY_SHULKER_SHELL.get();
+            case CYAN -> ModItems.CYAN_SHULKER_SHELL.get();
+            case PURPLE -> ModItems.PURPLE_SHULKER_SHELL.get();
+            case BLUE -> ModItems.BLUE_SHULKER_SHELL.get();
+            case BROWN -> ModItems.BROWN_SHULKER_SHELL.get();
+            case GREEN -> ModItems.GREEN_SHULKER_SHELL.get();
+            case RED -> ModItems.RED_SHULKER_SHELL.get();
+            case BLACK -> ModItems.BLACK_SHULKER_SHELL.get();
+        } : Items.SHULKER_SHELL;
     }
 }

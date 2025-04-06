@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefineryBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.OilRefinery;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +16,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class OilRefineryBlock<T extends OilRefineryBlockEntity> extends MachineFourWayBlock<T> {
+public class OilRefineryBlock<T extends OilRefinery> extends MachineFourWayBlock<T> {
     public OilRefineryBlock(Properties props, BlockEntityType.BlockEntitySupplier<T> supplier) {
         super(BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_LIGHT_GRAY)

@@ -56,8 +56,7 @@ public class BatteryItem extends EnergyRendererItem {
 
     @Override
     public boolean isFoil(ItemStack stack) {
-        if(isCharging(stack)) return true;
-        return super.isFoil(stack);
+        return isCharging(stack) || super.isFoil(stack);
     }
 
     public static boolean isCharging(ItemStack stack) {
@@ -71,7 +70,7 @@ public class BatteryItem extends EnergyRendererItem {
 
     @Override
     public int getEnchantmentValue(ItemStack stack) {
-        return 18;
+        return 22;
     }
 
     @Override

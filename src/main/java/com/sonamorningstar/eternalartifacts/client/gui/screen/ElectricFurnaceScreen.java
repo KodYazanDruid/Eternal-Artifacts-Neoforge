@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ElectricFurnaceBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.ElectricFurnace;
 import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -20,12 +20,12 @@ public class ElectricFurnaceScreen extends AbstractSidedMachineScreen<ElectricFu
 	@Override
 	protected void init() {
 		super.init();
-		int currValue = menu.getBlockEntity() instanceof ElectricFurnaceBlockEntity furnace ? furnace.recipeTypeId : 0;
+		int currValue = menu.getBlockEntity() instanceof ElectricFurnace furnace ? furnace.recipeTypeId : 0;
 		addRenderableWidget(new ExtendedSlider(leftPos + 100, topPos + 10, 50, 10, Component.empty(), Component.empty(),
 			0, 3, currValue, 1, 1, true) {
 			@Override
 			protected void applyValue() {
-				if (menu.getBlockEntity() instanceof ElectricFurnaceBlockEntity furnace) {
+				if (menu.getBlockEntity() instanceof ElectricFurnace furnace) {
 					furnace.setRecipeTypeId((short) getValueInt());
 				}
 				minecraft.gameMode.handleInventoryButtonClick(menu.containerId, getValueInt());
@@ -35,7 +35,7 @@ public class ElectricFurnaceScreen extends AbstractSidedMachineScreen<ElectricFu
 	
 	@Override
 	protected void drawExtraBg(GuiGraphics gui, float tickDelta, int x, int y) {
-		if (menu.getBlockEntity() instanceof ElectricFurnaceBlockEntity furnace) {
+		if (menu.getBlockEntity() instanceof ElectricFurnace furnace) {
 			ItemStack recipeItem;
 			switch (furnace.recipeTypeId) {
 				case 1 -> recipeItem = Items.BLAST_FURNACE.getDefaultInstance();

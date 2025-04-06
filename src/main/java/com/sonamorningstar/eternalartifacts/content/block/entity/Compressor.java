@@ -8,18 +8,30 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-public class CompressorBlockEntity extends GenericMachineBlockEntity {
-    public CompressorBlockEntity(BlockPos pos, BlockState blockState) {
+public class Compressor extends GenericMachineBlockEntity {
+    public Compressor(BlockPos pos, BlockState blockState) {
         super(ModMachines.COMPRESSOR, pos, blockState);
         outputSlots.add(1);
         setInventory(() -> createRecipeFinderInventory(2, outputSlots));
         setEnergy(this::createDefaultEnergy);
         setRecipeTypeAndContainer(ModRecipes.COMPRESSING.getType(), () -> new SimpleContainer(inventory.getStackInSlot(0)));
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        if (recipe instanceof CompressorRecipe compressor) {
+            condition
+                .queueImport(compressor.getOutput())
+                .commitQueuedImports();
+        }
+        super.setProcessCondition(condition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
@@ -28,14 +40,9 @@ public class CompressorBlockEntity extends GenericMachineBlockEntity {
             progress = 0;
             return;
         }
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initOutputSlots(outputSlots)
-                .tryExtractItemForced(recipe.getInput().getItems()[0].getCount())
-                .tryInsertForced(recipe.getOutput());
-        progress(condition::getResult, () -> {
+        progress(() -> {
             inventory.insertItemForced(1, recipe.getOutput().copy(), false);
             inventory.extractItem(0, recipe.getInput().getItems()[0].getCount(), false);
-        }, energy);
+        });
     }
 }

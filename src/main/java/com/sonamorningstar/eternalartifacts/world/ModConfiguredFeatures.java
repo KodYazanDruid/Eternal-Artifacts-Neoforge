@@ -1,14 +1,17 @@
 package com.sonamorningstar.eternalartifacts.world;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.LakeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
@@ -29,6 +32,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGANESE_ORE = registerKey("manganese_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGANESE_ORE_SMALL = registerKey("manganese_ore_small");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TIGRIS_FLOWER = registerKey("tigris_flower");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("crude_oil_lake_deepslate");
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(MODID, name));
@@ -50,6 +54,9 @@ public class ModConfiguredFeatures {
             PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.TIGRIS_FLOWER.get())
             ))
+        )));
+        context.register(CRUDE_OIL_LAKE_DEEPSLATE, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(
+            BlockStateProvider.simple(ModFluids.CRUDE_OIL.getFluidBlock()), BlockStateProvider.simple(Blocks.DEEPSLATE)
         )));
     }
 }

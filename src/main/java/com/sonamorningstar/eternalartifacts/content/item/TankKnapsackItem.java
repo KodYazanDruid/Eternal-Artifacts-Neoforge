@@ -27,4 +27,14 @@ public class TankKnapsackItem extends Item {
     private void openMenu(Player player, ItemStack stack) {
         player.openMenu(new SimpleMenuProvider((id, inv, p) -> new TankKnapsackMenu(id, inv, stack), stack.getHoverName()), buff -> buff.writeItem(stack));
     }
+    
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 18;
+    }
+    
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return getMaxStackSize(stack) == 1;
+    }
 }

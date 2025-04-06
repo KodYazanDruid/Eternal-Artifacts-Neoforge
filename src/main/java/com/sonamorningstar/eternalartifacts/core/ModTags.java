@@ -93,8 +93,9 @@ public class ModTags {
         public static final TagKey<Fluid> CRUDE_OIL = forgeTag("crude_oil");
         public static final TagKey<Fluid> GASOLINE = forgeTag("gasoline");
         public static final TagKey<Fluid> DIESEL = forgeTag("diesel");
-
-        private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
+        public static final TagKey<Fluid> NAPHTHA = forgeTag("naphtha");
+		
+		private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }
     }
 

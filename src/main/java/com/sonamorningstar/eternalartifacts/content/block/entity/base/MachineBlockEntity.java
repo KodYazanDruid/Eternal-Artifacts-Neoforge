@@ -8,6 +8,8 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.enchantment.base.MachineEnchantment;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -25,6 +27,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -64,14 +67,17 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     
     protected final ContainerData data;
     protected int progress;
-    protected int maxProgress = 100;
-    protected final int defaultMaxProgress = 100;
+    protected int progressStep = 1;
+    protected int defaultMaxProgress = 100;
+    protected int maxProgress;
     protected int energyPerTick = 40;
 
     public final List<Integer> outputSlots = new ArrayList<>();
     protected RecipeType<? extends Recipe<? extends Container>> recipeType;
     protected Supplier<? extends Container> recipeContainer;
-
+    protected Recipe<? extends Container> previousRecipe = null;
+    @Setter(value = AccessLevel.NONE)
+    protected ProcessCondition processCondition;
     @Getter
     protected Map<Integer, SidedTransferMachineBlockEntity.RedstoneType> redstoneConfigs = new HashMap<>(1);
 
@@ -79,6 +85,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     public MachineBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         this.menuConstructor = quadF;
+        this.maxProgress = defaultMaxProgress;
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -126,37 +133,63 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         this.tank = tankSetter.get();
     }
     
+    protected void setMaxProgress(int maxProgress) {
+        this.defaultMaxProgress = maxProgress;
+        this.maxProgress = maxProgress;
+    }
+    
     @Override
-    public void onEnchanted() {
-        if (energySetter != null) {
-            CompoundTag oldData = new CompoundTag();
-            oldData.put("Energy", energy.serializeNBT());
-            this.energy = energySetter.get();
-            energy.deserializeNBT(oldData.get("Energy"));
-        }
-        if (inventorySetter != null) {
-            CompoundTag oldData = new CompoundTag();
-            oldData.put("Inventory", inventory.serializeNBT());
-            this.inventory = inventorySetter.get();
-            inventory.deserializeNBT(oldData.getCompound("Inventory"));
-        }
-        if (tankSetter != null) {
-            CompoundTag oldData = new CompoundTag();
-            oldData.put("Fluid", tank.serializeNBT());
-            this.tank = tankSetter.get();
-            tank.deserializeNBT(oldData.getCompound("Fluid"));
+    public void onEnchanted(Enchantment enchantment, int level) {
+        if (enchantment == ModEnchantments.VOLUME.get()){
+            if (energySetter != null) {
+                CompoundTag oldData = new CompoundTag();
+                oldData.put("Energy", energy.serializeNBT());
+                this.energy = energySetter.get();
+                energy.deserializeNBT(oldData.get("Energy"));
+            }
+            if (inventorySetter != null) {
+                CompoundTag oldData = new CompoundTag();
+                oldData.put("Inventory", inventory.serializeNBT());
+                this.inventory = inventorySetter.get();
+                inventory.deserializeNBT(oldData.getCompound("Inventory"));
+            }
+            if (tankSetter != null) {
+                CompoundTag oldData = new CompoundTag();
+                oldData.put("Fluid", tank.serializeNBT());
+                this.tank = tankSetter.get();
+                tank.deserializeNBT(oldData.getCompound("Fluid"));
+            }
         }
         
-        int effLevel = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+        if (enchantment == Enchantments.BLOCK_EFFICIENCY) {
+			applyEfficiency(level);
+        }
+        
+       if (enchantment == ModEnchantments.CELERITY.get()) setProgressStep(level + 1);
+    }
+    
+    protected void applyEfficiency(int level) {
         int reduction = 10;
         double reductionFactor = (100 - reduction) / 100.0;
-        int newMaxProgress = (int) Math.max(1, Math.round(defaultMaxProgress * Math.pow(reductionFactor, effLevel)));
-        setMaxProgress(newMaxProgress);
+        int newMaxProgress = (int) Math.max(1, Math.round(defaultMaxProgress * Math.pow(reductionFactor, level)));
+        maxProgress = newMaxProgress;
     }
     
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        Recipe<Container> recipe = (Recipe<Container>) RecipeCache.getCachedRecipe(this);
+        if (recipeType != null && recipe == null) {
+            progress = 0;
+            return;
+        }
+        if (previousRecipe != null && previousRecipe != recipe) {
+            progress = 0;
+        }
+        previousRecipe = recipe;
+    }
     
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        processCondition = condition;
     }
     
     @Override
@@ -182,6 +215,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     public void onLoad() {
         super.onLoad();
         findRecipe();
+        setProcessCondition(new ProcessCondition(this), getCachedRecipe());
     }
 
     @Override
@@ -265,14 +299,20 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
     
+    protected void progress(Runnable result) {
+        if (processCondition != null && energy != null) {
+            progress(processCondition::getResult, result, energy);
+        }
+    }
+    
     protected void progress(BooleanSupplier test, Runnable result, ModEnergyStorage energy) {
         progress(test, Runnables.doNothing(), result, energy);
     }
 
     protected void progress(BooleanSupplier test, Runnable running, Runnable result, ModEnergyStorage energy) {
-        if(!hasEnergy(energyPerTick, energy) || level == null) return;
+        if (!hasEnergy(energyPerTick, energy) || level == null) return;
         SidedTransferMachineBlockEntity.RedstoneType type = redstoneConfigs.get(0);
-        if(redstoneChecks(type, level)){
+        if (redstoneChecks(type, level)) {
             if (test.getAsBoolean()) {
                 progress = 0;
                 return;
@@ -285,7 +325,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                 }
             } else energy.extractEnergyForced(energyPerTick, false);
             running.run();
-            if (progress++ >= maxProgress) {
+            progress = Math.min(maxProgress, progress + progressStep);
+            if (progress >= maxProgress) {
                 result.run();
                 progress = 0;
             }
@@ -300,7 +341,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
 
     protected boolean hasEnergy(int amount, ModEnergyStorage energy) {
         if (amount <= 0) return true;
-        return hasAnyEnergy(energy) || energy.extractEnergyForced(amount, true) == amount;
+        return energy.extractEnergyForced(amount, true) == amount;
     }
 
     protected boolean hasAnyEnergy(ModEnergyStorage energy) {
@@ -401,8 +442,8 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     public void loadContents(CompoundTag additionalTag) {
-        progress = additionalTag.getInt("Progress");
-        maxProgress = additionalTag.getInt("MaxProgress");
-        energyPerTick = additionalTag.getInt("EnergyPerTick");
+        if (additionalTag.contains("Progress")) progress = additionalTag.getInt("Progress");
+        if (additionalTag.contains("MaxProgress")) maxProgress = additionalTag.getInt("MaxProgress");
+        if (additionalTag.contains("EnergyPerTick")) energyPerTick = additionalTag.getInt("EnergyPerTick");
     }
 }

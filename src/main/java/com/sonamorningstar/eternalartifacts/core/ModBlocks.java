@@ -133,9 +133,13 @@ public class ModBlocks {
         () -> new TrashCanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
-            ()-> new UncoveredCableBlock(ModProperties.Blocks.CABLE));
+            ()-> new UncoveredCableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.CABLE));
     public static final DeferredBlock<CableBlock> COVERED_COPPER_CABLE = registerWithItem("covered_copper_cable",
-            ()-> new CableBlock(ModProperties.Blocks.CABLE));
+            ()-> new CableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.CABLE));
+    public static final DeferredBlock<CableBlock> GOLD_CABLE = registerWithItem("gold_cable",
+        ()-> new UncoveredCableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.CABLE));
+    public static final DeferredBlock<CableBlock> COVERED_GOLD_CABLE = registerWithItem("covered_gold_cable",
+        ()-> new CableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.CABLE));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));

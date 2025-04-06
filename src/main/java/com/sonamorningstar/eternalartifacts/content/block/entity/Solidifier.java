@@ -9,12 +9,14 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.jetbrains.annotations.Nullable;
 
-public class SolidifierBlockEntity extends GenericMachineBlockEntity {
-    public SolidifierBlockEntity(BlockPos pos, BlockState blockState) {
+public class Solidifier extends GenericMachineBlockEntity {
+    public Solidifier(BlockPos pos, BlockState blockState) {
         super(ModMachines.SOLIDIFIER, pos, blockState);
         setInventory(() -> createBasicInventory(1, false));
         setEnergy(this::createDefaultEnergy);
@@ -23,7 +25,19 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
         outputSlots.add(0);
         screenInfo.setArrowXOffset(-40);
     }
-
+    
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        if (recipe instanceof SolidifierRecipe solidifier) {
+            condition.initInputTank(tank)
+                .initOutputTank(tank)
+                .queueImport(solidifier.getOutput())
+                .commitQueuedImports();
+                
+        }
+        super.setProcessCondition(condition, recipe);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
@@ -36,16 +50,9 @@ public class SolidifierBlockEntity extends GenericMachineBlockEntity {
             return;
         }
 
-        ProcessCondition condition = new ProcessCondition()
-                .initInventory(inventory)
-                .initInputTank(tank)
-                .initOutputSlots(outputSlots)
-                .tryExtractFluidForced(recipe.getInputFluid().getFluidStacks()[0].getAmount())
-                .tryInsertForced(recipe.getOutput());
-
-        progress(condition::getResult, () -> {
+        progress(() -> {
             ItemHelper.insertItemStackedForced(inventory, recipe.getResultItem(lvl.registryAccess()).copy(), false, outputSlots);
             tank.drainForced(recipe.getInputFluid().getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
-        }, energy);
+        });
     }
 }

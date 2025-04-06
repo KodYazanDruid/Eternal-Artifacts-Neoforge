@@ -8,12 +8,14 @@ import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -23,7 +25,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCombustionMenu> implements ITickableClient {
     public FluidCombustionDynamoBlockEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), pos, blockState, FluidCombustionMenu::new);
-        setEnergy(() -> createBasicEnergy(50000, 2500, false, true));
+        setEnergy(() -> createBasicEnergy(100000, 5000, false, true));
         setTank(() -> createRecipeFinderTank(16000, false, true));
         setRecipeTypeAndContainer(ModRecipes.FLUID_COMBUSTING.getType(), () -> new SimpleFluidContainer(tank.getFluid(0)));
     }
@@ -50,8 +52,10 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     protected void findRecipe() {
         super.findRecipe();
         if (RecipeCache.getCachedRecipe(this) instanceof FluidCombustionRecipe recipe) {
-            setEnergyPerTick(recipe.getGeneration());
-            setMaxProgress(recipe.getDuration());
+            int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
+            setEnergyPerTick(recipe.getGeneration() * ((celerity / 3) + 1));
+            int eff = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+            setMaxProgress(recipe.getDuration() * ((eff / 5) + 1));
         }
     }
 
@@ -76,7 +80,10 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
     public float getAnimationLerp(float tick) {
         return isWorking ? Mth.lerp((1.0F - Mth.cos((tick + tickCounter) * 0.25F)) / 2F, 4.0F, 9.0F) : 4.0F;
     }
-
+    
+    @Override
+    protected void applyEfficiency(int level) {}
+    
     @Override
     public void tickClient(Level lvl, BlockPos pos, BlockState st) {
         if(isWorking) tickCounter++;
@@ -104,9 +111,9 @@ public class FluidCombustionDynamoBlockEntity extends MachineBlockEntity<FluidCo
             }
         }else{
             if(recipe != null) {
-                FluidStack drained = tank.drainForced(50, IFluidHandler.FluidAction.SIMULATE);
-                if(drained.getAmount() == 50) {
-                    tank.drainForced(50, IFluidHandler.FluidAction.EXECUTE);
+                FluidStack drained = tank.drainForced(100, IFluidHandler.FluidAction.SIMULATE);
+                if(drained.getAmount() == 100) {
+                    tank.drainForced(100, IFluidHandler.FluidAction.EXECUTE);
                     cache = new DynamoProcessCache(maxProgress, energy, energyPerTick, this);
                 }
             }

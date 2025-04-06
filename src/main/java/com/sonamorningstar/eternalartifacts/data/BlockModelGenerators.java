@@ -60,6 +60,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
         cable(ModBlocks.COPPER_CABLE.get(), false);
         cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);
+        cable(ModBlocks.GOLD_CABLE.get(), false);
+        cable(ModBlocks.COVERED_GOLD_CABLE.get(), true);
 
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
     }

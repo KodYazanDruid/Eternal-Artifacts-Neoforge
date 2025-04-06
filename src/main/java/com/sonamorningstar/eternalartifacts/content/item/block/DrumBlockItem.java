@@ -22,4 +22,14 @@ public class DrumBlockItem extends FluidHolderBlockItem {
     public Component getName(ItemStack stack) {
         return Component.translatable(getDescriptionId(stack));
     }
+    
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return 22;
+    }
+    
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+        return stack.getCount() == 1;
+    }
 }

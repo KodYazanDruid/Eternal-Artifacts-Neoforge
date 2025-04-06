@@ -38,16 +38,20 @@ public class ModFluids {
             153, 131, 36, MapColor.TERRACOTTA_ORANGE, false
     );
     public static final GenericLiquidHolder CRUDE_OIL = FLUIDS.register(
-            "crude_oil", 0, 3500, 3500, Rarity.UNCOMMON,
-            23, 21, 22, MapColor.COLOR_BLACK, false
+            "crude_oil", 0, 1100, 2500, Rarity.UNCOMMON,
+            43, 25, 7, MapColor.COLOR_BLACK, true, 0xFF2B1907
     );
     public static final GenericLiquidHolder GASOLINE = FLUIDS.register(
-            "gasoline", 0, 2000, 4000, Rarity.RARE,
-            51, 88, 77, MapColor.TERRACOTTA_YELLOW, true, 0xFFF5C92D
+            "gasoline", 0, 750, 400, Rarity.RARE,
+            227, 242, 163, MapColor.TERRACOTTA_LIGHT_GREEN, true, 0xFFE3F2A3
     );
     public static final GenericLiquidHolder DIESEL = FLUIDS.register(
-            "diesel", 0, 2000, 4000, Rarity.RARE,
-            22, 54, 58, MapColor.TERRACOTTA_BROWN, true, 0xFFFDA50A
+            "diesel", 0, 830, 900, Rarity.RARE,
+            217, 164, 65, MapColor.TERRACOTTA_ORANGE, true, 0xFFD9A441
+    );
+    public static final GenericLiquidHolder NAPHTHA = FLUIDS.register(
+            "naphtha", 0, 850, 600, Rarity.RARE,
+            245, 213, 128, MapColor.TERRACOTTA_YELLOW, true, 0xFFF5D580
     );
     public static final LiquidBlockFluidHolder<HotSpringWaterLiquidBlock> HOT_SPRING_WATER = FLUIDS.register(
             "hot_spring_water", HotSpringWaterLiquidBlock::new, 0, 1000, 1000, Rarity.RARE,
