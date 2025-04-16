@@ -9,6 +9,7 @@
     "eternalartifacts:nous_tank",
     "eternalartifacts:shock_absorber",
     "eternalartifacts:machine_workbench",
+    "eternalartifacts:solid_combustion_dynamo",
     "#forge:storage_blocks",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
@@ -24,6 +25,8 @@
     "eternalartifacts:fluid_mixer",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:oil_refinery",
-    "eternalartifacts:induction_furnace"
+    "eternalartifacts:induction_furnace",
+    "eternalartifacts:block_placer",
+    "eternalartifacts:block_breaker"
   ]
 }

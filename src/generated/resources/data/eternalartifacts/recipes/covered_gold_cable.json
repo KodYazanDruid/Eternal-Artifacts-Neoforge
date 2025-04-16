@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "eternalartifacts:gold_cable"
+    },
+    {
+      "item": "eternalartifacts:gold_cable"
+    },
+    {
+      "item": "eternalartifacts:plastic_sheet"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "eternalartifacts:covered_gold_cable"
+  }
+}

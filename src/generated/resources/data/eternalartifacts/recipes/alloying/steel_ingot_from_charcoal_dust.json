@@ -6,12 +6,16 @@
       "tag": "forge:ingots/iron"
     },
     {
+      "amount": 1,
+      "tag": "forge:ingots/manganese"
+    },
+    {
       "amount": 3,
       "tag": "forge:dusts/charcoal"
     }
   ],
   "output": {
-    "Count": 1,
+    "Count": 2,
     "id": "eternalartifacts:steel_ingot"
   }
 }

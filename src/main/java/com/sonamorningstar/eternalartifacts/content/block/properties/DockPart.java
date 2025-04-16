@@ -19,13 +19,6 @@ public enum DockPart implements StringRepresentable {
         this.name = name;
     }
 
-/*    @Override
-    public String toString() {return name;}
-
-    public String getName() {
-        return name;
-    }*/
-
     @Override
     public String getSerializedName() {return name;}
 }

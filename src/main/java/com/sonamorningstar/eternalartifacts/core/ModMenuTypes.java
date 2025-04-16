@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.container.*;
+import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -20,14 +21,18 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BookDuplicatorMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<BatteryBoxMenu>> BATTERY_BOX = MENUS.register("battery_box",
             ()-> IMenuTypeExtension.create(BatteryBoxMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<FluidCombustionMenu>> FLUID_COMBUSTION_MENU = MENUS.register("fluid_combustion",
-            ()-> IMenuTypeExtension.create(FluidCombustionMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<DynamoMenu>> DYNAMO_MENU = MENUS.register("dynamo_menu",
+            ()-> IMenuTypeExtension.create(DynamoMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
             ()-> IMenuTypeExtension.create(NousTankMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<TesseractMenu>> TESSERACT = MENUS.register("tesseract",
         ()-> IMenuTypeExtension.create(TesseractMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MachineWorkbenchMenu>> MACHINE_WORKBENCH = MENUS.register("machine_workbench",
         ()-> IMenuTypeExtension.create(MachineWorkbenchMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<SolidDynamoMenu>> SOLID_DYNAMO = MENUS.register("solid_dynamo_menu",
+        ()-> IMenuTypeExtension.create(SolidDynamoMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<SolarPanelMenu>> SOLAR_PANEL = MENUS.register("solar_panel",
+        ()-> IMenuTypeExtension.create(SolarPanelMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<ScreenWrapperMenu>> SCREEN_WRAPPER = MENUS.register("screen_wrapper",
             ()-> IMenuTypeExtension.create(ScreenWrapperMenu::new));
@@ -43,4 +48,6 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BlueprintMenu::fromNetwork));
     public static final DeferredHolder<MenuType<?>, MenuType<PortableBatteryMenu>> PORTABLE_BATTERY = MENUS.register("portable_battery",
             ()-> IMenuTypeExtension.create(PortableBatteryMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<BasicAttachmentMenu>> BASIC_ATTACHMENT = MENUS.register("basic_attachment",
+            ()-> IMenuTypeExtension.create(BasicAttachmentMenu::fromNetwork));
 }

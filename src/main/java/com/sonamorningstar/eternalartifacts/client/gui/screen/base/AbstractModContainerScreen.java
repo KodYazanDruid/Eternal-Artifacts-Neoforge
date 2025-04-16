@@ -42,8 +42,9 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         this.imageHeight = height;
     }
     
-    protected <G extends GuiEventListener & NarratableEntry> void addUpperLayerChild(G child) {
-        addWidget(child);
+    public <G extends GuiEventListener & NarratableEntry> void addUpperLayerChild(G child) {
+        children.add(0, child);
+        narratables.add(0, child);
         upperLayerChildren.add(child);
     }
     
@@ -90,7 +91,13 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         if (renderEffects) super.renderEffects(pGuiGraphics, pMouseX, pMouseY);
     }
     
-    public static boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, double mx, double my) {
+    public boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, double mx, double my) {
+        Optional<GuiEventListener> child = getChildAt(mx, my);
+        if (child.isPresent()) {
+            if (child.get() instanceof Overlapping) {
+                return false;
+            }
+        }
         return mx >= startX && mx <= startX + lengthX &&
                 my >= startY && my <= startY + lengthY;
     }
@@ -109,11 +116,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     public boolean mouseDragged(double mx, double my, int button, double dragX, double dragY) {
         super.mouseDragged(mx, my, button, dragX, dragY);
         return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mx, my, button, dragX, dragY);
-    }
-    
-    @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        return super.mouseClicked(pMouseX, pMouseY, pButton);
     }
     
     @Override

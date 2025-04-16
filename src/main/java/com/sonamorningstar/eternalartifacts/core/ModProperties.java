@@ -25,11 +25,22 @@ public class ModProperties {
                 .isViewBlocking(ModProperties.Blocks::never);
 
         public static final BlockBehaviour.Properties CABLE = BlockBehaviour.Properties.of()
-                .mapColor(MapColor.TERRACOTTA_ORANGE)
+                .mapColor(MapColor.COLOR_ORANGE)
                 .sound(SoundType.COPPER)
                 .pushReaction(PushReaction.DESTROY)
                 .noOcclusion()
                 .strength(3.0F, 4.0F)
+                .isValidSpawn(ModProperties.Blocks::never)
+                .isRedstoneConductor(ModProperties.Blocks::never)
+                .isSuffocating(ModProperties.Blocks::never)
+                .isViewBlocking(ModProperties.Blocks::never);
+        
+        public static final BlockBehaviour.Properties FLUID_PIPE = BlockBehaviour.Properties.of()
+                .mapColor(MapColor.TERRACOTTA_ORANGE)
+                .sound(SoundType.COPPER)
+                .pushReaction(PushReaction.DESTROY)
+                .noOcclusion()
+                .strength(4.0F, 5.0F)
                 .isValidSpawn(ModProperties.Blocks::never)
                 .isRedstoneConductor(ModProperties.Blocks::never)
                 .isSuffocating(ModProperties.Blocks::never)

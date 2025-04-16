@@ -5,4 +5,4 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BiConsumer;
 
-public record CustomRenderButtonInfo(int x, int y, int width, int height, ResourceLocation tex, BiConsumer<SpriteButton, Integer> onPress) { }
+public record CustomRenderButtonInfo(int x, int y, int width, int height, ResourceLocation tex, Runnable onPress) { }

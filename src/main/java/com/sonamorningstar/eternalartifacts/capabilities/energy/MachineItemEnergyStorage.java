@@ -15,16 +15,19 @@ public class MachineItemEnergyStorage implements IEnergyStorage, INBTSerializabl
     private int maxEnergyStored;
     public MachineItemEnergyStorage(ItemStack stack) {
         this.stack = stack;
-        CompoundTag tag = stack.getOrCreateTag();
-        if (stack.hasTag()) {
-            CompoundTag energyTag = tag.getCompound("Energy");
-            deserializeNBT(energyTag);
+        if (stack.hasTag() && stack.getTag().contains("Energy")) {
+            deserializeNBT(stack.getTag().getCompound("Energy"));
         }
 
     }
 
     public void onEnergyChanged() {
-        stack.getOrCreateTag().put("Energy", serializeNBT());
+        if (energyStored <= 0) {
+            if (stack.hasTag() && stack.getTag().contains("Energy")) {
+                stack.getTag().remove("Energy");
+            }
+        }
+        else stack.getOrCreateTag().put("Energy", serializeNBT());
     }
 
     @Override

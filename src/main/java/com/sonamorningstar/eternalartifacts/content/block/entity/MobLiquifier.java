@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.IButtonHolder;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -30,7 +29,7 @@ import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class MobLiquifier extends GenericMachineBlockEntity implements IAreaRenderer, IButtonHolder {
+public class MobLiquifier extends GenericMachineBlockEntity implements IAreaRenderer {
 
     public MobLiquifier(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
@@ -49,17 +48,13 @@ public class MobLiquifier extends GenericMachineBlockEntity implements IAreaRend
         screenInfo.setTankPosition(64, 20, 2);
         screenInfo.setTankPosition(84, 20, 3);
         screenInfo.setShouldDrawInventoryTitle(false);
-        screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, (b, i) -> {
-            switchRender();
+        screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, () -> {
+            shouldRenderArea = !shouldRenderArea;
+            sendUpdate();
         });
     }
     List<LivingEntity> livingList = new ArrayList<>();
     private boolean shouldRenderArea = false;
-
-    public void switchRender() {
-        shouldRenderArea = !shouldRenderArea;
-        if (level != null && !level.isClientSide()) sendUpdate();
-    }
 
     @Override
     public boolean shouldRender() {

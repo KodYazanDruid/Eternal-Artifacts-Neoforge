@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:block/pipe_side_filtering",
+  "textures": {
+    "texture": "eternalartifacts:block/copper_item_pipe"
+  }
+}

@@ -2,6 +2,9 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
+import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamo;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SolidCombustionDynamo;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
@@ -12,6 +15,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -125,12 +129,14 @@ public class ModBlocks {
             ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<FluidCombustionDynamoBlock> FLUID_COMBUSTION_DYNAMO = registerMachineWithBewlr("fluid_combustion_dynamo",
-            () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+    public static final DeferredBlock<DynamoBlock<?>> FLUID_COMBUSTION_DYNAMO = registerMachineWithBewlr("fluid_combustion_dynamo",
+            () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), FluidCombustionDynamo::new));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
     public static final DeferredBlock<TrashCanBlock> TRASH_CAN = registerWithItem("trash_can",
         () -> new TrashCanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final DeferredBlock<DynamoBlock<?>> SOLID_COMBUSTION_DYNAMO = registerMachineWithBewlr("solid_combustion_dynamo",
+        () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), SolidCombustionDynamo::new));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
             ()-> new UncoveredCableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.CABLE));
@@ -140,6 +146,16 @@ public class ModBlocks {
         ()-> new UncoveredCableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.CABLE));
     public static final DeferredBlock<CableBlock> COVERED_GOLD_CABLE = registerWithItem("covered_gold_cable",
         ()-> new CableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.CABLE));
+    
+    public static final DeferredBlock<FluidPipeBlock> COPPER_FLUID_PIPE = registerWithItem("copper_fluid_pipe",
+        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.COPPER, ModProperties.Blocks.FLUID_PIPE));
+    public static final DeferredBlock<FluidPipeBlock> GOLD_FLUID_PIPE = registerWithItem("gold_fluid_pipe",
+        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.GOLD, ModProperties.Blocks.FLUID_PIPE));
+    
+    public static final DeferredBlock<ItemPipeBlock> COPPER_ITEM_PIPE = registerWithItem("copper_item_pipe",
+        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.COPPER, ModProperties.Blocks.FLUID_PIPE));
+    public static final DeferredBlock<ItemPipeBlock> GOLD_ITEM_PIPE = registerWithItem("gold_item_pipe",
+        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.GOLD, ModProperties.Blocks.FLUID_PIPE));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -149,6 +165,7 @@ public class ModBlocks {
             ()-> new EnergyDockBlock(Blocks.DEEPSLATE.properties().forceSolidOn()));
     public static final DeferredBlock<Block> SHOCK_ABSORBER = registerMachineWithItem("shock_absorber", ShockAbsorberBlock::new);
     public static final DeferredBlock<Block> MACHINE_WORKBENCH = registerMachineWithItem("machine_workbench", MachineWorkbench::new);
+    public static final DeferredBlock<Block> SOLAR_PANEL = registerMachineWithItem("solar_panel", SolarPanelBlock::new);
     
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
@@ -274,8 +291,8 @@ public class ModBlocks {
         return registerWithItem(name, () -> new FallingDropExperienceBlock(exp, BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)));
     }
 
-    private static DeferredBlock<FluidCombustionDynamoBlock> registerDynamo(String name) {
-        return registerWithBewlr(name, () -> new FluidCombustionDynamoBlock(MACHINE_BLOCK.get().properties()));
+    private static DeferredBlock<DynamoBlock<? extends AbstractDynamo<?>>> registerDynamo(String name, BlockEntityType.BlockEntitySupplier<? extends AbstractDynamo<?>> fun) {
+        return registerWithBewlr(name, () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), fun));
     }
 
     private static DeferredBlock<DrumBlock> registerDrum(String name, BlockBehaviour.Properties material, int cap, Item.Properties... itemProps) {

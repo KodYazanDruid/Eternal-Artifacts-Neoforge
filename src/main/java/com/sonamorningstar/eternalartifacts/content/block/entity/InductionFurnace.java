@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 public class InductionFurnace extends SidedTransferMachineBlockEntity<InductionFurnaceMenu> {
-    private int heatKeepCost = 10;
+    private int heatKeepCost = 20;
     protected Supplier<? extends Container> recipeContainer2;
     public InductionFurnace(BlockPos pos, BlockState blockState) {
         super(ModMachines.INDUCTION_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new InductionFurnaceMenu(ModMachines.INDUCTION_FURNACE.getMenu(), a, b, c, d));

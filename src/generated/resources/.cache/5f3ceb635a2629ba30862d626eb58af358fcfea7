@@ -1,4 +1,4 @@
-// 1.20.4	2025-03-15T13:01:09.5506895	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-04-15T21:28:45.5447187	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 ed100bf617106ca16d56ad83350f486940af2940 data/eternalartifacts/tags/items/charms/back.json
 9b2c93d4150a8e166cddc320c1991280b2faf36c data/eternalartifacts/tags/items/charms/belt.json
@@ -15,11 +15,12 @@ de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablet
 0e39dbf7b4ae88e14b7d2b48a312ade6fe39c998 data/eternalartifacts/tags/items/tools/cutlasses.json
 a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 8b5cea59f396e1e2df266fab2db65e27e0d091e5 data/forge/tags/items/dough/wheat.json
-9af9f891b3169d8d7827827c0f61ed7dedffb474 data/forge/tags/items/dusts.json
+341c90f51f92fe3bb03d507a530af364725b6f49 data/forge/tags/items/dusts.json
 823cdebeedb138c0ae6b910e89a0318c87613ef4 data/forge/tags/items/dusts/charcoal.json
 6d6361a976c7e7b2ae41d984df4714648a48aece data/forge/tags/items/dusts/clay.json
 4db274c8ebd02cada15a2b387ede312323ab9be2 data/forge/tags/items/dusts/coal.json
 7ddbda42135dbac002eb8bbadd97083d00e2be17 data/forge/tags/items/dusts/flour.json
+2b8d0f7ee9afaa4b3d8bb7516508572e83ab72a9 data/forge/tags/items/dusts/manganese.json
 875349ab7998b6fcd8ee78a023f991b0c1500269 data/forge/tags/items/dusts/sugar_charcoal.json
 8aea35b9fb43e978f8582edfa4c0feec4018b3a3 data/forge/tags/items/feathers.json
 c7f00a4501c05f582b1ac98cbd8a3bbd15948538 data/forge/tags/items/flour/wheat.json
@@ -43,8 +44,10 @@ ab4aeb82c21f03d5dca2e30af473360fc64eeab5 data/forge/tags/items/ores/coal.json
 23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/items/ores/copper.json
 f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/forge/tags/items/ores/gold.json
 2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/forge/tags/items/ores/iron.json
+73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/items/ores/manganese.json
 bc5216995fbc1af0ccb662a4f8008aaed727fb70 data/forge/tags/items/plastic_sheets.json
 cda4c91807e5f930a6389f2eec42507b6af9021a data/forge/tags/items/raw_materials.json
+6602563629da6ca1cc5e0f008351a77700de8c54 data/forge/tags/items/raw_materials/manganese.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
@@ -59,7 +62,7 @@ f0dd0a8660131a466006888e2b325db7dde680f6 data/forge/tags/items/tools/hammers.jso
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/items/logs.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/items/logs_that_burn.json
 9688c4144586ddbd9d219b5d2c144a673d57c2eb data/minecraft/tags/items/pickaxes.json
-b71cc5723036c3c57ac0aa555bf4f8c968b22ff4 data/minecraft/tags/items/piglin_loved.json
+e148cd48fc8a75b0d2eec10715d8a334dce37535 data/minecraft/tags/items/piglin_loved.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/items/planks.json
 12234a55cdbf70d4cb3d320594cbfd99dd86ef0a data/minecraft/tags/items/shovels.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/items/small_flowers.json

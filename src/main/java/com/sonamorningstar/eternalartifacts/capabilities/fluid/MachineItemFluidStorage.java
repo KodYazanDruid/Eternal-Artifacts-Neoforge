@@ -16,13 +16,17 @@ public class MachineItemFluidStorage extends AbstractFluidTank implements IFluid
     public MachineItemFluidStorage(ItemStack stack) {
         this.stack = stack;
         if (stack.hasTag()) {
-            CompoundTag nbt = stack.getTag();
-            deserializeNBT(nbt);
+            deserializeNBT(stack.getTag());
         }
     }
 
     protected void onContentsChange() {
-        stack.getOrCreateTag().put("Fluid", serializeNBT());
+        if (areFluidsEmpty()) {
+            if (stack.hasTag() && stack.getTag().contains("Fluid")) {
+                stack.getTag().remove("Fluid");
+            }
+        }
+        else stack.getOrCreateTag().put("Fluid", serializeNBT());
     }
 
     @Override
@@ -35,8 +39,18 @@ public class MachineItemFluidStorage extends AbstractFluidTank implements IFluid
     public FluidStack getFluid(int tank) {
         return get(tank).getFluidInTank(tank);
     }
+    
+    public boolean areFluidsEmpty() {
+        for (AbstractFluidTank tank : tanks) {
+            if (!tank.getFluidInTank(0).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void deserializeNBT(CompoundTag nbt) {
+        if (!nbt.contains("Fluid")) return;
         CompoundTag fluidNBT = nbt.getCompound("Fluid");
         ListTag tanksList = fluidNBT.getList("Tanks", 10);
         int biggestTankIndex = fluidNBT.getInt("BiggestTankIndex");

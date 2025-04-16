@@ -57,6 +57,12 @@
     "eternalartifacts:machine_workbench",
     "eternalartifacts:gold_cable",
     "eternalartifacts:covered_gold_cable",
+    "eternalartifacts:copper_fluid_pipe",
+    "eternalartifacts:gold_fluid_pipe",
+    "eternalartifacts:copper_item_pipe",
+    "eternalartifacts:gold_item_pipe",
+    "eternalartifacts:solid_combustion_dynamo",
+    "eternalartifacts:solar_panel",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -71,6 +77,8 @@
     "eternalartifacts:fluid_mixer",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:oil_refinery",
-    "eternalartifacts:induction_furnace"
+    "eternalartifacts:induction_furnace",
+    "eternalartifacts:block_placer",
+    "eternalartifacts:block_breaker"
   ]
 }

@@ -19,11 +19,15 @@ public class ModScreens {
         event.register(ModMachines.OIL_REFINERY.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.ELECTRIC_FURNACE.getMenu(), ElectricFurnaceScreen::new);
         event.register(ModMachines.INDUCTION_FURNACE.getMenu(), InductionFurnaceScreen::new);
+        event.register(ModMachines.BLOCK_BREAKER.getMenu(), GenericSidedMachineScreen::new);
+        event.register(ModMachines.BLOCK_PLACER.getMenu(), GenericSidedMachineScreen::new);
 
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);
         event.register(ModMenuTypes.BLUEPRINT.get(), BlueprintScreen::new);
         event.register(ModMenuTypes.PORTABLE_BATTERY.get(), PortableBatteryScreen::new);
         event.register(ModMenuTypes.MACHINE_WORKBENCH.get(), MachineWorkbenchScreen::new);
+        event.register(ModMenuTypes.BASIC_ATTACHMENT.get(), BasicAttachmentScreen::new);
+        event.register(ModMenuTypes.SOLAR_PANEL.get(), SolarPanelScreen::new);
     }
 }

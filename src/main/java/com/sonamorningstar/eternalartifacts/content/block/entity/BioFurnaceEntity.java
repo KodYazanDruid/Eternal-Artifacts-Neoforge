@@ -19,7 +19,7 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> {
 
     public BioFurnaceEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.BIOFURNACE.get(), pPos, pBlockState, BioFurnaceMenu::new);
-        setInventory(() -> createBasicInventory(1, List.of()));
+        setInventory(() -> createBasicInventory(1, List.of(), (slot, stack) -> true));
         setEnergy(this::createDefaultEnergy);
     }
 

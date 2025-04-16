@@ -9,6 +9,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.neoforged.fml.common.Mod;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -185,6 +186,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SPAWNER_EXTRACTOR.get(), "Spawner Extractor");
                 addPotion(ModPotions.ANGLERS_LUCK.get(), "Potion of Angler's Luck");
                 addPotion(ModPotions.LURING.get(), "Potion of Luring");
+                add(ModItems.MANGANESE_DUST.get(), "Manganese Dust");
+                add(ModItems.PIPE_EXTRACTOR.get(), "Pipe Extractor");
+                add(ModItems.PIPE_FILTER.get(), "Pipe Filter");
+                add(ModItems.SWORD_OF_THE_TWILIGHT.get(), "Sword of the Twilight");
+                add(ModItems.SWORD_OF_THE_DAWN.get(), "Sword of the Dawn");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -275,6 +281,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MACHINE_WORKBENCH.get(), "Machine Workbench");
                 add(ModBlocks.GOLD_CABLE.get(), "Gold Cable");
                 add(ModBlocks.COVERED_GOLD_CABLE.get(), "Covered Gold Cable");
+                add(ModBlocks.COPPER_FLUID_PIPE.get(), "Copper Fluid Pipe");
+                add(ModBlocks.GOLD_FLUID_PIPE.get(), "Gold Fluid Pipe");
+                add(ModBlocks.COPPER_ITEM_PIPE.get(), "Copper Item Pipe");
+                add(ModBlocks.GOLD_ITEM_PIPE.get(), "Gold Item Pipe");
+                add(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "Solid Combustion Dynamo");
+                add(ModBlocks.SOLAR_PANEL.get(), "Solar Panel");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -421,6 +433,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("private"), "Private");
                 add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("protected"), "Protected");
                 add(ModConstants.GUI.withSuffix("add"), "Add");
+                add("eternalartifacts.blueprint.missing_items", "Missing items");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -610,6 +623,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 addPotion(ModPotions.ANGLERS_LUCK.get(), "Balıkçı Şansı İksiri");
                 addPotion(ModPotions.LURING.get(), "Yemleme İksiri");
                 add(ModFluids.NAPHTHA.getBucketItem(), "Nafta Kovası");
+                add(ModItems.MANGANESE_DUST.get(), "Manganez Tozu");
+                add(ModItems.PIPE_EXTRACTOR.get(), "Boru Çıkartıcı");
+                add(ModItems.PIPE_FILTER.get(), "Boru Filtresi");
+                add(ModItems.SWORD_OF_THE_TWILIGHT.get(), "Alacakaranlık Kılıcı");
+                add(ModItems.SWORD_OF_THE_DAWN.get(), "Şafak Kılıcı");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -665,7 +683,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
                 add(ModFluids.LIQUID_PLASTIC.getTranslationKey(), "Sıvı Plastik");
                 add(ModFluids.LIQUID_PLASTIC.getFluidBlock(), "Sıvı Plastik");
-                add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Sıvı Yanmalı Dinamo");
+                add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Sıvı Yakıtlı Dinamo");
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganez Cevheri");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Kayrak Taşında Manganez Cevheri");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
@@ -737,6 +755,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.FLUID_MIXER.getBlockTranslationKey(), "Sıvı Karıştırıcı");
                 add(ModBlocks.GOLD_CABLE.get(), "Altın Kablo");
                 add(ModBlocks.COVERED_GOLD_CABLE.get(), "İzole Altın Kablo");
+                add(ModMachines.BLOCK_BREAKER.getBlockTranslationKey(), "Blok Kırıcı");
+                add(ModMachines.BLOCK_PLACER.getBlockTranslationKey(), "Blok Koyucu");
+                add(ModBlocks.COPPER_FLUID_PIPE.get(), "Bakır Sıvı Borusu");
+                add(ModBlocks.GOLD_FLUID_PIPE.get(), "Altın Sıvı Borusu");
+                add(ModBlocks.COPPER_ITEM_PIPE.get(), "Bakır Eşya Borusu");
+                add(ModBlocks.GOLD_ITEM_PIPE.get(), "Altın Eşya Borusu");
+                add(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "Katı Yakıtlı Dinamo");
+                add(ModBlocks.SOLAR_PANEL.get(), "Güneş Paneli");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -911,7 +937,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("public"), "Genel");
                 add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("protected"), "Korumalı");
                 add(ModConstants.GUI.withSuffix("add"), "Ekle");
-                
+                add("eternalartifacts.blueprint.missing_items", "Eksik öğeler");
                 //endregion
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
                     if("tr_tr".equals(loc)) add(lang.getFirst(), lang.getSecond());

@@ -10,7 +10,7 @@ public class ModModelLayers {
     public static final ModelLayerLocation DUCK_LAYER = create("duck_layer");
     //public static final ModelLayerLocation FANCY_CHEST_LAYER = new ModelLayerLocation(new ResourceLocation(MODID, "fancy_chest_layer"), "main");
     public static final ModelLayerLocation JAR_LAYER = create("jar_layer");
-    public static final ModelLayerLocation FLUID_COMBUSTION_LAYER = create("fluid_combustion_layer");
+    public static final ModelLayerLocation DYNAMO_LAYER = create("dynamo_layer");
     public static final ModelLayerLocation NOUS_TANK_LAYER = create("nous_tank_layer");
     public static final ModelLayerLocation OIL_REFINERY_LAYER = create("oil_refinery_layer");
     public static final ModelLayerLocation TORNADO_LAYER = create("tornado_layer");

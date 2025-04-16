@@ -115,6 +115,9 @@ public class ModItems {
     public static final DeferredItem<Item> ANGELIC_HEART = register("angelic_heart", p -> new AngelicHeartItem(p.food(ModFoods.ANGELIC_HEART)));
     public static final DeferredItem<Item> GREEN_APPLE = register("green_apple", p -> new Item(p.food(ModFoods.GREEN_APPLE)));
     public static final DeferredItem<Item> YELLOW_APPLE = register("yellow_apple", p -> new Item(p.food(ModFoods.YELLOW_APPLE)));
+    public static final DeferredItem<Item> MANGANESE_DUST = register("manganese_dust");
+    public static final DeferredItem<PipeExtractor> PIPE_EXTRACTOR = register("pipe_extractor", PipeExtractor::new);
+    public static final DeferredItem<PipeFilter> PIPE_FILTER = register("pipe_filter", PipeFilter::new);
     
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -216,6 +219,8 @@ public class ModItems {
     //public static final DeferredItem<Item> BONE_HAMMER = registerStacksToOne("bone_hammer", p -> new HammerItem(ModTiers.BONE, p));
     //public static final DeferredItem<Item> BONE_SICKLE = registerStacksToOne("bone_sickle", p -> new SickleItem(ModTiers.BONE, p));
     //public static final DeferredItem<Item> BONE_CUTLASS = registerStacksToOne("bone_cutlass", p -> new CutlassItem(ModTiers.BONE, p));
+    public static final DeferredItem<Item> SWORD_OF_THE_TWILIGHT = registerStacksToOne("sword_of_the_twilight", SwordOfTheTwilightItem::new);
+    public static final DeferredItem<Item> SWORD_OF_THE_DAWN = registerStacksToOne("sword_of_the_dawn", SwordOfTheDawnItem::new);
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

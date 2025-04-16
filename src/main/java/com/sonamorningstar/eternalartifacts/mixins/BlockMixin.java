@@ -2,11 +2,13 @@ package com.sonamorningstar.eternalartifacts.mixins;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.sonamorningstar.eternalartifacts.api.item.ChiselBlockPlaceContext;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
 import com.sonamorningstar.eternalartifacts.content.item.ChiselItem;
 import com.sonamorningstar.eternalartifacts.event.common.CommonEvents;
 import com.sonamorningstar.eternalartifacts.network.BlockPlaceOnClient;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.BlockPos;
@@ -23,6 +25,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -40,9 +44,23 @@ public abstract class BlockMixin {
 
     @Unique
     private boolean eternal_Artifacts_Neoforge$isSuccessful = false;
-
+    
     @WrapWithCondition(method = "playerDestroy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;dropResources(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;Z)V"))
     private boolean playerDestroy(BlockState state, Level level, BlockPos pos, BlockEntity blockEntity, Entity entity, ItemStack tool, boolean dropXp) {
+        if (entity instanceof FakePlayer fakePlayer && "EternalArtifactsBlockBreaker".equals(fakePlayer.getGameProfile().getName())) {
+            BlockEntity be = level.getBlockEntity(fakePlayer.blockPosition());
+            if (be instanceof BlockBreaker breaker) {
+                for (ItemStack drop : Block.getDrops(state, (ServerLevel) level, pos, blockEntity, entity, breaker.inventory.getStackInSlot(0))) {
+                    ItemStack remaining = ItemHelper.insertItemStackedForced(breaker.inventory, drop, false, breaker.outputSlots).getFirst();
+                    if (!remaining.isEmpty()) {
+                        Block.popResource(level, pos, remaining);
+                        break;
+                    }
+                }
+                return false;
+            }
+        }
+        
         return !(tool.getItem() instanceof ChiselItem) ||
                 (tool.getItem() instanceof ChiselItem && !eternal_Artifacts_Neoforge$isSuccessful);
     }

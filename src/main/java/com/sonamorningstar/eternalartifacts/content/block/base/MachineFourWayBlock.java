@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -16,16 +17,7 @@ public class MachineFourWayBlock<T extends MachineBlockEntity<? extends Abstract
 
     public MachineFourWayBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> supplier) {
         super(pProperties, supplier);
-    }
-    
-    @Override
-    public BlockState mirror(BlockState pState, Mirror pMirror) {
-        return super.mirror(pState, pMirror);
-    }
-    
-    @Override
-    public BlockState rotate(BlockState pState, Rotation pRotation) {
-        return super.rotate(pState, pRotation);
+        registerDefaultState(defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.NORTH));
     }
     
     @Nullable
@@ -37,6 +29,16 @@ public class MachineFourWayBlock<T extends MachineBlockEntity<? extends Abstract
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
         pBuilder.add(BlockStateProperties.HORIZONTAL_FACING);
+    }
+    
+    @Override
+    public BlockState rotate(BlockState pState, Rotation pRotation) {
+        return pState.setValue(BlockStateProperties.HORIZONTAL_FACING, pRotation.rotate(pState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
+    }
+    
+    @Override
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
+        return pState.rotate(pMirror.getRotation(pState.getValue(BlockStateProperties.HORIZONTAL_FACING)));
     }
 
 }

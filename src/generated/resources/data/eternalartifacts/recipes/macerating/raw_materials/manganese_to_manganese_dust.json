@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:raw_materials/manganese"
+  },
+  "output": {
+    "Count": 2,
+    "id": "eternalartifacts:manganese_dust"
+  }
+}

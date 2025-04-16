@@ -61,7 +61,7 @@ public class MobLiquifierCategory extends EAEmiRecipe {
                     gui, 12, 24, 25, new Vector3f(),
                     new Quaternionf().rotationXYZ(0.2F, 3F, (float) Math.PI), null,
                     living);
-            if (AbstractModContainerScreen.isCursorInBounds(0, 0, 38, 38, mouseX, mouseY))
+            if (isInBounds(0, 0, 38, 38, mouseX, mouseY))
                 gui.renderTooltip(mc.font, living.getName(), mouseX, mouseY);
         });
         widgets.addText(Component.literal("1x "), 34, 10, 0, false);
@@ -71,6 +71,10 @@ public class MobLiquifierCategory extends EAEmiRecipe {
         for(int i = 0; i < outputs.size(); i++) {
             widgets.addSlot(outputs.get(i), 64 + i * 20, 16);
         }
+    }
+    
+    private boolean isInBounds(int x, int y, int width, int height, double mouseX, double mouseY) {
+        return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
     @Override

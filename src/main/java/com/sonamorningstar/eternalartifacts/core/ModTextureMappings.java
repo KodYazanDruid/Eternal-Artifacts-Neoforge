@@ -6,10 +6,10 @@ import net.minecraft.world.level.block.Block;
 
 public class ModTextureMappings extends TextureMapping{
 
-    public static TextureMapping cable(Block cable) {
+    public static TextureMapping pipe(Block pipe) {
         return new TextureMapping()
-            .put(TextureSlot.TEXTURE, getBlockTexture(cable))
-            .put(TextureSlot.PARTICLE, getBlockTexture(cable));
+            .put(TextureSlot.TEXTURE, getBlockTexture(pipe))
+            .put(TextureSlot.PARTICLE, getBlockTexture(pipe));
     }
 
     public static TextureMapping inventoryWall(Block wall) {

@@ -47,8 +47,7 @@ public class ChloroveinPickaxeItem extends PickaxeItem {
             cache.scanForBlocks();
             Queue<BlockPos> queuedPos = cache.getCache();
             if (player instanceof ServerPlayer serverPlayer) {
-                while (!queuedPos.isEmpty() && !stack.isEmpty() &&
-                        serverPlayer.hasCorrectToolForDrops(level.getBlockState(queuedPos.peek()))) {
+                while (!queuedPos.isEmpty() && !stack.isEmpty() && checkForCorrectTool(level, queuedPos.peek(), serverPlayer)) {
                     if (!currentMiners.contains(stack)) currentMiners.add(stack);
                     cache.mine(queuedPos, serverPlayer);
                 }
@@ -56,6 +55,11 @@ public class ChloroveinPickaxeItem extends PickaxeItem {
             currentMiners.remove(stack);
             return false;
         } else return super.mineBlock(stack, level, state, pos, living);
+    }
+    
+    private boolean checkForCorrectTool(Level level, BlockPos pos, ServerPlayer sPlayer) {
+        BlockState state = level.getBlockState(pos);
+        return state.getBlock().canHarvestBlock(state, level, pos, sPlayer);
     }
 
     @Override

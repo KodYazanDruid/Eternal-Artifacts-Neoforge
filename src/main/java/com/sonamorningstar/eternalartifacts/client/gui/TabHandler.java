@@ -84,13 +84,13 @@ public class TabHandler {
         poseStack.popPose();
     }
 
-    public boolean listenClicks(int x, int y, double mouseX, double mouseY, Screen oldScreen) {
+    public boolean listenClicks(int x, int y, double mouseX, double mouseY, Screen screen) {
         for (int i = 0; i < activeTabs.size(); i++) {
             TabType<? extends AbstractInventoryTab> tab = activeTabs.get(i);
             if (tab == currentTab) continue;
             int xPos = x + 27 * i;
             int yPos = y - 28;
-            if (AbstractModContainerScreen.isCursorInBounds(xPos, yPos, 26, 32, mouseX, mouseY)) {
+            if (isInBounds(xPos, yPos, 26, 32, mouseX, mouseY)) {
                 currentTab = tab;
                 requested = true;
                 Minecraft instance = Minecraft.getInstance();
@@ -105,7 +105,11 @@ public class TabHandler {
                 } else Channel.sendToServer(new OpenTabMenuToServer(tab));
             }
         }
-        return Minecraft.getInstance().screen != oldScreen;
+        return Minecraft.getInstance().screen != screen;
+    }
+    
+    private boolean isInBounds(int x, int y, int width, int height, double mouseX, double mouseY) {
+        return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height;
     }
 
 }

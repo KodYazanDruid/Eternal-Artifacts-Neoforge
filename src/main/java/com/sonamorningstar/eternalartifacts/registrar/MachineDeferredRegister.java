@@ -66,13 +66,13 @@ public class MachineDeferredRegister {
     }
     public
     <M extends AbstractMachineMenu,  BE extends MachineBlockEntity<M>>
-    MachineDeferredHolder<M, BE, MachineFourWayBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity) {
+    MachineDeferredHolder<M, BE, BaseMachineBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity) {
         return register(name, menu, blockEntity, false);
     }
 
     public
     <M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>>
-    MachineDeferredHolder<M, BE, MachineFourWayBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity, boolean hasUniqueTexture) {
+    MachineDeferredHolder<M, BE, BaseMachineBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity, boolean hasUniqueTexture) {
         return register(name, menu, blockEntity, MachineFourWayBlock::new, MachineBlockItem::new, hasUniqueTexture, false);
     }
 

@@ -56,6 +56,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
         tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
+        copy(ModTags.Blocks.ORES_MANGANESE, ModTags.Items.ORES_MANGANESE);
+        tag(ModTags.Items.DUSTS_MANGANESE).add(ModItems.MANGANESE_DUST.get());
+        tag(ModTags.Items.RAW_MATERIALS_MANGANESE).add(ModItems.RAW_MANGANESE.get());
         tag(Tags.Items.NUGGETS).add(
             ModItems.COPPER_NUGGET.get(),
             ModItems.EXPERIENCE_BERRY.get(),
@@ -65,7 +68,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(Tags.Items.DUSTS).add(
             ModItems.COAL_DUST.get(),
             ModItems.CHARCOAL_DUST.get(),
-            ModItems.SUGAR_CHARCOAL_DUST.get()
+            ModItems.SUGAR_CHARCOAL_DUST.get(),
+            ModItems.MANGANESE_DUST.get()
         );
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
@@ -101,7 +105,12 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.DOUGH_WHEAT).add(ModItems.DOUGH.get());
         tag(ModTags.Items.DOUGH).addTag(ModTags.Items.DOUGH_WHEAT);
         tag(ModTags.Items.DUSTS_CLAY).add(ModItems.CLAY_DUST.get());
-        tag(ItemTags.PIGLIN_LOVED).add(ModItems.GOLD_RING.get());
+        tag(ItemTags.PIGLIN_LOVED).add(
+            ModItems.GOLDEN_CUTLASS.get(),
+            ModItems.GOLDEN_HAMMER.get(),
+            ModItems.GOLDEN_SICKLE.get(),
+            ModItems.GOLD_RING.get()
+        );
         
         tag(Tags.Items.HEADS).add(
             ModItems.DROWNED_HEAD.get(),

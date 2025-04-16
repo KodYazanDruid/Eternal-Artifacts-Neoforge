@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.EntityExposer;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
 import net.minecraft.client.Minecraft;
@@ -13,9 +12,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
@@ -23,7 +19,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
-import java.util.Map;
 
 public class MobModelRenderer {
 	private static final Minecraft mc = Minecraft.getInstance();
@@ -42,16 +37,6 @@ public class MobModelRenderer {
 			event.setCanceled(true);
 			mc.getEntityRenderDispatcher().setRenderShadow(true);
 		}
-	}
-	
-	public static @Nullable EntityType<? extends LivingEntity> getEntityType(ItemStack headCharm) {
-		EntityType<? extends LivingEntity> entityType = null;
-		for (Map.Entry<EntityType<? extends LivingEntity>, Item> entry : CutlassModifier.ENTITY_HEAD_MAP.entrySet()) {
-			if (!headCharm.is(Items.DRAGON_HEAD) && headCharm.is(entry.getValue())) {
-				entityType = entry.getKey();
-			}
-		}
-		return entityType;
 	}
 	
 	@Nullable

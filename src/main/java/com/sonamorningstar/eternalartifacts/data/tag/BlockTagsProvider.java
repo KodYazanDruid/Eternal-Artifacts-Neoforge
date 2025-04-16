@@ -50,7 +50,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
@@ -84,6 +84,12 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.MACHINE_WORKBENCH.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.GOLD_CABLE.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.COVERED_GOLD_CABLE.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.COPPER_FLUID_PIPE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.GOLD_FLUID_PIPE.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.COPPER_ITEM_PIPE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.GOLD_ITEM_PIPE.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.SOLAR_PANEL.get(), "stone", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
@@ -94,7 +100,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
             ModBlocks.NOUS_TANK.get(),
             ModBlocks.SHOCK_ABSORBER.get(),
-            ModBlocks.MACHINE_WORKBENCH.get()
+            ModBlocks.MACHINE_WORKBENCH.get(),
+            ModBlocks.SOLID_COMBUSTION_DYNAMO.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);

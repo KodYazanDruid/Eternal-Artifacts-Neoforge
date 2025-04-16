@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
@@ -35,12 +36,6 @@ public class WrenchItem extends DiggerItem {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         
-        var map = PlayerMorphUtil.MORPH_MAP;
-        
-        if (!level.isClientSide) {
-            map.forEach((sp, et) -> System.out.println(sp + " " + et));
-        }
-        
         return super.use(level, player, hand);
     }
 
@@ -51,18 +46,18 @@ public class WrenchItem extends DiggerItem {
         BlockPos pos = ctx.getClickedPos();
         BlockEntity be = level.getBlockEntity(pos);
         
-        if (level instanceof ServerLevel && be instanceof MachineBlockEntity<?> machine) {
-            var recipes = RecipeCache.getCachedRecipes(machine);
-            for (Recipe<? extends Container> recipe : recipes) {
-                System.out.println(recipe);
-                if (recipe != null){
-                    System.out.println(recipe.getType());
-                    for (Ingredient ingredient : recipe.getIngredients()) {
-                        System.out.println(ingredient);
-                    }
-                }
-                System.out.println("*-*-*-*-*-*-*-*");
-            }
+        if (!level.isClientSide() && be instanceof AbstractPipeBlockEntity<?> pipe) {
+            System.out.println("Pipe: " + pipe.getBlockPos());
+            System.out.println("Printing sources: ");
+            pipe.allSources.forEach((k, v) -> {
+                System.out.println("Source: " + k);
+                System.out.println("Source Cap: " + v.getCapability());
+            });
+            System.out.println("Printing targets: ");
+            pipe.allTargets.forEach((k, v) -> {
+                System.out.println("Target: " + k);
+                System.out.println("Target Cap: " + v.getCapability());
+            });
         }
         
         return super.useOn(ctx);

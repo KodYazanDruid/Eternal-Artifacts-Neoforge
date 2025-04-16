@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
 import lombok.Setter;
@@ -319,17 +321,80 @@ public abstract class SidedTransferMachineBlockEntity<T extends AbstractMachineM
         return autoConfigs.get(3) == null || !autoConfigs.get(3);
     }
 
+    /*public static Direction resolveActualDir(BlockState state, int index) {
+		if (state.getBlock() instanceof MachineFourWayBlock<?>) {
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            return switch (index) {
+                case 0 -> Direction.UP;
+                case 1 -> facing.getClockWise();
+                case 2 -> facing;
+                case 3 -> facing.getCounterClockWise();
+                case 4 -> Direction.DOWN;
+                case 5 -> facing.getOpposite();
+                default -> throw new IllegalStateException("Unexpected value: " + index);
+            };
+        }
+        else if (state.getBlock() instanceof MachineSixWayBlock<?>) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            Direction.Axis axis;
+            switch (facing) {
+                case NORTH, SOUTH -> axis = Direction.Axis.Z;
+				case EAST, WEST -> axis = Direction.Axis.X;
+				default -> axis = Direction.Axis.Y;
+            }
+            return switch (index) {
+                case 0 -> Direction.UP;
+                case 1 -> facing.getClockWise(axis);
+                case 2 -> facing;
+                case 3 -> facing.getCounterClockWise(axis);
+                case 4 -> Direction.DOWN;
+                case 5 -> facing.getOpposite();
+                default -> throw new IllegalStateException("Unexpected value: " + index);
+            };
+        }
+        return Direction.NORTH;
+    }*/
+    
     public static Direction resolveActualDir(BlockState state, int index) {
-        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        return switch (index) {
-            case 0 -> Direction.UP;
-            case 1 -> facing.getClockWise();
-            case 2 -> facing;
-            case 3 -> facing.getCounterClockWise();
-            case 4 -> Direction.DOWN;
-            case 5 -> facing.getOpposite();
-            default -> throw new IllegalStateException("Unexpected value: " + index);
-        };
+        if (state.getBlock() instanceof MachineFourWayBlock<?>) {
+            Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            return switch (index) {
+                case 0 -> Direction.UP;
+                case 1 -> facing.getClockWise();
+                case 2 -> facing;
+                case 3 -> facing.getCounterClockWise();
+                case 4 -> Direction.DOWN;
+                case 5 -> facing.getOpposite();
+                default -> throw new IllegalStateException("Unexpected value: " + index);
+            };
+        }
+        
+        else if (state.getBlock() instanceof MachineSixWayBlock<?>) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            
+            return switch (index) {
+                case 0 -> facing == Direction.UP ? Direction.SOUTH :
+                    facing == Direction.DOWN ? Direction.NORTH : Direction.UP;
+                case 1 -> switch (facing) {
+                    case UP, DOWN, NORTH -> Direction.EAST;
+					case SOUTH -> Direction.WEST;
+                    case EAST -> Direction.SOUTH;
+                    case WEST -> Direction.NORTH;
+                };
+                case 2 -> facing;
+                case 3 -> switch (facing) {
+                    case UP, DOWN, NORTH -> Direction.WEST;
+					case SOUTH -> Direction.EAST;
+                    case EAST -> Direction.NORTH;
+                    case WEST -> Direction.SOUTH;
+                };
+                case 4 -> facing == Direction.UP ? Direction.NORTH :
+                    facing == Direction.DOWN ? Direction.SOUTH : Direction.DOWN;
+                case 5 -> facing.getOpposite();
+                default -> throw new IllegalStateException("Unexpected value: " + index);
+            };
+        }
+        return Direction.NORTH;
     }
 
     public void loadConfiguration(ItemStack drive) {

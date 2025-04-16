@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.api.morph;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
@@ -42,13 +43,24 @@ public class PlayerMorphUtil {
 		return null;
 	}
 	
+	public static @org.jetbrains.annotations.Nullable EntityType<? extends LivingEntity> getEntityType(ItemStack headCharm) {
+		EntityType<? extends LivingEntity> entityType = null;
+		for (var entry : CutlassModifier.ENTITY_HEAD_MAP.entrySet()) {
+			if (headCharm.is(entry.getValue())) {
+				entityType = entry.getKey();
+				if (entityType.is(ModTags.Entities.MORPH_BLACKLISTED)) return null;
+			}
+		}
+		return entityType;
+	}
+	
 	@Nullable
 	public static EntityType<? extends LivingEntity> getMorphType(Player player) {
 		ItemStack stack = getMorphItem(player);
 		if (stack.isEmpty()) return null;
 		var other = getMorphTypeOther(player);
 		if (other != null) return other;
-		return MobModelRenderer.getEntityType(stack);
+		return getEntityType(stack);
 	}
 	
 	@Nullable

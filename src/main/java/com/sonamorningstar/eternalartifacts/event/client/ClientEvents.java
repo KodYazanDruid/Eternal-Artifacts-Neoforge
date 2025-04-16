@@ -14,6 +14,11 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BlockPlacer;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -326,7 +331,8 @@ public class ClientEvents {
         Player player = mc.player;
         if (player == null) return;
         CompoundTag tag = player.getPersistentData();
-        if (key == mc.options.keyJump.getKey().getValue() && !player.onGround() && !player.isPassenger()) {
+        boolean isStill = player.getDeltaMovement().length() < 1.0E-4;
+        if (key == mc.options.keyJump.getKey().getValue() && !player.onGround() && !player.isPassenger() && !isStill) {
             ItemStack charm = CharmManager.findCharm(player, ModItems.SKYBOUND_TREADS.get());
             int jumps = tag.getInt(ILivingJumper.KEY);
             if (!charm.isEmpty() && player instanceof ILivingJumper jumper && jumps > 0 && player.noJumpDelay == 0) {
@@ -336,7 +342,7 @@ public class ClientEvents {
                 player.noJumpDelay = 10;
             }
         }
-        if (key == mc.options.keySprint.getKey().getValue() && !player.onGround() && !player.isPassenger()) {
+        if (key == mc.options.keySprint.getKey().getValue() && !player.onGround() && !player.isPassenger() && !isStill) {
             ItemStack charm = CharmManager.findCharm(player, ModItems.GALE_SASH.get());
             int dashes = tag.getInt(ILivingDasher.KEY);
             if (!charm.isEmpty() && player instanceof ILivingDasher dasher && dashes > 0 && dasher.dashCooldown() == 0) {
@@ -344,6 +350,38 @@ public class ClientEvents {
                 Channel.sendToServer(new ConsumeDashTokenToServer());
                 tag.putInt(ILivingDasher.KEY, dashes - 1);
                 dasher.setDashCooldown(10);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void screenInitPost(ScreenEvent.Init.Post event) {
+        Screen screen = event.getScreen();
+        if (screen instanceof GenericSidedMachineScreen gsms) {
+            int x = gsms.getGuiLeft();
+            int y = gsms.getGuiTop();
+            int width = gsms.getXSize();
+            int height = gsms.getYSize();
+            if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
+                SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(x + 23, y + 8, 129, 70,
+                    SimpleDraggablePanel.Bounds.of(0, 0, gsms.width, gsms.height));
+                filterPanel.visible = false;
+                filterPanel.active = false;
+                
+                event.addListener(SpriteButton.builder(Component.empty(), (b, i) -> {
+                    filterPanel.visible = true;
+                    filterPanel.active = true;
+                }, new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png")).bounds(x + width - 21, y + 3, 18, 18).build());
+                
+                filterPanel.addChildren((fX, fY, fW, fH) -> SpriteButton.builder(Component.empty(), (b, i) -> {
+                    filterPanel.visible = false;
+                    filterPanel.active = false;
+                }, new ResourceLocation(MODID, "textures/gui/sprites/sided_buttons/deny.png")).bounds(fX + fW - 12, fY + 3, 9, 9).build());
+                
+                /*filterPanel.addChildren((fX, fY, fW, fH) -> new SlotWidget(new FakeSlot(new SimpleContainer(1), 0, fX + 3, fY + 3, false),
+                    fX, fY, 18, 18, Component.empty()));*/
+                
+                gsms.addUpperLayerChild(filterPanel);
             }
         }
     }

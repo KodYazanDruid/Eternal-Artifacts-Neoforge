@@ -86,10 +86,9 @@ public class ChargedSheepEntity extends Sheep implements PowerableMob {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
-        if(energy != null) {
-            if (!level().isClientSide){
-                if (EnergyUtils.transferEnergy(this.energy, energy, Integer.MAX_VALUE) > 0)
-                    return InteractionResult.SUCCESS;
+        if(energy != null && hand == InteractionHand.MAIN_HAND) {
+            if (EnergyUtils.transferEnergy(this.energy, energy, Integer.MAX_VALUE) > 0) {
+                return InteractionResult.sidedSuccess(level().isClientSide);
             }
             return InteractionResult.CONSUME;
         }else return super.mobInteract(player, hand);

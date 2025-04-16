@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "eternalartifacts:block/block_breaker",
+      "x": 90
+    },
+    "facing=east": {
+      "model": "eternalartifacts:block/block_breaker",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/block_breaker"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/block_breaker",
+      "y": 180
+    },
+    "facing=up": {
+      "model": "eternalartifacts:block/block_breaker",
+      "x": -90
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/block_breaker",
+      "y": 270
+    }
+  }
+}

@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.recipe.base.DynamoRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.base.NoResultItemRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
@@ -17,7 +18,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PUBLIC)
-public class FluidCombustionRecipe extends NoResultItemRecipe<SimpleFluidContainer> {
+public class FluidCombustionRecipe extends NoResultItemRecipe<SimpleFluidContainer> implements DynamoRecipe {
 
     private final FluidIngredient fuel;
     private final int generation;
@@ -38,7 +39,7 @@ public class FluidCombustionRecipe extends NoResultItemRecipe<SimpleFluidContain
 
     public static class Serializer implements RecipeSerializer<FluidCombustionRecipe> {
         private static final Codec<FluidCombustionRecipe> CODEC = RecordCodecBuilder.create(inst -> inst.group(
-                FluidIngredient.CODEC.fieldOf("fuel").forGetter(r -> r.fuel),
+                FluidIngredient.CODEC_NONEMPTY.fieldOf("fuel").forGetter(r -> r.fuel),
                 Codec.INT.fieldOf("generation").forGetter(r -> r.generation),
                 Codec.INT.fieldOf("duration").forGetter(r -> r.duration)
         ).apply(inst, FluidCombustionRecipe::new));

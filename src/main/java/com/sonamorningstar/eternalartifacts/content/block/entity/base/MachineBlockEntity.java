@@ -8,7 +8,6 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.enchantment.base.MachineEnchantment;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.AccessLevel;
@@ -317,13 +316,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
                 progress = 0;
                 return;
             }
-            int lvl = getEnchantmentLevel(Enchantments.UNBREAKING);
-            if (lvl > 0) {
-                float chance = 1.0f / (lvl + 1);
-                if (level.random.nextFloat() > chance) {
-                    energy.extractEnergyForced(energyPerTick, false);
-                }
-            } else energy.extractEnergyForced(energyPerTick, false);
+            spendEnergy(energyPerTick, energy);
             running.run();
             progress = Math.min(maxProgress, progress + progressStep);
             if (progress >= maxProgress) {
@@ -333,7 +326,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         }
     }
 
-    private boolean redstoneChecks(SidedTransferMachineBlockEntity.RedstoneType type, Level level) {
+    protected boolean redstoneChecks(SidedTransferMachineBlockEntity.RedstoneType type, Level level) {
         return (type == SidedTransferMachineBlockEntity.RedstoneType.HIGH && level.getDirectSignalTo(getBlockPos()) > 0) ||
                 (type == SidedTransferMachineBlockEntity.RedstoneType.LOW && level.getDirectSignalTo(getBlockPos()) == 0) ||
                 type == SidedTransferMachineBlockEntity.RedstoneType.IGNORED || type == null;
@@ -346,6 +339,17 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
 
     protected boolean hasAnyEnergy(ModEnergyStorage energy) {
         return energy.getEnergyStored() > 0;
+    }
+    
+    public int spendEnergy(int amount, ModEnergyStorage energy) {
+        if (energy == null || level == null) return 0;
+        int lvl = getEnchantmentLevel(Enchantments.UNBREAKING);
+        if (lvl > 0) {
+            float chance = 1.0f / (lvl + 1);
+            if (level.random.nextFloat() > chance) {
+                return energy.extractEnergyForced(energyPerTick, false);
+            } else return 0;
+        } else return energy.extractEnergyForced(energyPerTick, false);
     }
 
     //region Transfer methods.

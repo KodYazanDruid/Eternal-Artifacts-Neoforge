@@ -1,9 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.CableBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Cable;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSources;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -46,16 +47,28 @@ public class UncoveredCableBlock extends CableBlock{
 
         return joinedShape;
     }
-
+    
     @Override
     public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (entity instanceof LivingEntity living) {
+        if (entity instanceof LivingEntity living && !living.isInvulnerableTo(living.damageSources().lightningBolt())) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof CableBlockEntity cable) {
-            
+            if (be instanceof Cable cable) {
+                int damageAmount = cable.getTier().getDamageCost();
+                int totalExtractable = cable.extractEnergyFromSources(damageAmount, true);
+                
+                float damage = Math.max(1.0F, totalExtractable / 10.0F);
+                
+                if (totalExtractable > 0) {
+                    if (living.hurt(living.damageSources().lightningBolt(), damage)) {
+                        cable.extractEnergyFromSources(totalExtractable, false);
+                        if (level instanceof ServerLevel sl) {
+                            sl.sendParticles(ParticleTypes.ELECTRIC_SPARK,
+                                living.getX(), living.getY() + 1.0, living.getZ(),
+                                20, 0.0, 0.0, 0.0, 0.5);
+                        }
+                    }
+                }
             }
-            DamageSources source = new DamageSources(living.level().registryAccess());
-            living.hurt(source.lightningBolt(), 1.0F);
         }
     }
 }

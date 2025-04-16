@@ -1,0 +1,168 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_inside"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side"
+      },
+      "when": {
+        "north_connection": "free"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_extracting"
+      },
+      "when": {
+        "north_connection": "extract"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_filtering"
+      },
+      "when": {
+        "north_connection": "filtered"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side",
+        "y": 90
+      },
+      "when": {
+        "east_connection": "free"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_extracting",
+        "y": 90
+      },
+      "when": {
+        "east_connection": "extract"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_filtering",
+        "y": 90
+      },
+      "when": {
+        "east_connection": "filtered"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side",
+        "y": 180
+      },
+      "when": {
+        "south_connection": "free"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_extracting",
+        "y": 180
+      },
+      "when": {
+        "south_connection": "extract"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_filtering",
+        "y": 180
+      },
+      "when": {
+        "south_connection": "filtered"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side",
+        "y": 270
+      },
+      "when": {
+        "west_connection": "free"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_extracting",
+        "y": 270
+      },
+      "when": {
+        "west_connection": "extract"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_filtering",
+        "y": 270
+      },
+      "when": {
+        "west_connection": "filtered"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side",
+        "x": 270
+      },
+      "when": {
+        "up_connection": "free"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_extracting",
+        "x": 270
+      },
+      "when": {
+        "up_connection": "extract"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_filtering",
+        "x": 270
+      },
+      "when": {
+        "up_connection": "filtered"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side",
+        "x": 90
+      },
+      "when": {
+        "down_connection": "free"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_extracting",
+        "x": 90
+      },
+      "when": {
+        "down_connection": "extract"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/copper_item_pipe_side_filtering",
+        "x": 90
+      },
+      "when": {
+        "down_connection": "filtered"
+      }
+    }
+  ]
+}

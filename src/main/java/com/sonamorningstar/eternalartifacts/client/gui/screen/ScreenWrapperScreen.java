@@ -20,7 +20,7 @@ public class ScreenWrapperScreen extends AbstractModContainerScreen<ScreenWrappe
     }
 
     @Override
-    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-        return parent.mouseClicked(pMouseX, pMouseY, pButton);
+    public boolean mouseClicked(double mx, double my, int button) {
+        return parent.mouseClicked(mx, my, button);
     }
 }

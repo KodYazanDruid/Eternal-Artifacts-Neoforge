@@ -5,15 +5,15 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.item.decorator.BlueprintDecorator;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.InfiniteWaterTank;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.MachineItemFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModItemMultiFluidTank;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.TesseractEnergyCap;
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.*;
 import com.sonamorningstar.eternalartifacts.capabilities.item.MachineItemItemStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModScaleableItemItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.TesseractInventoryCap;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -38,13 +38,16 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.RegisterCauldronFluidContentEvent;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -96,12 +99,15 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.JAR.get(), (be, ctx) -> be.tank);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SHOCK_ABSORBER.get(), (be, ctx) -> be.energy);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SOLAR_PANEL.get(), SolarPanel::createEnergyCap);
         registerMachineItem(event, ModBlocks.SHOCK_ABSORBER);
         registerMachineItem(event, ModBlocks.FLUID_COMBUSTION_DYNAMO);
         registerMachineItem(event, ModBlocks.BIOFURNACE);
         registerMachineItem(event, ModBlocks.BOOK_DUPLICATOR);
         registerMachineItem(event, ModBlocks.BATTERY_BOX);
         registerMachineItem(event, ModBlocks.ANVILINATOR);
+        registerMachineItem(event, ModBlocks.SOLID_COMBUSTION_DYNAMO);
+        registerMachineItem(event, ModBlocks.SOLAR_PANEL);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
@@ -118,9 +124,12 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, null));
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
-                ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+            ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
-
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
+            ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.inventory);
+        
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DRUM.get(), (be, ctx) -> be.tank);
@@ -142,6 +151,22 @@ public class CommonModEvents {
         event.registerBlock(Capabilities.EnergyStorage.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
         
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MACHINE_WORKBENCH.get(), (be, ctx) -> be.inventory);
+    
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
+            var network = be.getCachedNetwork();
+            if (network == null) return null;
+            return network.getCapabilityClass() == IItemHandler.class ? new TesseractInventoryCap(be) : null;
+        });
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
+            var network = be.getCachedNetwork();
+            if (network == null) return null;
+            return network.getCapabilityClass() == IFluidHandler.class ? new TesseractFluidCap(be) : null;
+        });
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
+            var network = be.getCachedNetwork();
+            if (network == null) return null;
+            return network.getCapabilityClass() == IEnergyStorage.class ? new TesseractEnergyCap(be) : null;
+        });
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {

@@ -87,12 +87,12 @@ public class GenericScreenInfo {
         components.put(component, new ComponentInfo(x, y, color, dropShadow));
     }
 
-    public void addButton(String sprite, int x, int y, int width, int height, BiConsumer<SpriteButton, Integer> onPress) {
-        machine.getButtonConsumerMap().put(buttons.size(), i -> onPress.accept(null, i));
+    public void addButton(String sprite, int x, int y, int width, int height, Runnable onPress) {
+        machine.getButtonConsumerMap().put(buttons.size(), i -> onPress.run());
         buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(sprite), onPress));
     }
-    public void addButton(String namespace, String sprite, int x, int y, int width, int height, BiConsumer<SpriteButton, Integer> onPress) {
-        machine.getButtonConsumerMap().put(buttons.size(), i -> onPress.accept(null, i));
+    public void addButton(String namespace, String sprite, int x, int y, int width, int height, Runnable onPress) {
+        machine.getButtonConsumerMap().put(buttons.size(), i -> onPress.run());
         buttons.add(new CustomRenderButtonInfo(x, y, width, height, new ResourceLocation(namespace, sprite), onPress));
     }
 }

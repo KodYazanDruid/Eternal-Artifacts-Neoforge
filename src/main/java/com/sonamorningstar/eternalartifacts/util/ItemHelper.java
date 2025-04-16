@@ -81,7 +81,6 @@ public class ItemHelper {
         return stack;
     }
     public static Pair<ItemStack, List<Integer>> insertItemStackedForced(ModItemStorage inventory, ItemStack stack, boolean simulate, List<Integer> slots) {
-        //List<Integer> slotsList = Arrays.stream(slots).toList();
         List<Integer> insertedSlots = new ArrayList<>();
         if (inventory == null || stack.isEmpty())
             return Pair.of(stack, Collections.emptyList());

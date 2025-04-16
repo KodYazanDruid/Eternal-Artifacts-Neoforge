@@ -1,11 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
+import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -39,11 +38,13 @@ public class MachineBlockItem extends FluidHolderBlockItem {
     
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        if (stack.is(ModBlocks.SOLAR_PANEL.asItem())) return false;
+        
         if (ModMachines.INDUCTION_FURNACE.getItem() == stack.getItem() && enchantment == Enchantments.BLOCK_EFFICIENCY) {
             return false;
         }
-        if (BuiltInRegistries.ITEM.get(ModBlocks.FLUID_COMBUSTION_DYNAMO.getId()) == stack.getItem() && enchantment == Enchantments.UNBREAKING) {
-            return false;
+        if (enchantment == Enchantments.UNBREAKING && getBlock() instanceof DynamoBlock<?>) {
+			return false;
         }
         return ALLOWED_ENCHANTMENTS.contains(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
     }

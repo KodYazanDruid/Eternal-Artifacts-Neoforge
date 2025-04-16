@@ -14,7 +14,7 @@ public class MachineItemItemStorage implements IItemHandlerModifiable, INBTSeria
 
     public MachineItemItemStorage(ItemStack stack) {
         this.stack = stack;
-        if (stack.hasTag()) {
+        if (stack.hasTag() && stack.getTag().contains("Inventory")) {
             deserializeNBT(stack.getTag().getCompound("Inventory"));
         } else {
             stacks = NonNullList.withSize(0, ItemStack.EMPTY);
@@ -22,7 +22,12 @@ public class MachineItemItemStorage implements IItemHandlerModifiable, INBTSeria
     }
 
     protected void onContentsChanged() {
-        stack.getOrCreateTag().put("Inventory", serializeNBT());
+        if (areStacksEmpty()) {
+            if (stack.hasTag() && stack.getTag().contains("Inventory")) {
+                stack.getTag().remove("Inventory");
+            }
+        }
+        else stack.getOrCreateTag().put("Inventory", serializeNBT());
     }
 
     public void setSize(int size) {
@@ -70,6 +75,15 @@ public class MachineItemItemStorage implements IItemHandlerModifiable, INBTSeria
     protected void validateSlotIndex(int slot) {
         if (slot < 0 || slot >= stacks.size())
             throw new RuntimeException("Slot " + slot + " not in valid range - [0," + stacks.size() + ")");
+    }
+    
+    public boolean areStacksEmpty() {
+        for (ItemStack stack : stacks) {
+            if (!stack.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.network.BlueprintIngredientsToClient;
+import com.sonamorningstar.eternalartifacts.network.RebuildTesseractPanelToClient;
 import com.sonamorningstar.eternalartifacts.network.UpdateEntityEnergyToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
@@ -116,9 +117,17 @@ public class ClientProxy {
         }
     }
     
-    public static void rebuildTesseractPanel() {
+    public static void rebuildTesseractPanel(RebuildTesseractPanelToClient pkt) {
         if (mc.screen instanceof TesseractScreen screen) {
-            screen.rebuildNetworkPanel();
+            if (pkt.clearSelected()) {
+                if (screen.getSelectedNetwork() != null) {
+                    screen.getMenu().tesseract.setNetworkId(null);
+                    screen.removeWidget(screen.getSelectedNetwork());
+                    screen.rebuildNetworkPanel();
+                }
+            } else {
+                screen.rebuildNetworkPanel();
+            }
         }
     }
     

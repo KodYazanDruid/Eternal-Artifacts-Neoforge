@@ -5,6 +5,7 @@
     "eternalartifacts:gravel_iron_ore",
     "eternalartifacts:sandy_tiled_stone_bricks",
     "eternalartifacts:sandy_stone_bricks",
+    "eternalartifacts:fluid_combustion_dynamo",
     "eternalartifacts:manganese_ore",
     "eternalartifacts:deepslate_manganese_ore",
     "eternalartifacts:raw_manganese_block",
@@ -16,6 +17,10 @@
     "eternalartifacts:shock_absorber",
     "eternalartifacts:trash_can",
     "eternalartifacts:machine_workbench",
+    "eternalartifacts:copper_fluid_pipe",
+    "eternalartifacts:copper_item_pipe",
+    "eternalartifacts:solid_combustion_dynamo",
+    "eternalartifacts:solar_panel",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -30,6 +35,8 @@
     "eternalartifacts:fluid_mixer",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:oil_refinery",
-    "eternalartifacts:induction_furnace"
+    "eternalartifacts:induction_furnace",
+    "eternalartifacts:block_placer",
+    "eternalartifacts:block_breaker"
   ]
 }

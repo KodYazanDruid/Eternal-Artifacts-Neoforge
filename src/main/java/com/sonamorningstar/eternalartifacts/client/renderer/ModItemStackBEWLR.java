@@ -7,8 +7,10 @@ import com.sonamorningstar.eternalartifacts.client.renderer.item.SpellTomeRender
 import com.sonamorningstar.eternalartifacts.client.resources.model.TwoLayerSkullModel;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
+import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.client.Minecraft;
@@ -31,6 +33,7 @@ import net.minecraft.world.level.block.SkullBlock;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -50,11 +53,12 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     }
 
     private final JarBlockEntity jar = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
-    private final FluidCombustionDynamoBlockEntity fcDynamo = new FluidCombustionDynamoBlockEntity(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
+    //private final FluidCombustionDynamo fcDynamo = new FluidCombustionDynamo(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
+    private final Map<DynamoBlock<?>, AbstractDynamo<?>> dynamoMap = new HashMap<>();
     private final NousTankBlockEntity nousTank = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
     private final OilRefinery refinery = new OilRefinery(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
     private final EnergyDockBlockEntity energyDock = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
-    private final TesseractBlockEntity tesseract = new TesseractBlockEntity(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());
+    private final Tesseract tesseract = new Tesseract(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());
     
     @Override
     public void onResourceManagerReload(ResourceManager manager) {
@@ -74,8 +78,8 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 if (tag != null) isOpen = tag.getBoolean(JarBlockItem.KEY_OPEN);
                 jar.isOpen = isOpen;
                 beRenderer.renderItem(jar, ps, buff, light, overlay);
-            }else if(block instanceof FluidCombustionDynamoBlock) {
-                beRenderer.renderItem(fcDynamo, ps, buff, light, overlay);
+            } else if(block instanceof DynamoBlock<?> dynamo) {
+                beRenderer.renderItem(dynamoMap.computeIfAbsent(dynamo, d -> (AbstractDynamo<?>) d.newBlockEntity(BlockPos.ZERO, d.defaultBlockState())), ps, buff, light, overlay);
             }else if(block instanceof NousTankBlock) {
                 if(fluidHandlerItem != null) nousTank.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 beRenderer.renderItem(nousTank, ps, buff, light, overlay);

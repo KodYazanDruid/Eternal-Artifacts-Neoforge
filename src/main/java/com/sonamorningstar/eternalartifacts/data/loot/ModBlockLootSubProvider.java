@@ -112,6 +112,10 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.MACHINE_WORKBENCH.get());
         dropSelf(ModBlocks.GOLD_CABLE.get());
         dropSelf(ModBlocks.COVERED_GOLD_CABLE.get());
+        dropSelf(ModBlocks.COPPER_FLUID_PIPE.get());
+        dropSelf(ModBlocks.GOLD_FLUID_PIPE.get());
+        dropSelf(ModBlocks.COPPER_ITEM_PIPE.get());
+        dropSelf(ModBlocks.GOLD_ITEM_PIPE.get());
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -140,9 +144,12 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.SHOCK_ABSORBER, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BATTERY_BOX, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.FLUID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.SOLID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.ANVILINATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BOOK_DUPLICATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());
+        
+        add(ModBlocks.SOLAR_PANEL.get(), this::createSlabItemTable);
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())

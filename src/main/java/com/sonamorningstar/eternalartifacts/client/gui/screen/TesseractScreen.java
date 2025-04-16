@@ -10,9 +10,11 @@ import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
 import com.sonamorningstar.eternalartifacts.network.AddTesseractNetworkToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -24,6 +26,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	private ScrollablePanel<TesseractNetwork> panel;
 	private EditBox networkName;
 	private Button addNetwork;
+	@Getter
 	private TesseractNetwork selectedNetwork;
 	private DropdownMenu<ScrollablePanelComponent> securityMenu;
 	private DropdownMenu<ScrollablePanelComponent> capMenu;
@@ -84,6 +87,11 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		}
 	}
 	
+	@Override
+	public void removeWidget(GuiEventListener pListener) {
+		super.removeWidget(pListener);
+	}
+	
 	public void rebuildNetworkPanel() {
 		removeWidget(panel);
 		double scrollAmount = panel.scrollAmount();
@@ -116,9 +124,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		);
 	}
 	private void clearSelected(Button button) {
-		menu.tesseract.setNetworkId(null);
 		if (selectedNetwork != null) {
 			removeWidget(selectedNetwork);
+			rebuildNetworkPanel();
 		}
 		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 2000);
 	}
@@ -128,8 +136,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 			TesseractNetwork widget = children.get(index);
 			if (widget != null && widget.isFocused()) {
 				Network<?> network = TesseractMenu.gatheredNetworks.get(index);
-				menu.tesseract.setNetworkId(network.getUuid());
 				constructSelected(network);
+				menu.tesseract.setNetworkId(network.getUuid());
+				rebuildNetworkPanel();
 				minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 5000 + index);
 			} else if (widget != null) {
 				focusNetwork(widget);
@@ -142,7 +151,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		panel.getChildren().stream().filter(w -> w != widget).forEach(w -> w.setFocused(false));
 	}
 	
-	private void constructSelected(Network<?> network) {
+	public void constructSelected(Network<?> network) {
 		if (selectedNetwork != null) {
 			removeWidget(selectedNetwork);
 		}
@@ -174,7 +183,6 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	
 	@Override
 	public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-		//System.out.println("Key Pressed!: "+pKeyCode);
 		if (pKeyCode == 261) {
 			for (int i = 0; i < panel.getChildren().size(); i++) {
 				TesseractNetwork tn = panel.getChildren().get(i);

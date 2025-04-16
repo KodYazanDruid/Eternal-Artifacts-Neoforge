@@ -8,7 +8,6 @@ import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookR
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRenameWarpToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
-import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -50,9 +49,9 @@ public class Channel {
                 SwitchBatteryChargeToServer::create,
                 handler -> handler.server(SwitchBatteryChargeToServer::handle));
 
-        registrar.play(BlueprintUpdateSlotToServer.ID,
-                BlueprintUpdateSlotToServer::create,
-                handler -> handler.server(BlueprintUpdateSlotToServer::handle));
+        registrar.play(UpdateFakeSlotToServer.ID,
+                UpdateFakeSlotToServer::create,
+                handler -> handler.server(UpdateFakeSlotToServer::handle));
 
         registrar.play(PlayerTeleportToServer.ID,
                 PlayerTeleportToServer::create,
@@ -81,10 +80,6 @@ public class Channel {
         registrar.play(ConsumeDashTokenToServer.ID,
             ConsumeDashTokenToServer::create,
             handler -> handler.server(ConsumeDashTokenToServer::handle));
-
-        registrar.play(BlockEntityButtonPress.ID,
-                BlockEntityButtonPress::create,
-                handler -> handler.server(BlockEntityButtonPress::handle));
 
         registrar.play(UpdateCharmsToClient.ID,
                 UpdateCharmsToClient::create,

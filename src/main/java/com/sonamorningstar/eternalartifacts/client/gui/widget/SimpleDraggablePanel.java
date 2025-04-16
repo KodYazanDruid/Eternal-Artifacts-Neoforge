@@ -45,6 +45,7 @@ public class SimpleDraggablePanel extends AbstractWidget implements IParentalWid
 	
 	@Override
 	protected void onDrag(double mx, double my, double dragX, double dragY) {
+		if (!visible || !active) return;
 		for (Bounds undragArea : undragAreas) {
 			if (undragArea.x() <= mx && undragArea.x() + undragArea.width() >= mx &&
 				undragArea.y() <= my && undragArea.y() + undragArea.height() >= my) {

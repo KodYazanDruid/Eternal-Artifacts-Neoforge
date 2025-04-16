@@ -13,18 +13,13 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 @Getter
-public abstract class GenericMachineBlockEntity extends SidedTransferMachineBlockEntity<GenericMachineMenu> implements IButtonHolder {
+public abstract class GenericMachineBlockEntity extends SidedTransferMachineBlockEntity<GenericMachineMenu> {
     protected final Map<Integer, Consumer<Integer>> buttonConsumerMap = new HashMap<>();
     public GenericMachineBlockEntity(MachineDeferredHolder<?, ? ,? ,?> machineHolder, BlockPos pos, BlockState blockState) {
         super(machineHolder.getBlockEntity(), pos, blockState, (a, b, c, d) -> new GenericMachineMenu(machineHolder.getMenu(), a, b ,c ,d));
     }
 
     protected GenericScreenInfo screenInfo = new GenericScreenInfo(this);
-
-    @Override
-    public Map<Integer, Consumer<Integer>> buttonConsumerMap() {
-        return buttonConsumerMap;
-    }
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {

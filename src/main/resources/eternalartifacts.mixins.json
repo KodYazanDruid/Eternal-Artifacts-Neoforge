@@ -12,6 +12,7 @@
     "InventoryMixin",
     "MapItemSavedDataMixin",
     "PickaxeItemMixin",
+    "ServerPlayerGameModeMixin",
     "ShovelItemMixin",
     "entity.AbstractHorseMixin",
     "entity.AbstractSkeletonMixin",

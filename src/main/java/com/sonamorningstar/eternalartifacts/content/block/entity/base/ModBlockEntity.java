@@ -28,9 +28,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.function.BiPredicate;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
+import java.util.function.*;
 
 public class ModBlockEntity extends BlockEntity {
     public final Object2IntMap<Enchantment> enchantments = new Object2IntOpenHashMap<>();
@@ -268,7 +266,7 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     @SafeVarargs
-    protected final ModItemStorage createBasicInventory(int size, List<Integer> outputSlots, Consumer<Integer>... consumers) {
+    protected final ModItemStorage createBasicInventory(int size, List<Integer> outputSlots, BiFunction<Integer, ItemStack, Boolean> isValid, Consumer<Integer>... consumers) {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -280,7 +278,9 @@ public class ModBlockEntity extends BlockEntity {
             }
 
             @Override
-            public boolean isItemValid(int slot, ItemStack stack) {return !outputSlots.contains(slot);}
+            public boolean isItemValid(int slot, ItemStack stack) {
+                return !outputSlots.contains(slot) && isValid.apply(slot, stack);
+            }
         };
     }
     protected final ModItemStorage createRecipeFinderInventory(int size, List<Integer> outputSlots) {

@@ -19,10 +19,9 @@ public class BatteryBoxMenu extends AbstractMachineMenu {
 
         if(beInventory != null) {
             addSlot(new SlotItemHandler(beInventory, 0, 80, 35));
-            addSlot(new SlotItemHandler(beInventory, 1, 80, 53));
-            addSlot(new SlotItemHandler(beInventory, 2, 98, 35));
+            addSlot(new SlotItemHandler(beInventory, 1, 98, 35));
+            addSlot(new SlotItemHandler(beInventory, 2, 80, 53));
             addSlot(new SlotItemHandler(beInventory, 3, 98, 53));
         }
-
     }
 }

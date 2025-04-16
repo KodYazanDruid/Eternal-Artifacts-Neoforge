@@ -13,6 +13,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
@@ -68,7 +69,7 @@ public final class ModHooks {
             AppleSkinCompat.run(modEventBus);
         }
         if (emiLoaded) {
-            if(ModLoader.isDataGenRunning()) EmiCompat.runData();
+            if(FMLLoader.getLaunchHandler().isData()) EmiCompat.runData();
         }
     }
 

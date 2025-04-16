@@ -3,9 +3,11 @@ package com.sonamorningstar.eternalartifacts.container.base;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -69,6 +71,11 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
             }
         }
         return ret;
+    }
+    
+    //Packet send from client to server.
+    public void fakeSlotSynch(UpdateFakeSlotToServer pkt) {
+    
     }
     
     @Override

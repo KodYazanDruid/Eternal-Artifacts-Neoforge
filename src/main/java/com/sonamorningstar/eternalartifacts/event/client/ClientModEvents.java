@@ -54,11 +54,12 @@ public class ClientModEvents {
         event.register(ModMenuTypes.BIOFURNACE.get(), BioFurnaceScreen::new);
         event.register(ModMenuTypes.BOOK_DUPLICATOR.get(), BookDuplicatorScreen::new);
         event.register(ModMenuTypes.BATTERY_BOX.get(), BatteryBoxScreen::new);
-        event.register(ModMenuTypes.FLUID_COMBUSTION_MENU.get(), FluidCombustionScreen::new);
+        event.register(ModMenuTypes.DYNAMO_MENU.get(), FluidDynamoScreen::new);
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
         event.register(ModMenuTypes.TANK_KNAPSACK.get(), TankKnapsackScreen::new);
         event.register(ModMenuTypes.TESSERACT.get(), TesseractScreen::new);
+        event.register(ModMenuTypes.SOLID_DYNAMO.get(), SolidDynamoScreen::new);
     }
 
     @SubscribeEvent
@@ -155,7 +156,7 @@ public class ClientModEvents {
 
         //event.registerLayerDefinition(ModModelLayers.FANCY_CHEST_LAYER, FancyChestRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.JAR_LAYER, JarRenderer::createSingleBodyLayer);
-        event.registerLayerDefinition(ModModelLayers.FLUID_COMBUSTION_LAYER, FluidCombustionDynamoModel::createBodyLayer);
+        event.registerLayerDefinition(ModModelLayers.DYNAMO_LAYER, DynamoModel::createBodyLayer);
         event.registerLayerDefinition(ModModelLayers.NOUS_TANK_LAYER, NousTankRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.OIL_REFINERY_LAYER, OilRefineryRenderer::createSingleBodyLayer);
         event.registerLayerDefinition(ModModelLayers.ENERGY_DOCK_LAYER, EnergyDockBlockEntityRenderer::createSingleBodyLayer);
@@ -172,7 +173,8 @@ public class ClientModEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.JAR.get(), JarRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), FluidCombustionRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.NOUS_TANK.get(), NousTankRenderer::new);
         event.registerBlockEntityRenderer(ModMachines.OIL_REFINERY.getBlockEntity(), OilRefineryRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntityRenderer::new);

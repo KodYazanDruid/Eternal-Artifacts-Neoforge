@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.api.machine.tesseract;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -15,6 +16,7 @@ import java.util.*;
 @Getter
 public class TesseractNetworks extends SavedData {
 	private final Set<Network<?>> networks = new HashSet<>();
+	private final Map<Network<?>, Set<Tesseract>> tesseracts = new HashMap<>();
 	
 	@Override
 	public CompoundTag save(CompoundTag tag) {
@@ -41,6 +43,18 @@ public class TesseractNetworks extends SavedData {
 			Network<?> network = Network.fromNBT(networkTag);
 			networks.add(network);
 		}
+	}
+	
+	public void removeTesseractFromNetwork(Tesseract tesseract) {
+		for (Network<?> network : networks) {
+			if (tesseracts.containsKey(network)) {
+				tesseracts.get(network).remove(tesseract);
+			}
+		}
+	}
+	
+	public Set<Tesseract> getTesseracts(Network<?> network) {
+		return tesseracts.getOrDefault(network, new HashSet<>());
 	}
 	
 	public boolean addNetwork(Network<?> network) {

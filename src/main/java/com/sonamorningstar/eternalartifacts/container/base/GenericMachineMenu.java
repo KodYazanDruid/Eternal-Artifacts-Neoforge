@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.container.base;
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -41,5 +42,11 @@ public class GenericMachineMenu extends AbstractMachineMenu {
                 });
             }
         }
+    }
+    
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        screenInfo.getButtons().get(id).onPress().run();
+        return super.clickMenuButton(player, id);
     }
 }

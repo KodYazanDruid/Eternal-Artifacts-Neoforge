@@ -181,6 +181,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.YELLOW_APPLE.get());
         handheld(ModItems.SPAWNER_EXTRACTOR);
         handheld(ModItems.BONE_SWORD);
+        basicItem(ModItems.MANGANESE_DUST.get());
+        basicItem(ModItems.PIPE_EXTRACTOR.get());
+        basicItem(ModItems.PIPE_FILTER.get());
+        handheld(ModItems.SWORD_OF_THE_TWILIGHT);
+        handheld(ModItems.SWORD_OF_THE_DAWN);
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

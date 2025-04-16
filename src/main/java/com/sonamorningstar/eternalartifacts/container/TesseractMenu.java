@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.container;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.TesseractBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.RebuildTesseractPanelToClient;
@@ -21,7 +21,7 @@ import java.util.UUID;
 
 public class TesseractMenu extends AbstractModContainerMenu {
 	public final Level level;
-	public final TesseractBlockEntity tesseract;
+	public final Tesseract tesseract;
 	public volatile static List<Network<?>> gatheredNetworks;
 	
 	public TesseractMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
@@ -34,7 +34,7 @@ public class TesseractMenu extends AbstractModContainerMenu {
 	public TesseractMenu(int id, Inventory inv, BlockEntity blockEntity, List<Network<?>> networks) {
 		super(ModMenuTypes.TESSERACT.get(), id);
 		this.level = inv.player.level();
-		this.tesseract = ((TesseractBlockEntity) blockEntity);
+		this.tesseract = ((Tesseract) blockEntity);
 		gatheredNetworks = networks;
 	}
 	
@@ -48,7 +48,7 @@ public class TesseractMenu extends AbstractModContainerMenu {
 		network.setAccess(Network.Access.values()[secIdx]);
 		TesseractNetworks.get(level).addNetwork(network);
 		gatheredNetworks = TesseractNetworks.get(level).getNetworksForPlayer(owner);
-		rebuildPanel((ServerPlayer) owner);
+		rebuildPanel((ServerPlayer) owner, false);
 	}
 	
 	@Override
@@ -63,27 +63,27 @@ public class TesseractMenu extends AbstractModContainerMenu {
 				if (network != null) {
 					networks.removeNetwork(network);
 					gatheredNetworks = networks.getNetworksForPlayer(player);
-					rebuildPanel(sp);
+					rebuildPanel(sp, false);
 				}
 			}
 			return true;
 		} else if (id == 2000) {
 			tesseract.setNetworkId(null);
-			rebuildPanel(sp);
+			rebuildPanel(sp, true);
 			return true;
 		} else if (id >= 5000) {
 			int index = id - 5000;
 			if (index < gatheredNetworks.size()) {
 				Network<?> network = gatheredNetworks.get(index);
 				tesseract.setNetworkId(network.getUuid());
-				rebuildPanel(sp);
+				rebuildPanel(sp, false);
 			}
 			return true;
 		}
 		return super.clickMenuButton(player, id);
 	}
 	
-	private void rebuildPanel(ServerPlayer player) {
-		Channel.sendToPlayer(new RebuildTesseractPanelToClient(), player);
+	private void rebuildPanel(ServerPlayer player, boolean clearSelected) {
+		Channel.sendToPlayer(new RebuildTesseractPanelToClient(clearSelected), player);
 	}
 }

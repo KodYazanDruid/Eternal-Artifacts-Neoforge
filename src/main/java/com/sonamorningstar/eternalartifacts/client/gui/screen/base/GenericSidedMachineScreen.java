@@ -6,15 +6,11 @@ import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButt
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
-import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.protocol.BlockEntityButtonPress;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.function.BiConsumer;
 
 public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<GenericMachineMenu>{
     @Getter
@@ -33,16 +29,16 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
             CustomRenderButtonInfo info = screenInfo.getButtons().get(i);
             int finalI = i;
             addRenderableWidget(SpriteButton
-                    .builder(Component.empty(), (button, key) -> handleButtonPress(button, key, finalI, info.onPress()), info.tex())
+                    .builder(Component.empty(), (button, key) -> handleButtonPress(finalI, info.onPress()), info.tex())
                     .size(info.width(), info.height())
                     .pos(leftPos + info.x(), topPos + info.y()).build());
         }
 
     }
 
-    private void handleButtonPress(SpriteButton button, int key, int index, BiConsumer<SpriteButton, Integer> onPress) {
-        onPress.accept(button, key);
-        Channel.sendToServer(new BlockEntityButtonPress(machine.getBlockPos(), key, index));
+    private void handleButtonPress(int index, Runnable onPress) {
+        onPress.run();
+        minecraft.gameMode.handleInventoryButtonClick(menu.containerId, index);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.compat.mekanism;
 
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
@@ -19,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import mekanism.common.tags.MekanismTags;
 import mekanism.generators.common.GeneratorTags;
@@ -55,6 +57,44 @@ public class MekanismCompat {
 	}
     
     public static void registerMekCaps(RegisterCapabilitiesEvent event) {
+		event.registerBlockEntity(Capabilities.GAS.block(), ModBlockEntities.TESSERACT.get(), (be, dir) -> {
+			var network = be.getCachedNetwork();
+			if (network == null) return null;
+			return network.getCapabilityClass() == IGasHandler.class ? new IGasHandler() {
+				@Override
+				public int getTanks() {
+					return 1;
+				}
+				
+				@Override
+				public GasStack getChemicalInTank(int i) {
+					return GasStack.EMPTY;
+				}
+				
+				@Override
+				public void setChemicalInTank(int i, GasStack stack) {}
+				
+				@Override
+				public long getTankCapacity(int i) {
+					return 16000;
+				}
+				
+				@Override
+				public boolean isValid(int i, GasStack stack) {
+					return true;
+				}
+				
+				@Override
+				public GasStack insertChemical(int i, GasStack stack, Action action) {
+					return GasStack.EMPTY;
+				}
+				
+				@Override
+				public GasStack extractChemical(int i, long l, Action action) {
+					return GasStack.EMPTY;
+				}
+			} : null;
+		});
         event.registerBlock(Capabilities.GAS.block(), (a, b, c, d, e) -> new IGasHandler() {
 			@Override
 			public int getTanks() {
@@ -67,9 +107,7 @@ public class MekanismCompat {
 			}
 			
 			@Override
-			public void setChemicalInTank(int i, GasStack stack) {
-			
-			}
+			public void setChemicalInTank(int i, GasStack stack) {}
 			
 			@Override
 			public long getTankCapacity(int i) {

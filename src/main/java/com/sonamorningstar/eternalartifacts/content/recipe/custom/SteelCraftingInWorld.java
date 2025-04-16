@@ -15,12 +15,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.Tags;
 
 import java.util.*;
 
 public final class SteelCraftingInWorld {
-
-    private static final Item STEEL_CANDIDATE = Items.IRON_INGOT;
 
     private static final Map<TagKey<Item>, Integer> dustValues = Map.of(
             ModTags.Items.DUSTS_COAL, 2,
@@ -34,16 +33,16 @@ public final class SteelCraftingInWorld {
         boolean isLit = belowState.is(Blocks.BLAST_FURNACE) && belowState.getValue(BlockStateProperties.LIT);
         return blockState.is(Blocks.CAULDRON) && isLit;
     }
-
-    private static boolean isSteelCandidate(Item item) {
-        return Objects.equals(item, STEEL_CANDIDATE);
+    
+    private static boolean isValidIngot(ItemStack stack) {
+        return stack.is(Tags.Items.INGOTS_IRON) || stack.is(ModTags.Items.INGOTS_MANGANESE);
     }
-
-    public static boolean isValidItem(Item item) {
+    
+    public static boolean isValidItem(ItemStack item) {
         for(TagKey<Item> tag : dustValues.keySet()) {
-            if(item.getDefaultInstance().is(tag)) return true;
+            if(item.is(tag)) return true;
         }
-        return isSteelCandidate(item);
+        return isValidIngot(item);
     }
 
     private static int getDustValue(ItemStack stack) {
@@ -55,7 +54,7 @@ public final class SteelCraftingInWorld {
         Level level = itemEntity.level();
         AABB area = new AABB(itemEntity.blockPosition());
         List<ItemEntity> entities = level.getEntities(null, area).stream()
-                .filter(e -> e instanceof ItemEntity ie && !e.isRemoved() && isValidItem(ie.getItem().getItem())
+                .filter(e -> e instanceof ItemEntity ie && !e.isRemoved() && isValidItem(ie.getItem())
                 ).map(e -> (ItemEntity) e).toList();
 
         List<ItemStack> cachedItemStacks = new ArrayList<>();
@@ -63,7 +62,7 @@ public final class SteelCraftingInWorld {
         boolean hasDust = false;
         for (ItemEntity entity : entities) {
             ItemStack stack = entity.getItem();
-            if(stack.is(STEEL_CANDIDATE)) cachedItemStacks.add(stack);
+            if(isValidIngot(stack)) cachedItemStacks.add(stack);
             else if(stack.getCount() >= getDustValue(stack) && !hasDust) {
                 cachedItemStacks.add(stack);
                 hasDust = true;
@@ -72,11 +71,11 @@ public final class SteelCraftingInWorld {
 
         if(cachedItemStacks.size() > 1) {
             for(ItemStack stack : cachedItemStacks) {
-                if (stack.is(STEEL_CANDIDATE)) stack.shrink(1);
+                if (isValidIngot(stack)) stack.shrink(1);
                 else stack.shrink(getDustValue(stack));
                 if(stack.getCount() < 0) itemEntity.discard();
             }
-            ItemEntity steelItemEntity = new ItemEntity(level, itemEntity.xo, itemEntity.yo, itemEntity.zo, ModItems.STEEL_INGOT.toStack());
+            ItemEntity steelItemEntity = new ItemEntity(level, itemEntity.xo, itemEntity.yo, itemEntity.zo, ModItems.STEEL_INGOT.toStack(2));
             level.addFreshEntity(steelItemEntity);
             level.playSound(null, itemEntity.xo, itemEntity.yo, itemEntity.zo, SoundEvents.ANVIL_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         }

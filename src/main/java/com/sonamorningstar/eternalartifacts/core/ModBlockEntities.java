@@ -18,19 +18,22 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(BookDuplicatorMachineBlockEntity::new, ModBlocks.BOOK_DUPLICATOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBoxBlockEntity>> BATTERY_BOX = BLOCK_ENTITIES.register("battery_box", ()->
             BlockEntityType.Builder.of(BatteryBoxBlockEntity::new, ModBlocks.BATTERY_BOX.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamoBlockEntity>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
-            BlockEntityType.Builder.of(FluidCombustionDynamoBlockEntity::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
+            BlockEntityType.Builder.of(FluidCombustionDynamo::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NousTankBlockEntity>> NOUS_TANK = BLOCK_ENTITIES.register("nous_tank", ()->
             BlockEntityType.Builder.of(NousTankBlockEntity::new, ModBlocks.NOUS_TANK.get()).build(null));
-
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolidCombustionDynamo>> SOLID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("solid_combustion_dynamo", ()->
+        BlockEntityType.Builder.of(SolidCombustionDynamo::new, ModBlocks.SOLID_COMBUSTION_DYNAMO.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnergyDockBlockEntity>> ENERGY_DOCK = BLOCK_ENTITIES.register("energy_dock", ()->
             BlockEntityType.Builder.of(EnergyDockBlockEntity::new, ModBlocks.ENERGY_DOCK.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ShockAbsorberBlockEntity>> SHOCK_ABSORBER = BLOCK_ENTITIES.register("shock_absorber", ()->
             BlockEntityType.Builder.of(ShockAbsorberBlockEntity::new, ModBlocks.SHOCK_ABSORBER.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TesseractBlockEntity>> TESSERACT = BLOCK_ENTITIES.register("tesseract", ()->
-        BlockEntityType.Builder.of(TesseractBlockEntity::new, ModBlocks.TESSERACT.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Tesseract>> TESSERACT = BLOCK_ENTITIES.register("tesseract", ()->
+        BlockEntityType.Builder.of(Tesseract::new, ModBlocks.TESSERACT.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarPanel>> SOLAR_PANEL = BLOCK_ENTITIES.register("solar_panel", ()->
+        BlockEntityType.Builder.of(SolarPanel::new, ModBlocks.SOLAR_PANEL.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonatorBlockEntity>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
             BlockEntityType.Builder.of(ResonatorBlockEntity::new, ModBlocks.RESONATOR.get()).build(null));
@@ -44,13 +47,23 @@ public class ModBlockEntities {
                     ModBlocks.NETHERITE_DRUM.get()
             ).build(null));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CableBlockEntity>> CABLE = BLOCK_ENTITIES.register("cable", ()->
-            BlockEntityType.Builder.of(CableBlockEntity::new,
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Cable>> CABLE = BLOCK_ENTITIES.register("cable", ()->
+            BlockEntityType.Builder.of(Cable::new,
                     ModBlocks.COPPER_CABLE.get(),
                     ModBlocks.COVERED_COPPER_CABLE.get(),
                     ModBlocks.GOLD_CABLE.get(),
                     ModBlocks.COVERED_GOLD_CABLE.get()
             ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidPipe>> FLUID_PIPE = BLOCK_ENTITIES.register("fluid_pipe", ()->
+        BlockEntityType.Builder.of(FluidPipe::new,
+            ModBlocks.COPPER_FLUID_PIPE.get(),
+            ModBlocks.GOLD_FLUID_PIPE.get()
+        ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemPipe>> ITEM_PIPE = BLOCK_ENTITIES.register("item_pipe", ()->
+        BlockEntityType.Builder.of(ItemPipe::new,
+            ModBlocks.COPPER_ITEM_PIPE.get(),
+            ModBlocks.GOLD_ITEM_PIPE.get()
+        ).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->
             BlockEntityType.Builder.of(GardeningPotEntity::new, ModBlocks.GARDENING_POT.get()).build(null));

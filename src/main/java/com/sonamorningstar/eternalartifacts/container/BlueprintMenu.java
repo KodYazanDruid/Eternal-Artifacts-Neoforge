@@ -8,10 +8,12 @@ import com.sonamorningstar.eternalartifacts.content.recipe.blueprint.BlueprintPa
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.network.BlueprintIngredientsToClient;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import lombok.Getter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +26,6 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
 
 @Getter
 public class BlueprintMenu extends AbstractModContainerMenu {
@@ -43,11 +44,6 @@ public class BlueprintMenu extends AbstractModContainerMenu {
         fakeResult = new SimpleContainer(1);
         addSlot(new FakeSlot(fakeResult, 0, 124, 35, true));
         findRecipe();
-    }
-    
-    @Override
-    public void initializeContents(int pStateId, List<ItemStack> pItems, ItemStack pCarried) {
-        super.initializeContents(pStateId, pItems, pCarried);
     }
     
     public static BlueprintMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf extraData) {
@@ -73,6 +69,11 @@ public class BlueprintMenu extends AbstractModContainerMenu {
                 addSlot(new BlueprintFakeSlot(pattern, i, xOff + (i % 3) * 18, yOff + (i / 3) * 18, false));
             }
         }
+    }
+    
+    @Override
+    public void fakeSlotSynch(UpdateFakeSlotToServer pkt) {
+        getPattern().getFakeItems().setItem(pkt.index(), pkt.slotItem());
     }
     
     @Override

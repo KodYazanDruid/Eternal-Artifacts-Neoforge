@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:block/pipe_side",
+  "textures": {
+    "texture": "eternalartifacts:block/gold_fluid_pipe"
+  }
+}

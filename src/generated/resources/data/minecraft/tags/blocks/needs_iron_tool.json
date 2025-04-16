@@ -6,7 +6,6 @@
     "eternalartifacts:machine_block",
     "eternalartifacts:gravel_gold_ore",
     "eternalartifacts:battery_box",
-    "eternalartifacts:fluid_combustion_dynamo",
     "eternalartifacts:nous_tank",
     "eternalartifacts:marin_ore",
     "eternalartifacts:raw_marin_block",
@@ -18,6 +17,8 @@
     "eternalartifacts:demon_block",
     "eternalartifacts:energy_dock",
     "eternalartifacts:gold_cable",
-    "eternalartifacts:covered_gold_cable"
+    "eternalartifacts:covered_gold_cable",
+    "eternalartifacts:gold_fluid_pipe",
+    "eternalartifacts:gold_item_pipe"
   ]
 }

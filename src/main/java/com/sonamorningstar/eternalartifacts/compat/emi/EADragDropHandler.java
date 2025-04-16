@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.BlueprintScreen;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
-import com.sonamorningstar.eternalartifacts.network.BlueprintUpdateSlotToServer;
+import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import dev.emi.emi.api.EmiDragDropHandler;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -28,7 +28,7 @@ public class EADragDropHandler implements EmiDragDropHandler<Screen> {
                 Rect2i area = new Rect2i(bs.getGuiLeft() + fakeSlot.x, bs.getGuiTop() + fakeSlot.y, 16, 16);
                 if (area.contains(mX, mY)) {
                     fakeSlot.set(stack);
-                    Channel.sendToServer(new BlueprintUpdateSlotToServer(bs.getMenu().containerId, i - playerInvSize, stack));
+                    Channel.sendToServer(new UpdateFakeSlotToServer(bs.getMenu().containerId, i - playerInvSize, stack));
                     return true;
                 }
             }

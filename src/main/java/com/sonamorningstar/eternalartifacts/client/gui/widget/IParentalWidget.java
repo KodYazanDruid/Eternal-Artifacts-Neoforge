@@ -20,6 +20,7 @@ public interface IParentalWidget {
 	
 	@Nullable
 	default GuiEventListener getChildUnderCursor(double mouseX, double mouseY) {
+		if (!self().isActive() || !self().visible) return null;
 		List<GuiEventListener> children = getChildren();
 		for (int i = children.size() - 1; i >= 0; i--) {
 			GuiEventListener child = children.get(i);

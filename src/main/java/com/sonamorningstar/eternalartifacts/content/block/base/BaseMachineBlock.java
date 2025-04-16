@@ -116,7 +116,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         return supplier.create(pPos, pState);
     }
 
-    private record SimpleTicker<B extends BlockEntity>(boolean isRemote) implements BlockEntityTicker<B> {
+    public record SimpleTicker<B extends BlockEntity>(boolean isRemote) implements BlockEntityTicker<B> {
         @Override
         public void tick(Level lvl, BlockPos pos, BlockState st, B be) {
             if (isRemote) {

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "pattern": [
+    "III"
+  ],
+  "result": {
+    "count": 8,
+    "item": "eternalartifacts:gold_cable"
+  }
+}

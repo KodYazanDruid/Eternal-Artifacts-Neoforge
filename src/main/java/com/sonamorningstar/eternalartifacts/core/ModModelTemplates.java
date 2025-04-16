@@ -19,6 +19,11 @@ public class ModModelTemplates {
     public static final ModelTemplate CABLE_INSIDE = create("cable_inside", "_inside", TextureSlot.TEXTURE);
     public static final ModelTemplate CABLE_SIDE = create("cable_side", "_side", TextureSlot.TEXTURE);
     public static final ModelTemplate CABLE_INVENTORY = create("cable_inventory", "_inventory", TextureSlot.TEXTURE);
+    public static final ModelTemplate PIPE_INSIDE = create("pipe_inside", "_inside", TextureSlot.TEXTURE);
+    public static final ModelTemplate PIPE_SIDE = create("pipe_side", "_side", TextureSlot.TEXTURE);
+    public static final ModelTemplate PIPE_SIDE_EXTRACTING = create("pipe_side_extracting", "_side_extracting", TextureSlot.TEXTURE);
+    public static final ModelTemplate PIPE_SIDE_FILTERING = create("pipe_side_filtering", "_side_filtering", TextureSlot.TEXTURE);
+    public static final ModelTemplate PIPE_INVENTORY = create("pipe_inventory", "_inventory", TextureSlot.TEXTURE);
 
     public static ModelTemplate ENTITY_RENDER_TRANSFORMS = createItem("entity_renderer_transform");
     public static ModelTemplate SPELL_TOME = createItem("spell_tome", TextureSlot.TEXTURE);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eternalartifacts:block/solar_panel"
+    },
+    "type=double": {
+      "model": "eternalartifacts:block/solar_panel_double"
+    },
+    "type=top": {
+      "model": "eternalartifacts:block/solar_panel_top"
+    }
+  }
+}

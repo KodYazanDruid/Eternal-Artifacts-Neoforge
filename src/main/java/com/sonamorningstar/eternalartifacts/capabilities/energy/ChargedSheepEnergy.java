@@ -14,7 +14,7 @@ public class ChargedSheepEnergy extends ModEnergyStorage{
     @Override
     public void onEnergyChanged() {
         if (!sheep.level().isClientSide)
-            Channel.sendToAll(new UpdateEntityEnergyToClient(sheep.getId(), getEnergyStored()));
+            Channel.sendToSelfAndTracking(new UpdateEntityEnergyToClient(sheep.getId(), getEnergyStored()), sheep);
         sheep.getEntityData().set(ChargedSheepEntity.ENERGY, energy);
     }
 }

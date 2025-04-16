@@ -60,6 +60,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, MARIN_SMELTABLES, ModItems.MARIN_INGOT, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.DOUGH, Items.BREAD, 0.35f);
+        createOreSmeltingRecipe(recipeOutput, ModItems.MANGANESE_DUST, ModItems.MANGANESE_INGOT, 0.7f);
 
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICKS, Blocks.SNOW_BLOCK);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_STAIRS, Blocks.SNOW_BLOCK);
@@ -112,6 +113,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.CRUDE_OIL, 50, 80);
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.GASOLINE, 270, 300);
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);
+        
+        createSolidCombustionRecipe(recipeOutput, ModItems.PLANT_MATTER, 40, 150);
 
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Either.left(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
@@ -155,6 +158,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, Items.MAGMA_BLOCK.getDefaultInstance(), new ItemStack(Items.MAGMA_CREAM, 4));
         createMaceratingRecipe(recipeOutput, Items.NETHER_WART_BLOCK.getDefaultInstance(), new ItemStack(Items.NETHER_WART, 2));
         createMaceratingRecipe(recipeOutput, ModBlocks.CHLOROPHYTE_DEBRIS.toStack(), new ItemStack(ModItems.PLANT_MATTER.get(), 8));
+        createMaceratingRecipe(recipeOutput, ModTags.Items.INGOTS_MANGANESE, new ItemStack(ModItems.MANGANESE_DUST.get()));
+        createMaceratingRecipe(recipeOutput, ModTags.Items.RAW_MATERIALS_MANGANESE, new ItemStack(ModItems.MANGANESE_DUST.get(), 2));
+        createMaceratingRecipe(recipeOutput, ModTags.Items.ORES_MANGANESE, new ItemStack(ModItems.MANGANESE_DUST.get(), 5));
         //endregion
 
         createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 100));
@@ -172,16 +178,19 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 ModBlocks.TEMPERED_GLASS.toStack(2), "");
         createAlloyingRecipe(recipeOutput, List.of(
                     SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                    SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1),
                     SizedIngredient.of(ModTags.Items.DUSTS_COAL, 2)),
-                ModItems.STEEL_INGOT.toStack(), "from_coal_dust");
+                ModItems.STEEL_INGOT.toStack(2), "from_coal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
                     SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                    SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1),
                     SizedIngredient.of(ModTags.Items.DUSTS_CHARCOAL, 3)),
-                ModItems.STEEL_INGOT.toStack(), "from_charcoal_dust");
+                ModItems.STEEL_INGOT.toStack(2), "from_charcoal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
                     SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                    SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1),
                     SizedIngredient.of(ModTags.Items.DUSTS_SUGAR_CHARCOAL, 4)),
-                ModItems.STEEL_INGOT.toStack(), "from_sugar_charcoal_dust");
+                ModItems.STEEL_INGOT.toStack(2), "from_sugar_charcoal_dust");
 
         //region Mob Liquifying recipes.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
@@ -503,6 +512,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern(" AA").pattern(" SA").pattern("S  ")
                 .define('A', Tags.Items.GEMS_AMETHYST).define('S', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(Tags.Items.GEMS_AMETHYST)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.MACHINE_BLOCK)
+                .pattern("MSM").pattern("SRS").pattern("MSM")
+                .define('M', ModTags.Items.INGOTS_MANGANESE).define('S', ModTags.Items.INGOTS_STEEL)
+                .define('R', Tags.Items.DUSTS_REDSTONE).unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        cableRecipe(recipeOutput, ModBlocks.COPPER_CABLE, Tags.Items.INGOTS_COPPER);
+        cableRecipe(recipeOutput, ModBlocks.GOLD_CABLE, Tags.Items.INGOTS_GOLD);
+        fluidPipeRecipe(recipeOutput, ModBlocks.COPPER_FLUID_PIPE, Tags.Items.INGOTS_COPPER);
+        fluidPipeRecipe(recipeOutput, ModBlocks.GOLD_FLUID_PIPE, Tags.Items.INGOTS_GOLD);
+        itemPipeRecipe(recipeOutput, ModBlocks.COPPER_ITEM_PIPE, Tags.Items.INGOTS_COPPER);
+        itemPipeRecipe(recipeOutput, ModBlocks.GOLD_ITEM_PIPE, Tags.Items.INGOTS_GOLD);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -552,11 +571,33 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.DEMON_INGOT, 9)
                 .requires(ModBlocks.DEMON_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.DEMON_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, ModBlocks.COVERED_COPPER_CABLE, 2)
+                .requires(ModBlocks.COPPER_CABLE, 2).requires(ModItems.PLASTIC_SHEET)
+                .unlockedBy("has_item", has(ModBlocks.COPPER_CABLE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, ModBlocks.COVERED_GOLD_CABLE, 2)
+                .requires(ModBlocks.GOLD_CABLE, 2).requires(ModItems.PLASTIC_SHEET)
+                .unlockedBy("has_item", has(ModBlocks.GOLD_CABLE)).save(recipeOutput);
         //endregion
     }
 
     private ResourceLocation makeID(String name) {
         return new ResourceLocation(MODID, name);
+    }
+    
+    private void cableRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, new ItemStack(result, 8))
+                .pattern("III").define('I', input)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private void fluidPipeRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, new ItemStack(result, 4))
+                .pattern("IPI").define('I', input).define('P', Tags.Items.GLASS_PANES)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private void itemPipeRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, new ItemStack(result, 8))
+                .pattern("IPI").define('I', input).define('P', ItemTags.PLANKS)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
     }
 
     private void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {
@@ -690,6 +731,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         String path = fluid.location().getPath();
         SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid, 1000), generation, duration))
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
+    }
+    private void createSolidCombustionRecipe(RecipeOutput output, ItemLike item, int generation, int duration) {
+        String path = BuiltInRegistries.ITEM.getKey(item.asItem()).getPath();
+        SpecialRecipeBuilder.special(category -> new SolidCombustionRecipe(Ingredient.of(item), generation, duration))
+            .save(output, new ResourceLocation(MODID, "solid_combusting/"+path));
+    }
+    private void createSolidCombustionRecipe(RecipeOutput output, TagKey<Item> item, int generation, int duration) {
+        String path = item.location().getPath();
+        SpecialRecipeBuilder.special(category -> new SolidCombustionRecipe(Ingredient.of(item), generation, duration))
+            .save(output, new ResourceLocation(MODID, "solid_combusting/"+path));
     }
 
     private void createFluidInfusingRecipe(RecipeOutput output, Fluid fluid, int fluidAmount, Either<Item, TagKey<Item>> either, ItemStack result) {

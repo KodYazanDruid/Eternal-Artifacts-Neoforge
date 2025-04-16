@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.container.slot.BlueprintFakeSlot;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
-import com.sonamorningstar.eternalartifacts.network.BlueprintUpdateSlotToServer;
+import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -68,7 +68,7 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
     }
 
     private void updateItem(int menuId, int slotIndex, ItemStack stack) {
-        Channel.sendToServer(new BlueprintUpdateSlotToServer(menuId, slotIndex, stack));
+        Channel.sendToServer(new UpdateFakeSlotToServer(menuId, slotIndex, stack));
     }
     
     protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {

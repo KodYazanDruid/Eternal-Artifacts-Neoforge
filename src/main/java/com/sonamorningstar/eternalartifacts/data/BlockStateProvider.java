@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlockFamilies;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -134,7 +136,12 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
-            if(!holder.isHasCustomRender()) machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture());
+            if(!holder.isHasCustomRender()) {
+                if (holder.getBlock() instanceof MachineFourWayBlock<?>)
+                    machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture());
+                else if (holder.getBlock() instanceof MachineSixWayBlock<?>)
+                    machineBlockSixWay(holder.getBlockHolder(), holder.isHasUniqueTexture());
+            }
         });
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel)
                 .forEach(family -> simpleBlockItem(family.getBaseBlock(), cubeAll(family.getBaseBlock())));
@@ -155,6 +162,22 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 modLoc(siding),
                 modLoc(siding))
             .texture("particle", modLoc(siding))), BlockStateProperties.HORIZONTAL_FACING);
+        simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
+    }
+    private void machineBlockSixWay(DeferredHolder<Block, ? extends Block> holder, boolean unique) {
+        String name = holder.getId().getPath();
+        String top = unique ? "block/"+name+"_top" : "block/machine_top";
+        String bottom = unique ? "block/"+name+"_bottom" : "block/machine_bottom";
+        String siding = unique ? "block/"+name+"_side" : "block/machine_side";
+        directionBlock(holder.get(), (state, builder) ->
+            builder.modelFile(models().cube(name,
+                    modLoc(bottom),
+                    modLoc(top),
+                    modLoc("block/"+name+"_front"),
+                    modLoc(siding),
+                    modLoc(siding),
+                    modLoc(siding))
+                .texture("particle", modLoc(siding))), BlockStateProperties.FACING);
         simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
     }
     private void horizontalBlockWithItem(DeferredHolder<Block, ? extends Block> holder) {
