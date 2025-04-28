@@ -28,7 +28,12 @@ public class BioFurnaceEntity extends MachineBlockEntity<BioFurnaceMenu> {
         generatePower();
         distributePower();
     }
-
+    
+    @Override
+    public boolean isGenerator() {
+        return true;
+    }
+    
     private void generatePower() {
         ItemStack fuel = inventory.getStackInSlot(0);
         if(energy.getEnergyStored() < energy.getMaxEnergyStored()) {

@@ -24,10 +24,24 @@ import java.util.List;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModBiomeModifiers {
+    public static final ResourceKey<BiomeModifier> ADD_GRAVEL_MANGANESE_ORE = registerKey("feature", "add_gravel_gravel_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_COAL_ORE = registerKey("feature", "add_gravel_coal_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_COPPER_ORE = registerKey("feature", "add_gravel_copper_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_IRON_ORE = registerKey("feature", "add_gravel_iron_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_GOLD_ORE = registerKey("feature", "add_gravel_gold_ore");
+    public static final ResourceKey<BiomeModifier> ADD_GRAVEL_DIAMOND_ORE = registerKey("feature", "add_gravel_diamond_ore");
+    public static final ResourceKey<BiomeModifier> ADD_GRAVEL_EMERALD_ORE = registerKey("feature", "add_gravel_emerald_ore");
+    public static final ResourceKey<BiomeModifier> ADD_GRAVEL_REDSTONE_ORE = registerKey("feature", "add_gravel_redstone_ore");
+    public static final ResourceKey<BiomeModifier> ADD_GRAVEL_LAPIS_ORE = registerKey("feature", "add_gravel_lapis_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_MANGANESE_ORE = registerKey("feature", "add_moss_manganese_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_COAL_ORE = registerKey("feature", "add_moss_coal_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_COPPER_ORE = registerKey("feature", "add_moss_copper_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_IRON_ORE = registerKey("feature", "add_moss_iron_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_GOLD_ORE = registerKey("feature", "add_moss_gold_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_DIAMOND_ORE = registerKey("feature", "add_moss_diamond_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_EMERALD_ORE = registerKey("feature", "add_moss_emerald_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_REDSTONE_ORE = registerKey("feature", "add_moss_redstone_ore");
+    public static final ResourceKey<BiomeModifier> ADD_MOSS_LAPIS_ORE = registerKey("feature", "add_moss_lapis_ore");
     public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_MEDIUM = registerKey("feature", "add_manganese_ore_medium");
     public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_SMALL = registerKey("feature", "add_manganese_ore_small");
     public static final ResourceKey<BiomeModifier> ADD_TIGRIS_FLOWERS = registerKey("feature", "add_tigris_flowers");
@@ -44,23 +58,25 @@ public class ModBiomeModifiers {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         HolderGetter<ConfiguredWorldCarver<?>> configuredCarver = context.lookup(Registries.CONFIGURED_CARVER);
         HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
-
-        context.register(ADD_GRAVEL_COAL_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_GRAVEL_COAL_ORE)),
-                GenerationStep.Decoration.SURFACE_STRUCTURES));
-        context.register(ADD_GRAVEL_COPPER_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_GRAVEL_COPPER_ORE)),
-                GenerationStep.Decoration.SURFACE_STRUCTURES));
-        context.register(ADD_GRAVEL_IRON_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_GRAVEL_IRON_ORE)),
-                GenerationStep.Decoration.SURFACE_STRUCTURES));
-        context.register(ADD_GRAVEL_GOLD_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
-                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_GRAVEL_GOLD_ORE)),
-                GenerationStep.Decoration.SURFACE_STRUCTURES));
+        
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_MANGANESE_ORE, ModPlacedFeatures.PLACED_GRAVEL_MANGANESE_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_COAL_ORE, ModPlacedFeatures.PLACED_GRAVEL_COAL_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_COPPER_ORE, ModPlacedFeatures.PLACED_GRAVEL_COPPER_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_IRON_ORE, ModPlacedFeatures.PLACED_GRAVEL_IRON_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_GOLD_ORE, ModPlacedFeatures.PLACED_GRAVEL_GOLD_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_DIAMOND_ORE, ModPlacedFeatures.PLACED_GRAVEL_DIAMOND_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_EMERALD_ORE, ModPlacedFeatures.PLACED_GRAVEL_EMERALD_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_REDSTONE_ORE, ModPlacedFeatures.PLACED_GRAVEL_REDSTONE_ORE);
+        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_LAPIS_ORE, ModPlacedFeatures.PLACED_GRAVEL_LAPIS_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_MANGANESE_ORE, ModPlacedFeatures.PLACED_MOSS_MANGANESE_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_COAL_ORE, ModPlacedFeatures.PLACED_MOSS_COAL_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_COPPER_ORE, ModPlacedFeatures.PLACED_MOSS_COPPER_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_IRON_ORE, ModPlacedFeatures.PLACED_MOSS_IRON_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_GOLD_ORE, ModPlacedFeatures.PLACED_MOSS_GOLD_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_DIAMOND_ORE, ModPlacedFeatures.PLACED_MOSS_DIAMOND_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_EMERALD_ORE, ModPlacedFeatures.PLACED_MOSS_EMERALD_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_REDSTONE_ORE, ModPlacedFeatures.PLACED_MOSS_REDSTONE_ORE);
+        registerMossOre(context, placedFeatures, biome, ADD_MOSS_LAPIS_ORE, ModPlacedFeatures.PLACED_MOSS_LAPIS_ORE);
         context.register(ADD_MANGANESE_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biome.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MANGANESE_ORE_MIDDLE)),
@@ -87,5 +103,22 @@ public class ModBiomeModifiers {
                 HolderSet.direct(biome.getOrThrow(Biomes.CRIMSON_FOREST)),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.DEMON_EYE.get(), 10, 2, 6))
         ));
+    }
+    
+    private static void registerGravelOre(BootstapContext<BiomeModifier> context,
+                                          HolderGetter<PlacedFeature> placedFeatures, HolderGetter<Biome> biome,
+                                          ResourceKey<BiomeModifier> key, ResourceKey<PlacedFeature> placedFeature) {
+        context.register(key, new BiomeModifiers.AddFeaturesBiomeModifier(
+            biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+            HolderSet.direct(placedFeatures.getOrThrow(placedFeature)),
+            GenerationStep.Decoration.SURFACE_STRUCTURES));
+    }
+    private static void registerMossOre(BootstapContext<BiomeModifier> context,
+                                          HolderGetter<PlacedFeature> placedFeatures, HolderGetter<Biome> biome,
+                                          ResourceKey<BiomeModifier> key, ResourceKey<PlacedFeature> placedFeature) {
+        context.register(key, new BiomeModifiers.AddFeaturesBiomeModifier(
+            biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+            HolderSet.direct(placedFeatures.getOrThrow(placedFeature)),
+            GenerationStep.Decoration.UNDERGROUND_ORES));
     }
 }

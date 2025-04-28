@@ -34,13 +34,10 @@ public class EternalArtifacts {
      * TODO: Modular Fluid Tank
      * TODO: Smart Piston (with sticky)
      * TODO: Scrap boxes and similar loot thingies.
-     * TODO: Shulker armor.
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
-     * TODO: Add solar helmet.
      * TODO: Block pattern copy paste.
      * TODO: Add fluid hopper.
-     * TODO: Add block placer/breaker.
     */
 
     public static final String MODID = "eternalartifacts";

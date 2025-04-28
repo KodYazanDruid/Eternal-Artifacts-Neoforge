@@ -116,6 +116,11 @@ public abstract class AbstractPipeBlock<CAP> extends Block implements EntityBloc
 	}
 	
 	@Override
+	public boolean hasDynamicShape() {
+		return true;
+	}
+	
+	@Override
 	public RenderShape getRenderShape(BlockState pState) {return RenderShape.MODEL;}
 	@Override
 	public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) { return false; }

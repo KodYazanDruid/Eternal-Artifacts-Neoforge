@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
+import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolidCombustionDynamo;
@@ -17,6 +17,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
@@ -27,6 +29,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static net.minecraft.world.level.block.Blocks.CAULDRON;
@@ -38,10 +41,19 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.STONE)));
     public static final DeferredBlock<RotatedPillarBlock> ROSY_FROGLIGHT = registerWithItem("rosy_froglight",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).strength(0.3F).lightLevel(p_220869_ -> 15).sound(SoundType.FROGLIGHT)));
+    public static final DeferredBlock<Block> GRAVEL_MANGANESE_ORE = registerGravelOres("gravel_manganese_ore");
     public static final DeferredBlock<Block> GRAVEL_COAL_ORE = registerGravelOres("gravel_coal_ore", UniformInt.of(0, 2));
     public static final DeferredBlock<Block> GRAVEL_COPPER_ORE = registerGravelOres("gravel_copper_ore");
     public static final DeferredBlock<Block> GRAVEL_IRON_ORE = registerGravelOres("gravel_iron_ore");
     public static final DeferredBlock<Block> GRAVEL_GOLD_ORE = registerGravelOres("gravel_gold_ore");
+    public static final DeferredBlock<Block> GRAVEL_DIAMOND_ORE = registerGravelOres("gravel_diamond_ore", UniformInt.of(3, 7));
+    public static final DeferredBlock<Block> GRAVEL_EMERALD_ORE = registerGravelOres("gravel_emerald_ore", UniformInt.of(3, 7));
+    public static final DeferredBlock<Block> GRAVEL_REDSTONE_ORE = registerWithItem("gravel_redstone_ore",
+        () -> new FallingRedstoneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)
+            .randomTicks().lightLevel(litBlockEmission(9))
+        ));
+    public static final DeferredBlock<Block> GRAVEL_LAPIS_ORE = registerGravelOres("gravel_lapis_ore", UniformInt.of(2, 5));
+    
     public static final DeferredBlock<Block> CHLOROPHYTE_DEBRIS = registerWithItem("chlorophyte_debris",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.3F).sound(SoundType.MOSS)));
     public static final DeferredBlock<Block> MANGANESE_ORE = registerWithItem("manganese_ore",
@@ -64,7 +76,19 @@ public class ModBlocks {
             () -> new TemperedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).strength(25.0f, 3600000.0F).mapColor(MapColor.COLOR_PURPLE).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> DEMON_BLOCK = registerWithItem("demon_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_RED)));
-
+    public static final DeferredBlock<Block> MOSS_MANGANESE_ORE = registerMossOres("moss_manganese_ore");
+    public static final DeferredBlock<Block> MOSS_COAL_ORE = registerMossOres("moss_coal_ore", UniformInt.of(0, 2));
+    public static final DeferredBlock<Block> MOSS_COPPER_ORE = registerMossOres("moss_copper_ore");
+    public static final DeferredBlock<Block> MOSS_IRON_ORE = registerMossOres("moss_iron_ore");
+    public static final DeferredBlock<Block> MOSS_GOLD_ORE = registerMossOres("moss_gold_ore");
+    public static final DeferredBlock<Block> MOSS_DIAMOND_ORE = registerMossOres("moss_diamond_ore", UniformInt.of(3, 7));
+    public static final DeferredBlock<Block> MOSS_EMERALD_ORE = registerMossOres("moss_emerald_ore", UniformInt.of(3, 7));
+    public static final DeferredBlock<Block> MOSS_REDSTONE_ORE = registerWithItem("moss_redstone_ore",
+        () -> new RedStoneOreBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MOSS_BLOCK)
+            .randomTicks().lightLevel(litBlockEmission(9))
+        ));
+    public static final DeferredBlock<Block> MOSS_LAPIS_ORE = registerMossOres("moss_lapis_ore", UniformInt.of(2, 5));
+    
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));
     public static final DeferredBlock<Block> SANDY_STONE_BRICKS = registerWithItem("sandy_stone_bricks",
@@ -288,7 +312,13 @@ public class ModBlocks {
         return registerGravelOres(name, ConstantInt.of(0));
     }
     private static DeferredBlock<Block> registerGravelOres(String name, IntProvider exp) {
-        return registerWithItem(name, () -> new FallingDropExperienceBlock(exp, BlockBehaviour.Properties.ofFullCopy(Blocks.GRAVEL)));
+        return registerWithItem(name, () -> new FallingDropExperienceBlock(exp, ModProperties.Blocks.GRAVEL_ORE));
+    }
+    private static DeferredBlock<Block> registerMossOres(String name) {
+        return registerMossOres(name, ConstantInt.of(0));
+    }
+    private static DeferredBlock<Block> registerMossOres(String name, IntProvider exp) {
+        return registerWithItem(name, () -> new DropExperienceBlock(exp, ModProperties.Blocks.MOSS_ORE));
     }
 
     private static DeferredBlock<DynamoBlock<? extends AbstractDynamo<?>>> registerDynamo(String name, BlockEntityType.BlockEntitySupplier<? extends AbstractDynamo<?>> fun) {
@@ -317,6 +347,10 @@ public class ModBlocks {
         return new FlowerPotBlock(() -> ((FlowerPotBlock) Blocks.FLOWER_POT), block, BlockBehaviour.Properties.of().instabreak().noOcclusion().pushReaction(PushReaction.DESTROY));
     }
     //endregion
-
+    
+    private static ToIntFunction<BlockState> litBlockEmission(int pLightValue) {
+        return p_50763_ -> p_50763_.getValue(BlockStateProperties.LIT) ? pLightValue : 0;
+    }
+    
 }
 

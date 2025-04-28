@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
+import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;

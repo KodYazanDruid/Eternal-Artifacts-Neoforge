@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.common.util.Lazy;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -39,7 +38,7 @@ public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<Anvi
     public String name = "";
     public boolean enableNaming = false;
     private int cost = 0;
-    private final Lazy<FakePlayer> fakePlayer = Lazy.of(() -> FakePlayerHelper.getFakePlayer(level));
+    private final FakePlayer fakePlayer;
     private AnvilUpdateEvent anvilUpdateEvent;
 
     /*INPUT_SLOT = 0;
@@ -50,6 +49,7 @@ public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<Anvi
     public AnvilinatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.ANVILINATOR.get(), pPos, pBlockState, AnvilinatorMenu::new);
         setEnergy(this::createDefaultEnergy);
+        fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
         setTank(() -> createBasicTank(64000, fs-> fs.is(ModTags.Fluids.EXPERIENCE), true, true, Runnables.doNothing()));
         outputSlots.add(2);
         setInventory(() -> new ModItemStorage(4) {
@@ -57,7 +57,7 @@ public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<Anvi
             protected void onContentsChanged(int slot) {
                 if(slot != 3 && !outputSlots.contains(slot)) progress = 0;
                 if(slot == 0 && this.getStackInSlot(0).isEmpty()) progress = 0;
-                anvilUpdateEvent = new AnvilUpdateEvent(this.getStackInSlot(0), this.getStackInSlot(1), name, cost, fakePlayer.get());
+                anvilUpdateEvent = new AnvilUpdateEvent(this.getStackInSlot(0), this.getStackInSlot(1), name, cost, fakePlayer);
                 AnvilinatorBlockEntity.this.sendUpdate();
             }
             @Override
@@ -99,7 +99,7 @@ public class AnvilinatorBlockEntity extends SidedTransferMachineBlockEntity<Anvi
     @Override
     public void onLoad() {
         super.onLoad();
-        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, cost, fakePlayer.get());
+        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, cost, fakePlayer);
     }
 
     @Override

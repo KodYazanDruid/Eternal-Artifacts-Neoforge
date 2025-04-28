@@ -4,13 +4,12 @@ import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
-import com.sonamorningstar.eternalartifacts.client.renderer.entity.BucketLayer;
-import com.sonamorningstar.eternalartifacts.client.renderer.entity.ProtectiveAuraLayer;
-import com.sonamorningstar.eternalartifacts.client.renderer.entity.ShulkerShellLayer;
-import com.sonamorningstar.eternalartifacts.client.renderer.item.PortableBatteryLayer;
+import com.sonamorningstar.eternalartifacts.client.render.entity.*;
+import com.sonamorningstar.eternalartifacts.client.render.item.PortableBatteryLayer;
+import com.sonamorningstar.eternalartifacts.client.render.item.PortableFurnaceLayer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.*;
-import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.*;
-import com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer;
+import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
+import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
@@ -18,6 +17,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -80,6 +80,11 @@ public class ClientModEvents {
         CutlassModifier.ENTITY_HEAD_MAP.values().forEach(item -> {
             if(item != Items.DRAGON_HEAD) event.register(EquipmentSlot.HEAD, item);
         });
+    }
+    
+    @SubscribeEvent
+    public static void registerShaders(RegisterShadersEvent event) {
+        SpellShaders.registerShaders(event);
     }
 
     @SubscribeEvent
@@ -193,6 +198,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.TORNADO.get(), TornadoRenderer::new);
         event.registerEntityRenderer(ModEntities.METEORITE.get(), MeteoriteRenderer::new);
         event.registerEntityRenderer(ModEntities.MISSILE.get(), MissileRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
     }
 
     @SubscribeEvent
@@ -210,18 +216,24 @@ public class ClientModEvents {
 
     @SuppressWarnings("unchecked")
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachLayers(LivingEntityRenderer<T, M> renderer, EntityRendererProvider.Context ctx) {
-        renderer.addLayer(new HolyDaggerLayer<>(renderer));
-        renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
-
+        /*renderer.addLayer(new HolyDaggerLayer<>(renderer));
+        renderer.addLayer(new ProtectiveAuraLayer<>(renderer));*/
+        
         if (renderer instanceof HumanoidMobRenderer<?, ?> hmr) {
+            renderer.addLayer(new HolyDaggerLayer<>(renderer));
+            renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
             renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(hmr, ctx));
             renderer.addLayer((RenderLayer<T, M>) new BucketLayer<>(hmr, ctx));
             renderer.addLayer((RenderLayer<T, M>) new PortableBatteryLayer<>(hmr, ctx));
+            renderer.addLayer((RenderLayer<T, M>) new PortableFurnaceLayer<>(hmr));
         }
         if (renderer instanceof PlayerRenderer pr) {
+            renderer.addLayer(new HolyDaggerLayer<>(renderer));
+            renderer.addLayer(new ProtectiveAuraLayer<>(renderer));
             renderer.addLayer((RenderLayer<T, M>) new ShulkerShellLayer<>(pr, ctx));
             renderer.addLayer((RenderLayer<T, M>) new BucketLayer<>(pr, ctx));
             renderer.addLayer((RenderLayer<T, M>) new PortableBatteryLayer<>(pr, ctx));
+            renderer.addLayer((RenderLayer<T, M>) new PortableFurnaceLayer<>(pr));
         }
     }
 

@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameType;
@@ -99,6 +100,13 @@ public class MobModelRenderer {
 		for (int i = 0; i < CharmStorage.get(player).getSlots(); i++) {
 			CharmStorage.get(dummy).setStackInSlot(i, CharmStorage.get(player).getStackInSlot(i));
 		}
+		
+		dummy.getActiveEffects().clear();
+		player.getActiveEffects().forEach(effect -> {
+			if (effect.getDuration() > 0) {
+				dummy.addEffect(new MobEffectInstance(effect));
+			}
+		});
 		
 		Class<? extends LivingEntity> entityClass = dummy.getClass();
 		try {

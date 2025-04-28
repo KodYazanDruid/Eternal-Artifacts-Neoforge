@@ -19,6 +19,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
+import com.sonamorningstar.eternalartifacts.mixins.CrossbowItemMixin;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
@@ -43,7 +44,6 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -144,27 +144,36 @@ public class CommonEvents {
     @SubscribeEvent
     public static void livingHurtEvent(LivingHurtEvent event) {
         LivingEntity living = event.getEntity();
+        float damage = event.getAmount();
+        float health = living.getHealth();
+        float absorption = living.getAbsorptionAmount();
+        float maxHealth = living.getMaxHealth();
+        float healthPercent = health / maxHealth;
+        float totalHealthPercent = (health + absorption) / maxHealth;
         if(living instanceof Player player) {
             ItemCooldowns cooldowns = player.getCooldowns();
             cooldowns.addCooldown(ModItems.MEDKIT.get(), 160);
-
-            Item dagger = ModItems.HOLY_DAGGER.get();
-            if(!CharmManager.findInPlayer(player, dagger).isEmpty()) {
-                if(!cooldowns.isOnCooldown(dagger)){
-                    float damage = event.getAmount();
-                    float health = player.getHealth();
-                    float absorption = player.getAbsorptionAmount();
-                    float maxHealth = player.getMaxHealth();
-                    if (health + absorption <= damage || (health + absorption) / maxHealth <= 0.5) {
-                        player.addEffect(new MobEffectInstance(ModEffects.DIVINE_PROTECTION.get(), 600, 0));
-                        player.getCooldowns().addCooldown(dagger, 6000);
-                        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
-                        Channel.sendToPlayer(new ItemActivationToClient(dagger.getDefaultInstance()), (ServerPlayer) player);
-                    }
+            
+            if (health + absorption <= damage || totalHealthPercent <= 0.5) {
+                ItemStack charm = CharmManager.findCharm(player, ModItems.HOLY_DAGGER.get());
+                if (!charm.isEmpty() && !cooldowns.isOnCooldown(charm.getItem())) {
+                    player.addEffect(new MobEffectInstance(ModEffects.DIVINE_PROTECTION.get(), 600, 0));
+                    cooldowns.addCooldown(charm.getItem(), 6000);
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
+                    Channel.sendToPlayer(new ItemActivationToClient(charm), (ServerPlayer) player);
+                    
                 }
             }
             
+            if (healthPercent <= 0.3) {
+                ItemStack charm = CharmManager.findCharm(player, ModItems.HEART_NECKLACE.get());
+                if (!charm.isEmpty() && !cooldowns.isOnCooldown(charm.getItem())) {
+                    player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+                    cooldowns.addCooldown(charm.getItem(), 1200);
+                }
+            }
         }
+        
     }
 
     @SubscribeEvent
@@ -286,8 +295,11 @@ public class CommonEvents {
     }
     @SubscribeEvent
     public static void startTrackingEvent(PlayerEvent.StartTracking event) {
-        if (event.getTarget() instanceof Player player && !player.level().isClientSide) {
-            CharmStorage.get(player).syncSelf();
+        Entity tracked = event.getTarget();
+        Player player = event.getEntity();
+        
+        if (tracked instanceof LivingEntity living && !player.level().isClientSide()) {
+            CharmStorage.get(living).synchTracking();
         }
     }
     @SubscribeEvent
@@ -320,13 +332,16 @@ public class CommonEvents {
             }
         }
     }
+    
+    public static final String TAG_KEY = "EtarMagicQuiver";
     @SubscribeEvent
     public static void entityJoinWorld(EntityJoinLevelEvent event) {
         Entity entity = event.getEntity();
         
-        if (entity instanceof Player player && !player.level().isClientSide)
+        if (!entity.level().isClientSide() && entity instanceof Player player) {
             CharmStorage.get(player).syncSelf();
-        
+        }
+       
         if (entity instanceof AbstractArrow arrow) {
             Entity owner = arrow.getOwner();
             if (owner instanceof ServerPlayer sp) {
@@ -337,6 +352,10 @@ public class CommonEvents {
                     arr.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 600));
                     arr.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
                 }
+            }
+            ItemStack pickup = arrow.getPickupItemStackOrigin();
+            if (pickup.hasTag() && pickup.getTag().getBoolean(TAG_KEY)) {
+                arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
         }
         
@@ -466,18 +485,6 @@ public class CommonEvents {
             }
         }
     }
-    
-    /*@SubscribeEvent
-    public static void getProjectileEvent(LivingGetProjectileEvent event) {
-        LivingEntity entity = event.getEntity();
-        ItemStack projectile = event.getProjectileItemStack();
-        if (entity instanceof ServerPlayer sp) {
-            EntityType<?> morph = PlayerMorphUtil.MORPH_MAP.get(sp);
-            if (morph == EntityType.WITHER_SKELETON) {
-            
-            }
-        }
-    }*/
 
     @SubscribeEvent
     public static void useEvent(UseItemOnBlockEvent event) {

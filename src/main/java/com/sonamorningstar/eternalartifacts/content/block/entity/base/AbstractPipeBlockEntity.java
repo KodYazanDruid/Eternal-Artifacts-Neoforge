@@ -4,23 +4,24 @@ import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implements ITickableServer {
 	//This is for this pipe's surroundings.
 	public final LinkedHashSet<BlockPos> pipes = new LinkedHashSet<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> sources = new LinkedHashMap<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> targets = new LinkedHashMap<>();
+	public final Map<Direction, NonNullList<Ingredient>> filters = new HashMap<>();
 	
 	//This is for the entire network.
 	public final LinkedHashSet<BlockPos> networkPipes = new LinkedHashSet<>();
@@ -43,6 +44,24 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	public void onLoad() {
 		super.onLoad();
 		if (level != null && !level.isClientSide()) isDirty = true;
+	}
+	
+	@Override
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		/*ListTag filterList = new ListTag();
+		filters.forEach((dir, filter) -> {
+			CompoundTag filterTag = new CompoundTag();
+			filterTag.putInt("Direction", dir.get3DDataValue());
+			ListTag ingList = new ListTag();
+			for (Ingredient ing : filter) {
+				CompoundTag ingTag = new CompoundTag();
+				ingTag.put("Ingredient", NbtU)
+				ingList.add();
+			}
+			filterList.add(filterTag);
+		});
+		tag.put("Filters", )*/
 	}
 	
 	public void openMenu(ServerPlayer player, Direction dir) {

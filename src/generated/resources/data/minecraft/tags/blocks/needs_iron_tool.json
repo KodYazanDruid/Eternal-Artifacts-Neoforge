@@ -5,6 +5,9 @@
     "eternalartifacts:resonator",
     "eternalartifacts:machine_block",
     "eternalartifacts:gravel_gold_ore",
+    "eternalartifacts:gravel_diamond_ore",
+    "eternalartifacts:gravel_emerald_ore",
+    "eternalartifacts:gravel_redstone_ore",
     "eternalartifacts:battery_box",
     "eternalartifacts:nous_tank",
     "eternalartifacts:marin_ore",
@@ -19,6 +22,10 @@
     "eternalartifacts:gold_cable",
     "eternalartifacts:covered_gold_cable",
     "eternalartifacts:gold_fluid_pipe",
-    "eternalartifacts:gold_item_pipe"
+    "eternalartifacts:gold_item_pipe",
+    "eternalartifacts:moss_gold_ore",
+    "eternalartifacts:moss_redstone_ore",
+    "eternalartifacts:moss_diamond_ore",
+    "eternalartifacts:moss_emerald_ore"
   ]
 }

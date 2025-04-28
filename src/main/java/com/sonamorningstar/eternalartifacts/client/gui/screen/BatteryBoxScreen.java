@@ -11,7 +11,12 @@ public class BatteryBoxScreen extends AbstractSidedMachineScreen<BatteryBoxMenu>
         super(pMenu, pPlayerInventory, pTitle);
         setRedstoneControllable(false);
     }
-
+    
+    @Override
+    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
+        renderEnergyTooltip(gui, mx, my, false);
+    }
+    
     @Override
     protected void renderBg(GuiGraphics gui, float partialTick, int mouseX, int mouseY) {
         super.renderBg(gui, partialTick, mouseX, mouseY);

@@ -1,12 +1,12 @@
-// 1.20.4	2025-04-15T21:28:45.5447187	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-04-27T19:45:10.0283235	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
-ed100bf617106ca16d56ad83350f486940af2940 data/eternalartifacts/tags/items/charms/back.json
-9b2c93d4150a8e166cddc320c1991280b2faf36c data/eternalartifacts/tags/items/charms/belt.json
-5a60d4d6defde1d77adad4959c5d4aac661e4a5f data/eternalartifacts/tags/items/charms/bracelet.json
-177bd8ba380abb9bb917323e23123b67d51accac data/eternalartifacts/tags/items/charms/charm.json
+c5fddb42131dcc6ef3e7acc713c0ae7c5a3c60bf data/eternalartifacts/tags/items/charms/back.json
+c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
+dffc6a5234a3ae84e9b6b290e81b904ef8afd22a data/eternalartifacts/tags/items/charms/bracelet.json
+54c01766d1a70bc27fd554641e246b125adbffe2 data/eternalartifacts/tags/items/charms/charm.json
 301411bafa638e02d0c5ef21fe418709a20682b9 data/eternalartifacts/tags/items/charms/feet.json
-2f3f07c106703626e90f1695d9ca1853086254ea data/eternalartifacts/tags/items/charms/hand.json
-a9c8768547175b90018c463d1d0f85db5b3ca9ce data/eternalartifacts/tags/items/charms/head.json
+08afbd682a113b91f6c15e1adb39b9222f1364a5 data/eternalartifacts/tags/items/charms/hand.json
+55ac4316de7bc145858cc0c603d04aeceb88d2b0 data/eternalartifacts/tags/items/charms/head.json
 600363108b6a7ae3ba1f543638aabd5af8e0987a data/eternalartifacts/tags/items/charms/necklace.json
 d429de6cd6ef9b3a62721ef02325f191827b29e3 data/eternalartifacts/tags/items/charms/ring.json
 cd40b2c4f0e4714c52bb7abbe39a8e26f9feb65d data/eternalartifacts/tags/items/gardening_pot_suitable.json
@@ -40,11 +40,15 @@ d5c8916de212728a3799453c1fd385f5435f182d data/forge/tags/items/ingots/meat.json
 9f8737be4c7afb21a8efe8042bd46f129c400ecc data/forge/tags/items/nuggets/experience.json
 c3f9a87145bbbc37d14f6c773ae4678299c7baac data/forge/tags/items/nuggets/manganese.json
 dbcff27a2762da2d30570d3e4cdf9f134fd38c77 data/forge/tags/items/nuggets/steel.json
-ab4aeb82c21f03d5dca2e30af473360fc64eeab5 data/forge/tags/items/ores/coal.json
-23cbc0f3e7b7b0f19a5207b1094eff496c4e4fc3 data/forge/tags/items/ores/copper.json
-f56e83ea3495f9b01a8fcf8b5c0a9f981cfedf05 data/forge/tags/items/ores/gold.json
-2e30931ffddab0279e12df6c8a6cf437fadf1b29 data/forge/tags/items/ores/iron.json
-73e8a86ab8e91ba72aa7fb73a57952b05a4af786 data/forge/tags/items/ores/manganese.json
+795d80d60fea32795e44e5c4352dbb4144429d53 data/forge/tags/items/ores/coal.json
+c730984e92ed36d4487748e4c79cad9e282bab55 data/forge/tags/items/ores/copper.json
+c93017d3ac10cefdaa781fd21764fc1059998315 data/forge/tags/items/ores/diamond.json
+ef50fe97e1bfb41efee5c06e79f44ce62b6263d3 data/forge/tags/items/ores/emerald.json
+d7f2f69f7e66d7aeffe268fa756b5b673cb4b0f8 data/forge/tags/items/ores/gold.json
+da265234fc1f3221e8568661450736c444c9be57 data/forge/tags/items/ores/iron.json
+d13d4b802ee4b0c74ee99980bbe607fd09a9a94d data/forge/tags/items/ores/lapis.json
+5ed58760c8541f9c4d77dda6d464072ddb15460c data/forge/tags/items/ores/manganese.json
+f2817eece7e8244585c75a72fd0e6782110fd052 data/forge/tags/items/ores/redstone.json
 bc5216995fbc1af0ccb662a4f8008aaed727fb70 data/forge/tags/items/plastic_sheets.json
 cda4c91807e5f930a6389f2eec42507b6af9021a data/forge/tags/items/raw_materials.json
 6602563629da6ca1cc5e0f008351a77700de8c54 data/forge/tags/items/raw_materials/manganese.json

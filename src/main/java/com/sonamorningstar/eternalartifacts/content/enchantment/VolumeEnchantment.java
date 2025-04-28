@@ -15,7 +15,8 @@ import java.util.function.Predicate;
 public class VolumeEnchantment extends Enchantment {
     private static final Set<Class<?>> acceptedItems = Set.of(
         FeedingCanister.class,
-        EnderNotebookItem.class
+        EnderNotebookItem.class,
+        ChlorophyteRepeaterItem.class
     );
     private static final Set<Class<?>> blacklistedItems = Set.of(
         BucketItem.class,

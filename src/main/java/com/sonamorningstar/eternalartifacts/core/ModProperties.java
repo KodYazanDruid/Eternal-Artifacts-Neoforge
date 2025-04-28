@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -88,6 +89,11 @@ public class ModProperties {
                 .ofFullCopy(net.minecraft.world.level.block.Blocks.OBSIDIAN)
                 .noOcclusion()
                 .strength(4.0F, 3600F);
+        
+        public static final BlockBehaviour.Properties GRAVEL_ORE = BlockBehaviour.Properties
+            .ofFullCopy(net.minecraft.world.level.block.Blocks.GRAVEL).requiresCorrectToolForDrops();
+        public static final BlockBehaviour.Properties MOSS_ORE = BlockBehaviour.Properties
+            .ofFullCopy(net.minecraft.world.level.block.Blocks.MOSS_BLOCK).requiresCorrectToolForDrops();
 
         private static Boolean never(BlockState st, BlockGetter lvl, BlockPos pos, EntityType<?> type) {return false;}
         private static Boolean always(BlockState st, BlockGetter lvl, BlockPos pos, EntityType<?> type) {return true;}

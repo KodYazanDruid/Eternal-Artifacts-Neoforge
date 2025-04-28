@@ -1,5 +1,10 @@
 {
   "values": [
-    "eternalartifacts:gravel_copper_ore"
+    "eternalartifacts:gravel_copper_ore",
+    "eternalartifacts:gravel_redstone_ore",
+    "eternalartifacts:gravel_lapis_ore",
+    "eternalartifacts:moss_copper_ore",
+    "eternalartifacts:moss_redstone_ore",
+    "eternalartifacts:moss_lapis_ore"
   ]
 }

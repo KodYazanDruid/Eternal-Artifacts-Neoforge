@@ -49,10 +49,15 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
     protected void registerStatesAndModels() {
         simpleBlockWithItem(ModBlocks.BIOFURNACE.get());
         simpleBlockWithItem(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_MANGANESE_ORE.get());
         simpleBlockWithItem(ModBlocks.GRAVEL_COAL_ORE.get());
         simpleBlockWithItem(ModBlocks.GRAVEL_COPPER_ORE.get());
         simpleBlockWithItem(ModBlocks.GRAVEL_IRON_ORE.get());
         simpleBlockWithItem(ModBlocks.GRAVEL_GOLD_ORE.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_DIAMOND_ORE.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_EMERALD_ORE.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_REDSTONE_ORE.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_LAPIS_ORE.get());
         simpleBlockWithItem(ModBlocks.CHLOROPHYTE_DEBRIS.get());
         simpleBlockWithItem(ModBlocks.SANDY_TILED_STONE_BRICKS.get());
         simpleBlockWithItem(ModBlocks.SANDY_STONE_BRICKS.get());
@@ -86,6 +91,16 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItemWithRenderType(ModBlocks.TEMPERED_GLASS.get(), "cutout");
         simpleBlockWithItem(ModBlocks.DEMON_BLOCK.get());
         horizontalBlockWithItem(ModBlocks.SHOCK_ABSORBER);
+        simpleBlockWithItem(ModBlocks.MOSS_MANGANESE_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_COAL_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_COPPER_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_IRON_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_GOLD_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_DIAMOND_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_EMERALD_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_REDSTONE_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_LAPIS_ORE.get());
+        
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

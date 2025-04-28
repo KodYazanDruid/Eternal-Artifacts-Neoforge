@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import lombok.Setter;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -62,8 +63,12 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     protected void renderSlots(GuiGraphics gui) {
         for(Slot slot : menu.slots) {
-            gui.blitSprite(new ResourceLocation("container/slot"), leftPos + slot.x-1, topPos + slot.y-1, 0, 18, 18);
+            renderSlot(gui, slot, new ResourceLocation("container/slot"));
         }
+    }
+    
+    protected void renderSlot(GuiGraphics gui, Slot slot, ResourceLocation texture) {
+        gui.blitSprite(texture, leftPos + slot.x-1, topPos + slot.y-1, 0, 18, 18);
     }
     
     @Override
@@ -81,6 +86,13 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     public void applyGuiTint(GuiGraphics gui, int alpha) {
         gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,
             FastColor.ARGB32.blue(guiTint) / 255.0F, alpha / 255.0F);
+    }
+    public void applyCustomGuiTint(GuiGraphics gui, int color) {
+        gui.setColor(FastColor.ARGB32.red(color) / 255.0F, FastColor.ARGB32.green(color) / 255.0F,
+            FastColor.ARGB32.blue(color) / 255.0F, FastColor.ARGB32.alpha(color) / 255.0F);
+    }
+    public void resetGuiTint(GuiGraphics gui) {
+        applyGuiTint(gui);
     }
     public void clearGuiTint(GuiGraphics gui) {
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);

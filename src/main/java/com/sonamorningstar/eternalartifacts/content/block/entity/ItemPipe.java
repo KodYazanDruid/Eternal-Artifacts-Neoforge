@@ -1,11 +1,9 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.container.BasicAttachmentMenu;
-import com.sonamorningstar.eternalartifacts.content.block.FluidPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.ItemPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.core.BlockPos;
@@ -28,6 +26,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+import static com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty.PipeConnection;
+
 public class ItemPipe extends AbstractPipeBlockEntity<IItemHandler> implements MenuProvider {
 	private final ItemPipeBlock.PipeTier tier;
 	public ItemPipe(BlockPos pos, BlockState state) {
@@ -37,9 +37,11 @@ public class ItemPipe extends AbstractPipeBlockEntity<IItemHandler> implements M
 	
 	@Override
 	public void openMenu(ServerPlayer player, Direction dir) {
+		PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 		player.openMenu(this, wr -> {
 			wr.writeBlockPos(getBlockPos());
 			wr.writeEnum(dir);
+			wr.writeVarInt(conn == PipeConnection.EXTRACT ? 0 : 1);
 		});
 	}
 	
@@ -52,8 +54,10 @@ public class ItemPipe extends AbstractPipeBlockEntity<IItemHandler> implements M
 	@Override
 	public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
 		BlockHitResult hit = RayTraceHelper.retrace(pPlayer);
+		Direction dir = ((AttachmentablePipeBlock<?>) getBlockState().getBlock()).getClickedRelativePos(hit.getDirection(), getBlockPos(), hit.getLocation(), 8);
+		PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 		return new BasicAttachmentMenu(pContainerId, pPlayerInventory, getBlockPos(),
-			((AttachmentablePipeBlock<?>) getBlockState().getBlock()).getClickedRelativePos(hit.getDirection(), getBlockPos(), hit.getLocation(), 8)
+			dir, conn == PipeConnection.EXTRACT ? 0 : 1
 		);
 	}
 	
@@ -65,10 +69,10 @@ public class ItemPipe extends AbstractPipeBlockEntity<IItemHandler> implements M
 	@Override
 	protected void updatePipeConnections(Level lvl, BlockState state, Direction dir, boolean canConnect) {
 		if (lvl.isAreaLoaded(getBlockPos(), 1) && state.getBlock() instanceof ItemPipeBlock) {
-			PipeConnectionProperty.PipeConnection current = state.getValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
-			if (current == PipeConnectionProperty.PipeConnection.NONE || current == PipeConnectionProperty.PipeConnection.FREE) {
+			PipeConnection current = state.getValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
+			if (current == PipeConnection.NONE || current == PipeConnection.FREE) {
 				lvl.setBlockAndUpdate(getBlockPos(), state.setValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
-					canConnect ? PipeConnectionProperty.PipeConnection.FREE : PipeConnectionProperty.PipeConnection.NONE));
+					canConnect ? PipeConnection.FREE : PipeConnection.NONE));
 			}
 		}
 	}
@@ -84,10 +88,10 @@ public class ItemPipe extends AbstractPipeBlockEntity<IItemHandler> implements M
 	@Override
 	protected boolean fillSourcesAndTargets(Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> sources, Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> targets, BlockCapabilityCache<IItemHandler, Direction> cache, BlockPos pos, Direction dir) {
 		IItemHandler cap = cache.getCapability();
-		PipeConnectionProperty.PipeConnection connection = getBlockState().getValue(FluidPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
+		PipeConnection connection = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 		boolean ret = false;
 		if (cap != null) {
-			if (connection == PipeConnectionProperty.PipeConnection.EXTRACT) {
+			if (connection == PipeConnection.EXTRACT) {
 				sources.put(pos, cache);
 				ret = true;
 			} else /*if (connection != PipeConnection.NONE) */{

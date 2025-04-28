@@ -20,24 +20,52 @@ import java.util.List;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModPlacedFeatures {
+    public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_MANGANESE_ORE = registerKey("gravel_manganese_ore");
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_COAL_ORE = registerKey("gravel_coal_ore");
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_COPPER_ORE = registerKey("gravel_copper_ore");
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_IRON_ORE = registerKey("gravel_iron_ore");
     public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_GOLD_ORE = registerKey("gravel_gold_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_DIAMOND_ORE = registerKey("gravel_diamond_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_EMERALD_ORE = registerKey("gravel_emerald_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_REDSTONE_ORE = registerKey("gravel_redstone_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_GRAVEL_LAPIS_ORE = registerKey("gravel_lapis_ore");
     public static final ResourceKey<PlacedFeature> PLACED_MANGANESE_ORE_MIDDLE = registerKey("placed_manganese_ore_middle");
     public static final ResourceKey<PlacedFeature> PLACED_MANGANESE_ORE_SMALL = registerKey("placed_manganese_ore_small");
     public static final ResourceKey<PlacedFeature> PLACED_TIGRIS_FLOWER = registerKey("placed_tigris_flower");
     public static final ResourceKey<PlacedFeature> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("crude_oil_deposit");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_MANGANESE_ORE = registerKey("moss_manganese_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_COAL_ORE = registerKey("moss_coal_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_COPPER_ORE = registerKey("moss_copper_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_IRON_ORE = registerKey("moss_iron_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_GOLD_ORE = registerKey("moss_gold_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_DIAMOND_ORE = registerKey("moss_diamond_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_EMERALD_ORE = registerKey("moss_emerald_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_REDSTONE_ORE = registerKey("moss_redstone_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MOSS_LAPIS_ORE = registerKey("moss_lapis_ore");
     
     public static ResourceKey<PlacedFeature> registerKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(MODID, name));
     }
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> holderGetter = context.lookup(Registries.CONFIGURED_FEATURE);
-        context.register(PLACED_GRAVEL_COAL_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_COAL_ORE), createListWithRarity(250)));
-        context.register(PLACED_GRAVEL_COPPER_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_COPPER_ORE), createListWithRarity(300)));
-        context.register(PLACED_GRAVEL_IRON_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_IRON_ORE), createListWithRarity(350)));
-        context.register(PLACED_GRAVEL_GOLD_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.GRAVEL_GOLD_ORE), createListWithRarity(500)));
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_MANGANESE_ORE, ModConfiguredFeatures.GRAVEL_MANGANESE_ORE, 350);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_COAL_ORE, ModConfiguredFeatures.GRAVEL_COAL_ORE, 250);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_COPPER_ORE, ModConfiguredFeatures.GRAVEL_COPPER_ORE, 300);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_IRON_ORE, ModConfiguredFeatures.GRAVEL_IRON_ORE, 350);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_GOLD_ORE, ModConfiguredFeatures.GRAVEL_GOLD_ORE, 500);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_DIAMOND_ORE, ModConfiguredFeatures.GRAVEL_DIAMOND_ORE, 500);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_EMERALD_ORE, ModConfiguredFeatures.GRAVEL_EMERALD_ORE, 500);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_LAPIS_ORE, ModConfiguredFeatures.GRAVEL_LAPIS_ORE, 350);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_REDSTONE_ORE, ModConfiguredFeatures.GRAVEL_REDSTONE_ORE, 350);
+        registerMossOre(context, holderGetter, PLACED_MOSS_MANGANESE_ORE, ModConfiguredFeatures.MOSS_MANGANESE_ORE, 8);
+        registerMossOre(context, holderGetter, PLACED_MOSS_COAL_ORE, ModConfiguredFeatures.MOSS_COAL_ORE, 10);
+        registerMossOre(context, holderGetter, PLACED_MOSS_COPPER_ORE, ModConfiguredFeatures.MOSS_COPPER_ORE, 10);
+        registerMossOre(context, holderGetter, PLACED_MOSS_IRON_ORE, ModConfiguredFeatures.MOSS_IRON_ORE, 8);
+        registerMossOre(context, holderGetter, PLACED_MOSS_GOLD_ORE, ModConfiguredFeatures.MOSS_GOLD_ORE, 8);
+        registerMossOre(context, holderGetter, PLACED_MOSS_DIAMOND_ORE, ModConfiguredFeatures.MOSS_DIAMOND_ORE, 4);
+        registerMossOre(context, holderGetter, PLACED_MOSS_EMERALD_ORE, ModConfiguredFeatures.MOSS_EMERALD_ORE, 4);
+        registerMossOre(context, holderGetter, PLACED_MOSS_REDSTONE_ORE, ModConfiguredFeatures.MOSS_REDSTONE_ORE, 12);
+        registerMossOre(context, holderGetter, PLACED_MOSS_LAPIS_ORE, ModConfiguredFeatures.MOSS_LAPIS_ORE, 8);
         context.register(PLACED_MANGANESE_ORE_MIDDLE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE),
                 commonOrePlacement(10, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(36)))));
         context.register(PLACED_MANGANESE_ORE_SMALL, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MANGANESE_ORE_SMALL),
@@ -70,6 +98,15 @@ public class ModPlacedFeatures {
 
     private static List<PlacementModifier> rareOrePlacement(int chance, PlacementModifier heightRange) {
         return orePlacement(RarityFilter.onAverageOnceEvery(chance), heightRange);
+    }
+    
+    private static void registerGravelOre(BootstapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> holderGetter, ResourceKey<PlacedFeature> key, ResourceKey<ConfiguredFeature<?, ?>> configuredFeature, int rarity) {
+        context.register(key, new PlacedFeature(holderGetter.getOrThrow(configuredFeature), createListWithRarity(rarity)));
+    }
+    private static void registerMossOre(BootstapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> holderGetter,
+                                        ResourceKey<PlacedFeature> key, ResourceKey<ConfiguredFeature<?, ?>> configuredFeature, int size) {
+        context.register(key, new PlacedFeature(holderGetter.getOrThrow(configuredFeature),
+            commonOrePlacement(size, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.top()))));
     }
 }
 

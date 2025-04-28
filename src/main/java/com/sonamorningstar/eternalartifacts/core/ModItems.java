@@ -118,14 +118,15 @@ public class ModItems {
     public static final DeferredItem<Item> MANGANESE_DUST = register("manganese_dust");
     public static final DeferredItem<PipeExtractor> PIPE_EXTRACTOR = register("pipe_extractor", PipeExtractor::new);
     public static final DeferredItem<PipeFilter> PIPE_FILTER = register("pipe_filter", PipeFilter::new);
-    
+    public static final DeferredItem<Item> MAGNET = register("magnet", p -> new MagnetItem(p.rarity(Rarity.UNCOMMON)));
+    //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
     public static final DeferredItem<DeferredSpawnEggItem> MAGICAL_BOOK_SPAWN_EGG = registerSpawnEgg("magical_book_spawn_egg", ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802);
     public static final DeferredItem<DeferredSpawnEggItem> DUCK_SPAWN_EGG = registerSpawnEgg("duck_spawn_egg", ModEntities.DUCK, 0x126700, 0xF2691B);
     public static final DeferredItem<DeferredSpawnEggItem> CHARGED_SHEEP_SPAWN_EGG = registerSpawnEgg("charged_sheep_spawn_egg", ModEntities.CHARGED_SHEEP, 0xF8D0FF, 0xFFA1D7);
-
-    //Actual artifacts.
+    //endregion
+    //region Actual artifacts.
     public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger", HolyDaggerItem::new);
     public static final DeferredItem<Item> MEDKIT = registerStacksToOne("medkit", MedkitItem::new);
     public static final DeferredItem<Item> FROG_LEGS = registerStacksToOne("frog_legs", FrogLegsItem::new);
@@ -147,8 +148,10 @@ public class ModItems {
     public static final DeferredItem<Item> EMERALD_SIGNET = registerStacksToOne("emerald_signet");
     public static final DeferredItem<Item> SKYBOUND_TREADS = registerStacksToOne("skybound_treads");
     public static final DeferredItem<Item> GALE_SASH = registerStacksToOne("gale_sash");
-
-    //Tools.
+    public static final DeferredItem<Item> MAGIC_QUIVER = registerStacksToOne("magic_quiver", MagicQuiverItem::new);
+    public static final DeferredItem<Item> IRON_LEATHER_GLOVES = registerStacksToOne("iron_leather_gloves");
+    //endregion
+    //region Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
     public static final DeferredItem<Item> COPPER_PICKAXE = registerStacksToOne("copper_pickaxe", p -> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, p));
     public static final DeferredItem<Item> COPPER_AXE = registerStacksToOne("copper_axe", p -> new AxeItem(ModTiers.COPPER, 7, -3.2f, p));
@@ -221,6 +224,10 @@ public class ModItems {
     //public static final DeferredItem<Item> BONE_CUTLASS = registerStacksToOne("bone_cutlass", p -> new CutlassItem(ModTiers.BONE, p));
     public static final DeferredItem<Item> SWORD_OF_THE_TWILIGHT = registerStacksToOne("sword_of_the_twilight", SwordOfTheTwilightItem::new);
     public static final DeferredItem<Item> SWORD_OF_THE_DAWN = registerStacksToOne("sword_of_the_dawn", SwordOfTheDawnItem::new);
+    public static final DeferredItem<Item> SOLAR_PANEL_HELMET = registerStacksToOne("solar_panel_helmet", SolarPanelHelmet::new);
+    public static final DeferredItem<Item> CHLOROPHYTE_REPEATER = registerStacksToOne("chlorophyte_repeater", p -> new ChlorophyteRepeaterItem(p.durability(615)));
+    public static final DeferredItem<Item> PORTABLE_FURNACE = registerStacksToOne("portable_furnace", PortableFurnaceItem::new);
+    //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

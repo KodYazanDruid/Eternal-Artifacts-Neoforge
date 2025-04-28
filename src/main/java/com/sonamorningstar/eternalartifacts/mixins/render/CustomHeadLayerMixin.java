@@ -4,7 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.client.renderer.blockentity.ModSkullBlockRenderer;
+import com.sonamorningstar.eternalartifacts.client.render.blockentity.ModSkullBlockRenderer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.TwoLayerSkullModel;
 import com.sonamorningstar.eternalartifacts.mixin_helper.RenderOverrides;
 import net.minecraft.client.model.SkullModelBase;

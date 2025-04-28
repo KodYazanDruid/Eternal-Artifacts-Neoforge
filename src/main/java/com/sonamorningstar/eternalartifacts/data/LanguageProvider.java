@@ -9,7 +9,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.neoforged.fml.common.Mod;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -191,6 +190,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PIPE_FILTER.get(), "Pipe Filter");
                 add(ModItems.SWORD_OF_THE_TWILIGHT.get(), "Sword of the Twilight");
                 add(ModItems.SWORD_OF_THE_DAWN.get(), "Sword of the Dawn");
+                add(ModItems.SOLAR_PANEL_HELMET.get(), "Solar Panel Helmet");
+                add(ModItems.MAGIC_QUIVER.get(), "Magic Quiver");
+                add(ModItems.IRON_LEATHER_GLOVES.get(), "Iron Leather Gloves");
+                add(ModItems.MAGNET.get(), "Magnet");
+                add(ModItems.CHLOROPHYTE_REPEATER.get(), "Chlorophyte Repeater");
+                add(ModItems.PORTABLE_FURNACE.get(), "Portable Furnace");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -205,10 +210,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Book Duplicator");
                 add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Block of Sugar Charcoal");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Four Leaf Clover");
+                add(ModBlocks.GRAVEL_MANGANESE_ORE.get(), "Gravel Manganese Ore");
                 add(ModBlocks.GRAVEL_COAL_ORE.get(), "Gravel Coal Ore");
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Gravel Copper Ore");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Gravel Iron Ore");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Gravel Gold Ore");
+                add(ModBlocks.GRAVEL_DIAMOND_ORE.get(), "Gravel Diamond Ore");
+                add(ModBlocks.GRAVEL_EMERALD_ORE.get(), "Gravel Emerald Ore");
+                add(ModBlocks.GRAVEL_REDSTONE_ORE.get(), "Gravel Redstone Ore");
+                add(ModBlocks.GRAVEL_LAPIS_ORE.get(), "Gravel Lapis Ore");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Chlorophyte Debris");
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Sandy Tiled Stone Bricks");
                 add(ModBlocks.SANDY_STONE_BRICKS.get(), "Sandy Stone Bricks");
@@ -287,6 +297,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GOLD_ITEM_PIPE.get(), "Gold Item Pipe");
                 add(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "Solid Combustion Dynamo");
                 add(ModBlocks.SOLAR_PANEL.get(), "Solar Panel");
+                add(ModBlocks.MOSS_MANGANESE_ORE.get(), "Moss Manganese Ore");
+                add(ModBlocks.MOSS_COPPER_ORE.get(), "Moss Copper Ore");
+                add(ModBlocks.MOSS_IRON_ORE.get(), "Moss Iron Ore");
+                add(ModBlocks.MOSS_GOLD_ORE.get(), "Moss Gold Ore");
+                add(ModBlocks.MOSS_DIAMOND_ORE.get(), "Moss Diamond Ore");
+                add(ModBlocks.MOSS_EMERALD_ORE.get(), "Moss Emerald Ore");
+                add(ModBlocks.MOSS_LAPIS_ORE.get(), "Moss Lapis Ore");
+                add(ModBlocks.MOSS_REDSTONE_ORE.get(), "Moss Redstone Ore");
+                add(ModBlocks.MOSS_COAL_ORE.get(), "Moss Coal Ore");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -434,6 +453,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("protected"), "Protected");
                 add(ModConstants.GUI.withSuffix("add"), "Add");
                 add("eternalartifacts.blueprint.missing_items", "Missing items");
+                add(ModConstants.GUI.withSuffix("consume_energy_per_tick"), "Consumes %d RF per tick.");
+                add(ModConstants.GUI.withSuffix("produce_energy_per_tick"), "Produces %d RF per tick.");
+                add(ModConstants.TOOLTIP.withSuffix("repeater.projectiles"), "Projectiles:");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -628,6 +650,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PIPE_FILTER.get(), "Boru Filtresi");
                 add(ModItems.SWORD_OF_THE_TWILIGHT.get(), "Alacakaranlık Kılıcı");
                 add(ModItems.SWORD_OF_THE_DAWN.get(), "Şafak Kılıcı");
+                add(ModItems.SOLAR_PANEL_HELMET.get(), "Güneş Paneli Kaskı");
+                add(ModItems.MAGIC_QUIVER.get(), "Büyülü Ok Kılıfı");
+                add(ModItems.IRON_LEATHER_GLOVES.get(), "Demir Deri Eldiven");
+                add(ModItems.MAGNET.get(), "Mıknatıs");
+                add(ModItems.CHLOROPHYTE_REPEATER.get(), "Klorofit Tekrarlayıcı");
+                add(ModItems.PORTABLE_FURNACE.get(), "Taşınabilir Fırın");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -648,10 +676,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.BOOK_DUPLICATOR.get(), "Kitap Çoğaltıcı");
                 add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Şeker Odun Kömürü Bloğu");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Dört Yapraklı Yonca");
+                add(ModBlocks.GRAVEL_MANGANESE_ORE.get(), "Çakılda Manganez Cevheri");
                 add(ModBlocks.GRAVEL_COAL_ORE.get(), "Çakılda Kömür Cevheri");
                 add(ModBlocks.GRAVEL_COPPER_ORE.get(), "Çakılda Bakır Cevheri");
                 add(ModBlocks.GRAVEL_IRON_ORE.get(), "Çakılda Demir Cevheri");
                 add(ModBlocks.GRAVEL_GOLD_ORE.get(), "Çakılda Altın Cevheri");
+                add(ModBlocks.GRAVEL_DIAMOND_ORE.get(), "Çakılda Elmas Cevheri");
+                add(ModBlocks.GRAVEL_EMERALD_ORE.get(), "Çakılda Zümrüt Cevheri");
+                add(ModBlocks.GRAVEL_REDSTONE_ORE.get(), "Çakılda Kızıltaş Cevheri");
+                add(ModBlocks.GRAVEL_LAPIS_ORE.get(), "Çakılda Lapis Cevheri");
                 add(ModMachines.MEAT_PACKER.getBlockTranslationKey(), "Et Paketleyici");
                 add(ModBlocks.CHLOROPHYTE_DEBRIS.get(), "Klorofit Kalıntısı");
                 add(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "Kumlu Döşeme Taş Tuğlası");
@@ -763,6 +796,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GOLD_ITEM_PIPE.get(), "Altın Eşya Borusu");
                 add(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "Katı Yakıtlı Dinamo");
                 add(ModBlocks.SOLAR_PANEL.get(), "Güneş Paneli");
+                add(ModBlocks.MOSS_MANGANESE_ORE.get(), "Yosunlu Manganez Cevheri");
+                add(ModBlocks.MOSS_COPPER_ORE.get(), "Yosunlu Bakır Cevheri");
+                add(ModBlocks.MOSS_IRON_ORE.get(), "Yosunlu Demir Cevheri");
+                add(ModBlocks.MOSS_GOLD_ORE.get(), "Yosunlu Altın Cevheri");
+                add(ModBlocks.MOSS_DIAMOND_ORE.get(), "Yosunlu Elmas Cevheri");
+                add(ModBlocks.MOSS_EMERALD_ORE.get(), "Yosunlu Zümrüt Cevheri");
+                add(ModBlocks.MOSS_LAPIS_ORE.get(), "Yosunlu Lapis Cevheri");
+                add(ModBlocks.MOSS_REDSTONE_ORE.get(), "Yosunlu Kızıltaş Cevheri");
+                add(ModBlocks.MOSS_COAL_ORE.get(), "Yosunlu Kömür Cevheri");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -938,7 +980,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffix("protected"), "Korumalı");
                 add(ModConstants.GUI.withSuffix("add"), "Ekle");
                 add("eternalartifacts.blueprint.missing_items", "Eksik öğeler");
+                add(ModConstants.GUI.withSuffix("consume_energy_per_tick"), "Tick başına %d RF harcar.");
+                add(ModConstants.GUI.withSuffix("produce_energy_per_tick"), "Tick başına %d RF üretir.");
+                add(ModConstants.TOOLTIP.withSuffix("repeater.projectiles"), "Mühimmatlar:");
                 //endregion
+                
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
                     if("tr_tr".equals(loc)) add(lang.getFirst(), lang.getSecond());
                 });
@@ -946,9 +992,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
         }
     }
     
+    //FIXME
     private void addPotion(Potion potion, String name) {
         add(potion.getName(Items.POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.LINGERING_POTION.getDescriptionId() + ".effect."), name);
+        add(potion.getName(Items.TIPPED_ARROW.getDescriptionId() + ".effect."), name);
     }
 }

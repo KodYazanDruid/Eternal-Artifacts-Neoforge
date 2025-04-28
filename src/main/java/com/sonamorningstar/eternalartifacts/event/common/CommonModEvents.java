@@ -68,6 +68,7 @@ public class CommonModEvents {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,75000,15000), ModItems.PORTABLE_BATTERY.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,25000,5000), ModItems.LIGHTSABER.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,10000,500), ModItems.CONFIGURATION_DRIVE.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,16000,500), ModItems.PORTABLE_FURNACE.get());
 
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
@@ -93,6 +94,7 @@ public class CommonModEvents {
         event.registerItem(ModCapabilities.ItemCooldown.ITEM, (stack, ctx) -> new ItemStackCooldown(stack, 200), ModItems.WRENCH);
         event.registerItem(Capabilities.FluidHandler.ITEM, InfiniteWaterTank::createForItem, ModBlocks.TIGRIS_FLOWER.asItem());
         event.registerEntity(Capabilities.EnergyStorage.ENTITY, ModEntities.CHARGED_SHEEP.get(), (entity, ctx) -> entity.energy);
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack, 8000, 100), ModItems.SOLAR_PANEL_HELMET.get());
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.RESONATOR.get(), (be, ctx) ->
                 be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
@@ -242,6 +244,16 @@ public class CommonModEvents {
             .addModifier(ModAttributes.SPELL_POWER.get(), getMod("Band of Arcane Charm Spell Power", 10))
             .addModifier(ModAttributes.SPELL_COOLDOWN_REDUCTION.get(), getMod("Band of Arcane Charm Cooldown Reduction", 10))
             .addType(CharmType.RING).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.SOLAR_PANEL_HELMET)
+            .addModifier(Attributes.ARMOR, getMod("Solar Panel Charm Armor", ((ArmorItem) ModItems.SOLAR_PANEL_HELMET.get()).getDefense()))
+            .addType(CharmType.HEAD).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.IRON_LEATHER_GLOVES)
+            .addModifier(Attributes.ARMOR, getMod("Iron Leather Gloves Armor", 3))
+            .addType(CharmType.HAND).build()
         );
     }
 

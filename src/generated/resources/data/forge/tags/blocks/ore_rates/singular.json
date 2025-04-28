@@ -3,9 +3,18 @@
     "eternalartifacts:gravel_coal_ore",
     "eternalartifacts:gravel_iron_ore",
     "eternalartifacts:gravel_gold_ore",
+    "eternalartifacts:gravel_diamond_ore",
+    "eternalartifacts:gravel_emerald_ore",
+    "eternalartifacts:gravel_manganese_ore",
     "eternalartifacts:manganese_ore",
     "eternalartifacts:deepslate_manganese_ore",
     "eternalartifacts:marin_ore",
-    "eternalartifacts:chlorophyte_debris"
+    "eternalartifacts:chlorophyte_debris",
+    "eternalartifacts:moss_coal_ore",
+    "eternalartifacts:moss_iron_ore",
+    "eternalartifacts:moss_gold_ore",
+    "eternalartifacts:moss_diamond_ore",
+    "eternalartifacts:moss_emerald_ore",
+    "eternalartifacts:moss_manganese_ore"
   ]
 }

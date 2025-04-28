@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -11,8 +12,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -39,16 +39,26 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         renderExtra(gui, mx, my, partialTick);
         renderTooltip(gui, mx, my);
     }
-
-    private void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
+    
+    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
+        renderEnergyTooltip(gui, mx, my, true);
+    }
+    
+    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my, boolean renderEPT) {
         if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my)) {
-            gui.renderTooltip(font,
-                    Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
-                            .append(String.valueOf(menu.getBeEnergy().getEnergyStored())).append("/").append(String.valueOf(menu.getBeEnergy().getMaxEnergyStored())),
-                    mx, my);
+            MachineBlockEntity<?> machine = (MachineBlockEntity<?>) menu.getBlockEntity();
+            List<Component> tooltips = new ArrayList<>();
+            tooltips.add(Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
+                .append(String.valueOf(menu.getBeEnergy().getEnergyStored()))
+                .append("/").append(String.valueOf(menu.getBeEnergy().getMaxEnergyStored())));
+            if (renderEPT) {
+                String prefix = machine.isGenerator() ? "produce": "consume";
+                tooltips.add(Component.translatable(ModConstants.GUI.withSuffix(prefix+"_energy_per_tick"), machine.getEnergyPerTick()));
+            }
+            gui.renderTooltip(font, tooltips, Optional.empty(), mx, my);
         }
     }
-    private void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
+    protected void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
                 gui.renderTooltip(font,
@@ -58,7 +68,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
             }
         });
     }
-    private void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
+    protected void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
         if(isCursorInBounds(x, y, xLen, yLen, mx, my)) {
             gui.renderTooltip(font,
                     Component.translatable(ModConstants.GUI.withSuffix(key)).append(": ")

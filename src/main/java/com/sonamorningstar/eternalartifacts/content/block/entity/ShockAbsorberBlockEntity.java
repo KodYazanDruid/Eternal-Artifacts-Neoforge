@@ -13,7 +13,12 @@ public class ShockAbsorberBlockEntity extends MachineBlockEntity<AbstractMachine
         super(ModBlockEntities.SHOCK_ABSORBER.get(), pos, state, null);
         setEnergy(() -> createBasicEnergy(100000, 100000, false, true));
     }
-
+    
+    @Override
+    public boolean isGenerator() {
+        return true;
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);

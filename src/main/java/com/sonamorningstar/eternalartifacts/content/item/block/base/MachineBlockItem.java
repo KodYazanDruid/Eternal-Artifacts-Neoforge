@@ -1,17 +1,24 @@
 package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
 import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
@@ -103,5 +110,26 @@ public class MachineBlockItem extends FluidHolderBlockItem {
     protected static float getChargeLevel(ItemStack stack) {
         IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
         return energy != null ? ((float) energy.getEnergyStored()) / energy.getMaxEnergyStored() : 0;
+    }
+    
+    @Override
+    public InteractionResult place(BlockPlaceContext ctx) {
+        int oldEnergy;
+        Level level = ctx.getLevel();
+        BlockPos pos = ctx.getClickedPos();
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof SolarPanel solarPanel) oldEnergy = solarPanel.energy.getEnergyStored();
+        else return super.place(ctx);
+        InteractionResult result = super.place(ctx);
+        if (result.consumesAction()) {
+             BlockEntity newBe = level.getBlockEntity(pos);
+             if (newBe instanceof SolarPanel newSolarPanel) {
+                 if (newSolarPanel.energy != null) {
+                     newSolarPanel.energy.setEnergy(oldEnergy);
+                 }
+             }
+             return result;
+        }
+        return InteractionResult.FAIL;
     }
 }

@@ -37,9 +37,11 @@ public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements
 	
 	@Override
 	public void openMenu(ServerPlayer player, Direction dir) {
+		PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 		player.openMenu(this, wr -> {
 			wr.writeBlockPos(getBlockPos());
 			wr.writeEnum(dir);
+			wr.writeVarInt(conn == PipeConnection.EXTRACT ? 0 : 1);
 		});
 	}
 	
@@ -52,8 +54,10 @@ public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements
 	@Override
 	public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
 		BlockHitResult hit = RayTraceHelper.retrace(pPlayer);
+		Direction dir = ((AttachmentablePipeBlock<?>) getBlockState().getBlock()).getClickedRelativePos(hit.getDirection(), getBlockPos(), hit.getLocation(), 8);
+		PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 		return new BasicAttachmentMenu(pContainerId, pPlayerInventory, getBlockPos(),
-			((AttachmentablePipeBlock<?>) getBlockState().getBlock()).getClickedRelativePos(hit.getDirection(), getBlockPos(), hit.getLocation(), 8)
+			dir, conn == PipeConnection.EXTRACT ? 0 : 1
 		);
 	}
 	

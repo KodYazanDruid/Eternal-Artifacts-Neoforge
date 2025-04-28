@@ -69,7 +69,9 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     protected int progressStep = 1;
     protected int defaultMaxProgress = 100;
     protected int maxProgress;
-    protected int energyPerTick = 40;
+    protected int defaultEnergyPerTick = 40;
+    @Getter
+    protected int energyPerTick;
 
     public final List<Integer> outputSlots = new ArrayList<>();
     protected RecipeType<? extends Recipe<? extends Container>> recipeType;
@@ -85,6 +87,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
         super(type, pos, blockState);
         this.menuConstructor = quadF;
         this.maxProgress = defaultMaxProgress;
+        this.energyPerTick = defaultEnergyPerTick;
         data = new ContainerData() {
             @Override
             public int get(int index) {
@@ -109,9 +112,7 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     }
 
     @Override
-    protected boolean shouldSyncOnUpdate() {
-        return true;
-    }
+    protected boolean shouldSyncOnUpdate() {return true;}
 
     protected boolean shouldSerializeEnergy() {return true;}
     protected boolean shouldSerializeInventory() {return true;}
@@ -140,38 +141,57 @@ public abstract class MachineBlockEntity<T extends AbstractMachineMenu> extends 
     @Override
     public void onEnchanted(Enchantment enchantment, int level) {
         if (enchantment == ModEnchantments.VOLUME.get()){
-            if (energySetter != null) {
-                CompoundTag oldData = new CompoundTag();
-                oldData.put("Energy", energy.serializeNBT());
-                this.energy = energySetter.get();
-                energy.deserializeNBT(oldData.get("Energy"));
-            }
-            if (inventorySetter != null) {
-                CompoundTag oldData = new CompoundTag();
-                oldData.put("Inventory", inventory.serializeNBT());
-                this.inventory = inventorySetter.get();
-                inventory.deserializeNBT(oldData.getCompound("Inventory"));
-            }
-            if (tankSetter != null) {
-                CompoundTag oldData = new CompoundTag();
-                oldData.put("Fluid", tank.serializeNBT());
-                this.tank = tankSetter.get();
-                tank.deserializeNBT(oldData.getCompound("Fluid"));
-            }
+            resetEnergy();
+            resetInventory();
+            resetTank();
         }
         
         if (enchantment == Enchantments.BLOCK_EFFICIENCY) {
 			applyEfficiency(level);
         }
         
-       if (enchantment == ModEnchantments.CELERITY.get()) setProgressStep(level + 1);
+       if (enchantment == ModEnchantments.CELERITY.get()) {
+           setProgressStep(level + 1);
+           energyPerTick = defaultEnergyPerTick * (level + 1);
+       }
+    }
+    
+    public void resetEnergy() {
+        if (energySetter != null) {
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Energy", energy.serializeNBT());
+            this.energy = energySetter.get();
+            energy.deserializeNBT(oldData.get("Energy"));
+            this.invalidateCapabilities();
+        }
+    }
+    public void resetInventory() {
+        if (inventorySetter != null) {
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Inventory", inventory.serializeNBT());
+            this.inventory = inventorySetter.get();
+            inventory.deserializeNBT(oldData.getCompound("Inventory"));
+            this.invalidateCapabilities();
+        }
+    }
+    public void resetTank() {
+        if (tankSetter != null) {
+            CompoundTag oldData = new CompoundTag();
+            oldData.put("Fluid", tank.serializeNBT());
+            this.tank = tankSetter.get();
+            tank.deserializeNBT(oldData.getCompound("Fluid"));
+            this.invalidateCapabilities();
+        }
     }
     
     protected void applyEfficiency(int level) {
         int reduction = 10;
         double reductionFactor = (100 - reduction) / 100.0;
-        int newMaxProgress = (int) Math.max(1, Math.round(defaultMaxProgress * Math.pow(reductionFactor, level)));
-        maxProgress = newMaxProgress;
+		maxProgress = (int) Math.max(1, Math.round(defaultMaxProgress * Math.pow(reductionFactor, level)));
+    }
+    
+    public boolean isGenerator() {
+        return false;
     }
     
     @Override

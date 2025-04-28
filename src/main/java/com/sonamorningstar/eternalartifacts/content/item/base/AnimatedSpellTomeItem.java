@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item.base;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
+import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import net.neoforged.neoforge.registries.DeferredHolder;

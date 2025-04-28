@@ -31,10 +31,15 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.RESONATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "", "pickaxe");
-        tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_MANGANESE_ORE.get(), "stone", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_COAL_ORE.get(), "wooden", "shovel");
         tierAndTool(ModBlocks.GRAVEL_COPPER_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.GRAVEL_IRON_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.GRAVEL_GOLD_ORE.get(), "iron", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_DIAMOND_ORE.get(), "iron", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_EMERALD_ORE.get(), "iron", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_REDSTONE_ORE.get(), "iron", "shovel");
+        tierAndTool(ModBlocks.GRAVEL_LAPIS_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.SANDY_TILED_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SANDY_STONE_BRICKS.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SANDY_PRISMARINE.get(), "", "pickaxe");
@@ -90,6 +95,15 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GOLD_ITEM_PIPE.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SOLAR_PANEL.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.MOSS_MANGANESE_ORE.get(), "stone", "hoe");
+        tierAndTool(ModBlocks.MOSS_COPPER_ORE.get(), "stone", "hoe");
+        tierAndTool(ModBlocks.MOSS_IRON_ORE.get(), "stone", "hoe");
+        tierAndTool(ModBlocks.MOSS_GOLD_ORE.get(), "iron", "hoe");
+        tierAndTool(ModBlocks.MOSS_REDSTONE_ORE.get(), "iron", "hoe");
+        tierAndTool(ModBlocks.MOSS_LAPIS_ORE.get(), "stone", "hoe");
+        tierAndTool(ModBlocks.MOSS_DIAMOND_ORE.get(), "iron", "hoe");
+        tierAndTool(ModBlocks.MOSS_EMERALD_ORE.get(), "iron", "hoe");
+        tierAndTool(ModBlocks.MOSS_COAL_ORE.get(), "wooden", "hoe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
@@ -139,23 +153,69 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
 
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get(), ModBlocks.TIGRIS_FLOWER.get());
-        tag(BlockTags.COAL_ORES).add(ModBlocks.GRAVEL_COAL_ORE.get());
-        tag(BlockTags.COPPER_ORES).add(ModBlocks.GRAVEL_COPPER_ORE.get());
-        tag(BlockTags.IRON_ORES).add(ModBlocks.GRAVEL_IRON_ORE.get());
-        tag(BlockTags.GOLD_ORES).add(ModBlocks.GRAVEL_GOLD_ORE.get());
-        tag(ModTags.Blocks.ORES_MANGANESE).add(
-                ModBlocks.MANGANESE_ORE.get(),
-                ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
+        tag(BlockTags.COAL_ORES).add(
+            ModBlocks.GRAVEL_COAL_ORE.get(),
+            ModBlocks.MOSS_COAL_ORE.get()
         );
-        tag(Tags.Blocks.ORE_RATES_DENSE).add(ModBlocks.GRAVEL_COPPER_ORE.get());
+        tag(BlockTags.COPPER_ORES).add(
+            ModBlocks.GRAVEL_COPPER_ORE.get(),
+            ModBlocks.MOSS_COPPER_ORE.get()
+        );
+        tag(BlockTags.IRON_ORES).add(
+            ModBlocks.GRAVEL_IRON_ORE.get(),
+            ModBlocks.MOSS_IRON_ORE.get()
+        );
+        tag(BlockTags.GOLD_ORES).add(
+            ModBlocks.GRAVEL_GOLD_ORE.get(),
+            ModBlocks.MOSS_GOLD_ORE.get()
+        );
+        tag(ModTags.Blocks.ORES_MANGANESE).add(
+            ModBlocks.MANGANESE_ORE.get(),
+            ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
+            ModBlocks.MOSS_MANGANESE_ORE.get(),
+            ModBlocks.GRAVEL_MANGANESE_ORE.get()
+        );
+        tag(BlockTags.DIAMOND_ORES).add(
+            ModBlocks.MOSS_DIAMOND_ORE.get(),
+            ModBlocks.GRAVEL_DIAMOND_ORE.get()
+        );
+        tag(BlockTags.EMERALD_ORES).add(
+            ModBlocks.MOSS_EMERALD_ORE.get(),
+            ModBlocks.GRAVEL_EMERALD_ORE.get()
+        );
+        tag(BlockTags.REDSTONE_ORES).add(
+            ModBlocks.MOSS_REDSTONE_ORE.get(),
+            ModBlocks.GRAVEL_REDSTONE_ORE.get()
+        );
+        tag(BlockTags.LAPIS_ORES).add(
+            ModBlocks.MOSS_LAPIS_ORE.get(),
+            ModBlocks.GRAVEL_LAPIS_ORE.get()
+        );
+        tag(Tags.Blocks.ORE_RATES_DENSE).add(
+            ModBlocks.GRAVEL_COPPER_ORE.get(),
+            ModBlocks.GRAVEL_REDSTONE_ORE.get(),
+            ModBlocks.GRAVEL_LAPIS_ORE.get(),
+            ModBlocks.MOSS_COPPER_ORE.get(),
+            ModBlocks.MOSS_REDSTONE_ORE.get(),
+            ModBlocks.MOSS_LAPIS_ORE.get()
+        );
         tag(Tags.Blocks.ORE_RATES_SINGULAR).add(
-                ModBlocks.GRAVEL_COAL_ORE.get(),
-                ModBlocks.GRAVEL_IRON_ORE.get(),
-                ModBlocks.GRAVEL_GOLD_ORE.get(),
-                ModBlocks.MANGANESE_ORE.get(),
-                ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
-                ModBlocks.MARIN_ORE.get(),
-                ModBlocks.CHLOROPHYTE_DEBRIS.get()
+            ModBlocks.GRAVEL_COAL_ORE.get(),
+            ModBlocks.GRAVEL_IRON_ORE.get(),
+            ModBlocks.GRAVEL_GOLD_ORE.get(),
+            ModBlocks.GRAVEL_DIAMOND_ORE.get(),
+            ModBlocks.GRAVEL_EMERALD_ORE.get(),
+            ModBlocks.GRAVEL_MANGANESE_ORE.get(),
+            ModBlocks.MANGANESE_ORE.get(),
+            ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
+            ModBlocks.MARIN_ORE.get(),
+            ModBlocks.CHLOROPHYTE_DEBRIS.get(),
+            ModBlocks.MOSS_COAL_ORE.get(),
+            ModBlocks.MOSS_IRON_ORE.get(),
+            ModBlocks.MOSS_GOLD_ORE.get(),
+            ModBlocks.MOSS_DIAMOND_ORE.get(),
+            ModBlocks.MOSS_EMERALD_ORE.get(),
+            ModBlocks.MOSS_MANGANESE_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE).add(
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
@@ -166,18 +226,38 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
                 ModBlocks.MARIN_ORE.get()
         );
+        tag(ModTags.Blocks.ORE_BEARING_GROUND_GRAVEL).add(
+            ModBlocks.GRAVEL_MANGANESE_ORE.get(),
+            ModBlocks.GRAVEL_COAL_ORE.get(),
+            ModBlocks.GRAVEL_COPPER_ORE.get(),
+            ModBlocks.GRAVEL_IRON_ORE.get(),
+            ModBlocks.GRAVEL_GOLD_ORE.get(),
+            ModBlocks.GRAVEL_DIAMOND_ORE.get(),
+            ModBlocks.GRAVEL_EMERALD_ORE.get(),
+            ModBlocks.GRAVEL_REDSTONE_ORE.get(),
+            ModBlocks.GRAVEL_LAPIS_ORE.get()
+            
+        );
         tag(ModTags.Blocks.ORE_BEARING_GROUND_MOSS).add(
-                ModBlocks.CHLOROPHYTE_DEBRIS.get()
+            ModBlocks.CHLOROPHYTE_DEBRIS.get(),
+            ModBlocks.MOSS_COPPER_ORE.get(),
+            ModBlocks.MOSS_IRON_ORE.get(),
+            ModBlocks.MOSS_GOLD_ORE.get(),
+            ModBlocks.MOSS_REDSTONE_ORE.get(),
+            ModBlocks.MOSS_LAPIS_ORE.get(),
+            ModBlocks.MOSS_DIAMOND_ORE.get(),
+            ModBlocks.MOSS_EMERALD_ORE.get(),
+            ModBlocks.MOSS_COAL_ORE.get(),
+            ModBlocks.MOSS_MANGANESE_ORE.get()
+        );
+        tag(Tags.Blocks.ORES).addTags(
+            ModTags.Blocks.ORE_BEARING_GROUND_GRAVEL,
+            ModTags.Blocks.ORE_BEARING_GROUND_MOSS
         );
         tag(Tags.Blocks.ORES).add(
                 ModBlocks.MANGANESE_ORE.get(),
                 ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
-                ModBlocks.GRAVEL_COAL_ORE.get(),
-                ModBlocks.GRAVEL_COPPER_ORE.get(),
-                ModBlocks.GRAVEL_IRON_ORE.get(),
-                ModBlocks.GRAVEL_GOLD_ORE.get(),
-                ModBlocks.MARIN_ORE.get(),
-                ModBlocks.CHLOROPHYTE_DEBRIS.get()
+                ModBlocks.MARIN_ORE.get()
         );
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),

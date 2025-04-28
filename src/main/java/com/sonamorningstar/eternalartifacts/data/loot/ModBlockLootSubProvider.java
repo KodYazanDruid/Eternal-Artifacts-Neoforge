@@ -123,13 +123,28 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         generateOreBerryTables(ModBlocks.EXPERIENCE_ORE_BERRY, ModLootTables.EXPERIENCE_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.MANGANESE_ORE_BERRY, ModLootTables.MANGANESE_OREBERRY_HARVEST);
 
+        add(ModBlocks.GRAVEL_MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.GRAVEL_COAL_ORE.get(), block -> createOreDrop(block, Items.COAL));
         add(ModBlocks.GRAVEL_COPPER_ORE.get(), this::createCopperOreDrops);
         add(ModBlocks.GRAVEL_IRON_ORE.get(), block -> createOreDrop(block, Items.RAW_IRON));
         add(ModBlocks.GRAVEL_GOLD_ORE.get(), block -> createOreDrop(block, Items.RAW_GOLD));
+        add(ModBlocks.GRAVEL_DIAMOND_ORE.get(), b -> createOreDrop(b, Items.DIAMOND));
+        add(ModBlocks.GRAVEL_EMERALD_ORE.get(), b -> createOreDrop(b, Items.EMERALD));
+        add(ModBlocks.GRAVEL_LAPIS_ORE.get(), this::createLapisOreDrops);
+        add(ModBlocks.GRAVEL_REDSTONE_ORE.get(), this::createRedstoneOreDrops);
         add(ModBlocks.MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.MARIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MARIN.get()));
+        
+        add(ModBlocks.MOSS_MANGANESE_ORE.get(), b -> createOreDrop(b, ModItems.RAW_MANGANESE.get()));
+        add(ModBlocks.MOSS_COAL_ORE.get(), b -> createOreDrop(b, Items.COAL));
+        add(ModBlocks.MOSS_COPPER_ORE.get(), this::createCopperOreDrops);
+        add(ModBlocks.MOSS_IRON_ORE.get(), b -> createOreDrop(b, Items.RAW_IRON));
+        add(ModBlocks.MOSS_GOLD_ORE.get(), b -> createOreDrop(b, Items.RAW_GOLD));
+        add(ModBlocks.MOSS_DIAMOND_ORE.get(), b -> createOreDrop(b, Items.DIAMOND));
+        add(ModBlocks.MOSS_EMERALD_ORE.get(), b -> createOreDrop(b, Items.EMERALD));
+        add(ModBlocks.MOSS_LAPIS_ORE.get(), this::createLapisOreDrops);
+        add(ModBlocks.MOSS_REDSTONE_ORE.get(), this::createRedstoneOreDrops);
 
         dropSelfWithFunction(ModBlocks.GARDENING_POT, RetexturedLootFunction.builder());
         dropSelfWithFunction(ModBlocks.FANCY_CHEST, RetexturedLootFunction.builder());

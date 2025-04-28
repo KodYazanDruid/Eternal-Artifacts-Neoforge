@@ -66,11 +66,7 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     @Override
     protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
         super.renderBg(gui, pPartialTick, mx, my);
-        //gui.blit(TEXTURE, leftPos, topPos, 0, 0, imageWidth, imageHeight);
-        /*if(anvilinatorBlockEntity.getEnableNaming()) gui.blit(TEXTURE, leftPos + 70, topPos + 20, 0, 166, 94, 16);
-        else gui.blit(TEXTURE, leftPos + 70, topPos + 20, 0, 182, 94, 16);*/
         renderDefaultEnergyAndFluidBar(gui);
-        //renderSwitch(gui, leftPos, topPos);
         renderProgressArrow(gui, leftPos + 122, topPos + 53, mx, my);
     }
 
@@ -78,14 +74,6 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     private void renderFg(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
         this.name.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
     }
-
-    //Render misc stuff on the screen.
-    /*private void renderSwitch(GuiGraphics guiGraphics, int x, int y) {
-        int offset;
-        if(anvilinatorBlockEntity.getEnableNaming()) offset = 0;
-        else offset = 5;
-        guiGraphics.blit(BARS, x + 69, y + 40, 48, offset, 5, 5);
-    }*/
 
     // Returns false when typing on the box.
     @Override

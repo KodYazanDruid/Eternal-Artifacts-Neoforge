@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.ModItemStackBEWLR;
+import com.sonamorningstar.eternalartifacts.client.render.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;

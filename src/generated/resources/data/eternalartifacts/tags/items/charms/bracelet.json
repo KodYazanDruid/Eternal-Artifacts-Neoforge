@@ -2,6 +2,7 @@
   "values": [
     "minecraft:clock",
     "minecraft:compass",
-    "minecraft:recovery_compass"
+    "minecraft:recovery_compass",
+    "eternalartifacts:magnet"
   ]
 }

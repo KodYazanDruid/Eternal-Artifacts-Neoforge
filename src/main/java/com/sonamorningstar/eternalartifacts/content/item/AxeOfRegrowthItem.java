@@ -73,7 +73,7 @@ public class AxeOfRegrowthItem extends AxeItem {
                 !living.isShiftKeyDown() &&
                 !currentMiners.contains(stack)) {
             Block block = state.getBlock();
-            BlockVeinCache cache = new BlockVeinCache(block, level, pos, 4, 10);
+            BlockVeinCache cache = new BlockVeinCache(block, level, pos, 4, 10, 1);
             cache.addMineableTag(BlockTags.LOGS);
             cache.addMineableTag(BlockTags.LEAVES);
             cache.scanForBlocks();

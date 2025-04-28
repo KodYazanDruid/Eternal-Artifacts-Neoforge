@@ -28,6 +28,7 @@ public class ModTags {
         public static final TagKey<Block> GLASS_HARDENED = forgeTag("glass/hardened");
         public static final TagKey<Block> HARDENED_GLASS = forgeTag("hardened_glass");
         public static final TagKey<Block> VERSATILITY_MINEABLES = modTag("mineable/versatility");
+        public static final TagKey<Block> ORE_BEARING_GROUND_GRAVEL = modTag("ore_bearing_ground/gravel");
         public static final TagKey<Block> ORE_BEARING_GROUND_MOSS = modTag("ore_bearing_ground/moss");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }

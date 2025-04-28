@@ -12,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -84,10 +85,42 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.NUGGETS_STEEL).add(ModItems.STEEL_NUGGET.get());
         copy(ModTags.Blocks.STORAGE_BLOCKS_STEEL, ModTags.Items.STORAGE_BLOCKS_STEEL);
 
-        tag(Tags.Items.ORES_COAL).add(ModBlocks.GRAVEL_COAL_ORE.asItem());
-        tag(Tags.Items.ORES_COPPER).add(ModBlocks.GRAVEL_COPPER_ORE.asItem());
-        tag(Tags.Items.ORES_IRON).add(ModBlocks.GRAVEL_IRON_ORE.asItem());
-        tag(Tags.Items.ORES_GOLD).add(ModBlocks.GRAVEL_GOLD_ORE.asItem());
+        tag(ModTags.Items.ORES_MANGANESE).add(
+            ModBlocks.GRAVEL_MANGANESE_ORE.asItem(),
+            ModBlocks.MOSS_MANGANESE_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_COAL).add(
+            ModBlocks.GRAVEL_COAL_ORE.asItem(),
+            ModBlocks.MOSS_COAL_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_COPPER).add(
+            ModBlocks.GRAVEL_COPPER_ORE.asItem(),
+            ModBlocks.MOSS_COPPER_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_IRON).add(
+            ModBlocks.GRAVEL_IRON_ORE.asItem(),
+            ModBlocks.MOSS_IRON_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_GOLD).add(
+            ModBlocks.GRAVEL_GOLD_ORE.asItem(),
+            ModBlocks.MOSS_GOLD_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_DIAMOND).add(
+            ModBlocks.GRAVEL_DIAMOND_ORE.asItem(),
+            ModBlocks.MOSS_DIAMOND_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_EMERALD).add(
+            ModBlocks.GRAVEL_EMERALD_ORE.asItem(),
+            ModBlocks.MOSS_EMERALD_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_REDSTONE).add(
+            ModBlocks.GRAVEL_REDSTONE_ORE.asItem(),
+            ModBlocks.MOSS_REDSTONE_ORE.asItem()
+        );
+        tag(Tags.Items.ORES_LAPIS).add(
+            ModBlocks.GRAVEL_LAPIS_ORE.asItem(),
+            ModBlocks.MOSS_LAPIS_ORE.asItem()
+        );
 
         tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
@@ -193,7 +226,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             Items.BUCKET,
             Items.CARVED_PUMPKIN,
             Items.OBSERVER,
-            Items.PIGLIN_HEAD
+            Items.PIGLIN_HEAD,
+            ModItems.SOLAR_PANEL_HELMET.get()
         );
         tag(ModTags.Items.CHARMS_HEAD).addTags(
             ModTags.Items.SHULKER_SHELL,
@@ -206,6 +240,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.SAGES_TALISMAN.get()
         );
         tag(ModTags.Items.CHARMS_HAND).add(
+            ModItems.IRON_LEATHER_GLOVES.get(),
             ModItems.POWER_GAUNTLET.get()
         );
         tag(ModTags.Items.CHARMS_RING).add(
@@ -216,14 +251,16 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARMS_BRACELET).add(
             Items.CLOCK,
             Items.COMPASS,
-            Items.RECOVERY_COMPASS
+            Items.RECOVERY_COMPASS,
+            ModItems.MAGNET.get()
         );
         tag(ModTags.Items.CHARMS_BACK).add(
             ModItems.KNAPSACK.get(),
             ModItems.TANK_KNAPSACK.get(),
             ModItems.ENDER_KNAPSACK.get(),
             Items.ELYTRA,
-            ModItems.PORTABLE_BATTERY.get()
+            ModItems.PORTABLE_BATTERY.get(),
+            ModItems.PORTABLE_FURNACE.get()
         );
         tag(ModTags.Items.CHARM_FEET).add(
             ModItems.COMFY_SHOES.get(),
@@ -233,7 +270,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARMS_BELT).add(
             Items.FILLED_MAP,
             Items.BUNDLE,
-            ModItems.GALE_SASH.get()
+            ModItems.GALE_SASH.get(),
+            ModItems.MAGIC_QUIVER.get()
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
             ModItems.MAGIC_FEATHER.get(),
@@ -243,7 +281,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.MEDKIT.get(),
             Items.RABBIT_FOOT,
             Items.COD,
-            Items.TOTEM_OF_UNDYING
+            Items.TOTEM_OF_UNDYING,
+            ModItems.MAGNET.get()
         );
         /*tag(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED).add(
         );*/

@@ -89,6 +89,11 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends MachineBlo
 		else tickCounter = 0;
 	}
 	
+	@Override
+	public boolean isGenerator() {
+		return true;
+	}
+	
 	protected boolean canProcessRecipeless() {
 		return false;
 	}

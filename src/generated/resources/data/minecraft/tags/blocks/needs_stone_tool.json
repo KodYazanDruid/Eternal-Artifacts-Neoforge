@@ -1,8 +1,10 @@
 {
   "values": [
     "eternalartifacts:biofurnace",
+    "eternalartifacts:gravel_manganese_ore",
     "eternalartifacts:gravel_copper_ore",
     "eternalartifacts:gravel_iron_ore",
+    "eternalartifacts:gravel_lapis_ore",
     "eternalartifacts:sandy_tiled_stone_bricks",
     "eternalartifacts:sandy_stone_bricks",
     "eternalartifacts:fluid_combustion_dynamo",
@@ -21,6 +23,10 @@
     "eternalartifacts:copper_item_pipe",
     "eternalartifacts:solid_combustion_dynamo",
     "eternalartifacts:solar_panel",
+    "eternalartifacts:moss_manganese_ore",
+    "eternalartifacts:moss_copper_ore",
+    "eternalartifacts:moss_iron_ore",
+    "eternalartifacts:moss_lapis_ore",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",

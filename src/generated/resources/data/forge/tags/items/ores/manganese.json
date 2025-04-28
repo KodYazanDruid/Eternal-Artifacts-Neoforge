@@ -1,6 +1,10 @@
 {
   "values": [
+    "eternalartifacts:gravel_manganese_ore",
+    "eternalartifacts:moss_manganese_ore",
     "eternalartifacts:manganese_ore",
-    "eternalartifacts:deepslate_manganese_ore"
+    "eternalartifacts:deepslate_manganese_ore",
+    "eternalartifacts:moss_manganese_ore",
+    "eternalartifacts:gravel_manganese_ore"
   ]
 }

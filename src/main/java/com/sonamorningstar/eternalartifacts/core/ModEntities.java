@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.Meteorite;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.Missile;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.SpellProjectile;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.Tornado;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -37,5 +38,7 @@ public class ModEntities {
             ()-> EntityType.Builder.<Meteorite>of(Meteorite::new, MobCategory.MISC).fireImmune().sized(2.0f, 2.0f).canSpawnFarFromPlayer().clientTrackingRange(1).updateInterval(10).build("meteorite"));
     public static final DeferredHolder<EntityType<?>, EntityType<Missile>> MISSILE = ENTITY_TYPES.register("missile",
             ()-> EntityType.Builder.<Missile>of(Missile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(1).updateInterval(10).build("meteorite"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpellProjectile>> SPELL_PROJECTILE = ENTITY_TYPES.register("spell_projectile",
+        ()-> EntityType.Builder.of(SpellProjectile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(1).updateInterval(10).build("meteorite"));
 
 }

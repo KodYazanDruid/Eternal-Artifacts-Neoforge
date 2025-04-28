@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.container.SolarPanelMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -20,9 +19,15 @@ public class SolarPanel extends MachineBlockEntity<SolarPanelMenu> {
 	public SolarPanel( BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.SOLAR_PANEL.get(), pos, blockState, SolarPanelMenu::new);
 		setEnergy(() -> {
-			int vol = getEnchantmentLevel(ModEnchantments.VOLUME.get());
-			return new SolarPanelEnergy(this, 16000 * (vol + 1), 500);
+			int cap = getBlockState().getValue(SlabBlock.TYPE) == SlabType.DOUBLE ? 32000 : 16000;
+			return new SolarPanelEnergy(this, cap, 500);
 		});
+	}
+	
+	@Override
+	public void setBlockState(BlockState pBlockState) {
+		super.setBlockState(pBlockState);
+		resetEnergy();
 	}
 	
 	@Nullable
@@ -36,6 +41,11 @@ public class SolarPanel extends MachineBlockEntity<SolarPanelMenu> {
 			return panel.energy;
 		}
 		return null;
+	}
+	
+	@Override
+	public boolean isGenerator() {
+		return true;
 	}
 	
 	@Override
@@ -70,12 +80,7 @@ public class SolarPanel extends MachineBlockEntity<SolarPanelMenu> {
 		}
 		
 		@Override
-		public int getMaxEnergyStored() {
-			SlabType type = panel.getBlockState().getValue(SlabBlock.TYPE);
-			int max = super.getMaxEnergyStored();
-			return type == SlabType.DOUBLE ? 2 * max : max;
-		}
-		
+		public int extractEnergyForced(int maxExtract, boolean simulate) {return this.extractEnergy(maxExtract, simulate);}
 		@Override
 		public boolean canExtract() {return true;}
 		@Override

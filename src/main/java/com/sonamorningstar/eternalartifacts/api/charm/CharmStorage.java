@@ -7,7 +7,9 @@ import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
+import com.sonamorningstar.eternalartifacts.content.item.MagnetItem;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
+import com.sonamorningstar.eternalartifacts.content.item.SolarPanelHelmet;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -25,13 +27,16 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -145,10 +150,10 @@ public class CharmStorage extends ItemStackHandler {
         }
     }
 
-    public void syncSelfAndTracking(LivingEntity tracked) {
+    public void syncSelfAndTracking(LivingEntity entity) {
         if (Config.CHARMS_ENABLED.getAsBoolean()) {
-            Channel.sendToSelfAndTracking(new UpdateCharmsToClient(tracked.getId(), this.stacks), tracked);
-            Channel.sendToSelfAndTracking(new CycleWildcardToClient(tracked.getId(), canHaveWildcard(tracked)), tracked);
+            Channel.sendToSelfAndTracking(new UpdateCharmsToClient(entity.getId(), this.stacks), entity);
+            Channel.sendToSelfAndTracking(new CycleWildcardToClient(entity.getId(), canHaveWildcard(entity)), entity);
             updateCharmAttributes();
         }
     }
@@ -273,25 +278,37 @@ public class CharmStorage extends ItemStackHandler {
         if (!Config.CHARMS_ENABLED.getAsBoolean()) return;
         LivingEntity living = event.getEntity();
         ItemStack charm = event.getCharm();
+        Item charmItem = charm.getItem();
+        Level level = living.level();
         int slot = event.getSlot();
         if (charm.is(ModItems.MEDKIT) && living instanceof Player player) {
             if (!player.getCooldowns().isOnCooldown(ModItems.MEDKIT.get()) && !player.hasEffect(MobEffects.REGENERATION)) {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
             }
         }
-        if(charm.getItem() instanceof KnapsackItem knapsack) {
+        if(charmItem instanceof KnapsackItem knapsack) {
             if (VersatilityEnchantment.has(charm))
                 knapsack.inventoryTick(charm, living.level(), living, -1, false);
         }
         
-        if (charm.getItem() instanceof MapItem mapItem) {
+        if (charmItem instanceof MapItem mapItem) {
             mapItem.inventoryTick(charm, living.level(), living, -1, true);
         }
-        if (charm.getItem() instanceof CompassItem compassItem) {
+        if (charmItem instanceof CompassItem compassItem) {
             compassItem.inventoryTick(charm, living.level(), living, -1, true);
         }
-        if (charm.getItem() instanceof PortableBatteryItem battery && living instanceof Player player) {
+        if (charmItem instanceof PortableBatteryItem battery && living instanceof Player player) {
             battery.chargeSlots(player, charm);
+        }
+        if (charmItem instanceof SolarPanelHelmet solarHelmet) {
+            solarHelmet.generate(charm, living.level(), living.blockPosition());
+            solarHelmet.chargeInventory(charm, living);
+        }
+        if (charmItem instanceof MagnetItem && !level.isClientSide()) {
+            var itemEntities = living.level().getEntitiesOfClass(ItemEntity.class, living.getBoundingBox().inflate(5));
+            for (ItemEntity itemEntity : itemEntities) {
+                if (!itemEntity.hasPickUpDelay() && itemEntity.isAlive()) itemEntity.moveTo(living.position());
+            }
         }
     }
     

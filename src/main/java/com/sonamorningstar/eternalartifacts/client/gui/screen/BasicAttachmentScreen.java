@@ -14,10 +14,10 @@ import net.minecraft.world.item.ItemStack;
 
 public class BasicAttachmentScreen extends AbstractModContainerScreen<BasicAttachmentMenu> {
 	
-	public BasicAttachmentScreen(BasicAttachmentMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
-		super(pMenu, pPlayerInventory, pTitle);
+	public BasicAttachmentScreen(BasicAttachmentMenu menu, Inventory pPlayerInventory, Component pTitle) {
+		super(menu, pPlayerInventory, pTitle);
 		renderEffects = false;
-		setGuiTint(0xffe5ea4d);
+		setGuiTint(menu.getAttType() == 0 ? 0xffea630c : 0xff4d9fe5);
 	}
 	
 	@Override

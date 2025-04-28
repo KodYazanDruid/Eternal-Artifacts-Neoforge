@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
-import com.sonamorningstar.eternalartifacts.client.renderer.BEWLRProps;
+import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 

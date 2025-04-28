@@ -186,6 +186,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.PIPE_FILTER.get());
         handheld(ModItems.SWORD_OF_THE_TWILIGHT);
         handheld(ModItems.SWORD_OF_THE_DAWN);
+        basicItem(ModItems.SOLAR_PANEL_HELMET.get());
+        basicItem(ModItems.MAGIC_QUIVER.get());
+        basicItem(ModItems.IRON_LEATHER_GLOVES.get());
+        basicItem(ModItems.MAGNET.get());
+        withParentItemPath(ModItems.CHLOROPHYTE_REPEATER, "crossbow");
+        basicItem(ModItems.PORTABLE_FURNACE.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

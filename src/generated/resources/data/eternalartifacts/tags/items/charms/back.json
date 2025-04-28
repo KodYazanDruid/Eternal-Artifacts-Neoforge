@@ -5,6 +5,7 @@
     "eternalartifacts:ender_knapsack",
     "minecraft:elytra",
     "eternalartifacts:portable_battery",
+    "eternalartifacts:portable_furnace",
     {
       "id": "mekanism:hdpe_elytra",
       "required": false

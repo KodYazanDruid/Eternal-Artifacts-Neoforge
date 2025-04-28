@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngr
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.*;
+import net.minecraft.Util;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
@@ -29,13 +30,21 @@ import net.neoforged.neoforge.common.conditions.IConditionBuilder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.spongepowered.include.com.google.common.collect.ImmutableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 @SuppressWarnings({"unused", "SameParameterValue"})
 public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider implements IConditionBuilder {
 
-    private final List<ItemLike> MANGANESE_SMELTABLES = ImmutableList.of(ModBlocks.MANGANESE_ORE, ModBlocks.DEEPSLATE_MANGANESE_ORE, ModItems.RAW_MANGANESE);
+    private final List<ItemLike> MANGANESE_SMELTABLES = Util.make(new ArrayList<>(), list -> {
+        list.add(ModBlocks.MANGANESE_ORE);
+        list.add(ModBlocks.DEEPSLATE_MANGANESE_ORE);
+        list.add(ModItems.RAW_MANGANESE);
+        list.add(ModItems.MANGANESE_DUST);
+        list.add(ModBlocks.MOSS_MANGANESE_ORE);
+        list.add(ModBlocks.GRAVEL_MANGANESE_ORE);
+    });
     private final List<ItemLike> MARIN_SMELTABLES = ImmutableList.of(ModBlocks.MARIN_ORE, ModItems.RAW_MARIN);
 
     public RecipeProvider(PackOutput pOutput) {
@@ -54,13 +63,24 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.COOKED_MEAT_INGOT, 0.35f);
         createFoodCookingRecipe(recipeOutput, ModItems.DUCK_MEAT, ModItems.COOKED_DUCK_MEAT, 0.35f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COAL_ORE, Items.COAL, 0.1f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_COAL_ORE, Items.COAL, 0.1f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COPPER_ORE, Items.COPPER_INGOT, 0.7f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_COPPER_ORE, Items.COPPER_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_IRON_ORE, Items.IRON_INGOT, 0.7f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_IRON_ORE, Items.IRON_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_GOLD_ORE, Items.GOLD_INGOT, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_DIAMOND_ORE, Items.DIAMOND, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_DIAMOND_ORE, Items.DIAMOND, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_EMERALD_ORE, Items.EMERALD, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_EMERALD_ORE, Items.EMERALD, 1.0f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_LAPIS_ORE, Items.LAPIS_LAZULI, 0.2f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_LAPIS_ORE, Items.LAPIS_LAZULI, 0.2f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.MOSS_REDSTONE_ORE, Items.REDSTONE, 0.7f);
+        createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_REDSTONE_ORE, Items.REDSTONE, 0.7f);
         createOreSmeltingRecipe(recipeOutput, MANGANESE_SMELTABLES, ModItems.MANGANESE_INGOT, 0.7f);
         createOreSmeltingRecipe(recipeOutput, MARIN_SMELTABLES, ModItems.MARIN_INGOT, 1.0f);
         createFoodCookingRecipe(recipeOutput, ModItems.DOUGH, Items.BREAD, 0.35f);
-        createOreSmeltingRecipe(recipeOutput, ModItems.MANGANESE_DUST, ModItems.MANGANESE_INGOT, 0.7f);
 
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICKS, Blocks.SNOW_BLOCK);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_STAIRS, Blocks.SNOW_BLOCK);

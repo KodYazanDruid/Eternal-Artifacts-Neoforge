@@ -43,12 +43,6 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 		return RenderShape.MODEL;
 	}
 	
-	@Nullable
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		return super.getStateForPlacement(ctx);
-	}
-	
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);

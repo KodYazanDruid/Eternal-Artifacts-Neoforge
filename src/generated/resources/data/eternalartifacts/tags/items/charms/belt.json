@@ -2,6 +2,7 @@
   "values": [
     "minecraft:filled_map",
     "minecraft:bundle",
-    "eternalartifacts:gale_sash"
+    "eternalartifacts:gale_sash",
+    "eternalartifacts:magic_quiver"
   ]
 }

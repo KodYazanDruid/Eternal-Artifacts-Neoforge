@@ -29,7 +29,7 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
         super(ModBlockEntities.BOOK_DUPLICATOR.get(), pPos, pBlockState, BookDuplicatorMenu::new);
         setMaxProgress(500);
         setEnergy(this::createDefaultEnergy);
-        setTank(() -> createBasicTank(10000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true));
+        setTank(() -> createBasicTank(16000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, true));
         setInventory(() -> new ModItemStorage(4) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -83,7 +83,13 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
                     int level = enchant.getValue();
                     //Only level 3 and lower enchantment levels can be duped.
                     if (level > 0 && level <= 3) {
-                        progressAndCraft(inputBook.copy(), consumableBook, 1000 * level);
+                        progress(()-> tank.getFluidAmount(0) < 1000 * level, () -> {
+                            consumableBook.shrink(1);
+                            tank.drainForced(1000 * level, IFluidHandler.FluidAction.EXECUTE);
+                            ItemStack copy = new ItemStack(Items.ENCHANTED_BOOK);
+                            EnchantmentHelper.setEnchantments(Map.of(enchant.getKey(), level), copy);
+                            inventory.setStackInSlot(1, copy);
+                        }, energy);
                     }
                 }
             }
@@ -93,32 +99,16 @@ public class BookDuplicatorMachineBlockEntity extends SidedTransferMachineBlockE
                     output.isEmpty() &&
                     inputBook.getTag() != null &&
                     WrittenBookItem.getGeneration(inputBook) < 2) {
-            ItemStack copy = new ItemStack(Items.WRITTEN_BOOK);
-            CompoundTag compoundtag = inputBook.getTag().copy();
-            compoundtag.putInt("generation", WrittenBookItem.getGeneration(inputBook) + 1);
-            copy.setTag(compoundtag);
-            net.neoforged.neoforge.attachment.AttachmentUtils.copyStackAttachments(inputBook, copy);
-            progress(()-> tank.getFluidAmount(0) < 500, ()->{
+            progress(()-> tank.getFluidAmount(0) < 500, ()-> {
                 consumableBook.shrink(1);
                 tank.drainForced(500, IFluidHandler.FluidAction.EXECUTE);
+                ItemStack copy = new ItemStack(Items.WRITTEN_BOOK);
+                CompoundTag compoundtag = inputBook.getTag().copy();
+                compoundtag.putInt("generation", WrittenBookItem.getGeneration(inputBook) + 1);
+                copy.setTag(compoundtag);
+                net.neoforged.neoforge.attachment.AttachmentUtils.copyStackAttachments(inputBook, copy);
                 inventory.setStackInSlot(1, copy);
             }, energy);
-        }
-
-    }
-
-    private void progressAndCraft(ItemStack result, @Nullable ItemStack consumableBook, int nousCost) {
-        if(nousCost > tank.getFluidAmount(0)) {
-            progress = 0;
-            return;
-        }
-        energy.extractEnergyForced(energyPerTick, false);
-        progress++;
-        if (progress >= maxProgress) {
-            consumableBook.shrink(1);
-            tank.drainForced(nousCost, IFluidHandler.FluidAction.EXECUTE);
-            inventory.setStackInSlot(1, result);
-            progress = 0;
         }
     }
 }

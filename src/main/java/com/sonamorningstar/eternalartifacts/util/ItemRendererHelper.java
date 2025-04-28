@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.util;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.client.renderer.util.GhostVertexConsumer;
+import com.sonamorningstar.eternalartifacts.client.render.util.GhostVertexConsumer;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import net.minecraft.client.Minecraft;

@@ -15,7 +15,7 @@ public enum ModTiers implements Tier {
     CHLOROPHYTE(3, 1749, 10.0F, 3.0F, 20, ()-> Ingredient.of(ModItems.CHLOROPHYTE_INGOT.get())),
     COPPER(1, 192, 5.5F, 1.5F, 17, () -> Ingredient.of(Tags.Items.INGOTS_COPPER)),
     WITHER(3, 1352, 7.0F, 5.0F, 15, () -> Ingredient.of(Items.WITHER_SKELETON_SKULL)),
-    STEEL(2, 512, 6.0F, 2.5F, 16, () -> Ingredient.of(ModItems.STEEL_INGOT.get())),
+    STEEL(2, 512, 6.0F, 2.5F, 16, () -> Ingredient.of(ModTags.Items.INGOTS_STEEL)),
     BONE(1, 160, 6.0F, 2.5F, 8, () -> Ingredient.of(Tags.Items.BONES));
 
     private final int level;
