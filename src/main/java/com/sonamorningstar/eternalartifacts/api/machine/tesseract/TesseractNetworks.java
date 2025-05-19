@@ -48,8 +48,39 @@ public class TesseractNetworks extends SavedData {
 	public void removeTesseractFromNetwork(Tesseract tesseract) {
 		for (Network<?> network : networks) {
 			if (tesseracts.containsKey(network)) {
-				tesseracts.get(network).remove(tesseract);
+				var tesseractSet = tesseracts.get(network);
+				if (tesseractSet != null) {
+					tesseractSet.remove(tesseract);
+					if (tesseractSet.isEmpty()) {
+						tesseracts.remove(network);
+					}
+				}
 			}
+		}
+	}
+	
+	public void changeNetwork(Tesseract tesseract, UUID oldId, UUID newId) {
+		Network<?> oldNetwork = TesseractNetworks.getNetwork(oldId, tesseract.getLevel());
+		Network<?> newNetwork = TesseractNetworks.getNetwork(newId, tesseract.getLevel());
+		
+		if (oldNetwork != null) {
+			var oldSet = tesseracts.get(oldNetwork);
+			if (oldSet != null) {
+				oldSet.remove(tesseract);
+				if (oldSet.isEmpty()) {
+					tesseracts.remove(oldNetwork);
+				}
+			}
+		}
+		
+		if (newNetwork == null) return;
+		var newSet = tesseracts.get(newNetwork);
+		if (newSet != null) {
+			newSet.add(tesseract);
+		} else {
+			Set<Tesseract> newTesseracts = new HashSet<>();
+			newTesseracts.add(tesseract);
+			tesseracts.put(newNetwork, newTesseracts);
 		}
 	}
 	

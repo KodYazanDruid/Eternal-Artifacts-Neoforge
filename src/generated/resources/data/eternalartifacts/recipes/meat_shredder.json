@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    },
+    "X": {
+      "item": "minecraft:iron_axe"
+    }
+  },
+  "pattern": [
+    "SBX",
+    "AMA",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:meat_shredder"
+  }
+}

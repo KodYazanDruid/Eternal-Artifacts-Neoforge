@@ -53,19 +53,15 @@ public class ModBlocks {
             .randomTicks().lightLevel(litBlockEmission(9))
         ));
     public static final DeferredBlock<Block> GRAVEL_LAPIS_ORE = registerGravelOres("gravel_lapis_ore", UniformInt.of(2, 5));
+    public static final DeferredBlock<Block> GRAVEL_TIN_ORE = registerGravelOres("gravel_tin_ore");
+    public static final DeferredBlock<Block> GRAVEL_ALUMINUM_ORE = registerGravelOres("gravel_aluminum_ore");
     
     public static final DeferredBlock<Block> CHLOROPHYTE_DEBRIS = registerWithItem("chlorophyte_debris",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(0.3F).sound(SoundType.MOSS)));
-    public static final DeferredBlock<Block> MANGANESE_ORE = registerWithItem("manganese_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
-    public static final DeferredBlock<Block> DEEPSLATE_MANGANESE_ORE = registerWithItem("deepslate_manganese_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)));
     public static final DeferredBlock<Block> RAW_MANGANESE_BLOCK = registerWithItem("raw_manganese_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_IRON_BLOCK)));
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerWithItem("charcoal_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
-    public static final DeferredBlock<Block> MARIN_ORE = registerWithItem("marin_ore",
-            () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE).mapColor(DyeColor.ORANGE)));
     public static final DeferredBlock<Block> RAW_MARIN_BLOCK = registerWithItem("raw_marin_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)));
     public static final DeferredBlock<Block> MARIN_BLOCK = registerWithItem("marin_block",
@@ -88,6 +84,24 @@ public class ModBlocks {
             .randomTicks().lightLevel(litBlockEmission(9))
         ));
     public static final DeferredBlock<Block> MOSS_LAPIS_ORE = registerMossOres("moss_lapis_ore", UniformInt.of(2, 5));
+    public static final DeferredBlock<Block> MOSS_TIN_ORE = registerMossOres("moss_tin_ore");
+    public static final DeferredBlock<Block> MOSS_ALUMINUM_ORE = registerMossOres("moss_aluminum_ore");
+    
+    public static final DeferredBlock<Block> MANGANESE_ORE = registerWithItem("manganese_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
+    public static final DeferredBlock<Block> MARIN_ORE = registerWithItem("marin_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE).mapColor(DyeColor.ORANGE)));
+    public static final DeferredBlock<Block> TIN_ORE = registerWithItem("tin_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
+    public static final DeferredBlock<Block> ALUMINUM_ORE = registerWithItem("aluminum_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
+    
+    public static final DeferredBlock<Block> DEEPSLATE_MANGANESE_ORE = registerWithItem("deepslate_manganese_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)));
+    public static final DeferredBlock<Block> DEEPSLATE_TIN_ORE = registerWithItem("deepslate_tin_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)));
+    public static final DeferredBlock<Block> DEEPSLATE_ALUMINUM_ORE = registerWithItem("deepslate_aluminum_ore",
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_IRON_ORE)));
     
     public static final DeferredBlock<Block> SANDY_TILED_STONE_BRICKS = registerWithItem("sandy_tiled_stone_bricks",
             ()-> new Block(Blocks.STONE_BRICKS.properties()));

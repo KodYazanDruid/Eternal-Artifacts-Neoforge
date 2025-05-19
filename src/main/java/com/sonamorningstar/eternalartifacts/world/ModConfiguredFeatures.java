@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.world;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
@@ -37,11 +38,16 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_EMERALD_ORE = registerKey("gravel_emerald_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_REDSTONE_ORE = registerKey("gravel_redstone_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_LAPIS_ORE = registerKey("gravel_lapis_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_TIN_ORE = registerKey("gravel_tim_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GRAVEL_ALUMINUM_ORE = registerKey("gravel_aluminum_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGANESE_ORE = registerKey("manganese_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MANGANESE_ORE_SMALL = registerKey("manganese_ore_small");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE = registerKey("tin_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> TIN_ORE_SMALL = registerKey("tin_ore_small");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ALUMINUM_ORE = registerKey("aluminum_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> ALUMINUM_ORE_SMALL = registerKey("aluminum_ore_small");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TIGRIS_FLOWER = registerKey("tigris_flower");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("crude_oil_lake_deepslate");
-    public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_MANGANESE_ORE = registerKey("moss_manganese_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_COAL_ORE = registerKey("moss_coal_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_COPPER_ORE = registerKey("moss_copper_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_IRON_ORE = registerKey("moss_iron_ore");
@@ -50,16 +56,29 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_EMERALD_ORE = registerKey("moss_emerald_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_REDSTONE_ORE = registerKey("moss_redstone_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_LAPIS_ORE = registerKey("moss_lapis_ore");
-    
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_TIN_ORE = registerKey("moss_tim_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_ALUMINUM_ORE = registerKey("moss_aluminum_ore");
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(MODID, name));
     }
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
         RuleTest ruleTestStone = new TagMatchTest(BlockTags.STONE_ORE_REPLACEABLES);
         RuleTest ruleTestDeepslate = new TagMatchTest(BlockTags.DEEPSLATE_ORE_REPLACEABLES);
+        RuleTest ruleTestMoss = new TagMatchTest(ModTags.Blocks.MOSS_ORE_REPLACEABLES);
         List<OreConfiguration.TargetBlockState> manganeseOres = List.of(
             OreConfiguration.target(ruleTestStone, ModBlocks.MANGANESE_ORE.get().defaultBlockState()),
-            OreConfiguration.target(ruleTestDeepslate, ModBlocks.DEEPSLATE_MANGANESE_ORE.get().defaultBlockState())
+            OreConfiguration.target(ruleTestDeepslate, ModBlocks.DEEPSLATE_MANGANESE_ORE.get().defaultBlockState()),
+            OreConfiguration.target(ruleTestMoss, ModBlocks.MOSS_MANGANESE_ORE.get().defaultBlockState())
+        );
+        List<OreConfiguration.TargetBlockState> tinOres = List.of(
+            OreConfiguration.target(ruleTestStone, ModBlocks.TIN_ORE.get().defaultBlockState()),
+            OreConfiguration.target(ruleTestDeepslate, ModBlocks.DEEPSLATE_TIN_ORE.get().defaultBlockState()),
+            OreConfiguration.target(ruleTestMoss, ModBlocks.MOSS_TIN_ORE.get().defaultBlockState())
+        );
+        List<OreConfiguration.TargetBlockState> aluminumOres = List.of(
+            OreConfiguration.target(ruleTestStone, ModBlocks.ALUMINUM_ORE.get().defaultBlockState()),
+            OreConfiguration.target(ruleTestDeepslate, ModBlocks.DEEPSLATE_ALUMINUM_ORE.get().defaultBlockState()),
+            OreConfiguration.target(ruleTestMoss, ModBlocks.MOSS_ALUMINUM_ORE.get().defaultBlockState())
         );
         registerGravelOre(context, GRAVEL_MANGANESE_ORE, ModBlocks.GRAVEL_MANGANESE_ORE);
         registerGravelOre(context, GRAVEL_COAL_ORE, ModBlocks.GRAVEL_COAL_ORE);
@@ -70,17 +89,25 @@ public class ModConfiguredFeatures {
         registerGravelOre(context, GRAVEL_EMERALD_ORE, ModBlocks.GRAVEL_EMERALD_ORE);
         registerGravelOre(context, GRAVEL_REDSTONE_ORE, ModBlocks.GRAVEL_REDSTONE_ORE);
         registerGravelOre(context, GRAVEL_LAPIS_ORE, ModBlocks.GRAVEL_LAPIS_ORE);
-        registerMossOre(context, MOSS_MANGANESE_ORE, ModBlocks.MOSS_MANGANESE_ORE, 9);
+        registerGravelOre(context, GRAVEL_TIN_ORE, ModBlocks.GRAVEL_TIN_ORE);
+        registerGravelOre(context, GRAVEL_ALUMINUM_ORE, ModBlocks.GRAVEL_ALUMINUM_ORE);
         registerMossOre(context, MOSS_COAL_ORE, ModBlocks.MOSS_COAL_ORE, 9);
         registerMossOre(context, MOSS_COPPER_ORE, ModBlocks.MOSS_COPPER_ORE, 9);
         registerMossOre(context, MOSS_IRON_ORE, ModBlocks.MOSS_IRON_ORE, 9);
         registerMossOre(context, MOSS_GOLD_ORE, ModBlocks.MOSS_GOLD_ORE, 9);
-        registerMossOre(context, MOSS_DIAMOND_ORE, ModBlocks.MOSS_DIAMOND_ORE, 9);
-        registerMossOre(context, MOSS_EMERALD_ORE, ModBlocks.MOSS_EMERALD_ORE, 9);
+        registerMossOre(context, MOSS_DIAMOND_ORE, ModBlocks.MOSS_DIAMOND_ORE, 4);
+        registerMossOre(context, MOSS_EMERALD_ORE, ModBlocks.MOSS_EMERALD_ORE, 4);
         registerMossOre(context, MOSS_REDSTONE_ORE, ModBlocks.MOSS_REDSTONE_ORE, 9);
         registerMossOre(context, MOSS_LAPIS_ORE, ModBlocks.MOSS_LAPIS_ORE, 9);
+        registerMossOre(context, MOSS_TIN_ORE, ModBlocks.MOSS_TIN_ORE, 9);
+        registerMossOre(context, MOSS_ALUMINUM_ORE, ModBlocks.MOSS_ALUMINUM_ORE, 9);
         context.register(MANGANESE_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(manganeseOres, 9)));
         context.register(MANGANESE_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(manganeseOres, 4)));
+        context.register(TIN_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(tinOres, 9)));
+        context.register(TIN_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(tinOres, 4)));
+        context.register(ALUMINUM_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(aluminumOres, 9)));
+        context.register(ALUMINUM_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(aluminumOres, 4)));
+        
         context.register(TIGRIS_FLOWER, new ConfiguredFeature<>(Feature.NO_BONEMEAL_FLOWER, new RandomPatchConfiguration(64, 6, 2,
             PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
                 new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.TIGRIS_FLOWER.get())

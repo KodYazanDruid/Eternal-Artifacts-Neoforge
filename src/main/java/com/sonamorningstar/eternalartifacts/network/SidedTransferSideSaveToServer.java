@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -13,15 +13,15 @@ import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public record SidedTransferSideSaveToServer(int index, SidedTransferMachineBlockEntity.TransferType type, BlockPos pos) implements CustomPacketPayload {
+public record SidedTransferSideSaveToServer(int index, SidedTransferMachine.TransferType type, BlockPos pos) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "sidedtransferside");
 
     public static SidedTransferSideSaveToServer create(FriendlyByteBuf buf) {
-        return new SidedTransferSideSaveToServer(buf.readInt(), buf.readEnum(SidedTransferMachineBlockEntity.TransferType.class), buf.readBlockPos());
+        return new SidedTransferSideSaveToServer(buf.readInt(), buf.readEnum(SidedTransferMachine.TransferType.class), buf.readBlockPos());
     }
 
-    public static SidedTransferSideSaveToServer create(int index, SidedTransferMachineBlockEntity.TransferType type, BlockPos pos) {
+    public static SidedTransferSideSaveToServer create(int index, SidedTransferMachine.TransferType type, BlockPos pos) {
         return new SidedTransferSideSaveToServer(index, type, pos);
     }
 
@@ -41,8 +41,8 @@ public record SidedTransferSideSaveToServer(int index, SidedTransferMachineBlock
         ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
             Level level = player.level();
             BlockEntity entity = level.getBlockEntity(pos);
-            if(entity instanceof SidedTransferMachineBlockEntity<?> sided) {
-                Map<Integer, SidedTransferMachineBlockEntity.TransferType> sideConfigs = sided.getSideConfigs();
+            if(entity instanceof SidedTransferMachine<?> sided) {
+                Map<Integer, SidedTransferMachine.TransferType> sideConfigs = sided.getSideConfigs();
                 sideConfigs.put(index, type);
                 sided.sendUpdate();
                 sided.invalidateCapabilities();

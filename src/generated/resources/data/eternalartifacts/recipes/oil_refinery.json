@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    " J ",
+    "JMJ",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:oil_refinery"
+  }
+}

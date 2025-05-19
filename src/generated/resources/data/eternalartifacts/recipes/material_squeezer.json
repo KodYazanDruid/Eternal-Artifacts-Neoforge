@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:ingots/brick"
+    },
+    "R": {
+      "item": "minecraft:piston"
+    }
+  },
+  "pattern": [
+    "RPJ",
+    "IMI",
+    "DCD"
+  ],
+  "result": {
+    "item": "eternalartifacts:material_squeezer"
+  }
+}

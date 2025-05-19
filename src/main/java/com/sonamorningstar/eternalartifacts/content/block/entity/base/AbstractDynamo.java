@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public abstract class AbstractDynamo<MENU extends DynamoMenu> extends MachineBlockEntity<MENU> implements ITickableClient {
+public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<MENU> implements ITickableClient {
 	public AbstractDynamo(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, MENU> quadF) {
 		super(type, pos, blockState, quadF);
 		setEnergy(() -> createBasicEnergy(100000, 5000, false, true));

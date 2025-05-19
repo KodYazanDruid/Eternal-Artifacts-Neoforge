@@ -3,8 +3,7 @@ package com.sonamorningstar.eternalartifacts.api.machine;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.records.ComponentInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import lombok.Getter;
@@ -17,12 +16,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 @Getter
 @RequiredArgsConstructor
 public class GenericScreenInfo {
-    private final GenericMachineBlockEntity machine;
+    private final GenericMachine machine;
     private int arrowXOffset = 0;
     private int arrowYOffset = 0;
     @Setter

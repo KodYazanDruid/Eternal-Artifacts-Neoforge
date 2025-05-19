@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
-public class MachineSixWayBlock <T extends MachineBlockEntity<? extends AbstractMachineMenu>> extends BaseMachineBlock<T>{
+public class MachineSixWayBlock <T extends Machine<? extends AbstractMachineMenu>> extends BaseMachineBlock<T>{
 	public MachineSixWayBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> fun) {
 		super(pProperties, fun);
 		registerDefaultState(defaultBlockState().setValue(BlockStateProperties.FACING, Direction.NORTH));

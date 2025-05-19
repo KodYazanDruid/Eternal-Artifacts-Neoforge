@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.recipe.AlloyingRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.SizedIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -15,7 +15,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class AlloySmelter extends GenericMachineBlockEntity {
+public class AlloySmelter extends GenericMachine {
     public AlloySmelter(BlockPos pos, BlockState blockState) {
         super(ModMachines.ALLOY_SMELTER, pos, blockState);
         setEnergy(this::createDefaultEnergy);

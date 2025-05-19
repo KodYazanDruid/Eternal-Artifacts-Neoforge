@@ -5,20 +5,20 @@ import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<GenericMachineMenu>{
+public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<GenericMachineMenu> {
     @Getter
-    private final GenericMachineBlockEntity machine;
+    private final GenericMachine machine;
     private final GenericScreenInfo screenInfo;
     public GenericSidedMachineScreen(GenericMachineMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
-        this.machine = ((GenericMachineBlockEntity) menu.getBlockEntity());
+        this.machine = ((GenericMachine) menu.getBlockEntity());
         this.screenInfo = machine.getScreenInfo();
     }
 
@@ -54,9 +54,9 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
             }
         }
 
-        screenInfo.getComponents().forEach(((component, info) -> {
-            gui.drawString(font, component, info.x(), info.y(), info.color(), info.dropShadow());
-        }));
+        screenInfo.getComponents().forEach(((component, info) ->
+            gui.drawString(font, component, info.x(), info.y(), info.color(), info.dropShadow())
+        ));
 
         if(screenInfo.isShouldDrawArrow()) renderProgressArrow(gui, leftPos + menu.arrowX, topPos + menu.arrowY, mx, my);
     }

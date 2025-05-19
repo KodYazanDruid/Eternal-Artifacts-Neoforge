@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class BlockPlacer extends GenericMachineBlockEntity {
+public class BlockPlacer extends GenericMachine {
 	public boolean isContinuous = false;
 	public boolean blockMode = true;
 	public boolean fluidMode = false;

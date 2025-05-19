@@ -8,7 +8,7 @@
     "id": "minecraft:sponge"
   },
   "outputFluid": {
-    "Amount": 100,
+    "Amount": 125,
     "FluidName": "minecraft:water"
   }
 }

@@ -71,6 +71,9 @@ public class TesseractMenu extends AbstractModContainerMenu {
 			tesseract.setNetworkId(null);
 			rebuildPanel(sp, true);
 			return true;
+		} else if (id == 3000) {
+			tesseract.cycleTransfer();
+			return true;
 		} else if (id >= 5000) {
 			int index = id - 5000;
 			if (index < gatheredNetworks.size()) {

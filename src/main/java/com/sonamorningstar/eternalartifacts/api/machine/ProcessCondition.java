@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.api.machine;
 
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 
 public class ProcessCondition {
-    private final MachineBlockEntity<?> machine;
+    private final Machine<?> machine;
     private final ModItemStorage inventory;
     private final List<Integer> outputSlots;
     private final List<ItemStack> queuedItemStackImports = new ArrayList<>();
@@ -23,7 +23,7 @@ public class ProcessCondition {
     private AbstractFluidTank outputTank;
     private BooleanSupplier supplier;
     
-    public ProcessCondition(MachineBlockEntity<?> machine) {
+    public ProcessCondition(Machine<?> machine) {
         this.machine = machine;
         this.inventory = machine.inventory;
         this.outputSlots = machine.outputSlots;

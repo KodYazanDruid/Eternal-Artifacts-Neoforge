@@ -13,18 +13,19 @@ import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 @OnlyIn(Dist.CLIENT)
 public class SpellShaders {
 	private static final Map<String, ShaderInstance> shaders = new HashMap<>();
 	
-	public static ShaderInstance SPELL_CLOUD;
+	public static Supplier<ShaderInstance> SPELL_CLOUD;
 	
 	public static void registerShaders(RegisterShadersEvent event) {
 		try {
-			registerShader("spell_cloud", DefaultVertexFormat.POSITION_COLOR_TEX, event);
+			registerShader("spell_cloud", DefaultVertexFormat.POSITION_COLOR, event);
 		} catch (IOException e) {
-			EternalArtifacts.LOGGER.error("Shader kayıt hatası", e);
+			EternalArtifacts.LOGGER.error("Failed to parse shader: ", e);
 		}
 	}
 	
@@ -34,11 +35,11 @@ public class SpellShaders {
 			new ResourceLocation(EternalArtifacts.MODID, name),
 			vertexFormat
 		);
-		event.registerShader(shader, (shaderInstance) -> {
+		event.registerShader(shader, shaderInstance -> {
 			shaders.put(name, shaderInstance);
 			
 			if (name.equals("spell_cloud")) {
-				SPELL_CLOUD = shaderInstance;
+				SPELL_CLOUD = () -> shaderInstance;
 			}
 		});
 	}

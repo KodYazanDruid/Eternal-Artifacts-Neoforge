@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/bronze"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "F": {
+      "item": "minecraft:flint"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "FPF",
+    "BMB",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:industrial_macerator"
+  }
+}

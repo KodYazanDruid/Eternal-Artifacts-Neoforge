@@ -5,8 +5,8 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.MachineItemFluidS
 import com.sonamorningstar.eternalartifacts.capabilities.item.MachineItemItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import lombok.Getter;
@@ -23,7 +23,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 @RequiredArgsConstructor
 public class
-MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEntity<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem> implements ItemLike {
+MachineDeferredHolder<M extends AbstractMachineMenu, BE extends Machine<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem> implements ItemLike {
     private final DeferredHolder<MenuType<?>, MenuType<M>> menu;
     private final DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntity;
     private final DeferredHolder<Block, MB> block;
@@ -55,13 +55,13 @@ MachineDeferredHolder<M extends AbstractMachineMenu, BE extends MachineBlockEnti
     //TODO: Complete item capabilities.
     public void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
-            if (be instanceof SidedTransferMachineBlockEntity<?> sided) {
+            if (be instanceof SidedTransferMachine<?> sided) {
                 if(sided.inventory != null) return CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots);
                 else return null;
             } else return be.inventory;
         });
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
-            if (be instanceof SidedTransferMachineBlockEntity<?> sided) {
+            if (be instanceof SidedTransferMachine<?> sided) {
                 if(sided.tank != null) return CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx);
                 else return null;
             } else return be.tank;

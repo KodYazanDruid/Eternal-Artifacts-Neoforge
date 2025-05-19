@@ -1,14 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
-import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,8 +13,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -46,7 +41,7 @@ public class WrenchItem extends DiggerItem {
         BlockPos pos = ctx.getClickedPos();
         BlockEntity be = level.getBlockEntity(pos);
         
-        if (!level.isClientSide() && be instanceof AbstractPipeBlockEntity<?> pipe) {
+        /*if (!level.isClientSide() && be instanceof AbstractPipeBlockEntity<?> pipe) {
             System.out.println("Pipe: " + pipe.getBlockPos());
             System.out.println("Printing sources: ");
             pipe.allSources.forEach((k, v) -> {
@@ -58,7 +53,24 @@ public class WrenchItem extends DiggerItem {
                 System.out.println("Target: " + k);
                 System.out.println("Target Cap: " + v.getCapability());
             });
-        }
+        }*/
+        /*if (!level.isClientSide() && be instanceof Tesseract tesseract) {
+            var map = TesseractNetworks.get(level).getTesseracts();
+            map.forEach((k, v) -> {
+                System.out.println("Network ID: " + k.getUuid());
+                System.out.println("Network: " + k.getName());
+                System.out.println("Type: " + k.getCapabilityClass().getSimpleName());
+                System.out.println("Tesseracts: [");
+                for (Tesseract tesseract1 : v) {
+                    System.out.println("  Tesseract: " + tesseract1.getBlockPos());
+                    System.out.println("  Network ID: " + tesseract1.getNetworkId());
+                    System.out.println("  Network: " + tesseract1.getCachedNetwork().getName());
+                    System.out.println("  Tesseract: " + tesseract1);
+                    System.out.println("  ");
+                }
+                System.out.println("]");
+            });
+        }*/
         
         return super.useOn(ctx);
     }

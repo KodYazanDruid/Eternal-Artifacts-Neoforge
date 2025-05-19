@@ -8,6 +8,8 @@
     "eternalartifacts:gravel_diamond_ore",
     "eternalartifacts:gravel_emerald_ore",
     "eternalartifacts:gravel_redstone_ore",
-    "eternalartifacts:gravel_lapis_ore"
+    "eternalartifacts:gravel_lapis_ore",
+    "eternalartifacts:gravel_tin_ore",
+    "eternalartifacts:gravel_aluminum_ore"
   ]
 }

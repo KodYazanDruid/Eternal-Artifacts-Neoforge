@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.recipe.MaceratingRecipe;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
@@ -13,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class IndustrialMacerator extends GenericMachineBlockEntity {
+public class IndustrialMacerator extends GenericMachine {
     public IndustrialMacerator(BlockPos pos, BlockState blockState) {
         super(ModMachines.INDUSTRIAL_MACERATOR, pos, blockState);
         setEnergy(this::createDefaultEnergy);

@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
@@ -18,7 +18,7 @@ public class GenericMachineMenu extends AbstractMachineMenu {
     public GenericMachineMenu(@Nullable MenuType<?> menuType, int id, Inventory inv, BlockEntity entity, ContainerData data) {
         super(menuType, id, inv, entity, data);
         int marginX = 7;
-        this.screenInfo = ((GenericMachineBlockEntity) this.getBlockEntity()).getScreenInfo();
+        this.screenInfo = ((GenericMachine) this.getBlockEntity()).getScreenInfo();
         if (beEnergy != null) marginX += 18;
         if (beTank != null) marginX += 18;
         this.arrowX = screenInfo.isOverrideArrowPos() ? screenInfo.getArrowX() : marginX + 56;

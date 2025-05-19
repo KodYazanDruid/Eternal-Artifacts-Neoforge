@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import com.mojang.authlib.GameProfile;
 import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -20,7 +20,7 @@ import java.util.UUID;
 public class FakePlayerHelper {
     private static final GameProfile MOD_PROFILE = new GameProfile(UUID.fromString("6832a398-12c4-42bb-924c-dd8a14eb15f6"), "EternalArtifacts");
     private static Map<LevelAccessor, FakePlayer> levelFakePlayers = new HashMap<>();
-    private static Map<MachineBlockEntity<?>, FakePlayer> machineFakePlayers = new HashMap<>();
+    private static Map<Machine<?>, FakePlayer> machineFakePlayers = new HashMap<>();
 
     public static FakePlayer getFakePlayer(Level level) {
         return FakePlayerHelper.levelFakePlayers.computeIfAbsent(level, sLevel -> {
@@ -30,7 +30,7 @@ public class FakePlayerHelper {
                 return null;
         });
     }
-    public static FakePlayer getFakePlayer(MachineBlockEntity<?> machine, Level level) {
+    public static FakePlayer getFakePlayer(Machine<?> machine, Level level) {
         return FakePlayerHelper.machineFakePlayers.computeIfAbsent(machine, mMachine -> {
             if(level instanceof ServerLevel sl)
                 return new ModFakePlayer(sl, getProfileForMachine(mMachine));
@@ -39,12 +39,12 @@ public class FakePlayerHelper {
         });
     }
     
-    private static GameProfile getProfileForMachine(MachineBlockEntity<?> machine) {
+    private static GameProfile getProfileForMachine(Machine<?> machine) {
         String path = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(machine.getType()).getPath();
         return new GameProfile(UUID.randomUUID(), "EternalArtifacts"+TooltipHelper.prettyNameNoBlanks(path));
     }
     
-    public static void removeFakePlayer(MachineBlockEntity<?> machine) {
+    public static void removeFakePlayer(Machine<?> machine) {
         FakePlayer fakePlayer = machineFakePlayers.remove(machine);
         if(fakePlayer != null) {
             fakePlayer.discard();

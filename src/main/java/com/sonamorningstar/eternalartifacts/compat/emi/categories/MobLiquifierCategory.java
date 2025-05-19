@@ -69,7 +69,7 @@ public class MobLiquifierCategory extends EAEmiRecipe {
         widgets.addTexture(HEART_TEXTURE, 46, 8);
         widgets.addTexture(EmiTexture.EMPTY_ARROW, 34, 17);
         for(int i = 0; i < outputs.size(); i++) {
-            widgets.addSlot(outputs.get(i), 64 + i * 20, 16);
+            widgets.addTank(outputs.get(i), 64 + i * 20, 0, 18, 50, 16000);
         }
     }
     

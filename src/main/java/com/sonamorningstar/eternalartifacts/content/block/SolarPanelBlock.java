@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.core.ModProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +13,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
@@ -46,7 +45,7 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 	@Override
 	public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
 		BlockEntity blockEntity = level.getBlockEntity(pos);
-		if (blockEntity instanceof MachineBlockEntity<?> machine) {
+		if (blockEntity instanceof Machine<?> machine) {
 			int resistance = machine.getEnchantmentLevel(Enchantments.BLAST_PROTECTION) + 1;
 			return super.getExplosionResistance(state, level, pos, explosion) * resistance;
 		}
@@ -57,7 +56,7 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		super.use(state, level, pos, player, hand, hit);
 		BlockEntity be = level.getBlockEntity(pos);
-		if (be instanceof MachineBlockEntity<?> mbe && mbe.canConstructMenu()) {
+		if (be instanceof Machine<?> mbe && mbe.canConstructMenu()) {
 			AbstractMachineMenu.openContainer(player, pos);
 			return InteractionResult.sidedSuccess(level.isClientSide());
 		}
@@ -80,7 +79,7 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity be = level.getBlockEntity(pos);
-		if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
+		if (be instanceof Machine<?> mbe && stack.hasTag()) {
 			mbe.loadEnchants(stack.getEnchantmentTags());
 			for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
 				mbe.onEnchanted(entry.getKey(), entry.getValue());
@@ -94,7 +93,7 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 				else energy.receiveEnergy(energyStack.getEnergyStored(), false);
 			}
 		}
-		if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
+		if (be instanceof Machine<?> mbe && stack.hasTag()) {
 			CompoundTag nbt = stack.getTag();
 			if (nbt.contains("MachineData")) {
 				mbe.loadContents(nbt.getCompound("MachineData"));

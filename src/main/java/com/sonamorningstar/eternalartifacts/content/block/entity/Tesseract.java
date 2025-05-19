@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
@@ -25,6 +26,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 	private UUID networkId = null;
 	@Nullable
 	private Network<?> cachedNetwork = null;
+	private TransferMode transferMode = TransferMode.BOTH;
 	
 	public Tesseract(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.TESSERACT.get(), pos, state);
@@ -39,6 +41,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 		if (networkId != null) {
 			tag.putUUID(SELECTED_NETWORK, networkId);
 		}
+		tag.putString("TransferMode", transferMode.name());
 	}
 	
 	@Override
@@ -47,12 +50,18 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 		if (tag.contains(SELECTED_NETWORK)) {
 			networkId = tag.getUUID(SELECTED_NETWORK);
 		}
+		try {
+			transferMode = TransferMode.valueOf(tag.getString("TransferMode"));
+		} catch (IllegalArgumentException e) {
+			EternalArtifacts.LOGGER.error("Invalid transfer mode in Tesseract NBT: \"{}\"", tag.getString("TransferMode"));
+			transferMode = TransferMode.BOTH;
+		}
 	}
 	
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		if (!level.isClientSide()) cachedNetwork = TesseractNetworks.getNetwork(networkId, level);
+		setNetworkId(networkId);
 	}
 	
 	@Override
@@ -61,26 +70,31 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 		if (!level.isClientSide()) TesseractNetworks.get(level).removeTesseractFromNetwork(this);
 	}
 	
-	public void setNetworkId(@Nullable UUID networkId) {
+	public void cycleTransfer() {
+		transferMode = TransferMode.values()[(transferMode.ordinal() + 1) % TransferMode.values().length];
+		invalidateCapabilities();
+		sendUpdate();
+	}
+	
+	public void setNetworkId(@Nullable UUID newId) {
 		//Network id is only useful on screen and menu layout in client.
 		//Network logic is handled on server side.
 		if (level.isClientSide()) {
-			if (networkId == null) {
+			if (newId == null) {
 				this.networkId = null;
 				this.cachedNetwork = null;
 			} else {
-				this.networkId = networkId;
+				this.networkId = newId;
 			}
 		} else {
-			this.networkId = networkId;
-			if (networkId != null) {
-				this.cachedNetwork = TesseractNetworks.getNetwork(networkId, level);
-				TesseractNetworks.get(level).getTesseracts().get(cachedNetwork).add(this);
-			}
-			else {
-				this.cachedNetwork = null;
+			if (newId != null) {
+				TesseractNetworks.get(level).changeNetwork(this, networkId, newId);
+				this.cachedNetwork = TesseractNetworks.getNetwork(newId, level);
+			} else {
 				TesseractNetworks.get(level).removeTesseractFromNetwork(this);
+				this.cachedNetwork = null;
 			}
+			this.networkId = newId;
 			invalidateCapabilities();
 			sendUpdate();
 		}
@@ -96,6 +110,13 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 	public AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
 		return new TesseractMenu(id, inv, this,
 			TesseractNetworks.get(player.level()).getNetworksForPlayer(player));
+	}
+	
+	public enum TransferMode {
+		BOTH,
+		EXTRACT_ONLY,
+		INSERT_ONLY,
+		NONE
 	}
 	
 }

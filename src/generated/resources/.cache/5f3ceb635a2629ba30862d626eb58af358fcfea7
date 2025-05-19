@@ -1,4 +1,4 @@
-// 1.20.4	2025-04-27T19:45:10.0283235	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-05-14T18:08:05.3241287	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 c5fddb42131dcc6ef3e7acc713c0ae7c5a3c60bf data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -30,16 +30,20 @@ f36fd97d0265cc281f068806274db8d78e53ca1a data/forge/tags/items/fruits/apple.json
 ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.json
 91aab86753deb913a975f3639150d05d0706b6fd data/forge/tags/items/fruits/orange.json
 9dc670d8b676a075a5f9225eb5f61243e0f96088 data/forge/tags/items/heads.json
-18931c61a3941211d43d6c098acb50d690c87af0 data/forge/tags/items/ingots.json
+9772ddda3bfc46b53874667ba03616ac36f3cdb0 data/forge/tags/items/ingots.json
+ea2d8731e74b80ccd52a531d82523ff15ce55e3e data/forge/tags/items/ingots/aluminum.json
+14fd303c44c858bd6ca164c7f375cf7431147720 data/forge/tags/items/ingots/bronze.json
 0cef74bc1b863aaeeb0e539a112a731f1dceed42 data/forge/tags/items/ingots/manganese.json
 d5c8916de212728a3799453c1fd385f5435f182d data/forge/tags/items/ingots/meat.json
 49561d1964884e94195f462abd9a9e82efa0365d data/forge/tags/items/ingots/raw_meat.json
 239297daaaa2a69b32fbf9f48620dda0a50472ba data/forge/tags/items/ingots/steel.json
+09158ebba3dd655510a1717df1eb5b5d7f4ba3d7 data/forge/tags/items/ingots/tin.json
 1df18fc4e00aa26efa910d16d8e5f43b52f9d423 data/forge/tags/items/nuggets.json
 38e6d8d327693b752cc68363667a1e10268d9e15 data/forge/tags/items/nuggets/copper.json
 9f8737be4c7afb21a8efe8042bd46f129c400ecc data/forge/tags/items/nuggets/experience.json
 c3f9a87145bbbc37d14f6c773ae4678299c7baac data/forge/tags/items/nuggets/manganese.json
 dbcff27a2762da2d30570d3e4cdf9f134fd38c77 data/forge/tags/items/nuggets/steel.json
+18a08ad432d7d8b99b4a7151182c6ba775e6428f data/forge/tags/items/ores/aluminum.json
 795d80d60fea32795e44e5c4352dbb4144429d53 data/forge/tags/items/ores/coal.json
 c730984e92ed36d4487748e4c79cad9e282bab55 data/forge/tags/items/ores/copper.json
 c93017d3ac10cefdaa781fd21764fc1059998315 data/forge/tags/items/ores/diamond.json
@@ -49,9 +53,12 @@ da265234fc1f3221e8568661450736c444c9be57 data/forge/tags/items/ores/iron.json
 d13d4b802ee4b0c74ee99980bbe607fd09a9a94d data/forge/tags/items/ores/lapis.json
 5ed58760c8541f9c4d77dda6d464072ddb15460c data/forge/tags/items/ores/manganese.json
 f2817eece7e8244585c75a72fd0e6782110fd052 data/forge/tags/items/ores/redstone.json
+7d36624524286c9eca8863072219d26e2801480b data/forge/tags/items/ores/tin.json
 bc5216995fbc1af0ccb662a4f8008aaed727fb70 data/forge/tags/items/plastic_sheets.json
-cda4c91807e5f930a6389f2eec42507b6af9021a data/forge/tags/items/raw_materials.json
+82db71f7158899e4f66991898cc75d518980d350 data/forge/tags/items/raw_materials.json
+e758efc4b5ef81f0051bbf58344b957307c2274f data/forge/tags/items/raw_materials/aluminum.json
 6602563629da6ca1cc5e0f008351a77700de8c54 data/forge/tags/items/raw_materials/manganese.json
+9531f61aa53048c39e1ab8d1f1502b3f6c3433b1 data/forge/tags/items/raw_materials/tin.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json

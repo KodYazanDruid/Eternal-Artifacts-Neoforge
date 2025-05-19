@@ -42,6 +42,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addCategory(MelterCategory.MELTER_CATEGORY);
         registry.addCategory(SolidifierCategory.SOLIDIFIER_CATEGORY);
         registry.addCategory(HammeringCategory.HAMMERING_CATEGORY);
+        registry.addCategory(FluidMixingCategory.FLUID_MIXING_CATEGORY);
 
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModMachines.ADVANCED_CRAFTER.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModItems.PORTABLE_CRAFTER));
@@ -65,6 +66,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(MelterCategory.MELTER_CATEGORY, EmiStack.of(ModMachines.MELTING_CRUCIBLE.getItem()));
         registry.addWorkstation(SolidifierCategory.SOLIDIFIER_CATEGORY, EmiStack.of(ModMachines.SOLIDIFIER.getItem()));
         registry.addWorkstation(HammeringCategory.HAMMERING_CATEGORY, EmiIngredient.of(ModTags.Items.TOOLS_HAMMER));
+        registry.addWorkstation(FluidMixingCategory.FLUID_MIXING_CATEGORY, EmiStack.of(ModMachines.FLUID_MIXER.getItem()));
 
         registry.addRecipe(new MeatPackerCategory());
         HammeringCategory.fillRecipes(registry);
@@ -78,6 +80,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         SqueezingCategory.fillRecipes(registry);
         MelterCategory.fillRecipes(registry);
         SolidifierCategory.fillRecipes(registry);
+        FluidMixingCategory.fillRecipes(registry);
 
         List<Item> items = BuiltInRegistries.ITEM.getTag(ModTags.Items.GARDENING_POT_SUITABLE)
                 .map(holders -> holders.stream().map(Holder::value).toList()).orElseGet(ArrayList::new);

@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.content.item.base.EnergyRendererItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
@@ -39,7 +39,7 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
         BlockPos pos = ctx.getClickedPos();
         Player player = ctx.getPlayer();
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof SidedTransferMachineBlockEntity<?> machine && player != null) {
+        if (blockEntity instanceof SidedTransferMachine<?> machine && player != null) {
             IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
             if (energy == null) return InteractionResult.PASS;
             if (player.isShiftKeyDown()) {
@@ -114,7 +114,7 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                         case 5 -> direction = "back";
                     }
                     int color = ChatFormatting.WHITE.getColor();
-                    switch (SidedTransferMachineBlockEntity.TransferType.valueOf(entry.getString("Type"))) {
+                    switch (SidedTransferMachine.TransferType.valueOf(entry.getString("Type"))) {
                         case NONE -> color = ChatFormatting.RED.getColor();
                         case PULL -> color = ChatFormatting.BLUE.getColor();
                         case PUSH -> color = ChatFormatting.GOLD.getColor();
@@ -164,7 +164,7 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
         }
     }
 
-    private void saveConfiguration(ItemStack drive, SidedTransferMachineBlockEntity<?> machine) {
+    private void saveConfiguration(ItemStack drive, SidedTransferMachine<?> machine) {
         CompoundTag nbt = drive.getOrCreateTag();
         CompoundTag tag = new CompoundTag();
         ListTag sideConfigs = new ListTag();

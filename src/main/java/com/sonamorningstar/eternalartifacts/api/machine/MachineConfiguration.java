@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.api.machine;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.nbt.CompoundTag;
@@ -11,13 +11,13 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity.TransferType;
-import static com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity.RedstoneType;
+import static com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine.TransferType;
+import static com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine.RedstoneType;
 
 @Getter
 @RequiredArgsConstructor
 public class MachineConfiguration implements INBTSerializable<CompoundTag> {
-    private final SidedTransferMachineBlockEntity<?> machine;
+    private final SidedTransferMachine<?> machine;
     private final SideConfig sideConfig = new SideConfig();
     private final RedstoneConfig redstoneConfig = new RedstoneConfig();
     private final AutoConfig autoConfig = new AutoConfig();

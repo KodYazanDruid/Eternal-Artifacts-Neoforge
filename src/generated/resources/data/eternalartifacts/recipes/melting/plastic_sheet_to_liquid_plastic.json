@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:melting",
+  "input": {
+    "item": "eternalartifacts:plastic_sheet"
+  },
+  "output": {
+    "Amount": 250,
+    "FluidName": "eternalartifacts:liquid_plastic"
+  }
+}

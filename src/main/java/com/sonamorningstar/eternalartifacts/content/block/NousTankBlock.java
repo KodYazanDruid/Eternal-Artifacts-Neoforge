@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.NousTank;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -20,9 +20,9 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-public class NousTankBlock extends MachineFourWayBlock<NousTankBlockEntity> {
+public class NousTankBlock extends MachineFourWayBlock<NousTank> {
     public NousTankBlock(Properties pProperties) {
-        super(pProperties, NousTankBlockEntity::new);
+        super(pProperties, NousTank::new);
     }
 
     private static final VoxelShape SHAPE = BlockHelper.generateByArea(14, 14, 14, 1, 0, 1);

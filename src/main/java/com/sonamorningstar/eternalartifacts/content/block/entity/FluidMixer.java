@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.recipe.FluidMixingRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.ItemFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class FluidMixer extends GenericMachineBlockEntity {
+public class FluidMixer extends GenericMachine {
 	public FluidMixer(BlockPos pos, BlockState blockState) {
 		super(ModMachines.FLUID_MIXER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);

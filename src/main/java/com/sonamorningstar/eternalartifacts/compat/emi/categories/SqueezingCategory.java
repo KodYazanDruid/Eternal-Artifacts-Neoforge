@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class SqueezingCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory SQUEEZING_CATEGORY = createCategory(ModRecipes.SQUEEZING, ModMachines.MATERIAL_SQUEEZER);
     public SqueezingCategory(SqueezingRecipe recipe, ResourceLocation id) {
-        super(SQUEEZING_CATEGORY, id, 90, 18);
+        super(SQUEEZING_CATEGORY, id, 90, 50);
         inputs.add(EmiIngredient.of(recipe.getInput()));
         outputs.add(EmiStack.of(recipe.getOutput()));
         outputs.add(EmiStack.of(recipe.getOutputFluid().getFluid(), recipe.getOutputFluid().getAmount()));
@@ -25,10 +25,10 @@ public class SqueezingCategory extends EAEmiRecipe {
 
     @Override
     public void addWidgets(WidgetHolder widgetHolder) {
-        widgetHolder.addSlot(inputs.get(0), 0, 0);
-        widgetHolder.addFillingArrow(24, 0, 10000);
-        widgetHolder.addSlot(outputs.get(0), 54, 0).recipeContext(this);
-        widgetHolder.addSlot(outputs.get(1).setAmount(outputs.get(1).getAmount()), 72, 0).recipeContext(this);
+        widgetHolder.addSlot(inputs.get(0), 0, 16);
+        widgetHolder.addFillingArrow(24, 16, 10000);
+        widgetHolder.addSlot(outputs.get(0), 52, 16).recipeContext(this);
+        widgetHolder.addTank(outputs.get(1).setAmount(outputs.get(1).getAmount()), 72, 0, 18, 50, 16000).recipeContext(this);
     }
 
     public static void fillRecipes(EmiRegistry registry) {

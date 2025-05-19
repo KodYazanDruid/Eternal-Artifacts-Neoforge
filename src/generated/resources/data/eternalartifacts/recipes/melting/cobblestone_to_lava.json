@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:melting",
+  "input": {
+    "item": "minecraft:cobblestone"
+  },
+  "output": {
+    "Amount": 500,
+    "FluidName": "minecraft:lava"
+  }
+}

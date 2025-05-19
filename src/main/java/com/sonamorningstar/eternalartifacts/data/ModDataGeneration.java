@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.data;
 
 import com.sonamorningstar.eternalartifacts.data.loot.ModGlobalLootModifierProvider;
 import com.sonamorningstar.eternalartifacts.data.loot.ModLootTableProvider;
+import com.sonamorningstar.eternalartifacts.data.recipe.RecipeProvider;
 import com.sonamorningstar.eternalartifacts.data.tag.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;

@@ -1,8 +1,0 @@
-{
-  "type": "eternalartifacts:solid_combusting",
-  "duration": 150,
-  "fuel": {
-    "item": "eternalartifacts:plant_matter"
-  },
-  "generation": 40
-}

@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
@@ -33,24 +33,25 @@ public class ModMachines {
     public static final GenericMachineHolder<Compressor> COMPRESSOR = registerGeneric("compressor", Compressor::new);
     public static final GenericMachineHolder<AdvancedCrafter> ADVANCED_CRAFTER = registerGeneric("advanced_crafter", AdvancedCrafter::new);
     public static final GenericMachineHolder<FluidMixer> FLUID_MIXER = registerGeneric("fluid_mixer", FluidMixer::new);
+    public static final GenericMachineHolder<Disenchanter> DISENCHANTER = registerGeneric("disenchanter", Disenchanter::new);
     
     public static final MachineDeferredHolder<ElectricFurnaceMenu, ElectricFurnace, BaseMachineBlock<ElectricFurnace>, MachineBlockItem>
         ELECTRIC_FURNACE = MACHINES.register("electric_furnace", ElectricFurnaceMenu::new, ElectricFurnace::new);
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefinery, OilRefineryBlock<OilRefinery>, BewlrMachineItem>
-            OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefinery::new, OilRefineryBlock::new, BewlrMachineItem::new, true, true);
+        OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefinery::new, OilRefineryBlock::new, BewlrMachineItem::new, true, true);
 
     public static final MachineDeferredHolder<InductionFurnaceMenu, InductionFurnace, BaseMachineBlock<InductionFurnace>, MachineBlockItem>
-            INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnace::new);
+        INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnace::new);
     
     public static final MachineDeferredHolder<GenericMachineMenu, BlockPlacer, MachineSixWayBlock<BlockPlacer>, MachineBlockItem>
         BLOCK_PLACER = MACHINES.register("block_placer", GenericMachineMenu::new, BlockPlacer::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);
     public static final MachineDeferredHolder<GenericMachineMenu, BlockBreaker, MachineSixWayBlock<BlockBreaker>, MachineBlockItem>
         BLOCK_BREAKER = MACHINES.register("block_breaker", GenericMachineMenu::new, BlockBreaker::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);
 
-    private static <T extends GenericMachineBlockEntity> GenericMachineHolder<T> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp) {
+    private static <T extends GenericMachine> GenericMachineHolder<T> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp) {
         return MACHINES.registerGeneric(name, supp,false);
     }
-    private static <T extends GenericMachineBlockEntity> GenericMachineHolder<T> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp, boolean hasCustomRender) {
+    private static <T extends GenericMachine> GenericMachineHolder<T> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp, boolean hasCustomRender) {
         return MACHINES.registerGeneric(name, supp,false, hasCustomRender);
     }
 }

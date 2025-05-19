@@ -2,29 +2,28 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.AnvilinatorBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Anvilinator;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.PacketAnvilatorSwitchToServer;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMenu> {
-    //private static final ResourceLocation TEXTURE = new ResourceLocation(MODID, "textures/gui/anvilator.png");
-    //private static final ResourceLocation BARS = new ResourceLocation(MODID, "textures/gui/bars.png");
+    private static final ResourceLocation enabled = new ResourceLocation("container/anvil/text_field");
+    private static final ResourceLocation disabled = new ResourceLocation("container/anvil/text_field_disabled");
     private EditBox name;
-    private Button nameSwitchButton;
-    private Font switchInfo;
-    private final AnvilinatorBlockEntity anvilinatorBlockEntity;
+    private final Anvilinator anvilinatorBlockEntity;
 
     public AnvilinatorScreen(AnvilinatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        this.anvilinatorBlockEntity = (AnvilinatorBlockEntity) menu.getBlockEntity();
+        inventoryLabelX = 46;
+        this.anvilinatorBlockEntity = (Anvilinator) menu.getBlockEntity();
     }
 
     @Override
@@ -38,16 +37,14 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
         name.setMaxLength(50);
         name.setValue(anvilinatorBlockEntity.getName());
         name.setEditable(!anvilinatorBlockEntity.getEnableNaming());
-        name.setFocused(!anvilinatorBlockEntity.getEnableNaming());
-        addWidget(this.name);
+        addRenderableWidget(this.name);
 
-        nameSwitchButton = addWidget(Button.builder(Component.empty(), this::setNameSwitch).bounds(leftPos + 70, topPos + 38, 85, 7).build());
+        addWidget(Button.builder(Component.empty(), this::setNameSwitch).bounds(leftPos + 70, topPos + 21, 88, 19).build());
     }
 
     private void setNameSwitch(Button button) {
         boolean invertedValue = !anvilinatorBlockEntity.getEnableNaming();
         name.setEditable(anvilinatorBlockEntity.getEnableNaming());
-        name.setFocused(anvilinatorBlockEntity.getEnableNaming());
 
         String naming = "";
         if (invertedValue) {
@@ -70,11 +67,6 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
         renderProgressArrow(gui, leftPos + 122, topPos + 53, mx, my);
     }
 
-    // For rendering widgets.
-    private void renderFg(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        this.name.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-    }
-
     // Returns false when typing on the box.
     @Override
     public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
@@ -84,10 +76,10 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     }
 
     @Override
-    public void render(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        inventoryLabelX = 46;
-
+    public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+        super.render(gui, pMouseX, pMouseY, pPartialTick);
+        boolean flag = anvilinatorBlockEntity.getEnableNaming();
+        gui.blitSprite(flag ? enabled : disabled, leftPos + 67, topPos + 17, 0, 110, 16);
         int color;
         String key;
         if(anvilinatorBlockEntity.getEnableNaming()) {
@@ -97,12 +89,9 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
             key = "key." + MODID + ".anvilinator.disabled_naming";
             color = 0x4e0523;
         }
-         pGuiGraphics.drawString(font, Component.translatable(key), leftPos + 76, topPos + 38, color);
+         gui.drawString(font, Component.translatable(key), leftPos + 76, topPos + 38, color, false);
 
-        renderBackground(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        super.render(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderFg(pGuiGraphics, pMouseX, pMouseY, pPartialTick);
-        renderTooltip(pGuiGraphics, pMouseX, pMouseY);
+        renderTooltip(gui, pMouseX, pMouseY);
     }
 
 }

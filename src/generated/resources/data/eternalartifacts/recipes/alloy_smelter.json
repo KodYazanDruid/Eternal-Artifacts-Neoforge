@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "item": "eternalartifacts:plant_matter"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:rods/blaze"
+    },
+    "R": {
+      "tag": "forge:ingots/brick"
+    }
+  },
+  "pattern": [
+    "RPR",
+    "IMI",
+    "DCD"
+  ],
+  "result": {
+    "item": "eternalartifacts:alloy_smelter"
+  }
+}

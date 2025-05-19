@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModularEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.core.ModLoots;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +42,7 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
     @Override
     protected ItemStack run(ItemStack stack, LootContext ctx) {
         BlockEntity entity = ctx.getParam(LootContextParams.BLOCK_ENTITY);
-        if (!(entity instanceof MachineBlockEntity<?> machine)) return stack;
+        if (!(entity instanceof Machine<?> machine)) return stack;
         Level level = ctx.getLevel();
         ItemStack tool = ctx.getParam(LootContextParams.TOOL);
         var enchantments = machine.enchantments;

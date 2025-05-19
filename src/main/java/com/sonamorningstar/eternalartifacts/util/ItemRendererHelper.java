@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 /**
  * Original author: XFactHD
- * Source: https://github.com/XFactHD/FramedBlocks/blob/1.19.4/src/main/java/xfacthd/framedblocks/client/util/ItemRenderHelper.java
+ * Source: <a href="https://github.com/XFactHD/FramedBlocks/blob/1.19.4/src/main/java/xfacthd/framedblocks/client/util/ItemRenderHelper.java">...</a>
  */
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

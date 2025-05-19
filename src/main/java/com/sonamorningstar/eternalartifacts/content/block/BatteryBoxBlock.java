@@ -1,11 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.BatteryBoxBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BatteryBox;
 
-public class BatteryBoxBlock extends MachineFourWayBlock<BatteryBoxBlockEntity> {
+public class BatteryBoxBlock extends MachineFourWayBlock<BatteryBox> {
 
     public BatteryBoxBlock(Properties pProperties) {
-        super(pProperties, BatteryBoxBlockEntity::new);
+        super(pProperties, BatteryBox::new);
     }
 }

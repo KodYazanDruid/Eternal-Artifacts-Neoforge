@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/bronze"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "item": "eternalartifacts:demonic_tablet"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "minecraft:blaze_powder"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "DPD",
+    "BMB",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:mob_liquifier"
+  }
+}

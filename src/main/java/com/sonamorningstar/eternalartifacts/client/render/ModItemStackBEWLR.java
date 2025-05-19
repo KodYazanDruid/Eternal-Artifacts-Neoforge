@@ -54,7 +54,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final JarBlockEntity jar = new JarBlockEntity(BlockPos.ZERO, ModBlocks.JAR.get().defaultBlockState());
     //private final FluidCombustionDynamo fcDynamo = new FluidCombustionDynamo(BlockPos.ZERO, ModBlocks.FLUID_COMBUSTION_DYNAMO.get().defaultBlockState());
     private final Map<DynamoBlock<?>, AbstractDynamo<?>> dynamoMap = new HashMap<>();
-    private final NousTankBlockEntity nousTank = new NousTankBlockEntity(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
+    private final NousTank nousTank = new NousTank(BlockPos.ZERO, ModBlocks.NOUS_TANK.get().defaultBlockState());
     private final OilRefinery refinery = new OilRefinery(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
     private final EnergyDockBlockEntity energyDock = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
     private final Tesseract tesseract = new Tesseract(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());

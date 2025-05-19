@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:jar"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "I": {
+      "item": "eternalartifacts:marin_ingot"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "eternalartifacts:demon_ingot"
+    },
+    "R": {
+      "tag": "forge:ingots/brick"
+    }
+  },
+  "pattern": [
+    "RPB",
+    "IMI",
+    "DCD"
+  ],
+  "result": {
+    "item": "eternalartifacts:melting_crucible"
+  }
+}

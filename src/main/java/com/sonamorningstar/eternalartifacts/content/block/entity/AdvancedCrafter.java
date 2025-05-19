@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
 import com.sonamorningstar.eternalartifacts.content.recipe.blueprint.BlueprintPattern;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleContainerCrafterWrapped;
@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdvancedCrafter extends GenericMachineBlockEntity {
+public class AdvancedCrafter extends GenericMachine {
     @Nullable
     BlueprintPattern pattern = null;
     

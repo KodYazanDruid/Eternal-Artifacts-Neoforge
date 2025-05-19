@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.sonamorningstar.eternalartifacts.content.block.entity.MachineWorkbenchBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MachineWorkbench;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -16,14 +16,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.items.IItemHandler;
 
-public class MachineWorkbenchRenderer implements BlockEntityRenderer<MachineWorkbenchBlockEntity> {
+public class MachineWorkbenchRenderer implements BlockEntityRenderer<MachineWorkbench> {
 	
 	public MachineWorkbenchRenderer(BlockEntityRendererProvider.Context ctx) {
 	
 	}
 	
 	@Override
-	public void render(MachineWorkbenchBlockEntity workbench, float deltaTick, PoseStack pose,
+	public void render(MachineWorkbench workbench, float deltaTick, PoseStack pose,
 					   MultiBufferSource buff, int light, int overlay) {
 		IItemHandler inventory = workbench.inventory;
 		if (inventory != null) {
@@ -45,7 +45,7 @@ public class MachineWorkbenchRenderer implements BlockEntityRenderer<MachineWork
 	}
 	
 	@Override
-	public AABB getRenderBoundingBox(MachineWorkbenchBlockEntity blockEntity) {
+	public AABB getRenderBoundingBox(MachineWorkbench blockEntity) {
 		return new AABB(blockEntity.getBlockPos()).setMaxY(blockEntity.getBlockPos().getY() + 1.5);
 	}
 }

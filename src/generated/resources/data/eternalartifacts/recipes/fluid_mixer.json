@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/brick"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "I": {
+      "tag": "forge:ingots/bronze"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    }
+  },
+  "pattern": [
+    "JBJ",
+    "IMI",
+    "DCD"
+  ],
+  "result": {
+    "item": "eternalartifacts:fluid_mixer"
+  }
+}

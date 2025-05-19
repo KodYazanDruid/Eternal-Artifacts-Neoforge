@@ -15,6 +15,14 @@
     "eternalartifacts:moss_gold_ore",
     "eternalartifacts:moss_diamond_ore",
     "eternalartifacts:moss_emerald_ore",
-    "eternalartifacts:moss_manganese_ore"
+    "eternalartifacts:moss_manganese_ore",
+    "eternalartifacts:tin_ore",
+    "eternalartifacts:deepslate_tin_ore",
+    "eternalartifacts:gravel_tin_ore",
+    "eternalartifacts:moss_tin_ore",
+    "eternalartifacts:aluminum_ore",
+    "eternalartifacts:deepslate_aluminum_ore",
+    "eternalartifacts:gravel_aluminum_ore",
+    "eternalartifacts:moss_aluminum_ore"
   ]
 }

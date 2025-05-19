@@ -135,6 +135,14 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         add(ModBlocks.MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.MARIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_MARIN.get()));
+        add(ModBlocks.TIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_TIN.get()));
+        add(ModBlocks.DEEPSLATE_TIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_TIN.get()));
+        add(ModBlocks.GRAVEL_TIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_TIN.get()));
+        add(ModBlocks.MOSS_TIN_ORE.get(), block -> createOreDrop(block, ModItems.RAW_TIN.get()));
+        add(ModBlocks.ALUMINUM_ORE.get(), block -> createOreDrop(block, ModItems.RAW_ALUMINUM.get()));
+        add(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), block -> createOreDrop(block, ModItems.RAW_ALUMINUM.get()));
+        add(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), block -> createOreDrop(block, ModItems.RAW_ALUMINUM.get()));
+        add(ModBlocks.MOSS_ALUMINUM_ORE.get(), block -> createOreDrop(block, ModItems.RAW_ALUMINUM.get()));
         
         add(ModBlocks.MOSS_MANGANESE_ORE.get(), b -> createOreDrop(b, ModItems.RAW_MANGANESE.get()));
         add(ModBlocks.MOSS_COAL_ORE.get(), b -> createOreDrop(b, Items.COAL));

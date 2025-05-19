@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/brick"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "I": {
+      "tag": "forge:ingots/bronze"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "eternalartifacts:copper_pickaxe"
+    }
+  },
+  "pattern": [
+    "BPB",
+    "IMI",
+    "DCD"
+  ],
+  "result": {
+    "item": "eternalartifacts:block_breaker"
+  }
+}

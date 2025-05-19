@@ -18,14 +18,14 @@ public class MeatPackerCategory extends BasicEmiRecipe {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "fake_recipe/meat_packer");
     public static final EmiRecipeCategory MEAT_PACKER_CATEGORY = new EmiRecipeCategory(ID, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
     public MeatPackerCategory() {
-        super(MEAT_PACKER_CATEGORY, new ResourceLocation(MODID, "/fake_recipe/meat_packer"), 72, 18);
+        super(MEAT_PACKER_CATEGORY, new ResourceLocation(MODID, "/fake_recipe/meat_packer"), 72, 50);
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addSlot(EmiIngredient.of(ModTags.Fluids.MEAT).setAmount(250), 0, 0);
-        widgets.addFillingArrow(24, 0, 10000);
-        widgets.addSlot(EmiStack.of(ModItems.RAW_MEAT_INGOT), 54, 0).recipeContext(this);
+        widgets.addTank(EmiIngredient.of(ModTags.Fluids.MEAT).setAmount(250), 0, 0, 18, 50, 500);
+        widgets.addFillingArrow(24, 16, 10000);
+        widgets.addSlot(EmiStack.of(ModItems.RAW_MEAT_INGOT), 54, 16).recipeContext(this);
     }
 
     @Override

@@ -16,17 +16,15 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
-
-import static net.neoforged.neoforge.common.NeoForgeMod.enableMilkFluid;
 
 @Mod(EternalArtifacts.MODID)
 public class EternalArtifacts {
     
     /**
      * TODO: Add proper power generation system (like biodiesel engine from IE, peat generator from cyclic(originally from forestry)) instead of burning oranges.
-     * TODO: Add disenchanter and other enchantment related blocks.
      * TODO: A storage block can storage items, fluids and energy. (battery box with items and fluids)
      * TODO: Fourlegged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
@@ -37,14 +35,13 @@ public class EternalArtifacts {
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
      * TODO: Block pattern copy paste.
-     * TODO: Add fluid hopper.
     */
 
     public static final String MODID = "eternalartifacts";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public EternalArtifacts(IEventBus modEventBus) {
-        enableMilkFluid();
+        NeoForgeMod.enableMilkFluid();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
         ModSpells.SPELLS.register(modEventBus);

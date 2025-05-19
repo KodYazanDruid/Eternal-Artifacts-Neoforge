@@ -24,6 +24,8 @@ public class Network<C> implements Comparable<Network<?>> {
 	private final List<UUID> whitelistedPlayers = new ArrayList<>();
 	@Setter
 	private Access access = Access.PUBLIC;
+	@Setter
+	private CompoundTag savedData;
 	
 	private final String name;
 	private final UUID uuid;
@@ -71,23 +73,28 @@ public class Network<C> implements Comparable<Network<?>> {
 		}
 		networkTag.put("Whitelist", whitelist);
 		networkTag.putString("CapabilityClass", capabilityClass.getName());
+		if (savedData != null) networkTag.put("CapData", savedData);
 	}
 	
 	@Nullable
 	public static Network<?> fromNBT(@Nullable CompoundTag networkTag) {
 		if (networkTag == null) return null;
 		Class<?> capClass = null;
+		CompoundTag capData = null;
 		try {
 			capClass = Class.forName(networkTag.getString("CapabilityClass"));
 		} catch (ClassNotFoundException e) {
 			EternalArtifacts.LOGGER.error("Failed to load capability class for network: {}.", networkTag.getString("Name"));
 		}
+		if (networkTag.contains("CapData")) capData = networkTag.getCompound("CapData");
+		
 		GameProfile gameProfile = NbtUtils.readGameProfile(networkTag.getCompound("Owner"));
 		Network<?> network = new Network<>(
 				networkTag.getString("Name"),
 				networkTag.getUUID("UUID"),
 				gameProfile,
 				capClass);
+		if (capData != null) network.setSavedData(capData);
 		network.setAccess(Access.valueOf(networkTag.getString("Access")));
 		ListTag whitelist = networkTag.getList("Whitelist", 10);
 		for (int i = 0; i < whitelist.size(); i++) {

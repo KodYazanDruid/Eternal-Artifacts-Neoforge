@@ -1,5 +1,7 @@
 {
   "values": [
-    "eternalartifacts:manganese_ore"
+    "eternalartifacts:manganese_ore",
+    "eternalartifacts:tin_ore",
+    "eternalartifacts:aluminum_ore"
   ]
 }

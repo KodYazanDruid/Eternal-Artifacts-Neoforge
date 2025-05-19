@@ -33,7 +33,6 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_EMERALD_ORE = registerKey("feature", "add_gravel_emerald_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_REDSTONE_ORE = registerKey("feature", "add_gravel_redstone_ore");
     public static final ResourceKey<BiomeModifier> ADD_GRAVEL_LAPIS_ORE = registerKey("feature", "add_gravel_lapis_ore");
-    public static final ResourceKey<BiomeModifier> ADD_MOSS_MANGANESE_ORE = registerKey("feature", "add_moss_manganese_ore");
     public static final ResourceKey<BiomeModifier> ADD_MOSS_COAL_ORE = registerKey("feature", "add_moss_coal_ore");
     public static final ResourceKey<BiomeModifier> ADD_MOSS_COPPER_ORE = registerKey("feature", "add_moss_copper_ore");
     public static final ResourceKey<BiomeModifier> ADD_MOSS_IRON_ORE = registerKey("feature", "add_moss_iron_ore");
@@ -44,6 +43,10 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_MOSS_LAPIS_ORE = registerKey("feature", "add_moss_lapis_ore");
     public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_MEDIUM = registerKey("feature", "add_manganese_ore_medium");
     public static final ResourceKey<BiomeModifier> ADD_MANGANESE_ORE_SMALL = registerKey("feature", "add_manganese_ore_small");
+    public static final ResourceKey<BiomeModifier> ADD_TIN_ORE_MEDIUM = registerKey("feature", "add_tin_ore_medium");
+    public static final ResourceKey<BiomeModifier> ADD_TIN_ORE_SMALL = registerKey("feature", "add_tin_ore_small");
+    public static final ResourceKey<BiomeModifier> ADD_ALUMINUM_ORE_MEDIUM = registerKey("feature", "add_aluminum_ore_medium");
+    public static final ResourceKey<BiomeModifier> ADD_ALUMINUM_ORE_SMALL = registerKey("feature", "add_aluminum_ore_small");
     public static final ResourceKey<BiomeModifier> ADD_TIGRIS_FLOWERS = registerKey("feature", "add_tigris_flowers");
     public static final ResourceKey<BiomeModifier> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("feature", "crude_oil_deposit");
     
@@ -68,7 +71,6 @@ public class ModBiomeModifiers {
         registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_EMERALD_ORE, ModPlacedFeatures.PLACED_GRAVEL_EMERALD_ORE);
         registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_REDSTONE_ORE, ModPlacedFeatures.PLACED_GRAVEL_REDSTONE_ORE);
         registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_LAPIS_ORE, ModPlacedFeatures.PLACED_GRAVEL_LAPIS_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_MANGANESE_ORE, ModPlacedFeatures.PLACED_MOSS_MANGANESE_ORE);
         registerMossOre(context, placedFeatures, biome, ADD_MOSS_COAL_ORE, ModPlacedFeatures.PLACED_MOSS_COAL_ORE);
         registerMossOre(context, placedFeatures, biome, ADD_MOSS_COPPER_ORE, ModPlacedFeatures.PLACED_MOSS_COPPER_ORE);
         registerMossOre(context, placedFeatures, biome, ADD_MOSS_IRON_ORE, ModPlacedFeatures.PLACED_MOSS_IRON_ORE);
@@ -84,6 +86,22 @@ public class ModBiomeModifiers {
         context.register(ADD_MANGANESE_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biome.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MANGANESE_ORE_SMALL)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
+        context.register(ADD_TIN_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_TIN_ORE_MIDDLE)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
+        context.register(ADD_TIN_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_TIN_ORE_SMALL)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
+        context.register(ADD_ALUMINUM_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_ALUMINUM_ORE_MIDDLE)),
+                GenerationStep.Decoration.UNDERGROUND_ORES));
+        context.register(ADD_ALUMINUM_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_ALUMINUM_ORE_SMALL)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         
         context.register(ADD_TIGRIS_FLOWERS, new BiomeModifiers.AddFeaturesBiomeModifier(

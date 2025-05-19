@@ -104,6 +104,14 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.MOSS_DIAMOND_ORE.get(), "iron", "hoe");
         tierAndTool(ModBlocks.MOSS_EMERALD_ORE.get(), "iron", "hoe");
         tierAndTool(ModBlocks.MOSS_COAL_ORE.get(), "wooden", "hoe");
+        tierAndTool(ModBlocks.TIN_ORE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.DEEPSLATE_TIN_ORE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.GRAVEL_TIN_ORE.get(), "stone", "shovel");
+        tierAndTool(ModBlocks.MOSS_TIN_ORE.get(), "stone", "hoe");
+        tierAndTool(ModBlocks.ALUMINUM_ORE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), "stone", "shovel");
+        tierAndTool(ModBlocks.MOSS_ALUMINUM_ORE.get(), "stone", "hoe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
@@ -175,6 +183,18 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.MOSS_MANGANESE_ORE.get(),
             ModBlocks.GRAVEL_MANGANESE_ORE.get()
         );
+        tag(ModTags.Blocks.ORES_TIN).add(
+            ModBlocks.TIN_ORE.get(),
+            ModBlocks.DEEPSLATE_TIN_ORE.get(),
+            ModBlocks.GRAVEL_TIN_ORE.get(),
+            ModBlocks.MOSS_TIN_ORE.get()
+        );
+        tag(ModTags.Blocks.ORES_ALUMINUM).add(
+            ModBlocks.ALUMINUM_ORE.get(),
+            ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(),
+            ModBlocks.GRAVEL_ALUMINUM_ORE.get(),
+            ModBlocks.MOSS_ALUMINUM_ORE.get()
+        );
         tag(BlockTags.DIAMOND_ORES).add(
             ModBlocks.MOSS_DIAMOND_ORE.get(),
             ModBlocks.GRAVEL_DIAMOND_ORE.get()
@@ -215,13 +235,25 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.MOSS_GOLD_ORE.get(),
             ModBlocks.MOSS_DIAMOND_ORE.get(),
             ModBlocks.MOSS_EMERALD_ORE.get(),
-            ModBlocks.MOSS_MANGANESE_ORE.get()
+            ModBlocks.MOSS_MANGANESE_ORE.get(),
+            ModBlocks.TIN_ORE.get(),
+            ModBlocks.DEEPSLATE_TIN_ORE.get(),
+            ModBlocks.GRAVEL_TIN_ORE.get(),
+            ModBlocks.MOSS_TIN_ORE.get(),
+            ModBlocks.ALUMINUM_ORE.get(),
+            ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(),
+            ModBlocks.GRAVEL_ALUMINUM_ORE.get(),
+            ModBlocks.MOSS_ALUMINUM_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_DEEPSLATE).add(
-                ModBlocks.DEEPSLATE_MANGANESE_ORE.get()
+                ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
+                ModBlocks.DEEPSLATE_TIN_ORE.get(),
+                ModBlocks.DEEPSLATE_ALUMINUM_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_STONE).add(
-                ModBlocks.MANGANESE_ORE.get()
+                ModBlocks.MANGANESE_ORE.get(),
+                ModBlocks.TIN_ORE.get(),
+                ModBlocks.ALUMINUM_ORE.get()
         );
         tag(Tags.Blocks.ORE_BEARING_GROUND_NETHERRACK).add(
                 ModBlocks.MARIN_ORE.get()
@@ -235,7 +267,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.GRAVEL_DIAMOND_ORE.get(),
             ModBlocks.GRAVEL_EMERALD_ORE.get(),
             ModBlocks.GRAVEL_REDSTONE_ORE.get(),
-            ModBlocks.GRAVEL_LAPIS_ORE.get()
+            ModBlocks.GRAVEL_LAPIS_ORE.get(),
+            ModBlocks.GRAVEL_TIN_ORE.get(),
+            ModBlocks.GRAVEL_ALUMINUM_ORE.get()
             
         );
         tag(ModTags.Blocks.ORE_BEARING_GROUND_MOSS).add(
@@ -248,7 +282,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.MOSS_DIAMOND_ORE.get(),
             ModBlocks.MOSS_EMERALD_ORE.get(),
             ModBlocks.MOSS_COAL_ORE.get(),
-            ModBlocks.MOSS_MANGANESE_ORE.get()
+            ModBlocks.MOSS_MANGANESE_ORE.get(),
+            ModBlocks.MOSS_TIN_ORE.get(),
+            ModBlocks.MOSS_ALUMINUM_ORE.get()
         );
         tag(Tags.Blocks.ORES).addTags(
             ModTags.Blocks.ORE_BEARING_GROUND_GRAVEL,
@@ -256,9 +292,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
         tag(Tags.Blocks.ORES).add(
                 ModBlocks.MANGANESE_ORE.get(),
-                ModBlocks.DEEPSLATE_MANGANESE_ORE.get(),
-                ModBlocks.MARIN_ORE.get()
+                ModBlocks.MARIN_ORE.get(),
+                ModBlocks.TIN_ORE.get(),
+                ModBlocks.ALUMINUM_ORE.get()
         );
+        tag(ModTags.Blocks.MOSS_ORE_REPLACEABLES).add(Blocks.MOSS_BLOCK);
         tag(Tags.Blocks.STORAGE_BLOCKS).add(
                 ModBlocks.SUGAR_CHARCOAL_BLOCK.get(),
                 ModBlocks.MARIN_BLOCK.get(),

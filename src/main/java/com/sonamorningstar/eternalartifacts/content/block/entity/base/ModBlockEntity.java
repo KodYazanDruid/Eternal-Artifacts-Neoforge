@@ -115,6 +115,10 @@ public class ModBlockEntity extends BlockEntity {
     public int getVolumeLevel() {
         return getEnchantmentLevel(ModEnchantments.VOLUME.get());
     }
+    
+    public boolean isVersatile() {
+        return getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0;
+    }
 
     protected ModFluidStorage createDefaultTank() {return createBasicTank(16000);}
     protected ModFluidStorage createBasicTank(int size, Runnable... run) {
@@ -122,7 +126,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModFluidStorage(size * (volume + 1)) {
             @Override
             protected void onContentsChanged() {
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
@@ -136,7 +140,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged() {
                 findRecipe();
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
@@ -148,7 +152,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModFluidStorage(size * (volume + 1)) {
             @Override
             protected void onContentsChanged() {
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
@@ -170,7 +174,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged() {
                 findRecipe();
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
@@ -190,7 +194,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModFluidStorage(size * (volume + 1), validator) {
             @Override
             protected void onContentsChanged() {
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
@@ -212,7 +216,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged() {
                 findRecipe();
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
@@ -251,7 +255,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 ModBlockEntity.this.sendUpdate();
@@ -269,7 +273,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 ModBlockEntity.this.sendUpdate();
@@ -289,7 +293,7 @@ public class ModBlockEntity extends BlockEntity {
                 if (!outputSlots.contains(slot)) {
                     findRecipe();
                 }
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 ModBlockEntity.this.sendUpdate();
@@ -306,7 +310,7 @@ public class ModBlockEntity extends BlockEntity {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 ModBlockEntity.this.sendUpdate();
@@ -328,7 +332,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 findRecipe();
-                if (ModBlockEntity.this instanceof MachineBlockEntity<?> machine) {
+                if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 ModBlockEntity.this.sendUpdate();

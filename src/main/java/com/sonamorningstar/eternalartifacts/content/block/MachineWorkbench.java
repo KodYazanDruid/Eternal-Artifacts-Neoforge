@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.MachineWorkbenchBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModProperties;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -11,9 +10,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class MachineWorkbench extends MachineFourWayBlock<MachineWorkbenchBlockEntity> {
+public class MachineWorkbench extends MachineFourWayBlock<com.sonamorningstar.eternalartifacts.content.block.entity.MachineWorkbench> {
 	public MachineWorkbench() {
-		super(ModProperties.Blocks.MACHINE, MachineWorkbenchBlockEntity::new);
+		super(ModProperties.Blocks.MACHINE, com.sonamorningstar.eternalartifacts.content.block.entity.MachineWorkbench::new);
 	}
 	private static final VoxelShape TOP = BlockHelper.generateByArea(16, 2, 16, 0, 14, 0);
 	private static final VoxelShape LEG1 = BlockHelper.generateByArea(2, 14, 2, 1, 0, 1);

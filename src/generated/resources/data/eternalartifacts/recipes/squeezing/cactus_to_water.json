@@ -8,7 +8,7 @@
     "id": "minecraft:green_dye"
   },
   "outputFluid": {
-    "Amount": 125,
+    "Amount": 100,
     "FluidName": "minecraft:water"
   }
 }

@@ -51,13 +51,21 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.CHLOROPHYTE_INGOT.get(),
             ModItems.MANGANESE_INGOT.get(),
             ModItems.STEEL_INGOT.get(),
-            ModItems.MARIN_INGOT.get()
+            ModItems.MARIN_INGOT.get(),
+            ModItems.TIN_INGOT.get(),
+            ModItems.ALUMINUM_INGOT.get(),
+            ModItems.BRONZE_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.COOKED_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
         tag(ModTags.Items.INGOTS_STEEL).add(ModItems.STEEL_INGOT.get());
+        tag(ModTags.Items.INGOTS_TIN).add(ModItems.TIN_INGOT.get());
+        tag(ModTags.Items.INGOTS_ALUMINUM).add(ModItems.ALUMINUM_INGOT.get());
+        tag(ModTags.Items.INGOTS_BRONZE).add(ModItems.BRONZE_INGOT.get());
         copy(ModTags.Blocks.ORES_MANGANESE, ModTags.Items.ORES_MANGANESE);
+        copy(ModTags.Blocks.ORES_TIN, ModTags.Items.ORES_TIN);
+        copy(ModTags.Blocks.ORES_ALUMINUM, ModTags.Items.ORES_ALUMINUM);
         tag(ModTags.Items.DUSTS_MANGANESE).add(ModItems.MANGANESE_DUST.get());
         tag(ModTags.Items.RAW_MATERIALS_MANGANESE).add(ModItems.RAW_MANGANESE.get());
         tag(Tags.Items.NUGGETS).add(
@@ -77,8 +85,12 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.DUSTS_SUGAR_CHARCOAL).add(ModItems.SUGAR_CHARCOAL_DUST.get());
         tag(Tags.Items.RAW_MATERIALS).add(
             ModItems.RAW_MANGANESE.get(),
-            ModItems.RAW_MARIN.get()
+            ModItems.RAW_MARIN.get(),
+            ModItems.RAW_TIN.get(),
+            ModItems.RAW_ALUMINUM.get()
         );
+        tag(ModTags.Items.RAW_MATERIALS_TIN).add(ModItems.RAW_TIN.get());
+        tag(ModTags.Items.RAW_MATERIALS_ALUMINUM).add(ModItems.RAW_ALUMINUM.get());
         tag(ModTags.Items.NUGGETS_COPPER).add(ModItems.COPPER_NUGGET.get());
         tag(ModTags.Items.NUGGETS_EXPERIENCE).add(ModItems.EXPERIENCE_BERRY.get());
         tag(ModTags.Items.NUGGETS_MANGANESE).add(ModItems.MANGANESE_NUGGET.get());
@@ -88,6 +100,14 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.ORES_MANGANESE).add(
             ModBlocks.GRAVEL_MANGANESE_ORE.asItem(),
             ModBlocks.MOSS_MANGANESE_ORE.asItem()
+        );
+        tag(ModTags.Items.ORES_TIN).add(
+            ModBlocks.GRAVEL_TIN_ORE.asItem(),
+            ModBlocks.MOSS_TIN_ORE.asItem()
+        );
+        tag(ModTags.Items.ORES_ALUMINUM).add(
+            ModBlocks.GRAVEL_ALUMINUM_ORE.asItem(),
+            ModBlocks.MOSS_ALUMINUM_ORE.asItem()
         );
         tag(Tags.Items.ORES_COAL).add(
             ModBlocks.GRAVEL_COAL_ORE.asItem(),

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.client.render.util.RendererHelper;
-import com.sonamorningstar.eternalartifacts.content.block.entity.NousTankBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.NousTank;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class NousTankRenderer implements BlockEntityRenderer<NousTankBlockEntity> {
+public class NousTankRenderer implements BlockEntityRenderer<NousTank> {
     public static final Material TEXTURE_TANK = new Material(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(MODID, "block/nous_tank"));
 
     private static ModelPart modelPart;
@@ -60,7 +60,7 @@ public class NousTankRenderer implements BlockEntityRenderer<NousTankBlockEntity
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
     @Override
-    public void render(NousTankBlockEntity tank, float tick, PoseStack poseStack, MultiBufferSource buff, int light, int overlay) {
+    public void render(NousTank tank, float tick, PoseStack poseStack, MultiBufferSource buff, int light, int overlay) {
         poseStack.pushPose();
 
         Direction facing = tank.hasLevel() ? tank.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING) : Direction.NORTH;

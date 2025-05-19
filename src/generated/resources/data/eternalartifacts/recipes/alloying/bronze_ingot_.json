@@ -1,0 +1,17 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    {
+      "amount": 3,
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "amount": 1,
+      "tag": "forge:ingots/tin"
+    }
+  ],
+  "output": {
+    "Count": 4,
+    "id": "eternalartifacts:bronze_ingot"
+  }
+}

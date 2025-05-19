@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:jar"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "R": {
+      "item": "eternalartifacts:clay_dust"
+    }
+  },
+  "pattern": [
+    "BPB",
+    "IMI",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:fluid_infuser"
+  }
+}

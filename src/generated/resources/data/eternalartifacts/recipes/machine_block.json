@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "M": {
-      "tag": "forge:ingots/manganese"
+    "A": {
+      "tag": "forge:ingots/aluminum"
     },
     "R": {
       "tag": "forge:dusts/redstone"
@@ -13,9 +13,9 @@
     }
   },
   "pattern": [
-    "MSM",
+    "ASA",
     "SRS",
-    "MSM"
+    "ASA"
   ],
   "result": {
     "item": "eternalartifacts:machine_block"

@@ -2,44 +2,72 @@ package com.sonamorningstar.eternalartifacts.capabilities.energy;
 
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.minecraft.nbt.CompoundTag;
 
-import java.util.Set;
+import static com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract.TransferMode.*;
 
-public record TesseractEnergyCap(Tesseract tesseract) implements IEnergyStorage {
-	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate) {
-		/*if (tesseract.getLevel().isClientSide()) return 0;
-		Set<Tesseract> tesseracts = TesseractNetworks.get(tesseract.getLevel()).getTesseracts(tesseract.getCachedNetwork());
-		tesseracts.stream().filter(t -> !t.equals(tesseract)).forEach(t -> {
-			IEnergyStorage storage = t.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, t.getBlockPos(), null);
-		});*/
-		return 0;
-	}
+public class TesseractEnergyCap extends ModEnergyStorage {
+	private final Tesseract tesseract;
 	
-	@Override
-	public int extractEnergy(int maxExtract, boolean simulate) {
-		return 0;
-	}
-	
-	@Override
-	public int getEnergyStored() {
-		return 0;
-	}
-	
-	@Override
-	public int getMaxEnergyStored() {
-		return 0;
-	}
-	
-	@Override
-	public boolean canExtract() {
-		return true;
+	public TesseractEnergyCap(Tesseract tesseract) {
+		super(8000, 1000, 1000);
+		this.tesseract = tesseract;
+		var network = tesseract.getCachedNetwork();
+		if (network != null) {
+			CompoundTag tag = network.getSavedData();
+			if (tag != null) {
+				deserializeNBT(tag.get("Energy"));
+			}
+		}
 	}
 	
 	@Override
 	public boolean canReceive() {
-		return true;
+		var mode = tesseract.getTransferMode();
+		if (mode == NONE) return false;
+		return (mode == BOTH || mode == INSERT_ONLY) && super.canReceive();
+	}
+	
+	@Override
+	public boolean canExtract() {
+		var mode = tesseract.getTransferMode();
+		if (mode == NONE) return false;
+		return (mode == BOTH || mode == EXTRACT_ONLY) && super.canExtract();
+	}
+	
+	@Override
+	public int receiveEnergy(int maxReceive, boolean simulate) {
+		var mode = tesseract.getTransferMode();
+		if (mode == BOTH || mode == INSERT_ONLY) return super.receiveEnergy(maxReceive, simulate);
+		else return 0;
+	}
+	@Override
+	public int receiveEnergyForced(int maxReceive, boolean simulate) {
+		var mode = tesseract.getTransferMode();
+		if (mode == BOTH || mode == INSERT_ONLY) return super.receiveEnergyForced(maxReceive, simulate);
+		else return 0;
+	}
+	@Override
+	public int extractEnergy(int maxExtract, boolean simulate) {
+		var mode = tesseract.getTransferMode();
+		if (mode == BOTH || mode == EXTRACT_ONLY) return super.extractEnergy(maxExtract, simulate);
+		else return 0;
+	}
+	@Override
+	public int extractEnergyForced(int maxExtract, boolean simulate) {
+		var mode = tesseract.getTransferMode();
+		if (mode == BOTH || mode == EXTRACT_ONLY) return super.extractEnergyForced(maxExtract, simulate);
+		else return 0;
+	}
+	
+	@Override
+	public void onEnergyChanged() {
+		var network = tesseract.getCachedNetwork();
+		if (network != null) {
+			CompoundTag tag = new CompoundTag();
+			tag.put("Energy", serializeNBT());
+			network.setSavedData(tag);
+		}
+		TesseractNetworks.get(tesseract.getLevel()).getTesseracts().get(network).forEach(Tesseract::invalidateCapabilities);
 	}
 }

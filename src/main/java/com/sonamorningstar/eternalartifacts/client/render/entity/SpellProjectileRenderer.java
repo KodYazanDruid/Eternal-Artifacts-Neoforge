@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
 public class SpellProjectileRenderer extends EntityRenderer<SpellProjectile> {
@@ -24,75 +23,52 @@ public class SpellProjectileRenderer extends EntityRenderer<SpellProjectile> {
 		poseStack.pushPose();
 		
 		// Projektil boyutu
-		float scale = 0.5f;
+		float scale = 0.8f;
 		poseStack.scale(scale, scale, scale);
-		
-		// Kamera yönünü takip et ama tamamen billboard olmasın
-		Vec3 cameraPos = this.entityRenderDispatcher.camera.getPosition();
-		Vec3 entityPos = entity.position();
 		
 		// Özel RenderType kullan
 		RenderType renderType = ModRenderTypes.SPELL_CLOUD.get();
 		VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
 		
-		// Renk değerleri
-		float red = 0.3f;
-		float green = 0.3f;
-		float blue = 1.0f;
-		float alpha = 0.8f;
+		// Ana renk değerleri - shader kendi rengini uygulayacak ama
+		// bu renk ile karışacak (vertexColor ile çarpılıyor)
+		float red = 1.0f;    // Daha çok kırmızıya yakın
+		float green = 0.6f;  // Orta seviye yeşil
+		float blue = 0.2f;   // Düşük mavi (ateş efekti için)
+		float alpha = 1.0f;  // Tam opaklık
 		
-		// Quad boyutu
-		float size = 1.0f;
-		
-		// Matris oluştur
+		// Ana quad (shader billboard tekniği kullanıyor zaten)
 		Matrix4f matrix = poseStack.last().pose();
+		renderBillboard(matrix, vertexConsumer, red, green, blue, alpha);
 		
-		// Birden fazla açıyla quad'ları yerleştir (3D bulut efekti)
-		// 1. X-Y düzlemi
-		renderQuad(matrix, vertexConsumer, size, 0f, red, green, blue, alpha);
-		
-		// 2. X-Z düzlemi
-		poseStack.pushPose();
-		poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(90));
-		matrix = poseStack.last().pose();
-		renderQuad(matrix, vertexConsumer, size, 0.2f, red, green, blue, alpha);
-		poseStack.popPose();
-		
-		// 3. Y-Z düzlemi
+		// Ekstra derinlik ve hacim için ikinci bir quad
+		// 90 derece farklı açıda
 		poseStack.pushPose();
 		poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(90));
 		matrix = poseStack.last().pose();
-		renderQuad(matrix, vertexConsumer, size, 0.1f, red, green, blue, alpha);
+		renderBillboard(matrix, vertexConsumer, red, green, blue, alpha * 0.8f);
 		poseStack.popPose();
-		
-		// 4-6. Ekstra düzlemler - daha hacimli görünüm için
-		for (int i = 0; i < 3; i++) {
-			poseStack.pushPose();
-			poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(45 + i * 30));
-			poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(45 + i * 30));
-			matrix = poseStack.last().pose();
-			renderQuad(matrix, vertexConsumer, size * 0.8f, 0.15f, red, green, blue, alpha * 0.8f);
-			poseStack.popPose();
-		}
 		
 		poseStack.popPose();
 		super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
 	}
 	
-	// Bir quad render etmek için yardımcı metod
-	private void renderQuad(Matrix4f matrix, VertexConsumer vertexConsumer, float size, float zOffset,
-							float r, float g, float b, float a) {
-		// Quad'ı vertex buffer'a ekle
-		addVertex(matrix, vertexConsumer, -size, -size, zOffset, r, g, b, a);
-		addVertex(matrix, vertexConsumer, size, -size, zOffset, r, g, b, a);
-		addVertex(matrix, vertexConsumer, size, size, zOffset, r, g, b, a);
-		addVertex(matrix, vertexConsumer, -size, size, zOffset, r, g, b, a);
-	}
-	
-	// Vertex ekleme yardımcı metodu
-	private void addVertex(Matrix4f matrix, VertexConsumer builder, float x, float y, float z,
-						   float r, float g, float b, float a) {
-		builder.vertex(matrix, x, y, z)
+	// Billboard quad oluşturma (shader her zaman kameraya bakacak)
+	private void renderBillboard(Matrix4f matrix, VertexConsumer vertexConsumer,
+								 float r, float g, float b, float a) {
+		float size = 1.0f;
+		
+		// Texture koordinatları doğru olacak şekilde quad oluştur
+		vertexConsumer.vertex(matrix, -size, -size, 0)
+			.color(r, g, b, a)
+			.endVertex();
+		vertexConsumer.vertex(matrix, size, -size, 0)
+			.color(r, g, b, a)
+			.endVertex();
+		vertexConsumer.vertex(matrix, size, size, 0)
+			.color(r, g, b, a)
+			.endVertex();
+		vertexConsumer.vertex(matrix, -size, size, 0)
 			.color(r, g, b, a)
 			.endVertex();
 	}

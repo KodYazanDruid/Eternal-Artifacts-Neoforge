@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -46,7 +46,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     
     protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my, boolean renderEPT) {
         if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my)) {
-            MachineBlockEntity<?> machine = (MachineBlockEntity<?>) menu.getBlockEntity();
+            Machine<?> machine = (Machine<?>) menu.getBlockEntity();
             List<Component> tooltips = new ArrayList<>();
             tooltips.add(Component.translatable(ModConstants.GUI.withSuffix("energy")).append(": ")
                 .append(String.valueOf(menu.getBeEnergy().getEnergyStored()))

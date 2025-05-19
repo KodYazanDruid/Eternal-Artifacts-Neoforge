@@ -42,7 +42,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		super.init();
 		setupPanel();
 		addRenderableWidget(Button.builder(Component.literal("clear_selected"), this::clearSelected)
-			.bounds(leftPos, topPos-75, imageWidth, 25).build());
+			.bounds(leftPos, topPos-50, imageWidth, 25).build());
+		addRenderableWidget(Button.builder(Component.literal("cycle_transfer"), this::cycleTransfer)
+			.bounds(leftPos, topPos-25, imageWidth, 25).build());
 		List<Component> securities = new ArrayList<>();
 		Network.Access[] values = Network.Access.values();
 		for (Network.Access value : values) {
@@ -129,6 +131,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 			rebuildNetworkPanel();
 		}
 		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 2000);
+	}
+	private void cycleTransfer(Button button) {
+		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 3000);
 	}
 	private void selectNetwork(int index) {
 		if (index < TesseractMenu.gatheredNetworks.size()) {

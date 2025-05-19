@@ -100,7 +100,14 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.MOSS_EMERALD_ORE.get());
         simpleBlockWithItem(ModBlocks.MOSS_REDSTONE_ORE.get());
         simpleBlockWithItem(ModBlocks.MOSS_LAPIS_ORE.get());
-        
+        simpleBlockWithItem(ModBlocks.TIN_ORE.get());
+        simpleBlockWithItem(ModBlocks.DEEPSLATE_TIN_ORE.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_TIN_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_TIN_ORE.get());
+        simpleBlockWithItem(ModBlocks.ALUMINUM_ORE.get());
+        simpleBlockWithItem(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get());
+        simpleBlockWithItem(ModBlocks.GRAVEL_ALUMINUM_ORE.get());
+        simpleBlockWithItem(ModBlocks.MOSS_ALUMINUM_ORE.get());
 
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(

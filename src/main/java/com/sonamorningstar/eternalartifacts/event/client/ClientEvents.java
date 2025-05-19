@@ -17,17 +17,25 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModCo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
+import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
+import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
+import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockPlacer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Disenchanter;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
+import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -60,6 +68,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -117,6 +127,10 @@ public class ClientEvents {
                 }
                 pose.popPose();
             }
+        }
+    
+        if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_ENTITIES)) {
+            mc.renderBuffers().bufferSource().endBatch(ModRenderTypes.SPELL_CLOUD.get());
         }
     }
 
@@ -382,6 +396,31 @@ public class ClientEvents {
                     fX, fY, 18, 18, Component.empty()));*/
                 
                 gsms.addUpperLayerChild(filterPanel);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void renderEtarSlotEvent(RenderEtarSlotEvent event) {
+        AbstractModContainerScreen<?> screen = event.getScreen();
+        AbstractModContainerMenu menu = screen.getMenu();
+        Slot slot = event.getSlot();
+        if (menu instanceof BookDuplicatorMenu bd) {
+            var inv = bd.getBeInventory();
+            if (slot.index == 38 && inv != null && inv.getStackInSlot(2).isEmpty()) {
+                ItemRendererHelper.renderFakeItemTransparent(
+                    event.getGui(), Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
+                );
+            }
+        }
+        if (menu instanceof GenericMachineMenu gms) {
+            BlockEntity be = gms.getBlockEntity();
+            var inv = gms.getBeInventory();
+            if (be instanceof Disenchanter && inv != null &&
+                    inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
+                ItemRendererHelper.renderFakeItemTransparent(
+                    event.getGui(), Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
+                );
             }
         }
     }

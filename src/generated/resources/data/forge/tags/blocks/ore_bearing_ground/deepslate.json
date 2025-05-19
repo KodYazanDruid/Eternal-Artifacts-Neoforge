@@ -1,5 +1,7 @@
 {
   "values": [
-    "eternalartifacts:deepslate_manganese_ore"
+    "eternalartifacts:deepslate_manganese_ore",
+    "eternalartifacts:deepslate_tin_ore",
+    "eternalartifacts:deepslate_aluminum_ore"
   ]
 }

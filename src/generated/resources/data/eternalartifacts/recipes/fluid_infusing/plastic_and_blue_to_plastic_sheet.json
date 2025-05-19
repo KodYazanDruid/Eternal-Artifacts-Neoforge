@@ -1,0 +1,14 @@
+{
+  "type": "eternalartifacts:fluid_infusing",
+  "input": {
+    "tag": "forge:dyes/blue"
+  },
+  "inputFluid": {
+    "amount": 1000,
+    "tag": "forge:plastic"
+  },
+  "output": {
+    "Count": 4,
+    "id": "eternalartifacts:plastic_sheet"
+  }
+}

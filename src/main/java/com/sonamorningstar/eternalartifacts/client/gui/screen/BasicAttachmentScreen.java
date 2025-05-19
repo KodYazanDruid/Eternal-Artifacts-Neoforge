@@ -29,7 +29,7 @@ public class BasicAttachmentScreen extends AbstractModContainerScreen<BasicAttac
 	@Override
 	protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
 		super.renderLabels(pGuiGraphics, pMouseX, pMouseY);
-		pGuiGraphics.drawString(font, Component.literal(menu.getDir().toString()), 50, 6, 0xFF404040);
+		pGuiGraphics.drawString(font, Component.literal(menu.getDir().toString()), 50, 6, 0xFF404040, false);
 	}
 	
 	@Override

@@ -196,6 +196,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MAGNET.get(), "Magnet");
                 add(ModItems.CHLOROPHYTE_REPEATER.get(), "Chlorophyte Repeater");
                 add(ModItems.PORTABLE_FURNACE.get(), "Portable Furnace");
+                add(ModItems.TIN_INGOT.get(), "Tin Ingot");
+                add(ModItems.ALUMINUM_INGOT.get(), "Aluminum Ingot");
+                add(ModItems.BRONZE_INGOT.get(), "Bronze Ingot");
+                add(ModItems.RAW_TIN.get(), "Raw Tin");
+                add(ModItems.RAW_ALUMINUM.get(), "Raw Aluminum");
+                add(ModItems.DASHING_SWORD.get(), "Dashing Sword");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -306,6 +312,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MOSS_LAPIS_ORE.get(), "Moss Lapis Ore");
                 add(ModBlocks.MOSS_REDSTONE_ORE.get(), "Moss Redstone Ore");
                 add(ModBlocks.MOSS_COAL_ORE.get(), "Moss Coal Ore");
+                add(ModBlocks.TIN_ORE.get(), "Tin Ore");
+                add(ModBlocks.DEEPSLATE_TIN_ORE.get(), "Deepslate Tin Ore");
+                add(ModBlocks.GRAVEL_TIN_ORE.get(), "Gravel Tin Ore");
+                add(ModBlocks.MOSS_TIN_ORE.get(), "Moss Tin Ore");
+                add(ModBlocks.ALUMINUM_ORE.get(), "Aluminum Ore");
+                add(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), "Deepslate Aluminum Ore");
+                add(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), "Gravel Aluminum Ore");
+                add(ModBlocks.MOSS_ALUMINUM_ORE.get(), "Moss Aluminum Ore");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -656,6 +670,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MAGNET.get(), "Mıknatıs");
                 add(ModItems.CHLOROPHYTE_REPEATER.get(), "Klorofit Tekrarlayıcı");
                 add(ModItems.PORTABLE_FURNACE.get(), "Taşınabilir Fırın");
+                add(ModItems.TIN_INGOT.get(), "Kalay Külçesi");
+                add(ModItems.ALUMINUM_INGOT.get(), "Alüminyum Külçesi");
+                add(ModItems.BRONZE_INGOT.get(), "Bronz Külçesi");
+                add(ModItems.RAW_TIN.get(), "Ham Kalay");
+                add(ModItems.RAW_ALUMINUM.get(), "Ham Alüminyum");
+                add(ModItems.DASHING_SWORD.get(), "Hızlı Kılıç");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -805,6 +825,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MOSS_LAPIS_ORE.get(), "Yosunlu Lapis Cevheri");
                 add(ModBlocks.MOSS_REDSTONE_ORE.get(), "Yosunlu Kızıltaş Cevheri");
                 add(ModBlocks.MOSS_COAL_ORE.get(), "Yosunlu Kömür Cevheri");
+                add(ModMachines.DISENCHANTER.getBlockTranslationKey(), "Büyü Çıkarıcı");
+                add(ModBlocks.TIN_ORE.get(), "Kalay Cevheri");
+                add(ModBlocks.DEEPSLATE_TIN_ORE.get(), "Kayrak Taşında Kalay Cevheri");
+                add(ModBlocks.GRAVEL_TIN_ORE.get(), "Çakılda Kalay Cevheri");
+                add(ModBlocks.MOSS_TIN_ORE.get(), "Yosunlu Kalay Cevheri");
+                add(ModBlocks.ALUMINUM_ORE.get(), "Aluminyum Cevheri");
+                add(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), "Kayrak Taşında Aluminyum Cevheri");
+                add(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), "Çakılda Aluminyum Cevheri");
+                add(ModBlocks.MOSS_ALUMINUM_ORE.get(), "Yosunlu Aluminyum Cevheri");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

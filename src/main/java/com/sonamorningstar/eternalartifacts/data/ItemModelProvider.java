@@ -192,6 +192,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.MAGNET.get());
         withParentItemPath(ModItems.CHLOROPHYTE_REPEATER, "crossbow");
         basicItem(ModItems.PORTABLE_FURNACE.get());
+        basicItem(ModItems.TIN_INGOT.get());
+        basicItem(ModItems.ALUMINUM_INGOT.get());
+        basicItem(ModItems.BRONZE_INGOT.get());
+        basicItem(ModItems.RAW_TIN.get());
+        basicItem(ModItems.RAW_ALUMINUM.get());
+        handheld(ModItems.DASHING_SWORD);
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

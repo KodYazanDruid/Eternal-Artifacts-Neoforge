@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "tag": "forge:plastic_sheets"
+    }
+  },
+  "pattern": [
+    "SPS",
+    "AMA",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:meat_packer"
+  }
+}

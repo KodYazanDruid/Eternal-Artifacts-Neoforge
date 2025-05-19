@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +14,7 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class ElectricFurnace extends SidedTransferMachineBlockEntity<ElectricFurnaceMenu> {
+public class ElectricFurnace extends SidedTransferMachine<ElectricFurnaceMenu> {
     public ElectricFurnace(BlockPos pos, BlockState blockState) {
         super(ModMachines.ELECTRIC_FURNACE.getBlockEntity(), pos, blockState, (a, b, c, d) -> new ElectricFurnaceMenu(ModMachines.ELECTRIC_FURNACE.getMenu(), a, b, c, d));
         setEnergy(this::createDefaultEnergy);

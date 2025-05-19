@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.recipe.FluidInfuserRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.ItemFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-public class FluidInfuser extends GenericMachineBlockEntity {
+public class FluidInfuser extends GenericMachine {
     public FluidInfuser(BlockPos pos, BlockState blockState) {
         super(ModMachines.FLUID_INFUSER, pos, blockState);
         outputSlots.add(1);

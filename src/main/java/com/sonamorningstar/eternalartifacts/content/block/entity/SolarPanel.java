@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.container.SolarPanelMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import net.minecraft.core.BlockPos;
@@ -15,10 +15,11 @@ import net.minecraft.world.level.levelgen.Heightmap;
 
 import javax.annotation.Nullable;
 
-public class SolarPanel extends MachineBlockEntity<SolarPanelMenu> {
+public class SolarPanel extends Machine<SolarPanelMenu> {
 	public SolarPanel( BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.SOLAR_PANEL.get(), pos, blockState, SolarPanelMenu::new);
 		setEnergy(() -> {
+			energyPerTick = getBlockState().getValue(SlabBlock.TYPE) == SlabType.DOUBLE ? 8 : 4;
 			int cap = getBlockState().getValue(SlabBlock.TYPE) == SlabType.DOUBLE ? 32000 : 16000;
 			return new SolarPanelEnergy(this, cap, 500);
 		});
@@ -66,7 +67,7 @@ public class SolarPanel extends MachineBlockEntity<SolarPanelMenu> {
 		}
 		if (lvl.isDay() && flag) {
 			if (energy.getEnergyStored() < energy.getMaxEnergyStored()) {
-				energy.receiveEnergyForced(st.getValue(SlabBlock.TYPE) == SlabType.DOUBLE ? 8 : 4, false);
+				energy.receiveEnergyForced(energyPerTick, false);
 			}
 		}
 	}

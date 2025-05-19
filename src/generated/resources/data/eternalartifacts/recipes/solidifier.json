@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:jar"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "I": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:ingots/gold"
+    },
+    "R": {
+      "tag": "forge:ingots/brick"
+    }
+  },
+  "pattern": [
+    "BPR",
+    "IMI",
+    "DCD"
+  ],
+  "result": {
+    "item": "eternalartifacts:solidifier"
+  }
+}

@@ -8,7 +8,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.MachineBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
 import net.minecraft.core.BlockPos;
@@ -46,7 +46,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
-public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntityBlock {
+public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     private final BlockEntityType.BlockEntitySupplier<T> supplier;
     public BaseMachineBlock(Properties pProperties, BlockEntityType.BlockEntitySupplier<T> fun) {
         super(pProperties);
@@ -66,7 +66,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Override
     public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof MachineBlockEntity<?> machine) {
+        if (blockEntity instanceof Machine<?> machine) {
             int resistance = machine.getEnchantmentLevel(Enchantments.BLAST_PROTECTION) + 1;
             return super.getExplosionResistance(state, level, pos, explosion) * resistance;
         }
@@ -76,7 +76,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     @Override
     public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if(blockEntity instanceof MachineBlockEntity<?> machine) {
+        if(blockEntity instanceof Machine<?> machine) {
             if (!(player.getMainHandItem().getItem() instanceof WrenchItem)) {
                 IItemHandler inventory = level.getCapability(Capabilities.ItemHandler.BLOCK, machine.getBlockPos(), machine.getBlockState(), machine, null);
                 if(inventory != null) {
@@ -103,7 +103,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
         IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
         if (fluidHandler != null && FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) return InteractionResult.sidedSuccess(level.isClientSide());
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof MachineBlockEntity<?> mbe && mbe.canConstructMenu()) {
+        if (be instanceof Machine<?> mbe && mbe.canConstructMenu()) {
             AbstractMachineMenu.openContainer(player, pos);
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
@@ -161,7 +161,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
+        if (be instanceof Machine<?> mbe && stack.hasTag()) {
             mbe.loadEnchants(stack.getEnchantmentTags());
             for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
                 mbe.onEnchanted(entry.getKey(), entry.getValue());
@@ -207,7 +207,7 @@ public class BaseMachineBlock<T extends MachineBlockEntity<?>> extends BaseEntit
             }
         }
 
-        if (be instanceof MachineBlockEntity<?> mbe && stack.hasTag()) {
+        if (be instanceof Machine<?> mbe && stack.hasTag()) {
             CompoundTag nbt = stack.getTag();
             if (nbt.contains("MachineData")) {
                 mbe.loadContents(nbt.getCompound("MachineData"));

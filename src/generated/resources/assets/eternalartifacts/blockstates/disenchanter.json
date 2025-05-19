@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/disenchanter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/disenchanter"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/disenchanter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/disenchanter",
+      "y": 270
+    }
+  }
+}

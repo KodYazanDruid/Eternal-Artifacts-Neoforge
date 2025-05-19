@@ -5,10 +5,10 @@ import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorberBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.enchantment.SoulboundEnchantment;
 import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
@@ -19,7 +19,6 @@ import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
-import com.sonamorningstar.eternalartifacts.mixins.CrossbowItemMixin;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
@@ -441,7 +440,7 @@ public class CommonEvents {
         BlockPos pos = BlockPos.containing(center.x, center.y, center.z);
         for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(2, 2, 2), pos.offset(-2, -2, -2))) {
             BlockEntity blockEntity = level.getBlockEntity(blockPos);
-            if (blockEntity instanceof ShockAbsorberBlockEntity absorber) {
+            if (blockEntity instanceof ShockAbsorber absorber) {
                 ModEnergyStorage energy = absorber.energy;
                 if (energy != null) {
                     int generated = (int) (explosion.radius() * 5000);

@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.content.block.entity.AnvilinatorBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Anvilinator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -36,7 +36,7 @@ public record PacketAnvilatorSwitchToServer(boolean enableNaming, BlockPos pos, 
     public void handle(PlayPayloadContext ctx) {
         ctx.workHandler().submitAsync(()-> {
             ctx.player().ifPresent(player -> {
-                if (player.level().isLoaded(pos) && player.level().getBlockEntity(pos) instanceof AnvilinatorBlockEntity anvilator) {
+                if (player.level().isLoaded(pos) && player.level().getBlockEntity(pos) instanceof Anvilinator anvilator) {
                     anvilator.setEnableNaming(enableNaming);
                     anvilator.setName(naming);
                 }

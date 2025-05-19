@@ -30,6 +30,10 @@ public class ModTags {
         public static final TagKey<Block> VERSATILITY_MINEABLES = modTag("mineable/versatility");
         public static final TagKey<Block> ORE_BEARING_GROUND_GRAVEL = modTag("ore_bearing_ground/gravel");
         public static final TagKey<Block> ORE_BEARING_GROUND_MOSS = modTag("ore_bearing_ground/moss");
+        public static final TagKey<Block> ORES_TIN = forgeTag("ores/tin");
+        public static final TagKey<Block> ORES_ALUMINUM = forgeTag("ores/aluminum");
+        public static final TagKey<Block> MOSS_ORE_REPLACEABLES = modTag("moss_ore_replaceables");
+        
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
@@ -83,6 +87,16 @@ public class ModTags {
         public static final TagKey<Item> DUSTS_MANGANESE = forgeTag("dusts/manganese");
         public static final TagKey<Item> ORES_MANGANESE = forgeTag("ores/manganese");
         public static final TagKey<Item> RAW_MATERIALS_MANGANESE = forgeTag("raw_materials/manganese");
+        public static final TagKey<Item> MACHINE_ENCHANT_UNBREAKING = modTag("machine_enchant_unbreaking");
+        public static final TagKey<Item> MACHINE_ENCHANT_EFFICIENCY = modTag("machine_enchant_efficiency");
+        public static final TagKey<Item> MACHINE_ENCHANT_CELERITY = modTag("machine_enchant_celerity");
+        public static final TagKey<Item> INGOTS_TIN = forgeTag("ingots/tin");
+        public static final TagKey<Item> INGOTS_ALUMINUM = forgeTag("ingots/aluminum");
+        public static final TagKey<Item> INGOTS_BRONZE = forgeTag("ingots/bronze");
+        public static final TagKey<Item> ORES_TIN = forgeTag("ores/tin");
+        public static final TagKey<Item> ORES_ALUMINUM = forgeTag("ores/aluminum");
+        public static final TagKey<Item> RAW_MATERIALS_TIN = forgeTag("raw_materials/tin");
+        public static final TagKey<Item> RAW_MATERIALS_ALUMINUM = forgeTag("raw_materials/aluminum");
 		
 		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

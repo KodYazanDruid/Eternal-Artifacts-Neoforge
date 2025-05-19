@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "M": {
+      "item": "eternalartifacts:electric_furnace"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "T": {
+      "item": "eternalartifacts:chlorophyte_tablet"
+    }
+  },
+  "pattern": [
+    " C ",
+    "TMT",
+    " R "
+  ],
+  "result": {
+    "item": "eternalartifacts:induction_furnace"
+  }
+}

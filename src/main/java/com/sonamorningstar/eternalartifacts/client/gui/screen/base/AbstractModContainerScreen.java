@@ -5,8 +5,8 @@ import com.sonamorningstar.eternalartifacts.client.gui.widget.Overlapping;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import lombok.Setter;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -17,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.ArrayList;
@@ -68,7 +69,17 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     protected void renderSlot(GuiGraphics gui, Slot slot, ResourceLocation texture) {
-        gui.blitSprite(texture, leftPos + slot.x-1, topPos + slot.y-1, 0, 18, 18);
+        int xPos = leftPos + slot.x - 1;
+        int yPos = topPos + slot.y - 1;
+        var event = NeoForge.EVENT_BUS.post(new RenderEtarSlotEvent(
+            this, gui, slot, texture, xPos, yPos, 0,18, 18, guiTint));
+        if (!event.isCanceled()) {
+            applyCustomGuiTint(event.getGui(), event.getGuiTint());
+            event.getGui().blitSprite(
+                event.getTexture(), event.getX(), event.getY(), event.getBlitOffset(), event.getWidth(), event.getHeight()
+            );
+            resetGuiTint(event.getGui());
+        }
     }
     
     @Override
