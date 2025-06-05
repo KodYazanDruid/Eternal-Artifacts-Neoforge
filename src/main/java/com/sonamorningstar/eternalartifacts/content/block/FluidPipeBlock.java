@@ -65,7 +65,8 @@ public class FluidPipeBlock extends AttachmentablePipeBlock<IFluidHandler> {
 	@Getter
 	public enum PipeTier implements IExtensibleEnum {
 		COPPER(16, 100),
-		GOLD(32, 1000);
+		GOLD(24, 500),
+		STEEL(32, 1000);
 		
 		private final int maxConnections;
 		private final int transferRate;

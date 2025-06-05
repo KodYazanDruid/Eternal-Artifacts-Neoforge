@@ -32,7 +32,7 @@ public class ModEnchantments {
         public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("versatility", VersatilityEnchantment.acceptedItems);
         public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1 || item instanceof MachineBlockItem);
         public static final EnchantmentCategory EVERLASTING = EnchantmentCategory.create("everlasting", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1 || item instanceof MachineBlockItem);
-        public static final EnchantmentCategory MACHINE = EnchantmentCategory.create("machine", item -> item instanceof MachineBlockItem);
+        public static final EnchantmentCategory EMPTY = EnchantmentCategory.create("machine", item -> false);
         
         private static boolean hasAnyCapability(ItemStack stack) {
             return hasEnergy(stack) || hasInventory(stack) || hasTank(stack);

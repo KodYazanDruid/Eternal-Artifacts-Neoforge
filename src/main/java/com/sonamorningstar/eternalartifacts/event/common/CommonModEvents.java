@@ -155,17 +155,17 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MACHINE_WORKBENCH.get(), (be, ctx) -> be.inventory);
     
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
-            var network = be.getCachedNetwork();
+            var network = be.getCachedTesseractNetwork();
             if (network == null) return null;
             return network.getCapabilityClass() == IItemHandler.class ? new TesseractInventoryCap(be) : null;
         });
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
-            var network = be.getCachedNetwork();
+            var network = be.getCachedTesseractNetwork();
             if (network == null) return null;
             return network.getCapabilityClass() == IFluidHandler.class ? new TesseractFluidCap(be) : null;
         });
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
-            var network = be.getCachedNetwork();
+            var network = be.getCachedTesseractNetwork();
             if (network == null) return null;
             return network.getCapabilityClass() == IEnergyStorage.class ? new TesseractEnergyCap(be) : null;
         });

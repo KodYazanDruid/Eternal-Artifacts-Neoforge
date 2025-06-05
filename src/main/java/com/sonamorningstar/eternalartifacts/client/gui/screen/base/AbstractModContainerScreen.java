@@ -6,9 +6,11 @@ import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -31,6 +33,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     //Inside of Template: 166px * 156px
     //Total Size: 176px * 166px
     @Setter
+    @Getter
     private int guiTint = 0xFFFFFFFF;
     protected boolean renderEffects = true;
     public final List<GuiEventListener> upperLayerChildren = new ArrayList<>();
@@ -153,6 +156,28 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     @Override
+    public boolean mouseClicked(double mx, double my, int button) {
+        boolean ret = super.mouseClicked(mx, my, button);
+        Optional<GuiEventListener> child = getChildAt(mx, my);
+        if (child.isPresent()) {
+            if (child.get() instanceof Overlapping overlapping) {
+                GuiEventListener listener = overlapping.getElementUnderMouse(mx, my);
+                if (listener != null) setFocused(listener);
+            }
+        }
+        return ret;
+    }
+    
+    @Override
+    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+        if (pKeyCode == 69) { // E key without modifiers
+            GuiEventListener focused = getFocused();
+            if (focused instanceof EditBox box && box.canConsumeInput()) return false; // Prevents closing the screen when typing in a text box
+        }
+        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+    }
+    
+    @Override
     public void render(GuiGraphics gui, int mx, int my, float delta) {
         super.render(gui, mx, my, delta);
         boolean foundOpenMenu = false;
@@ -165,8 +190,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
                 } else {
                     overlapping.updateHover(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
                 }
-            } else if (child instanceof ScrollablePanel<?> scrollPanel) {
-                scrollPanel.updateHover(mx, my);
             }
         }
     }

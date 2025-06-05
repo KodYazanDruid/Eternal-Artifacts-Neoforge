@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import com.sonamorningstar.eternalartifacts.event.custom.GetMachineEnchantmentLevelEvent;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -109,7 +111,9 @@ public class ModBlockEntity extends BlockEntity {
     }
     
     public int getEnchantmentLevel(Enchantment enchantment) {
-        return enchantments.getInt(enchantment);
+        var event = new GetMachineEnchantmentLevelEvent(this, enchantments, enchantment);
+        NeoForge.EVENT_BUS.post(event);
+        return event.getEnchantments().getOrDefault(enchantment, 0);
     }
     
     public int getVolumeLevel() {

@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,6 +33,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -81,6 +83,9 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected ProcessCondition processCondition;
     @Getter
     protected Map<Integer, SidedTransferMachine.RedstoneType> redstoneConfigs = new HashMap<>(1);
+    
+    /*@Getter
+    protected AABB area = null;*/
 
     /* CONSTRUCTOR */
     public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
@@ -274,6 +279,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public void setRemoved() {
         super.setRemoved();
         RecipeCache.clearRecipes(this);
+        FakePlayerHelper.removeFakePlayer(this);
     }
     
     protected void setRecipeTypeAndContainer(RecipeType<? extends Recipe<? extends Container>> type, Supplier<? extends Container> container) {
@@ -318,6 +324,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
     }
     
+    /*protected void prepareFakePlayer(FakePlayer fakePlayer) {
+    
+    }*/
+    
     protected void progress(Runnable result) {
         if (processCondition != null && energy != null) {
             progress(processCondition::getResult, result, energy);
@@ -329,14 +339,14 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
 
     protected void progress(BooleanSupplier test, Runnable running, Runnable result, ModEnergyStorage energy) {
-        if (!hasEnergy(energyPerTick, energy) || level == null) return;
+        if (!canWork(energy) || level == null) return;
         SidedTransferMachine.RedstoneType type = redstoneConfigs.get(0);
         if (redstoneChecks(type, level)) {
             if (test.getAsBoolean()) {
                 progress = 0;
                 return;
             }
-            spendEnergy(energyPerTick, energy);
+            spendEnergy(energy);
             running.run();
             progress = Math.min(maxProgress, progress + progressStep);
             if (progress >= maxProgress) {
@@ -352,24 +362,24 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
                 type == SidedTransferMachine.RedstoneType.IGNORED || type == null;
     }
 
-    protected boolean hasEnergy(int amount, ModEnergyStorage energy) {
-        if (amount <= 0) return true;
-        return energy.extractEnergyForced(amount, true) == amount;
+    protected boolean canWork(ModEnergyStorage energy) {
+        if (energyPerTick <= 0) return true;
+        return energy.extractEnergyForced(energyPerTick, true) == energyPerTick;
     }
 
     protected boolean hasAnyEnergy(ModEnergyStorage energy) {
         return energy.getEnergyStored() > 0;
     }
     
-    public int spendEnergy(int amount, ModEnergyStorage energy) {
+    public int spendEnergy(ModEnergyStorage energy) {
         if (energy == null || level == null) return 0;
         int lvl = getEnchantmentLevel(Enchantments.UNBREAKING);
         if (lvl > 0) {
             float chance = 1.0f / (lvl + 1);
             if (level.random.nextFloat() > chance) {
-                return energy.extractEnergyForced(amount, false);
+                return energy.extractEnergyForced(energyPerTick, false);
             } else return 0;
-        } else return energy.extractEnergyForced(amount, false);
+        } else return energy.extractEnergyForced(energyPerTick, false);
     }
 
     //region Transfer methods.

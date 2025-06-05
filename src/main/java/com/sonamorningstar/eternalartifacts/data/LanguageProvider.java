@@ -101,7 +101,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.RAW_MARIN.get(), "Raw Marin");
                 add(ModItems.TAR_BALL.get(), "Tar Ball");
                 add(ModItems.BITUMEN.get(), "Bitumen");
-                add(ModItems.PINK_SLIME_INGOT.get(), "Pink Slime Ingot");
+                add(ModItems.PINK_SLIME_STEEL_INGOT.get(), "Pink Slime Steel Ingot");
                 add(ModItems.GLASSCUTTER.get(), "Glasscutter");
                 add(ModItems.WITHERING_SWORD.get(), "Withering Sword");
                 add(ModItems.FEEDING_CANISTER.get(), "Feeding Canister");
@@ -202,6 +202,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.RAW_TIN.get(), "Raw Tin");
                 add(ModItems.RAW_ALUMINUM.get(), "Raw Aluminum");
                 add(ModItems.DASHING_SWORD.get(), "Dashing Sword");
+                add(ModItems.ITEM_FILTER.get(), "Item Filter");
+                add(ModItems.CARBON_PAPER.get(), "Carbon Paper");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -320,6 +322,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), "Deepslate Aluminum Ore");
                 add(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), "Gravel Aluminum Ore");
                 add(ModBlocks.MOSS_ALUMINUM_ORE.get(), "Moss Aluminum Ore");
+                add(ModBlocks.STEEL_ITEM_PIPE.get(), "Steel Item Pipe");
+                add(ModBlocks.STEEL_FLUID_PIPE.get(), "Steel Fluid Pipe");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -359,7 +363,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.COMMAND.withSuffix("charm.wildcard.deactivated"), "%s's wildcard charm slot has been deactivated.");
                 add(ModConstants.COMMAND.withSuffix("network.list"), "Networks:");
                 add(ModConstants.COMMAND.withSuffix("network.removed"), "Removed network with UUID %s.");
-                add(ModConstants.COMMAND.withSuffix("network.not_found"), "Network with UUID %s not found.");
+                add(ModConstants.COMMAND.withSuffix("network.not_found"), "TesseractNetwork with UUID %s not found.");
                 //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -470,6 +474,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("consume_energy_per_tick"), "Consumes %d RF per tick.");
                 add(ModConstants.GUI.withSuffix("produce_energy_per_tick"), "Produces %d RF per tick.");
                 add(ModConstants.TOOLTIP.withSuffix("repeater.projectiles"), "Projectiles:");
+                add(ModConstants.GUI.withSuffix("whitelist"), "Whitelist");
+                add(ModConstants.GUI.withSuffix("blacklist"), "Blacklist");
+                add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Click to swap to Whitelist");
+                add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Click to swap to Blacklist");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt"), "Ignores NBT");
+                add(ModConstants.GUI.withSuffix("pipe_filter_nbt_tolerant"), "Respects NBT");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt_swap"), "Click to swap to respect NBT");
+                add(ModConstants.GUI.withSuffix("pipe_filter_nbt_tolerant_swap"), "Click to swap to ignore NBT");
+                add("gui.eternalartifacts.pipe_filter.tags_for", "Tags for %s:");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -571,7 +584,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.CRUDE_OIL.getBucketItem(), "Ham Petrol Kovası");
                 add(ModItems.TAR_BALL.get(), "Katran Topu");
                 add(ModItems.BITUMEN.get(), "Zift");
-                add(ModItems.PINK_SLIME_INGOT.get(), "Pembe Balçık Külçesi");
+                add(ModItems.PINK_SLIME_STEEL_INGOT.get(), "Pembe Balçık Çeliği Külçesi");
                 add(ModItems.GLASSCUTTER.get(), "Cam Kesici");
                 add(ModFluids.GASOLINE.getBucketItem(), "Benzin Kovası");
                 add(ModFluids.DIESEL.getBucketItem(), "Dizel Kovası");
@@ -676,6 +689,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.RAW_TIN.get(), "Ham Kalay");
                 add(ModItems.RAW_ALUMINUM.get(), "Ham Alüminyum");
                 add(ModItems.DASHING_SWORD.get(), "Hızlı Kılıç");
+                add(ModItems.ITEM_FILTER.get(), "Eşya Filtresi");
+                add(ModItems.CARBON_PAPER.get(), "Karbon Kağıdı");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -834,6 +849,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), "Kayrak Taşında Aluminyum Cevheri");
                 add(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), "Çakılda Aluminyum Cevheri");
                 add(ModBlocks.MOSS_ALUMINUM_ORE.get(), "Yosunlu Aluminyum Cevheri");
+                add(ModMachines.MOB_HARVESTER.getBlockTranslationKey(), "Yaratık Hasat Makinesi");
+                add(ModBlocks.STEEL_ITEM_PIPE.get(), "Çelik Eşya Borusu");
+                add(ModBlocks.STEEL_FLUID_PIPE.get(), "Çelik Sıvı Borusu");
+                add(ModMachines.MARINE_FISHER.getBlockTranslationKey(), "Deniz Balıkçısı");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1012,6 +1031,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("consume_energy_per_tick"), "Tick başına %d RF harcar.");
                 add(ModConstants.GUI.withSuffix("produce_energy_per_tick"), "Tick başına %d RF üretir.");
                 add(ModConstants.TOOLTIP.withSuffix("repeater.projectiles"), "Mühimmatlar:");
+                add(ModConstants.GUI.withSuffix("whitelist"), "Beyaz Liste");
+                add(ModConstants.GUI.withSuffix("blacklist"), "Kara Liste");
+                add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Beyaz listeye geçmek için tıkla");
+                add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Kara listeye geçmek için tıkla");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt"), "NBT'yi yok say");
+                add(ModConstants.GUI.withSuffix("pipe_filter_nbt_tolerant"), "NBT'yi dikkate al");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt_swap"), "NBT'yi dikkate almamak için tıkla");
+                add(ModConstants.GUI.withSuffix("pipe_filter_nbt_tolerant_swap"), "NBT'yi yok saymak için tıkla");
+                add("gui.eternalartifacts.pipe_filter.tags_for", "%s için etiketler:");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

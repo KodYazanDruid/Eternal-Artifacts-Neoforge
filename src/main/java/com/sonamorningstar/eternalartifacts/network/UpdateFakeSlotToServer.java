@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;

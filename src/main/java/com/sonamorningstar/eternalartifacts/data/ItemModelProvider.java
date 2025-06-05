@@ -101,7 +101,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.MARIN_INGOT.get());
         basicItem(ModItems.TAR_BALL.get());
         basicItem(ModItems.BITUMEN.get());
-        basicItem(ModItems.PINK_SLIME_INGOT.get());
+        basicItem(ModItems.PINK_SLIME_STEEL_INGOT.get());
         handheld(ModItems.GLASSCUTTER);
         handheld(ModItems.WITHERING_SWORD);
         basicItem(ModItems.FEEDING_CANISTER.get());
@@ -198,6 +198,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.RAW_TIN.get());
         basicItem(ModItems.RAW_ALUMINUM.get());
         handheld(ModItems.DASHING_SWORD);
+        basicItem(ModItems.ITEM_FILTER.get());
+        basicItem(ModItems.CARBON_PAPER.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

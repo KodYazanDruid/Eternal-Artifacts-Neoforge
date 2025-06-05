@@ -57,14 +57,14 @@ public class WrenchItem extends DiggerItem {
         /*if (!level.isClientSide() && be instanceof Tesseract tesseract) {
             var map = TesseractNetworks.get(level).getTesseracts();
             map.forEach((k, v) -> {
-                System.out.println("Network ID: " + k.getUuid());
-                System.out.println("Network: " + k.getName());
+                System.out.println("TesseractNetwork ID: " + k.getUuid());
+                System.out.println("TesseractNetwork: " + k.getName());
                 System.out.println("Type: " + k.getCapabilityClass().getSimpleName());
                 System.out.println("Tesseracts: [");
                 for (Tesseract tesseract1 : v) {
                     System.out.println("  Tesseract: " + tesseract1.getBlockPos());
-                    System.out.println("  Network ID: " + tesseract1.getNetworkId());
-                    System.out.println("  Network: " + tesseract1.getCachedNetwork().getName());
+                    System.out.println("  TesseractNetwork ID: " + tesseract1.getNetworkId());
+                    System.out.println("  TesseractNetwork: " + tesseract1.getCachedTesseractNetwork().getName());
                     System.out.println("  Tesseract: " + tesseract1);
                     System.out.println("  ");
                 }

@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.compat.mekanism;
 
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 import mekanism.common.tags.MekanismTags;
 import mekanism.generators.common.GeneratorTags;
@@ -52,13 +51,13 @@ public class MekanismCompat {
 	
 	public static void fmlCommonSetup(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
-			Network.CAPABILITY_NAMES.put(IGasHandler.class, ModConstants.GAS_CAPABILITY.translatable());
+			TesseractNetwork.CAPABILITY_NAMES.put(IGasHandler.class, ModConstants.GAS_CAPABILITY.translatable());
 		});
 	}
     
     public static void registerMekCaps(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(Capabilities.GAS.block(), ModBlockEntities.TESSERACT.get(), (be, dir) -> {
-			var network = be.getCachedNetwork();
+			var network = be.getCachedTesseractNetwork();
 			if (network == null) return null;
 			return network.getCapabilityClass() == IGasHandler.class ? new IGasHandler() {
 				@Override

@@ -2,23 +2,41 @@ package com.sonamorningstar.eternalartifacts.mixins.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
+import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
+import com.sonamorningstar.eternalartifacts.content.block.entity.MobHarvester;
+import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.mixin_helper.MixinHelper;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
+import com.sonamorningstar.eternalartifacts.util.ItemHelper;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import javax.annotation.Nullable;
+import java.util.Collection;
+import java.util.function.Consumer;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher, LivingEntityExposer {
@@ -38,6 +56,10 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
     
     @Shadow protected ItemStack useItem;
     @Shadow protected int useItemRemaining;
+    
+    @Shadow protected int attackStrengthTicker;
+    
+    @Shadow @Nullable protected Player lastHurtByPlayer;
     @Unique
     public int dashCooldown = 0;
     
@@ -69,6 +91,54 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
         LivingEntity living = (LivingEntity) (Object) this;
         ItemStack totem = MixinHelper.getUndyingTotem(living);
         return totem.isEmpty() ? original.call(instance, hand) : totem;
+    }
+    
+    @WrapOperation(method = "dropAllDeathLoot", at = @At(value = "INVOKE", target = "Ljava/util/Collection;forEach(Ljava/util/function/Consumer;)V"))
+    private void dropLoot(Collection<ItemEntity> instance, Consumer<ItemEntity> consumer, Operation<Void> original, DamageSource source) {
+        Entity entity = source.getEntity();
+        if (entity instanceof FakePlayer fakePlayer && "EternalArtifactsMobHarvester".equals(fakePlayer.getGameProfile().getName())) {
+            BlockEntity be = fakePlayer.level().getBlockEntity(fakePlayer.blockPosition());
+            if (be instanceof MobHarvester harvester) {
+                for (ItemEntity itemEntity : instance) {
+                    ItemStack remainder = ItemHelper.insertItemStackedForced(harvester.inventory, itemEntity.getItem(), false);
+                    if (!remainder.isEmpty()) {
+                        consumer.accept(new ItemEntity(fakePlayer.level(), itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), remainder));
+                    }
+                }
+                return;
+            }
+        }
+        original.call(instance, consumer);
+    }
+    
+    @WrapOperation(method = "dropExperience", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"))
+    private void dropExp(ServerLevel serverLevel, Vec3 pos, int reward, Operation<Void> original) {
+        Player player = this.lastHurtByPlayer;
+        if (player instanceof FakePlayer fakePlayer && "EternalArtifactsMobHarvester".equals(fakePlayer.getGameProfile().getName())) {
+            BlockEntity be = fakePlayer.level().getBlockEntity(fakePlayer.blockPosition());
+            if (be instanceof MobHarvester harvester) {
+                while (reward > 0) {
+                    int filled = harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.SIMULATE);
+                    if (filled == 20) {
+                        harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.EXECUTE);
+                        reward--;
+                    } else break;
+                }
+            }
+        }
+        original.call(serverLevel, pos, reward);
+    }
+    
+    @Inject(method = "dropEquipment", at = @At(value = "HEAD"))
+    private void dropEquipment(CallbackInfo ci) {
+        LivingEntity living = (LivingEntity) (Object) this;
+        if (living instanceof Player player){
+            var charms = CharmStorage.get(living);
+            for (int i = 0; i < charms.getSlots(); i++) {
+                var charm = charms.getStackInSlot(i);
+                player.drop(charm, true, false);
+            }
+        }
     }
     
     @Unique
@@ -149,4 +219,11 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
     public void updateUsingItemExp(ItemStack stack) {
         this.updateUsingItem(stack);
     }
+    
+    @Override
+    public int incrementAttackStrengthTicker(int amount) {
+        attackStrengthTicker += amount;
+        return attackStrengthTicker;
+    }
+    
 }

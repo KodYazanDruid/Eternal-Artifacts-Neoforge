@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.core;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,26 +25,47 @@ public class ModProperties {
                 .isViewBlocking(ModProperties.Blocks::never);
 
         public static final BlockBehaviour.Properties CABLE = BlockBehaviour.Properties.of()
-                .mapColor(MapColor.COLOR_ORANGE)
+                .mapColor(MapColor.COLOR_BLUE)
                 .sound(SoundType.COPPER)
-                .pushReaction(PushReaction.DESTROY)
+                .pushReaction(PushReaction.BLOCK)
                 .noOcclusion()
-                .strength(3.0F, 4.0F)
+                .strength(3.0F, 5.0F)
                 .isValidSpawn(ModProperties.Blocks::never)
                 .isRedstoneConductor(ModProperties.Blocks::never)
                 .isSuffocating(ModProperties.Blocks::never)
                 .isViewBlocking(ModProperties.Blocks::never);
         
-        public static final BlockBehaviour.Properties FLUID_PIPE = BlockBehaviour.Properties.of()
-                .mapColor(MapColor.TERRACOTTA_ORANGE)
-                .sound(SoundType.COPPER)
-                .pushReaction(PushReaction.DESTROY)
-                .noOcclusion()
-                .strength(4.0F, 5.0F)
-                .isValidSpawn(ModProperties.Blocks::never)
-                .isRedstoneConductor(ModProperties.Blocks::never)
-                .isSuffocating(ModProperties.Blocks::never)
-                .isViewBlocking(ModProperties.Blocks::never);
+        public static final BlockBehaviour.Properties COPPER_PIPE = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_ORANGE)
+            .sound(SoundType.COPPER)
+            .pushReaction(PushReaction.BLOCK)
+            .noOcclusion()
+            .strength(3.0F, 6.0F)
+            .isValidSpawn(ModProperties.Blocks::never)
+            .isRedstoneConductor(ModProperties.Blocks::never)
+            .isSuffocating(ModProperties.Blocks::never)
+            .isViewBlocking(ModProperties.Blocks::never);
+        public static final BlockBehaviour.Properties GOLD_PIPE = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.GOLD)
+            .sound(SoundType.METAL)
+            .pushReaction(PushReaction.BLOCK)
+            .instrument(NoteBlockInstrument.BELL)
+            .noOcclusion()
+            .strength(3.0F, 6.0F)
+            .isValidSpawn(ModProperties.Blocks::never)
+            .isRedstoneConductor(ModProperties.Blocks::never)
+            .isSuffocating(ModProperties.Blocks::never)
+            .isViewBlocking(ModProperties.Blocks::never);
+        public static final BlockBehaviour.Properties STEEL_PIPE = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_ORANGE)
+            .sound(SoundType.METAL)
+            .pushReaction(PushReaction.BLOCK)
+            .noOcclusion()
+            .strength(5.5F, 7.0F)
+            .isValidSpawn(ModProperties.Blocks::never)
+            .isRedstoneConductor(ModProperties.Blocks::never)
+            .isSuffocating(ModProperties.Blocks::never)
+            .isViewBlocking(ModProperties.Blocks::never);
 
         public static final BlockBehaviour.Properties SNOW_BRICKS = BlockBehaviour.Properties.of()
                 .mapColor(MapColor.SNOW)

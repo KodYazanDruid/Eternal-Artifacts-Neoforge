@@ -26,6 +26,8 @@
     "eternalartifacts:moss_gold_ore",
     "eternalartifacts:moss_redstone_ore",
     "eternalartifacts:moss_diamond_ore",
-    "eternalartifacts:moss_emerald_ore"
+    "eternalartifacts:moss_emerald_ore",
+    "eternalartifacts:steel_item_pipe",
+    "eternalartifacts:steel_fluid_pipe"
   ]
 }

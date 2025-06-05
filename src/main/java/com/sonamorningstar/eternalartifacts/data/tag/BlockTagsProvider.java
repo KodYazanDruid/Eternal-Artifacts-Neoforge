@@ -112,6 +112,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.DEEPSLATE_ALUMINUM_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.GRAVEL_ALUMINUM_ORE.get(), "stone", "shovel");
         tierAndTool(ModBlocks.MOSS_ALUMINUM_ORE.get(), "stone", "hoe");
+        tierAndTool(ModBlocks.STEEL_ITEM_PIPE.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.STEEL_FLUID_PIPE.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),

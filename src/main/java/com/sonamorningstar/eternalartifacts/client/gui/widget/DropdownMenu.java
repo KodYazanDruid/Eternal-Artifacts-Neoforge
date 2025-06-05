@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -153,6 +154,17 @@ public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget imple
 			return dropPanel.updateHover(mx, my);
 		}
 		return false;
+	}
+	
+	@Override
+	public GuiEventListener getElementUnderMouse(double mx, double my) {
+		if (isMenuOpen) {
+			GuiEventListener element = dropPanel.getElementUnderMouse(mx, my);
+			if (element != null) {
+				return element;
+			}
+		}
+		return this;
 	}
 	
 	@Override

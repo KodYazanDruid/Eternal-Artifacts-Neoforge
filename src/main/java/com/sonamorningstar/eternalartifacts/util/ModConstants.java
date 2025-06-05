@@ -39,7 +39,6 @@ public enum ModConstants {
     ENERGY_CAPABILITY("capability."+MODID, "energy"),
     GAS_CAPABILITY("capability."+MODID, "gas"),;
     
-    
     final String string;
     @Nullable
     String subType;

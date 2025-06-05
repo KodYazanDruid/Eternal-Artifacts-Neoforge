@@ -27,7 +27,8 @@ public class ModScreens {
         event.register(ModMenuTypes.BLUEPRINT.get(), BlueprintScreen::new);
         event.register(ModMenuTypes.PORTABLE_BATTERY.get(), PortableBatteryScreen::new);
         event.register(ModMenuTypes.MACHINE_WORKBENCH.get(), MachineWorkbenchScreen::new);
-        event.register(ModMenuTypes.BASIC_ATTACHMENT.get(), BasicAttachmentScreen::new);
+        event.register(ModMenuTypes.PIPE_FILTER.get(), PipeFilterScreen::new);
+        event.register(ModMenuTypes.PIPE_FILTER_ITEM.get(), PipeFilterItemScreen::new);
         event.register(ModMenuTypes.SOLAR_PANEL.get(), SolarPanelScreen::new);
     }
 }

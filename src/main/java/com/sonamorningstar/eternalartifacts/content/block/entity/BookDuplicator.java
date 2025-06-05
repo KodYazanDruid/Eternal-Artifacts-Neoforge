@@ -71,7 +71,7 @@ public class BookDuplicator extends SidedTransferMachine<BookDuplicatorMenu> {
         if (inputBook.getItem() == Items.ENCHANTED_BOOK &&
                 consumableBook.getItem() == Items.BOOK &&
                 output.isEmpty() &&
-                hasEnergy(energyPerTick, energy)) {
+                canWork(energy)) {
 
             Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(inputBook);
             //Book should have one enchantment.

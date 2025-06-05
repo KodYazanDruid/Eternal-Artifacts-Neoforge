@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,6 +35,7 @@ public class BlockBreaker extends GenericMachine {
 		setTank(this::createDefaultTank);
 		outputSlots.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8));
 		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0 && canStackDig(stack)));
+		setEnergyPerTick(250);
 		screenInfo.setShouldDrawArrow(false);
 		screenInfo.setSlotPosition(46, 44, 0);
 		screenInfo.setSlotPosition(64, 35, 1);
@@ -87,12 +89,6 @@ public class BlockBreaker extends GenericMachine {
 		}
 	}
 	
-	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		FakePlayerHelper.removeFakePlayer(this);
-	}
-	
 	public int destroyTickStart = -1;
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
@@ -105,7 +101,7 @@ public class BlockBreaker extends GenericMachine {
 		fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
 		ItemStack tool = inventory.getStackInSlot(0);
 		fakePlayer.getInventory().selected = 0;
-		fakePlayer.setItemInHand(InteractionHand.MAIN_HAND, tool);
+		fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, tool);
 		for (int i = 0; i < inventory.getSlots(); i++) {
 			if (i == 0) continue;
 			ItemStack stack = inventory.getStackInSlot(i);
@@ -114,9 +110,9 @@ public class BlockBreaker extends GenericMachine {
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);
 		ServerPlayerGameMode gameMode = fakePlayer.gameMode;
-		if (blockMode && !lvl.getBlockState(targetPos).isAir() && hasEnergy(250, energy) &&
+		if (blockMode && !lvl.getBlockState(targetPos).isAir() && canWork(energy) &&
 				minedState.getBlock().canHarvestBlock(minedState, lvl, targetPos, fakePlayer)){
-			spendEnergy(250, energy);
+			spendEnergy(energy);
 			if (destroyTickStart == -1) {
 				gameMode.delayedTickStart = gameMode.gameTicks;
 				destroyTickStart = gameMode.gameTicks;
@@ -126,7 +122,7 @@ public class BlockBreaker extends GenericMachine {
 			gameMode.tick();
 		}
 		FluidState fluidState = lvl.getFluidState(targetPos);
-		if (fluidMode && !fluidState.isEmpty() && hasEnergy(250, energy) &&
+		if (fluidMode && !fluidState.isEmpty() && canWork(energy) &&
 				minedState.getBlock() instanceof BucketPickup bp && fluidState.isSource() &&
 				(tank.getFluid(0).isEmpty() || tank.getFluid(0).is(fluidState.getType()))) {
 			ItemStack bucketStack = bp.pickupBlock(fakePlayer, lvl, targetPos, minedState);
@@ -136,7 +132,7 @@ public class BlockBreaker extends GenericMachine {
 					int filled = tank.fillForced(itemH.getFluidInTank(0).copyWithAmount(1000), IFluidHandler.FluidAction.SIMULATE);
 					if (filled == 1000) {
 						tank.fillForced(itemH.getFluidInTank(0).copyWithAmount(1000), IFluidHandler.FluidAction.EXECUTE);
-						spendEnergy(250, energy);
+						spendEnergy(energy);
 						bp.getPickupSound(minedState).ifPresent(se -> fakePlayer.playSound(se, 1.0F, 1.0F));
 						lvl.gameEvent(fakePlayer, GameEvent.FLUID_PICKUP, targetPos);
 					}

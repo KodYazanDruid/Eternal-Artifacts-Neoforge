@@ -177,23 +177,27 @@ public class ModBlocks {
         () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), SolidCombustionDynamo::new));
 
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
-            ()-> new UncoveredCableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.CABLE));
+            ()-> new UncoveredCableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.COPPER_PIPE));
     public static final DeferredBlock<CableBlock> COVERED_COPPER_CABLE = registerWithItem("covered_copper_cable",
             ()-> new CableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.CABLE));
     public static final DeferredBlock<CableBlock> GOLD_CABLE = registerWithItem("gold_cable",
-        ()-> new UncoveredCableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.CABLE));
+        ()-> new UncoveredCableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.GOLD_PIPE));
     public static final DeferredBlock<CableBlock> COVERED_GOLD_CABLE = registerWithItem("covered_gold_cable",
         ()-> new CableBlock(CableBlock.CableTier.GOLD, ModProperties.Blocks.CABLE));
     
     public static final DeferredBlock<FluidPipeBlock> COPPER_FLUID_PIPE = registerWithItem("copper_fluid_pipe",
-        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.COPPER, ModProperties.Blocks.FLUID_PIPE));
+        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.COPPER, ModProperties.Blocks.COPPER_PIPE));
     public static final DeferredBlock<FluidPipeBlock> GOLD_FLUID_PIPE = registerWithItem("gold_fluid_pipe",
-        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.GOLD, ModProperties.Blocks.FLUID_PIPE));
+        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.GOLD, ModProperties.Blocks.GOLD_PIPE));
+    public static final DeferredBlock<FluidPipeBlock> STEEL_FLUID_PIPE = registerWithItem("steel_fluid_pipe",
+        () -> new FluidPipeBlock(FluidPipeBlock.PipeTier.STEEL, ModProperties.Blocks.STEEL_PIPE));
     
     public static final DeferredBlock<ItemPipeBlock> COPPER_ITEM_PIPE = registerWithItem("copper_item_pipe",
-        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.COPPER, ModProperties.Blocks.FLUID_PIPE));
+        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.COPPER, ModProperties.Blocks.COPPER_PIPE));
     public static final DeferredBlock<ItemPipeBlock> GOLD_ITEM_PIPE = registerWithItem("gold_item_pipe",
-        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.GOLD, ModProperties.Blocks.FLUID_PIPE));
+        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.GOLD, ModProperties.Blocks.GOLD_PIPE));
+    public static final DeferredBlock<ItemPipeBlock> STEEL_ITEM_PIPE = registerWithItem("steel_item_pipe",
+        () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.STEEL, ModProperties.Blocks.STEEL_PIPE));
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));

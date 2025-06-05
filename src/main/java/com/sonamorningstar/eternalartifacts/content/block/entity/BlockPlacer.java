@@ -41,6 +41,7 @@ public class BlockPlacer extends GenericMachine {
 		setEnergy(this::createDefaultEnergy);
 		setTank(this::createDefaultTank);
 		setInventory(() -> createBasicInventory(4, (slot, stack) -> stack.getItem() instanceof BlockItem));
+		setEnergyPerTick(250);
 		screenInfo.setShouldDrawArrow(false);
 		screenInfo.setSlotPosition(80, 35, 0);
 		screenInfo.setSlotPosition(98, 35, 1);
@@ -78,12 +79,6 @@ public class BlockPlacer extends GenericMachine {
 	}
 	
 	@Override
-	public void setRemoved() {
-		super.setRemoved();
-		FakePlayerHelper.removeFakePlayer(this);
-	}
-	
-	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputFluids(lvl, pos);
@@ -101,13 +96,14 @@ public class BlockPlacer extends GenericMachine {
 			fakePlayer.getInventory().setItem(i, stack);
 			if (stack == toPlace) fakePlayer.getInventory().selected = i;
 		}
-		if (blockMode && shouldPlace(lvl, targetPos) && !toPlace.isEmpty() && hasEnergy(250, energy)) {
+		if (blockMode && shouldPlace(lvl, targetPos) && !toPlace.isEmpty() && canWork(energy)) {
 			Direction facing = st.getValue(BlockStateProperties.FACING);
 			InteractionResult result = fakePlayer.gameMode.useItemOn(fakePlayer, level, toPlace, InteractionHand.MAIN_HAND,
 				new BlockHitResult(fakePlayer.position().relative(facing, 1), facing.getOpposite(), targetPos, true));
-			if (result.consumesAction()) spendEnergy(250, energy);
+			if (result.consumesAction()) spendEnergy(energy);
 		}
-		if (fluidMode && shouldPlaceFluid(fakePlayer, lvl, targetPos, toPlaceFluid) && !toPlaceFluid.isEmpty() && toPlaceFluid.getAmount() >= 1000 && hasEnergy(250, energy)) {
+		if (fluidMode && shouldPlaceFluid(fakePlayer, lvl, targetPos, toPlaceFluid) && !toPlaceFluid.isEmpty() && toPlaceFluid.getAmount() >= 1000 &&
+				canWork(energy)) {
 			boolean isPlaced = false;
 			if (targetState.getBlock() instanceof LiquidBlockContainer con) {
 				con.placeLiquid(lvl, targetPos, targetState, toPlaceFluid.getFluidType().getStateForPlacement(lvl, targetPos, toPlaceFluid));
@@ -119,7 +115,7 @@ public class BlockPlacer extends GenericMachine {
 			if (isPlaced) {
 				playEmptySound(fakePlayer, lvl, targetPos, toPlaceFluid.getFluid());
 				tank.drainForced(1000, IFluidHandler.FluidAction.EXECUTE);
-				spendEnergy(250, energy);
+				spendEnergy(energy);
 			}
 		}
 	}

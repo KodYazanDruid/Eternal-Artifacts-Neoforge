@@ -5,6 +5,7 @@ import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractScrollWidget;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWidget {
+public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWidget implements Overlapping {
 	@Getter
 	private final List<W> children = new ArrayList<>();
 	@Getter
@@ -68,6 +69,26 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 		children.clear();
 	}
 	
+	@Override
+	public void setX(int newX) {
+		int oldX = this.getX();
+		for (W child : children) {
+			int xOff = child.getX() - oldX;
+			child.setX(newX + xOff);
+		}
+		super.setX(newX);
+	}
+	
+	@Override
+	public void setY(int newY) {
+		int oldY = this.getY();
+		for (W child : children) {
+			int yOff = child.getY() - oldY;
+			child.setY(newY + yOff);
+		}
+		super.setY(newY);
+	}
+	
 	@Nullable
 	public W getChildUnderCursor(double mouseX, double mouseY) {
 		for (W child : children) {
@@ -99,6 +120,7 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 		super.mouseMoved(mx, my);
 	}
 	
+	@Override
 	public boolean updateHover(double mx, double my) {
 		if (visible) {
 			for (W child : children) {
@@ -109,6 +131,11 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public GuiEventListener getElementUnderMouse(double mx, double my) {
+		return getChildUnderCursor(mx, my);
 	}
 	
 	@Override

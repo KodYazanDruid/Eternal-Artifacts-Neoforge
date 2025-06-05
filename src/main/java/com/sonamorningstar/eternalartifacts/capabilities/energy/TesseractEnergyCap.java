@@ -12,7 +12,7 @@ public class TesseractEnergyCap extends ModEnergyStorage {
 	public TesseractEnergyCap(Tesseract tesseract) {
 		super(8000, 1000, 1000);
 		this.tesseract = tesseract;
-		var network = tesseract.getCachedNetwork();
+		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
 			CompoundTag tag = network.getSavedData();
 			if (tag != null) {
@@ -62,7 +62,7 @@ public class TesseractEnergyCap extends ModEnergyStorage {
 	
 	@Override
 	public void onEnergyChanged() {
-		var network = tesseract.getCachedNetwork();
+		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
 			CompoundTag tag = new CompoundTag();
 			tag.put("Energy", serializeNBT());

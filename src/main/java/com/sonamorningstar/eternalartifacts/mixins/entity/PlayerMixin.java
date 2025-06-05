@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.mixins.entity;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;

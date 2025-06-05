@@ -57,12 +57,14 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidPipe>> FLUID_PIPE = BLOCK_ENTITIES.register("fluid_pipe", ()->
         BlockEntityType.Builder.of(FluidPipe::new,
             ModBlocks.COPPER_FLUID_PIPE.get(),
-            ModBlocks.GOLD_FLUID_PIPE.get()
+            ModBlocks.GOLD_FLUID_PIPE.get(),
+            ModBlocks.STEEL_FLUID_PIPE.get()
         ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ItemPipe>> ITEM_PIPE = BLOCK_ENTITIES.register("item_pipe", ()->
         BlockEntityType.Builder.of(ItemPipe::new,
             ModBlocks.COPPER_ITEM_PIPE.get(),
-            ModBlocks.GOLD_ITEM_PIPE.get()
+            ModBlocks.GOLD_ITEM_PIPE.get(),
+            ModBlocks.STEEL_ITEM_PIPE.get()
         ).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->

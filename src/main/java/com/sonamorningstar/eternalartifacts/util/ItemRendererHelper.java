@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemRendererHelper {
+	private static final Minecraft M = Minecraft.getInstance();
     private static final RenderType TRANSLUCENT = RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS);
 
     public static void renderFakeItemTransparent(GuiGraphics gui, ItemStack stack, int x, int y, int alpha) {
@@ -84,4 +85,16 @@ public final class ItemRendererHelper {
     public static MultiBufferSource wrapBuffer(MultiBufferSource.BufferSource buffer, int alpha, boolean b) {
         return renderType -> new GhostVertexConsumer(buffer.getBuffer(b ? TRANSLUCENT : renderType), alpha);
     }
+	
+	public static boolean renderItemCarousel(GuiGraphics gui, ItemStack[] stacks, int x, int y, int backgroundColor, float alpha) {
+		long tick = M.clientTickCount;
+		if (stacks.length == 0) {
+			return false;
+		}
+		ItemStack itemStack = stacks[(int) ((tick / 20) % stacks.length)];
+		gui.fill(x, y, x + 16, y + 16, backgroundColor);
+		renderFakeItemTransparent(gui, itemStack, x, y, (int) (alpha * 255.0F));
+		gui.renderItemDecorations(M.font, itemStack, x, y, "");
+		return true;
+	}
 }

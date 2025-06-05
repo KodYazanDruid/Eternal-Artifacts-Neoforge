@@ -1,21 +1,26 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.container.BasicAttachmentMenu;
+import com.sonamorningstar.eternalartifacts.api.filter.FilterEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.FluidFilterEntry;
+import com.sonamorningstar.eternalartifacts.container.PipeFilterMenu;
 import com.sonamorningstar.eternalartifacts.content.block.FluidPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePipeBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.FilterablePipeBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
@@ -28,26 +33,11 @@ import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty.PipeConnection;
 
-public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements MenuProvider {
+public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 	private final FluidPipeBlock.PipeTier tier;
 	public FluidPipe(BlockPos pos, BlockState state) {
 		super(ModBlockEntities.FLUID_PIPE.get(), IFluidHandler.class, pos, state);
 		this.tier = ((FluidPipeBlock) state.getBlock()).getTier();
-	}
-	
-	@Override
-	public void openMenu(ServerPlayer player, Direction dir) {
-		PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
-		player.openMenu(this, wr -> {
-			wr.writeBlockPos(getBlockPos());
-			wr.writeEnum(dir);
-			wr.writeVarInt(conn == PipeConnection.EXTRACT ? 0 : 1);
-		});
-	}
-	
-	@Override
-	public Component getDisplayName() {
-		return Component.translatable("filter");
 	}
 	
 	@Nullable
@@ -55,10 +45,52 @@ public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements
 	public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
 		BlockHitResult hit = RayTraceHelper.retrace(pPlayer);
 		Direction dir = ((AttachmentablePipeBlock<?>) getBlockState().getBlock()).getClickedRelativePos(hit.getDirection(), getBlockPos(), hit.getLocation(), 8);
-		PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
-		return new BasicAttachmentMenu(pContainerId, pPlayerInventory, getBlockPos(),
-			dir, conn == PipeConnection.EXTRACT ? 0 : 1
+		PipeConnectionProperty.PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
+		filterEntries.putIfAbsent(dir, NonNullList.withSize(9, FluidFilterEntry.Empty.create(true)));
+		return new PipeFilterMenu(pContainerId, pPlayerInventory, getBlockPos(),
+			dir, conn == PipeConnectionProperty.PipeConnection.EXTRACT ? 0 : 1,
+			whitelists.get(dir) != null && whitelists.get(dir),
+			nbtIgnores.get(dir) != null && nbtIgnores.get(dir), filterEntries.get(dir)
 		);
+	}
+	
+	@Override
+	public void loadFilterEntries(CompoundTag data) {
+		CompoundTag filterData = data.getCompound("FilterData");
+		ListTag filterList = filterData.getList("FilterEntries", 10);
+		
+		filterList.stream().map(t -> (CompoundTag) t).forEach(dirTag -> {
+			for (Direction dir : Direction.values()) {
+				NonNullList<FilterEntry> list = NonNullList.withSize(9, FluidFilterEntry.Empty.create(true));
+				ListTag dirEntries = dirTag.getList(dir.getName(), 10);
+				if (dirEntries.isEmpty()) continue;
+				for (int i = 0; i < dirEntries.size(); i++) {
+					list.set(i, FluidFilterEntry.fromNBT(dirEntries.getCompound(i)));
+				}
+				filterEntries.put(dir, list);
+			}
+		});
+		for (Direction dir : Direction.values()) {
+			whitelists.put(dir, filterData.getBoolean(dir.getName() + "_whitelist"));
+			nbtIgnores.put(dir, filterData.getBoolean(dir.getName() + "_ignore_nbt"));
+		}
+	}
+	
+	@Override
+	public void loadFromItemFilter(ItemStack stack, Direction direction) {
+		if (stack.hasTag() && stack.getTag().contains("FilterData")) {
+			CompoundTag filterData = stack.getTag().getCompound("FilterData");
+			ListTag entryList = filterData.getList("FluidFilters", 10);
+			NonNullList<FilterEntry> filters = NonNullList.withSize(9, FluidFilterEntry.Empty.create(true));
+			for (int i = 0; i < entryList.size(); i++) {
+				CompoundTag entryTag = entryList.getCompound(i);
+				filters.set(i, FluidFilterEntry.fromNBT(entryTag));
+			}
+			filterEntries.put(direction, filters);
+			whitelists.put(direction, filterData.getBoolean("whitelist"));
+			nbtIgnores.put(direction, filterData.getBoolean("ignore_nbt"));
+			sendUpdate();
+		}
 	}
 	
 	@Override
@@ -118,7 +150,8 @@ public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements
 		
 		for (var sourceEntry : sources.entrySet()) {
 			BlockPos sourcePos = sourceEntry.getKey();
-			IFluidHandler source = sourceEntry.getValue().getCapability();
+			BlockCapabilityCache<IFluidHandler, Direction> sourceCache = sourceEntry.getValue();
+			IFluidHandler source = sourceCache.getCapability();
 			if (source == null) continue;
 			
 			var sortedTargets = targets.entrySet().stream()
@@ -131,18 +164,41 @@ public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements
 			FluidStack extracted = source.drain(maxTransferRate, IFluidHandler.FluidAction.SIMULATE);
 			if (extracted.isEmpty()) continue;
 			
+			Direction sourceDir = sourceCache.context();
+			BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
+			if (sourceBe instanceof FluidPipe sourcePipe) {
+				var sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
+				if (sourceFilters != null) {
+					if (checkFilters(sourcePipe, sourceFilters, extracted, sourceDir)) {
+						continue;
+					}
+				}
+			}
+			
 			int remainingAmount = Math.min(extracted.getAmount(), maxTransferRate);
 			
 			for (var targetEntry : sortedTargets) {
 				if (remainingAmount <= 0) break;
 				
-				IFluidHandler target = targetEntry.getValue().getCapability();
+				BlockPos targetPos = targetEntry.getKey();
+				BlockCapabilityCache<IFluidHandler, Direction> targetCache = targetEntry.getValue();
+				IFluidHandler target = targetCache.getCapability();
 				if (target == null) continue;
 				
 				FluidStack transferStack = new FluidStack(extracted.getFluid(), remainingAmount);
-				
 				int fillable = target.fill(transferStack, IFluidHandler.FluidAction.SIMULATE);
 				if (fillable <= 0) continue;
+				
+				Direction targetDir = targetCache.context();
+				BlockEntity targetBe = level.getBlockEntity(targetPos.relative(targetDir));
+				if (targetBe instanceof FluidPipe targetPipe) {
+					var targetFilters = targetPipe.filterEntries.get(targetDir.getOpposite());
+					if (targetFilters != null) {
+						if (checkFilters(targetPipe, targetFilters, extracted, targetDir)) {
+							continue;
+						}
+					}
+				}
 				
 				FluidStack actualExtract = source.drain(
 					new FluidStack(extracted.getFluid(), fillable),
@@ -155,5 +211,28 @@ public class FluidPipe extends AbstractPipeBlockEntity<IFluidHandler> implements
 				}
 			}
 		}
+	}
+	
+	private boolean checkFilters(FluidPipe sourcePipe, NonNullList<FilterEntry> sourceFilters,
+								 FluidStack stack, Direction sourceDir) {
+		boolean isWhitelist = sourcePipe.whitelists.getOrDefault(sourceDir.getOpposite(), false);
+		boolean shouldSkip = false;
+		
+		for (FilterEntry entry : sourceFilters) {
+			if (entry instanceof FluidFilterEntry itemFilter) {
+				boolean matches = itemFilter.matches(stack);
+				if (!isWhitelist && matches) {
+					shouldSkip = true;
+					break;
+				}
+				if (isWhitelist && matches) {
+					shouldSkip = false;
+					break;
+				} else if (isWhitelist) {
+					shouldSkip = true;
+				}
+			}
+		}
+		return shouldSkip;
 	}
 }

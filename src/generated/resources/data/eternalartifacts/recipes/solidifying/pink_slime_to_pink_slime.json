@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:solidifying",
+  "inputFluid": {
+    "amount": 250,
+    "tag": "forge:pink_slime"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:pink_slime"
+  }
+}

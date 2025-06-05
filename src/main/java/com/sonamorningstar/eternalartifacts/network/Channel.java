@@ -52,6 +52,15 @@ public class Channel {
         registrar.play(UpdateFakeSlotToServer.ID,
                 UpdateFakeSlotToServer::create,
                 handler -> handler.server(UpdateFakeSlotToServer::handle));
+        registrar.play(ItemTagFilterToServer.ID,
+                ItemTagFilterToServer::create,
+                handler -> handler.server(ItemTagFilterToServer::handle));
+        registrar.play(FluidStackFilterToServer.ID,
+                FluidStackFilterToServer::create,
+                handler -> handler.server(FluidStackFilterToServer::handle));
+        registrar.play(FluidTagFilterToServer.ID,
+                FluidTagFilterToServer::create,
+                handler -> handler.server(FluidTagFilterToServer::handle));
 
         registrar.play(PlayerTeleportToServer.ID,
                 PlayerTeleportToServer::create,

@@ -12,7 +12,7 @@ public class TesseractFluidCap extends ModFluidStorage {
 	public TesseractFluidCap(Tesseract tesseract) {
 		super(8000);
 		this.tesseract = tesseract;
-		var network = tesseract.getCachedNetwork();
+		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
 			CompoundTag tag = network.getSavedData();
 			if (tag != null) {
@@ -70,7 +70,7 @@ public class TesseractFluidCap extends ModFluidStorage {
 	
 	@Override
 	protected void onContentsChanged() {
-		var network = tesseract.getCachedNetwork();
+		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
 			network.setSavedData(serializeNBT());
 		}

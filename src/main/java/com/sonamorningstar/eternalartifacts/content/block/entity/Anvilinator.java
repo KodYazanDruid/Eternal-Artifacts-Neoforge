@@ -207,7 +207,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         if(output.getCount() + result.getCount() >= 64) return true;
         if((output.isEmpty() || ItemHandlerHelper.canItemStacksStack(output, result)) && tank.getFluidAmount(0) >= fluidAmount) {
             progress++;
-            spendEnergy(energyPerTick, energy);
+            spendEnergy(energy);
             setChanged();
             if (progress >= maxProgress) {
                 input.shrink(1);
@@ -229,7 +229,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         if(output.getCount() + result.getCount() >= 64) return;
         if(result.isEmpty() || ( !output.isEmpty() && !ItemHandlerHelper.canItemStacksStack(output, result))) return;
         progress++;
-        spendEnergy(energyPerTick, energy);
+        spendEnergy(energy);
         setChanged();
         if(progress >= maxProgress) {
             input.shrink(1);

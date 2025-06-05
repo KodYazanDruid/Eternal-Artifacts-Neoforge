@@ -377,7 +377,8 @@ public class ClientEvents {
             int width = gsms.getXSize();
             int height = gsms.getYSize();
             if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
-                SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(x + 23, y + 8, 129, 70,
+                SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(Component.empty(),
+                    x + 23, y + 8, 129, 70,
                     SimpleDraggablePanel.Bounds.of(0, 0, gsms.width, gsms.height));
                 filterPanel.visible = false;
                 filterPanel.active = false;
@@ -387,13 +388,7 @@ public class ClientEvents {
                     filterPanel.active = true;
                 }, new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png")).bounds(x + width - 21, y + 3, 18, 18).build());
                 
-                filterPanel.addChildren((fX, fY, fW, fH) -> SpriteButton.builder(Component.empty(), (b, i) -> {
-                    filterPanel.visible = false;
-                    filterPanel.active = false;
-                }, new ResourceLocation(MODID, "textures/gui/sprites/sided_buttons/deny.png")).bounds(fX + fW - 12, fY + 3, 9, 9).build());
-                
-                /*filterPanel.addChildren((fX, fY, fW, fH) -> new SlotWidget(new FakeSlot(new SimpleContainer(1), 0, fX + 3, fY + 3, false),
-                    fX, fY, 18, 18, Component.empty()));*/
+                filterPanel.addClosingButton();
                 
                 gsms.addUpperLayerChild(filterPanel);
             }

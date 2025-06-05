@@ -4,10 +4,7 @@ import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -21,7 +18,6 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	public final LinkedHashSet<BlockPos> pipes = new LinkedHashSet<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> sources = new LinkedHashMap<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> targets = new LinkedHashMap<>();
-	public final Map<Direction, NonNullList<Ingredient>> filters = new HashMap<>();
 	
 	//This is for the entire network.
 	public final LinkedHashSet<BlockPos> networkPipes = new LinkedHashSet<>();
@@ -29,7 +25,7 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> allTargets = new LinkedHashMap<>();
 	
 	public boolean isDirty = false;
-	private boolean updateAllPairs = false;
+	private boolean updateNetwork = false;
 	protected boolean isUpdatingConnections = false;
 	
 	@Getter
@@ -46,24 +42,6 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 		if (level != null && !level.isClientSide()) isDirty = true;
 	}
 	
-	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
-		/*ListTag filterList = new ListTag();
-		filters.forEach((dir, filter) -> {
-			CompoundTag filterTag = new CompoundTag();
-			filterTag.putInt("Direction", dir.get3DDataValue());
-			ListTag ingList = new ListTag();
-			for (Ingredient ing : filter) {
-				CompoundTag ingTag = new CompoundTag();
-				ingTag.put("Ingredient", NbtU)
-				ingList.add();
-			}
-			filterList.add(filterTag);
-		});
-		tag.put("Filters", )*/
-	}
-	
 	public void openMenu(ServerPlayer player, Direction dir) {
 	}
 	
@@ -74,18 +52,18 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 			isDirty = false;
 		}
 		
-		if (updateAllPairs) {
-			updateAllPairs = false;
+		if (updateNetwork) {
+			updateNetwork = false;
 			networkPipes.clear();
 			allSources.clear();
 			allTargets.clear();
 			collectNetworkDevices(networkPipes, allSources, allTargets, lvl);
 		}
 		
-		if (allSources.isEmpty() || allTargets.isEmpty()) return;
+		if (sources.isEmpty() || allTargets.isEmpty()) return;
 		
 		if (!isUpdatingConnections) {
-			doTransfer(new LinkedHashMap<>(allSources), new LinkedHashMap<>(allTargets));
+			doTransfer(new LinkedHashMap<>(sources), new LinkedHashMap<>(allTargets));
 		}
 	}
 	
@@ -137,7 +115,7 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 			}
 		} finally {
 			isUpdatingConnections = false;
-			updateAllPairs = true;
+			updateNetwork = true;
 		}
 	}
 	
@@ -165,7 +143,7 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 						Objects.equals(adjCable.getCapabilityClass(), capabilityClass)) {
 						AbstractPipeBlockEntity<CAP> typed = (AbstractPipeBlockEntity<CAP>) adjCable;
 						typed.collectNetworkDevices(visitedCables, allSources, allTargets, lvl);
-						typed.updateAllPairs = true;
+						typed.updateNetwork = true;
 					}
 				}
 			}
@@ -173,6 +151,6 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	}
 	
 	protected abstract void doTransfer(Map<BlockPos, BlockCapabilityCache<CAP, Direction>> sources,
-									 Map<BlockPos, BlockCapabilityCache<CAP, Direction>> targets);
+									   Map<BlockPos, BlockCapabilityCache<CAP, Direction>> targets);
 	
 }

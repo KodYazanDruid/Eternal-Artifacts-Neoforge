@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.base;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.FilterablePipeBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
 import com.sonamorningstar.eternalartifacts.content.item.PipeExtractor;
 import com.sonamorningstar.eternalartifacts.content.item.PipeFilter;
@@ -10,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -112,12 +114,22 @@ public abstract class AttachmentablePipeBlock<CAP> extends AbstractPipeBlock<CAP
 		if (player.isShiftKeyDown() && stack.isEmpty()) {
 			if (connection == PipeConnection.EXTRACT) {
 				level.setBlockAndUpdate(pos, state.setValue(CONNECTION_BY_DIRECTION.get(relativeDir), PipeConnection.NONE));
-				if (!isCreative) Block.popResourceFromFace(level, pos,hit.getDirection(), ModItems.PIPE_EXTRACTOR.toStack());
+				ItemStack extractorStack = ModItems.PIPE_EXTRACTOR.toStack();
+				if (pipe instanceof FilterablePipeBlockEntity<?> filterablePipe) {
+					CompoundTag data = filterablePipe.saveAndRemoveForDir(relativeDir);
+					extractorStack.setTag(data);
+				}
+				if (!isCreative) Block.popResourceFromFace(level, pos, hit.getDirection(), extractorStack);
 				pipe.updateConnections(level);
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (connection == PipeConnection.FILTERED) {
 				level.setBlockAndUpdate(pos, state.setValue(CONNECTION_BY_DIRECTION.get(relativeDir), PipeConnection.NONE));
-				if (!isCreative) Block.popResourceFromFace(level, pos,hit.getDirection(), ModItems.PIPE_FILTER.toStack());
+				ItemStack filterStack = ModItems.PIPE_FILTER.toStack();
+				if (pipe instanceof FilterablePipeBlockEntity<?> filterablePipe) {
+					CompoundTag data = filterablePipe.saveAndRemoveForDir(relativeDir);
+					filterStack.setTag(data);
+				}
+				if (!isCreative) Block.popResourceFromFace(level, pos, hit.getDirection(), filterStack);
 				pipe.updateConnections(level);
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (connection == PipeConnection.FREE) {
@@ -132,15 +144,21 @@ public abstract class AttachmentablePipeBlock<CAP> extends AbstractPipeBlock<CAP
 		} else {
 			if (stack.getItem() instanceof PipeExtractor) {
 				if (connection == PipeConnection.NONE || connection == PipeConnection.FREE) {
-					if (!isCreative) stack.shrink(1);
 					level.setBlockAndUpdate(pos, state.setValue(CONNECTION_BY_DIRECTION.get(relativeDir), PipeConnection.EXTRACT));
+					if (pipe instanceof FilterablePipeBlockEntity<?> filterablePipe) {
+						filterablePipe.loadFromItemFilter(stack, relativeDir);
+					}
+					if (!isCreative) stack.shrink(1);
 					pipe.updateConnections(level);
 					return InteractionResult.sidedSuccess(level.isClientSide());
 				}
 			} else if (stack.getItem() instanceof PipeFilter) {
 				if (connection == PipeConnection.NONE || connection == PipeConnection.FREE) {
-					if (!isCreative) stack.shrink(1);
 					level.setBlockAndUpdate(pos, state.setValue(CONNECTION_BY_DIRECTION.get(relativeDir), PipeConnection.FILTERED));
+					if (pipe instanceof FilterablePipeBlockEntity<?> filterablePipe) {
+						filterablePipe.loadFromItemFilter(stack, relativeDir);
+					}
+					if (!isCreative) stack.shrink(1);
 					pipe.updateConnections(level);
 					return InteractionResult.sidedSuccess(level.isClientSide());
 				}

@@ -48,6 +48,9 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(BlueprintMenu::fromNetwork));
     public static final DeferredHolder<MenuType<?>, MenuType<PortableBatteryMenu>> PORTABLE_BATTERY = MENUS.register("portable_battery",
             ()-> IMenuTypeExtension.create(PortableBatteryMenu::fromNetwork));
-    public static final DeferredHolder<MenuType<?>, MenuType<BasicAttachmentMenu>> BASIC_ATTACHMENT = MENUS.register("basic_attachment",
-            ()-> IMenuTypeExtension.create(BasicAttachmentMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<PipeFilterMenu>> PIPE_FILTER = MENUS.register("pipe_filter",
+        ()-> IMenuTypeExtension.create(PipeFilterMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<PipeFilterItemMenu>> PIPE_FILTER_ITEM = MENUS.register("pipe_filter_item",
+        ()-> IMenuTypeExtension.create(PipeFilterItemMenu::fromNetwork));
+    
 }

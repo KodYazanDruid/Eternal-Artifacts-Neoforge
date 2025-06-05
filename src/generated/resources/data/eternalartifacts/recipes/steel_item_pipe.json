@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/steel"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "pattern": [
+    "IPI"
+  ],
+  "result": {
+    "count": 8,
+    "item": "eternalartifacts:steel_item_pipe"
+  }
+}

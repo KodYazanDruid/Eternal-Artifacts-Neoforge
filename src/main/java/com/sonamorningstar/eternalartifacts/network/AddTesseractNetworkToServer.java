@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -38,7 +38,7 @@ public record AddTesseractNetworkToServer(String name, int ownerEntityId, int se
 	public void handle(PlayPayloadContext ctx) {
 		ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
 			if (player.getId() == ownerEntityId && player.containerMenu instanceof TesseractMenu menu) {
-				int secCount = Network.Access.values().length;
+				int secCount = TesseractNetwork.Access.values().length;
 				menu.addNetwork(name, player, Mth.clamp(secIdx, 0, secCount - 1), capIdx);
 			}
 		}));

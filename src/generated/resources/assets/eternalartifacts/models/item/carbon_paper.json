@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "eternalartifacts:item/pink_slime_ingot"
+    "layer0": "eternalartifacts:item/carbon_paper"
   }
 }

@@ -23,4 +23,6 @@ public interface LivingEntityExposer {
 	void setUseItemExp(ItemStack stack);
 	void setUseItemRemainingTicksExp(int ticks);
 	void updateUsingItemExp(ItemStack stack);
+	
+	int incrementAttackStrengthTicker(int amount);
 }

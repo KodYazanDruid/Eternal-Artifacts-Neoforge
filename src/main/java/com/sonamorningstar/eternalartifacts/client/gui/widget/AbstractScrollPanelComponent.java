@@ -22,11 +22,11 @@ public abstract class AbstractScrollPanelComponent extends AbstractWidget {
 	private boolean hoveredOnPanel;
 	@Getter
 	protected final int index;
-	protected final IntConsumer action;
+	protected final Clickable action;
 	protected final Font font;
 	protected final ScrollablePanel<? extends AbstractScrollPanelComponent> panel;
 	public AbstractScrollPanelComponent(int x, int y, int width, int height,
-			ScrollablePanel<? extends AbstractScrollPanelComponent> panel, IntConsumer action,
+			ScrollablePanel<? extends AbstractScrollPanelComponent> panel, Clickable action,
 			int index, Font font, Component message, int color, int hoverColor, int focusColor
 	) {
 		super(x, y, width, height, message);
@@ -71,11 +71,15 @@ public abstract class AbstractScrollPanelComponent extends AbstractWidget {
 	
 	@Override
 	public void onClick(double mouseX, double mouseY, int button) {
-		action.accept(index);
+		action.onClick(mouseX, mouseY, index);
 	}
 	
 	@Override
 	protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
 	
+	}
+	
+	public interface Clickable {
+		void onClick(double mouseX, double mouseY, int button);
 	}
 }

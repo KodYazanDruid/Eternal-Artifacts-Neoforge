@@ -218,7 +218,7 @@ public final class GuiDrawer {
 
         if (iterationX > 0 && iterationY <= 0) {
             for (int i = 0; i < iterationX; i++) gui.blit(texture, x + (textureWidth * i), y, edgeWidth, edgeWidth, textureWidth, remainingY, totalSpriteWidth, totalSpriteHeight);
-            if (remainingX > 0) gui.blit(texture, x + (textureWidth * iterationX), y, 0, 0, remainingX, remainingY, totalSpriteWidth, totalSpriteHeight);
+            if (remainingX > 0) gui.blit(texture, x + (textureWidth * iterationX), y, edgeWidth, edgeWidth, remainingX, remainingY, totalSpriteWidth, totalSpriteHeight);
         }
 
         if (iterationX <= 0 && iterationY > 0) {

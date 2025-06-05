@@ -88,7 +88,7 @@ public class ModItems {
     public static final DeferredItem<Item> RAW_MARIN = register("raw_marin");
     public static final DeferredItem<Item> TAR_BALL = register("tar_ball");
     public static final DeferredItem<Item> BITUMEN = register("bitumen");
-    public static final DeferredItem<Item> PINK_SLIME_INGOT = register("pink_slime_ingot");
+    public static final DeferredItem<Item> PINK_SLIME_STEEL_INGOT = register("pink_slime_steel_ingot");
     public static final DeferredItem<Item> DEMON_INGOT = register("demon_ingot", p -> new Item(p.fireResistant()));
     public static final DeferredItem<Item> DEMONIC_TABLET = register("demonic_tablet", p -> new Item(p.fireResistant()));
     public static final DeferredItem<Item> SLOT_LOCK = registerStacksToOne("slot_lock");
@@ -118,12 +118,13 @@ public class ModItems {
     public static final DeferredItem<Item> MANGANESE_DUST = register("manganese_dust");
     public static final DeferredItem<PipeExtractor> PIPE_EXTRACTOR = register("pipe_extractor", PipeExtractor::new);
     public static final DeferredItem<PipeFilter> PIPE_FILTER = register("pipe_filter", PipeFilter::new);
-    public static final DeferredItem<Item> MAGNET = register("magnet", p -> new MagnetItem(p.rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> TIN_INGOT = register("tin_ingot");
     public static final DeferredItem<Item> ALUMINUM_INGOT = register("aluminum_ingot");
     public static final DeferredItem<Item> BRONZE_INGOT = register("bronze_ingot");
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");
     public static final DeferredItem<Item> RAW_ALUMINUM = register("raw_aluminum");
+    public static final DeferredItem<Item> ITEM_FILTER = register("item_filter", ItemFilter::new);
+    public static final DeferredItem<Item> CARBON_PAPER = register("carbon_paper");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -233,6 +234,7 @@ public class ModItems {
     public static final DeferredItem<Item> CHLOROPHYTE_REPEATER = registerStacksToOne("chlorophyte_repeater", p -> new ChlorophyteRepeaterItem(p.durability(615)));
     public static final DeferredItem<Item> PORTABLE_FURNACE = registerStacksToOne("portable_furnace", PortableFurnaceItem::new);
     public static final DeferredItem<Item> DASHING_SWORD = registerStacksToOne("dashing_sword", p -> new DashingSwordItem(Tiers.IRON, p));
+    public static final DeferredItem<Item> MAGNET = registerStacksToOne("magnet", p -> new MagnetItem(p.rarity(Rarity.UNCOMMON)));
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container;
 
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
@@ -22,20 +22,20 @@ import java.util.UUID;
 public class TesseractMenu extends AbstractModContainerMenu {
 	public final Level level;
 	public final Tesseract tesseract;
-	public volatile static List<Network<?>> gatheredNetworks;
+	public volatile static List<TesseractNetwork<?>> gatheredTesseractNetworks;
 	
 	public TesseractMenu(int id, Inventory inv, FriendlyByteBuf extraData) {
 		this(id, inv,
 			inv.player.level().getBlockEntity(extraData.readBlockPos()),
-			extraData.readCollection(ArrayList::new, rd -> Network.fromNBT(rd.readNbt()))
+			extraData.readCollection(ArrayList::new, rd -> TesseractNetwork.fromNBT(rd.readNbt()))
 		);
 	}
 	
-	public TesseractMenu(int id, Inventory inv, BlockEntity blockEntity, List<Network<?>> networks) {
+	public TesseractMenu(int id, Inventory inv, BlockEntity blockEntity, List<TesseractNetwork<?>> tesseractNetworks) {
 		super(ModMenuTypes.TESSERACT.get(), id);
 		this.level = inv.player.level();
 		this.tesseract = ((Tesseract) blockEntity);
-		gatheredNetworks = networks;
+		gatheredTesseractNetworks = tesseractNetworks;
 	}
 	
 	@Override
@@ -44,10 +44,10 @@ public class TesseractMenu extends AbstractModContainerMenu {
 	}
 	
 	public void addNetwork(String name, Player owner, int secIdx, int capIdx) {
-		Network<?> network = new Network<>(name, UUID.randomUUID(), owner.getGameProfile(), Network.CAPABILITY_NAMES.keySet().stream().toList().get(capIdx));
-		network.setAccess(Network.Access.values()[secIdx]);
-		TesseractNetworks.get(level).addNetwork(network);
-		gatheredNetworks = TesseractNetworks.get(level).getNetworksForPlayer(owner);
+		TesseractNetwork<?> tesseractNetwork = new TesseractNetwork<>(name, UUID.randomUUID(), owner.getGameProfile(), TesseractNetwork.CAPABILITY_NAMES.keySet().stream().toList().get(capIdx));
+		tesseractNetwork.setAccess(TesseractNetwork.Access.values()[secIdx]);
+		TesseractNetworks.get(level).addNetwork(tesseractNetwork);
+		gatheredTesseractNetworks = TesseractNetworks.get(level).getNetworksForPlayer(owner);
 		rebuildPanel((ServerPlayer) owner, false);
 	}
 	
@@ -57,12 +57,12 @@ public class TesseractMenu extends AbstractModContainerMenu {
 		TesseractNetworks networks = TesseractNetworks.get(level);
 		if (networks == null || !(player instanceof ServerPlayer sp)) { return false; }
 		if (id >= 1000 && id < 2000) {
-			if (!gatheredNetworks.isEmpty()) {
+			if (!gatheredTesseractNetworks.isEmpty()) {
 				int networkIdx = id - 1000;
-				Network<?> network = gatheredNetworks.get(networkIdx);
-				if (network != null) {
-					networks.removeNetwork(network);
-					gatheredNetworks = networks.getNetworksForPlayer(player);
+				TesseractNetwork<?> tesseractNetwork = gatheredTesseractNetworks.get(networkIdx);
+				if (tesseractNetwork != null) {
+					networks.removeNetwork(tesseractNetwork);
+					gatheredTesseractNetworks = networks.getNetworksForPlayer(player);
 					rebuildPanel(sp, false);
 				}
 			}
@@ -76,9 +76,9 @@ public class TesseractMenu extends AbstractModContainerMenu {
 			return true;
 		} else if (id >= 5000) {
 			int index = id - 5000;
-			if (index < gatheredNetworks.size()) {
-				Network<?> network = gatheredNetworks.get(index);
-				tesseract.setNetworkId(network.getUuid());
+			if (index < gatheredTesseractNetworks.size()) {
+				TesseractNetwork<?> tesseractNetwork = gatheredTesseractNetworks.get(index);
+				tesseract.setNetworkId(tesseractNetwork.getUuid());
 				rebuildPanel(sp, false);
 			}
 			return true;

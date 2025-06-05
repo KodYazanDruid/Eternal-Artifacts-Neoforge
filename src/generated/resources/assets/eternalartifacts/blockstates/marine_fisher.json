@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/marine_fisher",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/marine_fisher"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/marine_fisher",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/marine_fisher",
+      "y": 270
+    }
+  }
+}

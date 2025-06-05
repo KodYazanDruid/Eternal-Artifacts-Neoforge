@@ -68,9 +68,11 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         
         pipe(ModBlocks.COPPER_FLUID_PIPE.get());
         pipe(ModBlocks.GOLD_FLUID_PIPE.get());
+        pipe(ModBlocks.STEEL_FLUID_PIPE.get());
         
         pipe(ModBlocks.COPPER_ITEM_PIPE.get());
         pipe(ModBlocks.GOLD_ITEM_PIPE.get());
+        pipe(ModBlocks.STEEL_ITEM_PIPE.get());
         
         createSolarPanel();
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));

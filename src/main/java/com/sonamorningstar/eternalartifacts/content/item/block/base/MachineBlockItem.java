@@ -1,59 +1,46 @@
 package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
-import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
+import com.sonamorningstar.eternalartifacts.api.machine.MachineEnchants;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MachineBlockItem extends FluidHolderBlockItem {
-    private static final Set<Enchantment> ALLOWED_ENCHANTMENTS = Set.of(
-        Enchantments.BLOCK_EFFICIENCY,
-        Enchantments.UNBREAKING,
-        Enchantments.BLAST_PROTECTION,
-        Enchantments.FIRE_PROTECTION
-    );
     
     @Override
-    public void onFluidContentChange(ItemStack stack) {
+    public void onFluidContentChange(ItemStack stack) {}
     
-    }
-    
-    public MachineBlockItem(Block block, Properties props) {
-        super(block, props);
-    }
+    public MachineBlockItem(Block block, Properties props) {super(block, props);}
     
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        if (stack.is(ModBlocks.SOLAR_PANEL.asItem())) return false;
-        
-        if (ModMachines.INDUCTION_FURNACE.getItem() == stack.getItem() && enchantment == Enchantments.BLOCK_EFFICIENCY) {
-            return false;
-        }
-        if (enchantment == Enchantments.UNBREAKING && getBlock() instanceof DynamoBlock<?>) {
-			return false;
-        }
-        return ALLOWED_ENCHANTMENTS.contains(enchantment) || super.canApplyAtEnchantingTable(stack, enchantment);
+        var enchantmentMap = MachineEnchants.enchantMap;
+        AtomicBoolean canApply = new AtomicBoolean(false);
+        enchantmentMap.forEach((machine, enchs) -> {
+            for (Block validBlock : machine.getValidBlocks()) {
+                if (stack.getItem() instanceof BlockItem bi && bi.getBlock() == validBlock) {
+                    canApply.set(enchs.contains(enchantment));
+                }
+            }
+        });
+        return canApply.get();
     }
     
     @Override

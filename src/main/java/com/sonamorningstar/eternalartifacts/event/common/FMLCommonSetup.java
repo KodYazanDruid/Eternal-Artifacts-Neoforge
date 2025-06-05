@@ -4,7 +4,8 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInterac
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.api.machine.MachineEnchants;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -50,15 +51,16 @@ public class FMLCommonSetup {
             setupCharmSlots();
             registerDispenserBehaviours();
             registerPotions();
+            MachineEnchants.bootstrap();
             
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.DROWNED, ModItems.DROWNED_HEAD.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.HUSK, ModItems.HUSK_HEAD.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.STRAY, ModItems.STRAY_SKULL.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.BLAZE, ModItems.BLAZE_HEAD.get());
             
-            Network.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
-            Network.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
-            Network.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
+            TesseractNetwork.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
+            TesseractNetwork.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
+            TesseractNetwork.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
         });
 
     }

@@ -2,7 +2,10 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
@@ -316,9 +319,11 @@ public class CommonEvents {
             newCharms.setWildcardNbt(oldWildcard);
             for (int i = 0; i < oldCharms.getSlots(); i++) {
                 ItemStack oldStack = oldCharms.getStackInSlot(i);
-                if (EnchantmentHelper.hasVanishingCurse(oldStack)) oldCharms.setStackInSlot(i, ItemStack.EMPTY);
+                if (EnchantmentHelper.hasVanishingCurse(oldStack)) {
+                    oldCharms.setStackInSlot(i, ItemStack.EMPTY);
+                    oldStack.setCount(0);
+                }
                 if (SoulboundEnchantment.has(oldStack) || doKeep) newCharms.setStackInSlot(i, oldStack.copyAndClear());
-                else oldPlayer.drop(oldStack, true,false);
             }
 
             if (!(doKeep || oldPlayer.isSpectator())) {
@@ -393,6 +398,20 @@ public class CommonEvents {
         
         if (menu instanceof BlueprintMenu bpMenu && player instanceof ServerPlayer sp) {
             bpMenu.synchIngredients(sp);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void playerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+        if (!(player.level() instanceof ServerLevel sl)) return;
+        var networks = TesseractNetworks.get(sl).getTesseractNetworks();
+        for (TesseractNetwork<?> network : networks) {
+            if (network.getPendingWhitelistPlayers().contains(player.getGameProfile().getName())) {
+                network.getPendingWhitelistPlayers().remove(player.getGameProfile().getName());
+                network.getWhitelistedPlayers().add(player.getGameProfile());
+                EternalArtifacts.LOGGER.info("Player {} has been whitelisted to tesseract network {}.", player.getGameProfile().getName(), network.getUuid());
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
 import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -95,18 +96,10 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
     @Override
     protected void renderSlotContents(GuiGraphics guiGraphics, ItemStack itemstack, Slot slot, int x, int y, @Nullable String countString) {
         if (slot instanceof BlueprintFakeSlot fakeSlot && !fakeSlot.isDisplayOnly() && BlueprintItem.isUsingTags(menu.getBlueprint())) {
-            int seed = slot.x + slot.y + imageWidth;
-            Ingredient ingredient = fakeSlot.getRecipeIngredient();
-            long tick = Minecraft.getInstance().clientTickCount;
-            ItemStack[] values = ingredient.getItems();
-            if (values.length == 0) {
+            if (!ItemRendererHelper.renderItemCarousel(guiGraphics, fakeSlot.getRecipeIngredient().getItems(),
+                x, y, 0x8054FFA3, 1.0F)) {
                 super.renderSlotContents(guiGraphics, itemstack, slot, x, y, countString);
-                return;
-            }
-            ItemStack itemStack = values[(int) ((tick / 20) % ingredient.getItems().length)];
-            if (values.length > 1) guiGraphics.fill(x, y, x + 16, y + 16, 0x8054FFA3);
-            guiGraphics.renderFakeItem(itemStack, x, y, seed);
-            guiGraphics.renderItemDecorations(font, itemStack, x, y, countString);
+			}
         } else {
             super.renderSlotContents(guiGraphics, itemstack, slot, x, y, countString);
         }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/steel"
+    },
+    "P": {
+      "tag": "forge:glass_panes"
+    }
+  },
+  "pattern": [
+    "IPI"
+  ],
+  "result": {
+    "count": 4,
+    "item": "eternalartifacts:steel_fluid_pipe"
+  }
+}

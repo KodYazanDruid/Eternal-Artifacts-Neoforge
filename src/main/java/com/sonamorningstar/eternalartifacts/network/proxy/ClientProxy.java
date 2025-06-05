@@ -123,10 +123,10 @@ public class ClientProxy {
                 if (screen.getSelectedNetwork() != null) {
                     screen.getMenu().tesseract.setNetworkId(null);
                     screen.removeWidget(screen.getSelectedNetwork());
-                    screen.rebuildNetworkPanel();
+                    screen.rebuildWidgets();
                 }
             } else {
-                screen.rebuildNetworkPanel();
+                screen.rebuildWidgets();
             }
         }
     }

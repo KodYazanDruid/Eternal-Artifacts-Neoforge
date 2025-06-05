@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
@@ -52,11 +52,11 @@ public class TesseractCommands {
 		ServerLevel level = source.getLevel();
 		MutableComponent networks = Component.empty();
 		networks.append(Component.translatable(ModConstants.COMMAND.withSuffix("network.list")).withStyle(ChatFormatting.GOLD));
-		Set<Network<?>> networkList = TesseractNetworks.get(level).getNetworks();
-		for (Network<?> network : networkList) {
+		Set<TesseractNetwork<?>> tesseractNetworkList = TesseractNetworks.get(level).getTesseractNetworks();
+		for (TesseractNetwork<?> tesseractNetwork : tesseractNetworkList) {
 			MutableComponent networkComp = Component.literal("\n")
-				.append(network.getName()).withStyle(ChatFormatting.YELLOW).append(" ")
-				.append(ComponentUtils.copyOnClickText(network.getUuid().toString())).withStyle(ChatFormatting.GRAY).append(" ");
+				.append(tesseractNetwork.getName()).withStyle(ChatFormatting.YELLOW).append(" ")
+				.append(ComponentUtils.copyOnClickText(tesseractNetwork.getUuid().toString())).withStyle(ChatFormatting.GRAY).append(" ");
 			networks.append(networkComp);
 		}
 		source.sendSuccess(() -> networks, false);

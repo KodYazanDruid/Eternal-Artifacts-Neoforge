@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.Network;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
@@ -25,7 +25,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 	@Nullable
 	private UUID networkId = null;
 	@Nullable
-	private Network<?> cachedNetwork = null;
+	private TesseractNetwork<?> cachedTesseractNetwork = null;
 	private TransferMode transferMode = TransferMode.BOTH;
 	
 	public Tesseract(BlockPos pos, BlockState state) {
@@ -77,22 +77,22 @@ public class Tesseract extends ModBlockEntity implements MenuProvider {
 	}
 	
 	public void setNetworkId(@Nullable UUID newId) {
-		//Network id is only useful on screen and menu layout in client.
-		//Network logic is handled on server side.
+		//TesseractNetwork id is only useful on screen and menu layout in client.
+		//TesseractNetwork logic is handled on server side.
 		if (level.isClientSide()) {
 			if (newId == null) {
 				this.networkId = null;
-				this.cachedNetwork = null;
+				this.cachedTesseractNetwork = null;
 			} else {
 				this.networkId = newId;
 			}
 		} else {
 			if (newId != null) {
 				TesseractNetworks.get(level).changeNetwork(this, networkId, newId);
-				this.cachedNetwork = TesseractNetworks.getNetwork(newId, level);
+				this.cachedTesseractNetwork = TesseractNetworks.getNetwork(newId, level);
 			} else {
 				TesseractNetworks.get(level).removeTesseractFromNetwork(this);
-				this.cachedNetwork = null;
+				this.cachedTesseractNetwork = null;
 			}
 			this.networkId = newId;
 			invalidateCapabilities();

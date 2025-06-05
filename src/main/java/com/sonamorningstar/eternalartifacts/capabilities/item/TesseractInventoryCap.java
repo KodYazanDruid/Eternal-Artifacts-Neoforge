@@ -14,7 +14,7 @@ public class TesseractInventoryCap extends ItemStackHandler {
 	public TesseractInventoryCap(Tesseract tesseract) {
 		super(9);
 		this.tesseract = tesseract;
-		var network = tesseract.getCachedNetwork();
+		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
 			CompoundTag tag = network.getSavedData();
 			if (tag != null) {
@@ -26,7 +26,7 @@ public class TesseractInventoryCap extends ItemStackHandler {
 	@Override
 	protected void onContentsChanged(int slot) {
 		super.onContentsChanged(slot);
-		var network = tesseract.getCachedNetwork();
+		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
 			network.setSavedData(serializeNBT());
 		}

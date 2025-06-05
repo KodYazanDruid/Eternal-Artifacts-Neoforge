@@ -24,10 +24,6 @@ public class InventoryMixin {
 
     @ModifyExpressionValue(method = "dropAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isEmpty()Z"))
     private boolean dropAll(boolean original) {
-        /*if (original) {
-            SoulboundEnchantment.has(eternal_Artifacts_Neoforge$stack);
-        }
-        return false;*/
         return original || SoulboundEnchantment.has(eternal_Artifacts_Neoforge$stack);
     }
 }

@@ -168,7 +168,7 @@ public class ClientModEvents {
         
         event.registerLayerDefinition(ModModelLayers.DROWNED_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 64));
         event.registerLayerDefinition(ModModelLayers.DROWNED_HEAD_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 64));
-        event.registerLayerDefinition(ModModelLayers.HUSK_HEAD, SkullModel::createHumanoidHeadLayer);
+        event.registerLayerDefinition(ModModelLayers.HUSK_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 64));
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 32));
         event.registerLayerDefinition(ModModelLayers.BLAZE_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 32));

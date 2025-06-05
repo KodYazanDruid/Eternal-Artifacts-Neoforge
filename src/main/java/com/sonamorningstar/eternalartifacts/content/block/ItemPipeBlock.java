@@ -65,7 +65,8 @@ public class ItemPipeBlock extends AttachmentablePipeBlock<IItemHandler> {
 	@Getter
 	public enum PipeTier implements IExtensibleEnum {
 		COPPER(16, 1),
-		GOLD(32, 4);
+		GOLD(24, 4),
+		STEEL(32, 8);
 		
 		private final int maxConnections;
 		private final int transferRate;

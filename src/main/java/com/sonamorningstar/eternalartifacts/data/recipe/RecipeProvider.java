@@ -136,7 +136,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);
         
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Either.left(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
-        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_INGOT.toStack());
+        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_STEEL_INGOT.toStack());
         createFluidInfusingRecipe(recipeOutput, Fluids.WATER, 125, Either.right(ModTags.Items.DUSTS_FLOUR), ModItems.DOUGH.toStack());
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PLASTIC, 1000, Either.right(Tags.Items.DYES_BLUE), ModItems.PLASTIC_SHEET.toStack(4));
         
@@ -191,7 +191,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(), Items.LEATHER.getDefaultInstance(), ModFluids.BLOOD.getFluidStack(100));
 
         createAlloyingRecipe(recipeOutput, List.of(
-                    SizedIngredient.of(ModItems.PINK_SLIME_INGOT),
+                    SizedIngredient.of(ModItems.PINK_SLIME_STEEL_INGOT),
                     SizedIngredient.of(Items.GLOWSTONE_DUST),
                     SizedIngredient.of(ModItems.PLANT_MATTER)),
                 ModItems.CHLOROPHYTE_INGOT.toStack(), "");
@@ -289,6 +289,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());
+        createSolidifyingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME,250, ModItems.PINK_SLIME.toStack());
 
         createCompressingRecipe(recipeOutput, ItemTags.FLOWERS, 8, ModItems.PLANT_MATTER.toStack());
         createCompressingRecipe(recipeOutput, Tags.Items.SEEDS, 16, ModItems.PLANT_MATTER.toStack());
@@ -548,8 +549,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         cableRecipe(recipeOutput, ModBlocks.GOLD_CABLE, Tags.Items.INGOTS_GOLD);
         fluidPipeRecipe(recipeOutput, ModBlocks.COPPER_FLUID_PIPE, Tags.Items.INGOTS_COPPER);
         fluidPipeRecipe(recipeOutput, ModBlocks.GOLD_FLUID_PIPE, Tags.Items.INGOTS_GOLD);
+        fluidPipeRecipe(recipeOutput, ModBlocks.STEEL_FLUID_PIPE, ModTags.Items.INGOTS_STEEL);
         itemPipeRecipe(recipeOutput, ModBlocks.COPPER_ITEM_PIPE, Tags.Items.INGOTS_COPPER);
         itemPipeRecipe(recipeOutput, ModBlocks.GOLD_ITEM_PIPE, Tags.Items.INGOTS_GOLD);
+        itemPipeRecipe(recipeOutput, ModBlocks.STEEL_ITEM_PIPE, ModTags.Items.INGOTS_STEEL);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
