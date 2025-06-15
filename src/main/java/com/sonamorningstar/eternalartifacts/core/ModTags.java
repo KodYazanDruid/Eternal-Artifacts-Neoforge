@@ -87,9 +87,6 @@ public class ModTags {
         public static final TagKey<Item> DUSTS_MANGANESE = forgeTag("dusts/manganese");
         public static final TagKey<Item> ORES_MANGANESE = forgeTag("ores/manganese");
         public static final TagKey<Item> RAW_MATERIALS_MANGANESE = forgeTag("raw_materials/manganese");
-        public static final TagKey<Item> MACHINE_ENCHANT_UNBREAKING = modTag("machine_enchant_unbreaking");
-        public static final TagKey<Item> MACHINE_ENCHANT_EFFICIENCY = modTag("machine_enchant_efficiency");
-        public static final TagKey<Item> MACHINE_ENCHANT_CELERITY = modTag("machine_enchant_celerity");
         public static final TagKey<Item> INGOTS_TIN = forgeTag("ingots/tin");
         public static final TagKey<Item> INGOTS_ALUMINUM = forgeTag("ingots/aluminum");
         public static final TagKey<Item> INGOTS_BRONZE = forgeTag("ingots/bronze");
@@ -97,6 +94,10 @@ public class ModTags {
         public static final TagKey<Item> ORES_ALUMINUM = forgeTag("ores/aluminum");
         public static final TagKey<Item> RAW_MATERIALS_TIN = forgeTag("raw_materials/tin");
         public static final TagKey<Item> RAW_MATERIALS_ALUMINUM = forgeTag("raw_materials/aluminum");
+        public static final TagKey<Item> DUSTS_TIN = forgeTag("dusts/tin");
+        public static final TagKey<Item> DUSTS_ALUMINUM = forgeTag("dusts/aluminum");
+        public static final TagKey<Item> DUSTS_BRONZE = forgeTag("dusts/bronze");
+        public static final TagKey<Item> DUSTS_COPPER = forgeTag("dusts/copper");
 		
 		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

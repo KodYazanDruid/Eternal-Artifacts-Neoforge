@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": {
+      "tag": "forge:gems/amethyst"
+    },
+    "F": {
+      "tag": "forge:feathers"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "A",
+    "S",
+    "F"
+  ],
+  "result": {
+    "count": 2,
+    "item": "eternalartifacts:amethyst_arrow"
+  }
+}

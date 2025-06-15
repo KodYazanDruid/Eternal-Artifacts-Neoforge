@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:block/covered_cable_inside",
+  "textures": {
+    "texture": "eternalartifacts:block/covered_tin_cable"
+  }
+}

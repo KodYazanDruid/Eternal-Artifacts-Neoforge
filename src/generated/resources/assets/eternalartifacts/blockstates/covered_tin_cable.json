@@ -1,0 +1,62 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_inside"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_side"
+      },
+      "when": {
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_side",
+        "y": 90
+      },
+      "when": {
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_side",
+        "y": 180
+      },
+      "when": {
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_side",
+        "y": 270
+      },
+      "when": {
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_side",
+        "x": 270
+      },
+      "when": {
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "eternalartifacts:block/covered_tin_cable_side",
+        "x": 90
+      },
+      "when": {
+        "down": "true"
+      }
+    }
+  ]
+}

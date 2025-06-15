@@ -45,6 +45,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     private final BlockEntityType.BlockEntitySupplier<T> supplier;

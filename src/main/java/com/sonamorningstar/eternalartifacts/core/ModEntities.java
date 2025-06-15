@@ -1,10 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.entity.*;
-import com.sonamorningstar.eternalartifacts.content.entity.projectile.Meteorite;
-import com.sonamorningstar.eternalartifacts.content.entity.projectile.Missile;
-import com.sonamorningstar.eternalartifacts.content.entity.projectile.SpellProjectile;
-import com.sonamorningstar.eternalartifacts.content.entity.projectile.Tornado;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.*;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -33,12 +30,14 @@ public class ModEntities {
 
     //Projectiles
     public static final DeferredHolder<EntityType<?>, EntityType<Tornado>> TORNADO = ENTITY_TYPES.register("tornado",
-            ()-> EntityType.Builder.<Tornado>of(Tornado::new, MobCategory.MISC).fireImmune().sized(1.0f, 2.0f).clientTrackingRange(4).updateInterval(10).build("tornado"));
+            ()-> EntityType.Builder.<Tornado>of(Tornado::new, MobCategory.MISC).fireImmune().sized(1.0f, 2.0f).clientTrackingRange(4).updateInterval(20).build("tornado"));
     public static final DeferredHolder<EntityType<?>, EntityType<Meteorite>> METEORITE = ENTITY_TYPES.register("meteorite",
-            ()-> EntityType.Builder.<Meteorite>of(Meteorite::new, MobCategory.MISC).fireImmune().sized(2.0f, 2.0f).canSpawnFarFromPlayer().clientTrackingRange(1).updateInterval(10).build("meteorite"));
+            ()-> EntityType.Builder.<Meteorite>of(Meteorite::new, MobCategory.MISC).fireImmune().sized(2.0f, 2.0f).canSpawnFarFromPlayer().clientTrackingRange(4).updateInterval(20).build("meteorite"));
     public static final DeferredHolder<EntityType<?>, EntityType<Missile>> MISSILE = ENTITY_TYPES.register("missile",
-            ()-> EntityType.Builder.<Missile>of(Missile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(1).updateInterval(10).build("meteorite"));
+            ()-> EntityType.Builder.<Missile>of(Missile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("meteorite"));
     public static final DeferredHolder<EntityType<?>, EntityType<SpellProjectile>> SPELL_PROJECTILE = ENTITY_TYPES.register("spell_projectile",
-        ()-> EntityType.Builder.of(SpellProjectile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(1).updateInterval(10).build("meteorite"));
+        ()-> EntityType.Builder.of(SpellProjectile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("meteorite"));
+    public static final DeferredHolder<EntityType<?>, EntityType<AmethystArrow>> AMETHYST_ARROW = ENTITY_TYPES.register("amethyst_arrow",
+            ()-> EntityType.Builder.<AmethystArrow>of(AmethystArrow::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("amethyst_arrow"));
 
 }

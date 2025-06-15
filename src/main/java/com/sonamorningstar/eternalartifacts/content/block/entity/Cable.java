@@ -31,8 +31,9 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements IT
     }
     
     @Override
-    protected boolean shouldPipesConnect(BlockState neighborState) {
-        return neighborState.getBlock() instanceof CableBlock cable && tier == cable.getTier();
+    protected boolean shouldPipesConnect(BlockState neighborState, Direction direction) {
+        return super.shouldPipesConnect(neighborState, direction) && neighborState.getBlock() instanceof CableBlock cable &&
+            tier == cable.getTier();
     }
     
     @Override

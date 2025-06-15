@@ -35,6 +35,16 @@ public class ModProperties {
                 .isSuffocating(ModProperties.Blocks::never)
                 .isViewBlocking(ModProperties.Blocks::never);
         
+        public static final BlockBehaviour.Properties TIN_PIPE = BlockBehaviour.Properties.of()
+            .mapColor(MapColor.TERRACOTTA_LIGHT_BLUE)
+            .sound(SoundType.METAL)
+            .pushReaction(PushReaction.BLOCK)
+            .noOcclusion()
+            .strength(3.0F, 6.0F)
+            .isValidSpawn(ModProperties.Blocks::never)
+            .isRedstoneConductor(ModProperties.Blocks::never)
+            .isSuffocating(ModProperties.Blocks::never)
+            .isViewBlocking(ModProperties.Blocks::never);
         public static final BlockBehaviour.Properties COPPER_PIPE = BlockBehaviour.Properties.of()
             .mapColor(MapColor.TERRACOTTA_ORANGE)
             .sound(SoundType.COPPER)

@@ -30,5 +30,7 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
             EntityType.CREEPER,
             EntityType.BLAZE
         );
+        
+        tag(EntityTypeTags.ARROWS).add(ModEntities.AMETHYST_ARROW.get());
     }
 }

@@ -10,7 +10,7 @@ public class TesseractEnergyCap extends ModEnergyStorage {
 	private final Tesseract tesseract;
 	
 	public TesseractEnergyCap(Tesseract tesseract) {
-		super(8000, 1000, 1000);
+		super(512000, 256000, 256000);
 		this.tesseract = tesseract;
 		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {

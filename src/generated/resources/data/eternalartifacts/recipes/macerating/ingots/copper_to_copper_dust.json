@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:ingots/copper"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:copper_dust"
+  }
+}

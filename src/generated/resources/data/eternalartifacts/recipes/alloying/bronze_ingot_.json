@@ -1,14 +1,26 @@
 {
   "type": "eternalartifacts:alloying",
   "inputs": [
-    {
-      "amount": 3,
-      "tag": "forge:ingots/copper"
-    },
-    {
-      "amount": 1,
-      "tag": "forge:ingots/tin"
-    }
+    [
+      {
+        "amount": 3,
+        "tag": "forge:ingots/copper"
+      },
+      {
+        "amount": 3,
+        "tag": "forge:dusts/copper"
+      }
+    ],
+    [
+      {
+        "amount": 1,
+        "tag": "forge:ingots/tin"
+      },
+      {
+        "amount": 1,
+        "tag": "forge:dusts/tin"
+      }
+    ]
   ],
   "output": {
     "Count": 4,

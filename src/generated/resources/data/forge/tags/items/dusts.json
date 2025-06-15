@@ -3,6 +3,10 @@
     "eternalartifacts:coal_dust",
     "eternalartifacts:charcoal_dust",
     "eternalartifacts:sugar_charcoal_dust",
-    "eternalartifacts:manganese_dust"
+    "eternalartifacts:manganese_dust",
+    "eternalartifacts:tin_dust",
+    "eternalartifacts:aluminum_dust",
+    "eternalartifacts:bronze_dust",
+    "eternalartifacts:copper_dust"
   ]
 }

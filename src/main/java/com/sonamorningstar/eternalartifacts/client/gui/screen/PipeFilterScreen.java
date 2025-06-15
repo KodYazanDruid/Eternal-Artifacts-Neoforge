@@ -15,10 +15,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.network.*;
-import com.sonamorningstar.eternalartifacts.util.FluidRendererHelper;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
-import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.ModListUtils;
+import com.sonamorningstar.eternalartifacts.util.*;
 import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -207,7 +204,7 @@ public class PipeFilterScreen extends AbstractModContainerScreen<PipeFilterMenu>
 			} else if (entry instanceof FluidStackEntry fluidStackEntry) {
 				FluidStack fluidStack = fluidStackEntry.getFilterStack();
 				if (!fluidStack.isEmpty())
-					guiGraphics.renderTooltip(font, getTooltipFromContainerFluid(fluidStack,
+					guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack,
 						minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			} else if (entry instanceof FluidTagEntry fluidTagEntry) {
 				FluidIngredient ingredient = FluidIngredient.of(fluidTagEntry.getTag(), 1000);
@@ -219,37 +216,12 @@ public class PipeFilterScreen extends AbstractModContainerScreen<PipeFilterMenu>
 				FluidStack fluidStack = values[(int) ((tick / 20) % values.length)].copy();
 				CompoundTag tag = fluidStack.getOrCreateTag();
 				tag.putString("EtarFluidStackName", fluidTagEntry.getTag().location().toString());
-				guiGraphics.renderTooltip(font, getTooltipFromContainerFluid(fluidStack, minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
+				guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack,
+					minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			} else super.renderTooltip(guiGraphics, x, y);
 			return;
 		}
 		super.renderTooltip(guiGraphics, x, y);
-	}
-	
-	public static List<Component> getTooltipFromContainerFluid(FluidStack stack, boolean isAdvanced) {
-		List<Component> list = Lists.newArrayList();
-		
-		if (stack.hasTag() && stack.getTag().contains("EtarFluidStackName")) {
-			String name = stack.getTag().getString("EtarFluidStackName");
-			list.add(Component.empty().append(name)
-				.withStyle(stack.getFluid().getFluidType().getRarity().getStyleModifier())
-				.withStyle(ChatFormatting.ITALIC));
-		} else {
-			list.add(Component.empty().append(stack.getDisplayName()));
-		}
-		
-		if (isAdvanced) {
-			list.add(Component.literal(BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString()).withStyle(ChatFormatting.DARK_GRAY));
-			if (stack.hasTag()) {
-				list.add(Component.translatable("item.nbt_tags", stack.getTag().getAllKeys().size()).withStyle(ChatFormatting.DARK_GRAY));
-			}
-		}
-		
-		ModListUtils.getFluidCreatorModId(stack).ifPresent(name -> {
-			list.add(Component.literal(name).withStyle(ChatFormatting.ITALIC)
-				.withStyle(ChatFormatting.BLUE));
-		});
-		return list;
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import com.sonamorningstar.eternalartifacts.network.*;
 import com.sonamorningstar.eternalartifacts.util.FluidRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -193,7 +194,7 @@ public class PipeFilterItemScreen extends AbstractModContainerScreen<PipeFilterI
 			} else if (entry instanceof FluidStackEntry fluidStackEntry) {
 				FluidStack fluidStack = fluidStackEntry.getFilterStack();
 				if (!fluidStack.isEmpty())
-					guiGraphics.renderTooltip(font, PipeFilterScreen.getTooltipFromContainerFluid(fluidStack,
+					guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack,
 						minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			} else if (entry instanceof FluidTagEntry fluidTagEntry) {
 				FluidIngredient ingredient = FluidIngredient.of(fluidTagEntry.getTag(), 1000);
@@ -205,7 +206,7 @@ public class PipeFilterItemScreen extends AbstractModContainerScreen<PipeFilterI
 				FluidStack fluidStack = values[(int) ((tick / 20) % values.length)].copy();
 				CompoundTag tag = fluidStack.getOrCreateTag();
 				tag.putString("EtarFluidStackName", fluidTagEntry.getTag().location().toString());
-				guiGraphics.renderTooltip(font, PipeFilterScreen.getTooltipFromContainerFluid(fluidStack, minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
+				guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			}  else super.renderTooltip(guiGraphics, x, y);
 			return;
 		}
@@ -256,10 +257,16 @@ public class PipeFilterItemScreen extends AbstractModContainerScreen<PipeFilterI
 						setupTagPanel();
 					}
 				} else {
-					fakeSlot.set(ItemStack.EMPTY);
-					filters.set(index, ItemStackEntry.EMPTY);
-					updateItem(menu.containerId, index, ItemStack.EMPTY);
-					updateFluid(menu.containerId, index, FluidStack.EMPTY);
+					if(entry instanceof FluidStackEntry fluidEntry && mouseButton == 1) {
+						toConvert = Either.right(fluidEntry.getFilterStack().getFluid());
+						convertingSlot = slot;
+						setupTagPanel();
+					} else {
+						fakeSlot.set(ItemStack.EMPTY);
+						filters.set(index, ItemStackEntry.EMPTY);
+						updateItem(menu.containerId, index, ItemStack.EMPTY);
+						updateFluid(menu.containerId, index, FluidStack.EMPTY);
+					}
 				}
 			} else {
 				if (entry instanceof ItemStackEntry itemEntry && hasCapAndMatches(itemEntry, carried)) {

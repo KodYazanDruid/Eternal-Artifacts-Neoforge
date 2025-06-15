@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.container.AutoCutterMenu;
 import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
@@ -36,9 +37,12 @@ public class ModMachines {
     public static final GenericMachineHolder<Disenchanter> DISENCHANTER = registerGeneric("disenchanter", Disenchanter::new);
     public static final GenericMachineHolder<MobHarvester> MOB_HARVESTER = registerGeneric("mob_harvester", MobHarvester::new);
     public static final GenericMachineHolder<MarineFisher> MARINE_FISHER = registerGeneric("marine_fisher", MarineFisher::new);
+    public static final GenericMachineHolder<Smithinator> SMITHINATOR = registerGeneric("smithinator", Smithinator::new);
     
     public static final MachineDeferredHolder<ElectricFurnaceMenu, ElectricFurnace, BaseMachineBlock<ElectricFurnace>, MachineBlockItem>
         ELECTRIC_FURNACE = MACHINES.register("electric_furnace", ElectricFurnaceMenu::new, ElectricFurnace::new);
+    public static final MachineDeferredHolder<AutoCutterMenu, AutoCutter, BaseMachineBlock<AutoCutter>, MachineBlockItem>
+        AUTOCUTTER = MACHINES.register("autocutter", AutoCutterMenu::new, 3, AutoCutter::new);
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefinery, OilRefineryBlock<OilRefinery>, BewlrMachineItem>
         OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefinery::new, OilRefineryBlock::new, BewlrMachineItem::new, true, true);
 

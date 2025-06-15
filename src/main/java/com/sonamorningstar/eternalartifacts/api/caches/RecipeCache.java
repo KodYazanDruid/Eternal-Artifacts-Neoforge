@@ -25,7 +25,7 @@ public class RecipeCache {
         findRecipeFor(machine, recipeType, container, level, allowDuplicate, -1);
     }
         
-        @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public static void findRecipeFor(Machine<?> machine, RecipeType<? extends Recipe<? extends Container>> recipeType,
 									 Container container, Level level, boolean allowDuplicate, int index) {
         if(level == null || container.isEmpty()) {
@@ -85,6 +85,16 @@ public class RecipeCache {
     public static void removeRecipe(Machine<?> machine, int index) {
         var recipeArr = recipeMap.get(machine);
         if (recipeArr != null && recipeArr.size() > index) recipeArr.set(index, null);
+    }
+    
+    public static void cacheRecipe(Machine<?> machine, Recipe<? extends Container> recipe) {
+        if (recipe == null || machine == null) return;
+		
+		var recipeArr = recipeMap.computeIfAbsent(machine, k -> new ArrayList<>());
+		
+		if (!recipeArr.contains(recipe)) {
+            recipeArr.add(recipe);
+        }
     }
     
     @Nullable

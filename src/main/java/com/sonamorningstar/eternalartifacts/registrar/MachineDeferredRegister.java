@@ -64,16 +64,23 @@ public class MachineDeferredRegister {
         this.itemRegister.register(bus);
 
     }
+    
     public
     <M extends AbstractMachineMenu,  BE extends Machine<M>>
     MachineDeferredHolder<M, BE, BaseMachineBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity) {
-        return register(name, menu, blockEntity, false);
+        return register(name, menu, 2, blockEntity, false);
+    }
+        
+        public
+    <M extends AbstractMachineMenu,  BE extends Machine<M>>
+    MachineDeferredHolder<M, BE, BaseMachineBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, int dataSize, BlockEntityType.BlockEntitySupplier<BE> blockEntity) {
+        return register(name, menu, dataSize, blockEntity, false);
     }
 
     public
     <M extends AbstractMachineMenu, BE extends Machine<M>>
-    MachineDeferredHolder<M, BE, BaseMachineBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity, boolean hasUniqueTexture) {
-        return register(name, menu, blockEntity, MachineFourWayBlock::new, MachineBlockItem::new, hasUniqueTexture, false);
+    MachineDeferredHolder<M, BE, BaseMachineBlock<BE>, MachineBlockItem> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, int dataSize, BlockEntityType.BlockEntitySupplier<BE> blockEntity, boolean hasUniqueTexture) {
+        return register(name, menu, dataSize, blockEntity, MachineFourWayBlock::new, MachineBlockItem::new, hasUniqueTexture, false);
     }
 
     public
@@ -100,13 +107,19 @@ public class MachineDeferredRegister {
         machines.add(holder);
         return holder;
     }
-
+    
     public
     <M extends AbstractMachineMenu, BE extends Machine<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem>
     MachineDeferredHolder<M, BE, MB, BI> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, BlockEntityType.BlockEntitySupplier<BE> blockEntity, BiFunction<BlockBehaviour.Properties, BlockEntityType.BlockEntitySupplier<BE>, MB> block, BiFunction<Block, Item.Properties, BI> item, boolean hasUniqueTexture, boolean hasCustomRender) {
+        return register(name, menu, 2, blockEntity, block, item, hasUniqueTexture, hasCustomRender);
+    }
+        
+    public
+    <M extends AbstractMachineMenu, BE extends Machine<M>, MB extends BaseMachineBlock<BE>, BI extends MachineBlockItem>
+    MachineDeferredHolder<M, BE, MB, BI> register(String name, MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menu, int dataSize, BlockEntityType.BlockEntitySupplier<BE> blockEntity, BiFunction<BlockBehaviour.Properties, BlockEntityType.BlockEntitySupplier<BE>, MB> block, BiFunction<Block, Item.Properties, BI> item, boolean hasUniqueTexture, boolean hasCustomRender) {
         ResourceLocation baseKey = new ResourceLocation(menuRegister.getNamespace(), name);
         DeferredHolder<MenuType<?>, MenuType<M>> menuType = DeferredHolder.create(Registries.MENU, baseKey);
-        DeferredHolder<MenuType<?>, MenuType<M>> menuHolder = menuRegister.register(name, ()-> IMenuTypeExtension.create(((id, inv, data) -> menu.apply(menuType.get(), id, inv, inv.player.level().getBlockEntity(data.readBlockPos()), new SimpleContainerData(2)))));
+        DeferredHolder<MenuType<?>, MenuType<M>> menuHolder = menuRegister.register(name, ()-> IMenuTypeExtension.create(((id, inv, data) -> menu.apply(menuType.get(), id, inv, inv.player.level().getBlockEntity(data.readBlockPos()), new SimpleContainerData(dataSize)))));
 
         DeferredHolder<Block, MB> blockHolder = blockRegister.register(name, () -> block.apply(defaultProperties, blockEntity));
         DeferredHolder<Item, BI> itemHolder = itemRegister.register(name, ()-> item.apply(blockHolder.get(), new Item.Properties()));

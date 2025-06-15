@@ -64,16 +64,16 @@ public class CableBlock extends AbstractPipeBlock<IEnergyStorage> {
     
     @Override
     public InteractionResult use(BlockState pState, Level level, BlockPos pPos, Player pPlayer, InteractionHand hand, BlockHitResult hit) {
-        if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND){
+        /*if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND){
             Direction relativeDir = getClickedRelativePos(hit.getDirection(), pPos, hit.getLocation(), 6);
-            System.out.println("Clicked on: " + relativeDir);
-        }
+        }*/
         return super.use(pState, level, pPos, pPlayer, hand, hit);
     }
     
     @Getter
     public enum CableTier implements IExtensibleEnum {
-        COPPER(16, 1000, 50),
+        TIN(16, 100, 10),
+        COPPER(24, 1000, 50),
         GOLD(32, 4000, 100);
         
         private final int maxConnections;

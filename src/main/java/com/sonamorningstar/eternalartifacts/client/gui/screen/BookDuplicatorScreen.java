@@ -17,6 +17,6 @@ public class BookDuplicatorScreen extends AbstractSidedMachineScreen<BookDuplica
         super.render(gui, mx, my, partialTick);
         renderDefaultEnergyAndFluidBar(gui);
         renderProgressArrow(gui, leftPos + 104, topPos + 49, mx, my);
-        renderLArraow(gui, leftPos + 43, topPos + 45);
+        renderLArrow(gui, leftPos + 43, topPos + 45);
     }
 }

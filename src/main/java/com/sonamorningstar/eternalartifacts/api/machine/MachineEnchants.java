@@ -21,7 +21,8 @@ public class MachineEnchants {
 		Enchantments.FIRE_PROTECTION,
 		ModEnchantments.CELERITY.get(),
 		ModEnchantments.SOULBOUND.get(),
-		ModEnchantments.EVERLASTING.get()
+		ModEnchantments.EVERLASTING.get(),
+		ModEnchantments.VOLUME.get()
 	);
 	
 	private static final Set<Enchantment> nonProgressMachineEnchants = Set.of(
@@ -54,6 +55,8 @@ public class MachineEnchants {
 		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), commonMachineEnchants);
 		enchantMap.put(ModBlockEntities.ANVILINATOR.get(), commonMachineEnchants);
 		enchantMap.put(ModBlockEntities.BOOK_DUPLICATOR.get(), commonMachineEnchants);
+		enchantMap.put(ModMachines.SMITHINATOR.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.AUTOCUTTER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);

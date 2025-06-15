@@ -6,10 +6,16 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.IntConsumer;
 
 public class ModItemStorage extends ItemStackHandler {
+    private List<IntConsumer> listeners = new ArrayList<>();
     public ModItemStorage(int size) {
         super(size);
+    }
+    
+    public void addListener(IntConsumer listener) {
+        listeners.add(listener);
     }
 
     public ItemStack insertItemForced(int slot, ItemStack stack, boolean simulate) {
@@ -53,7 +59,15 @@ public class ModItemStorage extends ItemStackHandler {
         }
         return items;
     }
-
+    
+    @Override
+    protected void onContentsChanged(int slot) {
+        super.onContentsChanged(slot);
+        for (IntConsumer listener : listeners) {
+            listener.accept(slot);
+        }
+    }
+    
     public void sendUpdate(int slot) {
         onContentsChanged(slot);
     }

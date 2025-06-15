@@ -186,6 +186,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.TESSERACT.get(), ctx -> new TesseractRenderer());
         event.registerBlockEntityRenderer(ModBlockEntities.SKULL.get(), ModSkullBlockRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MACHINE_WORKBENCH.get(), MachineWorkbenchRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.PICTURE_SCREEN.get(), PictureScreenRenderer::new);
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
 
@@ -199,6 +200,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.METEORITE.get(), MeteoriteRenderer::new);
         event.registerEntityRenderer(ModEntities.MISSILE.get(), MissileRenderer::new);
         event.registerEntityRenderer(ModEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
+        event.registerEntityRenderer(ModEntities.AMETHYST_ARROW.get(), AmethystArrowRenderer::new);
     }
 
     @SubscribeEvent

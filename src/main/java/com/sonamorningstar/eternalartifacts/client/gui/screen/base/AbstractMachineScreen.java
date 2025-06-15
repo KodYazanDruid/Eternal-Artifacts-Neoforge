@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -61,10 +62,10 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     protected void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
-                gui.renderTooltip(font,
-                        Component.translatable(ModConstants.GUI.withSuffix("fluid")).append(": ").append(menu.getBeTank().getFluidInTank(tank).getDisplayName()).append(" ")
-                                .append(String.valueOf(menu.getBeTank().getFluidInTank(tank).getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))),
-                        mx, my);
+                var fs = menu.getBeTank().getFluidInTank(tank);
+                var tooltips = TooltipHelper.getTooltipFromContainerFluid(fs, minecraft.options.advancedItemTooltips);
+                tooltips.add(Component.literal(String.valueOf(fs.getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))));
+                gui.renderTooltip(font, tooltips, Optional.empty(), mx, my);
             }
         });
     }
@@ -123,7 +124,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, "progress");
     }
 
-    protected void renderLArraow(GuiGraphics guiGraphics, int x, int y) {
+    protected void renderLArrow(GuiGraphics guiGraphics, int x, int y) {
         guiGraphics.blit(bars, x, y, 53, 0, 10, 9);
     }
 

@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:ores/copper"
+  },
+  "output": {
+    "Count": 5,
+    "id": "eternalartifacts:copper_dust"
+  }
+}

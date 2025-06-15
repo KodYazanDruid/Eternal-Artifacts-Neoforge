@@ -12,6 +12,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.level.LevelEvent;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,7 +42,8 @@ public class FakePlayerHelper {
     
     private static GameProfile getProfileForMachine(Machine<?> machine) {
         String path = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(machine.getType()).getPath();
-        return new GameProfile(UUID.randomUUID(), "EternalArtifacts"+TooltipHelper.prettyNameNoBlanks(path));
+        String name = "EternalArtifacts"+TooltipHelper.prettyNameNoBlanks(path);
+        return new GameProfile(UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8)), name);
     }
     
     public static void removeFakePlayer(Machine<?> machine) {

@@ -69,15 +69,17 @@ public class ModBlockEntity extends BlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         saveSynced(tag);
-        ListTag listTag = new ListTag();
-        for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
-            CompoundTag enchTag = EnchantmentHelper.storeEnchantment(
-                EnchantmentHelper.getEnchantmentId(entry.getKey()),
-                (byte) entry.getIntValue()
-            );
-            listTag.add(enchTag);
+        if (!enchantments.isEmpty()) {
+            ListTag listTag = new ListTag();
+            for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
+                CompoundTag enchTag = EnchantmentHelper.storeEnchantment(
+                    EnchantmentHelper.getEnchantmentId(entry.getKey()),
+                    (byte) entry.getIntValue()
+                );
+                listTag.add(enchTag);
+            }
+            tag.put("Enchantments", listTag);
         }
-        tag.put("Enchantments", listTag);
     }
     
     @Override
@@ -262,8 +264,8 @@ public class ModBlockEntity extends BlockEntity {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
-                ModBlockEntity.this.sendUpdate();
                 for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
+                ModBlockEntity.this.sendUpdate();
             }
 
             @Override
@@ -280,8 +282,8 @@ public class ModBlockEntity extends BlockEntity {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
-                ModBlockEntity.this.sendUpdate();
                 for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
+                ModBlockEntity.this.sendUpdate();
             }
 
             @Override
@@ -300,6 +302,7 @@ public class ModBlockEntity extends BlockEntity {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
+                super.onContentsChanged(slot);
                 ModBlockEntity.this.sendUpdate();
             }
 
@@ -317,6 +320,7 @@ public class ModBlockEntity extends BlockEntity {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
+                super.onContentsChanged(slot);
                 ModBlockEntity.this.sendUpdate();
             }
 
@@ -339,6 +343,7 @@ public class ModBlockEntity extends BlockEntity {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
+                super.onContentsChanged(slot);
                 ModBlockEntity.this.sendUpdate();
             }
 

@@ -10,7 +10,7 @@ import static com.sonamorningstar.eternalartifacts.content.block.entity.Tesserac
 public class TesseractFluidCap extends ModFluidStorage {
 	private final Tesseract tesseract;
 	public TesseractFluidCap(Tesseract tesseract) {
-		super(8000);
+		super(256000);
 		this.tesseract = tesseract;
 		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {
@@ -39,7 +39,7 @@ public class TesseractFluidCap extends ModFluidStorage {
 	@Override
 	public int fillForced(FluidStack resource, FluidAction action) {
 		var mode = tesseract.getTransferMode();
-		if (mode == BOTH ||mode == INSERT_ONLY)return super.fillForced(resource, action);
+		if (mode == BOTH ||mode == INSERT_ONLY) return super.fillForced(resource, action);
 		else return 0;
 	}
 	

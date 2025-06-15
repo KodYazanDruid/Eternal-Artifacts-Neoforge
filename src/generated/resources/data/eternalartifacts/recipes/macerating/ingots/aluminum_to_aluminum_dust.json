@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:ingots/aluminum"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:aluminum_dust"
+  }
+}

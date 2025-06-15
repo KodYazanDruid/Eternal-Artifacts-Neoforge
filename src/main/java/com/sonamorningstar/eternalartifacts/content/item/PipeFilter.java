@@ -5,10 +5,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class PipeFilter extends ItemFilter {
+public class PipeFilter extends Item {
 	public PipeFilter(Properties props) {
 		super(props);
 	}
@@ -18,7 +19,7 @@ public class PipeFilter extends ItemFilter {
 		ItemStack stack = player.getItemInHand(hand);
 		if(level.isClientSide()) {
 			return InteractionResultHolder.success(stack);
-		}else{
+		} else {
 			openMenu(player, stack);
 			return InteractionResultHolder.consume(stack);
 		}

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.api.filter.FilterEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.ItemStackEntry;
 import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidPipe;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ItemPipe;
@@ -22,9 +23,9 @@ import java.util.EnumMap;
 
 @Setter
 public abstract class FilterablePipeBlockEntity<CAP> extends AbstractPipeBlockEntity<CAP> implements MenuProvider {
-	public EnumMap<Direction, NonNullList<FilterEntry>> filterEntries = new EnumMap<>(Direction.class);
-	public EnumMap<Direction, Boolean> whitelists = new EnumMap<>(Direction.class);
-	public EnumMap<Direction, Boolean> nbtIgnores = new EnumMap<>(Direction.class);
+	public final EnumMap<Direction, NonNullList<FilterEntry>> filterEntries = new EnumMap<>(Direction.class);
+	public final EnumMap<Direction, Boolean> whitelists = new EnumMap<>(Direction.class);
+	public final EnumMap<Direction, Boolean> nbtIgnores = new EnumMap<>(Direction.class);
 	
 	public FilterablePipeBlockEntity(BlockEntityType<?> type, Class<CAP> cls, BlockPos pos, BlockState state) {
 		super(type, cls, pos, state);
@@ -42,7 +43,8 @@ public abstract class FilterablePipeBlockEntity<CAP> extends AbstractPipeBlockEn
 			wr.writeVarInt(conn == PipeConnectionProperty.PipeConnection.EXTRACT ? 0 : 1);
 			wr.writeBoolean(whitelists.get(dir) != null && whitelists.get(dir));
 			wr.writeBoolean(nbtIgnores.get(dir) != null && nbtIgnores.get(dir));
-			wr.writeCollection(filterEntries.get(dir), (buff, entry) -> {
+			var entries = filterEntries.get(dir);
+			wr.writeCollection(entries != null ? entries : NonNullList.withSize(9, ItemStackEntry.EMPTY), (buff, entry) -> {
 				entry.toNetwork(buff);
 			});
 		});

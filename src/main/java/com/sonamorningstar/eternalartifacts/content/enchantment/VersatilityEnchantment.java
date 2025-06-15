@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.List;
 import java.util.function.Predicate;

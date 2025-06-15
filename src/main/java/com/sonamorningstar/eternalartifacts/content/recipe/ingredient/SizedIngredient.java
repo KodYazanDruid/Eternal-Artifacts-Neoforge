@@ -35,7 +35,7 @@ import java.util.stream.Stream;
 public class SizedIngredient implements Predicate<ItemStack> {
     public static final SizedIngredient EMPTY = new SizedIngredient(Stream.empty());
     @Getter
-    public final Value[] values;
+    public Value[] values;
     @Nullable
     private ItemStack[] itemStacks;
     @Nullable private Boolean areAllStacksEmpty;
@@ -169,6 +169,21 @@ public class SizedIngredient implements Predicate<ItemStack> {
 
     public static SizedIngredient of(TagKey<Item> tag, int amount) {
         return fromValues(Stream.of(new TagValue(tag, amount)));
+    }
+    
+    public SizedIngredient addSizedIngredient(SizedIngredient ingredient) {
+        if (ingredient.isEmpty()) return this;
+        if (this.isEmpty()) {
+            this.itemStacks = ingredient.getItems();
+            this.values = ingredient.values;
+        } else {
+            List<Value> newValues = Lists.newArrayList(this.values);
+            newValues.addAll(Arrays.asList(ingredient.values));
+            this.values = newValues.toArray(new Value[0]);
+            this.itemStacks = null; // Reset item stacks to recalculate
+            this.areAllStacksEmpty = null; // Reset empty check
+        }
+        return this;
     }
 
     private static Codec<SizedIngredient> codec(boolean allowEmpty) {

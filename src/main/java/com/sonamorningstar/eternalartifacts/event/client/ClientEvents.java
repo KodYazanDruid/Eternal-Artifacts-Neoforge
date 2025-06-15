@@ -25,6 +25,7 @@ import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockPlacer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Disenchanter;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Smithinator;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -48,6 +49,7 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -65,6 +67,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -400,11 +403,12 @@ public class ClientEvents {
         AbstractModContainerScreen<?> screen = event.getScreen();
         AbstractModContainerMenu menu = screen.getMenu();
         Slot slot = event.getSlot();
+        GuiGraphics gui = event.getGui();
         if (menu instanceof BookDuplicatorMenu bd) {
             var inv = bd.getBeInventory();
             if (slot.index == 38 && inv != null && inv.getStackInSlot(2).isEmpty()) {
                 ItemRendererHelper.renderFakeItemTransparent(
-                    event.getGui(), Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
+                    gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
                 );
             }
         }
@@ -414,8 +418,24 @@ public class ClientEvents {
             if (be instanceof Disenchanter && inv != null &&
                     inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
                 ItemRendererHelper.renderFakeItemTransparent(
-                    event.getGui(), Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
+                    gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
                 );
+            }
+            if (be instanceof Smithinator && inv != null) {
+                if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(
+                        "item/empty_slot_smithing_template_netherite_upgrade"
+                    ));
+                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
+                        1.0F, 1.0F, 1.0F, 1.0F);
+                }
+                if (slot.index == 38 && inv.getStackInSlot(2).isEmpty()) {
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(
+                        "item/empty_slot_ingot")
+                    );
+                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
+                        1.0F, 1.0F, 1.0F, 1.0F);
+                }
             }
         }
     }

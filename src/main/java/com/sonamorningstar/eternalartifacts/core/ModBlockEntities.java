@@ -34,6 +34,8 @@ public class ModBlockEntities {
         BlockEntityType.Builder.of(Tesseract::new, ModBlocks.TESSERACT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarPanel>> SOLAR_PANEL = BLOCK_ENTITIES.register("solar_panel", ()->
         BlockEntityType.Builder.of(SolarPanel::new, ModBlocks.SOLAR_PANEL.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PictureScreen>> PICTURE_SCREEN = BLOCK_ENTITIES.register("picture_screen", ()->
+        BlockEntityType.Builder.of(PictureScreen::new, ModBlocks.PICTURE_SCREEN.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonatorBlockEntity>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
             BlockEntityType.Builder.of(ResonatorBlockEntity::new, ModBlocks.RESONATOR.get()).build(null));
@@ -49,6 +51,8 @@ public class ModBlockEntities {
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Cable>> CABLE = BLOCK_ENTITIES.register("cable", ()->
             BlockEntityType.Builder.of(Cable::new,
+                    ModBlocks.TIN_CABLE.get(),
+                    ModBlocks.COVERED_TIN_CABLE.get(),
                     ModBlocks.COPPER_CABLE.get(),
                     ModBlocks.COVERED_COPPER_CABLE.get(),
                     ModBlocks.GOLD_CABLE.get(),

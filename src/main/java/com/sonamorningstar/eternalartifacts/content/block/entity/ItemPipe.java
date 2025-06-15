@@ -93,8 +93,9 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 	}
 	
 	@Override
-	protected boolean shouldPipesConnect(BlockState neighborState) {
-		return neighborState.getBlock() instanceof ItemPipeBlock cable && tier == cable.getTier();
+	protected boolean shouldPipesConnect(BlockState neighborState, Direction direction) {
+		return super.shouldPipesConnect(neighborState, direction) && neighborState.getBlock() instanceof ItemPipeBlock cable &&
+			tier == cable.getTier();
 	}
 	
 	@Override
@@ -117,18 +118,22 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 	}
 	
 	@Override
-	protected boolean fillSourcesAndTargets(Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> sources, Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> targets, BlockCapabilityCache<IItemHandler, Direction> cache, BlockPos pos, Direction dir) {
+	protected boolean fillSourcesAndTargets(Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> sources,
+											Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> targets,
+											BlockCapabilityCache<IItemHandler, Direction> cache,
+											BlockPos pos, Direction dir) {
 		IItemHandler cap = cache.getCapability();
 		PipeConnection connection = getBlockState().getValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
+		boolean isManuallyDisabled = manuallyDisabled.getOrDefault(dir, false);
+		if (isManuallyDisabled && !(connection == PipeConnection.EXTRACT || connection == PipeConnection.FILTERED)) return false;
 		boolean ret = false;
 		if (cap != null) {
 			if (connection == PipeConnection.EXTRACT) {
 				sources.put(pos, cache);
-				ret = true;
-			} else /*if (connection != PipeConnection.NONE) */{
+			} else {
 				targets.put(pos, cache);
-				ret = true;
 			}
+			ret = true;
 		}
 		return ret;
 	}

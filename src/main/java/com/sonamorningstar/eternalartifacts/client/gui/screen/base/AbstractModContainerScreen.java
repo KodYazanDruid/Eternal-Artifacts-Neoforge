@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Overlapping;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;

@@ -8,11 +8,12 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 
 import static com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract.TransferMode.*;
 
-public class TesseractInventoryCap extends ItemStackHandler {
+public class
+TesseractInventoryCap extends ItemStackHandler {
 	private final Tesseract tesseract;
 	
 	public TesseractInventoryCap(Tesseract tesseract) {
-		super(9);
+		super(27);
 		this.tesseract = tesseract;
 		var network = tesseract.getCachedTesseractNetwork();
 		if (network != null) {

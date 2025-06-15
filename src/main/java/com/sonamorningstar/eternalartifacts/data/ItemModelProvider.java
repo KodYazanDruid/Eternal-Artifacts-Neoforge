@@ -198,8 +198,14 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.RAW_TIN.get());
         basicItem(ModItems.RAW_ALUMINUM.get());
         handheld(ModItems.DASHING_SWORD);
-        basicItem(ModItems.ITEM_FILTER.get());
         basicItem(ModItems.CARBON_PAPER.get());
+        basicItem(ModItems.TIN_DUST.get());
+        basicItem(ModItems.ALUMINUM_DUST.get());
+        basicItem(ModItems.BRONZE_DUST.get());
+        basicItem(ModItems.MACHINE_ITEM_FILTER.get());
+        basicItem(ModItems.MACHINE_FLUID_FILTER.get());
+        basicItem(ModItems.COPPER_DUST.get());
+        basicItem(ModItems.AMETHYST_ARROW.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

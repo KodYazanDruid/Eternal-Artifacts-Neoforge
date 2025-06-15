@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:ingots/bronze"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:bronze_dust"
+  }
+}

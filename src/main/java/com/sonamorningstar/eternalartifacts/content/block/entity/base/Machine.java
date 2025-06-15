@@ -93,7 +93,11 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         this.menuConstructor = quadF;
         this.maxProgress = defaultMaxProgress;
         this.energyPerTick = defaultEnergyPerTick;
-        data = new ContainerData() {
+        data = createContainerData();
+    }
+    
+    protected ContainerData createContainerData() {
+        return new ContainerData() {
             @Override
             public int get(int index) {
                 return switch (index) {

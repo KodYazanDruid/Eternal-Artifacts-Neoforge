@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:ingots/tin"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:tin_dust"
+  }
+}

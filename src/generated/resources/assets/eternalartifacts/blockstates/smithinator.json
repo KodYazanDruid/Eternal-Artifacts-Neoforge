@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/smithinator",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/smithinator"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/smithinator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/smithinator",
+      "y": 270
+    }
+  }
+}

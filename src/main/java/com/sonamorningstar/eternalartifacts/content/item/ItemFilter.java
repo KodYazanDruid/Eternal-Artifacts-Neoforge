@@ -1,11 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.filter.ItemFilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemStackEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemTagEntry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 

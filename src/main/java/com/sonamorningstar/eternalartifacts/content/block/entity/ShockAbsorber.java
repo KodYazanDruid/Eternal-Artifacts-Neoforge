@@ -22,9 +22,9 @@ public class ShockAbsorber extends Machine<AbstractMachineMenu> {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        for (Direction value : Direction.values()) {
-            if (hasAnyEnergy(energy)) outputEnergyToDir(lvl, pos, value, energy);
-        }
+        if (hasAnyEnergy(energy))
+            for (Direction value : Direction.values())
+                outputEnergyToDir(lvl, pos, value, energy);
     }
 
 }

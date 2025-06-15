@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "eternalartifacts:tin_cable"
+    },
+    {
+      "item": "eternalartifacts:tin_cable"
+    },
+    {
+      "item": "eternalartifacts:plastic_sheet"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "eternalartifacts:covered_tin_cable"
+  }
+}

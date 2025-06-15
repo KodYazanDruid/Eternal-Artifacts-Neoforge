@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
@@ -61,6 +62,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
 
         createPunjiStick(ModBlocks.PUNJI_STICKS.get());
 
+        cable(ModBlocks.TIN_CABLE.get(), false);
+        cable(ModBlocks.COVERED_TIN_CABLE.get(), true);
         cable(ModBlocks.COPPER_CABLE.get(), false);
         cable(ModBlocks.COVERED_COPPER_CABLE.get(), true);
         cable(ModBlocks.GOLD_CABLE.get(), false);

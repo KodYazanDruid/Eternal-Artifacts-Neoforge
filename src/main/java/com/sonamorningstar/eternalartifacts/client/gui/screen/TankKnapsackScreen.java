@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.TankKnapsackTransferToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.CommonComponents;
@@ -15,10 +16,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackMenu> {
@@ -43,10 +43,10 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
             FluidSlot slot = menu.getFluidSlot(i);
             FluidStack fluidStack = slot.getFluid();
             if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
-                List<Component> tooltipComponents = new ArrayList<>();
-                if (!fluidStack.isEmpty()){
-                    tooltipComponents.add(Component.translatable(ModConstants.GUI.withSuffix("fluid"))
-                        .append(": ").append(fluidStack.getDisplayName()).append(" " + fluidStack.getAmount() + " / " + slot.getMaxSize()));
+                var tooltipComponents = Lists.<Component>newArrayList();
+                if (!fluidStack.isEmpty()) {
+                    tooltipComponents.addAll(TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.options.advancedItemTooltips));
+                    tooltipComponents.add(Component.literal(fluidStack.getAmount() + " / " + slot.getMaxSize()));
                 }
                 if (!menu.getCarried().isEmpty()) {
                     IFluidHandlerItem carriedHandler = menu.getCarried().getCapability(Capabilities.FluidHandler.ITEM);

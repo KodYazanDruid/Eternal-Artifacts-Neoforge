@@ -2,8 +2,11 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import lombok.Getter;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,6 +21,11 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	public final LinkedHashSet<BlockPos> pipes = new LinkedHashSet<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> sources = new LinkedHashMap<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> targets = new LinkedHashMap<>();
+	public EnumMap<Direction, Boolean> manuallyDisabled = Util.make(new EnumMap<>(Direction.class), map -> {
+		for (Direction dir : Direction.values()) {
+			map.put(dir, false);
+		}
+	});
 	
 	//This is for the entire network.
 	public final LinkedHashSet<BlockPos> networkPipes = new LinkedHashSet<>();
@@ -40,6 +48,34 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	public void onLoad() {
 		super.onLoad();
 		if (level != null && !level.isClientSide()) isDirty = true;
+	}
+	
+	@Override
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		ListTag manuallyDisabledList = new ListTag();
+		for (Map.Entry<Direction, Boolean> entry : manuallyDisabled.entrySet()) {
+			if (entry.getValue()) {
+				CompoundTag entryTag = new CompoundTag();
+				entryTag.putString("Direction", entry.getKey().getName());
+				manuallyDisabledList.add(entryTag);
+			}
+		}
+		tag.put("ManuallyDisabled", manuallyDisabledList);
+	}
+	
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		ListTag manuallyDisabledList = tag.getList("ManuallyDisabled", 10);
+		for (int i = 0; i < manuallyDisabledList.size(); i++) {
+			CompoundTag entryTag = manuallyDisabledList.getCompound(i);
+			String dirName = entryTag.getString("Direction");
+			Direction dir = Direction.byName(dirName);
+			if (dir != null) {
+				manuallyDisabled.put(dir, true);
+			}
+		}
 	}
 	
 	public void openMenu(ServerPlayer player, Direction dir) {
@@ -72,7 +108,9 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	 * @param neighborState the state of the block to check
 	 * @return {@code true} if the pipe should connect, {@code false} otherwise
 	 */
-	protected abstract boolean shouldPipesConnect(BlockState neighborState);
+	protected boolean shouldPipesConnect(BlockState neighborState, Direction direction) {
+		return !manuallyDisabled.get(direction);
+	};
 	
 	protected abstract BlockCapabilityCache<CAP, Direction> createCache(BlockPos pos, Direction dir);
 	
@@ -97,7 +135,7 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 				BlockState neighborState = lvl.getBlockState(offset);
 				BlockState state = getBlockState();
 				
-				if (shouldPipesConnect(neighborState)) {
+				if (shouldPipesConnect(neighborState, dir)) {
 					pipes.add(offset);
 					updatePipeConnections(lvl, state, dir, true);
 					continue;

@@ -175,7 +175,11 @@ public class ModBlocks {
         () -> new TrashCanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
     public static final DeferredBlock<DynamoBlock<?>> SOLID_COMBUSTION_DYNAMO = registerMachineWithBewlr("solid_combustion_dynamo",
         () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), SolidCombustionDynamo::new));
-
+    
+    public static final DeferredBlock<CableBlock> TIN_CABLE = registerWithItem("tin_cable",
+        ()-> new UncoveredCableBlock(CableBlock.CableTier.TIN, ModProperties.Blocks.TIN_PIPE));
+    public static final DeferredBlock<CableBlock> COVERED_TIN_CABLE = registerWithItem("covered_tin_cable",
+        ()-> new UncoveredCableBlock(CableBlock.CableTier.TIN, ModProperties.Blocks.CABLE));
     public static final DeferredBlock<CableBlock> COPPER_CABLE = registerWithItem("copper_cable",
             ()-> new UncoveredCableBlock(CableBlock.CableTier.COPPER, ModProperties.Blocks.COPPER_PIPE));
     public static final DeferredBlock<CableBlock> COVERED_COPPER_CABLE = registerWithItem("covered_copper_cable",
@@ -208,6 +212,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SHOCK_ABSORBER = registerMachineWithItem("shock_absorber", ShockAbsorberBlock::new);
     public static final DeferredBlock<Block> MACHINE_WORKBENCH = registerMachineWithItem("machine_workbench", MachineWorkbench::new);
     public static final DeferredBlock<Block> SOLAR_PANEL = registerMachineWithItem("solar_panel", SolarPanelBlock::new);
+    public static final DeferredBlock<Block> PICTURE_SCREEN = registerWithBewlr("picture_screen", () -> new PictureScreenBlock(ModProperties.Blocks.MACHINE));
     
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);

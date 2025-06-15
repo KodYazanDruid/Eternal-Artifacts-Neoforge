@@ -123,8 +123,13 @@ public class ModItems {
     public static final DeferredItem<Item> BRONZE_INGOT = register("bronze_ingot");
     public static final DeferredItem<Item> RAW_TIN = register("raw_tin");
     public static final DeferredItem<Item> RAW_ALUMINUM = register("raw_aluminum");
-    public static final DeferredItem<Item> ITEM_FILTER = register("item_filter", ItemFilter::new);
     public static final DeferredItem<Item> CARBON_PAPER = register("carbon_paper");
+    public static final DeferredItem<Item> TIN_DUST = register("tin_dust");
+    public static final DeferredItem<Item> ALUMINUM_DUST = register("aluminum_dust");
+    public static final DeferredItem<Item> BRONZE_DUST = register("bronze_dust");
+    public static final DeferredItem<Item> MACHINE_ITEM_FILTER = register("machine_item_filter", ItemFilter::new);
+    public static final DeferredItem<Item> MACHINE_FLUID_FILTER = register("machine_fluid_filter", FluidFilter::new);
+    public static final DeferredItem<Item> COPPER_DUST = register("copper_dust");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -156,6 +161,7 @@ public class ModItems {
     public static final DeferredItem<Item> GALE_SASH = registerStacksToOne("gale_sash");
     public static final DeferredItem<Item> MAGIC_QUIVER = registerStacksToOne("magic_quiver", MagicQuiverItem::new);
     public static final DeferredItem<Item> IRON_LEATHER_GLOVES = registerStacksToOne("iron_leather_gloves");
+    public static final DeferredItem<Item> AMETHYST_ARROW = register("amethyst_arrow", AmethystArrowItem::new);
     //endregion
     //region Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -246,16 +252,20 @@ public class ModItems {
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));
     
     public static final DeferredItem<Item> DROWNED_HEAD = register("drowned_head", () ->
-        new BewlrStandingAndWallBlockItem(ModBlocks.DROWNED_HEAD.get(), ModBlocks.DROWNED_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+        new BewlrStandingAndWallBlockItem(ModBlocks.DROWNED_HEAD.get(), ModBlocks.DROWNED_WALL_HEAD.get(),
+            new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
     );
     public static final DeferredItem<Item> HUSK_HEAD = register("husk_head", () ->
-        new BewlrStandingAndWallBlockItem(ModBlocks.HUSK_HEAD.get(), ModBlocks.HUSK_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+        new BewlrStandingAndWallBlockItem(ModBlocks.HUSK_HEAD.get(), ModBlocks.HUSK_WALL_HEAD.get(),
+            new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
     );
     public static final DeferredItem<Item> STRAY_SKULL = register("stray_skull", () ->
-        new BewlrStandingAndWallBlockItem(ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+        new BewlrStandingAndWallBlockItem(ModBlocks.STRAY_SKULL.get(), ModBlocks.STRAY_WALL_SKULL.get(),
+            new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
     );
     public static final DeferredItem<Item> BLAZE_HEAD = register("blaze_head", () ->
-        new BewlrStandingAndWallBlockItem(ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(), new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+        new BewlrStandingAndWallBlockItem(ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(),
+            new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
     );
     
     //region Register methods.

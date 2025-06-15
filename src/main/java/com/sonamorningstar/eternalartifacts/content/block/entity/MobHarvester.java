@@ -46,7 +46,7 @@ public class MobHarvester extends GenericMachine implements IAreaRenderer {
 		if (!redstoneChecks(redstoneConfigs.get(0), lvl)) return;
 		
 		FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
-		fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
+		fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite().toYRot());
 		fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
 		ItemStack tool = inventory.getStackInSlot(0);
 		fakePlayer.getInventory().selected = 0;

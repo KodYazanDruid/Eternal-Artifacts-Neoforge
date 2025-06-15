@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/autocutter",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/autocutter"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/autocutter",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/autocutter",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "eternalartifacts:block/cable_side",
+  "textures": {
+    "texture": "eternalartifacts:block/tin_cable"
+  }
+}

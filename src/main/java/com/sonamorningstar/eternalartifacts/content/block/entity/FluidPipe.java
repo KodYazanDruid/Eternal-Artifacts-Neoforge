@@ -94,8 +94,9 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 	}
 	
 	@Override
-	protected boolean shouldPipesConnect(BlockState neighborState) {
-		return neighborState.getBlock() instanceof FluidPipeBlock cable && tier == cable.getTier();
+	protected boolean shouldPipesConnect(BlockState neighborState, Direction direction) {
+		return super.shouldPipesConnect(neighborState, direction) && neighborState.getBlock() instanceof FluidPipeBlock cable &&
+			tier == cable.getTier();
 	}
 	
 	@Override
@@ -124,15 +125,16 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 											BlockPos pos, Direction dir) {
 		IFluidHandler cap = cache.getCapability();
 		PipeConnection connection = getBlockState().getValue(FluidPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
+		boolean isManuallyDisabled = manuallyDisabled.getOrDefault(dir, false);
+		if (isManuallyDisabled && !(connection == PipeConnection.EXTRACT || connection == PipeConnection.FILTERED)) return false;
 		boolean ret = false;
 		if (cap != null) {
 			if (connection == PipeConnection.EXTRACT) {
 				sources.put(pos, cache);
-				ret = true;
-			} else /*if (connection != PipeConnection.NONE) */{
+			} else {
 				targets.put(pos, cache);
-				ret = true;
 			}
+			ret = true;
 		}
 		return ret;
 	}

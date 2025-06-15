@@ -28,6 +28,7 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
+import java.util.Objects;
 
 import static com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty.PipeConnection;
 
@@ -101,10 +102,11 @@ public abstract class AttachmentablePipeBlock<CAP> extends AbstractPipeBlock<CAP
 		
 		Direction relativeDir = getClickedRelativePos(hit.getDirection(), pos, hit.getLocation(), 8);
 		BlockState relativeState = level.getBlockState(pos.relative(relativeDir));
+		BlockEntity relativeEntity = level.getBlockEntity(pos.relative(relativeDir));
 		
-		if (checkPipe(relativeState)) {
+		/*if (checkPipe(relativeState)) {
 			return InteractionResult.PASS;
-		}
+		}*/
 		
 		ItemStack stack = player.getItemInHand(hand);
 		PipeConnection connection = state.getValue(CONNECTION_BY_DIRECTION.get(relativeDir));
@@ -133,11 +135,19 @@ public abstract class AttachmentablePipeBlock<CAP> extends AbstractPipeBlock<CAP
 				pipe.updateConnections(level);
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (connection == PipeConnection.FREE) {
-				level.setBlockAndUpdate(pos, state.setValue(CONNECTION_BY_DIRECTION.get(relativeDir), PipeConnection.NONE));
+				pipe.manuallyDisabled.put(relativeDir, true);
+				if (relativeEntity instanceof FilterablePipeBlockEntity<?> neighborPipe &&
+					Objects.equals(neighborPipe.getCapabilityClass(), pipe.getCapabilityClass())) {
+					neighborPipe.manuallyDisabled.put(relativeDir.getOpposite(), true);
+				}
 				pipe.updateConnections(level);
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			} else if (connection == PipeConnection.NONE) {
-				level.setBlockAndUpdate(pos, state.setValue(CONNECTION_BY_DIRECTION.get(relativeDir), PipeConnection.FREE));
+				pipe.manuallyDisabled.put(relativeDir, false);
+				if (relativeEntity instanceof FilterablePipeBlockEntity<?> neighborPipe &&
+					Objects.equals(neighborPipe.getCapabilityClass(), pipe.getCapabilityClass())) {
+					neighborPipe.manuallyDisabled.put(relativeDir.getOpposite(), false);
+				}
 				pipe.updateConnections(level);
 				return InteractionResult.sidedSuccess(level.isClientSide());
 			}

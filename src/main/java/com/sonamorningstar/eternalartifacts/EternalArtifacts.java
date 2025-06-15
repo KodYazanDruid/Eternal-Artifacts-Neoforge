@@ -26,7 +26,7 @@ public class EternalArtifacts {
     /**
      * TODO: Add proper power generation system (like biodiesel engine from IE, peat generator from cyclic(originally from forestry)) instead of burning oranges.
      * TODO: A storage block can storage items, fluids and energy. (battery box with items and fluids)
-     * TODO: Fourlegged model for gardening pot.
+     * TODO: Four-legged model for gardening pot.
      * TODO: Decorative gardening pot with old model(maybe combine it with four legged)
      * TODO: Piezoelectric Plane
      * TODO: Modular Fluid Tank
@@ -35,6 +35,7 @@ public class EternalArtifacts {
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
      * TODO: Block pattern copy paste.
+     * FIXME: Tank knapsack or multi tank capability related bug.
     */
 
     public static final String MODID = "eternalartifacts";

@@ -5,10 +5,16 @@
       "amount": 1,
       "tag": "forge:ingots/iron"
     },
-    {
-      "amount": 1,
-      "tag": "forge:ingots/manganese"
-    },
+    [
+      {
+        "amount": 1,
+        "tag": "forge:ingots/manganese"
+      },
+      {
+        "amount": 1,
+        "tag": "forge:dusts/manganese"
+      }
+    ],
     {
       "amount": 3,
       "tag": "forge:dusts/charcoal"

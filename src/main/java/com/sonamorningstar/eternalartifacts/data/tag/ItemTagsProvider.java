@@ -67,6 +67,10 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         copy(ModTags.Blocks.ORES_TIN, ModTags.Items.ORES_TIN);
         copy(ModTags.Blocks.ORES_ALUMINUM, ModTags.Items.ORES_ALUMINUM);
         tag(ModTags.Items.DUSTS_MANGANESE).add(ModItems.MANGANESE_DUST.get());
+        tag(ModTags.Items.DUSTS_TIN).add(ModItems.TIN_DUST.get());
+        tag(ModTags.Items.DUSTS_ALUMINUM).add(ModItems.ALUMINUM_DUST.get());
+        tag(ModTags.Items.DUSTS_BRONZE).add(ModItems.BRONZE_DUST.get());
+        tag(ModTags.Items.DUSTS_COPPER).add(ModItems.COPPER_DUST.get());
         tag(ModTags.Items.RAW_MATERIALS_MANGANESE).add(ModItems.RAW_MANGANESE.get());
         tag(Tags.Items.NUGGETS).add(
             ModItems.COPPER_NUGGET.get(),
@@ -78,7 +82,11 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.COAL_DUST.get(),
             ModItems.CHARCOAL_DUST.get(),
             ModItems.SUGAR_CHARCOAL_DUST.get(),
-            ModItems.MANGANESE_DUST.get()
+            ModItems.MANGANESE_DUST.get(),
+            ModItems.TIN_DUST.get(),
+            ModItems.ALUMINUM_DUST.get(),
+            ModItems.BRONZE_DUST.get(),
+            ModItems.COPPER_DUST.get()
         );
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
@@ -292,6 +300,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             Items.BUNDLE,
             ModItems.GALE_SASH.get(),
             ModItems.MAGIC_QUIVER.get()
+        );
+        tag(ItemTags.ARROWS).add(
+            ModItems.AMETHYST_ARROW.get()
         );
         tag(ModTags.Items.CHARMS_CHARM).add(
             ModItems.MAGIC_FEATHER.get(),

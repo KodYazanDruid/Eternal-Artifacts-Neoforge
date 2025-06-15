@@ -52,6 +52,7 @@ public class SolarPanel extends Machine<SolarPanelMenu> {
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
+		if (hasAnyEnergy(energy)) outputEnergyToDir(lvl, pos, Direction.DOWN, energy);
 		int xO = pos.getX();
 		int yO = pos.getY();
 		int zO = pos.getZ();
