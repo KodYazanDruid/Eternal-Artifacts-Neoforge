@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
+import com.sonamorningstar.eternalartifacts.container.AdvancedCrafterMenu;
 import com.sonamorningstar.eternalartifacts.container.AutoCutterMenu;
 import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
@@ -32,7 +33,6 @@ public class ModMachines {
     public static final GenericMachineHolder<AlloySmelter> ALLOY_SMELTER = registerGeneric("alloy_smelter", AlloySmelter::new);
     public static final GenericMachineHolder<Solidifier> SOLIDIFIER = registerGeneric("solidifier", Solidifier::new);
     public static final GenericMachineHolder<Compressor> COMPRESSOR = registerGeneric("compressor", Compressor::new);
-    public static final GenericMachineHolder<AdvancedCrafter> ADVANCED_CRAFTER = registerGeneric("advanced_crafter", AdvancedCrafter::new);
     public static final GenericMachineHolder<FluidMixer> FLUID_MIXER = registerGeneric("fluid_mixer", FluidMixer::new);
     public static final GenericMachineHolder<Disenchanter> DISENCHANTER = registerGeneric("disenchanter", Disenchanter::new);
     public static final GenericMachineHolder<MobHarvester> MOB_HARVESTER = registerGeneric("mob_harvester", MobHarvester::new);
@@ -45,6 +45,8 @@ public class ModMachines {
         AUTOCUTTER = MACHINES.register("autocutter", AutoCutterMenu::new, 3, AutoCutter::new);
     public static final MachineDeferredHolder<GenericMachineMenu, OilRefinery, OilRefineryBlock<OilRefinery>, BewlrMachineItem>
         OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefinery::new, OilRefineryBlock::new, BewlrMachineItem::new, true, true);
+    public static final MachineDeferredHolder<AdvancedCrafterMenu, AdvancedCrafter, BaseMachineBlock<AdvancedCrafter>, MachineBlockItem>
+        ADVANCED_CRAFTER = MACHINES.register("advanced_crafter", AdvancedCrafterMenu::new, AdvancedCrafter::new);
 
     public static final MachineDeferredHolder<InductionFurnaceMenu, InductionFurnace, BaseMachineBlock<InductionFurnace>, MachineBlockItem>
         INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnace::new);

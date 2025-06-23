@@ -18,7 +18,6 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedM
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
-import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
@@ -70,6 +69,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -187,6 +187,12 @@ public class ClientEvents {
                     if (!mergedMap.isEmpty()) addModifierTooltip(tooltips, type, mergedMap);
                 });
 			}
+            
+            if (CharmStorage.isBlacklistedWildcard(stack)) {
+                MutableComponent blacklisted = ModConstants.TOOLTIP.withSuffixTranslatable("wildcard_blacklisted")
+                    .withStyle(ChatFormatting.GRAY);
+                tooltips.add(tooltips.size() - 1, Either.left(blacklisted));
+            }
         }
         
         if (!types.isEmpty() || (stack.hasTag() && stack.getTag().contains(CharmType.CHARM_KEY))) {

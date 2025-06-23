@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data;
 
+import com.sonamorningstar.eternalartifacts.core.ModDamageTypes;
 import com.sonamorningstar.eternalartifacts.world.ModStructureSets;
 import com.sonamorningstar.eternalartifacts.world.ModStructures;
 import com.sonamorningstar.eternalartifacts.world.ModBiomeModifiers;
@@ -23,7 +24,8 @@ public class DatapackBuiltinEntriesProvider extends net.neoforged.neoforge.commo
             .add(Registries.PLACED_FEATURE, ModPlacedFeatures::bootstrap)
             .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ModBiomeModifiers::bootstrap)
             .add(Registries.STRUCTURE, ModStructures::bootstrap)
-            .add(Registries.STRUCTURE_SET, ModStructureSets::bootstrap);
+            .add(Registries.STRUCTURE_SET, ModStructureSets::bootstrap)
+            .add(Registries.DAMAGE_TYPE, ModDamageTypes::bootstrap);
 
     public DatapackBuiltinEntriesProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of("minecraft", MODID));

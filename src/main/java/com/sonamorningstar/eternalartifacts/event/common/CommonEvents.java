@@ -34,6 +34,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +43,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -63,10 +65,7 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.DispenserBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -74,6 +73,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.*;
@@ -86,6 +86,7 @@ import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -146,6 +147,7 @@ public class CommonEvents {
     @SubscribeEvent
     public static void livingHurtEvent(LivingHurtEvent event) {
         LivingEntity living = event.getEntity();
+        DamageSource source = event.getSource();
         float damage = event.getAmount();
         float health = living.getHealth();
         float absorption = living.getAbsorptionAmount();
@@ -163,7 +165,6 @@ public class CommonEvents {
                     cooldowns.addCooldown(charm.getItem(), 6000);
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.HOLY_DAGGER_ACTIVATE.get(), player.getSoundSource());
                     Channel.sendToPlayer(new ItemActivationToClient(charm), (ServerPlayer) player);
-                    
                 }
             }
             
@@ -174,8 +175,49 @@ public class CommonEvents {
                     cooldowns.addCooldown(charm.getItem(), 1200);
                 }
             }
+            
+            ItemStack oddlyShapedOpal = CharmManager.findCharm(player, ModItems.ODDLY_SHAPED_OPAL.get());
+            if (!oddlyShapedOpal.isEmpty() &&
+                !cooldowns.isOnCooldown(oddlyShapedOpal.getItem()) &&
+                !(source.is(DamageTypeTags.BYPASSES_ARMOR))) {
+               event.setAmount(damage * 0.5F);
+               cooldowns.addCooldown(ModItems.ODDLY_SHAPED_OPAL.get(), 200);
+            }
+            
         }
         
+    }
+    
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void livingDamageEvent(LivingDamageEvent event) {
+        DamageSource source = event.getSource();
+        Entity attacker = source.getEntity();
+        LivingEntity target = event.getEntity();
+        float remainingHealth = target.getHealth() - event.getAmount();
+        
+        if (attacker instanceof LivingEntity leAttacker &&
+            !target.getType().is(ModTags.Entities.EXECUTE_BLACKLISTED) &&
+            !source.is(ModDamageTypes.EXECUTE.get())) {
+            
+            ItemStack finalCut = CharmManager.findCharm(leAttacker, ModItems.FINAL_CUT.get());
+            if (!finalCut.isEmpty()) {
+                float threshold = Config.FINAL_CUT_EXECUTE_THRESHOLD.get().floatValue();
+                if (remainingHealth / target.getMaxHealth() <= threshold) {
+                    event.setCanceled(true);
+                    Level level = target.level();
+                    target.hurt(ModDamageSources.INSTANCES.get(level).execute(leAttacker), Float.MAX_VALUE);
+                    double pPosY = target.getY() + target.getBbHeight() / 2.0F;
+                    level.playSound(null, target.getX(), pPosY, target.getZ(),
+                        ModSounds.FINAL_CUT_EFFECT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                    if (level instanceof ServerLevel tsLevel) {
+                        tsLevel.sendParticles(ParticleTypes.CRIT,
+                            target.getX(), pPosY, target.getZ(),
+                            50, 0.5D, 0.5D, 0.5D, 0.01D);
+                    }
+                }
+            }
+            
+        }
     }
 
     @SubscribeEvent
@@ -308,27 +350,24 @@ public class CommonEvents {
     public static void playerCloneEvent(PlayerEvent.Clone event) {
         Player oldPlayer = event.getOriginal();
         Player newPlayer = event.getEntity();
-        boolean wasDeath = event.isWasDeath();
+        Inventory oldInventory = oldPlayer.getInventory();
+        Inventory newInventory = newPlayer.getInventory();
         var oldCharms = CharmStorage.get(oldPlayer);
         var newCharms = CharmStorage.get(newPlayer);
+        boolean wasDeath = event.isWasDeath();
+        Level level = oldPlayer.level();
+        boolean doKeep = level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
 
         if (wasDeath) {
-            Level level = oldPlayer.level();
-            boolean doKeep = level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
             boolean oldWildcard = CharmStorage.canHaveWildcard(oldPlayer);
             newCharms.setWildcardNbt(oldWildcard);
-            for (int i = 0; i < oldCharms.getSlots(); i++) {
-                ItemStack oldStack = oldCharms.getStackInSlot(i);
-                if (EnchantmentHelper.hasVanishingCurse(oldStack)) {
-                    oldCharms.setStackInSlot(i, ItemStack.EMPTY);
-                    oldStack.setCount(0);
-                }
-                if (SoulboundEnchantment.has(oldStack) || doKeep) newCharms.setStackInSlot(i, oldStack.copyAndClear());
-            }
 
-            if (!(doKeep || oldPlayer.isSpectator())) {
-                Inventory oldInventory = oldPlayer.getInventory();
-                Inventory newInventory = newPlayer.getInventory();
+            if (!doKeep && !oldPlayer.isSpectator()) {
+                for (int i = 0; i < oldCharms.getSlots(); i++) {
+                    ItemStack oldStack = oldCharms.getStackInSlot(i);
+                    if (SoulboundEnchantment.has(oldStack)) newCharms.setStackInSlot(i, oldStack);
+                }
+                
                 for (int i = 0; i < oldInventory.getContainerSize(); i++) {
                     ItemStack stack = oldInventory.getItem(i);
                     if (SoulboundEnchantment.has(stack)) newInventory.setItem(i, oldInventory.getItem(i));
@@ -413,6 +452,17 @@ public class CommonEvents {
                 EternalArtifacts.LOGGER.info("Player {} has been whitelisted to tesseract network {}.", player.getGameProfile().getName(), network.getUuid());
             }
         }
+    }
+    
+    @SubscribeEvent
+    public static void levelLoadEvent(LevelEvent.Load event) {
+        LevelAccessor level = event.getLevel();
+        ModDamageSources.INSTANCES.put(level, new ModDamageSources(level.registryAccess()));
+    }
+    @SubscribeEvent
+    public static void levelUnloadEvent(LevelEvent.Unload event) {
+        LevelAccessor level = event.getLevel();
+        ModDamageSources.INSTANCES.remove(level);
     }
 
     @SubscribeEvent

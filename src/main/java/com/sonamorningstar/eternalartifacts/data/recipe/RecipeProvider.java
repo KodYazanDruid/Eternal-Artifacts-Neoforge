@@ -78,6 +78,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         craftingRecipes(recipeOutput);
         smeltingRecipe(recipeOutput, Items.SUGAR_CANE, ModItems.SUGAR_CHARCOAL, 1.0f);
+        smeltingRecipe(recipeOutput, ModBlocks.WET_INDUSTRIAL_SPONGE, ModBlocks.INDUSTRIAL_SPONGE, 0.15F);
         createFoodCookingRecipe(recipeOutput, ModItems.RAW_MEAT_INGOT, ModItems.COOKED_MEAT_INGOT, 0.35f);
         createFoodCookingRecipe(recipeOutput, ModItems.DUCK_MEAT, ModItems.COOKED_DUCK_MEAT, 0.35f);
         createOreSmeltingRecipe(recipeOutput, ModBlocks.GRAVEL_COAL_ORE, Items.COAL, 0.1f);
@@ -277,6 +278,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 SizedIngredient.of(ModTags.Items.INGOTS_TIN, 1)
                     .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_TIN, 1))),
             ModItems.BRONZE_INGOT.toStack(4), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+                SizedIngredient.of(ItemTags.WOOL, 1),
+                SizedIngredient.of(Tags.Items.SLIMEBALLS, 1),
+                SizedIngredient.of(Tags.Items.DYES_GREEN, 1)
+            ), ModBlocks.INDUSTRIAL_SPONGE.toStack(), "");
 
         //region Mob Liquifying recipes.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
@@ -950,8 +956,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     private static void createAlloyingRecipe(RecipeOutput output, List<SizedIngredient> inputs, ItemStack result, String suffix){
         String path = BuiltInRegistries.ITEM.getKey(result.getItem()).getPath();
+        String savePath = suffix.isBlank() ? "alloying/"+path : "alloying/"+path+"_"+suffix;
         SpecialRecipeBuilder.special(category -> new AlloyingRecipe(inputs, result))
-                .save(output, new ResourceLocation(MODID, "alloying/"+path+"_"+suffix));
+                .save(output, new ResourceLocation(MODID, savePath));
     }
 
     private static void createSolidifyingRecipe(RecipeOutput output, Fluid fluid, int fluidAmount, ItemStack result) {

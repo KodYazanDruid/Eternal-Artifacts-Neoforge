@@ -116,6 +116,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.STEEL_FLUID_PIPE.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.TIN_CABLE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.COVERED_TIN_CABLE.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.INDUSTRIAL_SPONGE.get(), "", "hoe");
+        tierAndTool(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "", "hoe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),

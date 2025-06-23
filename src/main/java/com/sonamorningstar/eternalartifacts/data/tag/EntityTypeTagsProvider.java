@@ -26,6 +26,7 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
         tag(ModTags.Entities.CUTLASS_SPAWN_EGG_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
         
         tag(ModTags.Entities.MORPH_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
+        tag(ModTags.Entities.EXECUTE_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
         tag(ModTags.Entities.MORPH_BLACKLISTED).add(
             EntityType.CREEPER,
             EntityType.BLAZE

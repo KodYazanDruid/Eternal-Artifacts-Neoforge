@@ -42,6 +42,20 @@ public class BlueprintPattern {
             }
         }
     }
+    
+    public void findRecipe(Level level) {
+        MinecraftServer server = level.getServer();
+        if (server == null) return;
+        Optional<RecipeHolder<CraftingRecipe>> optional = server.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, fakeItems, level);
+        if (optional.isPresent()) {
+            RecipeHolder<CraftingRecipe> recipeholder = optional.get();
+            CraftingRecipe craftingrecipe = recipeholder.value();
+            if (recipeholder.value().isSpecial() || !level.getGameRules().getBoolean(GameRules.RULE_LIMITED_CRAFTING)) {
+                recipe = craftingrecipe;
+                recipeHolder = recipeholder;
+            }
+        }
+    }
 
     public boolean recipeChecks(ServerPlayer player, Level level, RecipeHolder<?> recipe) {
 		return recipe.value().isSpecial()

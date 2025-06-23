@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.15,
+  "ingredient": {
+    "item": "eternalartifacts:wet_industrial_sponge"
+  },
+  "result": "eternalartifacts:industrial_sponge"
+}

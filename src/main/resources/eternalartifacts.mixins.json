@@ -4,6 +4,7 @@
   "package": "com.sonamorningstar.eternalartifacts.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "AbstractFurnaceBlockEntityMixin",
     "AxeItemMixin",
     "BeaconEntityMixin",
     "BlockMixin",

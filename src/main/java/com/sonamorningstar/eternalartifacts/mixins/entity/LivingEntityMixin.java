@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
@@ -127,18 +128,6 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
             }
         }
         original.call(serverLevel, pos, reward);
-    }
-    
-    @Inject(method = "dropEquipment", at = @At(value = "HEAD"))
-    private void dropEquipment(CallbackInfo ci) {
-        LivingEntity living = (LivingEntity) (Object) this;
-        if (living instanceof Player player){
-            var charms = CharmStorage.get(living);
-            for (int i = 0; i < charms.getSlots(); i++) {
-                var charm = charms.getStackInSlot(i);
-                player.drop(charm, true, false);
-            }
-        }
     }
     
     @Unique

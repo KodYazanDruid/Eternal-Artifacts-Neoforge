@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "eternalartifacts:block/wet_industrial_sponge"
+  }
+}

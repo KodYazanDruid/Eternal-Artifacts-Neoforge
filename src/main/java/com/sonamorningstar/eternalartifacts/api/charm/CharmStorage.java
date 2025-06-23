@@ -49,6 +49,7 @@ public class CharmStorage extends ItemStackHandler {
     private final List<BiConsumer<LivingEntity, Integer>> listeners = new ArrayList<>();
     private final LivingEntity owner;
     public static final String WILDCARD_NBT = "CharmWildcard";
+    public static final String WILDCARD_BLACKLISTED = "WildcardBlacklisted";
     // 12. slot is wildcard slot. Can hold any charm.
     public static final Map<Integer, CharmType> slotTypes = new HashMap<>(12);
     public static final Set<CharmAttributes> itemAttributes = new HashSet<>();
@@ -73,15 +74,20 @@ public class CharmStorage extends ItemStackHandler {
         if (!Config.CHARMS_ENABLED.getAsBoolean()) return false;
         if (contains(stack.getItem())) return false;
         if (hasNBTType(stack, slot)) return true;
-        if (slot == 12 && stack.is(ModTags.Items.CHARMS) && !stack.is(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED)) return true;
+        if (slot == 12 && stack.is(ModTags.Items.CHARMS) && !isBlacklistedWildcard(stack)) return true;
         if (slotTypes.containsKey(slot)) return slotTypes.get(slot).test(stack);
         return false;
     }
     
+    public static boolean isBlacklistedWildcard(ItemStack stack) {
+        return stack.is(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED) || stack.hasTag() && stack.getTag().getBoolean(WILDCARD_BLACKLISTED);
+    }
+    
     private boolean hasNBTType(ItemStack stack, int slot) {
         if (!stack.hasTag()) return false;
-        if (slot == 12) return true;
+        if (slot == 12 && !isBlacklistedWildcard(stack)) return true;
         CharmType type = slotTypes.get(slot);
+        if (type == null) return false;
         ListTag listTag = stack.getTag().getList(CharmType.CHARM_KEY, 10);
         for (Tag tag : listTag) {
             CompoundTag compound = (CompoundTag) tag;

@@ -47,7 +47,6 @@
     "eternalartifacts:alloy_smelter",
     "eternalartifacts:solidifier",
     "eternalartifacts:compressor",
-    "eternalartifacts:advanced_crafter",
     "eternalartifacts:fluid_mixer",
     "eternalartifacts:disenchanter",
     "eternalartifacts:mob_harvester",
@@ -56,6 +55,7 @@
     "eternalartifacts:electric_furnace",
     "eternalartifacts:autocutter",
     "eternalartifacts:oil_refinery",
+    "eternalartifacts:advanced_crafter",
     "eternalartifacts:induction_furnace",
     "eternalartifacts:block_placer",
     "eternalartifacts:block_breaker"

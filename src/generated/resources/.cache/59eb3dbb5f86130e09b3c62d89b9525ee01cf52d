@@ -1,4 +1,4 @@
-// 1.20.4	2025-06-15T21:49:52.2549294	Loot Tables
+// 1.20.4	2025-06-21T11:02:36.7022573	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 5cdbfe04b08c9f529ff4b380190c0481143a16b5 data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 d160926d6a1b8e69201694d63bad7921e45e7454 data/eternalartifacts/loot_tables/blocks/aluminum_ore.json
@@ -67,6 +67,7 @@ f09629946be7ec7740eee479386966dbddd12253 data/eternalartifacts/loot_tables/block
 1ba1f83c2870184e224cab8ad36c2f20ea8e29b9 data/eternalartifacts/loot_tables/blocks/ice_brick_wall.json
 809d0d95bfdef6b99fc19e1d04286e7729edd8fe data/eternalartifacts/loot_tables/blocks/induction_furnace.json
 022c8cbce3201c1d70233a6925ae242f761a7862 data/eternalartifacts/loot_tables/blocks/industrial_macerator.json
+a810febb586f4934841b95cd042469b3ade26773 data/eternalartifacts/loot_tables/blocks/industrial_sponge.json
 708a2310dba2ae5c82c0edb666d4e824ccd1fdb4 data/eternalartifacts/loot_tables/blocks/iron_drum.json
 a709af7db8afbcad6df2b635fb76c314cd37f548 data/eternalartifacts/loot_tables/blocks/iron_oreberry.json
 f8fae0081f4b1e76be661983cf1e472e47ec89c4 data/eternalartifacts/loot_tables/blocks/jar.json
@@ -143,6 +144,7 @@ a7b634593f2560ea5375f29a1d26927a386925e7 data/eternalartifacts/loot_tables/block
 97cc5f560077b2f5d3ac7e2a9d6a23c6852fd20f data/eternalartifacts/loot_tables/blocks/trash_can.json
 2b0c80370322d176412e5576155075e7e626bdd6 data/eternalartifacts/loot_tables/blocks/very_sandy_dark_prismarine.json
 4dc8e7bc72dfbc99f2e1e1703cfd2ef673108379 data/eternalartifacts/loot_tables/blocks/very_sandy_prismarine.json
+0c2b0cec486fc36ccd2132f4fc852d84f160ba4d data/eternalartifacts/loot_tables/blocks/wet_industrial_sponge.json
 002196bc27b28ffb6eecedf4e4cfe7e2af787b02 data/eternalartifacts/loot_tables/chests/plains_house_desk.json
 52339dfd354046da238ef2175a066c103aa06248 data/eternalartifacts/loot_tables/chests/plains_house_entrance.json
 b5d20a7660b86bc0f2c192ba1dd47bd3c3f0c2b3 data/eternalartifacts/loot_tables/chests/survivalists_igloo.json

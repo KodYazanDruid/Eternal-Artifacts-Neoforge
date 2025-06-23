@@ -206,6 +206,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.MACHINE_FLUID_FILTER.get());
         basicItem(ModItems.COPPER_DUST.get());
         basicItem(ModItems.AMETHYST_ARROW.get());
+        basicItem(ModItems.FINAL_CUT.get());
+        basicItem(ModItems.ODDLY_SHAPED_OPAL.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

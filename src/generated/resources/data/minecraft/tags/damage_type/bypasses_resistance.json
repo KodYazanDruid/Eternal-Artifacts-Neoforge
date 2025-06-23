@@ -1,0 +1,8 @@
+{
+  "values": [
+    {
+      "id": "eternalartifacts:execute",
+      "required": false
+    }
+  ]
+}

@@ -210,6 +210,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MACHINE_FLUID_FILTER.get(), "Machine Fluid Filter");
                 add(ModItems.COPPER_DUST.get(), "Copper Dust");
                 add(ModItems.AMETHYST_ARROW.get(), "Amethyst Arrow");
+                add(ModItems.FINAL_CUT.get(), "Final Cut");
+                add(ModItems.ODDLY_SHAPED_OPAL.get(), "Oddly Shaped Opal");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -332,6 +334,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.STEEL_FLUID_PIPE.get(), "Steel Fluid Pipe");
                 add(ModBlocks.TIN_CABLE.get(), "Tin Cable");
                 add(ModBlocks.COVERED_TIN_CABLE.get(), "Covered Tin Cable");
+                add(ModBlocks.INDUSTRIAL_SPONGE.get(), "Industrial Sponge");
+                add(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "Wet Industrial Sponge");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -492,6 +496,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("pipe_filter_nbt_tolerant_swap"), "Click to swap to ignore NBT");
                 add("gui.eternalartifacts.pipe_filter.tags_for", "Tags for %s:");
                 add(ModConstants.GUI.withSuffix("autocutter.reset_index"), "Reset Selection");
+                add(ModConstants.TOOLTIP.withSuffix("wildcard_blacklisted"), "This item is blacklisted in Wildcard Charm slot.");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -706,6 +711,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MACHINE_FLUID_FILTER.get(), "Makine Sıvı Filtresi");
                 add(ModItems.COPPER_DUST.get(), "Bakır Tozu");
                 add(ModItems.AMETHYST_ARROW.get(), "Ametist Ok");
+                add(ModItems.FINAL_CUT.get(), "Son Darbe");
+                add(ModItems.ODDLY_SHAPED_OPAL.get(), "Tuhaf Şekilli Opal");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -872,6 +879,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.AUTOCUTTER.getBlockTranslationKey(), "Otomatik Kesici");
                 add(ModBlocks.TIN_CABLE.get(), "Kalay Kablo");
                 add(ModBlocks.COVERED_TIN_CABLE.get(), "İzole Kalay Kablo");
+                add(ModBlocks.INDUSTRIAL_SPONGE.get(), "Endüstriyel Sünger");
+                add(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "Islak Endüstriyel Sünger");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1060,6 +1069,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("pipe_filter_nbt_tolerant_swap"), "NBT'yi yok saymak için tıkla");
                 add("gui.eternalartifacts.pipe_filter.tags_for", "%s için etiketler:");
                 add(ModConstants.GUI.withSuffix("autocutter.reset_index"), "Seçimi sıfırla");
+                add(ModConstants.TOOLTIP.withSuffix("wildcard_blacklisted"), "Bu eşya, Joker Tılsım slotunda kara listede.");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

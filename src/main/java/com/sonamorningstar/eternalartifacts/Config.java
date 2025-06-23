@@ -5,6 +5,7 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 public class Config {
     private static final ModConfigSpec.Builder COMMON = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder CLIENT = new ModConfigSpec.Builder();
+    private static final ModConfigSpec.Builder SERVER = new ModConfigSpec.Builder();
 
     static {COMMON.push("Tools");}
     public static final ModConfigSpec.IntValue KNAPSACK_SLOT_IN_ROW =
@@ -33,7 +34,14 @@ public class Config {
                     .define("charms_enabled", true);
     static{COMMON.pop();}
     
+    static{SERVER.push("Artifacts");}
+    public static final ModConfigSpec.DoubleValue FINAL_CUT_EXECUTE_THRESHOLD =
+            SERVER.comment("Percentage of health that the Final Cut artifact will execute at.")
+                    .defineInRange("final_cut_execute_threshold", 0.20D, 0.01D, 1D);
+    static {SERVER.pop();}
+    
     static final ModConfigSpec COMMON_SPEC = COMMON.build();
     static final ModConfigSpec CLIENT_SPEC = CLIENT.build();
+    static final ModConfigSpec SERVER_SPEC = SERVER.build();
 
 }

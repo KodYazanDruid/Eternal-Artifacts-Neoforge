@@ -10,6 +10,8 @@
     "eternalartifacts:moss_emerald_ore",
     "eternalartifacts:moss_coal_ore",
     "eternalartifacts:moss_tin_ore",
-    "eternalartifacts:moss_aluminum_ore"
+    "eternalartifacts:moss_aluminum_ore",
+    "eternalartifacts:industrial_sponge",
+    "eternalartifacts:wet_industrial_sponge"
   ]
 }

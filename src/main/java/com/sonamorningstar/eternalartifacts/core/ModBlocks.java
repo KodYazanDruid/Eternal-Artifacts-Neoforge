@@ -230,6 +230,12 @@ public class ModBlocks {
     public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron", PlasticCauldronBlock::new);
     public static final DeferredBlock<Block> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
             ()-> new BluePlasticCauldronBlock(BlockBehaviour.Properties.ofFullCopy(CAULDRON)));
+    public static final DeferredBlock<Block> INDUSTRIAL_SPONGE = registerWithItem("industrial_sponge", () ->
+        new IndustrialSponge(BlockBehaviour.Properties.ofFullCopy(Blocks.SPONGE).mapColor(MapColor.COLOR_LIGHT_GREEN))
+    );
+    public static final DeferredBlock<Block> WET_INDUSTRIAL_SPONGE = registerWithItem("wet_industrial_sponge", () ->
+        new WetIndustrialSponge(BlockBehaviour.Properties.ofFullCopy(Blocks.WET_SPONGE).mapColor(MapColor.COLOR_LIGHT_GREEN))
+    );
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot", GardeningPotBlock::new);
     public static final DeferredBlock<JarBlock> JAR = registerNoItem("jar",

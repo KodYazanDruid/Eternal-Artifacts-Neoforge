@@ -22,6 +22,7 @@ public class ModScreens {
         event.register(ModMachines.BLOCK_BREAKER.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.BLOCK_PLACER.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.AUTOCUTTER.getMenu(), AutoCutterScreen::new);
+        event.register(ModMachines.ADVANCED_CRAFTER.getMenu(), AdvancedCrafterScreen::new);
 
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);

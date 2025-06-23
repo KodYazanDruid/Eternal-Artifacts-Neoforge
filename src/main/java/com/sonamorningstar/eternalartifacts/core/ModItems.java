@@ -161,7 +161,8 @@ public class ModItems {
     public static final DeferredItem<Item> GALE_SASH = registerStacksToOne("gale_sash");
     public static final DeferredItem<Item> MAGIC_QUIVER = registerStacksToOne("magic_quiver", MagicQuiverItem::new);
     public static final DeferredItem<Item> IRON_LEATHER_GLOVES = registerStacksToOne("iron_leather_gloves");
-    public static final DeferredItem<Item> AMETHYST_ARROW = register("amethyst_arrow", AmethystArrowItem::new);
+    public static final DeferredItem<Item> FINAL_CUT = registerStacksToOne("final_cut");
+    public static final DeferredItem<Item> ODDLY_SHAPED_OPAL = registerStacksToOne("oddly_shaped_opal");
     //endregion
     //region Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -241,6 +242,7 @@ public class ModItems {
     public static final DeferredItem<Item> PORTABLE_FURNACE = registerStacksToOne("portable_furnace", PortableFurnaceItem::new);
     public static final DeferredItem<Item> DASHING_SWORD = registerStacksToOne("dashing_sword", p -> new DashingSwordItem(Tiers.IRON, p));
     public static final DeferredItem<Item> MAGNET = registerStacksToOne("magnet", p -> new MagnetItem(p.rarity(Rarity.UNCOMMON)));
+    public static final DeferredItem<Item> AMETHYST_ARROW = register("amethyst_arrow", AmethystArrowItem::new);
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

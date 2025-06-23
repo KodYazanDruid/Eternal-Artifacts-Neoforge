@@ -27,7 +27,12 @@ public class ModDataGeneration {
         PackOutput packOutput = event.getGenerator().getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
         CompletableFuture<TagsProvider.TagLookup<Block>> blockTagProvider = dataGenerator.getVanillaPack(true).addProvider(factory -> new BlockTagsProvider(packOutput, lookupProvider, existingFileHelper)).contentsGetter();
-
+        
+        /*DatapackBuiltinEntriesProvider datapackProv = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider);
+        dataGenerator.addProvider(event.includeServer(), datapackProv);*/
+        //CompletableFuture<HolderLookup.Provider> datapackLookupProv = datapackProv.getRegistryProvider();
+        dataGenerator.addProvider(true, new DatapackBuiltinEntriesProvider(packOutput, lookupProvider));
+        
         dataGenerator.addProvider(event.includeClient(), new ModelProvider(packOutput));
         dataGenerator.addProvider(event.includeClient(), new BlockStateProvider(packOutput, existingFileHelper));
         dataGenerator.addProvider(event.includeClient(), new ItemModelProvider(packOutput, existingFileHelper));
@@ -46,9 +51,6 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeServer(), new DataMapProvider(packOutput, lookupProvider));
         dataGenerator.addProvider(event.includeServer(), new PaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new SpellTagsProvider(packOutput, lookupProvider, existingFileHelper));
-
-        DatapackBuiltinEntriesProvider datapackProv = new DatapackBuiltinEntriesProvider(packOutput, lookupProvider);
-        CompletableFuture<HolderLookup.Provider> datapackLookupProv = datapackProv.getRegistryProvider();
-        dataGenerator.addProvider(event.includeServer(), datapackProv);
+        dataGenerator.addProvider(event.includeServer(), new DamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
     }
 }

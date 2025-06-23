@@ -45,6 +45,7 @@ public class EternalArtifacts {
         NeoForgeMod.enableMilkFluid();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, Config.CLIENT_SPEC);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModSpells.SPELLS.register(modEventBus);
         ModMachines.MACHINES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);

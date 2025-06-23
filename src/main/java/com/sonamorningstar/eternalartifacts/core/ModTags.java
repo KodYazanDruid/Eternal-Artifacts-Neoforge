@@ -142,6 +142,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CUTLASS_BEHEADING_BLACKLISTED = modTag("cutlass_beheading_blacklisted");
         public static final TagKey<EntityType<?>> CUTLASS_SPAWN_EGG_BLACKLISTED = modTag("cutlass_spawn_egg_blacklisted");
         public static final TagKey<EntityType<?>> MORPH_BLACKLISTED = modTag("morph_blacklisted");
+        public static final TagKey<EntityType<?>> EXECUTE_BLACKLISTED = modTag("execute_blacklisted");
 
         private static TagKey<EntityType<?>> forgeTag(String name) { return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name)); }
         private static TagKey<EntityType<?>> modTag(String name) { return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MODID, name)); }
@@ -153,5 +154,8 @@ public class ModTags {
         private static TagKey<Biome> forgeTag(String name) { return TagKey.create(Registries.BIOME, new ResourceLocation("forge", name)); }
         private static TagKey<Biome> modTag(String name) { return TagKey.create(Registries.BIOME, new ResourceLocation(MODID, name)); }
 
+    }
+    
+    public static class DamageTypes {
     }
 }

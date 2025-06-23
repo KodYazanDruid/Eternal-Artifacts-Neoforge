@@ -32,7 +32,7 @@ public class SimpleCraftingContainer implements CraftingContainer {
     public List<ItemStack> getItems() {
         List<ItemStack> items = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            if (outputSlots.contains(i) || inventory.getSlots() > 9) continue;
+            if (outputSlots.contains(i) || inventory.getSlots() <= i) continue;
             items.add(inventory.getStackInSlot(i));
         }
         return items;

@@ -12,6 +12,7 @@ public class ModSounds {
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, MODID);
 
     public static final DeferredHolder<SoundEvent, SoundEvent> HOLY_DAGGER_ACTIVATE = registerSoundEvent("holy_dagger_activate");
+    public static final DeferredHolder<SoundEvent, SoundEvent> FINAL_CUT_EFFECT = registerSoundEvent("final_cut_effect");
 
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCK_AMBIENT = registerSoundEvent("duck_ambient");
     public static final DeferredHolder<SoundEvent, SoundEvent> DUCK_STEP = registerSoundEvent("duck_step");

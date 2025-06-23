@@ -1,4 +1,4 @@
-// 1.20.4	2025-06-15T08:35:13.3314398	Item Models: eternalartifacts
+// 1.20.4	2025-06-20T22:20:16.6036058	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 bd6a296945978ba6967a53d716114b2b32a6e09b assets/eternalartifacts/models/item/aluminum_dust.json
@@ -92,6 +92,7 @@ cacbc1204e0f048313f4821f660548aa6c1fa736 assets/eternalartifacts/models/item/end
 c2fdc74aea92bb242790af24ba4471dd51ca9817 assets/eternalartifacts/models/item/experience_oreberry.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json
 6458f1561471ece43f5545c14baf41969817f73f assets/eternalartifacts/models/item/feeding_canister.json
+302cbbdb68a9226e1bbc29af0b76158bf4ce0ece assets/eternalartifacts/models/item/final_cut.json
 9b1b466c164aa8f9c2c495d3d6195981378cd460 assets/eternalartifacts/models/item/flour.json
 98db580560adef0538044a44ccd9b7e5b4f12940 assets/eternalartifacts/models/item/fluid_infuser.json
 69903134626f3179b768ddd55348d9aee516a9a1 assets/eternalartifacts/models/item/fluid_mixer.json
@@ -167,6 +168,7 @@ bea5455c78f7bdddff361d2ff226ca115ecf7e61 assets/eternalartifacts/models/item/nap
 39d02e2ae8dcc20063278cab7f10c433f9572980 assets/eternalartifacts/models/item/netherite_hammer.json
 3572115af4bf4b2a573e82456ce70d32d727c8eb assets/eternalartifacts/models/item/netherite_sickle.json
 7ddddf22a43ef44fc8ef1a3c9d03910c9c9b8116 assets/eternalartifacts/models/item/nous_bucket.json
+4a04115119c206a22f31079c5b7f3f5f57123987 assets/eternalartifacts/models/item/oddly_shaped_opal.json
 3274e82f21d9cf891c57dd880ea567ec750c770b assets/eternalartifacts/models/item/orange.json
 41151ffb7627796b4561ed109343eb2856793489 assets/eternalartifacts/models/item/orange_shulker_shell.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/pinky_spawn_egg.json

@@ -12,7 +12,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -265,11 +264,13 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
         tag(ModTags.Items.CHARMS_NECKLACE).add(
             ModItems.HEART_NECKLACE.get(),
-            ModItems.SAGES_TALISMAN.get()
+            ModItems.SAGES_TALISMAN.get(),
+            ModItems.ODDLY_SHAPED_OPAL.get()
         );
         tag(ModTags.Items.CHARMS_HAND).add(
             ModItems.IRON_LEATHER_GLOVES.get(),
-            ModItems.POWER_GAUNTLET.get()
+            ModItems.POWER_GAUNTLET.get(),
+            ModItems.FINAL_CUT.get()
         );
         tag(ModTags.Items.CHARMS_RING).add(
             ModItems.GOLD_RING.get(),
@@ -301,9 +302,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.GALE_SASH.get(),
             ModItems.MAGIC_QUIVER.get()
         );
-        tag(ItemTags.ARROWS).add(
-            ModItems.AMETHYST_ARROW.get()
-        );
         tag(ModTags.Items.CHARMS_CHARM).add(
             ModItems.MAGIC_FEATHER.get(),
             ModItems.PORTABLE_CRAFTER.get(),
@@ -315,8 +313,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             Items.TOTEM_OF_UNDYING,
             ModItems.MAGNET.get()
         );
-        /*tag(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED).add(
-        );*/
+        tag(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED).add(
+            Items.TOTEM_OF_UNDYING
+        );
         tag(ModTags.Items.CHARMS).addTags(
             ModTags.Items.CHARMS_HEAD,
             ModTags.Items.CHARMS_NECKLACE,
@@ -328,7 +327,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModTags.Items.CHARM_FEET,
             ModTags.Items.CHARMS_CHARM
         );
-
+        tag(ItemTags.ARROWS).add(
+            ModItems.AMETHYST_ARROW.get()
+        );
         tag(ModTags.Items.SHULKER_SHELL).add(
                 ModItems.WHITE_SHULKER_SHELL.get(),
                 ModItems.ORANGE_SHULKER_SHELL.get(),
@@ -356,7 +357,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Tags.Items.SANDSTONE,
                 Tags.Items.COBBLESTONE,
                 Tags.Items.COBBLESTONE_MOSSY,
-                Tags.Items.COBBLESTONE_DEEPSLATE
+                Tags.Items.COBBLESTONE_DEEPSLATE,
+                ItemTags.PLANKS
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),
@@ -378,6 +380,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModBlocks.ROSY_FROGLIGHT.asItem(),
                 ModBlocks.SNOW_BRICKS.asItem(),
                 ModBlocks.OBSIDIAN_BRICKS.asItem(),
+                Blocks.BAMBOO_MOSAIC.asItem(),
                 //Glazed terracottas
                 Blocks.WHITE_GLAZED_TERRACOTTA.asItem(),
                 Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.asItem(),

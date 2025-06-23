@@ -20,6 +20,12 @@
     ],
     "subtitle": "eternalartifacts.subtitle.duck_step"
   },
+  "final_cut_effect": {
+    "sounds": [
+      "eternalartifacts:final_cut_effect"
+    ],
+    "subtitle": "eternalartifacts.subtitle.final_cut_effect"
+  },
   "holy_dagger_activate": {
     "sounds": [
       "eternalartifacts:holy_dagger_activate"
