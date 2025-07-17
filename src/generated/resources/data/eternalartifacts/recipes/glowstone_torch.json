@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "forge:dusts/glowstone"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "G",
+    "S"
+  ],
+  "result": {
+    "count": 6,
+    "item": "eternalartifacts:glowstone_torch"
+  }
+}
