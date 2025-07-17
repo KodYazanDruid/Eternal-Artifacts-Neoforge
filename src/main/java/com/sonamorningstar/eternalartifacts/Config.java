@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
-    private static final ModConfigSpec.Builder COMMON = new ModConfigSpec.Builder();
+	private static final ModConfigSpec.Builder COMMON = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder CLIENT = new ModConfigSpec.Builder();
     private static final ModConfigSpec.Builder SERVER = new ModConfigSpec.Builder();
 
@@ -38,6 +38,12 @@ public class Config {
     public static final ModConfigSpec.DoubleValue FINAL_CUT_EXECUTE_THRESHOLD =
             SERVER.comment("Percentage of health that the Final Cut artifact will execute at.")
                     .defineInRange("final_cut_execute_threshold", 0.20D, 0.01D, 1D);
+    public static final ModConfigSpec.DoubleValue MAGIC_BANE_DAMAGE_CONVERT_MULTIPLIER =
+            SERVER.comment("Damage multiplier for the Magic Bane artifact.")
+                    .defineInRange("magic_bane_damage_convert_multiplier", 0.2D, 0.1D, 1.0D);
+    public static final ModConfigSpec.DoubleValue MOONGLASS_PENDANT_HEAL_MULTIPLIER =
+            SERVER.comment("Healing multiplier for the Moonglass Pendant artifact.")
+                    .defineInRange("moonglass_pendant_heal_multiplier", 0.2D, 0.1D, 1.0D);
     static {SERVER.pop();}
     
     static final ModConfigSpec COMMON_SPEC = COMMON.build();

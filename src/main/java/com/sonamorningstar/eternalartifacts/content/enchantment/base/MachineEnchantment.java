@@ -5,7 +5,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class MachineEnchantment extends Enchantment {
-	protected MachineEnchantment(Rarity rarity) {
+	public MachineEnchantment(Rarity rarity) {
 		super(rarity, ModEnchantments.ModEnchantmentCategory.EMPTY, new EquipmentSlot[]{EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND});
 	}
 	

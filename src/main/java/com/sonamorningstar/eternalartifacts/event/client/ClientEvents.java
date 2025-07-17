@@ -15,16 +15,14 @@ import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
-import com.sonamorningstar.eternalartifacts.content.block.entity.BlockPlacer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Disenchanter;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Smithinator;
+import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -191,7 +189,7 @@ public class ClientEvents {
             if (CharmStorage.isBlacklistedWildcard(stack)) {
                 MutableComponent blacklisted = ModConstants.TOOLTIP.withSuffixTranslatable("wildcard_blacklisted")
                     .withStyle(ChatFormatting.GRAY);
-                tooltips.add(tooltips.size() - 1, Either.left(blacklisted));
+                tooltips.add(Either.left(blacklisted));
             }
         }
         
@@ -222,15 +220,15 @@ public class ClientEvents {
                 }
             }
             combined.append(charmTypes);
-            tooltips.add(tooltips.size() - 1, Either.left(combined));
+            tooltips.add(Either.left(combined));
         }
     }
     
     private static void addModifierTooltip(List<Either<FormattedText, TooltipComponent>> tooltips, CharmType type, Multimap<Attribute, AttributeModifier> modifierMap) {
         MutableComponent attributeText = ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName())
             .withStyle(ChatFormatting.GRAY);
-        tooltips.add(tooltips.size() - 1, Either.left(CommonComponents.EMPTY));
-        tooltips.add(tooltips.size() - 1, Either.left(attributeText));
+        tooltips.add(Either.left(CommonComponents.EMPTY));
+        tooltips.add(Either.left(attributeText));
         for (Map.Entry<Attribute, AttributeModifier> entry : modifierMap.entries()) {
             Attribute attribute = entry.getKey();
             AttributeModifier modifier = entry.getValue();
@@ -246,7 +244,7 @@ public class ClientEvents {
                     ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
                     Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.BLUE);
             }
-            if (formattedAmount != 0) tooltips.add(tooltips.size() - 1, Either.left(modifierText));
+            if (formattedAmount != 0) tooltips.add(Either.left(modifierText));
         }
     }
 
@@ -323,6 +321,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void screenRenderEvent(ScreenEvent.Render.Post event) {
         Screen screen = event.getScreen();
+        GuiGraphics gui = event.getGuiGraphics();
         if (screen instanceof AbstractContainerScreen<?> acs &&
                 !(acs instanceof CreativeModeInventoryScreen) &&
                 Config.CHARMS_ENABLED.getAsBoolean()) {
@@ -330,6 +329,19 @@ public class ClientEvents {
             int top = acs.getGuiTop();
             TabHandler instance = TabHandler.INSTANCE;
             if (instance != null) instance.renderTabs(event.getGuiGraphics(), left, top);
+        }
+        if (screen instanceof GenericSidedMachineScreen gsms) {
+            var owner = gsms.getMachine();
+            if (owner instanceof DimensionalAnchor anchor) {
+                int x = gsms.getGuiLeft();
+                int y = gsms.getGuiTop();
+                GuiDrawer.drawFramedBackground(gui, x + 37, y + 18, 100, 50, 1, 0xff000000, 0xff404040, 0xffa0a0a0);
+                gui.drawString(screen.getMinecraft().font,
+                    Component.translatable(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"),
+                        anchor.getForcedChunks().size()),
+                    x + 40, y + 20, 0xfff0f0f0, false
+                );
+            }
         }
     }
     

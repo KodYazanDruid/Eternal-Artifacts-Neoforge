@@ -42,4 +42,8 @@ public class ModDamageSources {
 	public DamageSource execute(LivingEntity entity) {
 		return this.source(ModDamageTypes.EXECUTE.get(), entity);
 	}
+	
+	public DamageSource magicBypassIFrame(LivingEntity entity) {
+		return this.source(ModDamageTypes.MAGIC_BYPASS_IFRAME.get(), entity);
+	}
 }

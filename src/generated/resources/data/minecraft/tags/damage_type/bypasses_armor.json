@@ -3,6 +3,10 @@
     {
       "id": "eternalartifacts:execute",
       "required": false
+    },
+    {
+      "id": "eternalartifacts:magic_bypass_iframe",
+      "required": false
     }
   ]
 }

@@ -6,6 +6,7 @@
     "minecraft:elytra",
     "eternalartifacts:portable_battery",
     "eternalartifacts:portable_furnace",
+    "eternalartifacts:raincoat",
     {
       "id": "mekanism:hdpe_elytra",
       "required": false

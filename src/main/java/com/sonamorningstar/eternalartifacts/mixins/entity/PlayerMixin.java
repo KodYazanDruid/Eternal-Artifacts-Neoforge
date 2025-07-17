@@ -12,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.GameRules;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -53,6 +54,7 @@ public class PlayerMixin {
     @Inject(method = "dropEquipment", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;dropAll()V"))
     private void dropEquipment(CallbackInfo ci) {
         Player player = (Player) (Object) this;
+        if (player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) return;
         var charms = CharmStorage.get(player);
         for (int i = 0; i < charms.getSlots(); i++) {
             var charm = charms.getStackInSlot(i);

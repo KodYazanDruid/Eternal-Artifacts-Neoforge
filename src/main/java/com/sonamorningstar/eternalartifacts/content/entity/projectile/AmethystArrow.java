@@ -8,6 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 
 public class AmethystArrow extends AbstractArrow {
 	public AmethystArrow(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
@@ -31,5 +32,11 @@ public class AmethystArrow extends AbstractArrow {
 		if (this.level().isClientSide && !this.inGround) {
 			this.level().addParticle(ParticleTypes.INSTANT_EFFECT, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
 		}
+	}
+	
+	@Override
+	protected void onHit(HitResult pResult) {
+		super.onHit(pResult);
+		
 	}
 }

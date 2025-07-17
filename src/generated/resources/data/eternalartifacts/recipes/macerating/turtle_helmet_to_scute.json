@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:turtle_helmet"
+  },
+  "output": {
+    "Count": 3,
+    "id": "minecraft:scute"
+  }
+}

@@ -163,6 +163,10 @@ public class ModItems {
     public static final DeferredItem<Item> IRON_LEATHER_GLOVES = registerStacksToOne("iron_leather_gloves");
     public static final DeferredItem<Item> FINAL_CUT = registerStacksToOne("final_cut");
     public static final DeferredItem<Item> ODDLY_SHAPED_OPAL = registerStacksToOne("oddly_shaped_opal");
+    public static final DeferredItem<Item> RAINCOAT = registerStacksToOne("raincoat");
+    public static final DeferredItem<Item> MAGIC_BANE = registerStacksToOne("magic_bane");
+    public static final DeferredItem<Item> DEATH_CAP = registerStacksToOne("death_cap");
+    public static final DeferredItem<Item> MOONGLASS_PENDANT = registerStacksToOne("moonglass_pendant");
     //endregion
     //region Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -249,6 +253,12 @@ public class ModItems {
     public static final DeferredItem<RetexturedBlockItem> FANCY_CHEST = register("fancy_chest", ()-> new FancyChestBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
     public static final DeferredItem<JarBlockItem> JAR = register("jar", JarBlockItem::new);
     public static final DeferredItem<TesseractItem> TESSERACT = register("tesseract", TesseractItem::new);
+    public static final DeferredItem<StandingAndWallBlockItem> GLOWSTONE_TORCH = register("glowstone_torch",
+            () -> new StandingAndWallBlockItem(ModBlocks.GLOWSTONE_TORCH.get(), ModBlocks.GLOWSTONE_WALL_TORCH.get(),
+                new Item.Properties(), Direction.DOWN));
+    public static final DeferredItem<StandingAndWallBlockItem> GLOWTORCH = register("glowtorch",
+            () -> new StandingAndWallBlockItem(ModBlocks.GLOWTORCH.get(), ModBlocks.WALL_GLOWTORCH.get(),
+                new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));

@@ -9,6 +9,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +23,8 @@ public class MachineEnchants {
 		ModEnchantments.CELERITY.get(),
 		ModEnchantments.SOULBOUND.get(),
 		ModEnchantments.EVERLASTING.get(),
-		ModEnchantments.VOLUME.get()
+		ModEnchantments.VOLUME.get(),
+		ModEnchantments.WORLDBIND.get()
 	);
 	
 	private static final Set<Enchantment> nonProgressMachineEnchants = Set.of(
@@ -31,7 +33,8 @@ public class MachineEnchants {
 		Enchantments.FIRE_PROTECTION,
 		ModEnchantments.SOULBOUND.get(),
 		ModEnchantments.EVERLASTING.get(),
-		ModEnchantments.VOLUME.get()
+		ModEnchantments.VOLUME.get(),
+		ModEnchantments.WORLDBIND.get()
 	);
 	
 	public static void bootstrap() {
@@ -62,17 +65,13 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), nonProgressMachineEnchants);
 		
-		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), Set.of(
-			Enchantments.UNBREAKING,
-			Enchantments.BLAST_PROTECTION,
-			Enchantments.FIRE_PROTECTION,
-			ModEnchantments.CELERITY.get(),
-			ModEnchantments.SOULBOUND.get(),
-			ModEnchantments.EVERLASTING.get(),
-			ModEnchantments.VOLUME.get()
-		));
+		var inductionFurnaceEnchants = new HashSet<>(nonProgressMachineEnchants);
+		inductionFurnaceEnchants.add(ModEnchantments.CELERITY.get());
+		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), inductionFurnaceEnchants);
 		
-		
+		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
+		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());
+		enchantMap.put(ModMachines.DIMENSIONAL_ANCHOR.getBlockEntity(), dimensionalAnchorEnchants);
 		
 	}
 }

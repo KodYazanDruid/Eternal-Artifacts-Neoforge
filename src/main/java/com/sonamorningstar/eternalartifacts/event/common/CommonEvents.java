@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
+import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
@@ -49,6 +50,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -63,7 +65,6 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -146,15 +147,17 @@ public class CommonEvents {
 
     @SubscribeEvent
     public static void livingHurtEvent(LivingHurtEvent event) {
-        LivingEntity living = event.getEntity();
+        LivingEntity hurtEntity = event.getEntity();
         DamageSource source = event.getSource();
+        Entity attacker = source.getEntity();
+        Level level = hurtEntity.level();
         float damage = event.getAmount();
-        float health = living.getHealth();
-        float absorption = living.getAbsorptionAmount();
-        float maxHealth = living.getMaxHealth();
+        float health = hurtEntity.getHealth();
+        float absorption = hurtEntity.getAbsorptionAmount();
+        float maxHealth = hurtEntity.getMaxHealth();
         float healthPercent = health / maxHealth;
         float totalHealthPercent = (health + absorption) / maxHealth;
-        if(living instanceof Player player) {
+        if(hurtEntity instanceof Player player) {
             ItemCooldowns cooldowns = player.getCooldowns();
             cooldowns.addCooldown(ModItems.MEDKIT.get(), 160);
             
@@ -186,6 +189,30 @@ public class CommonEvents {
             
         }
         
+        if (attacker instanceof LivingEntity lAttacker && !hurtEntity.isDeadOrDying()) {
+            for (int i = 0; i < CharmStorage.get(lAttacker).getSlots(); i++) {
+                ItemStack charm = CharmStorage.get(lAttacker).getStackInSlot(i);
+                if (charm.is(ModItems.MAGIC_BANE) &&
+                    !source.is(Tags.DamageTypes.IS_MAGIC) &&
+                    !source.is(Tags.DamageTypes.IS_TECHNICAL) &&
+                    !source.is(ModDamageTypes.EXECUTE.get())) {
+                    DamageSource magicDamage = ModDamageSources.INSTANCES.get(attacker.level()).magicBypassIFrame(lAttacker);
+                    float rawDamage = damage * Config.MAGIC_BANE_DAMAGE_CONVERT_MULTIPLIER.get().floatValue();
+                    float spellDamage = (float) lAttacker.getAttributeValue(ModAttributes.SPELL_POWER);
+                    float amplified = rawDamage * spellDamage / 100.0F;
+                    hurtEntity.hurt(magicDamage, amplified);
+                    if (level instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.ENCHANT,
+                            hurtEntity.getX(), hurtEntity.getY() + hurtEntity.getBbHeight() / 2.0F, hurtEntity.getZ(),
+                            50, 0.5D, 0.5D, 0.5D, 0.1D);
+                    }
+                }
+                if (charm.is(ModItems.MOONGLASS_PENDANT) && source.is(Tags.DamageTypes.IS_MAGIC)) {
+                    float heal = damage * Config.MOONGLASS_PENDANT_HEAL_MULTIPLIER.get().floatValue();
+                    lAttacker.heal(heal);
+                }
+            }
+        }
     }
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -196,6 +223,7 @@ public class CommonEvents {
         float remainingHealth = target.getHealth() - event.getAmount();
         
         if (attacker instanceof LivingEntity leAttacker &&
+            !target.isDeadOrDying() &&
             !target.getType().is(ModTags.Entities.EXECUTE_BLACKLISTED) &&
             !source.is(ModDamageTypes.EXECUTE.get())) {
             
@@ -212,11 +240,10 @@ public class CommonEvents {
                     if (level instanceof ServerLevel tsLevel) {
                         tsLevel.sendParticles(ParticleTypes.CRIT,
                             target.getX(), pPosY, target.getZ(),
-                            50, 0.5D, 0.5D, 0.5D, 0.01D);
+                            50, 0.5D, 0.5D, 0.5D, 0.1D);
                     }
                 }
             }
-            
         }
     }
 
@@ -247,6 +274,21 @@ public class CommonEvents {
             event.setDamageMultiplier(0.5F);
         }
     }
+    
+    //FIXME
+    @SubscribeEvent
+    public static void effectAddedEvent(MobEffectEvent.Added event) {
+        MobEffectInstance effect = event.getEffectInstance();
+        LivingEntity entity = event.getEntity();
+        if (effect != null && effect.getEffect().getCategory() == MobEffectCategory.HARMFUL &&
+                !effect.getEffect().isInstantenous() && entity instanceof Player player &&
+                !player.getCooldowns().isOnCooldown(ModItems.RAINCOAT.get()) &&
+                !CharmManager.findCharm(entity, ModItems.RAINCOAT.get()).isEmpty()) {
+            entity.removeEffect(effect.getEffect());
+            player.getCooldowns().addCooldown(ModItems.RAINCOAT.get(), 300);
+        }
+    }
+    
     @SubscribeEvent
     public static void livingTickEvent(LivingEvent.LivingTickEvent event) {
         LivingEntity living = event.getEntity();
@@ -325,6 +367,14 @@ public class CommonEvents {
             }
         }
     }
+    
+    @SubscribeEvent
+    public static void onLevelTickPre(TickEvent.LevelTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            if (event.level.isClientSide()) return;
+            ForceLoadManager.onServerWorldTick(event.level.getServer());
+        }
+    }
 
     @SubscribeEvent
     public static void serverTick(TickEvent.ServerTickEvent event) {
@@ -371,6 +421,11 @@ public class CommonEvents {
                 for (int i = 0; i < oldInventory.getContainerSize(); i++) {
                     ItemStack stack = oldInventory.getItem(i);
                     if (SoulboundEnchantment.has(stack)) newInventory.setItem(i, oldInventory.getItem(i));
+                }
+            } else {
+                for (int i = 0; i < oldCharms.getSlots(); i++) {
+                    ItemStack oldStack = oldCharms.getStackInSlot(i);
+                    newCharms.setStackInSlot(i, oldStack.copyAndClear());
                 }
             }
         }

@@ -254,6 +254,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             Items.CARVED_PUMPKIN,
             Items.OBSERVER,
             Items.PIGLIN_HEAD,
+            ModItems.DEATH_CAP.get(),
             ModItems.SOLAR_PANEL_HELMET.get()
         );
         tag(ModTags.Items.CHARMS_HEAD).addTags(
@@ -265,7 +266,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARMS_NECKLACE).add(
             ModItems.HEART_NECKLACE.get(),
             ModItems.SAGES_TALISMAN.get(),
-            ModItems.ODDLY_SHAPED_OPAL.get()
+            ModItems.ODDLY_SHAPED_OPAL.get(),
+            ModItems.MOONGLASS_PENDANT.get()
         );
         tag(ModTags.Items.CHARMS_HAND).add(
             ModItems.IRON_LEATHER_GLOVES.get(),
@@ -289,7 +291,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.ENDER_KNAPSACK.get(),
             Items.ELYTRA,
             ModItems.PORTABLE_BATTERY.get(),
-            ModItems.PORTABLE_FURNACE.get()
+            ModItems.PORTABLE_FURNACE.get(),
+            ModItems.RAINCOAT.get()
         );
         tag(ModTags.Items.CHARM_FEET).add(
             ModItems.COMFY_SHOES.get(),
@@ -311,7 +314,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             Items.RABBIT_FOOT,
             Items.COD,
             Items.TOTEM_OF_UNDYING,
-            ModItems.MAGNET.get()
+            ModItems.MAGNET.get(),
+            ModItems.MAGIC_BANE.get()
         );
         tag(ModTags.Items.CHARMS_WILDCARD_BLACKLISTED).add(
             Items.TOTEM_OF_UNDYING
@@ -349,7 +353,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.BLACK_SHULKER_SHELL.get(),
                 Items.SHULKER_SHELL
         );
-
+        
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
                 ItemTags.STONE_BRICKS,

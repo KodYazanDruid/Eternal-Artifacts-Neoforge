@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToS
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
@@ -112,6 +113,9 @@ public class Channel {
         registrar.play(BlueprintIngredientsToClient.ID,
             BlueprintIngredientsToClient::create,
             handler -> handler.client(BlueprintIngredientsToClient::handle));
+        registrar.play(ForcedChunksToClient.ID,
+            ForcedChunksToClient::create,
+            handler -> handler.client(ForcedChunksToClient::handle));
     }
 
     public static <MSG extends CustomPacketPayload> void sendToServer(MSG message) {
@@ -132,5 +136,9 @@ public class Channel {
     
     public static <MSG extends CustomPacketPayload> void sendToAllTracking(MSG message, Entity tracked) {
         PacketDistributor.TRACKING_ENTITY.with(tracked).send(message);
+    }
+    
+    public static <MSG extends CustomPacketPayload> void sendToChunk(MSG message, LevelChunk chunk) {
+        PacketDistributor.TRACKING_CHUNK.with(chunk).send(message);
     }
 }

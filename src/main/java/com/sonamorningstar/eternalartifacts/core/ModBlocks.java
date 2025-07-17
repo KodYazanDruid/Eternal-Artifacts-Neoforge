@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -226,6 +227,59 @@ public class ModBlocks {
             ()-> new PinkSlimeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SLIME_BLOCK)));
     public static final DeferredBlock<Block> SUGAR_CHARCOAL_BLOCK = registerWithItem("sugar_charcoal_block",
             ()-> new Block(Blocks.COAL_BLOCK.properties()));
+    public static final DeferredBlock<PunjiBlock> PUNJI_STICKS = registerWithItem("punji_sticks",
+        ()-> new PunjiBlock(BlockBehaviour.Properties.of()
+            .mapColor(MapColor.COLOR_GREEN)
+            .sound(SoundType.BAMBOO)
+            .noOcclusion()
+            .strength(0.3F)
+        ));
+    public static final DeferredBlock<UnderwaterTorchBlock> GLOWSTONE_TORCH = registerNoItem("glowstone_torch",
+            ()-> new UnderwaterTorchBlock(ParticleTypes.END_ROD, BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_YELLOW)
+                .sound(SoundType.WOOD)
+                .noCollission()
+                .forceSolidOn()
+                .noOcclusion()
+                .instabreak()
+                .lightLevel(st -> 14)
+                .pushReaction(PushReaction.DESTROY)
+            ));
+    public static final DeferredBlock<UnderwaterWallTorchBlock> GLOWSTONE_WALL_TORCH = registerNoItem("glowstone_wall_torch",
+            ()-> new UnderwaterWallTorchBlock(ParticleTypes.END_ROD, BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_YELLOW)
+                .sound(SoundType.WOOD)
+                .noCollission()
+                .forceSolidOn()
+                .noOcclusion()
+                .instabreak()
+                .lightLevel(st -> 14)
+                .pushReaction(PushReaction.DESTROY)
+                .lootFrom(GLOWSTONE_TORCH)
+            ));
+    public static final DeferredBlock<UnderwaterTorchBlock> GLOWTORCH = registerNoItem("glowtorch",
+            ()-> new UnderwaterTorchBlock(ParticleTypes.GLOW, BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                .sound(SoundType.WOOD)
+                .noCollission()
+                .forceSolidOn()
+                .noOcclusion()
+                .instabreak()
+                .lightLevel(st -> 14)
+                .pushReaction(PushReaction.DESTROY)
+            ));
+    public static final DeferredBlock<UnderwaterWallTorchBlock> WALL_GLOWTORCH = registerNoItem("wall_glowtorch",
+            ()-> new UnderwaterWallTorchBlock(ParticleTypes.GLOW, BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                .sound(SoundType.WOOD)
+                .noCollission()
+                .forceSolidOn()
+                .noOcclusion()
+                .instabreak()
+                .lightLevel(st -> 14)
+                .pushReaction(PushReaction.DESTROY)
+                .lootFrom(GLOWTORCH)
+            ));
 
     public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron", PlasticCauldronBlock::new);
     public static final DeferredBlock<Block> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
@@ -251,13 +305,6 @@ public class ModBlocks {
             ()-> new TallFlowerBlock(ModProperties.Blocks.FLOWER));
     public static final DeferredBlock<FlowerBlock> FOUR_LEAF_CLOVER = registerWithItem("four_leaf_clover",
             ()-> new FlowerBlock(()-> MobEffects.LUCK, 15, ModProperties.Blocks.FLOWER));
-    public static final DeferredBlock<PunjiBlock> PUNJI_STICKS = registerWithItem("punji_sticks",
-            ()-> new PunjiBlock(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_GREEN)
-                    .sound(SoundType.BAMBOO)
-                    .noOcclusion()
-                    .strength(0.3F)
-            ));
     public static final DeferredBlock<FlowerBlock> TIGRIS_FLOWER = registerWithItem("tigris_flower", TigrisFlowerBlock::new, TigrisFlowerItem.class);
     public static final DeferredBlock<FlowerPotBlock> POTTED_TIGRIS = registerNoItem("potted_tigris", ()-> flowerPot(TIGRIS_FLOWER));
 

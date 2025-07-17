@@ -77,6 +77,9 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         pipe(ModBlocks.GOLD_ITEM_PIPE.get());
         pipe(ModBlocks.STEEL_ITEM_PIPE.get());
         
+        createNormalTorch(ModBlocks.GLOWSTONE_TORCH.get(), ModBlocks.GLOWSTONE_WALL_TORCH.get());
+        createNormalTorch(ModBlocks.GLOWTORCH.get(), ModBlocks.WALL_GLOWTORCH.get());
+        
         createSolarPanel();
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
     }

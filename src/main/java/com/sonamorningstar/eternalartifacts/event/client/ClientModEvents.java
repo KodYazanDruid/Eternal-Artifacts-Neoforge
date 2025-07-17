@@ -77,6 +77,7 @@ public class ClientModEvents {
         event.register(EquipmentSlot.HEAD, ModTags.Items.SHULKER_SHELL);
         event.register(EquipmentSlot.HEAD, Items.BUCKET);
         event.register(EquipmentSlot.HEAD, Items.PLAYER_HEAD);
+        event.register(EquipmentSlot.HEAD, ModItems.DEATH_CAP.get());
         CutlassModifier.ENTITY_HEAD_MAP.values().forEach(item -> {
             if(item != Items.DRAGON_HEAD) event.register(EquipmentSlot.HEAD, item);
         });

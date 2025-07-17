@@ -1,4 +1,4 @@
-// 1.20.4	2025-06-20T22:20:16.6036058	Item Models: eternalartifacts
+// 1.20.4	2025-07-16T23:12:06.9724361	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 bd6a296945978ba6967a53d716114b2b32a6e09b assets/eternalartifacts/models/item/aluminum_dust.json
@@ -66,6 +66,7 @@ e73d259d8334731e43892dcbcbe0a85f97b77e3a assets/eternalartifacts/models/item/cop
 80400b71176133f3ed3f567cb7dece816efdee3c assets/eternalartifacts/models/item/crude_oil_bucket.json
 14e8bf782b21d39cebcc98d1166e6a4aed3e2c75 assets/eternalartifacts/models/item/cyan_shulker_shell.json
 66fc6373a33dc16a3f4eabf5d300f34067756c49 assets/eternalartifacts/models/item/dashing_sword.json
+232136f8386dfc7bf0506871addf104e7ee81317 assets/eternalartifacts/models/item/death_cap.json
 53b6a4114337d70d2ac6f215e88f767426aea259 assets/eternalartifacts/models/item/demonic_tablet.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/demon_eye_spawn_egg.json
 a29e139db615c7305823c5e2105692e3c22f090e assets/eternalartifacts/models/item/demon_ingot.json
@@ -74,6 +75,7 @@ f1476b9fa5d5efe7be7e6404b600a07967fec27c assets/eternalartifacts/models/item/dia
 8e19d7289ec1e1f7c90af274388b8a02ca2868ee assets/eternalartifacts/models/item/diamond_hammer.json
 b202fb37c092f64d494eda42dc58c3977f2f7d3e assets/eternalartifacts/models/item/diamond_sickle.json
 dcb7b0fe07a3dddfd11a0092e2e611a3bbd13937 assets/eternalartifacts/models/item/diesel_bucket.json
+d96d677d8fc18353a549a3eea9df74b62a0a4abc assets/eternalartifacts/models/item/dimensional_anchor.json
 bce44b41735bfc5eed9578285ec4e4cbc4b612ea assets/eternalartifacts/models/item/disenchanter.json
 146fbb5915c9c6dc314d80f2b0795bca07f9de4d assets/eternalartifacts/models/item/dough.json
 c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duck_feather.json
@@ -143,6 +145,7 @@ cd12a7f7d39155e3d210593fc5f26e3f7dcb551e assets/eternalartifacts/models/item/mac
 d57e2fab6dd28b1bf8a7d82ce7a97b18d244da62 assets/eternalartifacts/models/item/machine_workbench.json
 e1e5614b7b7738e4dc34e48d69862a79ffacd30f assets/eternalartifacts/models/item/magenta_shulker_shell.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/magical_book_spawn_egg.json
+0f7fc2b77783336ea3799ae8b28b228d4c32ff25 assets/eternalartifacts/models/item/magic_bane.json
 6afd025c41261b45f50dac602bcfc9762a50ff3c assets/eternalartifacts/models/item/magic_feather.json
 33ef83cd3de1a5aef17eba356ebbc8a1f05918fd assets/eternalartifacts/models/item/magic_quiver.json
 5b878d4594472eac08b137320c42d7cfc8fa4bea assets/eternalartifacts/models/item/magnet.json
@@ -161,6 +164,7 @@ eac553947dded131497aea667f841552a8f08c69 assets/eternalartifacts/models/item/mel
 3a9e72bd6fc8e64f0a1832e0db01df0710c34a2d assets/eternalartifacts/models/item/meteorite_tome.json
 eaace51d662918755bae49c8e7537a1d160dd5d6 assets/eternalartifacts/models/item/mob_harvester.json
 25484d3a562b80d50c5b4f6e7b29b2df2eb4808d assets/eternalartifacts/models/item/mob_liquifier.json
+ac90ca50e8e4d3eaa12eb5eeeea03b0e948bc455 assets/eternalartifacts/models/item/moonglass_pendant.json
 bea5455c78f7bdddff361d2ff226ca115ecf7e61 assets/eternalartifacts/models/item/naphtha_bucket.json
 81c9e09f20bcba45f4e17bfcf9ce4d3d4b38b846 assets/eternalartifacts/models/item/natural_spade.json
 347b2371f5271deacad094ca5a95dd03bd9e50bc assets/eternalartifacts/models/item/netherite_cutlass.json
@@ -186,6 +190,7 @@ aa868d2063c85e78c878980788dd3a2aed54245a assets/eternalartifacts/models/item/por
 370bc0bb66731ac9c319d70afc0544cd6d272e04 assets/eternalartifacts/models/item/portable_furnace.json
 796f194ef39fb88e5849ea50f721b2a196a1408a assets/eternalartifacts/models/item/power_gauntlet.json
 83f6f027c0599bd6a9d0af4c0273f0b21a55aff3 assets/eternalartifacts/models/item/purple_shulker_shell.json
+ad710fa05b94214a7361a6abd0b9f22b874c1024 assets/eternalartifacts/models/item/raincoat.json
 ced5a42594bd49c877434fb36ed69c3609e1164e assets/eternalartifacts/models/item/raw_aluminum.json
 848ea09bf19c94247e4badf808687de5fb7fbe66 assets/eternalartifacts/models/item/raw_manganese.json
 9db8300e78202cce2f106f98cbc979bb3ceeed63 assets/eternalartifacts/models/item/raw_marin.json

@@ -222,6 +222,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, Items.NETHER_WART_BLOCK.getDefaultInstance(), new ItemStack(Items.NETHER_WART, 2));
         createMaceratingRecipe(recipeOutput, ModBlocks.CHLOROPHYTE_DEBRIS.toStack(), new ItemStack(ModItems.PLANT_MATTER.get(), 8));
         createMaceratingRecipe(recipeOutput, ModTags.Items.INGOTS_BRONZE, ModItems.BRONZE_DUST.toStack());
+        createMaceratingRecipe(recipeOutput, Items.TURTLE_HELMET.getDefaultInstance(), new ItemStack(Items.SCUTE, 3));
         createOreMaceratingRecipeWithTag(recipeOutput, Map.of(
             ModTags.Items.INGOTS_MANGANESE, 1,
             ModTags.Items.RAW_MATERIALS_MANGANESE, 2,
@@ -622,6 +623,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("A").pattern("S").pattern("F")
                 .define('A', Tags.Items.GEMS_AMETHYST).define('S', Tags.Items.RODS_WOODEN)
                 .define('F', Tags.Items.FEATHERS).unlockedBy("has_item", has(Tags.Items.GEMS_AMETHYST)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GLOWSTONE_TORCH, 6)
+            .pattern("G").pattern("S")
+            .define('G', Tags.Items.DUSTS_GLOWSTONE).define('S', Tags.Items.RODS_WOODEN)
+            .unlockedBy("has_item", has(Tags.Items.DUSTS_GLOWSTONE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GLOWTORCH, 6)
+            .pattern("G").pattern("S")
+            .define('G', Items.GLOW_INK_SAC).define('S', Tags.Items.RODS_WOODEN)
+            .unlockedBy("has_item", has(Items.GLOW_INK_SAC)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

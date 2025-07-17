@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/wall_glowtorch"
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/wall_glowtorch",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/wall_glowtorch",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/wall_glowtorch",
+      "y": 180
+    }
+  }
+}

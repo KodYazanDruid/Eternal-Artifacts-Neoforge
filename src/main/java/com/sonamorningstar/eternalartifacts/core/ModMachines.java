@@ -38,6 +38,7 @@ public class ModMachines {
     public static final GenericMachineHolder<MobHarvester> MOB_HARVESTER = registerGeneric("mob_harvester", MobHarvester::new);
     public static final GenericMachineHolder<MarineFisher> MARINE_FISHER = registerGeneric("marine_fisher", MarineFisher::new);
     public static final GenericMachineHolder<Smithinator> SMITHINATOR = registerGeneric("smithinator", Smithinator::new);
+    public static final GenericMachineHolder<DimensionalAnchor> DIMENSIONAL_ANCHOR = registerGeneric("dimensional_anchor", DimensionalAnchor::new);
     
     public static final MachineDeferredHolder<ElectricFurnaceMenu, ElectricFurnace, BaseMachineBlock<ElectricFurnace>, MachineBlockItem>
         ELECTRIC_FURNACE = MACHINES.register("electric_furnace", ElectricFurnaceMenu::new, ElectricFurnace::new);

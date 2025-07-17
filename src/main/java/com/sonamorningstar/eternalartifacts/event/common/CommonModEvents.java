@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.item.decorator.BlueprintDecorator;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
@@ -38,6 +39,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
@@ -52,6 +54,7 @@ import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -241,8 +244,8 @@ public class CommonModEvents {
         );
         event.register(
             CharmAttributes.Builder.of(ModItems.BAND_OF_ARCANE)
-            .addModifier(ModAttributes.SPELL_POWER.get(), getMod("Band of Arcane Charm Spell Power", 10))
-            .addModifier(ModAttributes.SPELL_COOLDOWN_REDUCTION.get(), getMod("Band of Arcane Charm Cooldown Reduction", 10))
+            .addModifier(ModAttributes.SPELL_POWER.get(), getMod("Band of Arcane Charm Spell Power", 5))
+            .addModifier(ModAttributes.SPELL_COOLDOWN_REDUCTION.get(), getMod("Band of Arcane Charm Cooldown Reduction", 5))
             .addType(CharmType.RING).build()
         );
         event.register(
@@ -255,13 +258,25 @@ public class CommonModEvents {
             .addModifier(Attributes.ARMOR, getMod("Iron Leather Gloves Armor", 3))
             .addType(CharmType.HAND).build()
         );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.DEATH_CAP)
+            .addModifier(ModAttributes.SPELL_POWER.get(), getMod("Death Cap Spell Power", 0.2, AttributeModifier.Operation.MULTIPLY_TOTAL))
+            .addType(CharmType.HEAD).build()
+        );
+        event.register(
+            CharmAttributes.Builder.of(ModItems.MOONGLASS_PENDANT)
+                .addModifier(ModAttributes.SPELL_POWER.get(), getMod("Moonglass Pendant Spell Power", 5))
+                .addModifier(Attributes.ARMOR, getMod("Moonglass Pendant Armor", 1))
+                .addModifier(Attributes.ARMOR_TOUGHNESS, getMod("Moonglass Pendant Armor Toughness", 1))
+                .addType(CharmType.NECKLACE).build()
+        );
     }
 
     private static AttributeModifier getMod(String name, double amount) {
         return getMod(name, amount, AttributeModifier.Operation.ADDITION);
     }
     private static AttributeModifier getMod(String name, double amount, AttributeModifier.Operation operation) {
-        return new AttributeModifier(UUID.randomUUID(), name, amount, operation);
+        return new AttributeModifier(UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8)), name, amount, operation);
     }
 
     @SubscribeEvent
@@ -290,5 +305,10 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void registerItemDecorations(RegisterItemDecorationsEvent event) {
         event.register(ModItems.BLUEPRINT, new BlueprintDecorator());
+    }
+    
+    @SubscribeEvent
+    public static void registerTicketControllers(RegisterTicketControllersEvent event) {
+        event.register(ForceLoadManager.TICKET_CONTROLLER);
     }
 }

@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModSkullType;
@@ -41,6 +42,11 @@ public class FMLClientSetup {
         });
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());
+        
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_TORCH.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_WALL_TORCH.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWTORCH.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.WALL_GLOWTORCH.get(), RenderType.cutout());
         
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.DROWNED, new ResourceLocation("textures/entity/zombie/drowned.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.HUSK, new ResourceLocation("textures/entity/zombie/husk.png"));

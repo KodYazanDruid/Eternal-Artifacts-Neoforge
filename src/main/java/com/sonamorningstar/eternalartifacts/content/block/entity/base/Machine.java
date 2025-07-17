@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
@@ -33,7 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -49,7 +49,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 @Setter
-public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer {
+public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer, ChunkLoader {
     @Nullable
     private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
@@ -83,6 +83,9 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected ProcessCondition processCondition;
     @Getter
     protected Map<Integer, SidedTransferMachine.RedstoneType> redstoneConfigs = new HashMap<>(1);
+    protected final Set<ForceLoadManager.ForcedChunkPos> forcedChunks = new HashSet<>();
+    private int chunkUnloadCooldown = 200;
+    private int chunkUpdateCooldown = 100;
     
     /*@Getter
     protected AABB area = null;*/
@@ -205,6 +208,13 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        
+        chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
+        if (needsUpdate()) {
+            chunkUpdateCooldown = 100;
+            updateForcedChunks();
+        } else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);
+        
         Recipe<Container> recipe = (Recipe<Container>) RecipeCache.getCachedRecipe(this);
         if (recipeType != null && recipe == null) {
             progress = 0;
@@ -227,6 +237,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if(energy != null) tag.put("Energy", energy.serializeNBT());
         if(inventory != null) tag.put("Inventory", inventory.serializeNBT());
         if(tank != null) tag.put("Fluid", tank.serializeNBT());
+        tag.putInt("EnergyPerTick", energyPerTick);
     }
 
     @Override
@@ -237,6 +248,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if(energy != null && tag.contains("Energy") && shouldSerializeEnergy()) energy.deserializeNBT(tag.get("Energy"));
         if(inventory != null && shouldSerializeInventory()) inventory.deserializeNBT(tag.getCompound("Inventory"));
         if(tank != null && shouldSerializeTank()) tank.deserializeNBT(tag.getCompound("Fluid"));
+        energyPerTick = tag.getInt("EnergyPerTick");
     }
 
     @Override
@@ -244,6 +256,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         super.onLoad();
         findRecipe();
         setProcessCondition(new ProcessCondition(this), getCachedRecipe());
+        if (!level.isClientSide()) {
+            addToManager();
+            updateForcedChunks();
+        }
     }
 
     @Override
@@ -284,6 +300,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         super.setRemoved();
         RecipeCache.clearRecipes(this);
         FakePlayerHelper.removeFakePlayer(this);
+        if (!level.isClientSide()) {
+            removeFromManager();
+            updateForcedChunks();
+        }
     }
     
     protected void setRecipeTypeAndContainer(RecipeType<? extends Recipe<? extends Container>> type, Supplier<? extends Container> container) {
@@ -484,4 +504,36 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if (additionalTag.contains("MaxProgress")) maxProgress = additionalTag.getInt("MaxProgress");
         if (additionalTag.contains("EnergyPerTick")) energyPerTick = additionalTag.getInt("EnergyPerTick");
     }
+    
+    //region ChunkLoader implementation
+    @Override
+    public Set<ForceLoadManager.ForcedChunkPos> getForcedChunks() {
+        return forcedChunks;
+    }
+    
+    @Override
+    public boolean canLoadChunks() {
+        return getEnchantmentLevel(ModEnchantments.WORLDBIND.get()) > 0;
+    }
+    
+    @Override
+    public int getLoadingRange() {
+        return 1;
+    }
+    
+    @Override
+    public int getChunkUnloadCooldown() {
+        return chunkUnloadCooldown;
+    }
+    
+    @Override
+    public void setChunkUnloadCooldown(int cooldown) {
+        chunkUnloadCooldown = cooldown;
+    }
+    
+    @Override
+    public boolean needsUpdate() {
+        return chunkUpdateCooldown <= 0;
+    }
+    //endregion
 }

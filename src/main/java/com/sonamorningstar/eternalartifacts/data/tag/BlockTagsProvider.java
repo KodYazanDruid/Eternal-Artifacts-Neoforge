@@ -339,6 +339,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.ICE_BRICK_WALL.get(),
             ModBlocks.SNOW_BRICK_WALL.get()
         );
+        
+        tag(BlockTags.WALL_POST_OVERRIDE).add(
+            ModBlocks.GLOWSTONE_TORCH.get(),
+            ModBlocks.GLOWTORCH.get()
+        );
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             tierAndTool(holder.getBlock(), "stone", "pickaxe");

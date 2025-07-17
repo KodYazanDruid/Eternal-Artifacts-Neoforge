@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.enchantment.*;
+import com.sonamorningstar.eternalartifacts.content.enchantment.base.MachineEnchantment;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -22,6 +23,7 @@ public class ModEnchantments {
     public static final DeferredHolder<Enchantment, MeltingTouchEnchantment> MELTING_TOUCH = ENCHANTMENTS.register("melting_touch", MeltingTouchEnchantment::new);
     public static final DeferredHolder<Enchantment, EverlastingEnchantment> EVERLASTING = ENCHANTMENTS.register("everlasting", EverlastingEnchantment::new);
     public static final DeferredHolder<Enchantment, CelerityEnchantment> CELERITY = ENCHANTMENTS.register("celerity", CelerityEnchantment::new);
+    public static final DeferredHolder<Enchantment, MachineEnchantment> WORLDBIND = ENCHANTMENTS.register("worldbind", () -> new MachineEnchantment(Enchantment.Rarity.VERY_RARE));
     
     public static class ModEnchantmentCategory{
         public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {

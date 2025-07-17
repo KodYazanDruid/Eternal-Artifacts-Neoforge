@@ -36,6 +36,7 @@ public class EternalArtifacts {
      * TODO: Colored flower pots.
      * TODO: Block pattern copy paste.
      * FIXME: Tank knapsack or multi tank capability related bug.
+     * FIXME: Magicbane + Final Cut bug.
     */
 
     public static final String MODID = "eternalartifacts";

@@ -9,6 +9,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.neoforged.fml.common.Mod;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -212,6 +213,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.AMETHYST_ARROW.get(), "Amethyst Arrow");
                 add(ModItems.FINAL_CUT.get(), "Final Cut");
                 add(ModItems.ODDLY_SHAPED_OPAL.get(), "Oddly Shaped Opal");
+                add(ModItems.RAINCOAT.get(), "Raincoat");
+                add(ModItems.MAGIC_BANE.get(), "Magic Bane");
+                add(ModItems.DEATH_CAP.get(), "Death Cap");
+                add(ModItems.MOONGLASS_PENDANT.get(), "Moonglass Pendant");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -336,6 +341,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COVERED_TIN_CABLE.get(), "Covered Tin Cable");
                 add(ModBlocks.INDUSTRIAL_SPONGE.get(), "Industrial Sponge");
                 add(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "Wet Industrial Sponge");
+                add(ModBlocks.GLOWSTONE_TORCH.get(), "Glowstone Torch");
+                add(ModBlocks.GLOWTORCH.get(), "Glowtorch");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -365,6 +372,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.MELTING_TOUCH.get(), "Melting Touch");
                 add(ModEnchantments.EVERLASTING.get(), "Everlasting");
                 add(ModEnchantments.CELERITY.get(), "Celerity");
+                add(ModEnchantments.WORLDBIND.get(), "Worldbind");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -376,6 +384,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.COMMAND.withSuffix("network.list"), "Networks:");
                 add(ModConstants.COMMAND.withSuffix("network.removed"), "Removed network with UUID %s.");
                 add(ModConstants.COMMAND.withSuffix("network.not_found"), "TesseractNetwork with UUID %s not found.");
+                add(ModConstants.COMMAND.withSuffix("forceload.list"), "Loaded Chunks:");
+                add(ModConstants.COMMAND.withSuffix("forceload.list.empty"), "No chunks are loaded.");
+                add(ModConstants.COMMAND.withSuffix("forceload.chunk"), "Loaded chunk: %s");
                 //endregion
                 //region Misc.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Naming enabled.");
@@ -497,6 +508,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("gui.eternalartifacts.pipe_filter.tags_for", "Tags for %s:");
                 add(ModConstants.GUI.withSuffix("autocutter.reset_index"), "Reset Selection");
                 add(ModConstants.TOOLTIP.withSuffix("wildcard_blacklisted"), "This item is blacklisted in Wildcard Charm slot.");
+                add(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"), "Loading %d chunks.");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -713,6 +725,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.AMETHYST_ARROW.get(), "Ametist Ok");
                 add(ModItems.FINAL_CUT.get(), "Son Darbe");
                 add(ModItems.ODDLY_SHAPED_OPAL.get(), "Tuhaf Şekilli Opal");
+                add(ModItems.RAINCOAT.get(), "Yağmurluk");
+                add(ModItems.MAGIC_BANE.get(), "Sihirli Felaket");
+                add(ModItems.DEATH_CAP.get(), "Ölüm Şapkası");
+                add(ModItems.MOONGLASS_PENDANT.get(), "Aycamı Kolyesi");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -881,6 +897,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COVERED_TIN_CABLE.get(), "İzole Kalay Kablo");
                 add(ModBlocks.INDUSTRIAL_SPONGE.get(), "Endüstriyel Sünger");
                 add(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "Islak Endüstriyel Sünger");
+                add(ModBlocks.GLOWSTONE_TORCH.get(), "Işık Taşı Meşalesi");
+                add(ModBlocks.GLOWTORCH.get(), "Parlayan Meşale");
+                add(ModMachines.DIMENSIONAL_ANCHOR.getBlockTranslationKey(), "Boyutsal Çapa");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -918,6 +937,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.MELTING_TOUCH.get(), "Eriten Dokunuş");
                 add(ModEnchantments.EVERLASTING.get(), "Ebedi");
                 add(ModEnchantments.CELERITY.get(), "Sürat");
+                add(ModEnchantments.WORLDBIND.get(), "Dünyabağı");
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");
@@ -929,7 +949,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.COMMAND.withSuffix("network.list"), "Ağlar:");
                 add(ModConstants.COMMAND.withSuffix("network.removed"), "%s UUID'li ağ kaldırıldı.");
                 add(ModConstants.COMMAND.withSuffix("network.not_found"), "%s UUID'li ağ bulunamadı.");
-                
+                add(ModConstants.COMMAND.withSuffix("forceload.list"), "Yüklenen Yığınlar:");
+                add(ModConstants.COMMAND.withSuffix("forceload.list.empty"), "Yüklenen Yığın yok.");
+                add(ModConstants.COMMAND.withSuffix("forceload.chunk"), "Yüklenen Yığın: %s");
                 //endregion
                 //region Türkçe Ivır Zıvır.
                 add("key." + MODID + ".anvilinator.enabled_naming", "Adlandırma açık.");
@@ -1070,6 +1092,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("gui.eternalartifacts.pipe_filter.tags_for", "%s için etiketler:");
                 add(ModConstants.GUI.withSuffix("autocutter.reset_index"), "Seçimi sıfırla");
                 add(ModConstants.TOOLTIP.withSuffix("wildcard_blacklisted"), "Bu eşya, Joker Tılsım slotunda kara listede.");
+                add(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"), "%d yığın yükleniyor.");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

@@ -1,4 +1,4 @@
-// 1.20.4	2025-06-21T11:02:36.7022573	Loot Tables
+// 1.20.4	2025-07-16T23:12:06.9534338	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 5cdbfe04b08c9f529ff4b380190c0481143a16b5 data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 d160926d6a1b8e69201694d63bad7921e45e7454 data/eternalartifacts/loot_tables/blocks/aluminum_ore.json
@@ -32,6 +32,7 @@ fc18319a2ccfdec4e066eed864fa7868821d032e data/eternalartifacts/loot_tables/block
 8f0a3b7b5f1a6baab772df2577f5871e2206c054 data/eternalartifacts/loot_tables/blocks/deepslate_tin_ore.json
 2d6dde2dd6a7100ee709a5eb77ab0b47d6c5e31b data/eternalartifacts/loot_tables/blocks/demon_block.json
 da6df7d1d9c5cd9b40a08b6d0ccca9f948aaeadf data/eternalartifacts/loot_tables/blocks/diamond_drum.json
+b7a340c633b3eaa32558fc444dd101d959bf8a76 data/eternalartifacts/loot_tables/blocks/dimensional_anchor.json
 604a0b2dcba69dfcd7e2256617f03c7dab6b7369 data/eternalartifacts/loot_tables/blocks/disenchanter.json
 f1793c1eb3520400a07a118ddd4cb4731414580e data/eternalartifacts/loot_tables/blocks/drowned_head.json
 087cd2fb5fa5f93db5010b89644afd74520b45c4 data/eternalartifacts/loot_tables/blocks/electric_furnace.json
@@ -44,6 +45,8 @@ fbc9e910fc058488ffac7df243ea2dde187cc13e data/eternalartifacts/loot_tables/block
 c1447597e3f4cff0cdd64963fd28122eea363d87 data/eternalartifacts/loot_tables/blocks/forsythia.json
 46352d2960ffae7373ef1f76927fd873a7f6ef86 data/eternalartifacts/loot_tables/blocks/four_leaf_clover.json
 74385ace89cbe48da24c7775d6836e607df6397f data/eternalartifacts/loot_tables/blocks/gardening_pot.json
+ddb33fe7ec2ba545c097cf542c1b0aa52c0d93bc data/eternalartifacts/loot_tables/blocks/glowstone_torch.json
+45527dd27b084e8bd2e7e7a35cae047cb3e0c661 data/eternalartifacts/loot_tables/blocks/glowtorch.json
 f44054c9509e07eb0cf3c461d95e906cf1e72a47 data/eternalartifacts/loot_tables/blocks/gold_cable.json
 86ecb29b2bc1eb8f8f0f2da2d40340771427bd89 data/eternalartifacts/loot_tables/blocks/gold_drum.json
 4f812d697abe824eddbdc6217ef643fb4885cef4 data/eternalartifacts/loot_tables/blocks/gold_fluid_pipe.json

@@ -19,12 +19,15 @@ public class MeteoriteSpell extends Spell {
 
     @Override
     public boolean cast(ItemStack tome, LivingEntity caster, InteractionHand hand, Level level, RandomSource random, float amplifiedDamage) {
-        BlockHitResult result = RayTraceHelper.retrace(caster, ClipContext.Fluid.NONE);
-        if (!checkCooldown(caster, tome.getItem())) {
-            Vec3 eyePosition = caster.getEyePosition();
-            Vec3 shootVector = eyePosition.vectorTo(result.getLocation());
-            Meteorite meteorite = new Meteorite(level, caster, shootVector.x, shootVector.y, shootVector.z, amplifiedDamage);
-            meteorite.setPosRaw(eyePosition.x, eyePosition.y, eyePosition.z);
+        BlockHitResult result = RayTraceHelper.retrace(caster, 32, ClipContext.Fluid.NONE);
+        if (!checkCooldown(caster, tome.getItem()) && result.getType() != BlockHitResult.Type.MISS) {
+            Vec3 resultPosition = result.getLocation();
+            double randomOffsetX = random.nextDouble() * 10 - 5;
+            double randomOffsetZ = random.nextDouble() * 10 - 5;
+            Meteorite meteorite = new Meteorite(level, caster,
+                resultPosition.x + randomOffsetX, resultPosition.y + 10, resultPosition.z + randomOffsetZ,
+                -randomOffsetX, -10, -randomOffsetZ,
+                amplifiedDamage);
             level.addFreshEntity(meteorite);
             return true;
         }
