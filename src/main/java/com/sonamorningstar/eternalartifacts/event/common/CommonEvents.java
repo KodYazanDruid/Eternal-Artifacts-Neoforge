@@ -69,7 +69,11 @@ import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -553,6 +557,15 @@ public class CommonEvents {
                 event.setExpToDrop(Mth.ceil(expDrop * 1.2));
             }
         }
+    }
+    
+    @SubscribeEvent
+    public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
+        Entity entity = event.getEntity();
+        LevelAccessor levelAcc = event.getLevel();
+        BlockPos pos = event.getPos();
+        BlockState placedState = event.getPlacedBlock();
+        
     }
 
     @SubscribeEvent

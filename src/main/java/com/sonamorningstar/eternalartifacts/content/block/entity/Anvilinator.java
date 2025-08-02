@@ -37,7 +37,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     @Getter
     public String name = "";
     public boolean enableNaming = false;
-    private int cost = 0;
+    private final int cost = 0;
     private final FakePlayer fakePlayer;
     private AnvilUpdateEvent anvilUpdateEvent;
 

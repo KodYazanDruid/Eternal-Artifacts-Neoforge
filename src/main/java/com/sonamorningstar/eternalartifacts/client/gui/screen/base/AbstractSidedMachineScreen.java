@@ -26,6 +26,8 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     private final SidedTransferMachine<?> sidedTransferMachineBlockEntity = ((SidedTransferMachine<?>) menu.getBlockEntity());
 
     @Setter
+    private boolean isSidedTransferBarDisabled = false;
+    @Setter
     private boolean redstoneControllable = true;
     private boolean sidedTransferBarActive;
     private final List<SpriteButton> sideSetters = new ArrayList<>(6);
@@ -54,21 +56,23 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     @Override
     protected void init() {
         super.init();
-        for (int i = 0; i < 6; i++) {
-            int finalI = i;
-            sideSetters.add(SpriteButton.builder(Component.empty(), (button, key) -> buttonSideSet(button, key, finalI), allow).size(9, 9).build());
-            addRenderableWidget(sideSetters.get(i));
-        }
-        for (int i = 0; i < 4; i++) {
-            int finalI = i;
-            autoSetters.add(SpriteButton.builderNoTexture(Component.empty(), (button, key) -> buttonAutoSet(button, key, finalI)).size(9, 9).build());
-            addRenderableWidget(autoSetters.get(i));
-        }
-        if(redstoneControllable){
-            for (int i = 0; i < 1; i++) {
+        if (!isSidedTransferBarDisabled) {
+            for (int i = 0; i < 6; i++) {
                 int finalI = i;
-                redstoneSetters.add(SpriteButton.builderNoTexture(Component.empty(), (button, key) -> buttonRedstoneSet(button, key, finalI)).size(9, 9).build());
-                addRenderableWidget(redstoneSetters.get(i));
+                sideSetters.add(SpriteButton.builder(Component.empty(), (button, key) -> buttonSideSet(button, key, finalI), allow).size(9, 9).build());
+                addRenderableWidget(sideSetters.get(i));
+            }
+            for (int i = 0; i < 4; i++) {
+                int finalI = i;
+                autoSetters.add(SpriteButton.builderNoTexture(Component.empty(), (button, key) -> buttonAutoSet(button, key, finalI)).size(9, 9).build());
+                addRenderableWidget(autoSetters.get(i));
+            }
+            if (redstoneControllable) {
+                for (int i = 0; i < 1; i++) {
+                    int finalI = i;
+                    redstoneSetters.add(SpriteButton.builderNoTexture(Component.empty(), (button, key) -> buttonRedstoneSet(button, key, finalI)).size(9, 9).build());
+                    addRenderableWidget(redstoneSetters.get(i));
+                }
             }
         }
     }
@@ -101,7 +105,7 @@ public abstract class AbstractSidedMachineScreen<T extends AbstractMachineMenu> 
     @Override
     protected void renderBg(GuiGraphics gui, float tick, int mx, int my) {
         super.renderBg(gui, tick, mx, my);
-        renderSidedTransferTab(gui, sidedTransferMachineBlockEntity);
+        if (!isSidedTransferBarDisabled) renderSidedTransferTab(gui, sidedTransferMachineBlockEntity);
     }
 
     @Override

@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import javax.annotation.Nullable;
 
 public class SmartJukeboxSoundInstance extends AbstractTickableSoundInstance {
-    private SoundEvent music;
+    private final SoundEvent music;
     public int playTick;
     public SmartJukeboxSoundInstance(SoundEvent soundEvent, Vec3 location) {
         super(soundEvent, SoundSource.RECORDS, SoundInstance.createUnseededRandom());

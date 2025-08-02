@@ -20,8 +20,8 @@ import java.util.UUID;
 @Mod.EventBusSubscriber()
 public class FakePlayerHelper {
     private static final GameProfile MOD_PROFILE = new GameProfile(UUID.fromString("6832a398-12c4-42bb-924c-dd8a14eb15f6"), "EternalArtifacts");
-    private static Map<LevelAccessor, FakePlayer> levelFakePlayers = new HashMap<>();
-    private static Map<Machine<?>, FakePlayer> machineFakePlayers = new HashMap<>();
+    private static final Map<LevelAccessor, FakePlayer> levelFakePlayers = new HashMap<>();
+    private static final Map<Machine<?>, FakePlayer> machineFakePlayers = new HashMap<>();
 
     public static FakePlayer getFakePlayer(Level level) {
         return FakePlayerHelper.levelFakePlayers.computeIfAbsent(level, sLevel -> {

@@ -23,13 +23,13 @@ import java.util.*;
 public class TreeCache {
 
     @Getter
-    private Queue<BlockPos> woodCache;
+    private final Queue<BlockPos> woodCache;
     @Getter
-    private Queue<BlockPos> leavesCache;
-    private Level level;
-    private BlockPos current;
-    private ItemStack tool;
-    private BlockEntity blockEntity;
+    private final Queue<BlockPos> leavesCache;
+    private final Level level;
+    private final BlockPos current;
+    private final ItemStack tool;
+    private final BlockEntity blockEntity;
 
     public TreeCache(Level level, BlockPos current, ItemStack tool, BlockEntity blockEntity) {
         this.woodCache = new PriorityQueue<>(Comparator.comparingDouble(value -> ((BlockPos) value).distSqr(new Vec3i(((BlockPos) value).getX(), current.getY(), ((BlockPos) value).getZ()))).reversed());

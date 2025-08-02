@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.function.IntConsumer;
 
 public class ModItemStorage extends ItemStackHandler {
-    private List<IntConsumer> listeners = new ArrayList<>();
+    private final List<IntConsumer> listeners = new ArrayList<>();
     public ModItemStorage(int size) {
         super(size);
     }

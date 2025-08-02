@@ -13,7 +13,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class SpellTomeRenderer {
 
-    private SpellTomeModel model;
+    private final SpellTomeModel model;
 
     public SpellTomeRenderer(EntityRendererProvider.Context ctx) {
         this.model = new SpellTomeModel(ctx.bakeLayer(ModModelLayers.SPELL_TOME_LAYER));

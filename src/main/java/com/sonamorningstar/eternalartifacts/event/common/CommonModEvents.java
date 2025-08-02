@@ -15,12 +15,17 @@ import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
+import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
@@ -31,6 +36,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -52,11 +58,13 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -172,6 +180,27 @@ public class CommonModEvents {
             if (network == null) return null;
             return network.getCapabilityClass() == IEnergyStorage.class ? new TesseractEnergyCap(be) : null;
         });
+        
+        for (DeferredHolder<BlockEntityType<?>, ? extends BlockEntityType<?>> holder : ModBlockEntities.MULTIBLOCKS) {
+            event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.get(), (be, ctx) -> {
+                if (be instanceof AbstractMultiblockBlockEntity ambe) {
+                    return ambe.getEnergy(ctx);
+                }
+                return null;
+            });
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.get(), (be, ctx) -> {
+                if (be instanceof AbstractMultiblockBlockEntity ambe) {
+                    return ambe.getTank(ctx);
+                }
+                return null;
+            });
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.get(), (be, ctx) -> {
+                if (be instanceof AbstractMultiblockBlockEntity ambe) {
+                    return ambe.getInventory(ctx);
+                }
+                return null;
+            });
+        }
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
@@ -300,6 +329,7 @@ public class CommonModEvents {
     public static void newRegistryEvent(NewRegistryEvent event) {
         event.register(ModRegistries.SPELL);
         event.register(ModRegistries.TAB_TYPE);
+        event.register(ModRegistries.MULTIBLOCK);
     }
     
     @SubscribeEvent

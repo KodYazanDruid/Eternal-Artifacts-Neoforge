@@ -215,6 +215,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> SOLAR_PANEL = registerMachineWithItem("solar_panel", SolarPanelBlock::new);
     public static final DeferredBlock<Block> PICTURE_SCREEN = registerWithBewlr("picture_screen", () -> new PictureScreenBlock(ModProperties.Blocks.MACHINE));
     
+    public static final DeferredBlock<PumpjackMBBlock> PUMPJACK = registerNoItem("pumpjack", () ->
+        new PumpjackMBBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.COLOR_GRAY).noLootTable())
+    );
+    
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);
     public static final DeferredBlock<DrumBlock> GOLD_DRUM = registerDrum("gold_drum", Blocks.GOLD_BLOCK.properties(), 128000);

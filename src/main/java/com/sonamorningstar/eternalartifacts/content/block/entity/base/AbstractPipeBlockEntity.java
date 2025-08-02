@@ -110,7 +110,7 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	 */
 	protected boolean shouldPipesConnect(BlockState neighborState, Direction direction) {
 		return !manuallyDisabled.get(direction);
-	};
+	}
 	
 	protected abstract BlockCapabilityCache<CAP, Direction> createCache(BlockPos pos, Direction dir);
 	

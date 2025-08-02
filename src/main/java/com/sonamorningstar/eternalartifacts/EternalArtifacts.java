@@ -3,11 +3,11 @@ package com.sonamorningstar.eternalartifacts;
 import com.mojang.logging.LogUtils;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
+import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
-import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
@@ -36,7 +36,6 @@ public class EternalArtifacts {
      * TODO: Colored flower pots.
      * TODO: Block pattern copy paste.
      * FIXME: Tank knapsack or multi tank capability related bug.
-     * FIXME: Magicbane + Final Cut bug.
     */
 
     public static final String MODID = "eternalartifacts";
@@ -70,6 +69,7 @@ public class EternalArtifacts {
         ModInventoryTabs.INVENTORY_TABS.register(modEventBus);
         ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
+        ModMultiblocks.MULTIBLOCKS.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);

@@ -39,8 +39,8 @@ public class IndustrialMacerator extends GenericMachine {
         if (recipe == null) {
             progress = 0;
             return;
-        };
-        progress(() -> {
+        }
+		progress(() -> {
             ItemHelper.insertItemStackedForced(inventory, recipe.getOutput().copy(), false, outputSlots);
             inventory.extractItem(0, recipe.getInput().getItems()[0].getCount(), false);
         });

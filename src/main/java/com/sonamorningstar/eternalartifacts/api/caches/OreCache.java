@@ -18,12 +18,12 @@ import java.util.*;
 
 public class OreCache {
     @Getter
-    private Queue<BlockPos> oreCache;
-    private Level level;
-    private BlockPos current;
-    private ItemStack tool;
-    private BlockEntity blockEntity;
-    private Block minedOre;
+    private final Queue<BlockPos> oreCache;
+    private final Level level;
+    private final BlockPos current;
+    private final ItemStack tool;
+    private final BlockEntity blockEntity;
+    private final Block minedOre;
 
     public OreCache(Level level, BlockPos current, ItemStack tool, BlockEntity blockEntity) {
         //this.oreCache = new PriorityQueue<>(Comparator.comparingDouble(value -> ((BlockPos) value).distSqr(new Vec3i(((BlockPos) value).getX(), current.getY(), ((BlockPos) value).getZ()))).reversed());
