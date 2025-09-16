@@ -21,7 +21,10 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-        tag(EntityTypeTags.FROG_FOOD).add(ModEntities.PINKY.get());
+        tag(EntityTypeTags.FROG_FOOD).add(
+            ModEntities.PINKY.get(),
+            ModEntities.HONEY_SLIME.get()
+        );
         tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModEntities.DUCK.get());
         tag(ModTags.Entities.CUTLASS_SPAWN_EGG_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
         
@@ -31,6 +34,7 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
             EntityType.CREEPER,
             EntityType.BLAZE
         );
+        tag(ModTags.Entities.CATALOGUE_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
         
         tag(EntityTypeTags.ARROWS).add(ModEntities.AMETHYST_ARROW.get());
     }

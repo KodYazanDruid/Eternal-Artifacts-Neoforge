@@ -4,10 +4,12 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.EnderNotebookScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.EntityCatalogueScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.LightSaberScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.TesseractScreen;
 import com.sonamorningstar.eternalartifacts.container.slot.BlueprintFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
+import com.sonamorningstar.eternalartifacts.content.item.EntityCatalogueItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.network.BlueprintIngredientsToClient;
@@ -46,6 +48,7 @@ public class ClientProxy {
     static {
         addItemScreen(ClientProxy::openEnderNotebook, EnderNotebookItem.class);
         addItemScreen(ClientProxy::openLightSaber, LightSaberItem.class);
+        addItemScreen(ClientProxy::openEntityCatalogue, EntityCatalogueItem.class);
     }
 
     public static void requestScreen(ItemStack stack) {
@@ -60,6 +63,9 @@ public class ClientProxy {
     }
     public static void openLightSaber(ItemStack lightSaber) {
         openScreen(new LightSaberScreen(lightSaber));
+    }
+    public static void openEntityCatalogue(ItemStack stack) {
+        openScreen(new EntityCatalogueScreen(stack));
     }
 
     public static void openScreen(Screen screen) {

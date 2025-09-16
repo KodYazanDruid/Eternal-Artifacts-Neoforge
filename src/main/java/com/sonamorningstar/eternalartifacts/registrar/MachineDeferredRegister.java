@@ -62,7 +62,6 @@ public class MachineDeferredRegister {
         this.blockEntityRegister.register(bus);
         this.blockRegister.register(bus);
         this.itemRegister.register(bus);
-
     }
     
     public

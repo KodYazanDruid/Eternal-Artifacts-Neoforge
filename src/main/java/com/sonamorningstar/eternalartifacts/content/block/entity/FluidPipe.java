@@ -29,7 +29,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
+import java.util.*;
 
 import static com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty.PipeConnection;
 
@@ -140,14 +140,13 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 	}
 	
 	@Override
-	protected int getMaxConnections() {
+	protected int getMaxRange() {
 		return tier.getMaxConnections();
 	}
 	
 	@Override
 	protected void doTransfer(Map<BlockPos, BlockCapabilityCache<IFluidHandler, Direction>> sources,
 							  Map<BlockPos, BlockCapabilityCache<IFluidHandler, Direction>> targets) {
-		
 		int maxTransferRate = tier.getTransferRate();
 		
 		for (var sourceEntry : sources.entrySet()) {
@@ -156,34 +155,37 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 			IFluidHandler source = sourceCache.getCapability();
 			if (source == null) continue;
 			
-			var sortedTargets = targets.entrySet().stream()
-				.sorted((a, b) -> {
-					double distA = sourcePos.distSqr(a.getKey());
-					double distB = sourcePos.distSqr(b.getKey());
-					return Double.compare(distA, distB);
-				}).toList();
+			Map<BlockPos, Integer> distances = sourceToTargetDistances.getOrDefault(sourcePos, Collections.emptyMap());
+			if (distances.isEmpty()) continue;
+			
+			List<BlockPos> sortedTargets = distances.entrySet().stream()
+				.filter(entry -> targets.containsKey(entry.getKey()))
+				.sorted(Map.Entry.comparingByValue())
+				.map(Map.Entry::getKey)
+				.toList();
+			
+			if (sortedTargets.isEmpty()) continue;
 			
 			FluidStack extracted = source.drain(maxTransferRate, IFluidHandler.FluidAction.SIMULATE);
 			if (extracted.isEmpty()) continue;
 			
 			Direction sourceDir = sourceCache.context();
 			BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
+			NonNullList<FilterEntry> sourceFilters = null;
+			
 			if (sourceBe instanceof FluidPipe sourcePipe) {
-				var sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
-				if (sourceFilters != null) {
-					if (checkFilters(sourcePipe, sourceFilters, extracted, sourceDir)) {
-						continue;
-					}
+				sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
+				if (sourceFilters != null && checkFilters(sourcePipe, sourceFilters, extracted, sourceDir)) {
+					continue;
 				}
 			}
 			
 			int remainingAmount = Math.min(extracted.getAmount(), maxTransferRate);
 			
-			for (var targetEntry : sortedTargets) {
+			for (BlockPos targetPos : sortedTargets) {
 				if (remainingAmount <= 0) break;
 				
-				BlockPos targetPos = targetEntry.getKey();
-				BlockCapabilityCache<IFluidHandler, Direction> targetCache = targetEntry.getValue();
+				BlockCapabilityCache<IFluidHandler, Direction> targetCache = targets.get(targetPos);
 				IFluidHandler target = targetCache.getCapability();
 				if (target == null) continue;
 				
@@ -195,10 +197,8 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 				BlockEntity targetBe = level.getBlockEntity(targetPos.relative(targetDir));
 				if (targetBe instanceof FluidPipe targetPipe) {
 					var targetFilters = targetPipe.filterEntries.get(targetDir.getOpposite());
-					if (targetFilters != null) {
-						if (checkFilters(targetPipe, targetFilters, extracted, targetDir)) {
-							continue;
-						}
+					if (targetFilters != null && checkFilters(targetPipe, targetFilters, extracted, targetDir)) {
+						continue;
 					}
 				}
 				

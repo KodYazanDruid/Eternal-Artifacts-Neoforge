@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 
 public class MultiblockPatternHelper {
 	
-	@Nullable
+	/*@Nullable
 	public static BlockPattern.BlockPatternMatch findMultiblockPattern(LevelReader levelReader, BlockPos pos, BlockPattern pattern) {
 		int range = Math.max(Math.max(pattern.getWidth(), pattern.getHeight()), pattern.getDepth()) - 1;
 		for (int dx = -range; dx <= range; dx++) {
@@ -30,6 +30,31 @@ public class MultiblockPatternHelper {
 									return match;
 								}
 							}
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}*/
+	
+	@Nullable
+	public static BlockPattern.BlockPatternMatch findMultiblockPattern(LevelReader levelReader, BlockPos pos, BlockPattern pattern) {
+		int range = Math.max(Math.max(pattern.getWidth(), pattern.getHeight()), pattern.getDepth()) - 1;
+		for (int dx = -range; dx <= range; dx++) {
+			for (int dy = -range; dy <= range; dy++) {
+				for (int dz = -range; dz <= range; dz++) {
+					BlockPos checkPos = pos.offset(dx, dy, dz);
+					
+					for (Direction finger : Direction.values()) {
+						for (Direction thumb : Direction.values()) {
+							
+							if (finger == thumb || finger == thumb.getOpposite()) continue;
+							
+							BlockPattern.BlockPatternMatch match =
+								pattern.matches(levelReader, checkPos, finger, thumb);
+							
+							if (match != null) return match;
 						}
 					}
 				}

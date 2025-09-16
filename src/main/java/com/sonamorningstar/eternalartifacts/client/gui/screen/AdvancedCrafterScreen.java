@@ -2,17 +2,14 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.AdvancedCrafterMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.AdvancedCrafter;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
+import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 

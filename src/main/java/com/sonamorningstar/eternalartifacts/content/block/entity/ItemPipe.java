@@ -28,7 +28,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
+import java.util.*;
 
 import static com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty.PipeConnection;
 
@@ -139,7 +139,7 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 	}
 	
 	@Override
-	protected int getMaxConnections() {
+	protected int getMaxRange() {
 		return tier.getMaxConnections();
 	}
 	
@@ -147,59 +147,64 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 	protected void doTransfer(Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> sources,
 							  Map<BlockPos, BlockCapabilityCache<IItemHandler, Direction>> targets) {
 		int maxTransferRate = tier.getTransferRate();
-		int itemsTransferredFromThisSource = 0;
 		
-		sourceLoop : for (var sourceEntry : sources.entrySet()) {
+		for (var sourceEntry : sources.entrySet()) {
 			BlockPos sourcePos = sourceEntry.getKey();
 			BlockCapabilityCache<IItemHandler, Direction> sourceCache = sourceEntry.getValue();
 			IItemHandler source = sourceCache.getCapability();
 			if (source == null) continue;
 			
-			var sortedTargets = targets.entrySet().stream()
-				.sorted((a, b) -> {
-					double distA = sourcePos.distSqr(a.getKey());
-					double distB = sourcePos.distSqr(b.getKey());
-					return Double.compare(distA, distB);
-				}).toList();
+			int itemsTransferredFromThisSource = 0;
 			
-			for (int sourceSlot = 0; sourceSlot < source.getSlots(); sourceSlot++) {
+			Map<BlockPos, Integer> distances = sourceToTargetDistances.getOrDefault(sourcePos, Collections.emptyMap());
+			if (distances.isEmpty()) continue;
+			
+			List<BlockPos> sortedTargets = distances.entrySet().stream()
+				.filter(entry -> targets.containsKey(entry.getKey()))
+				.sorted(Map.Entry.comparingByValue())
+				.map(Map.Entry::getKey)
+				.toList();
+			
+			if (sortedTargets.isEmpty()) continue;
+			
+			Direction sourceDir = sourceCache.context();
+			BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
+			NonNullList<FilterEntry> sourceFilters = null;
+			
+			if (sourceBe instanceof ItemPipe sourcePipe) {
+				sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
+			}
+			
+			sourceLoop: for (int sourceSlot = 0; sourceSlot < source.getSlots(); sourceSlot++) {
+				if (itemsTransferredFromThisSource >= maxTransferRate) break;
+				
 				ItemStack stack = source.extractItem(sourceSlot, maxTransferRate - itemsTransferredFromThisSource, true);
 				if (stack.isEmpty()) continue;
 				
-				Direction sourceDir = sourceCache.context();
-				BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
-				if (sourceBe instanceof ItemPipe sourcePipe) {
-					var sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
-					if (sourceFilters != null) {
-						if (checkFilters(sourcePipe, sourceFilters, stack, sourceDir)) {
-							continue;
-						}
-					}
+				if (sourceFilters != null && checkFilters((ItemPipe)sourceBe, sourceFilters, stack, sourceDir)) {
+					continue;
 				}
 				
 				int remainingAmount = stack.getCount();
 				
-				for (var targetEntry : sortedTargets) {
+				for (BlockPos targetPos : sortedTargets) {
 					if (remainingAmount <= 0) break;
 					
-					BlockPos targetPos = targetEntry.getKey();
-					BlockCapabilityCache<IItemHandler, Direction> targetCache = targetEntry.getValue();
+					BlockCapabilityCache<IItemHandler, Direction> targetCache = targets.get(targetPos);
 					IItemHandler target = targetCache.getCapability();
 					if (target == null) continue;
 					
-					for (int targetSlot = 0; targetSlot < target.getSlots() && remainingAmount > 0; targetSlot++) {
-						
-						Direction targetDir = targetCache.context();
-						BlockEntity targetBe = level.getBlockEntity(targetPos.relative(targetDir));
-						if (targetBe instanceof ItemPipe targetPipe) {
-							var targetFilters = targetPipe.filterEntries.get(targetDir.getOpposite());
-							if (targetFilters != null) {
-								if (checkFilters(targetPipe, targetFilters, stack, targetDir)) {
-									continue;
-								}
-							}
+					Direction targetDir = targetCache.context();
+					BlockEntity targetBe = level.getBlockEntity(targetPos.relative(targetDir));
+					
+					if (targetBe instanceof ItemPipe targetPipe) {
+						var targetFilters = targetPipe.filterEntries.get(targetDir.getOpposite());
+						if (targetFilters != null && checkFilters(targetPipe, targetFilters, stack, targetDir)) {
+							continue;
 						}
-						
+					}
+					
+					for (int targetSlot = 0; targetSlot < target.getSlots() && remainingAmount > 0; targetSlot++) {
 						ItemStack copyStack = stack.copy();
 						copyStack.setCount(remainingAmount);
 						
@@ -216,8 +221,7 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 								itemsTransferredFromThisSource += actuallyInserted;
 								
 								if (itemsTransferredFromThisSource >= maxTransferRate) {
-									itemsTransferredFromThisSource = 0;
-									continue sourceLoop;
+									break sourceLoop;
 								}
 							}
 						}
@@ -225,7 +229,6 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 				}
 			}
 		}
-		
 	}
 	
 	private boolean checkFilters(ItemPipe sourcePipe, NonNullList<FilterEntry> sourceFilters,

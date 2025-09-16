@@ -67,6 +67,21 @@ public class ModEntityLootSubProvider extends net.minecraft.data.loot.EntityLoot
                     )
                 )
         );
+        
+        add(ModEntities.HONEY_SLIME.get(),
+            LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(Items.HONEY_BOTTLE)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))
+                    )
+                    .add(LootItem.lootTableItem(Blocks.HONEY_BLOCK)
+                        .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
+                        .when(killedByFrog())
+                    )
+                )
+        );
 
         add(ModEntities.DUCK.get(),
             LootTable.lootTable().withPool(LootPool.lootPool()

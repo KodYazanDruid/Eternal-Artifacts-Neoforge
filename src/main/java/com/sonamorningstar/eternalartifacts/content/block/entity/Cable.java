@@ -8,17 +8,19 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements ITickableServer {
     private final CableBlock.CableTier tier;
+    
+    private final Map<BlockPos, Map<BlockPos, Integer>> positionToSourceDistances = new HashMap<>();
     
     public Cable(BlockPos pos, BlockState state) {
         super(ModBlockEntities.CABLE.get(), IEnergyStorage.class, pos, state);
@@ -26,8 +28,8 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements IT
     }
     
     @Override
-    protected int getMaxConnections() {
-        return tier.getMaxConnections();
+    protected int getMaxRange() {
+        return tier.getMaxRange();
     }
     
     @Override
@@ -64,85 +66,156 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements IT
     }
     
     @Override
+    public void collectNetworkDevicesWithDistances(Level level) {
+        super.collectNetworkDevicesWithDistances(level);
+        positionToSourceDistances.clear();
+    }
+    
+    @Override
     protected void doTransfer(Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> sources,
                               Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> targets) {
+        int maxTransferRate = tier.getTransferRate();
+        
+        Map<BlockPos, Integer> allDistances = new HashMap<>();
+        sources.forEach((sourcePos, cap) -> {
+            Map<BlockPos, Integer> distances = sourceToTargetDistances.getOrDefault(sourcePos, Map.of());
+            distances.forEach((targetPos, dist) -> {
+                allDistances.merge(targetPos, dist, Math::min);
+            });
+        });
+        
+        if (allDistances.isEmpty()) return;
+        
+        List<BlockPos> availableTargets = allDistances.keySet().stream()
+                .filter(targets::containsKey)
+                .toList();
+        
+        if (availableTargets.isEmpty()) return;
+        
         int maxExtractable = 0;
         Map<BlockPos, Integer> sourceExtractions = new LinkedHashMap<>();
         
-        for (var sourceEntry : sources.entrySet()) {
-            IEnergyStorage sourceES = sourceEntry.getValue().getCapability();
+        for (BlockPos sourcePos : sources.keySet()) {
+            if (maxExtractable >= maxTransferRate) break;
+            
+            IEnergyStorage sourceES = sources.get(sourcePos).getCapability();
             if (sourceES == null) continue;
             
-            int canExtract = sourceES.extractEnergy(tier.getTransferRate() - maxExtractable, true);
+            int canExtract = sourceES.extractEnergy(maxTransferRate - maxExtractable, true);
             if (canExtract > 0) {
-                sourceExtractions.put(sourceEntry.getKey(), canExtract);
+                sourceExtractions.put(sourcePos, canExtract);
                 maxExtractable += canExtract;
-                
-                if (maxExtractable >= tier.getTransferRate()) break;
             }
         }
         
         if (maxExtractable == 0) return;
         
-        int maxReceivable = 0;
-        Map<BlockPos, Integer> targetReceptions = new LinkedHashMap<>();
+        int targetCount = availableTargets.size();
+        int energyPerTarget = Math.max(1, maxExtractable / targetCount);
+        int remainder = maxExtractable % targetCount;
         
-        for (var targetEntry : targets.entrySet()) {
-            IEnergyStorage targetES = targetEntry.getValue().getCapability();
+        Map<BlockPos, Integer> targetReceptions = new LinkedHashMap<>();
+        int totalReceivable = 0;
+        
+        for (int i = 0; i < availableTargets.size(); i++) {
+            BlockPos targetPos = availableTargets.get(i);
+            IEnergyStorage targetES = targets.get(targetPos).getCapability();
             if (targetES == null) continue;
             
-            int canReceive = targetES.receiveEnergy(maxExtractable - maxReceivable, true);
-            if (!sourceExtractions.containsKey(targetEntry.getKey()) && canReceive > 0) {
-                targetReceptions.put(targetEntry.getKey(), canReceive);
-                maxReceivable += canReceive;
-                
-                if (maxReceivable >= maxExtractable) break;
+            int toReceive = energyPerTarget;
+            if (i < remainder) {
+                toReceive++;
+            }
+            
+            int canReceive = targetES.receiveEnergy(toReceive, true);
+            if (canReceive > 0) {
+                targetReceptions.put(targetPos, canReceive);
+                totalReceivable += canReceive;
             }
         }
         
-        if (maxReceivable == 0) return;
+        if (totalReceivable == 0) return;
         
-        int transferAmount = Math.min(maxExtractable, maxReceivable);
-        if (transferAmount <= 0) return;
-        
+        int transferAmount = Math.min(maxExtractable, totalReceivable);
         int extracted = 0;
+        
         for (var entry : sourceExtractions.entrySet()) {
+            if (extracted >= transferAmount) break;
+            
             BlockPos pos = entry.getKey();
             int toExtract = Math.min(entry.getValue(), transferAmount - extracted);
             
             IEnergyStorage sourceES = sources.get(pos).getCapability();
             if (sourceES != null) {
                 extracted += sourceES.extractEnergy(toExtract, false);
-                if (extracted >= transferAmount) break;
             }
         }
         
-        int distributed = 0;
-        for (var entry : targetReceptions.entrySet()) {
-            BlockPos pos = entry.getKey();
-            int toReceive = Math.min(entry.getValue(), extracted - distributed);
+        if (extracted <= 0) return;
+        
+        List<BlockPos> receiveTargets = new ArrayList<>(targetReceptions.keySet());
+        int remaining = extracted;
+        
+        for (int i = 0; i < receiveTargets.size() && remaining > 0; i++) {
+            BlockPos targetPos = receiveTargets.get(i);
+            IEnergyStorage targetES = targets.get(targetPos).getCapability();
+            if (targetES == null) continue;
             
-            IEnergyStorage targetES = targets.get(pos).getCapability();
-            if (targetES != null) {
-                distributed += targetES.receiveEnergy(toReceive, false);
-                if (distributed >= extracted) break;
+            int baseAmount = extracted * targetReceptions.get(targetPos) / totalReceivable;
+            int toReceive = Math.min(baseAmount, remaining);
+            
+            if (toReceive > 0) {
+                int received = targetES.receiveEnergy(toReceive, false);
+                remaining -= received;
+            }
+        }
+        
+        if (remaining > 0) {
+            for (BlockPos targetPos : receiveTargets) {
+                if (remaining <= 0) break;
+                
+                IEnergyStorage targetES = targets.get(targetPos).getCapability();
+                if (targetES == null) continue;
+                
+                int received = targetES.receiveEnergy(remaining, false);
+                remaining -= received;
             }
         }
     }
     
-    public int extractEnergyFromSources(int maxAmount, boolean simulate) {
-        int totalExtracted = 0;
-        Map<BlockPos, Integer> sourceExtractions = new LinkedHashMap<>();
+    public int extractEnergyFromReachableSources(BlockPos cablePos, int maxAmount, boolean simulate) {
+        Map<BlockPos, Integer> sourceDistances = positionToSourceDistances.computeIfAbsent(cablePos, pos -> {
+            Map<BlockPos, Integer> distances = new HashMap<>();
+            
+            for (BlockPos sourcePos : allSources.keySet()) {
+                int distance = calculateDistanceToPosition(sourcePos, pos);
+                if (distance != Integer.MAX_VALUE && distance <= getMaxRange()) {
+                    distances.put(sourcePos, distance);
+                }
+            }
+            
+            return distances;
+        });
         
-        for (var sourceEntry : allSources.entrySet()) {
+        if (sourceDistances.isEmpty()) return 0;
+        
+        List<BlockPos> reachableSources = sourceDistances.entrySet().stream()
+            .sorted(Map.Entry.comparingByValue())
+            .map(Map.Entry::getKey)
+            .toList();
+        
+        Map<BlockPos, Integer> sourceExtractions = new LinkedHashMap<>();
+        int totalExtracted = 0;
+        
+        for (BlockPos sourcePos : reachableSources) {
             if (totalExtracted >= maxAmount) break;
             
-            IEnergyStorage sourceES = sourceEntry.getValue().getCapability();
+            IEnergyStorage sourceES = allSources.get(sourcePos).getCapability();
             if (sourceES == null) continue;
             
             int canExtract = sourceES.extractEnergy(maxAmount - totalExtracted, true);
             if (canExtract > 0) {
-                sourceExtractions.put(sourceEntry.getKey(), canExtract);
+                sourceExtractions.put(sourcePos, canExtract);
                 totalExtracted += canExtract;
             }
         }
@@ -162,6 +235,39 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements IT
         }
         
         return actualExtracted;
+    }
+    
+    private int calculateDistanceToPosition(BlockPos sourcePos, BlockPos targetPos) {
+        if (targetPos.equals(sourcePos)) return 0;
+        
+        Queue<BlockPos> queue = new LinkedList<>();
+        Map<BlockPos, Integer> distances = new HashMap<>();
+        Set<BlockPos> visited = new HashSet<>();
+        
+        queue.add(sourcePos);
+        distances.put(sourcePos, 0);
+        visited.add(sourcePos);
+        
+        while (!queue.isEmpty()) {
+            BlockPos current = queue.poll();
+            int currentDistance = distances.get(current);
+            
+            for (Direction dir : Direction.values()) {
+                BlockPos neighbor = current.relative(dir);
+                
+                if (neighbor.equals(targetPos)) {
+                    return currentDistance + 1;
+                }
+                
+                if (!visited.contains(neighbor) && networkPipes.contains(neighbor)) {
+                    queue.add(neighbor);
+                    distances.put(neighbor, currentDistance + 1);
+                    visited.add(neighbor);
+                }
+            }
+        }
+        
+        return Integer.MAX_VALUE;
     }
     
 }

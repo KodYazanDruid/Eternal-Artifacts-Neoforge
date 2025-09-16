@@ -2,7 +2,8 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Smithinator;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Packer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Recycler;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -52,5 +53,9 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
             Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(namespace, finalPath));
             HammerItem.gatheredBlocks.add(block);
         });
+        
+        Recycler.isRecipeMapInitialized = false;
+        Recycler.isBreakdownMapInitialized = false;
+        Packer.isPackingMapInitialized = false;
     }
 }

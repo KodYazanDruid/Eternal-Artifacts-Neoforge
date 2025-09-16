@@ -1,0 +1,13 @@
+{
+  "values": [
+    "#forge:tools/hammers",
+    "#eternalartifacts:tools/cutlasses",
+    "#forge:tools/sickles",
+    "#forge:tools/wrench",
+    "eternalartifacts:grafter",
+    "eternalartifacts:glasscutter",
+    "eternalartifacts:spawner_extractor",
+    "eternalartifacts:chisel",
+    "eternalartifacts:configuration_drive"
+  ]
+}

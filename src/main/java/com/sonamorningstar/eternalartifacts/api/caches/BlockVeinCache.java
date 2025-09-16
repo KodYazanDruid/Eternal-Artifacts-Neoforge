@@ -1,6 +1,10 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
+import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
+import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerPlayer;
@@ -44,11 +48,18 @@ public class BlockVeinCache {
     private final Queue<BlockPos> cache;
     private final Level level;
     private final BlockPos start;
+    private final int startX, startY, startZ;
+    private final double rangeXSq, rangeYSq;
+    private final long startKey;
     private final int rangeX;
     private final int rangeY;
     private final int searchRange;
     private final Set<Block> mineableBlocks = new HashSet<>();
     private final Set<TagKey<Block>> mineableTags = new HashSet<>();
+    @Setter
+    private boolean useBFS = false;
+    
+    private static final int[][] OFFSETS = generateOffsets();
     
     public BlockVeinCache(Level level, BlockPos start, int range) {
         this(level.getBlockState(start).getBlock(), level, start, range, range, 1);
@@ -66,6 +77,12 @@ public class BlockVeinCache {
         this.cache = new PriorityQueue<>(Comparator.comparingDouble(value -> value.distSqr(new Vec3i(start.getX(), start.getY(), start.getZ()))));
         this.level = level;
         this.start = start;
+        this.startX = start.getX();
+        this.startY = start.getY();
+        this.startZ = start.getZ();
+        this.startKey = start.asLong();
+        this.rangeXSq = rangeX * rangeX;
+        this.rangeYSq = rangeY * rangeY;
         this.rangeX = rangeX;
         this.rangeY = rangeY;
         this.searchRange = searchRange;
@@ -89,6 +106,9 @@ public class BlockVeinCache {
         }
         return false;
     }
+    private boolean canMine(long posKey) {
+        return canMine(BlockPos.of(posKey));
+    }
 
     public void mine(Queue<BlockPos> cache, @Nullable ServerPlayer player) {
         BlockPos pos = cache.peek();
@@ -101,28 +121,90 @@ public class BlockVeinCache {
     }
 
     public void scanForBlocks() {
-        Set<BlockPos> checkedPositions = new HashSet<>();
-        Stack<BlockPos> vein = new Stack<>();
-        scanArea(start, vein, checkedPositions);
-        cache.addAll(vein);
+        if (useBFS || searchRange == 1) {
+            scanBFS();
+        } else {
+            Set<BlockPos> checkedPositions = new HashSet<>();
+            Stack<BlockPos> vein = new Stack<>();
+            scanDFS(start, vein, checkedPositions);
+            cache.addAll(vein);
+        }
+    }
+    
+    private static int[][] generateOffsets() {
+        int[][] dirs = new int[26][3];
+        int i = 0;
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    if (x != 0 || y != 0 || z != 0) {
+                        dirs[i][0] = x;
+                        dirs[i][1] = y;
+                        dirs[i][2] = z;
+                        i++;
+                    }
+                }
+            }
+        }
+        return dirs;
+    }
+    
+    public void scanBFS() {
+        LongOpenHashSet visited = new LongOpenHashSet();
+        LongArrayFIFOQueue queue = new LongArrayFIFOQueue();
+        
+        if (canMine(startKey)) {
+            queue.enqueue(startKey);
+            visited.add(startKey);
+            cache.add(BlockPos.of(startKey));
+        }
+        
+        while (!queue.isEmpty()) {
+            long currentKey = queue.dequeueLong();
+            int cx = BlockPos.getX(currentKey);
+            int cy = BlockPos.getY(currentKey);
+            int cz = BlockPos.getZ(currentKey);
+            
+            for (int[] dir : OFFSETS) {
+                int nx = cx + dir[0];
+                int ny = cy + dir[1];
+                int nz = cz + dir[2];
+                long neighborKey = BlockPos.asLong(nx, ny, nz);
+                
+                if (!visited.contains(neighborKey)) {
+                    visited.add(neighborKey);
+                    
+                    if (isInRange(nx, ny, nz) && canMine(neighborKey)) {
+                        queue.enqueue(neighborKey);
+                        cache.add(BlockPos.of(neighborKey));
+                    }
+                }
+            }
+        }
     }
 
-    private void scanArea(BlockPos current, Stack<BlockPos> vein, Set<BlockPos> checked) {
+    private void scanDFS(BlockPos current, Stack<BlockPos> vein, Set<BlockPos> checked) {
         for (BlockPos pos : BlockPos.betweenClosed(current.offset(searchRange, searchRange, searchRange),
                 current.offset(searchRange * -1, searchRange * -1, searchRange * -1))) {
             if (checked.contains(pos)) continue;
             checked.add(pos.immutable());
             if (isInRange(pos) && !vein.contains(pos) && canMine(pos)) {
                 vein.add(pos.immutable());
-                scanArea(pos, vein, checked);
+                scanDFS(pos, vein, checked);
             }
         }
     }
 
     private boolean isInRange(BlockPos pos) {
-        double x = pos.getX() - start.getX();
-        double y = pos.getY() - start.getY();
-        double z = pos.getZ() - start.getZ();
-        return (x * x) / (rangeX * rangeX) + (y * y) / (rangeY * rangeY) + (z * z) / (rangeX * rangeX) <= 1;
+        double dx = pos.getX() - startX;
+        double dy = pos.getY() - startY;
+        double dz = pos.getZ() - startZ;
+        return (dx * dx) / rangeXSq + (dy * dy) / rangeYSq + (dz * dz) / rangeXSq <= 1.0;
+    }
+    private boolean isInRange(int x, int y, int z) {
+        double dx = x - startX;
+        double dy = y - startY;
+        double dz = z - startZ;
+        return (dx * dx) / rangeXSq + (dy * dy) / rangeYSq + (dz * dz) / rangeXSq <= 1.0;
     }
 }

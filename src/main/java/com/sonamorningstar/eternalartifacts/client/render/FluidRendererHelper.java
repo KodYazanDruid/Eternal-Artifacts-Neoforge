@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.util;
+package com.sonamorningstar.eternalartifacts.client.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

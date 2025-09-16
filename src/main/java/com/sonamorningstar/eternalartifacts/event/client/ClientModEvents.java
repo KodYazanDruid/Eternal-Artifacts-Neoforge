@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
+import com.sonamorningstar.eternalartifacts.client.render.blockentity.base.MultiBlockRenderer;
 import com.sonamorningstar.eternalartifacts.client.render.entity.*;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableBatteryLayer;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableFurnaceLayer;
@@ -191,6 +192,9 @@ public class ClientModEvents {
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
 
+        event.registerBlockEntityRenderer(ModMultiblocks.PUMPJACK.getBlockEntity(), MultiBlockRenderer::new);
+        event.registerBlockEntityRenderer(ModMultiblocks.GENERATOR.getBlockEntity(), MultiBlockRenderer::new);
+        
         event.registerEntityRenderer(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
         event.registerEntityRenderer(ModEntities.PINKY.get(), PinkyRenderer::new);
         event.registerEntityRenderer(ModEntities.CHARGED_SHEEP.get(), ChargedSheepRenderer::new);
@@ -202,6 +206,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.MISSILE.get(), MissileRenderer::new);
         event.registerEntityRenderer(ModEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
         event.registerEntityRenderer(ModEntities.AMETHYST_ARROW.get(), AmethystArrowRenderer::new);
+        event.registerEntityRenderer(ModEntities.HONEY_SLIME.get(), HoneySlimeRenderer::new);
     }
 
     @SubscribeEvent

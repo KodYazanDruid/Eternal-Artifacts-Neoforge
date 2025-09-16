@@ -53,7 +53,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.MARIN_INGOT.get(),
             ModItems.TIN_INGOT.get(),
             ModItems.ALUMINUM_INGOT.get(),
-            ModItems.BRONZE_INGOT.get()
+            ModItems.BRONZE_INGOT.get(),
+            ModItems.OBLIVIUM_INGOT.get()
         );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.COOKED_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
@@ -171,7 +172,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.GOLDEN_SICKLE.get(),
             ModItems.GOLD_RING.get()
         );
-        
         tag(Tags.Items.HEADS).add(
             ModItems.DROWNED_HEAD.get(),
             ModItems.HUSK_HEAD.get(),
@@ -239,6 +239,19 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.NETHERITE_SICKLE.get(),
             ModItems.CHLOROPHYTE_SICKLE.get(),
             ModItems.STEEL_SICKLE.get()
+        );
+        tag(Tags.Items.TOOLS).addTags(
+            ModTags.Items.TOOLS_HAMMER,
+            ModTags.Items.TOOLS_CUTLASS,
+            ModTags.Items.TOOLS_SICKLE,
+            ModTags.Items.TOOLS_WRENCH
+        );
+        tag(Tags.Items.TOOLS).add(
+            ModItems.GRAFTER.get(),
+            ModItems.GLASSCUTTER.get(),
+            ModItems.SPAWNER_EXTRACTOR.get(),
+            ModItems.CHISEL.get(),
+            ModItems.CONFIGURATION_DRIVE.get()
         );
         tag(ModTags.Items.TABLETS).add(
             ModItems.STONE_TABLET.get(),
@@ -330,6 +343,11 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModTags.Items.CHARMS_BACK,
             ModTags.Items.CHARM_FEET,
             ModTags.Items.CHARMS_CHARM
+        );
+        tag(ModTags.Items.RECYCLABLE).addTags(
+          Tags.Items.TOOLS,
+          Tags.Items.ARMORS,
+          ModTags.Items.CHARMS
         );
         tag(ItemTags.ARROWS).add(
             ModItems.AMETHYST_ARROW.get()

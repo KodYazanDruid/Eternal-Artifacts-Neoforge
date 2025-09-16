@@ -1,12 +1,13 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Either;
 import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanelComponent;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
+import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.PipeFilterMenu;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.container.slot.FilterFakeSlot;
@@ -17,7 +18,6 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.network.*;
 import com.sonamorningstar.eternalartifacts.util.*;
 import lombok.Getter;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.NonNullList;

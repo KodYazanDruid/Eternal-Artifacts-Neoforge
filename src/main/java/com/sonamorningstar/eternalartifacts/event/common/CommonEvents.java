@@ -10,6 +10,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwo
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
+import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -39,6 +40,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -54,6 +56,8 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Shulker;
@@ -65,15 +69,12 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.pattern.BlockInWorld;
-import net.minecraft.world.level.block.state.pattern.BlockPattern;
-import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
@@ -83,6 +84,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
@@ -98,6 +100,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -279,17 +282,36 @@ public class CommonEvents {
         }
     }
     
-    //FIXME
     @SubscribeEvent
     public static void effectAddedEvent(MobEffectEvent.Added event) {
-        MobEffectInstance effect = event.getEffectInstance();
+        MobEffectInstance oldEffect = event.getOldEffectInstance();
+        MobEffectInstance newEffect = event.getEffectInstance();
         LivingEntity entity = event.getEntity();
-        if (effect != null && effect.getEffect().getCategory() == MobEffectCategory.HARMFUL &&
-                !effect.getEffect().isInstantenous() && entity instanceof Player player &&
+        if (oldEffect == null && newEffect != null && newEffect.getEffect().getCategory() == MobEffectCategory.HARMFUL &&
+                !newEffect.getEffect().isInstantenous() && entity instanceof Player player &&
                 !player.getCooldowns().isOnCooldown(ModItems.RAINCOAT.get()) &&
                 !CharmManager.findCharm(entity, ModItems.RAINCOAT.get()).isEmpty()) {
-            entity.removeEffect(effect.getEffect());
+            newEffect.duration = 0;
             player.getCooldowns().addCooldown(ModItems.RAINCOAT.get(), 300);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void getItemAttributesEvent(ItemAttributeModifierEvent event) {
+        ItemStack stack = event.getItemStack();
+        Item item = stack.getItem();
+        EquipmentSlot slot = event.getSlotType();
+        Map<Enchantment, Integer> allEnchantments = stack.getAllEnchantments();
+        for (Map.Entry<Enchantment, Integer> entry : allEnchantments.entrySet()) {
+            Enchantment enchantment = entry.getKey();
+            int level = entry.getValue();
+            if (enchantment instanceof AttributeEnchantment attrEnchant && level > 0) {
+                Set<Attribute> attributeSet = attrEnchant.getAttributeSet();
+                for (Attribute attribute : attributeSet) {
+                    AttributeModifier mod = attrEnchant.getModifier(attribute, slot, stack, level);
+                    if (mod != null) event.addModifier(attribute, mod);
+                }
+            }
         }
     }
     
@@ -715,7 +737,9 @@ public class CommonEvents {
     
     @SubscribeEvent
     public static void serverStartingEvent(ServerStartingEvent event) {
-        rollHammeringTables(event.getServer().overworld());
+        MinecraftServer server = event.getServer();
+        rollHammeringTables(server.overworld());
+        server.getRecipeManager().hadErrorsLoading();
     }
     
     private static void rollHammeringTables(ServerLevel level) {

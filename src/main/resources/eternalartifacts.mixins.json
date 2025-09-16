@@ -12,6 +12,7 @@
     "DiggerItemMixin",
     "FlowerPotBlockMixin",
     "InventoryMixin",
+    "ItemStackMixin",
     "MapItemSavedDataMixin",
     "PickaxeItemMixin",
     "ServerPlayerGameModeMixin",

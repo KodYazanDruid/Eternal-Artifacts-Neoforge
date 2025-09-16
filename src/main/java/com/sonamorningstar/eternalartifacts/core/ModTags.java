@@ -98,6 +98,7 @@ public class ModTags {
         public static final TagKey<Item> DUSTS_ALUMINUM = forgeTag("dusts/aluminum");
         public static final TagKey<Item> DUSTS_BRONZE = forgeTag("dusts/bronze");
         public static final TagKey<Item> DUSTS_COPPER = forgeTag("dusts/copper");
+        public static final TagKey<Item> RECYCLABLE = modTag("recyclable");
 		
 		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }
@@ -143,6 +144,7 @@ public class ModTags {
         public static final TagKey<EntityType<?>> CUTLASS_SPAWN_EGG_BLACKLISTED = modTag("cutlass_spawn_egg_blacklisted");
         public static final TagKey<EntityType<?>> MORPH_BLACKLISTED = modTag("morph_blacklisted");
         public static final TagKey<EntityType<?>> EXECUTE_BLACKLISTED = modTag("execute_blacklisted");
+        public static final TagKey<EntityType<?>> CATALOGUE_BLACKLISTED = modTag("catalogue_blacklisted");
 
         private static TagKey<EntityType<?>> forgeTag(String name) { return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name)); }
         private static TagKey<EntityType<?>> modTag(String name) { return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(MODID, name)); }

@@ -37,7 +37,8 @@ public enum ModConstants {
     ITEM_CAPABILITY("capability."+MODID, "item"),
     FLUID_CAPABILITY("capability."+MODID, "fluid"),
     ENERGY_CAPABILITY("capability."+MODID, "energy"),
-    GAS_CAPABILITY("capability."+MODID, "gas"),;
+    GAS_CAPABILITY("capability."+MODID, "gas"),
+    BLOCK("block."+MODID);
     
     final String string;
     @Nullable

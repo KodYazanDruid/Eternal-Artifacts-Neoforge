@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.List;
+import java.util.Optional;
 
 public class TooltipHelper {
     public static String prettyName(String path) {
@@ -44,8 +45,16 @@ public class TooltipHelper {
             }
         }
         
-        ModListUtils.getFluidCreatorModId(stack).ifPresent(name -> list.add(Component.literal(name).withStyle(ChatFormatting.ITALIC)
-			.withStyle(ChatFormatting.BLUE)));
+        /*ModListUtils.getFluidCreatorModId(stack).ifPresent(name ->
+            list.add(Component.literal(name).withStyle(ChatFormatting.ITALIC)
+			.withStyle(ChatFormatting.BLUE)));*/
+        appendModName(list, ModListUtils.getFluidCreatorModId(stack));
         return list;
+    }
+    
+    public static void appendModName(List<Component> tooltip, Optional<String> modNameOpt) {
+        modNameOpt.ifPresent(name ->
+            tooltip.add(Component.literal(name).withStyle(ChatFormatting.ITALIC)
+                .withStyle(ChatFormatting.BLUE)));
     }
 }

@@ -109,6 +109,9 @@ public class Channel {
         registrar.play(AddTesseractNetworkToServer.ID,
                 AddTesseractNetworkToServer::create,
                 handler -> handler.server(AddTesseractNetworkToServer::handle));
+        registrar.play(SelectEntityMessageToServer.ID,
+                SelectEntityMessageToServer::create,
+                handler -> handler.server(SelectEntityMessageToServer::handle));
         
         registrar.play(BlueprintIngredientsToClient.ID,
             BlueprintIngredientsToClient::create,

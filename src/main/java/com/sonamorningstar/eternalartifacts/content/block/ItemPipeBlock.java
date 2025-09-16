@@ -4,8 +4,14 @@ import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePip
 import com.sonamorningstar.eternalartifacts.content.block.entity.ItemPipe;
 import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +21,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.IExtensibleEnum;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 @Getter
 public class ItemPipeBlock extends AttachmentablePipeBlock<IItemHandler> {
@@ -60,6 +68,13 @@ public class ItemPipeBlock extends AttachmentablePipeBlock<IItemHandler> {
 	@Override
 	protected boolean checkPipe(BlockState relativeState) {
 		return relativeState.getBlock() instanceof ItemPipeBlock o && o.getTier() == tier;
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+		super.appendHoverText(stack, pLevel, pTooltip, pFlag);
+		pTooltip.add(Component.translatable(ModConstants.BLOCK.withSuffix("pipe.range"), tier.maxConnections).withColor(0xADD8E6));
+		pTooltip.add(Component.translatable(ModConstants.BLOCK.withSuffix("pipe.item.transfer_rate"), tier.transferRate).withColor(0xADD8E6));
 	}
 	
 	@Getter

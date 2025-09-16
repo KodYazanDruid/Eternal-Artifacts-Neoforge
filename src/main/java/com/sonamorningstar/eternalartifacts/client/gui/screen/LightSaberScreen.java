@@ -24,7 +24,6 @@ import org.joml.Matrix4f;
 import javax.annotation.Nullable;
 
 public class LightSaberScreen extends ItemStackScreen {
-    private static Minecraft mc;
     //ExtendedSlider alphaSlider;
     ExtendedSlider redSlider;
     ExtendedSlider greenSlider;
@@ -40,7 +39,6 @@ public class LightSaberScreen extends ItemStackScreen {
         imageWidth = 256;
         imageHeight = 192;
         super.init();
-        mc = Minecraft.getInstance();
         int color = ColorUtils.getColorFromNBT(stack, 0);
         /*alphaSlider = new ExtendedSlider(
                 leftPos + 40, topPos + 30, 150, 20,
@@ -72,7 +70,7 @@ public class LightSaberScreen extends ItemStackScreen {
     @Override
     public void renderBackground(GuiGraphics gui, int mx, int my, float partTick) {
         super.renderBackground(gui, mx, my, partTick);
-        GuiDrawer.drawDefaultBackground(gui, leftPos, topPos, 256, 192);
+        GuiDrawer.drawDefaultBackground(gui, leftPos, topPos, imageWidth, imageHeight);
         //gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("alpha"), leftPos + 10, topPos + 38, alphaSlider.getValueInt() << 24, false);
         gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("red"), leftPos + 10, topPos + 38, redSlider.getValueInt() << 16, false);
         gui.drawString(font, ModConstants.GUI.withSuffixTranslatable("green"), leftPos + 10, topPos + 63, greenSlider.getValueInt() << 8, false);
@@ -128,17 +126,5 @@ public class LightSaberScreen extends ItemStackScreen {
         gui.flush();
         if (blockLight) Lighting.setupFor3DItems();
         pose.popPose();
-    }
-
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
-        if (super.keyPressed(keyCode, scanCode, modifiers)) return true;
-        else if (mc.options.keyInventory.isActiveAndMatches(mouseKey)) {
-            this.onClose();
-            return true;
-        }else {
-            return false;
-        }
     }
 }

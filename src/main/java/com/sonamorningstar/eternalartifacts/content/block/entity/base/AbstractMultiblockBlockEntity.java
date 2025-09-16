@@ -2,31 +2,45 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
+import com.sonamorningstar.eternalartifacts.content.multiblock.base.MultiblockCapabilityManager;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import net.neoforged.neoforge.capabilities.Capabilities;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMachineMenu> {
 	@Setter
 	private boolean isMaster = false;
+	@Setter
+	private BlockState deformState = Blocks.AIR.defaultBlockState();
 	private int masterXOff = 0;
 	private int masterYOff = 0;
 	private int masterZOff = 0;
 	private final Multiblock multiblock;
+	@Setter
+	private Set<BlockPos> slaves = new HashSet<>();
+	private boolean isDeforming = false;
 	
 	private Direction forwards = Direction.NORTH;
 	private Direction upwards = Direction.UP;
@@ -60,6 +74,15 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 			super.saveAdditional(tag);
 			tag.putString("Forwards", forwards.getName());
 			tag.putString("Upwards", upwards.getName());
+			ListTag slavesTag = new ListTag();
+			for (BlockPos slave : slaves) {
+				slavesTag.add(NbtUtils.writeBlockPos(slave));
+			}
+			tag.put("Slaves", slavesTag);
+		}
+		if (!deformState.isAir()) {
+			CompoundTag stateTag = NbtUtils.writeBlockState(deformState);
+			tag.put("DeformState", stateTag);
 		}
 	}
 	
@@ -73,6 +96,44 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 			super.load(tag);
 			forwards = Direction.byName(tag.getString("Forwards"));
 			upwards = Direction.byName(tag.getString("Upwards"));
+			ListTag slavesTag = tag.getList("Slaves", 10);
+			slaves = new HashSet<>();
+			for (int i = 0; i < slavesTag.size(); i++) {
+				slaves.add(NbtUtils.readBlockPos(slavesTag.getCompound(i)));
+			}
+		}
+		deformState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("DeformState"));
+	}
+	
+	public void deformMultiblock() {
+		deformMultiblock(getBlockPos());
+	}
+	
+	public void deformMultiblock(BlockPos brokenPos) {
+		AbstractMultiblockBlockEntity master = getMasterBlockEntity();
+		if (master != null) {
+			master.deformOnMaster(brokenPos);
+			level.setBlockAndUpdate(getBlockPos(), getDeformState());
+		}
+	}
+	
+	private void deformOnMaster(BlockPos brokenPos) {
+		if (!isDeforming) {
+			isDeforming = true;
+			for (BlockPos slave : slaves) {
+				BlockEntity be = level.getBlockEntity(slave);
+				if (be instanceof AbstractMultiblockBlockEntity ambe) {
+					level.setBlockAndUpdate(slave, ambe.getDeformState());
+				}
+			}
+			var itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, brokenPos, null);
+			if (itemHandler != null) {
+				for (int i = 0; i < itemHandler.getSlots(); i++) {
+					ItemStack stack = itemHandler.getStackInSlot(i);
+					Block.popResource(level, brokenPos, stack);
+				}
+			}
+			level.setBlockAndUpdate(getBlockPos(), getDeformState());
 		}
 	}
 	
@@ -102,15 +163,28 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 		return null;
 	}
 	
-	//Wrap capabilities if ctx is not null.
 	@Nullable
 	public ModEnergyStorage getEnergy(Direction ctx) {
 		AbstractMultiblockBlockEntity masterBe = getMasterBlockEntity();
 		if (masterBe != null) {
 			if (masterBe == this) {
-				return energy;
+				if (ctx == null) return energy;
+				
+				BlockPos frontLeftPos = getFrontLeftPos();
+				if (frontLeftPos != null) {
+					boolean hasCapability = multiblock.getCapabilityManager()
+						.hasCapability(frontLeftPos, getBlockPos(), ctx, MultiblockCapabilityManager.CapabilityType.ENERGY, getForwards(), getUpwards());
+					
+					return hasCapability ? energy : null;
+				}
+			} else {
+				if (ctx == null) return masterBe.getEnergy(null);
+				
+				boolean hasCapability = multiblock.getCapabilityManager()
+					.hasCapability(masterBe.getFrontLeftPos(), getBlockPos(), ctx, MultiblockCapabilityManager.CapabilityType.ENERGY, masterBe.getForwards(), masterBe.getUpwards());
+				
+				return hasCapability ? masterBe.getEnergy(null) : null;
 			}
-			return masterBe.getEnergy(ctx);
 		}
 		return null;
 	}
@@ -119,8 +193,24 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 	public AbstractFluidTank getTank(Direction ctx) {
 		AbstractMultiblockBlockEntity masterBe = getMasterBlockEntity();
 		if (masterBe != null) {
-			if (masterBe == this) return tank;
-			return masterBe.getTank(ctx);
+			if (masterBe == this) {
+				if (ctx == null) return tank;
+				
+				BlockPos frontLeftPos = getFrontLeftPos();
+				if (frontLeftPos != null) {
+					boolean hasCapability = multiblock.getCapabilityManager()
+						.hasCapability(frontLeftPos, getBlockPos(), ctx, MultiblockCapabilityManager.CapabilityType.FLUID, getForwards(), getUpwards());
+					
+					return hasCapability ? tank : null;
+				}
+			} else {
+				if (ctx == null) return masterBe.getTank(null);
+				
+				boolean hasCapability = multiblock.getCapabilityManager()
+					.hasCapability(masterBe.getFrontLeftPos(), getBlockPos(), ctx, MultiblockCapabilityManager.CapabilityType.FLUID, masterBe.getForwards(), masterBe.getUpwards());
+			
+				return hasCapability ? masterBe.getTank(null) : null;
+			}
 		}
 		return null;
 	}
@@ -129,17 +219,32 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 	public ModItemStorage getInventory(Direction ctx) {
 		AbstractMultiblockBlockEntity masterBe = getMasterBlockEntity();
 		if (masterBe != null) {
-			if (masterBe == this) return inventory;
-			return masterBe.getInventory(ctx);
+			if (masterBe == this) {
+				if (ctx == null) return inventory;
+				
+				BlockPos frontLeftPos = getFrontLeftPos();
+				if (frontLeftPos != null) {
+					boolean hasCapability = multiblock.getCapabilityManager()
+						.hasCapability(frontLeftPos, getBlockPos(), ctx, MultiblockCapabilityManager.CapabilityType.ITEM, getForwards(), getUpwards());
+					
+					return hasCapability ? inventory : null;
+				}
+			} else {
+				if (ctx == null) return masterBe.getInventory(null);
+				
+				boolean hasCapability = multiblock.getCapabilityManager()
+					.hasCapability(masterBe.getFrontLeftPos(), getBlockPos(), ctx, MultiblockCapabilityManager.CapabilityType.ITEM, masterBe.getForwards(), masterBe.getUpwards());
+			
+				return hasCapability ? masterBe.getInventory(null) : null;
+			}
 		}
 		return null;
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState state) {
+	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		if (isMaster) {
-		
+			super.tickServer(lvl, pos, st);
 		}
 	}
-	
 }

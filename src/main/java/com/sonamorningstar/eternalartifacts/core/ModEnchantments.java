@@ -1,10 +1,14 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.enchantment.*;
+import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.MachineEnchantment;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
@@ -12,9 +16,15 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
+import java.util.Map;
+import java.util.Set;
+
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModEnchantments {
+    private static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    
+    
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(Registries.ENCHANTMENT, MODID);
 
     public static final DeferredHolder<Enchantment, VolumeEnchantment> VOLUME = ENCHANTMENTS.register("volume", VolumeEnchantment::new);
@@ -24,7 +34,10 @@ public class ModEnchantments {
     public static final DeferredHolder<Enchantment, EverlastingEnchantment> EVERLASTING = ENCHANTMENTS.register("everlasting", EverlastingEnchantment::new);
     public static final DeferredHolder<Enchantment, CelerityEnchantment> CELERITY = ENCHANTMENTS.register("celerity", CelerityEnchantment::new);
     public static final DeferredHolder<Enchantment, MachineEnchantment> WORLDBIND = ENCHANTMENTS.register("worldbind", () -> new MachineEnchantment(Enchantment.Rarity.VERY_RARE));
-    
+    public static final DeferredHolder<Enchantment, AttributeEnchantment> FORTIFICATION = ENCHANTMENTS.register("fortification",
+        () -> new FortificationEnchantment(Enchantment.Rarity.RARE, Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS),
+            EnchantmentCategory.ARMOR, ARMOR_SLOTS)
+    );
     public static class ModEnchantmentCategory{
         public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {
             ItemStack stack = item.getDefaultInstance();

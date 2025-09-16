@@ -64,6 +64,9 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
     @Override
     protected void renderLabels(GuiGraphics gui, int mx, int my) {
         if(screenInfo.isShouldDrawMachineTitle()) gui.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
-        if(screenInfo.isShouldDrawInventoryTitle()) gui.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 4210752, false);
+        if(screenInfo.isShouldDrawInventoryTitle()) {
+            int xOff = menu.getBeTank() != null ? 0 : -18;
+            gui.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX + xOff, this.inventoryLabelY, 4210752, false);
+        }
     }
 }

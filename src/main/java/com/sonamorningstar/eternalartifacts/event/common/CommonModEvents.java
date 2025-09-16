@@ -33,6 +33,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ChestBlock;
@@ -180,27 +181,6 @@ public class CommonModEvents {
             if (network == null) return null;
             return network.getCapabilityClass() == IEnergyStorage.class ? new TesseractEnergyCap(be) : null;
         });
-        
-        for (DeferredHolder<BlockEntityType<?>, ? extends BlockEntityType<?>> holder : ModBlockEntities.MULTIBLOCKS) {
-            event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.get(), (be, ctx) -> {
-                if (be instanceof AbstractMultiblockBlockEntity ambe) {
-                    return ambe.getEnergy(ctx);
-                }
-                return null;
-            });
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.get(), (be, ctx) -> {
-                if (be instanceof AbstractMultiblockBlockEntity ambe) {
-                    return ambe.getTank(ctx);
-                }
-                return null;
-            });
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.get(), (be, ctx) -> {
-                if (be instanceof AbstractMultiblockBlockEntity ambe) {
-                    return ambe.getInventory(ctx);
-                }
-                return null;
-            });
-        }
     }
 
     private static void registerDrum(RegisterCapabilitiesEvent event, DeferredBlock<DrumBlock> holder) {
@@ -220,6 +200,7 @@ public class CommonModEvents {
         event.put(ModEntities.DEMON_EYE.get(), DemonEyeEntity.createAttributes().build());
         event.put(ModEntities.PINKY.get(), PinkyEntity.createAttributes().build());
         event.put(ModEntities.MAGICAL_BOOK.get(), MagicalBookEntity.createAttributes().build());
+        event.put(ModEntities.HONEY_SLIME.get(), Monster.createMonsterAttributes().build());
 
         event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
         event.put(ModEntities.CHARGED_SHEEP.get(), ChargedSheepEntity.createAttributes().build());

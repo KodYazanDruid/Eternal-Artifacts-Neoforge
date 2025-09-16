@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.fml.ModContainer;
@@ -20,6 +21,10 @@ public class ModListUtils {
 	public static Optional<String> getFluidCreatorModId(FluidStack fluid) {
 		if (fluid.isEmpty()) return Optional.empty();
 		return Optional.of(getModNameForModId(BuiltInRegistries.FLUID.getKey(fluid.getFluid()).getNamespace()));
+	}
+	
+	public static Optional<String> getEntityCreatorModId(EntityType<?> entityType) {
+		return Optional.of(getModNameForModId(BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getNamespace()));
 	}
 	
 	public static String getModNameForModId(String modid) {

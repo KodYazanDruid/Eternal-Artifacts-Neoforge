@@ -3,12 +3,15 @@ package com.sonamorningstar.eternalartifacts.content.block;
 import com.sonamorningstar.eternalartifacts.content.block.base.AbstractPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Cable;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,6 +23,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.IExtensibleEnum;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 @Getter
 @SuppressWarnings({"deprecation"})
@@ -70,23 +75,31 @@ public class CableBlock extends AbstractPipeBlock<IEnergyStorage> {
         return super.use(pState, level, pPos, pPlayer, hand, hit);
     }
     
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+        super.appendHoverText(stack, pLevel, pTooltip, pFlag);
+        pTooltip.add(Component.translatable(ModConstants.BLOCK.withSuffix("pipe.range"), tier.maxRange).withColor(0xADD8E6));
+        pTooltip.add(Component.translatable(ModConstants.BLOCK.withSuffix("pipe.energy.transfer_rate"), tier.transferRate).withColor(0xADD8E6));
+        if (this instanceof UncoveredCableBlock) pTooltip.add(Component.translatable(ModConstants.BLOCK.withSuffix("pipe.energy.damage_cost"), tier.damageCost).withColor(0xADD8E6));
+    }
+    
     @Getter
     public enum CableTier implements IExtensibleEnum {
         TIN(16, 100, 10),
         COPPER(24, 1000, 50),
         GOLD(32, 4000, 100);
         
-        private final int maxConnections;
+        private final int maxRange;
         private final int transferRate;
         private final int damageCost;
         
-        CableTier(int maxConnections, int transferRate, int damageCost) {
-            this.maxConnections = maxConnections;
+        CableTier(int maxRange, int transferRate, int damageCost) {
+            this.maxRange = maxRange;
             this.transferRate = transferRate;
             this.damageCost = damageCost;
         }
         
-        public static CableTier create(String name, int maxConnections, int transferRate, int damageCost) {
+        public static CableTier create(String name, int maxRange, int transferRate, int damageCost) {
             throw new IllegalStateException("Enum not extended");
         }
     }

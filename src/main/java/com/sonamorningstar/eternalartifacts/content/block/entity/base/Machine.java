@@ -297,13 +297,13 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     
     @Override
     public void setRemoved() {
-        super.setRemoved();
         RecipeCache.clearRecipes(this);
         FakePlayerHelper.removeFakePlayer(this);
         if (!level.isClientSide()) {
             removeFromManager();
             updateForcedChunks();
         }
+        super.setRemoved();
     }
     
     protected void setRecipeTypeAndContainer(RecipeType<? extends Recipe<? extends Container>> type, Supplier<? extends Container> container) {

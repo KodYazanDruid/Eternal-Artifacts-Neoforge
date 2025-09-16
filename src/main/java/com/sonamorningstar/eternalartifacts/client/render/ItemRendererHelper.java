@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.util;
+package com.sonamorningstar.eternalartifacts.client.render;
 
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;

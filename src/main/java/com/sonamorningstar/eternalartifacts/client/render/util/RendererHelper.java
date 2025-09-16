@@ -1,14 +1,19 @@
 package com.sonamorningstar.eternalartifacts.client.render.util;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -110,6 +115,7 @@ public class RendererHelper {
         if (info.shouldRender(Direction.WEST)) drawQuad(consumer, poseStack, x0, y0, z1, x0, y1, z0, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
         if (info.shouldRender(Direction.DOWN)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y0, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
     }
+    
 
     public static void drawQuad(
             VertexConsumer vertexConsumer,

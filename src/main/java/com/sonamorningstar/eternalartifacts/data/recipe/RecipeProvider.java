@@ -284,6 +284,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 SizedIngredient.of(Tags.Items.SLIMEBALLS, 1),
                 SizedIngredient.of(Tags.Items.DYES_GREEN, 1)
             ), ModBlocks.INDUSTRIAL_SPONGE.toStack(), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+            SizedIngredient.of(Tags.Items.NETHER_STARS, 1),
+            SizedIngredient.of(Tags.Items.INGOTS_NETHERITE, 1),
+            SizedIngredient.of(ModItems.CHLOROPHYTE_INGOT.get())
+        ), ModItems.OBLIVIUM_INGOT.toStack(), "");
 
         //region Mob Liquifying recipes.
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(

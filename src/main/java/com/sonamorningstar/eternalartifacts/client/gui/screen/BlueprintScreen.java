@@ -8,7 +8,7 @@ import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
 import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
+import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;

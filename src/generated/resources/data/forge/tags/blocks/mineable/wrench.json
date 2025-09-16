@@ -27,12 +27,18 @@
     "eternalartifacts:marine_fisher",
     "eternalartifacts:smithinator",
     "eternalartifacts:dimensional_anchor",
+    "eternalartifacts:repairer",
+    "eternalartifacts:recycler",
+    "eternalartifacts:packer",
+    "eternalartifacts:unpacker",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:autocutter",
     "eternalartifacts:oil_refinery",
     "eternalartifacts:advanced_crafter",
     "eternalartifacts:induction_furnace",
     "eternalartifacts:block_placer",
-    "eternalartifacts:block_breaker"
+    "eternalartifacts:block_breaker",
+    "eternalartifacts:pumpjack",
+    "eternalartifacts:generator"
   ]
 }

@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.sonamorningstar.eternalartifacts.client.render.EntityRendererHelper;
+import com.sonamorningstar.eternalartifacts.client.render.util.RendererHelper;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.base.EAEmiRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.EntityIngredient;
@@ -12,10 +14,12 @@ import dev.emi.emi.api.render.EmiTexture;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,12 +61,16 @@ public class MobLiquifierCategory extends EAEmiRecipe {
                 EntityType<?> randomized = types[(int) ((mc.clientTickCount / 20) % (types.length))];
                 if (living.getType() != randomized) living = (LivingEntity) randomized.create(mc.level);
             }
-            InventoryScreen.renderEntityInInventory(
-                    gui, 12, 24, 25, new Vector3f(),
-                    new Quaternionf().rotationXYZ(0.2F, 3F, (float) Math.PI), null,
-                    living);
+            if (living == null) return;
+            if (entityIngredient.values[0] instanceof EntityIngredient.TagValue value)
+                living.setCustomName(Component.literal("#"+value.tag().location()).withStyle(ChatFormatting.ITALIC));
+            PoseStack pose = gui.pose();
+            EntityRendererHelper.renderEntityInGui(pose, 12, 24, 25, living);
+            pose.pushPose();
+            pose.translate(0, 0, 200);
             if (isInBounds(0, 0, 38, 38, mouseX, mouseY))
-                gui.renderTooltip(mc.font, living.getName(), mouseX, mouseY);
+                EntityRendererHelper.renderTooltip(gui, living, mouseX, mouseY, mc.options.advancedItemTooltips);
+            pose.popPose();
         });
         widgets.addText(Component.literal("1x "), 34, 10, 0, false);
         widgets.addTexture(HEART_CONTAINER_TEXTURE, 46, 8);

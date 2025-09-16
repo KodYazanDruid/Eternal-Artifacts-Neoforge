@@ -9,7 +9,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
-import net.neoforged.fml.common.Mod;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
@@ -217,6 +216,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MAGIC_BANE.get(), "Magic Bane");
                 add(ModItems.DEATH_CAP.get(), "Death Cap");
                 add(ModItems.MOONGLASS_PENDANT.get(), "Moonglass Pendant");
+                add(ModItems.ENTITY_CATALOGUE.get(), "Entity Catalogue");
+                add(ModItems.OBLIVIUM_INGOT.get(), "Oblivium Ingot");
+                add(ModItems.HONEY_SLIME_SPAWN_EGG.get(), "Honey Slime Spawn Egg");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -351,6 +353,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.MAGICAL_BOOK.get(), "Magical Book");
                 add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Primed %s");
                 add(ModEntities.CHARGED_SHEEP.get(), "Charged Sheep");
+                add(ModEntities.HONEY_SLIME.get(), "Honey Slime");
                 //endregion
                 //region Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -373,6 +376,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.EVERLASTING.get(), "Everlasting");
                 add(ModEnchantments.CELERITY.get(), "Celerity");
                 add(ModEnchantments.WORLDBIND.get(), "Worldbind");
+                add(ModEnchantments.FORTIFICATION.get(), "Fortification");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -509,6 +513,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("autocutter.reset_index"), "Reset Selection");
                 add(ModConstants.TOOLTIP.withSuffix("wildcard_blacklisted"), "This item is blacklisted in Wildcard Charm slot.");
                 add(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"), "Loading %d chunks.");
+                add(ModConstants.GUI.withSuffix("catalogue.chosen_entity"), "Chosen entity: %s");
+                add(ModConstants.GUI.withSuffix("catalogue_health"), "Health: %1$.2d / %2$.2d");
+                add(ModConstants.BLOCK.withSuffix("pipe.range"), "Range: %d blocks");
+                add(ModConstants.BLOCK.withSuffix("pipe.item.transfer_rate"), "Items per tick: %d");
+                add(ModConstants.BLOCK.withSuffix("pipe.fluid.transfer_rate"), "Fluid per tick: %d mB");
+                add(ModConstants.BLOCK.withSuffix("pipe.energy.transfer_rate"), "Transfer rate: %d RF per tick");
+                add(ModConstants.BLOCK.withSuffix("pipe.energy.damage_cost"), "Damage cost: %d RF per hit");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -520,6 +531,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                     add(ModConstants.CHARM_TYPE.withSuffix(value.getLowerCaseName()), prettyName(value.getLowerCaseName()));
                     add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(value.getLowerCaseName()), "When on " + prettyName(value.getLowerCaseName()) + " Charm:");
                 }
+                ModMultiblocks.MULTIBLOCKS.getBlockHolders().forEach(holder ->
+                    add(holder.get(), prettyName(holder.getId().getPath()))
+                );
                 //endregion
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
                     if("en_us".equals(loc)) add(lang.getFirst(), lang.getSecond());
@@ -729,6 +743,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MAGIC_BANE.get(), "Sihirli Felaket");
                 add(ModItems.DEATH_CAP.get(), "Ölüm Şapkası");
                 add(ModItems.MOONGLASS_PENDANT.get(), "Aycamı Kolyesi");
+                add(ModItems.ENTITY_CATALOGUE.get(), "Varlık Kataloğu");
+                add(ModItems.OBLIVIUM_INGOT.get(), "Oblivyum Külçesi");
+                add(ModItems.HONEY_SLIME_SPAWN_EGG.get(), "Bal Balçığı Çağırma Yumurtası");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -900,6 +917,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GLOWSTONE_TORCH.get(), "Işık Taşı Meşalesi");
                 add(ModBlocks.GLOWTORCH.get(), "Parlayan Meşale");
                 add(ModMachines.DIMENSIONAL_ANCHOR.getBlockTranslationKey(), "Boyutsal Çapa");
+                add(ModMultiblocks.PUMPJACK.getTranslationKey(), "Pompalı Kriko");
+                add(ModMultiblocks.GENERATOR.getTranslationKey(), "Jeneratör");
+                add(ModMachines.REPAIRER.getBlockTranslationKey(), "Onarıcı");
+                add(ModMachines.RECYCLER.getBlockTranslationKey(), "Geri Dönüştürücü");
+                add(ModMachines.PACKER.getBlockTranslationKey(), "Paketleyici");
+                add(ModMachines.UNPACKER.getBlockTranslationKey(), "Paket Açıcı");
+                
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -908,6 +932,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.MAGICAL_BOOK.get(), "Büyülü Kitap");
                 add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Ateşlenmiş %s");
                 add(ModEntities.CHARGED_SHEEP.get(), "Şarzlı Koyun");
+                add(ModEntities.HONEY_SLIME.get(), "Bal Balçığı");
                 //endregion
                 //region Türkçe Efekt
                 add(ModEffects.FLIGHT.get(), "Uçuş");
@@ -938,6 +963,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.EVERLASTING.get(), "Ebedi");
                 add(ModEnchantments.CELERITY.get(), "Sürat");
                 add(ModEnchantments.WORLDBIND.get(), "Dünyabağı");
+                add(ModEnchantments.FORTIFICATION.get(), "Tahkim");
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");
@@ -1093,6 +1119,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("autocutter.reset_index"), "Seçimi sıfırla");
                 add(ModConstants.TOOLTIP.withSuffix("wildcard_blacklisted"), "Bu eşya, Joker Tılsım slotunda kara listede.");
                 add(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"), "%d yığın yükleniyor.");
+                add(ModConstants.GUI.withSuffix("catalogue.chosen_entity"), "Seçilen varlık: %s");
+                add(ModConstants.GUI.withSuffix("catalogue_health"), "Can: %1$.2d / %2$.2d");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

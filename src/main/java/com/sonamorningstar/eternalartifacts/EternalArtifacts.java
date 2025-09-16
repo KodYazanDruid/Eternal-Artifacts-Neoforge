@@ -48,6 +48,7 @@ public class EternalArtifacts {
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
         ModSpells.SPELLS.register(modEventBus);
         ModMachines.MACHINES.register(modEventBus);
+        ModMultiblocks.MULTIBLOCKS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems.ITEMS.register(modEventBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -69,9 +70,9 @@ public class EternalArtifacts {
         ModInventoryTabs.INVENTORY_TABS.register(modEventBus);
         ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
-        ModMultiblocks.MULTIBLOCKS.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
+        modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMultiblocks.MULTIBLOCKS::registerCapabilities);
         modEventBus.addListener(RegisterPayloadHandlerEvent.class, Channel::onRegisterPayloadHandler);
         NeoForge.EVENT_BUS.addListener(CharmTickEvent.class, CharmStorage::charmTick);
         ModCommands.addListener();

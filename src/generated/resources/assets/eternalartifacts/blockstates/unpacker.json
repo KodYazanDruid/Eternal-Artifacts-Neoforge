@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/unpacker",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/unpacker"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/unpacker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/unpacker",
+      "y": 270
+    }
+  }
+}

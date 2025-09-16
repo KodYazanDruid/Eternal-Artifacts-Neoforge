@@ -100,14 +100,14 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,
             FastColor.ARGB32.blue(guiTint) / 255.0F, alpha / 255.0F);
     }
-    public void applyCustomGuiTint(GuiGraphics gui, int color) {
+    public static void applyCustomGuiTint(GuiGraphics gui, int color) {
         gui.setColor(FastColor.ARGB32.red(color) / 255.0F, FastColor.ARGB32.green(color) / 255.0F,
             FastColor.ARGB32.blue(color) / 255.0F, FastColor.ARGB32.alpha(color) / 255.0F);
     }
     public void resetGuiTint(GuiGraphics gui) {
         applyGuiTint(gui);
     }
-    public void clearGuiTint(GuiGraphics gui) {
+    public static void clearGuiTint(GuiGraphics gui) {
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
     

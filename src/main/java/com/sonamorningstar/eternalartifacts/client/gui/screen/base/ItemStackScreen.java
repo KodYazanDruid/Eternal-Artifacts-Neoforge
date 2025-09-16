@@ -1,10 +1,13 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
+import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 
 public abstract class ItemStackScreen extends Screen {
+    protected static Minecraft mc;
     protected final ItemStack stack;
     protected int leftPos;
     protected int topPos;
@@ -17,6 +20,7 @@ public abstract class ItemStackScreen extends Screen {
 
     @Override
     protected void init() {
+        mc = Minecraft.getInstance();
         leftPos = (width - imageWidth) / 2;
         topPos = (height - imageHeight) / 2;
     }
@@ -35,4 +39,17 @@ public abstract class ItemStackScreen extends Screen {
     public void renderLabel(GuiGraphics gui) {
         gui.drawString(font, title, leftPos + 8, topPos + 6, 4210752, false);
     }
+    
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
+        if (super.keyPressed(keyCode, scanCode, modifiers)) return true;
+        else if (mc.options.keyInventory.isActiveAndMatches(mouseKey)) {
+            this.onClose();
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }

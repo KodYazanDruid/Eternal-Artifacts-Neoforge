@@ -1,0 +1,23 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    {
+      "amount": 1,
+      "tag": "forge:nether_stars"
+    },
+    {
+      "amount": 1,
+      "tag": "forge:ingots/netherite"
+    },
+    {
+      "item_stack": {
+        "Count": 1,
+        "id": "eternalartifacts:chlorophyte_ingot"
+      }
+    }
+  ],
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:oblivium_ingot"
+  }
+}

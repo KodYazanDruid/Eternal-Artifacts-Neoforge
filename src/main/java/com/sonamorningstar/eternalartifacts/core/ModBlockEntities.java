@@ -16,7 +16,6 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ModBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
             DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
-    public static final Set<DeferredHolder<BlockEntityType<?>, ? extends BlockEntityType<?>>> MULTIBLOCKS = new HashSet<>();
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Anvilinator>> ANVILINATOR = BLOCK_ENTITIES.register("anvilinator", ()->
             BlockEntityType.Builder.of(Anvilinator::new, ModBlocks.ANVILINATOR.get()).build(null));
@@ -101,15 +100,4 @@ public class ModBlockEntities {
                 ModBlocks.BLAZE_HEAD.get(),
                 ModBlocks.BLAZE_WALL_HEAD.get()
             ).build(null));
-    
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PumpjackMB>> PUMPJACK = registerMultiblockBE("pumpjack",
-        () -> BlockEntityType.Builder.of(PumpjackMB::new, ModBlocks.PUMPJACK.get()
-        ).build(null));
-
-    
-    private static <T extends BlockEntityType<?>> DeferredHolder<BlockEntityType<?>, T> registerMultiblockBE(String name, Supplier<T> supplier) {
-        var multiblockBE = BLOCK_ENTITIES.register(name, supplier);
-        MULTIBLOCKS.add(multiblockBE);
-        return multiblockBE;
-    }
 }

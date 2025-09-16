@@ -31,6 +31,8 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	public final LinkedHashSet<BlockPos> networkPipes = new LinkedHashSet<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> allSources = new LinkedHashMap<>();
 	public final Map<BlockPos, BlockCapabilityCache<CAP, Direction>> allTargets = new LinkedHashMap<>();
+	public final Map<BlockPos, Map<BlockPos, Integer>> sourceToTargetDistances = new HashMap<>();
+	
 	
 	public boolean isDirty = false;
 	private boolean updateNetwork = false;
@@ -90,24 +92,14 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 		
 		if (updateNetwork) {
 			updateNetwork = false;
-			networkPipes.clear();
-			allSources.clear();
-			allTargets.clear();
-			collectNetworkDevices(networkPipes, allSources, allTargets, lvl);
+			collectNetworkDevicesWithDistances(lvl);
 		}
 		
-		if (sources.isEmpty() || allTargets.isEmpty()) return;
+		if (sources.isEmpty() || allTargets.isEmpty() || isUpdatingConnections) return;
 		
-		if (!isUpdatingConnections) {
-			doTransfer(new LinkedHashMap<>(sources), new LinkedHashMap<>(allTargets));
-		}
+		doTransfer(Map.copyOf(sources), Map.copyOf(allTargets));
 	}
 	
-	/**
-	 * Checks if the pipe should connect to the given block.
-	 * @param neighborState the state of the block to check
-	 * @return {@code true} if the pipe should connect, {@code false} otherwise
-	 */
 	protected boolean shouldPipesConnect(BlockState neighborState, Direction direction) {
 		return !manuallyDisabled.get(direction);
 	}
@@ -163,29 +155,114 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 		}
 	}
 	
-	protected abstract int getMaxConnections();
+	protected abstract int getMaxRange();
 	
-	private void collectNetworkDevices(LinkedHashSet<BlockPos> visitedCables,
-									   Map<BlockPos, BlockCapabilityCache<CAP, Direction>> allSources,
-									   Map<BlockPos, BlockCapabilityCache<CAP, Direction>> allTargets,
-									   Level lvl) {
-		visitedCables.add(getBlockPos());
-		allSources.putAll(sources);
-		allTargets.putAll(targets);
+	protected void collectNetworkDevicesWithDistances(Level lvl) {
+		networkPipes.clear();
+		allSources.clear();
+		allTargets.clear();
+		sourceToTargetDistances.clear();
 		
-		if (visitedCables.size() < getMaxConnections()) {
-			for (BlockPos cablePos : pipes) {
-				if (!visitedCables.contains(cablePos)) {
-					BlockEntity entity = lvl.getBlockEntity(cablePos);
-					if (entity instanceof AbstractPipeBlockEntity<?> adjCable &&
-						Objects.equals(adjCable.getCapabilityClass(), capabilityClass)) {
-						AbstractPipeBlockEntity<CAP> typed = (AbstractPipeBlockEntity<CAP>) adjCable;
-						typed.collectNetworkDevices(visitedCables, allSources, allTargets, lvl);
-						typed.updateNetwork = true;
+		Queue<BlockPos> queue = new LinkedList<>();
+		Map<BlockPos, AbstractPipeBlockEntity<CAP>> pipeEntities = new HashMap<>();
+		
+		queue.add(getBlockPos());
+		networkPipes.add(getBlockPos());
+		pipeEntities.put(getBlockPos(), this);
+		
+		while (!queue.isEmpty()) {
+			BlockPos currentPos = queue.poll();
+			AbstractPipeBlockEntity<CAP> currentPipe = pipeEntities.get(currentPos);
+			
+			allSources.putAll(currentPipe.sources);
+			allTargets.putAll(currentPipe.targets);
+			
+			for (BlockPos pipePos : currentPipe.pipes) {
+				if (networkPipes.contains(pipePos)) continue;
+				
+				BlockEntity be = lvl.getBlockEntity(pipePos);
+				if (!(be instanceof AbstractPipeBlockEntity<?> pipe) ||
+					!Objects.equals(pipe.getCapabilityClass(), capabilityClass)) continue;
+				
+				@SuppressWarnings("unchecked")
+				AbstractPipeBlockEntity<CAP> typedPipe = (AbstractPipeBlockEntity<CAP>) pipe;
+				
+				networkPipes.add(pipePos);
+				pipeEntities.put(pipePos, typedPipe);
+				queue.add(pipePos);
+				
+				typedPipe.updateNetwork = true;
+			}
+		}
+		
+		calculateDistances(pipeEntities);
+	}
+	
+	private void calculateDistances(Map<BlockPos, AbstractPipeBlockEntity<CAP>> pipeEntities) {
+		for (BlockPos sourcePos : allSources.keySet()) {
+			Map<BlockPos, Integer> distancesToTargets = new HashMap<>();
+			sourceToTargetDistances.put(sourcePos, distancesToTargets);
+			
+			Queue<BlockPos> queue = new LinkedList<>();
+			Set<BlockPos> visited = new HashSet<>();
+			Map<BlockPos, Integer> distances = new HashMap<>();
+			
+			BlockPos startPos = findNearestPipe(sourcePos, pipeEntities);
+			if (startPos == null) continue;
+			
+			queue.add(startPos);
+			visited.add(startPos);
+			distances.put(startPos, 0);
+			
+			while (!queue.isEmpty()) {
+				BlockPos currentPos = queue.poll();
+				int currentDistance = distances.get(currentPos);
+				
+				if (currentDistance >= getMaxRange()) continue;
+				
+				for (Map.Entry<BlockPos, BlockCapabilityCache<CAP, Direction>> entry : allTargets.entrySet()) {
+					BlockPos targetPos = entry.getKey();
+					if (isAdjacent(currentPos, targetPos)) {
+						distancesToTargets.put(targetPos, currentDistance + 1);
+					}
+				}
+				
+				AbstractPipeBlockEntity<CAP> currentPipe = pipeEntities.get(currentPos);
+				if (currentPipe == null) continue;
+				
+				for (BlockPos neighborPos : currentPipe.pipes) {
+					if (!visited.contains(neighborPos) && networkPipes.contains(neighborPos)) {
+						queue.add(neighborPos);
+						visited.add(neighborPos);
+						distances.put(neighborPos, currentDistance + 1);
 					}
 				}
 			}
 		}
+	}
+	
+	private BlockPos findNearestPipe(BlockPos pos, Map<BlockPos, AbstractPipeBlockEntity<CAP>> pipeEntities) {
+		if (pipeEntities.containsKey(pos)) {
+			return pos;
+		}
+		
+		for (Direction dir : Direction.values()) {
+			BlockPos neighborPos = pos.relative(dir);
+			if (pipeEntities.containsKey(neighborPos)) {
+				return neighborPos;
+			}
+		}
+		
+		return null;
+	}
+	
+	protected boolean isAdjacent(BlockPos pos1, BlockPos pos2) {
+		for (Direction dir : Direction.values()) {
+			if (pos1.relative(dir).equals(pos2)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	protected abstract void doTransfer(Map<BlockPos, BlockCapabilityCache<CAP, Direction>> sources,

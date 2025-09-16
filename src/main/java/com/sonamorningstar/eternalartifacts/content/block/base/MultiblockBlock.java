@@ -2,45 +2,45 @@ package com.sonamorningstar.eternalartifacts.content.block.base;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
-import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractMultiblockBlock extends Block implements EntityBlock {
-	public AbstractMultiblockBlock(Properties props) {
+public class MultiblockBlock extends Block implements EntityBlock {
+	private final BlockEntityType.BlockEntitySupplier<? extends AbstractMultiblockBlockEntity> fun;
+	public MultiblockBlock(Properties props, BlockEntityType.BlockEntitySupplier<? extends AbstractMultiblockBlockEntity> fun) {
 		super(props);
+		this.fun = fun;
 	}
 	
 	@Override
 	public InteractionResult use(BlockState pState, Level level, BlockPos pPos, Player pPlayer, InteractionHand hand, BlockHitResult pHit) {
 		BlockEntity be = level.getBlockEntity(pPos);
-		if (be instanceof AbstractMultiblockBlockEntity mbBe && !level.isClientSide() && hand == InteractionHand.MAIN_HAND) {
-			System.out.println("Using multiblock at " + mbBe.getFrontLeftPos());
-		}
+		
 		return super.use(pState, level, pPos, pPlayer, hand, pHit);
 	}
 	
 	@Override
-	public void destroy(LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
-		if (!(pLevel instanceof Level level)) return;
-		BlockEntity be = level.getBlockEntity(pPos);
-		if (be instanceof AbstractMultiblockBlockEntity mbBe) {
-		
-		}
-		super.destroy(pLevel, pPos, pState);
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState pNewState, boolean pMovedByPiston) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be instanceof AbstractMultiblockBlockEntity ambe) ambe.deformMultiblock();
+		super.onRemove(state, level, pos, pNewState, pMovedByPiston);
+	}
+	
+	@Nullable
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+		return fun.create(pPos, pState);
 	}
 	
 	@Nullable

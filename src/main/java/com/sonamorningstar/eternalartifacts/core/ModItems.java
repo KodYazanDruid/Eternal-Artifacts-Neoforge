@@ -130,12 +130,14 @@ public class ModItems {
     public static final DeferredItem<Item> MACHINE_ITEM_FILTER = register("machine_item_filter", ItemFilter::new);
     public static final DeferredItem<Item> MACHINE_FLUID_FILTER = register("machine_fluid_filter", FluidFilter::new);
     public static final DeferredItem<Item> COPPER_DUST = register("copper_dust");
+    public static final DeferredItem<Item> OBLIVIUM_INGOT = register("oblivium_ingot");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
     public static final DeferredItem<DeferredSpawnEggItem> MAGICAL_BOOK_SPAWN_EGG = registerSpawnEgg("magical_book_spawn_egg", ModEntities.MAGICAL_BOOK, 0xe9b115, 0x752802);
     public static final DeferredItem<DeferredSpawnEggItem> DUCK_SPAWN_EGG = registerSpawnEgg("duck_spawn_egg", ModEntities.DUCK, 0x126700, 0xF2691B);
     public static final DeferredItem<DeferredSpawnEggItem> CHARGED_SHEEP_SPAWN_EGG = registerSpawnEgg("charged_sheep_spawn_egg", ModEntities.CHARGED_SHEEP, 0xF8D0FF, 0xFFA1D7);
+    public static final DeferredItem<DeferredSpawnEggItem> HONEY_SLIME_SPAWN_EGG = registerSpawnEgg("honey_slime_spawn_egg", ModEntities.HONEY_SLIME, 0xe9981f, 0xe0e90c);
     //endregion
     //region Actual artifacts.
     public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger", HolyDaggerItem::new);
@@ -247,6 +249,7 @@ public class ModItems {
     public static final DeferredItem<Item> DASHING_SWORD = registerStacksToOne("dashing_sword", p -> new DashingSwordItem(Tiers.IRON, p));
     public static final DeferredItem<Item> MAGNET = registerStacksToOne("magnet", p -> new MagnetItem(p.rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> AMETHYST_ARROW = register("amethyst_arrow", AmethystArrowItem::new);
+    public static final DeferredItem<Item> ENTITY_CATALOGUE = registerStacksToOne("entity_catalogue", EntityCatalogueItem::new);
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

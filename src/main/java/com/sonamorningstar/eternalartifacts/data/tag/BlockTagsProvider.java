@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
-import com.sonamorningstar.eternalartifacts.core.ModBlockFamilies;
-import com.sonamorningstar.eternalartifacts.core.ModBlocks;
-import com.sonamorningstar.eternalartifacts.core.ModMachines;
-import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -348,6 +345,10 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             tierAndTool(holder.getBlock(), "stone", "pickaxe");
             tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(holder.getBlock());
+        });
+        ModMultiblocks.MULTIBLOCKS.getBlockHolders().forEach(holder -> {
+            tierAndTool(holder.get(), "stone", "pickaxe");
+            tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(holder.get());
         });
 
     }

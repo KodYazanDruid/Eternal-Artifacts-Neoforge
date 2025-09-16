@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ElectricFurnace;
-import com.sonamorningstar.eternalartifacts.util.ItemRendererHelper;
+import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;

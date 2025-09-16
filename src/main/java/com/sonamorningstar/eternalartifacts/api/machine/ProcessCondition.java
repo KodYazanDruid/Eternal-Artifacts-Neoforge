@@ -118,7 +118,11 @@ public class ProcessCondition {
     public ProcessCondition tryExtractItemForced(int count, int slot) {
         if (supplier == null || !supplier.getAsBoolean()) {
             ItemStack extracted = inventory.extractItem(slot, count, true);
-            supplier = extracted::isEmpty;
+            if (extracted.isEmpty()) supplier = preventWorking();
+            else {
+                if (extracted.getCount() < count) supplier = preventWorking();
+                else supplier = noCondition();
+            }
         }
         return this;
     }

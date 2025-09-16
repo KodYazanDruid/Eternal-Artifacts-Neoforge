@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/repairer",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/repairer"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/repairer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/repairer",
+      "y": 270
+    }
+  }
+}

@@ -60,6 +60,10 @@ public class MachineEnchants {
 		enchantMap.put(ModBlockEntities.BOOK_DUPLICATOR.get(), commonMachineEnchants);
 		enchantMap.put(ModMachines.SMITHINATOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.AUTOCUTTER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.REPAIRER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.RECYCLER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.PACKER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.UNPACKER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
