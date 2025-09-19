@@ -67,7 +67,6 @@ public class InductionFurnaceScreen extends AbstractSidedMachineScreen<Induction
         PoseStack pose = gui.pose();
         pose.pushPose();
         pose.translate(0, 0, 150);
-        //renderHeat(gui, leftPos + 150, topPos + 56);
         pose.popPose();
     }
 

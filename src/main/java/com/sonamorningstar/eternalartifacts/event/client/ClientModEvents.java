@@ -98,7 +98,7 @@ public class ClientModEvents {
         event.register(new RetexturedColor(), ModItems.GARDENING_POT.get());
         event.register(new RetexturedColor(), ModItems.FANCY_CHEST.get());
         ModFluids.FLUIDS.getEntries().forEach(holder -> {
-            if (ModFluids.FLUIDS.isGeneric(holder)) event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
+            if (ModFluids.FLUIDS.isGeneric(holder) && holder.getBucketItem() != null) event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
         });
         event.register(ColorUtils::getColorFromNBT, ModItems.LIGHTSABER);
     }

@@ -522,8 +522,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.BLOCK.withSuffix("pipe.energy.damage_cost"), "Damage cost: %d RF per hit");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
-                    add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
-                    add(holder.getFluidBlock(), prettyName(holder.getFluidBlockHolder().getId().getPath()));
+                    if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
+                    if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.getFluidBlockHolder().getId().getPath()));
                     add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                 });
                 ModMachines.MACHINES.getMachines().forEach(holder -> add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath())));
@@ -923,6 +923,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.RECYCLER.getBlockTranslationKey(), "Geri Dönüştürücü");
                 add(ModMachines.PACKER.getBlockTranslationKey(), "Paketleyici");
                 add(ModMachines.UNPACKER.getBlockTranslationKey(), "Paket Açıcı");
+                add(ModFluids.POTION.getTranslationKey(), "İksir");
                 
                 //endregion
                 //region Türkçe Varlık

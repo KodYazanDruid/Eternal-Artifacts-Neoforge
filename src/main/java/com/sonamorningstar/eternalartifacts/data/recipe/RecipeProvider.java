@@ -247,7 +247,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         createAlloyingRecipe(recipeOutput, List.of(
                 SizedIngredient.of(ModItems.PINK_SLIME_STEEL_INGOT),
-                SizedIngredient.of(Items.GLOWSTONE_DUST),
+                SizedIngredient.of(Tags.Items.DUSTS_GLOWSTONE, 1),
                 SizedIngredient.of(ModItems.PLANT_MATTER)),
                 ModItems.CHLOROPHYTE_INGOT.toStack(), "");
         createAlloyingRecipe(recipeOutput, List.of(
@@ -256,19 +256,22 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 SizedIngredient.of(ModTags.Items.DUSTS_CLAY, 1)),
                 ModBlocks.TEMPERED_GLASS.toStack(2), "");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
+                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
                 SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
                     .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
                 SizedIngredient.of(ModTags.Items.DUSTS_COAL, 2)),
                 ModItems.STEEL_INGOT.toStack(2), "from_coal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
+                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
                 SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
                     .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
                 SizedIngredient.of(ModTags.Items.DUSTS_CHARCOAL, 3)),
                 ModItems.STEEL_INGOT.toStack(2), "from_charcoal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1),
+                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
+                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
                 SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
                     .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
                 SizedIngredient.of(ModTags.Items.DUSTS_SUGAR_CHARCOAL, 4)),

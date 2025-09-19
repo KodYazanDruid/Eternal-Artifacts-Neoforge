@@ -7,6 +7,7 @@ import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -34,7 +35,8 @@ public class RendererHelper {
         float fill = (float) fluid.getAmount() / fluidHandler.getTankCapacity(0);
         if(fluid.isEmpty()) return;
 
-        VertexConsumer vertexConsumer = buff.getBuffer(Sheets.translucentCullBlockSheet());
+        //VertexConsumer vertexConsumer = buff.getBuffer(Sheets.translucentCullBlockSheet());
+        VertexConsumer vertexConsumer = buff.getBuffer(RenderType.translucent());
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluid.getFluid());
         ResourceLocation still = fluidTypeExtensions.getStillTexture(fluid);
 

@@ -25,11 +25,11 @@ import java.util.function.Consumer;
  */
 @Getter
 public class BaseFluidType extends FluidType {
-    private final ResourceLocation stillTexture;
-    private final ResourceLocation flowingTexture;
-    private final ResourceLocation overlayTexture;
-    private final int tintColor;
-    private final Vector3f fogColor;
+    protected final ResourceLocation stillTexture;
+    protected final ResourceLocation flowingTexture;
+    protected final ResourceLocation overlayTexture;
+    protected final int tintColor;
+    protected final Vector3f fogColor;
 
     public BaseFluidType(final ResourceLocation stillTexture, final ResourceLocation flowingTexture, final ResourceLocation overlayTexture,
             final int tintColor, final Vector3f fogColor, final Properties properties) {
@@ -63,7 +63,7 @@ public class BaseFluidType extends FluidType {
             public int getTintColor() {
                 return tintColor;
             }
-
+            
             @Override
             public @NotNull Vector3f modifyFogColor(Camera camera, float partialTick, ClientLevel level,
                     int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor) {

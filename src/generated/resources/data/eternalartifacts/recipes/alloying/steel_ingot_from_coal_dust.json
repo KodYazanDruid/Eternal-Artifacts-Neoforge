@@ -1,10 +1,16 @@
 {
   "type": "eternalartifacts:alloying",
   "inputs": [
-    {
-      "amount": 1,
-      "tag": "forge:ingots/iron"
-    },
+    [
+      {
+        "amount": 1,
+        "tag": "forge:ingots/iron"
+      },
+      {
+        "amount": 1,
+        "tag": "forge:dusts/iron"
+      }
+    ],
     [
       {
         "amount": 1,

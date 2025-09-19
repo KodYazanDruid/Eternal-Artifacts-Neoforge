@@ -249,7 +249,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.TRASH_CAN);
         withParentBlock(ModBlocks.MACHINE_WORKBENCH);
 
-        ModFluids.FLUIDS.getEntries().forEach(this::bucketItem);
+        ModFluids.FLUIDS.getEntries().stream().filter(p -> p.getBucketItem() != null).forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             if(!holder.isHasCustomRender()) withParentBlock(holder.getBlockHolder());
         });

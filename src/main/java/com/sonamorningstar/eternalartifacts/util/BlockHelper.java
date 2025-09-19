@@ -19,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,8 +77,8 @@ public class BlockHelper {
         return state.getDrops(lootparams$builder);
     }
 
-    public static int getFluidTintColor(Fluid fluid) {
-        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluid);
-        return fluidTypeExtensions.getTintColor();
+    public static int getFluidTintColor(FluidStack stack) {
+        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
+        return fluidTypeExtensions.getTintColor(stack);
     }
 }

@@ -171,10 +171,9 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 			
 			Direction sourceDir = sourceCache.context();
 			BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
-			NonNullList<FilterEntry> sourceFilters = null;
 			
 			if (sourceBe instanceof FluidPipe sourcePipe) {
-				sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
+				var sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
 				if (sourceFilters != null && checkFilters(sourcePipe, sourceFilters, extracted, sourceDir)) {
 					continue;
 				}
@@ -189,7 +188,7 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 				IFluidHandler target = targetCache.getCapability();
 				if (target == null) continue;
 				
-				FluidStack transferStack = new FluidStack(extracted.getFluid(), remainingAmount);
+				FluidStack transferStack = new FluidStack(extracted.getFluid(), remainingAmount, extracted.getTag());
 				int fillable = target.fill(transferStack, IFluidHandler.FluidAction.SIMULATE);
 				if (fillable <= 0) continue;
 				
@@ -203,7 +202,7 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 				}
 				
 				FluidStack actualExtract = source.drain(
-					new FluidStack(extracted.getFluid(), fillable),
+					new FluidStack(extracted.getFluid(), fillable, extracted.getTag()),
 					IFluidHandler.FluidAction.EXECUTE
 				);
 				
@@ -221,8 +220,8 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 		boolean shouldSkip = false;
 		
 		for (FilterEntry entry : sourceFilters) {
-			if (entry instanceof FluidFilterEntry itemFilter) {
-				boolean matches = itemFilter.matches(stack);
+			if (entry instanceof FluidFilterEntry fluidFilter) {
+				boolean matches = fluidFilter.matches(stack);
 				if (!isWhitelist && matches) {
 					shouldSkip = true;
 					break;

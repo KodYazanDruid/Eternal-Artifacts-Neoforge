@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.util;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -19,12 +21,20 @@ public class ModListUtils {
 	private static final Map<String, String> modIdCache = new HashMap<>();
 
 	public static Optional<String> getFluidCreatorModId(FluidStack fluid) {
-		if (fluid.isEmpty()) return Optional.empty();
-		return Optional.of(getModNameForModId(BuiltInRegistries.FLUID.getKey(fluid.getFluid()).getNamespace()));
+		//if (fluid.isEmpty()) return Optional.empty();
+		//return Optional.of(getModNameForModId(BuiltInRegistries.FLUID.getKey(fluid.getFluid()).getNamespace()));
+		return getCreatorModId(BuiltInRegistries.FLUID, fluid.getFluid());
 	}
 	
 	public static Optional<String> getEntityCreatorModId(EntityType<?> entityType) {
-		return Optional.of(getModNameForModId(BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getNamespace()));
+		//return Optional.of(getModNameForModId(BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getNamespace()));
+		return getCreatorModId(BuiltInRegistries.ENTITY_TYPE, entityType);
+	}
+	
+	public static <T> Optional<String> getCreatorModId(Registry<T> registry, T holder) {
+		ResourceLocation loc = registry.getKey(holder);
+		if (loc == null) return Optional.empty();
+		return Optional.of(getModNameForModId(loc.getNamespace()));
 	}
 	
 	public static String getModNameForModId(String modid) {

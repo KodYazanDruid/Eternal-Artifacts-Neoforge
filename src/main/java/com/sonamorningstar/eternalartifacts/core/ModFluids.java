@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredRegister;
 import com.sonamorningstar.eternalartifacts.registrar.GenericLiquidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.LiquidBlockFluidHolder;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.MapColor;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -56,6 +57,10 @@ public class ModFluids {
     public static final LiquidBlockFluidHolder<HotSpringWaterLiquidBlock> HOT_SPRING_WATER = FLUIDS.register(
             "hot_spring_water", HotSpringWaterLiquidBlock::new, 0, 1000, 1000, Rarity.RARE,
             22, 54, 58, MapColor.COLOR_LIGHT_BLUE, true, 0xC500A4B3
+    );
+    
+    public static final LiquidBlockFluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion(
+            "potion", 0, 1000, 1000
     );
 
 }

@@ -45,7 +45,8 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
             if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
                 var tooltipComponents = Lists.<Component>newArrayList();
                 if (!fluidStack.isEmpty()) {
-                    tooltipComponents.addAll(TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.options.advancedItemTooltips));
+                    tooltipComponents.addAll(TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+                        minecraft.options.advancedItemTooltips));
                     tooltipComponents.add(Component.literal(fluidStack.getAmount() + " / " + slot.getMaxSize()));
                 }
                 if (!menu.getCarried().isEmpty()) {

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
+import com.sonamorningstar.eternalartifacts.content.fluid.PotionFluidType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -84,6 +85,26 @@ public class FluidDeferredRegister{
 
         LiquidBlockFluidHolder<B> holder = new LiquidBlockFluidHolder<>(fluidType, source, flowing, bucket, liquidBlock, tintColor);
         entryMap.put(holder, isGeneric);
+        return holder;
+    }
+    
+    public LiquidBlockFluidHolder<LiquidBlock> registerPotion(String name, int light, int density, int viscosity) {
+        
+        DeferredHolder<FluidType, BaseFluidType> fluidType = fluidTypeRegister.register(name, ()->
+            new PotionFluidType(WATER_STILL, WATER_FLOW, WATER_RENDER_OVERLAY,
+                FluidType.Properties.create().lightLevel(light).density(density).viscosity(viscosity).rarity(Rarity.UNCOMMON).canExtinguish(true).canSwim(true)
+                    .sound(SoundActions.BUCKET_FILL, SoundEvents.BOTTLE_FILL).sound(SoundActions.BUCKET_EMPTY, SoundEvents.BOTTLE_EMPTY))
+        );
+        
+        ResourceLocation baseKey = new ResourceLocation(fluidRegister.getNamespace(), name);
+        BaseFlowingFluid.Properties fluidProperties = new BaseFlowingFluid.Properties(fluidType, DeferredHolder.create(Registries.FLUID, baseKey),
+            DeferredHolder.create(Registries.FLUID, baseKey.withSuffix("_flow")));
+        
+        DeferredHolder<Fluid, BaseFlowingFluid.Source> source = fluidRegister.register(name,()-> new BaseFlowingFluid.Source(fluidProperties));
+        DeferredHolder<Fluid, BaseFlowingFluid.Flowing> flowing = fluidRegister.register(name+"_flow",()-> new BaseFlowingFluid.Flowing(fluidProperties));
+        
+        LiquidBlockFluidHolder<LiquidBlock> holder = new LiquidBlockFluidHolder<>(fluidType, source, flowing, null, null, 0xffffff);
+        entryMap.put(holder, true);
         return holder;
     }
 

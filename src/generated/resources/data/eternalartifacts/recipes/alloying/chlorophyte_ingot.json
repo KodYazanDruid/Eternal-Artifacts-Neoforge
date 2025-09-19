@@ -8,10 +8,8 @@
       }
     },
     {
-      "item_stack": {
-        "Count": 1,
-        "id": "minecraft:glowstone_dust"
-      }
+      "amount": 1,
+      "tag": "forge:dusts/glowstone"
     },
     {
       "item_stack": {

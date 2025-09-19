@@ -194,7 +194,7 @@ public class PipeFilterItemScreen extends AbstractModContainerScreen<PipeFilterI
 			} else if (entry instanceof FluidStackEntry fluidStackEntry) {
 				FluidStack fluidStack = fluidStackEntry.getFilterStack();
 				if (!fluidStack.isEmpty())
-					guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack,
+					guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
 						minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			} else if (entry instanceof FluidTagEntry fluidTagEntry) {
 				FluidIngredient ingredient = FluidIngredient.of(fluidTagEntry.getTag(), 1000);
@@ -206,7 +206,8 @@ public class PipeFilterItemScreen extends AbstractModContainerScreen<PipeFilterI
 				FluidStack fluidStack = values[(int) ((tick / 20) % values.length)].copy();
 				CompoundTag tag = fluidStack.getOrCreateTag();
 				tag.putString("EtarFluidStackName", fluidTagEntry.getTag().location().toString());
-				guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
+				guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+					minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			}  else super.renderTooltip(guiGraphics, x, y);
 			return;
 		}

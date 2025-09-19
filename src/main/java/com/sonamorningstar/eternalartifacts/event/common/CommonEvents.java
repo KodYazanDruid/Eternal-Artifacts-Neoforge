@@ -139,7 +139,6 @@ public class CommonEvents {
             event.setDefaultUseTime();
             event.setAfterDrink(((player, itemStack) -> player.heal(4.0F)));
         }
-
     }
 
     @SubscribeEvent

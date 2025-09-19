@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.content.item.block.base;
 
 import com.sonamorningstar.eternalartifacts.client.render.ModItemStackBEWLR;
+import com.sonamorningstar.eternalartifacts.content.fluid.PotionFluidType;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -21,9 +23,11 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 public abstract class FluidHolderBlockItem extends BlockItem implements ICapabilityListener {
     public FluidHolderBlockItem(Block block, Properties props) {
@@ -44,8 +48,11 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
                         Component.literal(String.valueOf(fluidAmount)).append(" / ").append(String.valueOf(tankCapacity));
                 if (!tankFluid.isEmpty()) {
                     tooltip.add(getFluidName(stack, 0, false).append(": ").append(value)
-                            .withColor(BlockHelper.getFluidTintColor(tankFluid.getFluid()))
+                            .withColor(BlockHelper.getFluidTintColor(tankFluid))
                     );
+                    if (tankFluid.getFluid().getFluidType() instanceof PotionFluidType) {
+                        tooltip.addAll(TooltipHelper.getPotionTooltips(tankFluid, level));
+                    }
                 }
             } else {
                 for (int i = 0; i < fhi.getTanks(); i++) {
@@ -59,7 +66,7 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
                     if (!tankFluid.isEmpty()) {
                         tooltip.add(Component.translatable(ModConstants.TOOLTIP.withSuffix("tank"), i + 1)
                                 .append(": ").append(fluidName).append(" ").append(value)
-                                .withColor(BlockHelper.getFluidTintColor(tankFluid.getFluid()))
+                                .withColor(BlockHelper.getFluidTintColor(tankFluid))
                         );
                     }
                 }
@@ -103,9 +110,9 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
         Fluid fluid = getFluid(stack, tank);
         if(fluid.isSame(Fluids.EMPTY)) return Component.empty();
         else {
-            String descriptionId = fluid.getFluidType().getDescriptionId();
-            MutableComponent fluidName = Component.translatable(descriptionId);
-            return doColor ? fluidName.withColor(BlockHelper.getFluidTintColor(fluid)) : fluidName;
+            FluidStack fluidStack = getFluidStack(stack, tank);
+            MutableComponent fluidName = fluid.getFluidType().getDescription(fluidStack).copy();
+            return doColor ? fluidName.withColor(BlockHelper.getFluidTintColor(fluidStack)) : fluidName;
         }
     }
 
@@ -125,16 +132,15 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
     public int getBarWidth(ItemStack stack) {
         IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
         if (handler != null) {
-            FluidStack fluid = FluidStack.EMPTY;
-            int index = 0;
-            for (int i = 0; i < handler.getTanks(); i++) {
-                FluidStack tankFluid = handler.getFluidInTank(i);
-                if (tankFluid.getAmount() >= fluid.getAmount()) {
-                    fluid = tankFluid;
-                    index = i;
-                }
-            }
-            return (handler.getFluidInTank(index).getAmount() / handler.getTankCapacity(index)) * 13;
+            int index = IntStream.range(0, handler.getTanks())
+                .boxed()
+                .max(Comparator.comparingInt(i -> handler.getFluidInTank(i).getAmount()))
+                .orElse(-1);
+            if (index == -1) return 0;
+            int amount = handler.getFluidInTank(index).getAmount();
+            int capacity = handler.getTankCapacity(index);
+            if (amount <= 0) return 0;
+            return Math.max(1, (int) Math.round((amount / (double) capacity) * 13));
         }
         return 0;
     }
@@ -146,7 +152,7 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return BlockHelper.getFluidTintColor(getMostAmountFluidStack(stack).getFluid());
+        return BlockHelper.getFluidTintColor(getMostAmountFluidStack(stack));
     }
 
     @Override

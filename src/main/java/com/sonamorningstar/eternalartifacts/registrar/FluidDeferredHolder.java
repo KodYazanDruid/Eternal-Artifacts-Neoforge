@@ -26,13 +26,13 @@ public class FluidDeferredHolder<T extends FluidType, S extends Fluid, F extends
     public DeferredHolder<FluidType, T> getFluidTypeHolder() {return fluidType;}
     public T getFluidType() {return fluidType.get();}
     public DeferredHolder<Fluid, S> getStillFluidHolder() {return still;}
-    public S getStillFluid() {return still.get();}
+    public S getStillFluid() {return still == null ? null : still.get();}
     public DeferredHolder<Fluid, F> getFlowingFluidHolder() {return flowing;}
-    public F getFlowingFluid() {return flowing.get();}
+    public F getFlowingFluid() {return flowing == null ? null : flowing.get();}
     public DeferredHolder<Item, BI> getBucketItemHolder() {return bucket;}
-    public BI getBucketItem() {return bucket.get();}
+    public BI getBucketItem() {return bucket == null ? null : bucket.get();}
     public DeferredHolder<Block, B> getFluidBlockHolder() {return block;}
-    public B getFluidBlock() {return block.get();}
+    public B getFluidBlock() {return block == null ? null : block.get();}
     public S getFluid() {return getStillFluid();}
 
     public ResourceLocation getRegistryName() {

@@ -63,7 +63,8 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
                 var fs = menu.getBeTank().getFluidInTank(tank);
-                var tooltips = TooltipHelper.getTooltipFromContainerFluid(fs, minecraft.options.advancedItemTooltips);
+                var tooltips = TooltipHelper.getTooltipFromContainerFluid(fs, minecraft.level,
+                    minecraft.options.advancedItemTooltips);
                 tooltips.add(Component.literal(String.valueOf(fs.getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))));
                 gui.renderTooltip(font, tooltips, Optional.empty(), mx, my);
             }
