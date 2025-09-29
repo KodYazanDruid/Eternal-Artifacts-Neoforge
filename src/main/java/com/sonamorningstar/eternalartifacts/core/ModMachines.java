@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.core;
 
-import com.sonamorningstar.eternalartifacts.container.AdvancedCrafterMenu;
-import com.sonamorningstar.eternalartifacts.container.AutoCutterMenu;
-import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
+import com.sonamorningstar.eternalartifacts.container.*;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
@@ -52,9 +49,12 @@ public class ModMachines {
         OIL_REFINERY = MACHINES.register("oil_refinery", GenericMachineMenu::new, OilRefinery::new, OilRefineryBlock::new, BewlrMachineItem::new, true, true);
     public static final MachineDeferredHolder<AdvancedCrafterMenu, AdvancedCrafter, BaseMachineBlock<AdvancedCrafter>, MachineBlockItem>
         ADVANCED_CRAFTER = MACHINES.register("advanced_crafter", AdvancedCrafterMenu::new, AdvancedCrafter::new);
-
     public static final MachineDeferredHolder<InductionFurnaceMenu, InductionFurnace, BaseMachineBlock<InductionFurnace>, MachineBlockItem>
         INDUCTION_FURNACE = MACHINES.register("induction_furnace", InductionFurnaceMenu::new, InductionFurnace::new);
+    public static final MachineDeferredHolder<AlchemicalBrewerMenu, AlchemicalBrewer, BaseMachineBlock<AlchemicalBrewer>, MachineBlockItem>
+        ALCHEMICAL_BREWER = MACHINES.register("alchemical_brewer", AlchemicalBrewerMenu::new, AlchemicalBrewer::new);
+    public static final MachineDeferredHolder<BottlerMenu, Bottler, BaseMachineBlock<Bottler>, MachineBlockItem>
+        BOTTLER = MACHINES.register("bottler", BottlerMenu::new, Bottler::new);
     
     public static final MachineDeferredHolder<GenericMachineMenu, BlockPlacer, MachineSixWayBlock<BlockPlacer>, MachineBlockItem>
         BLOCK_PLACER = MACHINES.register("block_placer", GenericMachineMenu::new, BlockPlacer::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);

@@ -36,9 +36,9 @@ public interface ChunkLoader {
 	
 	default void claimChunks(Set<ForceLoadManager.ForcedChunkPos> forcedChunks) {
 		getForcedChunks().addAll(forcedChunks);
-		System.out.println("*-*-*-*-*-*");
+		/*System.out.println("*-*-*-*-*-*");
 		System.out.println("Claimed " + forcedChunks.size() + " chunks at " + getBlockPos());
-		System.out.println("BlockEntity: " + this);
+		System.out.println("BlockEntity: " + this);*/
 		if (getLevel() instanceof ServerLevel sLevel) {
 			Channel.sendToChunk(new ForcedChunksToClient(getForcedChunks(), getBlockPos()), sLevel.getChunkAt(getBlockPos()));
 		}

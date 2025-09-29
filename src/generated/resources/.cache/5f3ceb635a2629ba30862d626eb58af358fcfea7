@@ -1,4 +1,4 @@
-// 1.20.4	2025-09-05T18:39:26.6384771	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-09-22T19:03:02.3364214	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -17,7 +17,7 @@ de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablet
 0e39dbf7b4ae88e14b7d2b48a312ade6fe39c998 data/eternalartifacts/tags/items/tools/cutlasses.json
 a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 8b5cea59f396e1e2df266fab2db65e27e0d091e5 data/forge/tags/items/dough/wheat.json
-9fa74425f12ce1541f9b42994806616a56119fda data/forge/tags/items/dusts.json
+d94eef9f2d49f8f38cc0efc65f96524b023b6ab5 data/forge/tags/items/dusts.json
 b94119fa456164e2667263dd467799e2b897f0ca data/forge/tags/items/dusts/aluminum.json
 39081f7795593304a37bc9a020d5125bd5e5c003 data/forge/tags/items/dusts/bronze.json
 823cdebeedb138c0ae6b910e89a0318c87613ef4 data/forge/tags/items/dusts/charcoal.json

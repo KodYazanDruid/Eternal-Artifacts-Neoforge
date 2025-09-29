@@ -1,5 +1,6 @@
-// 1.20.4	2025-09-14T20:59:37.7422932	Loot Tables
+// 1.20.4	2025-09-24T23:12:34.2357039	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
+43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 5cdbfe04b08c9f529ff4b380190c0481143a16b5 data/eternalartifacts/loot_tables/blocks/alloy_smelter.json
 d160926d6a1b8e69201694d63bad7921e45e7454 data/eternalartifacts/loot_tables/blocks/aluminum_ore.json
 4c4185f0e75e85b43f26925144a682524fd17409 data/eternalartifacts/loot_tables/blocks/ancient_crop.json
@@ -13,6 +14,7 @@ d56d083c76065cf84c9bfd5b1e2585259c5044b2 data/eternalartifacts/loot_tables/block
 212c43ce1014373734a29fb93ea17be4152c702e data/eternalartifacts/loot_tables/blocks/block_placer.json
 9017b5701129d4acebbb6526d527fc6b75af385e data/eternalartifacts/loot_tables/blocks/blue_plastic_cauldron.json
 c2687d765bf9bbf3552b94a01f47b222a6d54050 data/eternalartifacts/loot_tables/blocks/book_duplicator.json
+63cf3480b6f61a1456dc4679744e5990dcf6b47e data/eternalartifacts/loot_tables/blocks/bottler.json
 9d01bcc4e1a29b5bb7b531fab8a6555e2266a468 data/eternalartifacts/loot_tables/blocks/charcoal_block.json
 2e6d7a85424e2e0e6a176c7bcda87f605bf2e7e5 data/eternalartifacts/loot_tables/blocks/chlorophyte_debris.json
 fd21e762f96ac2132e1d9abb547a3ad534c5f4b1 data/eternalartifacts/loot_tables/blocks/citrus_log.json

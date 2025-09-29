@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:glow_ink_sac"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:glow_ink_dust"
+  }
+}

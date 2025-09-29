@@ -37,6 +37,17 @@ public class MachineEnchants {
 		ModEnchantments.WORLDBIND.get()
 	);
 	
+	private static final Set<Enchantment> nonProgressSpeedableMachineEnchants = Set.of(
+		Enchantments.UNBREAKING,
+		Enchantments.BLAST_PROTECTION,
+		Enchantments.FIRE_PROTECTION,
+		ModEnchantments.CELERITY.get(),
+		ModEnchantments.SOULBOUND.get(),
+		ModEnchantments.EVERLASTING.get(),
+		ModEnchantments.VOLUME.get(),
+		ModEnchantments.WORLDBIND.get()
+	);
+	
 	public static void bootstrap() {
 		enchantMap.put(ModMachines.MOB_LIQUIFIER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.MEAT_SHREDDER.getBlockEntity(), commonMachineEnchants);
@@ -64,14 +75,14 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.RECYCLER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.PACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.UNPACKER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.ALCHEMICAL_BREWER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), nonProgressMachineEnchants);
 		
-		var inductionFurnaceEnchants = new HashSet<>(nonProgressMachineEnchants);
-		inductionFurnaceEnchants.add(ModEnchantments.CELERITY.get());
-		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), inductionFurnaceEnchants);
+		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), nonProgressSpeedableMachineEnchants);
+		enchantMap.put(ModMachines.BOTTLER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		
 		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
 		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());

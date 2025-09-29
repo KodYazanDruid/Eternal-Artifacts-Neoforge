@@ -45,6 +45,12 @@ public class Config {
             SERVER.comment("Healing multiplier for the Moonglass Pendant artifact.")
                     .defineInRange("moonglass_pendant_heal_multiplier", 0.2D, 0.1D, 1.0D);
     static {SERVER.pop();}
+    static{SERVER.push("Machines");}
+    public static final ModConfigSpec.IntValue BREW_AMOUNT =
+        SERVER.comment("The mb amount of Alchemical Brewer should brew.")
+            .defineInRange("brew_amount", 1000, 1, Integer.MAX_VALUE);
+    static {SERVER.pop();}
+    
     
     static final ModConfigSpec COMMON_SPEC = COMMON.build();
     static final ModConfigSpec CLIENT_SPEC = CLIENT.build();

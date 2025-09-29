@@ -46,6 +46,7 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -440,14 +441,16 @@ public class ClientEvents {
             }
             if (be instanceof Smithinator && inv != null) {
                 if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+                        .apply(new ResourceLocation(
                         "item/empty_slot_smithing_template_netherite_upgrade"
                     ));
                     gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
                         1.0F, 1.0F, 1.0F, 1.0F);
                 }
                 if (slot.index == 38 && inv.getStackInSlot(2).isEmpty()) {
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(new ResourceLocation(
+                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+                        .apply(new ResourceLocation(
                         "item/empty_slot_ingot")
                     );
                     gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,

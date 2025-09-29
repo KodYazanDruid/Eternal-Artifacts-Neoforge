@@ -219,6 +219,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENTITY_CATALOGUE.get(), "Entity Catalogue");
                 add(ModItems.OBLIVIUM_INGOT.get(), "Oblivium Ingot");
                 add(ModItems.HONEY_SLIME_SPAWN_EGG.get(), "Honey Slime Spawn Egg");
+                add(ModItems.GLOW_INK_DUST.get(), "Glow Ink Dust");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -520,6 +521,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.BLOCK.withSuffix("pipe.fluid.transfer_rate"), "Fluid per tick: %d mB");
                 add(ModConstants.BLOCK.withSuffix("pipe.energy.transfer_rate"), "Transfer rate: %d RF per tick");
                 add(ModConstants.BLOCK.withSuffix("pipe.energy.damage_cost"), "Damage cost: %d RF per hit");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.blast_furnace"), "Blasting");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.smoker"), "Smoking");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.campfire"), "Campfire Cooking");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.furnace"), "Smelting");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -746,6 +751,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.ENTITY_CATALOGUE.get(), "Varlık Kataloğu");
                 add(ModItems.OBLIVIUM_INGOT.get(), "Oblivyum Külçesi");
                 add(ModItems.HONEY_SLIME_SPAWN_EGG.get(), "Bal Balçığı Çağırma Yumurtası");
+                add(ModItems.GLOW_INK_DUST.get(), "Parlayan Mürekkep Tozu");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -924,6 +930,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.PACKER.getBlockTranslationKey(), "Paketleyici");
                 add(ModMachines.UNPACKER.getBlockTranslationKey(), "Paket Açıcı");
                 add(ModFluids.POTION.getTranslationKey(), "İksir");
+                add(ModMachines.ALCHEMICAL_BREWER.getBlockTranslationKey(), "Simyasal Demleyici");
+                add(ModMachines.BOTTLER.getBlockTranslationKey(), "Şişeleyici");
                 
                 //endregion
                 //region Türkçe Varlık
@@ -1122,6 +1130,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"), "%d yığın yükleniyor.");
                 add(ModConstants.GUI.withSuffix("catalogue.chosen_entity"), "Seçilen varlık: %s");
                 add(ModConstants.GUI.withSuffix("catalogue_health"), "Can: %1$.2d / %2$.2d");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.blast_furnace"), "Maden Fırınında Pişirme");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.smoker"), "Duman Fırınında Pişirme");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.campfire"), "Kamp Ateşinde Pişirme");
+                add(ModConstants.TOOLTIP.withSuffix("recipe.furnace"), "Pişirme");
+                add(ModConstants.BLOCK.withSuffix("pipe.range"), "Menzil: %d blok");
+                add(ModConstants.BLOCK.withSuffix("pipe.item.transfer_rate"), "Tik başına eşya: %d");
+                add(ModConstants.BLOCK.withSuffix("pipe.fluid.transfer_rate"), "Tik başına sıvı: %d mB");
+                add(ModConstants.BLOCK.withSuffix("pipe.energy.transfer_rate"), "Aktarım hızı: Tik başına %d RF");
+                add(ModConstants.BLOCK.withSuffix("pipe.energy.damage_cost"), "Hasar maliyeti: Tik başına %d RF");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

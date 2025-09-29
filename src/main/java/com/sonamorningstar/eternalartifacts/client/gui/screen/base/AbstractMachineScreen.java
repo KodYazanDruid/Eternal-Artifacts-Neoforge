@@ -119,10 +119,14 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         renderProgressTooltip(guiGraphics, x + 1, y + 1, 13, 13, mx, my, "burn_time");
     }
 
-    protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
+    protected void renderProgressArrowWTooltips(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
         renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, "progress");
+    }
+    protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
+        guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
+        if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
     }
 
     protected void renderLArrow(GuiGraphics guiGraphics, int x, int y) {

@@ -58,7 +58,7 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
             gui.drawString(font, component, info.x(), info.y(), info.color(), info.dropShadow())
         ));
 
-        if(screenInfo.isShouldDrawArrow()) renderProgressArrow(gui, leftPos + menu.arrowX, topPos + menu.arrowY, mx, my);
+        if(screenInfo.isShouldDrawArrow()) renderProgressArrowWTooltips(gui, leftPos + menu.arrowX, topPos + menu.arrowY, mx, my);
     }
 
     @Override

@@ -215,6 +215,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.ENTITY_CATALOGUE.get());
         basicItem(ModItems.OBLIVIUM_INGOT.get());
         spawnEggItem(ModItems.HONEY_SLIME_SPAWN_EGG);
+        basicItem(ModItems.GLOW_INK_DUST.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
 

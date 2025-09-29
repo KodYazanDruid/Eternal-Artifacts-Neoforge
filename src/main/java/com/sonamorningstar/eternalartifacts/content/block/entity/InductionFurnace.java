@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
-public class InductionFurnace extends SidedTransferMachine<InductionFurnaceMenu> {
+public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
     private final int heatKeepCost = 20;
     protected Supplier<? extends Container> recipeContainer2;
     public InductionFurnace(BlockPos pos, BlockState blockState) {
@@ -49,7 +49,6 @@ public class InductionFurnace extends SidedTransferMachine<InductionFurnaceMenu>
     protected void saveSynced(CompoundTag tag) {
         super.saveSynced(tag);
         tag.put("HeatValue", heat.serializeNBT());
-        tag.putShort("RecipeType", recipeTypeId);
     }
 
     @Override
@@ -57,14 +56,12 @@ public class InductionFurnace extends SidedTransferMachine<InductionFurnaceMenu>
         super.load(tag);
         heat.deserializeNBT(tag.getCompound("HeatValue"));
         setMaxProgressForHeat();
-        recipeTypeId = tag.getShort("RecipeType");
     }
 
     @Override
     public void saveContents(CompoundTag additionalTag) {
         super.saveContents(additionalTag);
         additionalTag.put("HeatValue", heat.serializeNBT());
-        additionalTag.putShort("RecipeType", recipeTypeId);
     }
 
     @Override
@@ -72,21 +69,11 @@ public class InductionFurnace extends SidedTransferMachine<InductionFurnaceMenu>
         super.loadContents(additionalTag);
         heat.deserializeNBT(additionalTag.getCompound("HeatValue"));
         setMaxProgressForHeat();
-        recipeTypeId = additionalTag.getShort("RecipeType");
     }
 
     public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
     
-    public short recipeTypeId = 0;
-    public RecipeType<? extends Recipe<? extends Container>> getSelectedRecipeType() {
-        return switch (recipeTypeId) {
-            case 1 -> RecipeType.BLASTING;
-            case 2 -> RecipeType.SMOKING;
-            case 3 -> RecipeType.CAMPFIRE_COOKING;
-            default -> RecipeType.SMELTING;
-        };
-    }
-    
+    @Override
     public void setRecipeTypeId(short id) {
         recipeTypeId = id;
         findRecipe();

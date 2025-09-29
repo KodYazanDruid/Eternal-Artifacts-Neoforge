@@ -86,7 +86,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.TIN_DUST.get(),
             ModItems.ALUMINUM_DUST.get(),
             ModItems.BRONZE_DUST.get(),
-            ModItems.COPPER_DUST.get()
+            ModItems.COPPER_DUST.get(),
+            ModItems.GLOW_INK_DUST.get()
         );
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());

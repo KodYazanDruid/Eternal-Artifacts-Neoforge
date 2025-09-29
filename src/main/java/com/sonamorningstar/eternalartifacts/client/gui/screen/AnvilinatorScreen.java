@@ -64,7 +64,7 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
         super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
-        renderProgressArrow(gui, leftPos + 122, topPos + 53, mx, my);
+        renderProgressArrowWTooltips(gui, leftPos + 122, topPos + 53, mx, my);
     }
 
     // Returns false when typing on the box.

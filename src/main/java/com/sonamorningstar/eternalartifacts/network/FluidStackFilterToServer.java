@@ -1,8 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.container.PipeFilterItemMenu;
-import com.sonamorningstar.eternalartifacts.container.PipeFilterMenu;
-import net.minecraft.core.registries.Registries;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractPipeFilterMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -38,11 +36,8 @@ public record FluidStackFilterToServer(int containerId, int index, FluidStack fl
 	public void handle(PlayPayloadContext ctx) {
 		ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
 			AbstractContainerMenu menu = player.containerMenu;
-			if (menu.containerId == containerId && menu instanceof PipeFilterMenu modMenu) {
-				modMenu.fluidStackFilter(this);
-			}
-			if (menu.containerId == containerId && menu instanceof PipeFilterItemMenu modMenu) {
-				modMenu.fluidStackFilter(this);
+			if (menu.containerId == containerId && menu instanceof AbstractPipeFilterMenu modMenu) {
+				modMenu.fluidStackFilterSync(this);
 			}
 		}));
 	}

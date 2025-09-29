@@ -311,7 +311,7 @@ public class ModBlockEntity extends BlockEntity {
         };
     }
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
-        return createBasicInventory(size, isValid, slot -> 64);
+        return createBasicInventory(size, isValid, limit -> 64);
     }
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid, Int2IntFunction slotLimit) {
         return new ModItemStorage(size) {

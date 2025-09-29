@@ -20,6 +20,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +36,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
@@ -226,6 +229,22 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         previousRecipe = recipe;
     }
     
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+        if (fluidHandler != null && FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) return InteractionResult.sidedSuccess(level.isClientSide());
+        var useAfter = this.useAfter(state, level, pos, player, hand, hit);
+        if (useAfter != InteractionResult.PASS) return useAfter;
+        if (canConstructMenu()) {
+            AbstractMachineMenu.openContainer(player, pos);
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+        return InteractionResult.PASS;
+    }
+    
+    protected InteractionResult useAfter(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        return InteractionResult.PASS;
+    }
+    
     protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         processCondition = condition;
     }
@@ -381,10 +400,15 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
 
     protected boolean redstoneChecks(SidedTransferMachine.RedstoneType type, Level level) {
-        return (type == SidedTransferMachine.RedstoneType.HIGH && level.getDirectSignalTo(getBlockPos()) > 0) ||
-                (type == SidedTransferMachine.RedstoneType.LOW && level.getDirectSignalTo(getBlockPos()) == 0) ||
-                type == SidedTransferMachine.RedstoneType.IGNORED || type == null;
+        return type == SidedTransferMachine.RedstoneType.IGNORED || type == null ||
+            (type == SidedTransferMachine.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos())) ||
+            (type == SidedTransferMachine.RedstoneType.LOW && level.hasNeighborSignal(getBlockPos()));
     }
+    
+    /*protected boolean hasSignal(BlockPos pos, Level level) {
+        for (Direction dir : Direction.values()) if (level.getSignal(pos.relative(dir), dir) > 0) return true;
+        return false;
+    }*/
 
     protected boolean canWork(ModEnergyStorage energy) {
         if (energyPerTick <= 0) return true;

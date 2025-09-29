@@ -22,7 +22,7 @@ public class AdvancedCrafterScreen extends AbstractSidedMachineScreen<AdvancedCr
 	protected void renderBg(GuiGraphics gui, float tick, int mx, int my) {
 		super.renderBg(gui, tick, mx, my);
 		renderDefaultEnergyAndFluidBar(gui);
-		renderProgressArrow(gui, leftPos + 99, topPos + 37, mx, my);
+		renderProgressArrowWTooltips(gui, leftPos + 99, topPos + 37, mx, my);
 	}
 	
 	@Override

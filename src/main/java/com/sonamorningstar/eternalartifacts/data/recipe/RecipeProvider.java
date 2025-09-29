@@ -223,6 +223,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, ModBlocks.CHLOROPHYTE_DEBRIS.toStack(), new ItemStack(ModItems.PLANT_MATTER.get(), 8));
         createMaceratingRecipe(recipeOutput, ModTags.Items.INGOTS_BRONZE, ModItems.BRONZE_DUST.toStack());
         createMaceratingRecipe(recipeOutput, Items.TURTLE_HELMET.getDefaultInstance(), new ItemStack(Items.SCUTE, 3));
+        createMaceratingRecipe(recipeOutput, Items.GLOW_INK_SAC.getDefaultInstance(), ModItems.GLOW_INK_DUST.toStack());
         createOreMaceratingRecipeWithTag(recipeOutput, Map.of(
             ModTags.Items.INGOTS_MANGANESE, 1,
             ModTags.Items.RAW_MATERIALS_MANGANESE, 2,

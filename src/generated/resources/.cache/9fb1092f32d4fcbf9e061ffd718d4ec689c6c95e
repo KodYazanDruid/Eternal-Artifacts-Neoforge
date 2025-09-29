@@ -1,4 +1,4 @@
-// 1.20.4	2025-09-17T21:41:05.9156604	Recipes
+// 1.20.4	2025-09-22T19:03:02.3394208	Recipes
 3dda9c7194fb80e5be48c6a526e6e236bab0f1e2 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_slab.json
 07b243e4c363636606d739749024ba8870dfa511 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_stairs.json
 6bc980ccf5cfd81e2ed6d6e4f7073390b5c5d699 data/eternalartifacts/advancements/recipes/building_blocks/obsidian_brick_slab.json
@@ -461,6 +461,7 @@ c9a28af1715d789d0048fa0a8c8901e30d833f2b data/eternalartifacts/recipes/maceratin
 a14b627c9b418f9deca716ddc492fcb847fded39 data/eternalartifacts/recipes/macerating/cut_red_sandstone_to_red_sand.json
 d1f30c196189146a55c750c4300733206bf352b0 data/eternalartifacts/recipes/macerating/cut_sandstone_to_sand.json
 fe96b578eff1ef8335f575600d1b2d685277703f data/eternalartifacts/recipes/macerating/glowstone_to_glowstone_dust.json
+7f5ba09918fd67d9300f72d8f4bbafd0b49a38d7 data/eternalartifacts/recipes/macerating/glow_ink_sac_to_glow_ink_dust.json
 2c929cfb515128291a8a58fc32b34c64a220b79c data/eternalartifacts/recipes/macerating/gravel_to_sand.json
 0035681d8aac2e7f895505d9cbf22638c8fffbe8 data/eternalartifacts/recipes/macerating/honeycomb_block_to_honeycomb.json
 e892b67df90fbf80b4283cc82468608841450b33 data/eternalartifacts/recipes/macerating/ingots/aluminum_to_aluminum_dust.json

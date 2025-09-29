@@ -1,5 +1,6 @@
-// 1.20.4	2025-09-18T19:20:55.9499165	Item Models: eternalartifacts
+// 1.20.4	2025-09-24T23:12:34.2417043	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
+c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
 bd6a296945978ba6967a53d716114b2b32a6e09b assets/eternalartifacts/models/item/aluminum_dust.json
 9af33fde9f6c7a875526022b19c555aa5b708a8f assets/eternalartifacts/models/item/aluminum_ingot.json
@@ -26,6 +27,7 @@ db8b9c9664f4691f8d51eb49b90fbd131328adb7 assets/eternalartifacts/models/item/blo
 4f3f04bd8fe76afcc7ef40bf91ea8543534c7b2b assets/eternalartifacts/models/item/blueprint_filled.json
 97c8edd3885a1a66a113fd397ebfd3371d838472 assets/eternalartifacts/models/item/blue_shulker_shell.json
 96b27d4376a39cb9393932cb873bdc28f44b91f8 assets/eternalartifacts/models/item/bone_sword.json
+e70beb239a80ccc545f14a4567b781cf9b22eaad assets/eternalartifacts/models/item/bottler.json
 a4ff47382565473dbee87cf9b28ca93ef7a781ef assets/eternalartifacts/models/item/bronze_dust.json
 6cc211a25464771fc73581c9c8bd56538fb0d400 assets/eternalartifacts/models/item/bronze_ingot.json
 99b2120fbccd04d0be8a7d1646939253c1873aa8 assets/eternalartifacts/models/item/brown_shulker_shell.json
@@ -106,6 +108,7 @@ c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/for
 7d0e656ecf2f61bedbab2793001bae737289d13b assets/eternalartifacts/models/item/gardening_pot.json
 fd4a434f290e46fdb2d92be5520d32991cfe8a8c assets/eternalartifacts/models/item/gasoline_bucket.json
 17437f1f8ff3e02b5f59e262eeb91a7f6e671a3e assets/eternalartifacts/models/item/glasscutter.json
+e7b53d1c7823432ffcbabe77b8af21f636b7438a assets/eternalartifacts/models/item/glow_ink_dust.json
 aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/golden_ancient_fruit.json
 6dfdc1b0e3118440613573629511a557794a7ebe assets/eternalartifacts/models/item/golden_cutlass.json
 db3a3dd7934801c74cef3b2261d40a0d14d9a5ff assets/eternalartifacts/models/item/golden_hammer.json

@@ -131,6 +131,7 @@ public class ModItems {
     public static final DeferredItem<Item> MACHINE_FLUID_FILTER = register("machine_fluid_filter", FluidFilter::new);
     public static final DeferredItem<Item> COPPER_DUST = register("copper_dust");
     public static final DeferredItem<Item> OBLIVIUM_INGOT = register("oblivium_ingot");
+    public static final DeferredItem<Item> GLOW_INK_DUST = register("glow_ink_dust");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);

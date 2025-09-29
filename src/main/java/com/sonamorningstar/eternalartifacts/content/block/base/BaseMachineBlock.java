@@ -101,12 +101,9 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
-        if (fluidHandler != null && FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) return InteractionResult.sidedSuccess(level.isClientSide());
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof Machine<?> mbe && mbe.canConstructMenu()) {
-            AbstractMachineMenu.openContainer(player, pos);
-            return InteractionResult.sidedSuccess(level.isClientSide());
+            return mbe.use(state, level, pos, player, hand, hit);
         }
         return InteractionResult.PASS;
     }

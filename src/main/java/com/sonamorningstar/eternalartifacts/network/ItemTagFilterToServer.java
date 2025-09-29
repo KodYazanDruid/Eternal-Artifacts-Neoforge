@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.container.PipeFilterItemMenu;
-import com.sonamorningstar.eternalartifacts.container.PipeFilterMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractPipeFilterMenu;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -41,11 +40,8 @@ public record ItemTagFilterToServer(int containerId, int index, TagKey<Item> tag
 	public void handle(PlayPayloadContext ctx) {
 		ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
 			AbstractContainerMenu menu = player.containerMenu;
-			if (menu.containerId == containerId && menu instanceof PipeFilterMenu modMenu) {
-				modMenu.itemTagFilter(this);
-			}
-			if (menu.containerId == containerId && menu instanceof PipeFilterItemMenu modMenu) {
-				modMenu.tagFilterSynch(this);
+			if (menu.containerId == containerId && menu instanceof AbstractPipeFilterMenu modMenu) {
+				modMenu.itemTagFilterSynch(this);
 			}
 		}));
 	}

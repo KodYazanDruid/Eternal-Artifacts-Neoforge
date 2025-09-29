@@ -57,6 +57,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(VanillaEmiRecipeCategories.SMELTING, EmiStack.of(ModMachines.ELECTRIC_FURNACE.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.SMITHING, EmiStack.of(ModMachines.SMITHINATOR.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.STONECUTTING, EmiStack.of(ModMachines.AUTOCUTTER.getItem()));
+        registry.addWorkstation(VanillaEmiRecipeCategories.BREWING, EmiStack.of(ModMachines.ALCHEMICAL_BREWER.getItem()));
         registry.addWorkstation(MeatPackerCategory.MEAT_PACKER_CATEGORY, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
         registry.addWorkstation(MeatShredderCategory.MEAT_SHREDDER_CATEGORY, EmiStack.of(ModMachines.MEAT_SHREDDER.getItem()));
         registry.addWorkstation(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY, EmiStack.of(ModMachines.MOB_LIQUIFIER.getItem()));

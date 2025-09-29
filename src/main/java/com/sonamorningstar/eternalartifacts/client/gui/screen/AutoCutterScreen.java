@@ -45,7 +45,7 @@ public class AutoCutterScreen extends AbstractSidedMachineScreen<AutoCutterMenu>
 	@Override
 	protected void renderBg(GuiGraphics gui, float tick, int mx, int my) {
 		super.renderBg(gui, tick, mx, my);
-		renderProgressArrow(gui, leftPos + 118, topPos + 41, mx, my);
+		renderProgressArrowWTooltips(gui, leftPos + 118, topPos + 41, mx, my);
 		renderRecipes(gui, leftPos + 46, topPos + 20, mx, my);
 		int k = (int)(39.0F * this.scrollOffs);
 		ResourceLocation resourcelocation = this.isScrollBarActive() ? SCROLLER_SPRITE : SCROLLER_DISABLED_SPRITE;
