@@ -115,7 +115,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 			});
 			innerList.reCalcInnerHeight();
 			tagList.addChildren((x, y, width, height) -> innerList);
-			addRenderableWidget(tagList);
+			addUpperLayerChild(tagList);
 		} else if (tagList != null) {
 			removeWidget(tagList);
 			tagList = null;

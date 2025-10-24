@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -29,7 +29,7 @@ import java.util.List;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
-public class MobLiquifier extends GenericMachine implements IAreaRenderer {
+public class MobLiquifier extends GenericMachine implements AreaRenderer {
 
     public MobLiquifier(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
@@ -62,7 +62,7 @@ public class MobLiquifier extends GenericMachine implements IAreaRenderer {
     }
 
     @Override
-    public AABB getBoundingBox() {
+    public AABB getWorkingArea() {
         return getWorkingArea(getBlockPos(), getBlockState());
     }
 

@@ -60,7 +60,7 @@ public class PictureScreenRenderer implements BlockEntityRenderer<PictureScreen>
 		}
 		
 		poseStack.mulPose(Axis.ZP.rotationDegrees(faceRotation * 90));
-		poseStack.translate(0, 0, -0.501);
+		poseStack.translate(0, 0, -0.501 + 12/16F);
 		
 		VertexConsumer builder = bufferSource.getBuffer(RenderType.entityCutout(texture));
 		Matrix4f matrix = poseStack.last().pose();

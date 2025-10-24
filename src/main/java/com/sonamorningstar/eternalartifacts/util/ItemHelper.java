@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -10,6 +12,21 @@ import java.util.Collections;
 import java.util.List;
 
 public class ItemHelper {
+    
+    public static short getSlot(Inventory inv, ItemStack pStack) {
+        int offset = 0;
+        
+        for(NonNullList<ItemStack> nonnulllist : inv.compartments) {
+            for(int i = 0; i < nonnulllist.size(); ++i) {
+                if (nonnulllist.get(i) == pStack) {
+                    return (short) (offset + i);
+                }
+            }
+            offset += nonnulllist.size();
+        }
+        
+        return -1;
+    }
 
     /**
      * I modified some methods in {@link net.neoforged.neoforge.items.ItemHandlerHelper}

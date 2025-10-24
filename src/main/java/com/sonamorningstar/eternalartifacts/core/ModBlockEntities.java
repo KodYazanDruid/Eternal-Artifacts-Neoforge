@@ -1,15 +1,10 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -23,12 +18,8 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(BookDuplicator::new, ModBlocks.BOOK_DUPLICATOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBox>> BATTERY_BOX = BLOCK_ENTITIES.register("battery_box", ()->
             BlockEntityType.Builder.of(BatteryBox::new, ModBlocks.BATTERY_BOX.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
-            BlockEntityType.Builder.of(FluidCombustionDynamo::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NousTank>> NOUS_TANK = BLOCK_ENTITIES.register("nous_tank", ()->
             BlockEntityType.Builder.of(NousTank::new, ModBlocks.NOUS_TANK.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolidCombustionDynamo>> SOLID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("solid_combustion_dynamo", ()->
-        BlockEntityType.Builder.of(SolidCombustionDynamo::new, ModBlocks.SOLID_COMBUSTION_DYNAMO.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
             BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnergyDockBlockEntity>> ENERGY_DOCK = BLOCK_ENTITIES.register("energy_dock", ()->
@@ -75,6 +66,15 @@ public class ModBlockEntities {
             ModBlocks.GOLD_ITEM_PIPE.get(),
             ModBlocks.STEEL_ITEM_PIPE.get()
         ).build(null));
+    
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
+        BlockEntityType.Builder.of(FluidCombustionDynamo::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolidCombustionDynamo>> SOLID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("solid_combustion_dynamo", ()->
+        BlockEntityType.Builder.of(SolidCombustionDynamo::new, ModBlocks.SOLID_COMBUSTION_DYNAMO.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AlchemicalDynamo>> ALCHEMICAL_DYNAMO = BLOCK_ENTITIES.register("alchemical_dynamo", ()->
+        BlockEntityType.Builder.of(AlchemicalDynamo::new, ModBlocks.ALCHEMICAL_DYNAMO.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CulinaryDynamo>> CULINARY_DYNAMO = BLOCK_ENTITIES.register("culinary_dynamo", ()->
+        BlockEntityType.Builder.of(CulinaryDynamo::new, ModBlocks.CULINARY_DYNAMO.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->
             BlockEntityType.Builder.of(GardeningPotEntity::new, ModBlocks.GARDENING_POT.get()).build(null));

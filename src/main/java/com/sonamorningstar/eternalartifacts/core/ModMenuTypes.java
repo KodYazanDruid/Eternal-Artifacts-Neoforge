@@ -29,10 +29,12 @@ public class ModMenuTypes {
         ()-> IMenuTypeExtension.create(TesseractMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MachineWorkbenchMenu>> MACHINE_WORKBENCH = MENUS.register("machine_workbench",
         ()-> IMenuTypeExtension.create(MachineWorkbenchMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<SolidDynamoMenu>> SOLID_DYNAMO = MENUS.register("solid_dynamo_menu",
-        ()-> IMenuTypeExtension.create(SolidDynamoMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<ItemDynamoMenu>> ITEM_DYNAMO = MENUS.register("item_dynamo_menu",
+        ()-> IMenuTypeExtension.create(ItemDynamoMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<SolarPanelMenu>> SOLAR_PANEL = MENUS.register("solar_panel",
         ()-> IMenuTypeExtension.create(SolarPanelMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<PictureScreenMenu>> PICTURE_SCREEN = MENUS.register("picture_screen",
+        ()-> IMenuTypeExtension.create(PictureScreenMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<ScreenWrapperMenu>> SCREEN_WRAPPER = MENUS.register("screen_wrapper",
             ()-> IMenuTypeExtension.create(ScreenWrapperMenu::new));
@@ -40,6 +42,8 @@ public class ModMenuTypes {
             ()-> IMenuTypeExtension.create(KnapsackMenu::fromNetwork));
     public static final DeferredHolder<MenuType<?>, MenuType<TankKnapsackMenu>> TANK_KNAPSACK = MENUS.register("tank_knapsack",
             ()-> IMenuTypeExtension.create(TankKnapsackMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<TankKnapsacktemMenu>> TANK_KNAPSACK_ITEM = MENUS.register("tank_knapsack_item",
+            ()-> IMenuTypeExtension.create(TankKnapsacktemMenu::fromNetworkItem));
     public static final DeferredHolder<MenuType<?>, MenuType<CharmsMenu>> CHARMS = MENUS.register("charms",
             ()-> IMenuTypeExtension.create(CharmsMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<FishMenu>> FISH = MENUS.register("fish",
@@ -52,5 +56,7 @@ public class ModMenuTypes {
         ()-> IMenuTypeExtension.create(PipeFilterMenu::fromNetwork));
     public static final DeferredHolder<MenuType<?>, MenuType<PipeFilterItemMenu>> PIPE_FILTER_ITEM = MENUS.register("pipe_filter_item",
         ()-> IMenuTypeExtension.create(PipeFilterItemMenu::fromNetwork));
+    public static final DeferredHolder<MenuType<?>, MenuType<InterfaceRemoteMenu>> INTERFACE_REMOTE = MENUS.register("interface_remote",
+        ()-> IMenuTypeExtension.create(InterfaceRemoteMenu::fromNetwork));
     
 }

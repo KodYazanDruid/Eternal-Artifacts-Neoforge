@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.api.filter;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 
 public interface FilterEntry extends INBTSerializable<CompoundTag> {
@@ -9,6 +10,8 @@ public interface FilterEntry extends INBTSerializable<CompoundTag> {
 	void setWhitelist(boolean isWhitelist);
 	boolean isIgnoreNBT();
 	void setIgnoreNBT(boolean isNbtTolerant);
+	boolean isEmpty();
+	Component getDisplayName();
 	default void toggleWhitelist() {
 		setWhitelist(!isWhitelist());
 	}

@@ -33,6 +33,8 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         createBEWLRTransforms(ModBlocks.NOUS_TANK);
         createBEWLRTransforms(ModBlocks.FLUID_COMBUSTION_DYNAMO);
         createBEWLRTransforms(ModBlocks.SOLID_COMBUSTION_DYNAMO);
+        createBEWLRTransforms(ModBlocks.ALCHEMICAL_DYNAMO);
+        createBEWLRTransforms(ModBlocks.CULINARY_DYNAMO);
         createBEWLRTransforms(ModMachines.OIL_REFINERY.getItem());
         createBEWLRTransforms(ModBlocks.ENERGY_DOCK);
         useParent(ModBlocks.DROWNED_HEAD, ModelTemplates.SKULL_INVENTORY);

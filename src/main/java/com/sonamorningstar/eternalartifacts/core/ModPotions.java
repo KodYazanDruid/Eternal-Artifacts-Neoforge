@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.alchemy.Potion;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -24,4 +25,11 @@ public class ModPotions {
 		() -> new Potion("luring", new MobEffectInstance(ModEffects.LURING.get(), 9600)));
 	public static final DeferredHolder<Potion, Potion> STRONG_LURING = POTIONS.register("strong_luring",
 		() -> new Potion("luring", new MobEffectInstance(ModEffects.LURING.get(), 1800, 1)));
+	
+	public static final DeferredHolder<Potion, Potion> ENDURANCE = POTIONS.register("endurance",
+		() -> new Potion(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3600)));
+	public static final DeferredHolder<Potion, Potion> LONG_ENDURANCE = POTIONS.register("long_endurance",
+		() -> new Potion("endurance", new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 9600)));
+	public static final DeferredHolder<Potion, Potion> STRONG_ENDURANCE = POTIONS.register("strong_endurance",
+		() -> new Potion("endurance", new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 1800, 1)));
 }

@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.api.filter;
 
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
@@ -47,6 +49,16 @@ public interface ItemFilterEntry extends FilterEntry, INBTSerializable<CompoundT
 		@Override
 		public boolean matches(ItemStack stack) {
 			return isWhitelist && stack.isEmpty();
+		}
+		
+		@Override
+		public boolean isEmpty() {
+			return true;
+		}
+		
+		@Override
+		public Component getDisplayName() {
+			return ModConstants.FILTER.withSuffixTranslatable("empty_item");
 		}
 		
 		@Override

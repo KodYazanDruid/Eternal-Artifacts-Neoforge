@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CleanButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
@@ -28,8 +29,8 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
         for (int i = 0; i < screenInfo.getButtons().size(); i++) {
             CustomRenderButtonInfo info = screenInfo.getButtons().get(i);
             int finalI = i;
-            addRenderableWidget(SpriteButton
-                    .builder(Component.empty(), (button, key) -> handleButtonPress(finalI, info.onPress()), info.tex())
+            addRenderableWidget(CleanButton
+                    .builder(Component.empty(), button -> handleButtonPress(finalI, info.onPress()))
                     .size(info.width(), info.height())
                     .pos(leftPos + info.x(), topPos + info.y()).build());
         }

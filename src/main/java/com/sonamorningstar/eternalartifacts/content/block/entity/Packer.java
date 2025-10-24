@@ -82,11 +82,6 @@ public class Packer extends GenericMachine {
 					}
 				}
 				
-				ingredientPacking.forEach((item, itemWithCount) -> {
-					System.out.println("Packing map: " + item.getDefaultInstance() +
-						" -> " + itemWithCount.single() + " x" + itemWithCount.count());
-				});
-				
 				isPackingMapInitialized = true;
 			} finally {
 				isInitializingPackingMap = false;

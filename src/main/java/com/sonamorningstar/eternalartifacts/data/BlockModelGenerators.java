@@ -14,7 +14,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
@@ -51,6 +50,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createForParticle(ModBlocks.ENERGY_DOCK, new ResourceLocation(MODID, "block/machine_side"));
         createForParticle(ModBlocks.FLUID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
         createForParticle(ModBlocks.SOLID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
+        createForParticle(ModBlocks.ALCHEMICAL_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
+        createForParticle(ModBlocks.CULINARY_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
         createForParticle(ModBlocks.DROWNED_HEAD, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.DROWNED_WALL_HEAD, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.HUSK_HEAD, Blocks.SOUL_SAND);

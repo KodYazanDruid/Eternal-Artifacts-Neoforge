@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
+import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
+import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
 import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
@@ -18,7 +20,6 @@ import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -59,8 +60,10 @@ public class ClientModEvents {
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
         event.register(ModMenuTypes.TANK_KNAPSACK.get(), TankKnapsackScreen::new);
+        event.register(ModMenuTypes.TANK_KNAPSACK_ITEM.get(), TankKnapsackScreen::new);
         event.register(ModMenuTypes.TESSERACT.get(), TesseractScreen::new);
-        event.register(ModMenuTypes.SOLID_DYNAMO.get(), SolidDynamoScreen::new);
+        event.register(ModMenuTypes.ITEM_DYNAMO.get(), ItemDynamoScreen::new);
+        event.register(ModMenuTypes.PICTURE_SCREEN.get(), PictureScreenScreen::new);
     }
 
     @SubscribeEvent
@@ -180,8 +183,6 @@ public class ClientModEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.JAR.get(), JarRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.NOUS_TANK.get(), NousTankRenderer::new);
         event.registerBlockEntityRenderer(ModMachines.OIL_REFINERY.getBlockEntity(), OilRefineryRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntityRenderer::new);
@@ -189,6 +190,11 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.SKULL.get(), ModSkullBlockRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MACHINE_WORKBENCH.get(), MachineWorkbenchRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PICTURE_SCREEN.get(), PictureScreenRenderer::new);
+        
+        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), DynamoRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.CULINARY_DYNAMO.get(), DynamoRenderer::new);
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
 
@@ -243,6 +249,12 @@ public class ClientModEvents {
             renderer.addLayer((RenderLayer<T, M>) new PortableBatteryLayer<>(pr, ctx));
             renderer.addLayer((RenderLayer<T, M>) new PortableFurnaceLayer<>(pr));
         }
+    }
+    
+    @SubscribeEvent
+    public static void registerTooltipFactories(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(ClientFilterTooltip.FilterTooltip.class, ClientFilterTooltip::new);
+        event.register(ClientFiltersClampedTooltip.FiltersClampedTooltip.class, ClientFiltersClampedTooltip::new);
     }
 
 }

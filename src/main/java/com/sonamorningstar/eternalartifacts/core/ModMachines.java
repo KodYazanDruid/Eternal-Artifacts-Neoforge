@@ -55,6 +55,9 @@ public class ModMachines {
         ALCHEMICAL_BREWER = MACHINES.register("alchemical_brewer", AlchemicalBrewerMenu::new, AlchemicalBrewer::new);
     public static final MachineDeferredHolder<BottlerMenu, Bottler, BaseMachineBlock<Bottler>, MachineBlockItem>
         BOTTLER = MACHINES.register("bottler", BottlerMenu::new, Bottler::new);
+    public static final MachineDeferredHolder<HarvesterMenu, Harvester, BaseMachineBlock<Harvester>, MachineBlockItem>
+        HARVESTER = MACHINES.register("harvester", HarvesterMenu::new, Harvester::new);
+    
     
     public static final MachineDeferredHolder<GenericMachineMenu, BlockPlacer, MachineSixWayBlock<BlockPlacer>, MachineBlockItem>
         BLOCK_PLACER = MACHINES.register("block_placer", GenericMachineMenu::new, BlockPlacer::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);

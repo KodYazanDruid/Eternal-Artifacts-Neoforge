@@ -11,11 +11,15 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
+import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
+import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
@@ -23,6 +27,7 @@ import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
+import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -46,10 +51,10 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -78,6 +83,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -87,12 +93,10 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
 public class ClientEvents {
-    private static final Minecraft mc = Minecraft.getInstance();
     private static final Direction[] DIRS = ArrayUtils.add(Direction.values(), null);
-
     @SubscribeEvent
     public static void renderLevelStage(final RenderLevelStageEvent event) {
-        PoseStack pose = event.getPoseStack();
+        Minecraft mc = Minecraft.getInstance();PoseStack pose = event.getPoseStack();
         BakedModel model = mc.getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         LivingEntity living = Minecraft.getInstance().player;
@@ -134,9 +138,54 @@ public class ClientEvents {
             mc.renderBuffers().bufferSource().endBatch(ModRenderTypes.SPELL_CLOUD.get());
         }
     }
-
+    
+    
     @SubscribeEvent
-    public static void renderTooltipEvent(RenderTooltipEvent.GatherComponents event) {
+    public static void charmDescriptions(ItemTooltipEvent event) {
+        ItemStack stack = event.getItemStack();
+        List<Component> toolTips = event.getToolTip();
+        ItemTooltipManager.applyTooltips(stack, toolTips);
+    }
+    
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void pipeFilterTooltip(RenderTooltipEvent.GatherComponents event) {
+        ItemStack stack = event.getItemStack();
+        List<Either<FormattedText, TooltipComponent>> tooltips = event.getTooltipElements();
+        
+        if (stack.getItem() instanceof PipeAttachmentItem) {
+            CompoundTag tag = stack.hasTag() ? stack.getTag() : new CompoundTag();
+            CompoundTag filterData = tag.getCompound("FilterData");
+            NonNullList<FilterEntry> entries = NonNullList.withSize(9, ItemFilterEntry.Empty.create(true));
+            ListTag itemEntries = filterData.getList("ItemFilters", 10);for (int i = 0; i < itemEntries.size(); i++) {
+                CompoundTag entryTag = itemEntries.getCompound(i);
+                entries.set(i, ItemFilterEntry.fromNBT(entryTag));
+            }
+            ListTag fluidEntries = filterData.getList("FluidFilters", 10);
+            for (int i = 0; i < fluidEntries.size(); i++) {
+                FilterEntry entry = entries.get(i);
+                CompoundTag entryTag = fluidEntries.getCompound(i);
+                if (!(entry instanceof ItemTagEntry || (entry instanceof ItemStackEntry itemEntry && !itemEntry.getFilterStack().isEmpty())))
+                    entries.set(i, FluidFilterEntry.fromNBT(entryTag));
+            }
+            if (!entries.isEmpty()){
+                Minecraft mc = Minecraft.getInstance();
+                tooltips.add(Either.left(
+                    Component.translatable(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"),
+                    mc.options.keyShift.getTranslatedKeyMessage())));
+                if (Screen.hasShiftDown()) {
+                    for (FilterEntry entry : entries) {
+                        if (entry.isEmpty()) continue;
+                        tooltips.add(Either.right(new ClientFilterTooltip.FilterTooltip(entry)));
+                    }
+                } else {
+                    tooltips.add(Either.right(new ClientFiltersClampedTooltip.FiltersClampedTooltip(entries.stream().filter(entry -> !entry.isEmpty()).toList())));
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void charmTooltip(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
         List<Either<FormattedText, TooltipComponent>> tooltips = event.getTooltipElements();
         List<CharmType> types = CharmType.getTypesOfItem(stack.getItem());
@@ -425,9 +474,7 @@ public class ClientEvents {
         if (menu instanceof BookDuplicatorMenu bd) {
             var inv = bd.getBeInventory();
             if (slot.index == 38 && inv != null && inv.getStackInSlot(2).isEmpty()) {
-                ItemRendererHelper.renderFakeItemTransparent(
-                    gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
-                );
+                ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96);
             }
         }
         if (menu instanceof GenericMachineMenu gms) {
@@ -435,24 +482,18 @@ public class ClientEvents {
             var inv = gms.getBeInventory();
             if (be instanceof Disenchanter && inv != null &&
                     inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
-                ItemRendererHelper.renderFakeItemTransparent(
-                    gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96
-                );
+                ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96);
             }
             if (be instanceof Smithinator && inv != null) {
                 if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {
                     TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                        .apply(new ResourceLocation(
-                        "item/empty_slot_smithing_template_netherite_upgrade"
-                    ));
+                        .apply(new ResourceLocation("item/empty_slot_smithing_template_netherite_upgrade"));
                     gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
                         1.0F, 1.0F, 1.0F, 1.0F);
                 }
                 if (slot.index == 38 && inv.getStackInSlot(2).isEmpty()) {
                     TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                        .apply(new ResourceLocation(
-                        "item/empty_slot_ingot")
-                    );
+                        .apply(new ResourceLocation("item/empty_slot_ingot"));
                     gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
                         1.0F, 1.0F, 1.0F, 1.0F);
                 }

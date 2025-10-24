@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -381,7 +382,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Tags.Items.COBBLESTONE,
                 Tags.Items.COBBLESTONE_MOSSY,
                 Tags.Items.COBBLESTONE_DEEPSLATE,
-                ItemTags.PLANKS
+                ItemTags.PLANKS,
+                Tags.Items.STORAGE_BLOCKS
         );
         tag(ModTags.Items.GARDENING_POT_SUITABLE).add(
                 Blocks.BRICKS.asItem(),
@@ -404,6 +406,14 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModBlocks.SNOW_BRICKS.asItem(),
                 ModBlocks.OBSIDIAN_BRICKS.asItem(),
                 Blocks.BAMBOO_MOSAIC.asItem(),
+                Blocks.COPPER_BLOCK.asItem(),
+                Blocks.EXPOSED_COPPER.asItem(),
+                Blocks.WEATHERED_COPPER.asItem(),
+                Blocks.OXIDIZED_COPPER.asItem(),
+                Blocks.CUT_COPPER.asItem(),
+                Blocks.EXPOSED_CUT_COPPER.asItem(),
+                Blocks.WEATHERED_CUT_COPPER.asItem(),
+                Blocks.OXIDIZED_CUT_COPPER.asItem(),
                 //Glazed terracottas
                 Blocks.WHITE_GLAZED_TERRACOTTA.asItem(),
                 Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.asItem(),

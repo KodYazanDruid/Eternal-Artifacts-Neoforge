@@ -27,6 +27,17 @@ public class MachineEnchants {
 		ModEnchantments.WORLDBIND.get()
 	);
 	
+	private static final Set<Enchantment> dynamoEnchants = Set.of(
+		Enchantments.BLOCK_EFFICIENCY,
+		Enchantments.BLAST_PROTECTION,
+		Enchantments.FIRE_PROTECTION,
+		ModEnchantments.CELERITY.get(),
+		ModEnchantments.SOULBOUND.get(),
+		ModEnchantments.EVERLASTING.get(),
+		ModEnchantments.VOLUME.get(),
+		ModEnchantments.WORLDBIND.get()
+	);
+	
 	private static final Set<Enchantment> nonProgressMachineEnchants = Set.of(
 		Enchantments.UNBREAKING,
 		Enchantments.BLAST_PROTECTION,
@@ -65,8 +76,6 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.OIL_REFINERY.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ELECTRIC_FURNACE.getBlockEntity(), commonMachineEnchants);
-		enchantMap.put(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), commonMachineEnchants);
-		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), commonMachineEnchants);
 		enchantMap.put(ModBlockEntities.ANVILINATOR.get(), commonMachineEnchants);
 		enchantMap.put(ModBlockEntities.BOOK_DUPLICATOR.get(), commonMachineEnchants);
 		enchantMap.put(ModMachines.SMITHINATOR.getBlockEntity(), commonMachineEnchants);
@@ -76,6 +85,7 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.PACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.UNPACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ALCHEMICAL_BREWER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.HARVESTER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
@@ -83,6 +93,11 @@ public class MachineEnchants {
 		
 		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.BOTTLER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
+		
+		enchantMap.put(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
+		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
+		enchantMap.put(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), dynamoEnchants);
+		enchantMap.put(ModBlockEntities.CULINARY_DYNAMO.get(), dynamoEnchants);
 		
 		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
 		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());

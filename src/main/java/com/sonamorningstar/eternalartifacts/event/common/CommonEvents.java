@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
+import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
@@ -522,6 +523,7 @@ public class CommonEvents {
     
     @SubscribeEvent
     public static void playerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+        ItemTooltipManager.setReload();
         Player player = event.getEntity();
         if (!(player.level() instanceof ServerLevel sl)) return;
         var networks = TesseractNetworks.get(sl).getTesseractNetworks();

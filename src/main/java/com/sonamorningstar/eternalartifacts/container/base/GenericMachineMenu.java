@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
+import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -46,7 +47,11 @@ public class GenericMachineMenu extends AbstractMachineMenu {
     
     @Override
     public boolean clickMenuButton(Player player, int id) {
-        screenInfo.getButtons().get(id).onPress().run();
+        CustomRenderButtonInfo info = screenInfo.getButtons().get(id);
+        if (info != null) {
+            info.onPress().run();
+            return true;
+        }
         return super.clickMenuButton(player, id);
     }
 }

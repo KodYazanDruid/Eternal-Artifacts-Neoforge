@@ -13,15 +13,15 @@ public class ModItemMultiFluidTank<T extends ModFluidStorage> extends MultiFluid
 
     public ModItemMultiFluidTank(ItemStack stack, List<T> tanks) {
         super(tanks);
-        this.stack = stack;
         tanks.forEach(tank -> tank.addListener(this::onContentsChange));
+        this.stack = stack;
         CompoundTag tag = stack.getTag();
         if (tag != null) deserializeNBT(tag);
     }
     
     @Override
     public CompoundTag serializeNBT() {
-        CompoundTag nbt = stack.getOrCreateTag();
+        CompoundTag nbt = new CompoundTag();
         ListTag tanksList = new ListTag();
         for(int i = 0; i < tanks.size(); i++) {
             T tank = tanks.get(i);
@@ -39,16 +39,17 @@ public class ModItemMultiFluidTank<T extends ModFluidStorage> extends MultiFluid
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         ListTag tanksList = nbt.getList("Tanks", 10);
-        for(int i = 0; i < tanksList.size() ; i++) {
+        for(int i = 0; i < tanksList.size(); i++) {
             CompoundTag entry = tanksList.getCompound(i);
             FluidStack stack = FluidStack.loadFluidStackFromNBT(entry);
             int tankNo = entry.getInt("TankNo");
-            if (tankNo <= i) tanks.get(tankNo).setFluid(stack, 0);
+            if (tankNo < tanks.size()) tanks.get(tankNo).setFluid(stack, 0);
         }
     }
 
+    @Override
     protected void onContentsChange() {
-        serializeNBT();
+        stack.getOrCreateTag().merge(serializeNBT());
     }
     
     @Override

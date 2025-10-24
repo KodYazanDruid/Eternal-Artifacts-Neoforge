@@ -25,7 +25,7 @@ public abstract class AbstractPipeFilterMenu extends AbstractModContainerMenu {
 	@Getter @Setter protected boolean ignoresNbt;
 	
 	protected AbstractPipeFilterMenu(MenuType<?> type, int id, Inventory inv, int attType) {
-		super(type, id);
+		super(type, id, inv);
 		this.attType = attType;
 		this.fakeSlots = new SimpleContainer(9);
 		this.filterEntries = NonNullList.withSize(9, ItemFilterEntry.Empty.create(true));

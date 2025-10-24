@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
+import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.content.fluid.PotionFluidType;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
@@ -17,8 +18,10 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
 
@@ -37,7 +40,8 @@ public class EternalArtifacts {
      * TODO: Camouflage armor.
      * TODO: Colored flower pots.
      * TODO: Block pattern copy paste.
-     * FIXME: Tank knapsack or multi tank capability related bug.
+     *
+     * FIXME: SPELL RENDERING
     */
 
     public static final String MODID = "eternalartifacts";
@@ -80,6 +84,7 @@ public class EternalArtifacts {
         NeoForge.EVENT_BUS.addListener(JarDrinkEvent.class, PotionFluidType::jarDrink);
         ModCommands.addListener();
         NeoForge.EVENT_BUS.addListener(RenderPlayerEvent.Pre.class, MobModelRenderer::playerRenderPre);
+        //NeoForge.EVENT_BUS.addListener(ItemTooltipEvent.class, AttributeEnchantment::mergeTooltips);
 
         new ModHooks().construct(modEventBus);
     }

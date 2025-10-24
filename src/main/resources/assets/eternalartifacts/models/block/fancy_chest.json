@@ -9,21 +9,21 @@
 		{
 			"name": "base",
 			"from": [1, 0, 1],
-			"to": [15, 10, 15],
+			"to": [15, 9, 15],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 8]},
 			"faces": {
 				"north": {"uv": [15, 16, 1, 6], "texture": "#3", "tintindex": 0},
 				"east": {"uv": [15, 16, 1, 6], "texture": "#3", "tintindex": 0},
 				"south": {"uv": [15, 16, 1, 6], "texture": "#3", "tintindex": 0},
 				"west": {"uv": [15, 16, 1, 6], "texture": "#3", "tintindex": 0},
-				"up": {"uv": [16, 16, 2, 2], "texture": "#3", "tintindex": 0},
+				"up": {"uv": [15, 15, 1, 1], "texture": "#3", "tintindex": 0},
 				"down": {"uv": [15, 15, 1, 1], "texture": "#3", "cullface": "down", "tintindex": 0}
 			}
 		},
 		{
 			"name": "lid",
-			"from": [1, 10, 1],
-			"to": [15, 15, 15],
+			"from": [1, 9, 1],
+			"to": [15, 14, 15],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 15]},
 			"faces": {
 				"north": {"uv": [15, 6, 1, 1], "texture": "#3", "tintindex": 0},
@@ -36,8 +36,8 @@
 		},
 		{
 			"name": "lock",
-			"from": [7, 8, 0],
-			"to": [9, 12, 1],
+			"from": [7, 7, 0],
+			"to": [9, 11, 1],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 1]},
 			"faces": {
 				"north": {"uv": [3, 5, 1, 1], "texture": "#5", "tintindex": 0},
@@ -89,7 +89,6 @@
 			"origin": [8, 0, 8],
 			"rotation": [-180, 0, 0],
 			"color": 0,
-			"nbt": "{}",
 			"children": [0]
 		},
 		{
@@ -97,7 +96,6 @@
 			"origin": [8, 9, 7],
 			"rotation": [-180, 0, 0],
 			"color": 0,
-			"nbt": "{}",
 			"children": [1]
 		},
 		{
@@ -105,7 +103,6 @@
 			"origin": [8, 9, 7],
 			"rotation": [-180, 0, 0],
 			"color": 0,
-			"nbt": "{}",
 			"children": [2]
 		}
 	],

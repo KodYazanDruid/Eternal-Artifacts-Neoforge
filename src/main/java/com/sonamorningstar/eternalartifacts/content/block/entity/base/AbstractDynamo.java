@@ -69,11 +69,15 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 		if (cache != null) return;
 		super.findRecipe();
 		if (RecipeCache.getCachedRecipe(this) instanceof DynamoRecipe recipe) {
-			int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
-			setEnergyPerTick(recipe.getGeneration() * ((celerity / 3) + 1));
-			int eff = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-			setMaxProgress(recipe.getDuration() * ((eff / 5) + 1));
+			prepareDynamo(recipe);
 		}
+	}
+	
+	protected void prepareDynamo(DynamoRecipe recipe) {
+		int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
+		setEnergyPerTick(recipe.getGeneration() * ((celerity / 3) + 1));
+		int eff = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+		setMaxProgress(recipe.getDuration() * ((eff / 5) + 1));
 	}
 	
 	public float getAnimationLerp(float tick) {
@@ -112,6 +116,7 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 			} else if (cache.isDone()) {
 				cache = null;
 				progress = 0;
+				onCacheExpire();
 				findRecipe();
 				if (recipe == null && !canProcessRecipeless()) {
 					isWorking = false;
@@ -120,21 +125,23 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 			}
 		} else {
 			if(recipe != null) {
-				executeRecipe(recipe, (a, b, c, d) -> {
-					this.cache = new DynamoProcessCache(a, a, b, c, d);
+				executeRecipe(recipe, (duration, energyCap, generation, dynamo) -> {
+					this.cache = new DynamoProcessCache(duration, duration, energyCap, generation, dynamo);
 					return this.cache;
 				});
 			} else if (canProcessRecipeless()) {
-				executeRecipeless((a, b, c, d) -> {
-					this.cache = new DynamoProcessCache(a, a, b, c, d);
+				executeRecipeless((duration, energyCap, generation, dynamo) -> {
+					this.cache = new DynamoProcessCache(duration, duration, energyCap, generation, dynamo);
 					return this.cache;
 				});
 			}
 		}
 	}
 	
-	protected void executeRecipe(Recipe<?> recipe,
-								 QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {}
-	protected void executeRecipeless(
-		QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {}
+	protected void executeRecipe(Recipe<?> recipe, QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {}
+	protected void executeRecipeless(QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {}
+	protected void onCacheExpire() {
+		setEnergyPerTick(defaultEnergyPerTick);
+		setMaxProgress(defaultMaxProgress);
+	}
 }

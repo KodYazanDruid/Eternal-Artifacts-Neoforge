@@ -32,7 +32,7 @@ public class TesseractMenu extends AbstractModContainerMenu {
 	}
 	
 	public TesseractMenu(int id, Inventory inv, BlockEntity blockEntity, List<TesseractNetwork<?>> tesseractNetworks) {
-		super(ModMenuTypes.TESSERACT.get(), id);
+		super(ModMenuTypes.TESSERACT.get(), id, inv);
 		this.level = inv.player.level();
 		this.tesseract = ((Tesseract) blockEntity);
 		gatheredTesseractNetworks = tesseractNetworks;

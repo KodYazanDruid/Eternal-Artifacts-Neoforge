@@ -15,6 +15,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +36,8 @@ public abstract class FilterablePipeBlockEntity<CAP> extends AbstractPipeBlockEn
 	public Component getDisplayName() { return Component.empty(); }
 	
 	@Override
-	public void openMenu(ServerPlayer player, Direction dir) {
+	public void openMenu(Player player, Direction dir) {
+		if (!(player instanceof ServerPlayer)) return;
 		PipeConnectionProperty.PipeConnection conn = getBlockState().getValue(AttachmentablePipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 		player.openMenu(this, wr -> {
 			wr.writeBlockPos(getBlockPos());

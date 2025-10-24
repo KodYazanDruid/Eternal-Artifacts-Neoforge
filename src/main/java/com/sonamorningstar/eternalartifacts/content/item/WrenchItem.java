@@ -61,29 +61,29 @@ public class WrenchItem extends DiggerItem {
         Player player = ctx.getPlayer();
         BlockPos pos = ctx.getClickedPos();
         BlockState state = level.getBlockState(pos);
-        AbstractPipeBlockEntity<?> be = (AbstractPipeBlockEntity<?>) level.getBlockEntity(pos);
+        BlockEntity be = level.getBlockEntity(pos);
         
-        if (be instanceof AbstractPipeBlockEntity<?> && player != null && !level.isClientSide()) {
+        if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {
             
             player.sendSystemMessage(Component.literal("Pipe Info:"));
-            player.sendSystemMessage(Component.literal(" - Network Size: " + be.networkPipes.size()));
-            player.sendSystemMessage(Component.literal(" - All Sources: " + be.allSources.size()));
-            be.allSources.forEach((blockPos, cap) -> {
+            player.sendSystemMessage(Component.literal(" - Network Size: " + pipe.networkPipes.size()));
+            player.sendSystemMessage(Component.literal(" - All Sources: " + pipe.allSources.size()));
+            pipe.allSources.forEach((blockPos, cap) -> {
                 player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
             });
-            player.sendSystemMessage(Component.literal(" - All Targets: " + be.allTargets.size()));
-            be.allTargets.forEach((blockPos, cap) -> {
+            player.sendSystemMessage(Component.literal(" - All Targets: " + pipe.allTargets.size()));
+            pipe.allTargets.forEach((blockPos, cap) -> {
                 player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
             });
-            player.sendSystemMessage(Component.literal(" - Sources: " + be.sources.size()));
-            be.sources.forEach((blockPos, cap) -> {
+            player.sendSystemMessage(Component.literal(" - Sources: " + pipe.sources.size()));
+            pipe.sources.forEach((blockPos, cap) -> {
                 player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
             });
-            player.sendSystemMessage(Component.literal(" - Targets: " + be.targets.size()));
-            be.targets.forEach((blockPos, cap) -> {
+            player.sendSystemMessage(Component.literal(" - Targets: " + pipe.targets.size()));
+            pipe.targets.forEach((blockPos, cap) -> {
                 player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
             });
-            be.sourceToTargetDistances.forEach((sourcePos, map) -> {
+            pipe.sourceToTargetDistances.forEach((sourcePos, map) -> {
                 map.forEach((targetPos, dist) -> {
                     player.sendSystemMessage(Component.literal(" - Distance from " + sourcePos + " to " + targetPos + " = " + dist));
                 });

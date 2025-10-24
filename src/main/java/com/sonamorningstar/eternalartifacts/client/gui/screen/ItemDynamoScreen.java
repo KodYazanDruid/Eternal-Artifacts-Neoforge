@@ -1,12 +1,12 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.sonamorningstar.eternalartifacts.container.SolidDynamoMenu;
+import com.sonamorningstar.eternalartifacts.container.ItemDynamoMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-public class SolidDynamoScreen extends AbstractDynamoScreen<SolidDynamoMenu> {
-	public SolidDynamoScreen(SolidDynamoMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
+public class ItemDynamoScreen extends AbstractDynamoScreen<ItemDynamoMenu> {
+	public ItemDynamoScreen(ItemDynamoMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
 		super(pMenu, pPlayerInventory, pTitle);
 	}
 	

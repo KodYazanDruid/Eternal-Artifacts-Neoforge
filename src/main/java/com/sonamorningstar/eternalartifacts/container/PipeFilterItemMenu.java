@@ -13,12 +13,14 @@ import net.minecraft.world.item.ItemStack;
 
 @Getter
 public class PipeFilterItemMenu extends AbstractPipeFilterMenu {
+	protected final short slotId;
 	protected final ItemStack filter;
 	protected final Player player;
 	
-	public PipeFilterItemMenu(int id, int attType, Inventory inv, ItemStack filter) {
+	public PipeFilterItemMenu(int id, int attType, Inventory inv, short slotId) {
 		super(ModMenuTypes.PIPE_FILTER_ITEM.get(), id, inv, attType);
-		this.filter = filter;
+		this.slotId = slotId;
+		this.filter = inv.getItem(slotId);
 		this.player = inv.player;
 		boolean hasTag = filter.hasTag();
 		CompoundTag tag = hasTag ? filter.getTag() : new CompoundTag();
@@ -32,7 +34,7 @@ public class PipeFilterItemMenu extends AbstractPipeFilterMenu {
 		for (int i = 0; i < fluidEntries.size(); i++) {
 			FilterEntry entry = filterEntries.get(i);
 			CompoundTag entryTag = fluidEntries.getCompound(i);
-			if (!(entry instanceof ItemTagEntry || (entry instanceof ItemStackEntry itemEntry && !itemEntry.getFilterStack().isEmpty())))
+			if (!(entry instanceof ItemStackEntry) && !(entry instanceof ItemTagEntry) || entry.isEmpty())
 				filterEntries.set(i, FluidFilterEntry.fromNBT(entryTag));
 		}
 		this.isWhitelist = filterData.getBoolean("whitelist");
@@ -75,6 +77,6 @@ public class PipeFilterItemMenu extends AbstractPipeFilterMenu {
 	}
 	
 	public static PipeFilterItemMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf buf) {
-		return new PipeFilterItemMenu(id, buf.readByte(), inv, buf.readItem());
+		return new PipeFilterItemMenu(id, buf.readByte(), inv, buf.readShort());
 	}
 }

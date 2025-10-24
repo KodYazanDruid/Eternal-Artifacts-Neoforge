@@ -1,16 +1,16 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.ItemStackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CleanButton;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
@@ -28,7 +28,7 @@ public class LightSaberScreen extends ItemStackScreen {
     ExtendedSlider redSlider;
     ExtendedSlider greenSlider;
     ExtendedSlider blueSlider;
-    Button toggleGlintButton;
+    CleanButton toggleGlintButton;
 
     public LightSaberScreen(ItemStack stack) {
         super(stack);
@@ -52,10 +52,10 @@ public class LightSaberScreen extends ItemStackScreen {
         blueSlider = new ExtendedSlider(
                 leftPos + 40, topPos + 80, 150, 20,
                 Component.empty(), Component.empty(), 0, 255, FastColor.ARGB32.blue(color), true);
-        Button doneButton = Button.builder(ModConstants.GUI.withSuffixTranslatable("done"),
+        CleanButton doneButton = CleanButton.builder(ModConstants.GUI.withSuffixTranslatable("done"),
                 (button) -> changeColor(button, stack))
                 .bounds(leftPos + 10, topPos + 105, 50, 20).build();
-        toggleGlintButton = Button.builder(ModConstants.GUI.withSuffixTranslatable("toggle_glint"),
+        toggleGlintButton = CleanButton.builder(ModConstants.GUI.withSuffixTranslatable("toggle_glint"),
                         (button) -> toggleGlint(stack))
                 .bounds(leftPos + 70, topPos + 105, 50, 20).build();
         toggleGlintButton.visible = stack.isEnchanted();
@@ -78,7 +78,7 @@ public class LightSaberScreen extends ItemStackScreen {
         //gui.fillGradient(leftPos + 10, topPos + 150, leftPos + 190, topPos + 200, getColor(), getColor());
     }
 
-   private void changeColor(@Nullable Button button, ItemStack stack) {
+   private void changeColor(@Nullable AbstractButton button, ItemStack stack) {
         if (stack.getItem() instanceof LightSaberItem lsi) {
             lsi.changeColor(stack, getColor());
         }

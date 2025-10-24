@@ -94,6 +94,7 @@ public class FMLCommonSetup {
     private static void registerPotions() {
         addPotionMix(ModPotions.ANGLERS_LUCK.get(), ModItems.ANCIENT_FRUIT.get(), ModPotions.LONG_ANGLERS_LUCK.get(), ModPotions.STRONG_ANGLERS_LUCK.get());
         addPotionMix(ModPotions.LURING.get(), ModItems.FROG_LEGS.get(), ModPotions.LONG_LURING.get(), ModPotions.STRONG_LURING.get());
+        addPotionMix(ModPotions.ENDURANCE.get(), ModItems.GLOW_INK_DUST.get(), ModPotions.LONG_ENDURANCE.get(), ModPotions.STRONG_ENDURANCE.get());
     }
     
     private static void addPotionMix(Potion potion, Item input, Potion longV, Potion strongV) {

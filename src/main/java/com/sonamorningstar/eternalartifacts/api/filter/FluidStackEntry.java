@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 @Setter
@@ -29,7 +30,17 @@ public class FluidStackEntry implements FluidFilterEntry {
 			? stack.getFluid() == filterStack.getFluid()
 			: stack.isFluidEqual(filterStack);
 	}
-
+	
+	@Override
+	public boolean isEmpty() {
+		return filterStack.isEmpty();
+	}
+	
+	@Override
+	public Component getDisplayName() {
+		return filterStack.getDisplayName();
+	}
+	
 	@Override
 	public CompoundTag serializeNBT() {
 		CompoundTag tag = new CompoundTag();

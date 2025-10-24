@@ -177,6 +177,8 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.BATTERY_BOX, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.FLUID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.SOLID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.ALCHEMICAL_DYNAMO, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.CULINARY_DYNAMO, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.ANVILINATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BOOK_DUPLICATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());

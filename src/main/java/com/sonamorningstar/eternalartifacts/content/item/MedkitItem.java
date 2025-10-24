@@ -4,10 +4,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class MedkitItem extends ArtifactItem {
+public class MedkitItem extends Item {
     public MedkitItem(Properties pProperties) {
         super(pProperties);
     }

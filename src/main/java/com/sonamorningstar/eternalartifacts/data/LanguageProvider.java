@@ -5,8 +5,10 @@ import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 
@@ -220,6 +222,29 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.OBLIVIUM_INGOT.get(), "Oblivium Ingot");
                 add(ModItems.HONEY_SLIME_SPAWN_EGG.get(), "Honey Slime Spawn Egg");
                 add(ModItems.GLOW_INK_DUST.get(), "Glow Ink Dust");
+                add(ModItems.GLASS_SPLASH_BOTTLE.get(), "Glass Splash Bottle");
+                add(ModItems.GLASS_LINGERING_BOTTLE.get(), "Glass Lingering Bottle");
+                addPotion(ModPotions.ENDURANCE.get(), "Potion of Endurance");
+                add(ModItems.INTERFACE_REMOTE.get(), "Interface Remote");
+                //endregion
+                //region Charm Tooltips
+                
+                tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
+                tooltipForItem(ModItems.HOLY_DAGGER.get(), "When you drop below %1$s%% health, grant user %2$s effect for %3$s seconds.");
+                tooltipForItem(ModItems.MEDKIT.get(), "Gives user %s effect whilst out of combat.");
+                tooltipForItem(ModItems.FROG_LEGS.get(), "Increases jump height by %1$s. Reduces fall distance by %2$s and reduces fall damage by %3$s%%");
+                tooltipForItem(ModItems.MAGIC_FEATHER.get(), "Gives %s effect while in active beacon range.");
+                tooltipForItem(ModItems.ENCUMBATOR.get(), "Prevents picking up items while active. Right click in inventory to toggle.");
+                tooltipForItem(ModItems.HEART_NECKLACE.get(), "Gives %1$s effect for %2$s seconds when user falls below %3$s%% health.");
+                tooltipForItem(ModItems.SAGES_TALISMAN.get(), "Increases experience gained from killing mobs and mining blocks by %s%%.");
+                tooltipForItem(ModItems.MAGIC_QUIVER.get(), "Provides infinity supply of arrows.");
+                tooltipForItem(ModItems.MAGIC_BANE.get(), "Attacks deal extra %s%% magic damage.");
+                tooltipForItem(ModItems.EMERALD_SIGNET.get(), "Decreases villager trade costs by %s%%.");
+                tooltipForItem(ModItems.MAGNET.get(), "Attracts items within a %s block radius.");
+                tooltipForItem(ModItems.SKYBOUND_TREADS.get(), "Allows user to perform a jump in mid-air.");
+                tooltipForItem(ModItems.GALE_SASH.get(), "Allows user to dash in the direction they are moving. Resets after jumping.");
+                tooltipForItem(ModItems.RAINCOAT.get(), "Negates the next bad effect.");
+                tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Decreases the next taken damage by %s%%.");
                 //endregion
                 //region Blocks
                 add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
@@ -346,6 +371,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "Wet Industrial Sponge");
                 add(ModBlocks.GLOWSTONE_TORCH.get(), "Glowstone Torch");
                 add(ModBlocks.GLOWTORCH.get(), "Glowtorch");
+                add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Alchemical Dynamo");
+                add(ModBlocks.CULINARY_DYNAMO.get(), "Culinary Dynamo");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -525,6 +552,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("recipe.smoker"), "Smoking");
                 add(ModConstants.TOOLTIP.withSuffix("recipe.campfire"), "Campfire Cooking");
                 add(ModConstants.TOOLTIP.withSuffix("recipe.furnace"), "Smelting");
+                add(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"), "Press [%s] for detailed information.");
+                add(ModConstants.FILTER.withSuffix("empty_item"), "Empty Item Tag");
+                add(ModConstants.FILTER.withSuffix("empty_fluid"), "Empty Fluid Tag");
+                add(ModConstants.WIDGET.withSuffix("use_ingredients.on"), "Use Ingredients");
+                add(ModConstants.WIDGET.withSuffix("use_ingredients.off"), "Don't Use Ingredients");
 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -752,6 +784,28 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.OBLIVIUM_INGOT.get(), "Oblivyum Külçesi");
                 add(ModItems.HONEY_SLIME_SPAWN_EGG.get(), "Bal Balçığı Çağırma Yumurtası");
                 add(ModItems.GLOW_INK_DUST.get(), "Parlayan Mürekkep Tozu");
+                add(ModItems.GLASS_SPLASH_BOTTLE.get(), "Cam Püskürtme Şişesi");
+                add(ModItems.GLASS_LINGERING_BOTTLE.get(), "Cam Kalıcı Şişe");
+                addPotion(ModPotions.ENDURANCE.get(), "Dayanıklılık İksiri");
+                add(ModItems.INTERFACE_REMOTE.get(), "Arayüz Kumandası");
+                //endregion
+                //region Türkçe Tılsım açıklamaları
+                tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
+                tooltipForItem(ModItems.HOLY_DAGGER.get(), "%%%1$s canın altına düştüğünde kullanıcıya %3$s saniyeliğine %2$s efekti verir.");
+                tooltipForItem(ModItems.MEDKIT.get(), "Çatışma dışındayken kullanıcıya %s efektini verir.");
+                tooltipForItem(ModItems.FROG_LEGS.get(), "Zıplama yüksekliğini %1$s arttırır. Düşme mesafesini %2$s azaltır ve düşüş hasarını %%%3$s azaltır.");
+                tooltipForItem(ModItems.MAGIC_FEATHER.get(), "Aktif fener menziline ikten %s efektini verir");
+                tooltipForItem(ModItems.ENCUMBATOR.get(), "Aktifken eşya toplamayı engeller.");
+                tooltipForItem(ModItems.HEART_NECKLACE.get(), "Kullanıcı %%%3$s canın altına düştüğünde %2$s saniyeliğine %1$s efekti verir.");
+                tooltipForItem(ModItems.SAGES_TALISMAN.get(), "Canavar öldürmelerinden ve blok kırmalarından elde edilen tecrübe miktarını %%%s arttırır.");
+                tooltipForItem(ModItems.MAGIC_QUIVER.get(), "Sınırsız ok sağlar.");
+                tooltipForItem(ModItems.MAGIC_BANE.get(), "Saldırılar fazladan %%%s büyü hasarı verir.");
+                tooltipForItem(ModItems.EMERALD_SIGNET.get(), "Köylü ticaret fiyatlarını %%%s azaltır.");
+                tooltipForItem(ModItems.MAGNET.get(), "%s yarıçapındaki eşyaları çeker.");
+                tooltipForItem(ModItems.SKYBOUND_TREADS.get(), "Kullanıcıya havada bir kez zıplama yeteneği verir.");
+                tooltipForItem(ModItems.GALE_SASH.get(), "Kullanıcıya havada hareket yönünde atılma yeteneği verir. Zıpladıktan sonra yenilenir.");
+                tooltipForItem(ModItems.RAINCOAT.get(), "Sonraki kötü efekti engeller.");
+                tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Sonraki alınan hasarı %%%s azaltır.");
                 //endregion
                 //region Türkçe Block
                 add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
@@ -932,7 +986,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.POTION.getTranslationKey(), "İksir");
                 add(ModMachines.ALCHEMICAL_BREWER.getBlockTranslationKey(), "Simyasal Demleyici");
                 add(ModMachines.BOTTLER.getBlockTranslationKey(), "Şişeleyici");
-                
+                add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Simyasal Dinamo");
+                add(ModBlocks.CULINARY_DYNAMO.get(), "Mutfak Dinamosu");
+                add(ModMachines.HARVESTER.getBlockTranslationKey(), "Hasat Makinesi");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1139,6 +1195,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.BLOCK.withSuffix("pipe.fluid.transfer_rate"), "Tik başına sıvı: %d mB");
                 add(ModConstants.BLOCK.withSuffix("pipe.energy.transfer_rate"), "Aktarım hızı: Tik başına %d RF");
                 add(ModConstants.BLOCK.withSuffix("pipe.energy.damage_cost"), "Hasar maliyeti: Tik başına %d RF");
+                add(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"), "Detaylı bilgi için [%s] tuşuna basın.");
+                add(ModConstants.FILTER.withSuffix("empty_item"), "Boş Eşya Etiketi");
+                add(ModConstants.FILTER.withSuffix("empty_fluid"), "Boş Sıvı Etiketi");
+                add(ModConstants.WIDGET.withSuffix("use_ingredients.on"), "Malzemeleri Kullan");
+                add(ModConstants.WIDGET.withSuffix("use_ingredients.off"), "Malzemeleri Kullanma");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
@@ -1154,5 +1215,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
         add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.LINGERING_POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.TIPPED_ARROW.getDescriptionId() + ".effect."), name);
+    }
+    
+    private void tooltipForItem(Item item, String tooltip) {
+        add(ModConstants.TOOLTIP.withSuffix(BuiltInRegistries.ITEM.getKey(item).getPath()), tooltip);
     }
 }

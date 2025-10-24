@@ -17,7 +17,7 @@ public class KnapsackMenu extends AbstractModContainerMenu {
     final ItemStack stack;
 
     public KnapsackMenu(int containerId, Inventory inv, ItemStack stack) {
-        super(ModMenuTypes.KNAPSACK.get(), containerId);
+        super(ModMenuTypes.KNAPSACK.get(), containerId, inv);
         this.stack = stack;
         IItemHandler ih = stack.getCapability(Capabilities.ItemHandler.ITEM);
         int column = Config.KNAPSACK_SLOT_IN_ROW.get();

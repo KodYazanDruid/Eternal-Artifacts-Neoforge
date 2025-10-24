@@ -115,6 +115,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.COVERED_TIN_CABLE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.INDUSTRIAL_SPONGE.get(), "", "hoe");
         tierAndTool(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "", "hoe");
+        tierAndTool(ModBlocks.ALCHEMICAL_DYNAMO.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.CULINARY_DYNAMO.get(), "stone", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
@@ -126,7 +128,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.NOUS_TANK.get(),
             ModBlocks.SHOCK_ABSORBER.get(),
             ModBlocks.MACHINE_WORKBENCH.get(),
-            ModBlocks.SOLID_COMBUSTION_DYNAMO.get()
+            ModBlocks.SOLID_COMBUSTION_DYNAMO.get(),
+            ModBlocks.ALCHEMICAL_DYNAMO.get(),
+            ModBlocks.CULINARY_DYNAMO.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);

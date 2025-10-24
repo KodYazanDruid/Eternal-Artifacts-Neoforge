@@ -175,7 +175,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.GASOLINE, 270, 300);
         createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);
         
-        createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.EXPERIENCE, 250, Either.left(Items.GLASS_BOTTLE), Items.EXPERIENCE_BOTTLE.getDefaultInstance());
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_STEEL_INGOT.toStack());
         createFluidInfusingRecipe(recipeOutput, Fluids.WATER, 125, Either.right(ModTags.Items.DUSTS_FLOUR), ModItems.DOUGH.toStack());
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PLASTIC, 1000, Either.right(Tags.Items.DYES_BLUE), ModItems.PLASTIC_SHEET.toStack(4));

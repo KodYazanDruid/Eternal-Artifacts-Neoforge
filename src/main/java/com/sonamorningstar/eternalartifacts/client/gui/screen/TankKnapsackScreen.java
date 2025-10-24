@@ -3,8 +3,6 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.container.TankKnapsackMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
-import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.TankKnapsackTransferToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import net.minecraft.ChatFormatting;
@@ -18,7 +16,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import org.apache.commons.compress.utils.Lists;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackMenu> {
@@ -61,29 +58,5 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
             }
             renderTankSlot(gui, x, y, slot);
         }
-    }
-
-    @Override
-    public boolean mouseClicked(double mx, double my, int button) {
-        super.mouseClicked(mx, my, button);
-        FluidSlot slot = findTank(mx, my);
-        if (slot != null) {
-            menu.handleTransfers(slot.index, button);
-            Channel.sendToServer(new TankKnapsackTransferToServer(slot.index, button));
-            rebuildWidgets();
-            return true;
-        }
-        return false;
-    }
-
-    @Nullable
-    private FluidSlot findTank(double mx, double my) {
-        for(int i = 0; i < this.menu.fluidSlots.size(); i++) {
-            FluidSlot slot = this.menu.fluidSlots.get(i);
-            if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
-                return slot;
-            }
-        }
-        return null;
     }
 }

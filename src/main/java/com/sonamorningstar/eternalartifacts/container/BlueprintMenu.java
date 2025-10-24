@@ -33,7 +33,7 @@ public class BlueprintMenu extends AbstractModContainerMenu {
     private final SimpleContainer fakeResult;
     private final Player player;
     public BlueprintMenu(int id, Inventory inv, ItemStack blueprint) {
-        super(ModMenuTypes.BLUEPRINT.get(), id);
+        super(ModMenuTypes.BLUEPRINT.get(), id, inv);
         this.blueprint = blueprint;
         this.player = inv.player;
         addPlayerInventoryAndHotbar(inv, 8, 66);

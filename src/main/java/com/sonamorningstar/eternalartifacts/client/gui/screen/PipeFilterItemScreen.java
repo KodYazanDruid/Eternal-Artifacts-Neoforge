@@ -7,6 +7,8 @@ import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -14,6 +16,12 @@ import net.neoforged.neoforge.fluids.FluidStack;
 public class PipeFilterItemScreen extends AbstractPipeFilterScreen<PipeFilterItemMenu> {
 	public PipeFilterItemScreen(PipeFilterItemMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
 		super(pMenu, pPlayerInventory, pTitle);
+	}
+	
+	@Override
+	protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
+		if (slotId == menu.getSlotId()) return;
+		super.slotClicked(slot, slotId, mouseButton, type);
 	}
 	
 	@Override

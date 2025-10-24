@@ -29,5 +29,6 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
         tag(ModTags.Fluids.DIESEL).add(ModFluids.DIESEL.getFluid());
         tag(ModTags.Fluids.NAPHTHA).add(ModFluids.NAPHTHA.getFluid());
         tag(FluidTags.WATER).add(ModFluids.HOT_SPRING_WATER.getFluid(), ModFluids.HOT_SPRING_WATER.getFlowingFluid());
+        tag(ModTags.Fluids.POTION).add(ModFluids.POTION.getFluid());
     }
 }

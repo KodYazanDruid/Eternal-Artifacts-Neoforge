@@ -132,6 +132,8 @@ public class ModItems {
     public static final DeferredItem<Item> COPPER_DUST = register("copper_dust");
     public static final DeferredItem<Item> OBLIVIUM_INGOT = register("oblivium_ingot");
     public static final DeferredItem<Item> GLOW_INK_DUST = register("glow_ink_dust");
+    public static final DeferredItem<Item> GLASS_SPLASH_BOTTLE = register("glass_splash_bottle");
+    public static final DeferredItem<Item> GLASS_LINGERING_BOTTLE = register("glass_lingering_bottle");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -141,14 +143,14 @@ public class ModItems {
     public static final DeferredItem<DeferredSpawnEggItem> HONEY_SLIME_SPAWN_EGG = registerSpawnEgg("honey_slime_spawn_egg", ModEntities.HONEY_SLIME, 0xe9981f, 0xe0e90c);
     //endregion
     //region Actual artifacts.
-    public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger", HolyDaggerItem::new);
+    public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger");
     public static final DeferredItem<Item> MEDKIT = registerStacksToOne("medkit", MedkitItem::new);
-    public static final DeferredItem<Item> FROG_LEGS = registerStacksToOne("frog_legs", FrogLegsItem::new);
+    public static final DeferredItem<Item> FROG_LEGS = registerStacksToOne("frog_legs");
     public static final DeferredItem<Item> MAGIC_FEATHER = registerStacksToOne("magic_feather", MagicFeatherItem::new);
     public static final DeferredItem<Item> ENCUMBATOR = registerStacksToOne("encumbator", EncumbatorItem::new);
     public static final DeferredItem<Item> ENDER_KNAPSACK = registerStacksToOne("ender_knapsack", EnderKnapsackItem::new);
     public static final DeferredItem<Item> PORTABLE_CRAFTER = registerStacksToOne("portable_crafter", PortableCrafterItem::new);
-    public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes", ComfyShoesItem::new);
+    public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes");
     public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
     public static final DeferredItem<SpellTomeItem<EvokerFangsSpell>> EVOKERS_TOME = registerTome("evokers_tome", ModSpells.EVOKER_FANGS);
     public static final DeferredItem<AnimatedSpellTomeItem<FireballSpell>> FIREBALL_TOME = registerAnimatedTome("fireball_tome", ModSpells.FIREBALL);
@@ -171,6 +173,7 @@ public class ModItems {
     public static final DeferredItem<Item> DEATH_CAP = registerStacksToOne("death_cap");
     public static final DeferredItem<Item> MOONGLASS_PENDANT = registerStacksToOne("moonglass_pendant");
     //endregion
+    
     //region Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
     public static final DeferredItem<Item> COPPER_PICKAXE = registerStacksToOne("copper_pickaxe", p -> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, p));
@@ -251,6 +254,7 @@ public class ModItems {
     public static final DeferredItem<Item> MAGNET = registerStacksToOne("magnet", p -> new MagnetItem(p.rarity(Rarity.UNCOMMON)));
     public static final DeferredItem<Item> AMETHYST_ARROW = register("amethyst_arrow", AmethystArrowItem::new);
     public static final DeferredItem<Item> ENTITY_CATALOGUE = registerStacksToOne("entity_catalogue", EntityCatalogueItem::new);
+    public static final DeferredItem<Item> INTERFACE_REMOTE = registerStacksToOne("interface_remote", InterfaceRemote::new);
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

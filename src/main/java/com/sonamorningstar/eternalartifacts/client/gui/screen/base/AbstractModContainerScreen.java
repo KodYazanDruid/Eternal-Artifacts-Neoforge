@@ -5,6 +5,8 @@ import com.sonamorningstar.eternalartifacts.client.gui.widget.Overlapping;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.FluidSlotTransferToServer;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,6 +23,7 @@ import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -164,7 +167,27 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
                 if (listener != null) setFocused(listener);
             }
         }
+        
+        FluidSlot slot = getTankUnderMouse(mx, my);
+        if (slot != null) {
+            menu.handleFluidTankTransfer(slot.index, button);
+            Channel.sendToServer(new FluidSlotTransferToServer(slot.index, button));
+            return true;
+        }
+        
+        
         return ret;
+    }
+    
+    @Nullable
+    private FluidSlot getTankUnderMouse(double mx, double my) {
+        for(int i = 0; i < this.menu.fluidSlots.size(); i++) {
+            FluidSlot slot = this.menu.fluidSlots.get(i);
+            if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
+                return slot;
+            }
+        }
+        return null;
     }
     
     @Override

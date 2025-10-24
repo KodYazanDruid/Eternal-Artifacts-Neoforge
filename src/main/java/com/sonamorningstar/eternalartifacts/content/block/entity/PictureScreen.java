@@ -2,14 +2,22 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.client.resources.ModDynamicTextures;
+import com.sonamorningstar.eternalartifacts.container.PictureScreenMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -22,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Setter
 @Getter
-public class PictureScreen extends ModBlockEntity {
+public class PictureScreen extends ModBlockEntity implements MenuProvider {
 	private String imageUrl = "";
 	private ResourceLocation imageResource = null;
 	private boolean isLoading = false;
@@ -37,7 +45,6 @@ public class PictureScreen extends ModBlockEntity {
 			this.imageUrl = url;
 			ModDynamicTextures.releaseDynamicTexture(this);
 			loadImageAsync();
-			setChanged();
 		}
 	}
 	
@@ -100,5 +107,16 @@ public class PictureScreen extends ModBlockEntity {
 		if (!url.isEmpty()) {
 			setImageUrl(url);
 		}
+	}
+	
+	@Override
+	public Component getDisplayName() {
+		return ModBlocks.PICTURE_SCREEN.get().getName();
+	}
+	
+	@Nullable
+	@Override
+	public AbstractContainerMenu createMenu(int pContainerId, Inventory pPlayerInventory, Player pPlayer) {
+		return new PictureScreenMenu(pContainerId, pPlayerInventory, this);
 	}
 }

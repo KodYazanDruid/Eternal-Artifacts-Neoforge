@@ -41,10 +41,10 @@ public class AlchemicalBrewer extends SidedTransferMachine<AlchemicalBrewerMenu>
 			(a, b, c, d) -> new AlchemicalBrewerMenu(ModMachines.ALCHEMICAL_BREWER.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
 		setTank(() -> new MultiFluidTank<>(
-			createRecipeFinderTank(16000, false, true),
+			createBasicTank(16000, false, true),
 			createBasicTank(16000, true, false)
 		));
-		setInventory(() -> createRecipeFinderInventory(1, (slot, stack) ->
+		setInventory(() -> createBasicInventory(1, (slot, stack) ->
 			PotionBrewing.isPotionIngredient(stack)
 		));
 	}

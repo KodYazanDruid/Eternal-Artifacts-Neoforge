@@ -50,7 +50,7 @@ public class MachineBlockItem extends FluidHolderBlockItem {
     
     @Override
     public int getEnchantmentValue(ItemStack stack) {
-        return 22;
+        return 26;
     }
     
     @Override

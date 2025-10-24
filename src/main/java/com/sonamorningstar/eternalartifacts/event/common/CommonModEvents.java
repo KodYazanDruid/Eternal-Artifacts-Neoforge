@@ -16,13 +16,11 @@ import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
-import com.sonamorningstar.eternalartifacts.content.item.ComfyShoesItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -73,7 +71,14 @@ public class CommonModEvents {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,25000,5000), ModItems.LIGHTSABER.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,10000,500), ModItems.CONFIGURATION_DRIVE.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,16000,500), ModItems.PORTABLE_FURNACE.get());
-
+        
+        //if (Config.BOTTLE_CAP_ENABLED.get()){
+            event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new BottleFluidWrapper(stack),
+                Items.GLASS_BOTTLE, ModItems.GLASS_SPLASH_BOTTLE, ModItems.GLASS_LINGERING_BOTTLE,
+                Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION,
+                Items.EXPERIENCE_BOTTLE);
+        //}
+        
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
         registerDrum(event, ModBlocks.COPPER_DRUM);
@@ -114,6 +119,8 @@ public class CommonModEvents {
         registerMachineItem(event, ModBlocks.ANVILINATOR);
         registerMachineItem(event, ModBlocks.SOLID_COMBUSTION_DYNAMO);
         registerMachineItem(event, ModBlocks.SOLAR_PANEL);
+        registerMachineItem(event, ModBlocks.ALCHEMICAL_DYNAMO);
+        registerMachineItem(event, ModBlocks.CULINARY_DYNAMO);
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
@@ -135,6 +142,12 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
             ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.inventory);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ALCHEMICAL_DYNAMO.get(), (be, ctx) ->
+            ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.ALCHEMICAL_DYNAMO.get(), (be, ctx) -> be.tank);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.CULINARY_DYNAMO.get(), (be, ctx) ->
+            ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.CULINARY_DYNAMO.get(), (be, ctx) -> be.inventory);
         
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
@@ -222,7 +235,7 @@ public class CommonModEvents {
         );
         event.register(
             CharmAttributes.Builder.of(ModItems.COMFY_SHOES)
-            .addModifier(NeoForgeMod.STEP_HEIGHT.value(), ComfyShoesItem.getStepHeight())
+            .addModifier(NeoForgeMod.STEP_HEIGHT.value(), getMod("Comfy Shoes Charm Step Height", 0.5D))
             .addModifier(Attributes.MOVEMENT_SPEED, getMod("Comfy Shoes Charm Movement Speed", 0.1D, AttributeModifier.Operation.MULTIPLY_TOTAL))
             .addType(CharmType.FEET).build()
         );
@@ -294,8 +307,10 @@ public class CommonModEvents {
 
     @SubscribeEvent
     public static void addAttributes(EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER, ModAttributes.SPELL_POWER.get());
-        event.add(EntityType.PLAYER, ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
+        event.getTypes().forEach(type -> {
+            event.add(type, ModAttributes.SPELL_POWER.get());
+            event.add(type, ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
+        });
     }
 
     @SubscribeEvent

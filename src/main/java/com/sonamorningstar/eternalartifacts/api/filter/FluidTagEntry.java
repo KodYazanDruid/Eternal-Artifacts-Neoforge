@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
@@ -23,6 +24,16 @@ public class FluidTagEntry implements FluidFilterEntry {
 	@Override
 	public boolean matches(FluidStack stack) {
 		return stack.is(tag);
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return tag == null;
+	}
+	
+	@Override
+	public Component getDisplayName() {
+		return Component.literal("#" + tag.location());
 	}
 	
 	@Override

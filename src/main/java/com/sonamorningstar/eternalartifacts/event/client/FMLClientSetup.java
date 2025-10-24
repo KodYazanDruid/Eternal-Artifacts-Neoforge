@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
+import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
@@ -11,10 +12,13 @@ import com.sonamorningstar.eternalartifacts.core.ModSkullType;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
@@ -52,8 +56,9 @@ public class FMLClientSetup {
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.HUSK, new ResourceLocation("textures/entity/zombie/husk.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.STRAY, new ResourceLocation("textures/entity/skeleton/stray.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.BLAZE, new ResourceLocation("textures/entity/blaze.png"));
+        
     }
-
+    
     private static void registerItemProperty(DeferredHolder<Item, ? extends Item> holder, String prefix) {
         ItemProperties.register(holder.get(),
                 new ResourceLocation(MODID, prefix), (s, l, e, seed) -> s.getItem() instanceof IActiveStack as && as.isActive(s) ? 1.0F : 0.0F);

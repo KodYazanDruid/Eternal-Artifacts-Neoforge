@@ -52,6 +52,8 @@ public class PipeFilterMenu extends AbstractPipeFilterMenu {
 	@Override
 	protected void saveFilterEntries() {
 		pipe.filterEntries.put(dir, filterEntries);
+		pipe.whitelists.put(dir, isWhitelist);
+		pipe.nbtIgnores.put(dir, ignoresNbt);
 		pipe.sendUpdate();
 	}
 	

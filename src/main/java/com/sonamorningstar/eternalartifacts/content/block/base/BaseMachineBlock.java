@@ -14,7 +14,10 @@ import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -72,6 +75,16 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
             return super.getExplosionResistance(state, level, pos, explosion) * resistance;
         }
         return super.getExplosionResistance(state, level, pos, explosion);
+    }
+    
+    @Override
+    public boolean canEntityDestroy(BlockState state, BlockGetter level, BlockPos pos, Entity entity) {
+        BlockEntity blockEntity = level.getBlockEntity(pos);
+        if (blockEntity instanceof Machine<?> machine) {
+            int resistance = machine.getEnchantmentLevel(Enchantments.BLAST_PROTECTION) + 1;
+            if ((entity instanceof WitherBoss || entity instanceof EnderDragon) && resistance >= 4) return false;
+        }
+        return super.canEntityDestroy(state, level, pos, entity);
     }
     
     @Override

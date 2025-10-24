@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
+import com.sonamorningstar.eternalartifacts.content.block.entity.AlchemicalDynamo;
+import com.sonamorningstar.eternalartifacts.content.block.entity.CulinaryDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolidCombustionDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
@@ -168,14 +170,19 @@ public class ModBlocks {
             ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
     public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
             ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<DynamoBlock<?>> FLUID_COMBUSTION_DYNAMO = registerMachineWithBewlr("fluid_combustion_dynamo",
-            () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), FluidCombustionDynamo::new));
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
     public static final DeferredBlock<TrashCanBlock> TRASH_CAN = registerWithItem("trash_can",
         () -> new TrashCanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    
+    public static final DeferredBlock<DynamoBlock<?>> FLUID_COMBUSTION_DYNAMO = registerMachineWithBewlr("fluid_combustion_dynamo",
+        () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), FluidCombustionDynamo::new));
     public static final DeferredBlock<DynamoBlock<?>> SOLID_COMBUSTION_DYNAMO = registerMachineWithBewlr("solid_combustion_dynamo",
         () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), SolidCombustionDynamo::new));
+    public static final DeferredBlock<DynamoBlock<?>> ALCHEMICAL_DYNAMO = registerMachineWithBewlr("alchemical_dynamo",
+        () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), AlchemicalDynamo::new));
+    public static final DeferredBlock<DynamoBlock<?>> CULINARY_DYNAMO = registerMachineWithBewlr("culinary_dynamo",
+        () -> new DynamoBlock<>(MACHINE_BLOCK.get().properties(), CulinaryDynamo::new));
     
     public static final DeferredBlock<CableBlock> TIN_CABLE = registerWithItem("tin_cable",
         ()-> new UncoveredCableBlock(CableBlock.CableTier.TIN, ModProperties.Blocks.TIN_PIPE));

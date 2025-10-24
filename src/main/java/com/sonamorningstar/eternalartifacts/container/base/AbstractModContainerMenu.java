@@ -3,11 +3,11 @@ package com.sonamorningstar.eternalartifacts.container.base;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.network.SendStringToServer;
 import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -20,14 +20,17 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
     public final NonNullList<FluidSlot> fluidSlots = NonNullList.create();
+    public final Inventory inventory;
 
-    protected AbstractModContainerMenu(@Nullable MenuType<?> menuType, int id) {
+    protected AbstractModContainerMenu(@Nullable MenuType<?> menuType, int id, Inventory inventory) {
         super(menuType, id);
+        this.inventory = inventory;
     }
 
     protected void addPlayerInventoryAndHotbar(Inventory inventory, int xOff, int yOff) {
@@ -40,12 +43,25 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
     }
 
     protected FluidSlot addFluidSlot(FluidSlot slot) {
-        fluidSlots.add(slot.index, slot);
+        fluidSlots.add(slot);
         return slot;
     }
 
     public FluidSlot getFluidSlot(int slot) {
         return this.fluidSlots.get(slot);
+    }
+    
+    public void handleFluidTankTransfer(int tankNo, int button) {
+        Player player = inventory.player;
+        FluidSlot slot = fluidSlots.get(tankNo);
+        IFluidHandlerItem containerHandler = getCarried().getCapability(Capabilities.FluidHandler.ITEM);
+        IItemHandler playerInventory = player.getCapability(Capabilities.ItemHandler.ENTITY);
+        if (containerHandler != null && playerInventory != null) {
+            switch (button) {
+                case 0 -> setCarried(drainSlotAndStow(slot, getCarried(), player));
+                case 1 -> setCarried(fillSlotAndStow(slot, getCarried(), player));
+            }
+        }
     }
 
     @Override
@@ -73,10 +89,14 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         return ret;
     }
     
-    //Packet send from client to server.
+    //region Packet send from client to server.
     public void fakeSlotSynch(UpdateFakeSlotToServer pkt) {
     
     }
+    public void receiveStringPkt(SendStringToServer pkt) {
+    
+    }
+    //endregion
     
     @Override
     protected boolean moveItemStackTo(ItemStack stack, int start, int end, boolean isReverse) {

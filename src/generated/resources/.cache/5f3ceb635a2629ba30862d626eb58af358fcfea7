@@ -1,4 +1,4 @@
-// 1.20.4	2025-09-22T19:03:02.3364214	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-10-06T20:32:46.5012721	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -10,7 +10,7 @@ dffc6a5234a3ae84e9b6b290e81b904ef8afd22a data/eternalartifacts/tags/items/charms
 09c65a2279484fbb8e1a218a5816b11dd8209ee5 data/eternalartifacts/tags/items/charms/necklace.json
 d429de6cd6ef9b3a62721ef02325f191827b29e3 data/eternalartifacts/tags/items/charms/ring.json
 9dffb9d7eb766747226b453827c4a194d7c5911c data/eternalartifacts/tags/items/charms/wildcard_blacklisted.json
-11e7d435f44d9ca4d5887727853057f5069ef55d data/eternalartifacts/tags/items/gardening_pot_suitable.json
+4ec657e0a06d66a4c3414479ab6f1cb19c5f49f0 data/eternalartifacts/tags/items/gardening_pot_suitable.json
 cced0014687aacaea5f2db8c340b0516acfdab72 data/eternalartifacts/tags/items/recyclable.json
 4d5a856cfddb256d28a3f63c15763ee25a51820b data/eternalartifacts/tags/items/shulker_shell.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json

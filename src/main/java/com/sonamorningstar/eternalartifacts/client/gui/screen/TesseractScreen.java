@@ -9,7 +9,7 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
@@ -23,7 +23,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	private ScrollablePanel<AbstractScrollPanelComponent> panel;
 	private EditBox networkName;
-	private Button addNetwork;
+	private AbstractButton addNetwork;
 	@Getter
 	private TesseractNetworkWidget selectedNetwork;
 	private DropdownMenu<ScrollablePanelComponent> securityMenu;
@@ -39,9 +39,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	protected void init() {
 		super.init();
 		setupPanel();
-		addRenderableWidget(Button.builder(Component.literal("clear_selected"), this::clearSelected)
+		addRenderableWidget(CleanButton.builder(Component.literal("clear_selected"), this::clearSelected)
 			.bounds(leftPos, topPos-50, imageWidth, 25).build());
-		addRenderableWidget(Button.builder(Component.literal("cycle_transfer"), this::cycleTransfer)
+		addRenderableWidget(CleanButton.builder(Component.literal("cycle_transfer"), this::cycleTransfer)
 			.bounds(leftPos, topPos-25, imageWidth, 25).build());
 		List<Component> securities = new ArrayList<>();
 		TesseractNetwork.Access[] values = TesseractNetwork.Access.values();
@@ -74,7 +74,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		
 		networkName = new EditBox(font, leftPos + 10, panel.getY() + panel.getHeight(), 85, 15, Component.empty());
 		networkName.setMaxLength(20);
-		addNetwork = Button.builder(ModConstants.GUI.withSuffixTranslatable("add"), this::addNetwork)
+		addNetwork = CleanButton.builder(ModConstants.GUI.withSuffixTranslatable("add"), this::addNetwork)
 			.bounds(leftPos + 10, networkName.getY() + networkName.getHeight(), 60, 15).build();
 		addNetwork.active = false;
 		addRenderableWidget(panel);
@@ -156,19 +156,19 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	}
 	
 	//region Buttons.
-	private void addNetwork(Button b) {
+	private void addNetwork(AbstractButton b) {
 		Channel.sendToServer(
 			new AddTesseractNetworkToServer(networkName.getValue(), minecraft.player.getId(), securityMenu.getIndex(), capMenu.getIndex())
 		);
 	}
-	private void clearSelected(Button button) {
+	private void clearSelected(AbstractButton button) {
 		if (selectedNetwork != null) {
 			removeWidget(selectedNetwork);
 			rebuildWidgets();
 		}
 		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 2000);
 	}
-	private void cycleTransfer(Button button) {
+	private void cycleTransfer(AbstractButton button) {
 		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 3000);
 	}
 	private void selectNetwork(int index) {

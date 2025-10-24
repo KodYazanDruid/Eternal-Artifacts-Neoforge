@@ -30,6 +30,7 @@ public class ModScreens {
         event.register(ModMachines.ADVANCED_CRAFTER.getMenu(), AdvancedCrafterScreen::new);
         event.register(ModMachines.ALCHEMICAL_BREWER.getMenu(), AlchemicalBrewerScreen::new);
         event.register(ModMachines.BOTTLER.getMenu(), BottlerScreen::new);
+        event.register(ModMachines.HARVESTER.getMenu(), HarvesterScreen::new);
 
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);
@@ -39,5 +40,6 @@ public class ModScreens {
         event.register(ModMenuTypes.PIPE_FILTER.get(), PipeFilterScreen::new);
         event.register(ModMenuTypes.PIPE_FILTER_ITEM.get(), PipeFilterItemScreen::new);
         event.register(ModMenuTypes.SOLAR_PANEL.get(), SolarPanelScreen::new);
+        event.register(ModMenuTypes.INTERFACE_REMOTE.get(), InterfaceRemoteScreen::new);
     }
 }

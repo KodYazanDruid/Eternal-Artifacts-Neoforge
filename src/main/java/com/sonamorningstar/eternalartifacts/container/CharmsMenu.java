@@ -10,7 +10,7 @@ import net.neoforged.neoforge.items.SlotItemHandler;
 public class CharmsMenu extends TabMenu {
     public final Player player;
     public CharmsMenu(int id, Inventory inv, FriendlyByteBuf buff) {
-        super(ModMenuTypes.CHARMS.get(), id);
+        super(ModMenuTypes.CHARMS.get(), id, inv);
         this.player = inv.player;
         addPlayerInventoryAndHotbar(inv, 8, 66);
         CharmStorage charms = CharmStorage.get(player);

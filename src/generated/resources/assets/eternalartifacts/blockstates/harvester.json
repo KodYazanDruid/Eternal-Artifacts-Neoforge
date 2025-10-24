@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/harvester",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/harvester"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/harvester",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/harvester",
+      "y": 270
+    }
+  }
+}

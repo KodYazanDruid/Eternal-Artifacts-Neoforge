@@ -53,6 +53,10 @@ public class Channel {
         registrar.play(UpdateFakeSlotToServer.ID,
                 UpdateFakeSlotToServer::create,
                 handler -> handler.server(UpdateFakeSlotToServer::handle));
+        registrar.play(SendStringToServer.ID,
+                SendStringToServer::create,
+                handler -> handler.server(SendStringToServer::handle));
+        
         registrar.play(ItemTagFilterToServer.ID,
                 ItemTagFilterToServer::create,
                 handler -> handler.server(ItemTagFilterToServer::handle));
@@ -78,9 +82,9 @@ public class Channel {
         registrar.play(ShootSkullsToServer.ID,
                 ShootSkullsToServer::create,
                 handler -> handler.server(ShootSkullsToServer::handle));
-        registrar.play(TankKnapsackTransferToServer.ID,
-                TankKnapsackTransferToServer::create,
-                handler -> handler.server(TankKnapsackTransferToServer::handle));
+        registrar.play(FluidSlotTransferToServer.ID,
+                FluidSlotTransferToServer::create,
+                handler -> handler.server(FluidSlotTransferToServer::handle));
         registrar.play(OpenTabMenuToServer.ID,
                 OpenTabMenuToServer::create,
                 handler -> handler.server(OpenTabMenuToServer::handle));

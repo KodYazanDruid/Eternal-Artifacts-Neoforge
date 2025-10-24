@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class PortableBatteryMenu extends TabMenu {
     public final ItemStack battery;
     public PortableBatteryMenu(int id, Inventory inv, ItemStack battery) {
-        super(ModMenuTypes.PORTABLE_BATTERY.get(), id);
+        super(ModMenuTypes.PORTABLE_BATTERY.get(), id, inv);
         this.battery = battery;
         addPlayerInventoryAndHotbar(inv, 8, 66);
     }

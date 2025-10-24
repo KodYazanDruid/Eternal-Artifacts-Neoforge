@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.client.render.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -11,11 +10,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class AreaRenderer<T extends BlockEntity & IAreaRenderer> implements BlockEntityRenderer<T> {
+public class AreaRenderer<T extends BlockEntity & com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer> implements BlockEntityRenderer<T> {
     @Override
     public void render(T be, float partialTick, PoseStack pose, MultiBufferSource buff, int light, int overlay) {
         VertexConsumer consumer = buff.getBuffer(RenderType.lines());
-        AABB box = be.getBoundingBox();
+        AABB box = be.getWorkingArea();
         Vec3 posVec = Vec3.atLowerCornerOf(be.getBlockPos());
         if(be.shouldRender()) LevelRenderer.renderLineBox(pose, consumer,
                 box.minX - posVec.x, box.minY - posVec.y, box.minZ - posVec.z,
@@ -25,6 +24,6 @@ public class AreaRenderer<T extends BlockEntity & IAreaRenderer> implements Bloc
 
     @Override
     public AABB getRenderBoundingBox(T blockEntity) {
-        return blockEntity.getBoundingBox();
+        return blockEntity.getWorkingArea();
     }
 }

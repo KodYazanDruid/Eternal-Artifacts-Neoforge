@@ -23,7 +23,7 @@ public class TankKnapsackMenu extends AbstractModContainerMenu {
     public int column = Config.TANK_KNAPSACK_SLOT_IN_ROW.get();
     public final Inventory playerInv;
     public TankKnapsackMenu(int id, Inventory inv, ItemStack knapsack) {
-        super(ModMenuTypes.TANK_KNAPSACK.get(), id);
+        super(ModMenuTypes.TANK_KNAPSACK.get(), id, inv);
         this.knapsack = knapsack;
         this.playerInv = inv;
         int playerInvPadding = Math.max(0, column - 9) * 9;
@@ -48,18 +48,5 @@ public class TankKnapsackMenu extends AbstractModContainerMenu {
 
     public static TankKnapsackMenu fromNetwork(int id, Inventory inventory, FriendlyByteBuf buff) {
         return new TankKnapsackMenu(id, inventory, buff.readItem());
-    }
-
-    public void handleTransfers(int tankNo, int button) {
-        Player player = playerInv.player;
-        FluidSlot slot = fluidSlots.get(tankNo);
-        IFluidHandlerItem containerHandler = getCarried().getCapability(Capabilities.FluidHandler.ITEM);
-        IItemHandler playerInventory = player.getCapability(Capabilities.ItemHandler.ENTITY);
-        if (containerHandler != null && playerInventory != null) {
-            switch (button) {
-                case 0 -> setCarried(drainSlotAndStow(slot, getCarried(), player));
-                case 1 -> setCarried(fillSlotAndStow(slot, getCarried(), player));
-            }
-        }
     }
 }

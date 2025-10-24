@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 @Setter
@@ -28,6 +29,16 @@ public class ItemStackEntry implements ItemFilterEntry {
 		return ignoreNBT
 			? stack.getItem() == filterStack.getItem()
 			: ItemStack.isSameItemSameTags(stack, filterStack);
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return filterStack.isEmpty();
+	}
+	
+	@Override
+	public Component getDisplayName() {
+		return filterStack.getHoverName();
 	}
 	
 	@Override

@@ -26,7 +26,7 @@ public class FakePlayerHelper {
     public static FakePlayer getFakePlayer(Level level) {
         return FakePlayerHelper.levelFakePlayers.computeIfAbsent(level, sLevel -> {
             if(level instanceof ServerLevel sl)
-                return new ModFakePlayer(sl, MOD_PROFILE);
+                return new ModFakePlayer(sl, MOD_PROFILE, null);
             else
                 return null;
         });
@@ -34,7 +34,7 @@ public class FakePlayerHelper {
     public static FakePlayer getFakePlayer(Machine<?> machine, Level level) {
         return FakePlayerHelper.machineFakePlayers.computeIfAbsent(machine, mMachine -> {
             if(level instanceof ServerLevel sl)
-                return new ModFakePlayer(sl, getProfileForMachine(mMachine));
+                return new ModFakePlayer(sl, getProfileForMachine(mMachine), mMachine);
             else
                 return null;
         });

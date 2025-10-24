@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.IAreaRenderer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import java.util.List;
 
-public class MobHarvester extends GenericMachine implements IAreaRenderer {
+public class MobHarvester extends GenericMachine implements AreaRenderer {
 	public MobHarvester(BlockPos pos, BlockState blockState) {
 		super(ModMachines.MOB_HARVESTER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
@@ -82,7 +82,7 @@ public class MobHarvester extends GenericMachine implements IAreaRenderer {
 	}
 	
 	@Override
-	public AABB getBoundingBox() {
+	public AABB getWorkingArea() {
 		return getWorkingArea(getBlockPos(), getBlockState());
 	}
 }

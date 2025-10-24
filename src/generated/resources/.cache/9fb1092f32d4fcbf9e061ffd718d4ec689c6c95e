@@ -1,4 +1,4 @@
-// 1.20.4	2025-09-22T19:03:02.3394208	Recipes
+// 1.20.4	2025-10-01T19:58:12.3850895	Recipes
 3dda9c7194fb80e5be48c6a526e6e236bab0f1e2 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_slab.json
 07b243e4c363636606d739749024ba8870dfa511 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_stairs.json
 6bc980ccf5cfd81e2ed6d6e4f7073390b5c5d699 data/eternalartifacts/advancements/recipes/building_blocks/obsidian_brick_slab.json
@@ -410,7 +410,6 @@ c7853d7791a12279b434365bfda59370b0eb784a data/eternalartifacts/recipes/dyeing/re
 31f472255ef89e972903e166dea5634010c3af81 data/eternalartifacts/recipes/fluid_combusting/gasoline.json
 31b33cc8e7d29dd8536cd9362a9e16486e3167fd data/eternalartifacts/recipes/fluid_combusting/lava.json
 d8ccff4b63c7c8e54cfaed0181127e18c21b30a6 data/eternalartifacts/recipes/fluid_infuser.json
-294954b5073e92c1717bef59689230a8b27c822e data/eternalartifacts/recipes/fluid_infusing/experience_and_glass_bottle_to_experience_bottle.json
 89344f6fc4feec77317e352cff4099c954f89083 data/eternalartifacts/recipes/fluid_infusing/pink_slime_and_iron_to_pink_slime_steel_ingot.json
 c5173469624847c2d412eeecae4ade6428a933e4 data/eternalartifacts/recipes/fluid_infusing/plastic_and_blue_to_plastic_sheet.json
 7c2bf7e1211bf1ab484b295ad94c97f8adf94a9a data/eternalartifacts/recipes/fluid_infusing/water_and_dusts/flour_to_dough.json

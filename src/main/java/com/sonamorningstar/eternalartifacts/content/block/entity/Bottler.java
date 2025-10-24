@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.helper.FluidTankUtils;
 import com.sonamorningstar.eternalartifacts.container.BottlerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
@@ -11,23 +12,40 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidActionResult;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 public class Bottler extends SidedTransferMachine<BottlerMenu> {
-	public boolean mode = false; // false: fill, true: empty the tank
+	public boolean mode = false; // false: fill, true: empty the item tank
 	public int transferRate = 1000;
 	public Bottler(BlockPos pos, BlockState blockState) {
 		super(ModMachines.BOTTLER.getBlockEntity(), pos, blockState, (a, b, c, d) ->
 			new BottlerMenu(ModMachines.BOTTLER.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
-		setTank(() -> createBasicTank(16000, true, true));
+		setTank(() -> {
+			int volume = getVolumeLevel();
+			return new ModFluidStorage(16000 * (volume + 1)) {
+				@Override
+				protected void onContentsChanged() {
+					sendUpdate();
+				}
+				@Override
+				public FluidStack drain(int maxDrain, FluidAction action) {
+					return mode ? super.drain(maxDrain, action) : FluidStack.EMPTY;
+				}
+				@Override
+				public int fill(FluidStack resource, FluidAction action) {
+					return mode ? 0 : super.fill(resource, action);
+				}
+			};
+		});
 		outputSlots.add(2);
 		setInventory(() -> createBasicInventory(3, (slot, stack) ->
 			!outputSlots.contains(slot) &&
 			slot == 0 &&
-			stack.getCapability(Capabilities.FluidHandler.ITEM) != null, limit -> 1));
+			stack.getCapability(Capabilities.FluidHandler.ITEM) != null, slot -> slot == 1 ? 1 : 64));
 	}
 	
 	@Override
@@ -67,32 +85,27 @@ public class Bottler extends SidedTransferMachine<BottlerMenu> {
 		if (mode) performAutoOutputFluids(lvl, pos);
 		else performAutoInputFluids(lvl, pos);
 		
-		ItemStack tank = inventory.getStackInSlot(1);
+		ItemStack container = inventory.getStackInSlot(1);
 		
-		if (tank.isEmpty()) {
-			inventory.setStackInSlot(1, inventory.getStackInSlot(0).copy());
-			inventory.setStackInSlot(0, ItemStack.EMPTY);
+		if (container.isEmpty()) {
+			ItemStack pendingTanks = inventory.getStackInSlot(0);
+			inventory.setStackInSlot(1, pendingTanks.copyWithCount(1));
+			inventory.setStackInSlot(0, pendingTanks.copyWithCount(Math.max(0, pendingTanks.getCount() - 1)));
 		}
-		// false: fill, true: empty the tank
-		if (!tank.isEmpty() && canWork(energy)) {
-			IFluidHandlerItem itemTank = tank.getCapability(Capabilities.FluidHandler.ITEM);
-			if (itemTank != null) {
-				FluidStack transferred;
-				if (mode) {
-					transferred = FluidUtil.tryFluidTransfer(this.tank, itemTank, transferRate, true);
-					if (transferred.isEmpty() && FluidTankUtils.isFluidHandlerEmpty(itemTank)) {
-						inventory.setStackInSlot(2, tank.copy());
-						inventory.setStackInSlot(1, ItemStack.EMPTY);
-					}
+		if (!container.isEmpty() && canWork(energy)) {
+			IFluidHandlerItem containerCap = container.getCapability(Capabilities.FluidHandler.ITEM);
+			if (containerCap != null) {
+				FluidActionResult result = mode ?
+					FluidUtil.tryEmptyContainer(container, this.tank, transferRate, null, true) :
+					FluidUtil.tryFillContainer(container, this.tank, transferRate, null, true);
+				if (result.isSuccess()) {
+					inventory.setStackInSlot(1, result.getResult());
+					spendEnergy(energy);
 				}
-				else {
-					transferred = FluidUtil.tryFluidTransfer(itemTank, this.tank, transferRate, true);
-					if (transferred.isEmpty() && FluidTankUtils.isFluidHandlerFull(itemTank)) {
-						inventory.setStackInSlot(2, tank.copy());
-						inventory.setStackInSlot(1, ItemStack.EMPTY);
-					}
-				}
-				if (!transferred.isEmpty()) spendEnergy(energy);
+				containerCap = container.getCapability(Capabilities.FluidHandler.ITEM);
+				if (containerCap == null || (mode ? FluidTankUtils.isFluidHandlerEmpty(containerCap) :
+						FluidTankUtils.isFluidHandlerFull(containerCap))
+				) inventory.setStackInSlot(1, inventory.insertItemForced(2, container, false));
 			}
 		}
 	}

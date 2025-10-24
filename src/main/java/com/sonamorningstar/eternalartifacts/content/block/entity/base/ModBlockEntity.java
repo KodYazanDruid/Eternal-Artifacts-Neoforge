@@ -127,7 +127,7 @@ public class ModBlockEntity extends BlockEntity {
     }
 
     protected ModFluidStorage createDefaultTank() {return createBasicTank(16000);}
-    protected ModFluidStorage createBasicTank(int size, Runnable... run) {
+    protected ModFluidStorage createBasicTank(int size, Runnable... listeners) {
         int volume = getVolumeLevel();
         return new ModFluidStorage(size * (volume + 1)) {
             @Override
@@ -136,7 +136,7 @@ public class ModBlockEntity extends BlockEntity {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
-                for (Runnable runnable : run) runnable.run();
+                for (Runnable runnable : listeners) runnable.run();
             }
         };
     }
@@ -153,7 +153,7 @@ public class ModBlockEntity extends BlockEntity {
             }
         };
     }
-    protected ModFluidStorage createBasicTank(int size, boolean canDrain, boolean canFill, Runnable... run) {
+    protected ModFluidStorage createBasicTank(int size, boolean canDrain, boolean canFill, Runnable... listeners) {
         int volume = getVolumeLevel();
         return new ModFluidStorage(size * (volume + 1)) {
             @Override
@@ -162,7 +162,7 @@ public class ModBlockEntity extends BlockEntity {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
                 sendUpdate();
-                for (Runnable runnable : run) runnable.run();
+                for (Runnable runnable : listeners) runnable.run();
             }
             @Override
             public FluidStack drain(int maxDrain, FluidAction action) {

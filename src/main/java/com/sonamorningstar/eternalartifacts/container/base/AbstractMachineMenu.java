@@ -38,7 +38,7 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     public final MenuType<?> menuType;
 
     public AbstractMachineMenu(@Nullable MenuType<?> menuType, int id, Inventory inv, BlockEntity entity, ContainerData data) {
-        super(menuType, id);
+        super(menuType, id, inv);
         this.menuType = menuType;
         this.level = inv.player.level();
         this.blockEntity = entity;

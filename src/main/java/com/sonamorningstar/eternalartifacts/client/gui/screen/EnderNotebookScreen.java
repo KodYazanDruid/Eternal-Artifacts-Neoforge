@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.ItemStackScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CleanButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Warp;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.WarpPageHandler;
@@ -43,8 +44,8 @@ public class EnderNotebookScreen extends ItemStackScreen {
     int margin = 20;
     int textColor = 16777215;
     private EditBox name;
-    private Button addWarpButton;
-    private Button renameWarpButton;
+    private AbstractButton addWarpButton;
+    private AbstractButton renameWarpButton;
     private boolean isRenaming = false;
     private int renamingWarpIndex;
     public EnderNotebookScreen(ItemStack notebook) {
@@ -58,7 +59,7 @@ public class EnderNotebookScreen extends ItemStackScreen {
         imageWidth = 192;
         imageHeight = 256;
         super.init();
-        addWarpButton = Button.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("add_warp"), this::addWarpPress)
+        addWarpButton = CleanButton.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("add_warp"), this::addWarpPress)
                 .bounds(leftPos + 107, topPos + 196, 85, 20).build();
         name = new EditBox(font, leftPos + 5, topPos + 196, 100, 20, Component.empty());
         name.setMaxLength(20);
@@ -100,7 +101,7 @@ public class EnderNotebookScreen extends ItemStackScreen {
     }
     //endregion
     //region Button press handlers
-    private void addWarpPress(Button button) {
+    private void addWarpPress(AbstractButton button) {
         if(minecraft != null && minecraft.player != null && pageHandler.getWarpList().size() < maxWarpAmount) {
             addWarp(new Warp(name.getValue(), minecraft.player.level().dimension(), minecraft.player.blockPosition()));
         }
@@ -117,7 +118,7 @@ public class EnderNotebookScreen extends ItemStackScreen {
             name.setFocused(true);
         } else resetRenamingState();
     }
-    private void renameWarpButton(Button button) {
+    private void renameWarpButton(AbstractButton button) {
         Warp warp = pageHandler.getWarp(renamingWarpIndex);
         warp.setLabel(name.getValue());
         Channel.sendToServer(new EnderNotebookRenameWarpToServer(renamingWarpIndex, stack, name.getValue()));
@@ -163,7 +164,7 @@ public class EnderNotebookScreen extends ItemStackScreen {
             func.apply(rename);
             func.apply(delete);
         }
-        renameWarpButton = Button.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("rename_warp"), this::renameWarpButton)
+        renameWarpButton = CleanButton.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("rename_warp"), this::renameWarpButton)
                 .bounds(leftPos + 107, topPos + 196, 85, 20).build();
         renameWarpButton.visible = false;
         func.apply(renameWarpButton);

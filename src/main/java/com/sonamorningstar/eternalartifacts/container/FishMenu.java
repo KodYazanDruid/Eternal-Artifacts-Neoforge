@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class FishMenu extends TabMenu {
     public FishMenu(int id, Inventory inv, FriendlyByteBuf buff) {
-        super(ModMenuTypes.FISH.get(), id);
+        super(ModMenuTypes.FISH.get(), id, inv);
         addPlayerInventoryAndHotbar(inv, 8, 66);
     }
 }

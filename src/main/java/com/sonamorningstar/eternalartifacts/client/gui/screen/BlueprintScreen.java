@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
 import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -21,6 +22,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
 public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
+    private Button tagButton;
+    public static final Component USE_TAGS = ModConstants.WIDGET.withSuffixTranslatable("use_ingredients.on");
+    public static final Component USE_ITEMS = ModConstants.WIDGET.withSuffixTranslatable("use_ingredients.off");
     public BlueprintScreen(BlueprintMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
         renderEffects = false;
@@ -30,13 +34,14 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
     @Override
     protected void init() {
         super.init();
-        addRenderableWidget(Button.builder(Component.empty(), this::toggleTag)
-            .bounds(leftPos + 10, topPos + 10, 10, 10)
-            .build());
+        Component text = BlueprintItem.isUsingTags(menu.getBlueprint()) ? USE_ITEMS : USE_TAGS;
+        tagButton = Button.builder(text, this::toggleTag).bounds(leftPos + 84, topPos + 16, 80, 16).build();
+        addRenderableWidget(tagButton);
     }
     
     private void toggleTag(Button button) {
         BlueprintItem.toggleUseTags(menu.getBlueprint());
+        tagButton.setMessage(BlueprintItem.isUsingTags(menu.getBlueprint()) ? USE_ITEMS : USE_TAGS);
         minecraft.gameMode.handleInventoryButtonClick(menu.containerId,0);
     }
     

@@ -1,4 +1,4 @@
-// 1.20.4	2025-09-24T23:12:34.2417043	Item Models: eternalartifacts
+// 1.20.4	2025-10-19T22:43:30.7637009	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -108,6 +108,8 @@ c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/for
 7d0e656ecf2f61bedbab2793001bae737289d13b assets/eternalartifacts/models/item/gardening_pot.json
 fd4a434f290e46fdb2d92be5520d32991cfe8a8c assets/eternalartifacts/models/item/gasoline_bucket.json
 17437f1f8ff3e02b5f59e262eeb91a7f6e671a3e assets/eternalartifacts/models/item/glasscutter.json
+93bae3df2fb04144a1a10a62adda2e55d7cb10d3 assets/eternalartifacts/models/item/glass_lingering_bottle.json
+7a1644e71152ca582ba44e5dcd78ba1ea7272682 assets/eternalartifacts/models/item/glass_splash_bottle.json
 e7b53d1c7823432ffcbabe77b8af21f636b7438a assets/eternalartifacts/models/item/glow_ink_dust.json
 aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/golden_ancient_fruit.json
 6dfdc1b0e3118440613573629511a557794a7ebe assets/eternalartifacts/models/item/golden_cutlass.json
@@ -121,6 +123,7 @@ f7b570ee102e6034c44a3b6b40ee40bdaf18d3ec assets/eternalartifacts/models/item/gra
 5aec3f2bb7b2a941267e55eb9d4821d1ca14483f assets/eternalartifacts/models/item/green_apple.json
 bea8fef3470b4a38d2f75805362ea521579e4467 assets/eternalartifacts/models/item/green_shulker_shell.json
 17cea3c921ca033b040efdb8c0d358402f8ec92f assets/eternalartifacts/models/item/hammaxe.json
+2dd4edacbb3789299d9bb72c2b8e9cc8e9f7be6f assets/eternalartifacts/models/item/harvester.json
 59dc787c520658967dbc687998270ea969a5cbf1 assets/eternalartifacts/models/item/heart_necklace.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/honey_slime_spawn_egg.json
@@ -130,6 +133,7 @@ a9070a20a23138343210ca678b8019924f4169e9 assets/eternalartifacts/models/item/ice
 5421e91d5aa92006dcbf3f3fffb8663d2a368e4a assets/eternalartifacts/models/item/ice_brick_wall.json
 d660795854e4bf04885248e050254bfd59bc1cfb assets/eternalartifacts/models/item/induction_furnace.json
 c26763eab56edf48666cc6a8eee96773867b4c6a assets/eternalartifacts/models/item/industrial_macerator.json
+08266d4fa9d332a4198dc8544c921e2606fc8ffc assets/eternalartifacts/models/item/interface_remote.json
 5ad85fbe559ae885dcd6a10bf0fb2cf3aca42cf1 assets/eternalartifacts/models/item/iron_cutlass.json
 db1884568509aa8f4eb08063f93fb00cce6f6bd6 assets/eternalartifacts/models/item/iron_drum.json
 975f2c4f0f505df7ea49e0b501ae85271d0787d4 assets/eternalartifacts/models/item/iron_hammer.json

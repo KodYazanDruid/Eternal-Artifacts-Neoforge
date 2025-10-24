@@ -172,10 +172,9 @@ public abstract class AttachmentablePipeBlock<CAP> extends AbstractPipeBlock<CAP
 					pipe.updateConnections(level);
 					return InteractionResult.sidedSuccess(level.isClientSide());
 				}
-			} else if (stack.isEmpty() && player instanceof ServerPlayer sp &&
-				(connection == PipeConnection.EXTRACT || connection == PipeConnection.FILTERED)) {
-				pipe.openMenu(sp, relativeDir);
-				return InteractionResult.CONSUME;
+			} else if (stack.isEmpty()  && (connection == PipeConnection.EXTRACT || connection == PipeConnection.FILTERED)) {
+				pipe.openMenu(player, relativeDir);
+				return InteractionResult.sidedSuccess(level.isClientSide());
 			}
 		}
 		return super.use(state, level, pos, player, hand, hit);

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.data;
 import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BucketItem;
@@ -216,8 +217,11 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.OBLIVIUM_INGOT.get());
         spawnEggItem(ModItems.HONEY_SLIME_SPAWN_EGG);
         basicItem(ModItems.GLOW_INK_DUST.get());
+        basicItem(ModItems.INTERFACE_REMOTE.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
+        itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));
+        itemGeneratedWithTexture(ModItems.GLASS_LINGERING_BOTTLE, new ResourceLocation("lingering_potion"));
 
         withParentBlock(ModBlocks.RESONATOR);
         withParentBlock(ModBlocks.GARDENING_POT);
@@ -262,13 +266,15 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     }
 
     private void bucketItem(DeferredHolder<Item, BucketItem> bucket, DeferredHolder<Fluid, BaseFlowingFluid.Source> source) {
-        withExistingParent(bucket.getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
+        withExistingParent(bucket.getId().getPath(),
+            new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(source.get())
                 .applyTint(true);
     }
     private void bucketItem(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, ? extends LiquidBlock> holder) {
-        withExistingParent(holder.getBucketItemHolder().getId().getPath(), new ResourceLocation("neoforge", "item/bucket_drip"))
+        withExistingParent(holder.getBucketItemHolder().getId().getPath(),
+            new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(holder.getFluid())
                 .applyTint(true);
@@ -283,6 +289,10 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         getBuilder(path).parent(new ModelFile.UncheckedModelFile("item/generated"))
                 .texture("layer0", modLoc(loc));
     }
+    private void itemGeneratedWithTexture(DeferredItem<?> deferred, ResourceLocation texture) {
+        String path = deferred.getId().getPath();
+        singleTexture(path, mcLoc("item/handheld"), "layer0", new ResourceLocation(texture.getNamespace(), "item/"+texture.getPath()));
+    }
 
     private void withParentBlock(DeferredHolder<Block, ? extends Block> holder) {
         String path = holder.getId().getPath();
@@ -291,6 +301,10 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
     private void withParentItem(DeferredItem<?> holder, DeferredItem<?> parent) {
         withExistingParent(holder.getId().getPath(), new ResourceLocation(parent.getId().getNamespace(),"item/"+parent.getId().getPath()));
+    }
+    private void withParentItem(DeferredItem<?> holder, Item parent) {
+        ResourceLocation loc = BuiltInRegistries.ITEM.getKey(parent);
+        withExistingParent(holder.getId().getPath(), new ResourceLocation(loc.getNamespace(),"item/"+loc.getPath()));
     }
     private void withParentItemPath(DeferredItem<?> holder, String path) {
         withExistingParent(holder.getId().getPath(), mcLoc("item/"+path));

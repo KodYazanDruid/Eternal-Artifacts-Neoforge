@@ -58,7 +58,7 @@ public class PipeFilterScreen extends AbstractPipeFilterScreen<PipeFilterMenu> {
 				setupTagPanel();
 			}
 		} else {
-			if (entry instanceof FluidStackEntry fluidStackEntry && mouseButton == 1) {
+			if (entry instanceof FluidStackEntry fluidStackEntry && !fluidStackEntry.isEmpty() && mouseButton == 1) {
 				toConvert = Either.right(fluidStackEntry.getFilterStack().getFluid());
 				convertingSlot = fakeSlot;
 				setupTagPanel();

@@ -15,8 +15,12 @@ public class TrashCanHandler implements IItemHandler, IFluidHandler, IEnergyStor
 	private static final FluidStack EMPTY_FLUID = FluidStack.EMPTY;
 	private static final ItemStack EMPTY_STACK = ItemStack.EMPTY;
 	
+	public static final TrashCanHandler INSTANCE = new TrashCanHandler();
+	
+	private TrashCanHandler() {}
+	
 	public static TrashCanHandler registerCapability(Level level, BlockPos pos, BlockState state, BlockEntity be, Direction dir) {
-		return new TrashCanHandler();
+		return INSTANCE;
 	}
 	
 	//region Energy.

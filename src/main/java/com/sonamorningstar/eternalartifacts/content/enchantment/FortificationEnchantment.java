@@ -19,7 +19,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class FortificationEnchantment extends AttributeEnchantment {
 	public FortificationEnchantment(Rarity pRarity, Set<Attribute> attributeSet, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots) {
-		super(pRarity, attributeSet, pCategory, pApplicableSlots);
+		super(pRarity, 3, attributeSet, pCategory, pApplicableSlots);
 	}
 	
 	@Nullable
