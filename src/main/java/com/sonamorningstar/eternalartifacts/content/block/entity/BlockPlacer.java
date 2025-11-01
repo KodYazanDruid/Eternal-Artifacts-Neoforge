@@ -84,16 +84,15 @@ public class BlockPlacer extends GenericMachine {
 		performAutoInputFluids(lvl, pos);
 		if (!redstoneChecks(redstoneConfigs.get(0), lvl)) return;
 		
-		FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
-		fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
-		fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
+		getFakePlayer();
+		setupFakePlayer(st);
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState targetState = lvl.getBlockState(targetPos);
 		ItemStack toPlace = getPlaceableItem();
 		FluidStack toPlaceFluid = tank.getFluid(0);
 		for (int i = 0; i < inventory.getSlots(); i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
-			fakePlayer.getInventory().setItem(i, stack);
+			fakePlayer.getInventory().items.set(i, stack);
 			if (stack == toPlace) fakePlayer.getInventory().selected = i;
 		}
 		if (blockMode && shouldPlace(lvl, targetPos) && !toPlace.isEmpty() && canWork(energy)) {

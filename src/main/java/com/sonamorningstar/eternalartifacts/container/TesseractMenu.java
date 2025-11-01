@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerM
 import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.RebuildTesseractPanelToClient;
+import com.sonamorningstar.eternalartifacts.network.tesseract.RebuildTesseractPanelToClient;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;

@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.network;
+package com.sonamorningstar.eternalartifacts.network.tesseract;
 
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;

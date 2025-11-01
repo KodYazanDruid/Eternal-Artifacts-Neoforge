@@ -36,6 +36,9 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
         );
         tag(ModTags.Entities.CATALOGUE_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
         
-        tag(EntityTypeTags.ARROWS).add(ModEntities.AMETHYST_ARROW.get());
+        tag(EntityTypeTags.ARROWS).add(
+            ModEntities.AMETHYST_ARROW.get(),
+            ModEntities.PRISMARINE_ARROW.get()
+        );
     }
 }

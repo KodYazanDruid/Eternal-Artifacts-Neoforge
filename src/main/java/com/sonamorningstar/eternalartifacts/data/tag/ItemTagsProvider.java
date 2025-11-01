@@ -352,7 +352,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
           ModTags.Items.CHARMS
         );
         tag(ItemTags.ARROWS).add(
-            ModItems.AMETHYST_ARROW.get()
+            ModItems.AMETHYST_ARROW.get(),
+            ModItems.PRISMARINE_ARROW.get()
         );
         tag(ModTags.Items.SHULKER_SHELL).add(
                 ModItems.WHITE_SHULKER_SHELL.get(),

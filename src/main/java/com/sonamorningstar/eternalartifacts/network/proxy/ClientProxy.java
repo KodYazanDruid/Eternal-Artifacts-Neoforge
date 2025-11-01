@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network.proxy;
 
+import com.sonamorningstar.eternalartifacts.api.client.tesseract.ClientTesseractNetworks;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
@@ -13,10 +14,11 @@ import com.sonamorningstar.eternalartifacts.content.item.EntityCatalogueItem;
 import com.sonamorningstar.eternalartifacts.content.item.LightSaberItem;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.network.BlueprintIngredientsToClient;
-import com.sonamorningstar.eternalartifacts.network.RebuildTesseractPanelToClient;
+import com.sonamorningstar.eternalartifacts.network.tesseract.RebuildTesseractPanelToClient;
 import com.sonamorningstar.eternalartifacts.network.UpdateEntityEnergyToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
+import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -148,5 +150,9 @@ public class ClientProxy {
                 }
             });
         }
+    }
+    
+    public static void syncTesseractNetwork(TesseractNetworksToClient pkt) {
+        ClientTesseractNetworks.addNetwork(pkt.network());
     }
 }

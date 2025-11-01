@@ -1,4 +1,4 @@
-// 1.20.4	2025-10-06T20:32:46.5012721	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2025-10-28T20:28:54.6935384	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -73,7 +73,7 @@ d372ceeac1d07d8becfad30bedd14082d127a1ef data/forge/tags/items/tools.json
 f0dd0a8660131a466006888e2b325db7dde680f6 data/forge/tags/items/tools/hammers.json
 3217aed0df60b40f9565f9db3a164c13a1221830 data/forge/tags/items/tools/sickles.json
 4c36db30a00d54d37767d1315c2d9e4edeec3c8a data/forge/tags/items/tools/wrench.json
-6e0ed89c2d87263bc0c215e23a8b1db069e9db22 data/minecraft/tags/items/arrows.json
+a6c6f10815b8e27c3fceb47a6b5290fb86dc7bb6 data/minecraft/tags/items/arrows.json
 94462f1a711dba6e5c9b5204d11a797dc6b86114 data/minecraft/tags/items/axes.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/minecraft/tags/items/coals.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/items/flowers.json

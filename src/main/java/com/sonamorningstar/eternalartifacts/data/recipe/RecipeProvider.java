@@ -627,7 +627,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         itemPipeRecipe(recipeOutput, ModBlocks.COPPER_ITEM_PIPE, Tags.Items.INGOTS_COPPER);
         itemPipeRecipe(recipeOutput, ModBlocks.GOLD_ITEM_PIPE, Tags.Items.INGOTS_GOLD);
         itemPipeRecipe(recipeOutput, ModBlocks.STEEL_ITEM_PIPE, ModTags.Items.INGOTS_STEEL);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.AMETHYST_ARROW, 2)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.AMETHYST_ARROW, 4)
                 .pattern("A").pattern("S").pattern("F")
                 .define('A', Tags.Items.GEMS_AMETHYST).define('S', Tags.Items.RODS_WOODEN)
                 .define('F', Tags.Items.FEATHERS).unlockedBy("has_item", has(Tags.Items.GEMS_AMETHYST)).save(recipeOutput);
@@ -639,6 +639,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .pattern("G").pattern("S")
             .define('G', Items.GLOW_INK_SAC).define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(Items.GLOW_INK_SAC)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.PRISMARINE_ARROW, 4)
+            .pattern("P").pattern("S").pattern("F")
+            .define('P', Tags.Items.DUSTS_PRISMARINE).define('S', Tags.Items.RODS_WOODEN)
+            .define('F', Tags.Items.FEATHERS).unlockedBy("has_item", has(Tags.Items.DUSTS_PRISMARINE)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

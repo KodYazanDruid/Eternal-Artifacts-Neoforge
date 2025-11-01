@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
-import com.sonamorningstar.eternalartifacts.network.AddTesseractNetworkToServer;
+import com.sonamorningstar.eternalartifacts.network.tesseract.AddTesseractNetworkToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;

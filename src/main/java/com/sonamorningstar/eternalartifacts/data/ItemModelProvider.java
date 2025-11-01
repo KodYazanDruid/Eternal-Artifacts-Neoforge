@@ -218,6 +218,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         spawnEggItem(ModItems.HONEY_SLIME_SPAWN_EGG);
         basicItem(ModItems.GLOW_INK_DUST.get());
         basicItem(ModItems.INTERFACE_REMOTE.get());
+        basicItem(ModItems.PRISMARINE_ARROW.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));

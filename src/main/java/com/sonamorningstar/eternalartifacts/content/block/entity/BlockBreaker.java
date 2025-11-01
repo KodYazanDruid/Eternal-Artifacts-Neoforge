@@ -6,7 +6,6 @@ import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -63,6 +62,7 @@ public class BlockBreaker extends GenericMachine {
 			item.canPerformAction(stack, ToolActions.AXE_DIG) ||
 			item.canPerformAction(stack, ToolActions.PICKAXE_DIG) ||
 			item.canPerformAction(stack, ToolActions.HOE_DIG) ||
+			item.canPerformAction(stack, ToolActions.SHEARS_DIG) ||
 			item.canPerformAction(stack, ToolActions.SWORD_DIG);
 	}
 	
@@ -96,17 +96,9 @@ public class BlockBreaker extends GenericMachine {
 		performAutoOutputFluids(lvl, pos);
 		if (!redstoneChecks(redstoneConfigs.get(0), lvl)) return;
 		
-		FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
-		fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
-		fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-		ItemStack tool = inventory.getStackInSlot(0);
-		fakePlayer.getInventory().selected = 0;
-		fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, tool);
-		for (int i = 0; i < inventory.getSlots(); i++) {
-			if (i == 0) continue;
-			ItemStack stack = inventory.getStackInSlot(i);
-			fakePlayer.getInventory().setItem(i, stack);
-		}
+		getFakePlayer();
+		setupFakePlayer(st);
+		setupFakePlayerInventory(inventory.getStackInSlot(0));
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);
 		ServerPlayerGameMode gameMode = fakePlayer.gameMode;

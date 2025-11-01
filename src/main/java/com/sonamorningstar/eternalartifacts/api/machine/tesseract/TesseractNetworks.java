@@ -1,23 +1,30 @@
 package com.sonamorningstar.eternalartifacts.api.machine.tesseract;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.saveddata.SavedData;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 @Getter
 public class TesseractNetworks extends SavedData {
-	private final Set<TesseractNetwork<?>> tesseractNetworks = new HashSet<>();
-	private final Map<TesseractNetwork<?>, Set<Tesseract>> tesseracts = new HashMap<>();
+	private final Set<TesseractNetwork<?>> tesseractNetworks = ConcurrentHashMap.newKeySet();
+	private final Map<TesseractNetwork<?>, Set<Tesseract>> tesseracts = new ConcurrentHashMap<>();
+	private final Map<UUID, TesseractNetwork<?>> networkCache = new ConcurrentHashMap<>();
+	private final Map<String, TesseractNetwork<?>> nameCache = new ConcurrentHashMap<>();
 	
 	@Override
 	public CompoundTag save(CompoundTag tag) {
@@ -42,69 +49,67 @@ public class TesseractNetworks extends SavedData {
 		for (int i = 0; i < listTag.size(); i++) {
 			CompoundTag networkTag = listTag.getCompound(i);
 			TesseractNetwork<?> tesseractNetwork = TesseractNetwork.fromNBT(networkTag);
-			tesseractNetworks.add(tesseractNetwork);
+			addNetworkInternal(tesseractNetwork);
 		}
+	}
+	
+	private void addNetworkInternal(TesseractNetwork<?> network) {
+		tesseractNetworks.add(network);
+		networkCache.put(network.getUuid(), network);
+		nameCache.put(network.getName(), network);
 	}
 	
 	public void removeTesseractFromNetwork(Tesseract tesseract) {
-		for (TesseractNetwork<?> tesseractNetwork : tesseractNetworks) {
-			if (tesseracts.containsKey(tesseractNetwork)) {
-				var tesseractSet = tesseracts.get(tesseractNetwork);
-				if (tesseractSet != null) {
-					tesseractSet.remove(tesseract);
-					if (tesseractSet.isEmpty()) {
-						tesseracts.remove(tesseractNetwork);
-					}
-				}
-			}
-		}
+		tesseracts.values().forEach(set -> set.remove(tesseract));
+		tesseracts.values().removeIf(Set::isEmpty);
 	}
 	
-	public void changeNetwork(Tesseract tesseract, UUID oldId, UUID newId) {
-		TesseractNetwork<?> oldTesseractNetwork = TesseractNetworks.getNetwork(oldId, tesseract.getLevel());
-		TesseractNetwork<?> newTesseractNetwork = TesseractNetworks.getNetwork(newId, tesseract.getLevel());
-		
-		if (oldTesseractNetwork != null) {
-			var oldSet = tesseracts.get(oldTesseractNetwork);
-			if (oldSet != null) {
-				oldSet.remove(tesseract);
-				if (oldSet.isEmpty()) {
-					tesseracts.remove(oldTesseractNetwork);
+	public void changeNetwork(Tesseract tesseract, @Nullable UUID oldId, @Nullable UUID newId) {
+		if (oldId != null) {
+			TesseractNetwork<?> oldNetwork = networkCache.get(oldId);
+			if (oldNetwork != null) {
+				var oldSet = tesseracts.get(oldNetwork);
+				if (oldSet != null && oldSet.remove(tesseract) && oldSet.isEmpty()) {
+					tesseracts.remove(oldNetwork);
 				}
 			}
 		}
 		
-		if (newTesseractNetwork == null) return;
-		var newSet = tesseracts.get(newTesseractNetwork);
-		if (newSet != null) {
-			newSet.add(tesseract);
-		} else {
-			Set<Tesseract> newTesseracts = new HashSet<>();
-			newTesseracts.add(tesseract);
-			tesseracts.put(newTesseractNetwork, newTesseracts);
-		}
+		if (newId == null) return;
+		
+		TesseractNetwork<?> newNetwork = networkCache.get(newId);
+		if (newNetwork == null) return;
+		
+		tesseracts.computeIfAbsent(newNetwork, k -> ConcurrentHashMap.newKeySet()).add(tesseract);
 	}
 	
 	public Set<Tesseract> getTesseracts(TesseractNetwork<?> tesseractNetwork) {
-		return tesseracts.getOrDefault(tesseractNetwork, new HashSet<>());
+		return tesseracts.getOrDefault(tesseractNetwork, Collections.emptySet());
 	}
 	
 	public boolean addNetwork(TesseractNetwork<?> tesseractNetwork) {
-		boolean ret = tesseractNetworks.add(tesseractNetwork);
-		setDirty();
-		return ret;
+		boolean added = tesseractNetworks.add(tesseractNetwork);
+		if (added) {
+			addNetworkInternal(tesseractNetwork);
+			setDirty();
+		}
+		return added;
 	}
 	
 	public boolean removeNetwork(TesseractNetwork<?> tesseractNetwork) {
-		boolean ret = tesseractNetworks.remove(tesseractNetwork);
-		setDirty();
-		return ret;
+		boolean removed = tesseractNetworks.remove(tesseractNetwork);
+		if (removed) {
+			networkCache.remove(tesseractNetwork.getUuid());
+			nameCache.remove(tesseractNetwork.getName());
+			tesseracts.remove(tesseractNetwork);
+			setDirty();
+		}
+		return removed;
 	}
 	
 	public boolean removeNetwork(UUID uuid) {
-		boolean ret = tesseractNetworks.removeIf(network -> network.getUuid().equals(uuid));
-		setDirty();
-		return ret;
+		TesseractNetwork<?> network = networkCache.get(uuid);
+		return network != null && removeNetwork(network);
 	}
 	
 	public void mutateNetwork(TesseractNetwork<?> tesseractNetwork, Consumer<TesseractNetwork<?>> consumer) {
@@ -112,37 +117,49 @@ public class TesseractNetworks extends SavedData {
 		consumer.accept(tesseractNetwork);
 		setDirty();
 	}
+	
 	public void mutateNetwork(int index, Consumer<TesseractNetwork<?>> consumer) {
-		if (index < 0 || index >= tesseractNetworks.size()) return;
-		consumer.accept(tesseractNetworks.stream().toList().get(index));
+		List<TesseractNetwork<?>> list = tesseractNetworks.stream().toList();
+		if (index < 0 || index >= list.size()) return;
+		consumer.accept(list.get(index));
 		setDirty();
 	}
 	
 	@Nullable
 	public static TesseractNetwork<?> getNetwork(String name, LevelAccessor levelAcc) {
-		return get(levelAcc).tesseractNetworks.stream().filter(network -> network.getName().equals(name)).findFirst().orElse(null);
+		TesseractNetworks networks = get(levelAcc);
+		return networks != null ? networks.nameCache.get(name) : null;
 	}
 	
 	@Nullable
 	public static TesseractNetwork<?> getNetwork(UUID uuid, LevelAccessor levelAcc) {
-		return get(levelAcc).tesseractNetworks.stream().filter(network -> network.getUuid().equals(uuid)).findFirst().orElse(null);
+		TesseractNetworks networks = get(levelAcc);
+		return networks != null ? networks.networkCache.get(uuid) : null;
 	}
 	
 	public List<TesseractNetwork<?>> getNetworksForPlayer(Player player) {
-		return tesseractNetworks.stream().filter(network -> {
-			UUID ownerUUID = network.getOwner().getId();
-			if (ownerUUID.equals(player.getUUID())) return true;
-			var whitelist = network.getWhitelistedPlayers();
-			return whitelist.contains(ownerUUID);
-		}).toList();
+		UUID playerUUID = player.getUUID();
+		return tesseractNetworks.stream()
+			.filter(network -> {
+				UUID ownerUUID = network.getOwner().getId();
+				if (ownerUUID.equals(playerUUID)) return true;
+				return network.getWhitelistedPlayers().contains(playerUUID);
+			})
+			.toList();
 	}
 	
+	@Nullable
 	public static TesseractNetworks get(LevelAccessor levelAcc) {
-		if (levelAcc instanceof ServerLevelAccessor severLevelAcc) {
-			return Objects.requireNonNull(severLevelAcc.getServer()).overworld().getDataStorage().computeIfAbsent(
-				new SavedData.Factory<>(TesseractNetworks::new, TesseractNetworks::load, DataFixTypes.LEVEL),
-				"tesseract_networks"
-			);
-		} else return null;
+		if (!(levelAcc instanceof ServerLevelAccessor severLevelAcc)) return null;
+		var server = severLevelAcc.getServer();
+		if (server == null) return null;
+		return server.overworld().getDataStorage().computeIfAbsent(
+			new SavedData.Factory<>(TesseractNetworks::new, TesseractNetworks::load, DataFixTypes.LEVEL),
+			"tesseract_networks"
+		);
+	}
+	
+	public void syncToClient(TesseractNetwork<?> network, ServerPlayer player) {
+		Channel.sendToPlayer(new TesseractNetworksToClient(network), player);
 	}
 }

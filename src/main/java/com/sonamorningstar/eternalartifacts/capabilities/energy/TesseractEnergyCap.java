@@ -4,6 +4,8 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwo
 import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.HashSet;
+
 import static com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract.TransferMode.*;
 
 public class TesseractEnergyCap extends ModEnergyStorage {
@@ -35,7 +37,7 @@ public class TesseractEnergyCap extends ModEnergyStorage {
 		return (mode == BOTH || mode == EXTRACT_ONLY) && super.canExtract();
 	}
 	
-	@Override
+	/*@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 		var mode = tesseract.getTransferMode();
 		if (mode == BOTH || mode == INSERT_ONLY) return super.receiveEnergy(maxReceive, simulate);
@@ -58,7 +60,7 @@ public class TesseractEnergyCap extends ModEnergyStorage {
 		var mode = tesseract.getTransferMode();
 		if (mode == BOTH || mode == EXTRACT_ONLY) return super.extractEnergyForced(maxExtract, simulate);
 		else return 0;
-	}
+	}*/
 	
 	@Override
 	public void onEnergyChanged() {
@@ -68,6 +70,10 @@ public class TesseractEnergyCap extends ModEnergyStorage {
 			tag.put("Energy", serializeNBT());
 			network.setSavedData(tag);
 		}
-		TesseractNetworks.get(tesseract.getLevel()).getTesseracts().get(network).forEach(Tesseract::invalidateCapabilities);
+		//TesseractNetworks.get(tesseract.getLevel()).getTesseracts().get(network).forEach(Tesseract::invalidateCapabilities);
+		var tesseracts = TesseractNetworks.get(tesseract.getLevel())
+			.getTesseracts()
+			.getOrDefault(network, new HashSet<>());
+		tesseracts.forEach(Tesseract::invalidateCapabilities);
 	}
 }

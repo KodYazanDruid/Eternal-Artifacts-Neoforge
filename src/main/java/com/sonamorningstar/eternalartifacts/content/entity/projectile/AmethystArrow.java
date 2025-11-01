@@ -2,13 +2,15 @@ package com.sonamorningstar.eternalartifacts.content.entity.projectile;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 
 public class AmethystArrow extends AbstractArrow {
 	public AmethystArrow(EntityType<? extends AbstractArrow> pEntityType, Level pLevel) {
@@ -29,14 +31,19 @@ public class AmethystArrow extends AbstractArrow {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.level().isClientSide && !this.inGround) {
-			this.level().addParticle(ParticleTypes.INSTANT_EFFECT, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
+		if (level().isClientSide && !this.inGround) {
+			level().addParticle(ParticleTypes.INSTANT_EFFECT, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
 		}
 	}
 	
 	@Override
-	protected void onHit(HitResult pResult) {
-		super.onHit(pResult);
-		
+	protected void onHitBlock(BlockHitResult ray) {
+		BlockPos pos = ray.getBlockPos();
+		BlockState state = this.level().getBlockState(pos);
+		float destroySpeed = state.getDestroySpeed(this.level(), pos);
+		if (destroySpeed <= 0.5F) {
+			level().destroyBlock(pos, true, this.getOwner());
+			discard();
+		} else super.onHitBlock(ray);
 	}
 }

@@ -255,6 +255,7 @@ public class ModItems {
     public static final DeferredItem<Item> AMETHYST_ARROW = register("amethyst_arrow", AmethystArrowItem::new);
     public static final DeferredItem<Item> ENTITY_CATALOGUE = registerStacksToOne("entity_catalogue", EntityCatalogueItem::new);
     public static final DeferredItem<Item> INTERFACE_REMOTE = registerStacksToOne("interface_remote", InterfaceRemote::new);
+    public static final DeferredItem<Item> PRISMARINE_ARROW = register("prismarine_arrow", PrismarineArrowItem::new);
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

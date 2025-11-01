@@ -167,7 +167,7 @@ public class ClientEvents {
                 if (!(entry instanceof ItemTagEntry || (entry instanceof ItemStackEntry itemEntry && !itemEntry.getFilterStack().isEmpty())))
                     entries.set(i, FluidFilterEntry.fromNBT(entryTag));
             }
-            if (!entries.isEmpty()){
+            if (!entries.isEmpty() && entries.stream().noneMatch(FilterEntry::isEmpty)){
                 Minecraft mc = Minecraft.getInstance();
                 tooltips.add(Either.left(
                     Component.translatable(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"),

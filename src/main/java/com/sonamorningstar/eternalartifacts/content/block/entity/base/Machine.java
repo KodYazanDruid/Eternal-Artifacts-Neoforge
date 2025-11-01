@@ -23,6 +23,7 @@ import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -36,8 +37,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -68,7 +71,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public int itemTransferRate = 1;
     public int fluidTransferRate = 1000;
     public int energyTransferRate = 1000;
-    
     protected final ContainerData data;
     protected int progress;
     protected int progressStep = 1;
@@ -77,7 +79,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected int defaultEnergyPerTick = 40;
     @Getter
     protected int energyPerTick;
-
     public final List<Integer> outputSlots = new ArrayList<>();
     protected RecipeType<? extends Recipe<? extends Container>> recipeType;
     protected Supplier<? extends Container> recipeContainer;
@@ -89,6 +90,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected final Set<ForceLoadManager.ForcedChunkPos> forcedChunks = new HashSet<>();
     private int chunkUnloadCooldown = 200;
     private int chunkUpdateCooldown = 100;
+    protected FakePlayer fakePlayer = null;
+    protected boolean isFakePlayerSetUp = false;
     
     /*@Getter
     protected AABB area = null;*/
@@ -196,6 +199,36 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             this.tank = tankSetter.get();
             tank.deserializeNBT(oldData.getCompound("Fluid"));
             this.invalidateCapabilities();
+        }
+    }
+    
+    protected FakePlayer getFakePlayer() {
+        if (fakePlayer == null) {
+            fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
+        }
+		return fakePlayer;
+    }
+    protected void setupFakePlayer(BlockState st) {
+        if (fakePlayer == null || isFakePlayerSetUp) return;
+        fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
+        fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
+        if (st.hasProperty(BlockStateProperties.FACING)) {
+            fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
+        } else if (st.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+            fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
+        }
+        isFakePlayerSetUp = true;
+    }
+    protected void setupFakePlayerInventory(ItemStack mainHandItem) {
+        Inventory fakePlayerInventory = fakePlayer.getInventory();
+        fakePlayerInventory.selected = 0;
+        fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
+        for (int i = 0; i < fakePlayerInventory.items.size(); i++) {
+            for (int j = 0; j < inventory.getSlots(); j++) {
+                if (i == j && i != 0) {
+                    fakePlayerInventory.items.set(i, inventory.getStackInSlot(j).copy());
+                }
+            }
         }
     }
     

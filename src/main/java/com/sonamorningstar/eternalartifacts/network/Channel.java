@@ -8,6 +8,9 @@ import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookR
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRenameWarpToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
+import com.sonamorningstar.eternalartifacts.network.tesseract.AddTesseractNetworkToServer;
+import com.sonamorningstar.eternalartifacts.network.tesseract.RebuildTesseractPanelToClient;
+import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -116,6 +119,9 @@ public class Channel {
         registrar.play(SelectEntityMessageToServer.ID,
                 SelectEntityMessageToServer::create,
                 handler -> handler.server(SelectEntityMessageToServer::handle));
+        registrar.play(TesseractNetworksToClient.ID,
+            TesseractNetworksToClient::create,
+            handler -> handler.server(TesseractNetworksToClient::handle));
         
         registrar.play(BlueprintIngredientsToClient.ID,
             BlueprintIngredientsToClient::create,

@@ -2,23 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "A": {
-      "tag": "forge:gems/amethyst"
-    },
     "F": {
       "tag": "forge:feathers"
+    },
+    "P": {
+      "tag": "forge:dusts/prismarine"
     },
     "S": {
       "tag": "forge:rods/wooden"
     }
   },
   "pattern": [
-    "A",
+    "P",
     "S",
     "F"
   ],
   "result": {
     "count": 4,
-    "item": "eternalartifacts:amethyst_arrow"
+    "item": "eternalartifacts:prismarine_arrow"
   }
 }

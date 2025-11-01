@@ -36,10 +36,12 @@ public class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<Meteorite>> METEORITE = ENTITY_TYPES.register("meteorite",
             ()-> EntityType.Builder.<Meteorite>of(Meteorite::new, MobCategory.MISC).fireImmune().sized(2.0f, 2.0f).canSpawnFarFromPlayer().clientTrackingRange(4).updateInterval(20).build("meteorite"));
     public static final DeferredHolder<EntityType<?>, EntityType<Missile>> MISSILE = ENTITY_TYPES.register("missile",
-            ()-> EntityType.Builder.<Missile>of(Missile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("meteorite"));
+            ()-> EntityType.Builder.<Missile>of(Missile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("missile"));
     public static final DeferredHolder<EntityType<?>, EntityType<SpellProjectile>> SPELL_PROJECTILE = ENTITY_TYPES.register("spell_projectile",
-        ()-> EntityType.Builder.of(SpellProjectile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("meteorite"));
+        ()-> EntityType.Builder.of(SpellProjectile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("spell_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<AmethystArrow>> AMETHYST_ARROW = ENTITY_TYPES.register("amethyst_arrow",
-            ()-> EntityType.Builder.<AmethystArrow>of(AmethystArrow::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("amethyst_arrow"));
+        ()-> EntityType.Builder.<AmethystArrow>of(AmethystArrow::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("amethyst_arrow"));
+    public static final DeferredHolder<EntityType<?>, EntityType<PrismarineArrow>> PRISMARINE_ARROW = ENTITY_TYPES.register("prismarine_arrow",
+        ()-> EntityType.Builder.<PrismarineArrow>of(PrismarineArrow::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("prismarine_arrow"));
 
 }

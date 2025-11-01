@@ -226,6 +226,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GLASS_LINGERING_BOTTLE.get(), "Glass Lingering Bottle");
                 addPotion(ModPotions.ENDURANCE.get(), "Potion of Endurance");
                 add(ModItems.INTERFACE_REMOTE.get(), "Interface Remote");
+                add(ModItems.PRISMARINE_ARROW.get(), "Prismarine Arrow");
                 //endregion
                 //region Charm Tooltips
                 
@@ -382,6 +383,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Primed %s");
                 add(ModEntities.CHARGED_SHEEP.get(), "Charged Sheep");
                 add(ModEntities.HONEY_SLIME.get(), "Honey Slime");
+                add(ModEntities.AMETHYST_ARROW.get(), "Amethyst Arrow");
+                add(ModEntities.PRISMARINE_ARROW.get(), "Prismarine Arrow");
                 //endregion
                 //region Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -788,6 +791,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.GLASS_LINGERING_BOTTLE.get(), "Cam Kalıcı Şişe");
                 addPotion(ModPotions.ENDURANCE.get(), "Dayanıklılık İksiri");
                 add(ModItems.INTERFACE_REMOTE.get(), "Arayüz Kumandası");
+                add(ModItems.PRISMARINE_ARROW.get(), "Prizmarin Ok");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -998,6 +1002,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.PRIMED_BLOCK.get().getDescriptionId()+".primed", "Ateşlenmiş %s");
                 add(ModEntities.CHARGED_SHEEP.get(), "Şarzlı Koyun");
                 add(ModEntities.HONEY_SLIME.get(), "Bal Balçığı");
+                add(ModEntities.AMETHYST_ARROW.get(), "Ametist Ok");
+                add(ModEntities.PRISMARINE_ARROW.get(), "Prizmarin Ok");
                 //endregion
                 //region Türkçe Efekt
                 add(ModEffects.FLIGHT.get(), "Uçuş");

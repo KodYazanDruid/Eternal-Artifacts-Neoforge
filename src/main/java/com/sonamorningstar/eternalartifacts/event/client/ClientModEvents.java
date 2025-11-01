@@ -213,6 +213,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
         event.registerEntityRenderer(ModEntities.AMETHYST_ARROW.get(), AmethystArrowRenderer::new);
         event.registerEntityRenderer(ModEntities.HONEY_SLIME.get(), HoneySlimeRenderer::new);
+        event.registerEntityRenderer(ModEntities.PRISMARINE_ARROW.get(), PrismarineArrowRenderer::new);
     }
 
     @SubscribeEvent
