@@ -90,7 +90,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.STEEL_BLOCK.get());
         simpleBlockWithItemWithRenderType(ModBlocks.TEMPERED_GLASS.get(), "cutout");
         simpleBlockWithItem(ModBlocks.DEMON_BLOCK.get());
-        horizontalBlockWithItem(ModBlocks.SHOCK_ABSORBER);
+        columnBlockWithItem(ModBlocks.SHOCK_ABSORBER);
         simpleBlockWithItem(ModBlocks.MOSS_MANGANESE_ORE.get());
         simpleBlockWithItem(ModBlocks.MOSS_COAL_ORE.get());
         simpleBlockWithItem(ModBlocks.MOSS_COPPER_ORE.get());
@@ -110,7 +110,11 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.MOSS_ALUMINUM_ORE.get());
         simpleBlockWithItem(ModBlocks.INDUSTRIAL_SPONGE.get());
         simpleBlockWithItem(ModBlocks.WET_INDUSTRIAL_SPONGE.get());
-
+        deepStorageUnit(ModBlocks.DEEP_ITEM_STORAGE_UNIT);
+        deepStorageUnit(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT);
+        deepStorageUnit(ModBlocks.DEEP_FLUID_STORAGE_UNIT);
+        deepStorageUnit(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT);
+        
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
                 models().withExistingParent("pink_slime_block", mcLoc("block/slime_block"))
@@ -204,13 +208,27 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 .texture("particle", modLoc(siding))), BlockStateProperties.FACING);
         simpleBlockItem(holder.get(), models().getExistingFile(modLoc("block/"+name)));
     }
-    private void horizontalBlockWithItem(DeferredHolder<Block, ? extends Block> holder) {
-        String name = holder.getId().getPath();
-        ModelFile model = models().cubeColumnHorizontal(name, modLoc("block/"+name+"_side"), modLoc("block/"+name+"_end"));
+    private void columnBlockWithItem(DeferredHolder<Block, ? extends Block> holder) {
+        columnBlockWithItem(holder, holder.getId().getPath());
+    }
+    private void columnBlockWithItem(DeferredHolder<Block, ? extends Block> holder, String name) {
+        ResourceLocation side = modLoc("block/"+name+"_side");
+        ResourceLocation end = modLoc("block/"+name+"_end");
+        ModelFile model = models().cubeColumnHorizontal(name, side, end);
         simpleBlock(holder.get(), model);
         simpleBlockItem(holder.get(), model);
     }
-
+    private void deepStorageUnit(DeferredHolder<Block, ? extends Block> holder) {
+        bottomTop(holder, "deep_storage_unit");
+    }
+    private void bottomTop(DeferredHolder<Block, ? extends Block> holder, String name) {
+        ModelFile model = models().cubeBottomTop(name,
+            modLoc("block/"+name+"_side"),
+            modLoc("block/"+name+"_bottom"),
+            modLoc("block/"+name+"_top"));
+        simpleBlock(holder.get(), model);
+        //simpleBlockItem(holder.get(), model);
+    }
     private void makeAncientCrop(CropBlock crop, String textureName) {
         Function<BlockState, ConfiguredModel[]> func = state -> ancientCropStates(state, crop, textureName);
 

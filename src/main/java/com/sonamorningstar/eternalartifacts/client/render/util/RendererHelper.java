@@ -5,20 +5,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import org.joml.Matrix4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,6 +149,32 @@ public class RendererHelper {
         vertexConsumer.vertex(pose.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
         vertexConsumer.vertex(pose.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
  */   }
+    
+    public static void renderFluidTile(FluidStack fluid, PoseStack pose, MultiBufferSource buff, int color, int overlay) {
+        VertexConsumer vertexConsumer = buff.getBuffer(RenderType.translucent());
+        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluid.getFluid());
+        ResourceLocation still = fluidTypeExtensions.getStillTexture(fluid);
+        if (still != null) {
+            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
+            int tintColor = fluidTypeExtensions.getTintColor(fluid);
+            drawQuad(vertexConsumer, pose, 0, 0, 0, 1, 1, 0,
+                sprite.getU(0), sprite.getV(0), sprite.getU(1), sprite.getV(1),
+                tintColor, color, overlay, 1, 1, 1, true);
+        }
+    }
+    
+    public static void renderTextInWorld(String text, PoseStack pose, MultiBufferSource buff) {
+        renderTextInWorld(Component.literal(text), pose, buff);
+    }
+    public static void renderTextInWorld(Component component, PoseStack pose, MultiBufferSource buff) {
+        pose.pushPose();
+        pose.scale(1/16f, 1/16f, 1/16f);
+        pose.translate(16, 0, 0);
+        pose.mulPose(Axis.ZP.rotationDegrees(180));
+        Minecraft.getInstance().font.drawInBatch(component, 0, 0, 0xffffffff,
+            false, pose.last().pose(), buff, Font.DisplayMode.NORMAL, 0, LightTexture.FULL_BRIGHT);
+        pose.popPose();
+    }
 
     public record RenderCubeInfo(ArrayList<Direction> renderedFaces, boolean forceRenderUp) {
 

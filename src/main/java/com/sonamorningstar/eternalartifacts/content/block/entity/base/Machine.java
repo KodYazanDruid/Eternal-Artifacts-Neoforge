@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
+import com.sonamorningstar.eternalartifacts.api.machine.config.*;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
@@ -39,6 +40,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -52,10 +54,13 @@ import net.neoforged.neoforge.items.ItemHandlerHelper;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import static com.sonamorningstar.eternalartifacts.api.machine.config.RedstoneConfig.Mode;
+
 @Setter
-public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, ITickableServer, ChunkLoader {
+public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, TickableServer, ChunkLoader {
     @Nullable
     private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
@@ -85,8 +90,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected Recipe<? extends Container> previousRecipe = null;
     @Setter(value = AccessLevel.NONE)
     protected ProcessCondition processCondition;
-    @Getter
-    protected Map<Integer, SidedTransferMachine.RedstoneType> redstoneConfigs = new HashMap<>(1);
     protected final Set<ForceLoadManager.ForcedChunkPos> forcedChunks = new HashSet<>();
     private int chunkUnloadCooldown = 200;
     private int chunkUpdateCooldown = 100;
@@ -144,11 +147,19 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public <ITEM extends ModItemStorage> void setInventory(Supplier<ITEM> inventorySetter) {
         this.inventorySetter = inventorySetter;
         this.inventory = inventorySetter.get();
+        if (getConfiguration().getConfigs().values().stream().map(Config::getClass)
+                .toList()
+                .contains(SideConfig.class))
+            registerCapabilityConfigs(Capabilities.ItemHandler.BLOCK);
     }
     
     public <TANK extends AbstractFluidTank> void setTank(Supplier<TANK> tankSetter) {
         this.tankSetter = tankSetter;
         this.tank = tankSetter.get();
+        if (getConfiguration().getConfigs().values().stream().map(Config::getClass)
+                .toList()
+                .contains(SideConfig.class))
+            registerCapabilityConfigs(Capabilities.FluidHandler.BLOCK);
     }
     
     protected void setMaxProgress(int maxProgress) {
@@ -202,9 +213,22 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
     }
     
+    @Override
+    public void registerConfigs() {
+        super.registerConfigs();
+        getConfiguration().add(new RedstoneConfig());
+    }
+    
+    @Override
+    public void registerCapabilityConfigs(BlockCapability<?,?> cap) {
+        super.registerCapabilityConfigs(cap);
+        if (cap == Capabilities.ItemHandler.BLOCK) getConfiguration().add(new ReverseToggleConfig("item_transfer"));
+        if (cap == Capabilities.FluidHandler.BLOCK) getConfiguration().add(new ReverseToggleConfig("fluid_transfer"));
+    }
+    
     protected FakePlayer getFakePlayer() {
         if (fakePlayer == null) {
-            fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
+            this.fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
         }
 		return fakePlayer;
     }
@@ -220,6 +244,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         isFakePlayerSetUp = true;
     }
     protected void setupFakePlayerInventory(ItemStack mainHandItem) {
+        if (fakePlayer == null) return;
         Inventory fakePlayerInventory = fakePlayer.getInventory();
         fakePlayerInventory.selected = 0;
         fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
@@ -415,9 +440,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
 
     protected void progress(BooleanSupplier test, Runnable running, Runnable result, ModEnergyStorage energy) {
-        if (!canWork(energy) || level == null) return;
-        SidedTransferMachine.RedstoneType type = redstoneConfigs.get(0);
-        if (redstoneChecks(type, level)) {
+        if (!canWork(energy) || level == null) return;;
+        if (redstoneChecks(level)) {
             if (test.getAsBoolean()) {
                 progress = 0;
                 return;
@@ -431,17 +455,18 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             }
         }
     }
-
-    protected boolean redstoneChecks(SidedTransferMachine.RedstoneType type, Level level) {
-        return type == SidedTransferMachine.RedstoneType.IGNORED || type == null ||
-            (type == SidedTransferMachine.RedstoneType.HIGH && level.hasNeighborSignal(getBlockPos())) ||
-            (type == SidedTransferMachine.RedstoneType.LOW && level.hasNeighborSignal(getBlockPos()));
-    }
     
-    /*protected boolean hasSignal(BlockPos pos, Level level) {
-        for (Direction dir : Direction.values()) if (level.getSignal(pos.relative(dir), dir) > 0) return true;
-        return false;
-    }*/
+    protected boolean redstoneChecks(Level level) {
+        RedstoneConfig redstoneConfig = getConfiguration().get(RedstoneConfig.class);
+        Mode mode = redstoneConfig != null ? redstoneConfig.getMode() : Mode.IGNORE;
+        return redstoneChecks(mode, level);
+    }
+
+    protected boolean redstoneChecks(Mode type, Level level) {
+        return type == Mode.IGNORE || type == null ||
+            (type == Mode.HIGH && level.hasNeighborSignal(getBlockPos())) ||
+            (type == Mode.LOW && !level.hasNeighborSignal(getBlockPos()));
+    }
 
     protected boolean canWork(ModEnergyStorage energy) {
         if (energyPerTick <= 0) return true;
@@ -482,13 +507,14 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             }
         }
     }
-
-    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory) {
+    
+    protected void outputItemToDir(Level lvl, BlockPos pos, Direction dir, IItemHandlerModifiable inventory, List<Integer> outputSlotList, Predicate<ItemStack> canOutput) {
         IItemHandler targetInv = lvl.getCapability(Capabilities.ItemHandler.BLOCK, pos.relative(dir), dir.getOpposite());
         if(targetInv != null) {
-            for(int output : outputSlots) {
+            for(int output : outputSlotList) {
                 try {
                     ItemStack stack = inventory.getStackInSlot(output);
+                    if (stack.isEmpty() || !canOutput.test(stack.copy())) continue;
                     ItemStack remainder = ItemHandlerHelper.insertItemStacked(targetInv, stack, true);
                     if(remainder.isEmpty()) {
                         ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(stack.getCount()), false);
@@ -549,17 +575,37 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
     }
     //endregion
-
+    
+    
+    /**
+     * Method used to save machine data when the machine is mined with a wrench.
+     * Machine data is saved to an NBT tag which can later be restored when the machine is placed again.
+     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
+     *
+     * @param additionalTag The NBT tag used to store the machine contents
+     */
     public void saveContents(CompoundTag additionalTag) {
         additionalTag.putInt("Progress", progress);
         additionalTag.putInt("MaxProgress", maxProgress);
         additionalTag.putInt("EnergyPerTick", energyPerTick);
+        CompoundTag configTag = new CompoundTag();
+        getConfiguration().save(configTag);
+        additionalTag.put(ModBlockEntity.CONFIG_TAG_KEY, configTag);
     }
-
+    
+    /**
+     * Method used to load machine data when a machine that was mined with a wrench is placed again.
+     * Reads machine data from an NBT tag and saves it to the dropped machine item.
+     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
+     *
+     * @param additionalTag The NBT tag containing the machine contents to load
+     */
     public void loadContents(CompoundTag additionalTag) {
         if (additionalTag.contains("Progress")) progress = additionalTag.getInt("Progress");
         if (additionalTag.contains("MaxProgress")) maxProgress = additionalTag.getInt("MaxProgress");
         if (additionalTag.contains("EnergyPerTick")) energyPerTick = additionalTag.getInt("EnergyPerTick");
+        CompoundTag configTag = additionalTag.getCompound(ModBlockEntity.CONFIG_TAG_KEY);
+        getConfiguration().load(configTag);
     }
     
     //region ChunkLoader implementation

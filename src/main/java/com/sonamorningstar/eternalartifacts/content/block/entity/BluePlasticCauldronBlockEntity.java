@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements ITickableServer {
+public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements TickableServer {
     private final int cooldownValue = 200;
     public int cooldown = cooldownValue;
 

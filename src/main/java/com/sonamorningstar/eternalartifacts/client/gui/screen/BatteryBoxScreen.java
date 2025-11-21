@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Inventory;
 public class BatteryBoxScreen extends AbstractSidedMachineScreen<BatteryBoxMenu> {
     public BatteryBoxScreen(BatteryBoxMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        setRedstoneControllable(false);
     }
     
     @Override

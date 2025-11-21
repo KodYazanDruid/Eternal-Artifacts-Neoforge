@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "eternalartifacts:block/deep_storage_unit_bottom",
+    "side": "eternalartifacts:block/deep_storage_unit_side",
+    "top": "eternalartifacts:block/deep_storage_unit_top"
+  }
+}

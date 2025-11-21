@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
@@ -10,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.GetMachineEnchantmentLe
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
@@ -33,11 +36,19 @@ import java.util.function.*;
 
 public class ModBlockEntity extends BlockEntity {
     public final Object2IntMap<Enchantment> enchantments = new Object2IntOpenHashMap<>();
+    public static final String CONFIG_TAG_KEY = "Config";
+    @Getter
+	private final MachineConfiguration configuration = new MachineConfiguration();
     
     public ModBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+        registerConfigs();
     }
-
+    
+    public void registerConfigs() {}
+    
+    public void registerCapabilityConfigs(BlockCapability<?,?> cap) {}
+    
     protected boolean shouldSyncOnUpdate() {
         return false;
     }
@@ -80,6 +91,9 @@ public class ModBlockEntity extends BlockEntity {
             }
             tag.put("Enchantments", listTag);
         }
+        CompoundTag configTag = new CompoundTag();
+        configuration.save(configTag);
+        tag.put(CONFIG_TAG_KEY, configTag);
     }
     
     @Override
@@ -92,6 +106,15 @@ public class ModBlockEntity extends BlockEntity {
     public void load(CompoundTag tag) {
         super.load(tag);
         loadEnchants(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+        CompoundTag configTag = tag.getCompound(CONFIG_TAG_KEY);
+        configuration.load(configTag);
+    }
+    
+    public void loadConfiguration(ItemStack drive) {
+        if (drive.hasTag()){
+            getConfiguration().load(drive.getTag().getCompound(CONFIG_TAG_KEY));
+            sendUpdate();
+        }
     }
     
     public void sendUpdate(){

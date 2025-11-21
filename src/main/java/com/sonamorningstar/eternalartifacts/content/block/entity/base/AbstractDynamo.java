@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<MENU> implements ITickableClient {
+public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<MENU> implements TickableClient {
 	public AbstractDynamo(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, MENU> quadF) {
 		super(type, pos, blockState, quadF);
 		setEnergy(() -> createBasicEnergy(100000, 5000, false, true));
@@ -110,9 +110,9 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 		
 		Recipe<?> recipe = RecipeCache.getCachedRecipe(this);
 		if(cache != null) {
-			if(!cache.isDone()) {
+			progress = cache.getDuration();
+			if(!cache.isDone() && redstoneChecks(lvl)) {
 				cache.process();
-				progress = cache.getDuration();
 			} else if (cache.isDone()) {
 				cache = null;
 				progress = 0;

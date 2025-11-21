@@ -1,11 +1,13 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.network.SendStringToServer;
 import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
+import lombok.Setter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
@@ -27,6 +29,8 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
     public final NonNullList<FluidSlot> fluidSlots = NonNullList.create();
     public final Inventory inventory;
+    @Setter
+    public @Nullable MachineConfiguration machineConfigs = null;
 
     protected AbstractModContainerMenu(@Nullable MenuType<?> menuType, int id, Inventory inventory) {
         super(menuType, id);
@@ -110,7 +114,7 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
                 ItemStack slotStack = slot.getItem();
                 if (!slotStack.isEmpty() && ItemStack.isSameItemSameTags(stack, slotStack)) {
                     int totalCount = slotStack.getCount() + stack.getCount();
-                    int maxSize = Math.min(slot.getMaxStackSize(), stack.getMaxStackSize());
+                    int maxSize = Math.min(slot.getMaxStackSize(stack), stack.getMaxStackSize());
                     if (totalCount <= maxSize) {
                         stack.setCount(0);
                         slotStack.setCount(totalCount);
@@ -137,8 +141,8 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
                 Slot slot = this.slots.get(index);
                 ItemStack slotStack = slot.getItem();
                 if (slotStack.isEmpty() && slot.mayPlace(stack)) {
-                    if (stack.getCount() > slot.getMaxStackSize()) {
-                        slot.setByPlayer(stack.split(slot.getMaxStackSize()));
+                    if (stack.getCount() > slot.getMaxStackSize(stack)) {
+                        slot.setByPlayer(stack.split(slot.getMaxStackSize(stack)));
                     } else {
                         slot.setByPlayer(stack.split(stack.getCount()));
                     }
@@ -156,7 +160,7 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         return ret;
     }
     
-    private void updateSlot(Slot slot) {
+    protected void updateSlot(Slot slot) {
         if (slot instanceof SlotItemHandler sih) {
             if (sih.getItemHandler() instanceof CharmStorage charms) {
                 charms.onContentsChanged(sih.getSlotIndex());

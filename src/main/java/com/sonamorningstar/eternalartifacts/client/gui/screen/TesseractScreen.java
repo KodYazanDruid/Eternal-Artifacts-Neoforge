@@ -218,9 +218,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {}
 	
 	@Override
-	public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+	public boolean keyPressed(int keyCode, int pScanCode, int pModifiers) {
 		//Delete key removes the selected network.
-		if (pKeyCode == 261) {
+		if (keyCode == 261) {
 			for (int i = 0; i < panel.getChildren().size(); i++) {
 				AbstractScrollPanelComponent tn = panel.getChildren().get(i);
 				if (!(tn instanceof TesseractNetworkWidget)) continue;
@@ -235,11 +235,11 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 			}
 		}
 		// Escape key closes the screen.
-		if (pKeyCode == 256) {
+		if (keyCode == 256) {
 			minecraft.player.closeContainer();
 			return true;
 		}
 		
-		return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+		return super.keyPressed(keyCode, pScanCode, pModifiers);
 	}
 }

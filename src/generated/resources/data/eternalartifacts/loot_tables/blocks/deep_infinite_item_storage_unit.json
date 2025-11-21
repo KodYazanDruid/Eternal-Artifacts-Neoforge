@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "eternalartifacts:keep_items"
+            }
+          ],
+          "name": "eternalartifacts:deep_infinite_item_storage_unit"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "eternalartifacts:blocks/deep_infinite_item_storage_unit"
+}

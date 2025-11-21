@@ -2,10 +2,15 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
+import com.sonamorningstar.eternalartifacts.api.machine.config.*;
 import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.base.MultiBlockRenderer;
 import com.sonamorningstar.eternalartifacts.client.render.entity.*;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableBatteryLayer;
@@ -13,12 +18,21 @@ import com.sonamorningstar.eternalartifacts.client.render.item.PortableFurnaceLa
 import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
+import com.sonamorningstar.eternalartifacts.event.custom.CreateConfigWidgetEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.MachineConfigurationToServer;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import io.netty.buffer.Unpooled;
+import mekanism.api.functions.FloatSupplier;
 import net.minecraft.client.color.block.BlockColors;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SkullModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -27,6 +41,10 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.core.Direction;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -41,14 +59,304 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
+import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 
 import java.util.Objects;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientModEvents {
+    private static final ResourceLocation allow = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/allow.png");
+    private static final ResourceLocation deny = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/deny.png");
+    private static final ResourceLocation input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/input.png");
+    private static final ResourceLocation output = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/output.png");
+    private static final ResourceLocation auto_input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_input.png");
+    private static final ResourceLocation auto_output = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_output.png");
+    private static final ResourceLocation auto_input_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_input_enabled.png");
+    private static final ResourceLocation auto_output_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_output_enabled.png");
+    private static final ResourceLocation item_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/item_transfer.png");
+    private static final ResourceLocation fluid_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_transfer.png");
+    private static final ResourceLocation energy_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/energy_transfer.png");
+    private static final ResourceLocation item_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/item_transfer_disabled.png");
+    private static final ResourceLocation fluid_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_transfer_disabled.png");
+    private static final ResourceLocation energy_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/energy_transfer_disabled.png");
+    private static final ResourceLocation redstone_active = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_active.png");
+    private static final ResourceLocation redstone_passive = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_passive.png");
+    private static final ResourceLocation redstone_ignored = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_ignored.png");
+    private static final ResourceLocation batbox_full = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_full.png");
+    private static final ResourceLocation batbox_empty = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_empty.png");
+    private static final ResourceLocation batbox_percentage_below = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_below.png");
+    private static final ResourceLocation batbox_percentage_above = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_above.png");
+    private static final ResourceLocation batbox_percentage_exact = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_exact.png");
+    
+    @SubscribeEvent
+    public static void registerConfigWidgets(CreateConfigWidgetEvent event) {
+        event.register(SideConfig.class, (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            AbstractModContainerScreen<?> screen = ctx.screen;
+            for (int i = 0; i < 6; i++) {
+                int finalI = i;
+                if (!(screen.getMenu() instanceof AbstractMachineMenu amm)) continue;
+                if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) continue;
+                
+                Direction dir = Direction.from3DDataValue(finalI);
+                String sideName = switch (finalI)  {
+                    case 0 -> "up";
+                    case 1 -> "left";
+                    case 2 -> "front";
+                    case 3 -> "right";
+                    case 4 -> "down";
+                    case 5 -> "back";
+                    default -> "unknown";
+                };
+                
+                Function<Direction, SideConfig.TransferType> type = d -> config.getSides().get(d);
+                SpriteButton sideButton = SpriteButton.builder(Component.empty(), (button, key) -> {
+                    if (Screen.hasShiftDown()) {
+                        if (key == 0) config.getSides().put(dir, SideConfig.TransferType.NONE);
+                        else if (key == 1) config.getSides().put(dir, SideConfig.TransferType.DEFAULT);
+                    } else {
+                        if (key == 0) config.cycleNext(dir);
+                        else if (key == 1) config.cyclePrev(dir);
+                    }
+                    button.setTextures(getTextureForTransferType(type.apply(dir)));
+                    FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                    config.writeToServer(buf);
+                    Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+                }, getTextureForTransferType(config.getSides().get(dir)))
+                    .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable(sideName)
+                        .append(": ").append(ModConstants.GUI.withSuffixTranslatable(type.apply(dir).toString().toLowerCase())))
+                    .size(9, 9).build();
+                
+                panel.addChildren((fx, fy, fw, fh) -> {
+                    switch (finalI) {
+                        case 0 -> sideButton.setPosition(fx + 14, fy + 4);
+                        case 1 -> sideButton.setPosition(fx + 4, fy + 14);
+                        case 2 -> sideButton.setPosition(fx + 14, fy + 14);
+                        case 3 -> sideButton.setPosition(fx + 24, fy + 14);
+                        case 4 -> sideButton.setPosition(fx + 14, fy + 24);
+                        case 5 -> sideButton.setPosition(fx + 24, fy + 24);
+                    }
+                    return sideButton;
+                });
+            }
+        });
+        
+        event.register(AutoTransferConfig.class, (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            MachineConfiguration configs = mbe.getConfiguration();
+            
+            BooleanSupplier isInput = config::isInput;
+            SpriteButton autoInput = SpriteButton.builder(Component.empty(), (button, key) -> {
+                boolean newValue = !config.isInput();
+                config.setInput(newValue);
+                button.setTextures(newValue ? auto_input_enabled : auto_input);
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, isInput.getAsBoolean() ? auto_input_enabled : auto_input).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("auto_input")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isInput() ? "enabled" : "disabled"))).build();
+            
+            BooleanSupplier isOutput = config::isOutput;
+            SpriteButton autoOutput = SpriteButton.builder(Component.empty(), (button, key) -> {
+                boolean newValue = !config.isOutput();
+                config.setOutput(newValue);
+                button.setTextures(newValue ? auto_output_enabled : auto_output);
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, isOutput.getAsBoolean() ? auto_output_enabled : auto_output).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("auto_output")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isOutput() ? "enabled" : "disabled"))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                autoInput.setPosition(fx + 34, fy + 4);
+                return autoInput;
+            });
+            panel.addChildren((fx, fy, fw, fh) -> {
+                autoOutput.setPosition(fx + 34, fy + 14);
+                return autoOutput;
+            });
+        });
+        
+        event.register(ReverseToggleConfig.class, "item_transfer", (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            BooleanSupplier isDisabled = config::isDisabled;
+            SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+                boolean newValue = !config.isDisabled();
+                config.setDisabled(newValue);
+                button.setTextures(newValue ? item_transfer_disabled : item_transfer);
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, isDisabled.getAsBoolean() ? item_transfer_disabled : item_transfer).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("item_transportation")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                btn.setPosition(fx + 44, fy + 4);
+                return btn;
+            });
+        });
+        
+        event.register(ReverseToggleConfig.class, "fluid_transfer", (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            BooleanSupplier isDisabled = config::isDisabled;
+            SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+                boolean newValue = !config.isDisabled();
+                config.setDisabled(newValue);
+                button.setTextures(newValue ? fluid_transfer_disabled : fluid_transfer);
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, isDisabled.getAsBoolean() ? fluid_transfer_disabled : fluid_transfer).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("fluid_transportation")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                btn.setPosition(fx + 44, fy + 14);
+                return btn;
+            });
+        });
+        
+        event.register(ReverseToggleConfig.class, "energy_transfer", (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            BooleanSupplier isDisabled = config::isDisabled;
+            SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+                    boolean newValue = !config.isDisabled();
+                    config.setDisabled(newValue);
+                    button.setTextures(newValue ? energy_transfer_disabled : energy_transfer);
+                    FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                    config.writeToServer(buf);
+                    Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+                }, isDisabled.getAsBoolean() ? energy_transfer_disabled : energy_transfer).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("energy_transportation")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                btn.setPosition(fx + 44, fy + 24);
+                return btn;
+            });
+        });
+        
+        event.register(RedstoneConfig.class, (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            Supplier<RedstoneConfig.Mode> mode = config::getMode;
+            SpriteButton redstoneButton = SpriteButton.builder(Component.empty(), (button, key) -> {
+                config.cycleMode();
+                button.setTextures(getTextureForRedstoneType(mode.get()));
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, getTextureForRedstoneType(config.getMode())).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("redstone")
+                    .append(": ").append(getComponentForRedstone(mode.get()))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                redstoneButton.setPosition(fx + 54, fy + 4);
+                return redstoneButton;
+            });
+        });
+        
+        event.register(BatteryBoxExportConfig.class, (config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            Supplier<BatteryBoxExportConfig.ExportMode> mode = config::getExportMode;
+            FloatSupplier percGetter = config::getPercentage;
+            SpriteButton exportButton = SpriteButton.builder(Component.empty(), (button, key) -> {
+                config.cycleNextMode();
+                button.setTextures(getTextureForBatBox(mode.get()));
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, getTextureForBatBox(mode.get())).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("battery_box_export")
+                .append(": ").append(getComponentForBatBox(mode.get(), percGetter.getAsFloat()))).build();
+            
+            ExtendedSlider slider = new ExtendedSlider(0, 0, panel.getWidth() - 8, 10, Component.empty(), Component.empty(),
+                0.0d, 100.0d, percGetter.getAsFloat(), 0.1d, 0, false) {
+                @Override
+                protected void applyValue() {
+                    super.applyValue();
+                    config.setPercentage(((float) getValue()));
+                    FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                    config.writeToServer(buf);
+                    Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+                }
+            };
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                exportButton.setPosition(fx + 34, fy + 24);
+                return exportButton;
+            });
+            panel.addChildren((fx, fy, fw, fh) -> {
+                slider.setPosition(fx + 4, fy + 34);
+                return slider;
+            });
+        });
+    }
+    
+    private static ResourceLocation getTextureForTransferType(SideConfig.TransferType transferType) {
+        if(transferType == SideConfig.TransferType.NONE) return deny;
+        if(transferType == SideConfig.TransferType.PULL) return input;
+        if(transferType == SideConfig.TransferType.PUSH) return output;
+        return allow;
+    }
+    
+    private static ResourceLocation getTextureForRedstoneType(RedstoneConfig.Mode redstoneType) {
+        if(redstoneType == RedstoneConfig.Mode.IGNORE) return redstone_ignored;
+        if(redstoneType == RedstoneConfig.Mode.HIGH) return redstone_active;
+        if(redstoneType == RedstoneConfig.Mode.LOW) return redstone_passive;
+        return redstone_ignored;
+    }
+    
+    private static MutableComponent getComponentForRedstone(RedstoneConfig.Mode type) {
+        if (type == RedstoneConfig.Mode.LOW) return ModConstants.GUI.withSuffixTranslatable("redstone_passive");
+        if (type == RedstoneConfig.Mode.HIGH) return ModConstants.GUI.withSuffixTranslatable("redstone_active");
+        return ModConstants.GUI.withSuffixTranslatable("redstone_default");
+    }
+    
+    private static ResourceLocation getTextureForBatBox(BatteryBoxExportConfig.ExportMode mode) {
+        if (mode == BatteryBoxExportConfig.ExportMode.EMPTY) return batbox_empty;
+        if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_BELOW) return batbox_percentage_below;
+        if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_ABOVE) return batbox_percentage_above;
+        if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_EXACT) return batbox_percentage_exact;
+        return batbox_full;
+    }
+    
+    private static MutableComponent getComponentForBatBox(BatteryBoxExportConfig.ExportMode mode, float perc) {
+        if (mode == BatteryBoxExportConfig.ExportMode.EMPTY) return ModConstants.GUI.withSuffixTranslatable("battery_box_export_empty");
+        if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_BELOW)
+            return Component.translatable(ModConstants.GUI.withSuffix("battery_box_export_percentage_below"), perc);
+        if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_ABOVE)
+            return Component.translatable(ModConstants.GUI.withSuffix("battery_box_export_percentage_above"), perc);
+        if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_EXACT)
+            return Component.translatable(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), perc);
+        return ModConstants.GUI.withSuffixTranslatable("battery_box_export_full");
+    }
 
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
@@ -64,6 +372,8 @@ public class ClientModEvents {
         event.register(ModMenuTypes.TESSERACT.get(), TesseractScreen::new);
         event.register(ModMenuTypes.ITEM_DYNAMO.get(), ItemDynamoScreen::new);
         event.register(ModMenuTypes.PICTURE_SCREEN.get(), PictureScreenScreen::new);
+        event.register(ModMenuTypes.DEEP_ITEM_STORAGE_UNIT.get(), DeepItemStorageScreen::new);
+        event.register(ModMenuTypes.DEEP_FLUID_STORAGE_UNIT.get(), DeepFluidStorageUnitScreen::new);
     }
 
     @SubscribeEvent
@@ -85,6 +395,11 @@ public class ClientModEvents {
         CutlassModifier.ENTITY_HEAD_MAP.values().forEach(item -> {
             if(item != Items.DRAGON_HEAD) event.register(EquipmentSlot.HEAD, item);
         });
+    }
+    
+    @SubscribeEvent
+    public static void registerKeyMappings(RegisterKeyMappingsEvent event) {
+        ModKeyMappings.KEY_MAPPINGS.forEach(event::register);
     }
     
     @SubscribeEvent
@@ -197,6 +512,8 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.CULINARY_DYNAMO.get(), DynamoRenderer::new);
 
         event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
+        event.registerBlockEntityRenderer(ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), ctx -> new DSUItemRenderer());
+        event.registerBlockEntityRenderer(ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), ctx -> new DSUFluidRenderer());
 
         event.registerBlockEntityRenderer(ModMultiblocks.PUMPJACK.getBlockEntity(), MultiBlockRenderer::new);
         event.registerBlockEntityRenderer(ModMultiblocks.GENERATOR.getBlockEntity(), MultiBlockRenderer::new);

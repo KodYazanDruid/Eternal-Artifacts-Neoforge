@@ -1,12 +1,14 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -20,10 +22,6 @@ import java.util.function.Supplier;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class CleanButton extends AbstractButton {
-	public static final int SMALL_WIDTH = 120;
-	public static final int DEFAULT_WIDTH = 150;
-	public static final int DEFAULT_HEIGHT = 20;
-	public static final int DEFAULT_SPACING = 8;
 	protected static final CleanButton.CreateNarration DEFAULT_NARRATION = Supplier::get;
 	protected final CleanButton.OnPress onPress;
 	protected final CleanButton.CreateNarration createNarration;

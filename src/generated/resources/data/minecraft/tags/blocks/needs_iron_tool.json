@@ -28,6 +28,10 @@
     "eternalartifacts:moss_diamond_ore",
     "eternalartifacts:moss_emerald_ore",
     "eternalartifacts:steel_item_pipe",
-    "eternalartifacts:steel_fluid_pipe"
+    "eternalartifacts:steel_fluid_pipe",
+    "eternalartifacts:deep_item_storage_unit",
+    "eternalartifacts:deep_infinite_item_storage_unit",
+    "eternalartifacts:deep_fluid_storage_unit",
+    "eternalartifacts:deep_infinite_fluid_storage_unit"
   ]
 }

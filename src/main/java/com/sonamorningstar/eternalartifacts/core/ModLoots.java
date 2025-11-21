@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTag
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.*;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepContentsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
+import com.sonamorningstar.eternalartifacts.loot.function.KeepItemsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
@@ -26,6 +27,7 @@ public class ModLoots {
     public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> RETEXTURED_FUNCTION = FUNCTIONS.register("retexture", ()-> new LootItemFunctionType(RetexturedLootFunction.CODEC));
     public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> KEEP_CONTENTS_FUNCTION = FUNCTIONS.register("keep_contents", ()-> new LootItemFunctionType(KeepContentsFunction.CODEC));
     public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> KEEP_FLUIDS_FUNCTION = FUNCTIONS.register("keep_fluids", ()-> new LootItemFunctionType(KeepFluidsFunction.CODEC));
+    public static final DeferredHolder<LootItemFunctionType, LootItemFunctionType> KEEP_ITEMS_FUNCTION = FUNCTIONS.register("keep_items", ()-> new LootItemFunctionType(KeepItemsFunction.CODEC));
 
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<AddItemListModifier>> ADD_ITEM_LIST_SERIALIZER = register("add_item_list", AddItemListModifier.CODEC);
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<ReplaceItemModifier>> REPLACE_ITEM_SERIALIZER = register("replace_item", ReplaceItemModifier.CODEC);

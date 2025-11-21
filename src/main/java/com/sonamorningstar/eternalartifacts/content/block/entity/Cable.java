@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
@@ -17,7 +17,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import java.util.*;
 
 @Getter
-public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements ITickableServer {
+public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements TickableServer {
     private final CableBlock.CableTier tier;
     
     private final Map<BlockPos, Map<BlockPos, Integer>> positionToSourceDistances = new HashMap<>();

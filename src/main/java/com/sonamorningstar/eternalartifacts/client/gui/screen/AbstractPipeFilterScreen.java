@@ -71,7 +71,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 			Component desc = toConvert.map(Item::getDescription, fluid -> fluid.getFluidType().getDescription());
 			tagList = new SimpleDraggablePanel(
 				Component.translatable("gui.eternalartifacts.pipe_filter.tags_for", desc),
-				leftPos - 10, topPos - 10, 162, 96, SimpleDraggablePanel.Bounds.full(this));
+				leftPos + (imageWidth / 2) - 81, topPos + 10, 162, 96, SimpleDraggablePanel.Bounds.full(this));
 			tagList.addClosingButton();
 			tagList.setColor(getGuiTint());
 			tagList.addOnCloseListener(panel -> {

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,7 +24,7 @@ import java.util.function.Consumer;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Getter
-public class SimpleDraggablePanel extends AbstractWidget implements IParentalWidget, Draggable, Overlapping {
+public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidget, Draggable, Overlapping {
 	private final List<GuiEventListener> children = new ArrayList<>();
 	@Setter
 	private Bounds bounds;
@@ -44,7 +45,7 @@ public class SimpleDraggablePanel extends AbstractWidget implements IParentalWid
 						listener.accept(SimpleDraggablePanel.this);
 					}
 				}, new ResourceLocation(MODID, "textures/gui/sprites/sided_buttons/deny.png"))
-				.bounds(fX + fW - 14, fY + 5, 9, 9).build()
+				.bounds(fX + fW - 13, fY + 4, 9, 9).build()
 		);
 	}
 	
@@ -139,8 +140,8 @@ public class SimpleDraggablePanel extends AbstractWidget implements IParentalWid
 	}
 	
 	@Override
-	public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
-		return mouseClickedChild(pMouseX, pMouseY, pButton) || super.mouseClicked(pMouseX, pMouseY, pButton);
+	public boolean mouseClicked(double mx, double my, int pButton) {
+		return mouseClickedChild(mx, my, pButton) || super.mouseClicked(mx, my, pButton);
 	}
 	@Override
 	public boolean mouseReleased(double pMouseX, double pMouseY, int pButton) {
@@ -160,6 +161,9 @@ public class SimpleDraggablePanel extends AbstractWidget implements IParentalWid
 	@Override
 	public boolean isMouseOver(double pMouseX, double pMouseY) {
 		return isMouseOverChild(pMouseX, pMouseY) || super.isMouseOver(pMouseX, pMouseY);
+	}
+	public boolean isMouseOverRaw(double pMouseX, double pMouseY) {
+		return super.isMouseOver(pMouseX, pMouseY);
 	}
 	@Override
 	public void mouseMoved(double pMouseX, double pMouseY) {

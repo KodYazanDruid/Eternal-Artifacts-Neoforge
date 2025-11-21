@@ -22,7 +22,6 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
 
     public AnvilinatorScreen(AnvilinatorMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        inventoryLabelX = 46;
         this.anvilinatorBlockEntity = (Anvilinator) menu.getBlockEntity();
     }
 

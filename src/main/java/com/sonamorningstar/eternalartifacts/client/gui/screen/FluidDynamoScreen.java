@@ -14,6 +14,5 @@ public class FluidDynamoScreen extends AbstractDynamoScreen<DynamoMenu> {
     protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
         super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
-        renderBurn(gui, leftPos + 81, topPos + 55, mx, my);
     }
 }

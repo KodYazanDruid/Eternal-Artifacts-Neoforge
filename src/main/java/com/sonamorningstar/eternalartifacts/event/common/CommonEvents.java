@@ -136,6 +136,7 @@ public class CommonEvents {
                 player.setRemainingFireTicks(0);
             });
         }
+        //TODO: Yippie ki-yay mother
         if(fluidStack.is(ModFluids.BEER.getFluid())) {
             event.setDefaultUseTime();
             event.setAfterDrink(((player, itemStack) -> player.heal(4.0F)));

@@ -21,7 +21,7 @@ import java.util.List;
 public class AlchemicalDynamo extends AbstractDynamo<DynamoMenu> {
 	public AlchemicalDynamo(BlockPos pos, BlockState blockState) {
 		super(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), pos, blockState, DynamoMenu::new);
-		setTank(() -> createBasicTank(4000, false, true));
+		setTank(() -> createBasicTank(4000, (fs) -> fs.is(ModTags.Fluids.POTION), false, true));
 		setDefaultEnergyPerTick(80);
 	}
 	

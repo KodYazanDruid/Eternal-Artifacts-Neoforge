@@ -29,18 +29,18 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 		
 		int buttonWidth = 16;
 		int buttonHeight = 16;
-		int startX = leftPos + imageWidth - buttonWidth - 4;
-		int startY = topPos + 12;
+		int startX = leftPos + imageWidth - buttonWidth - 55;
+		int startY = topPos + 66;
 		for (int i = 0; i < 4; i++) {
 			final int recipeId = i;
 			RecipeTypeButton button = new RecipeTypeButton(
-				startX,
-				startY + (buttonWidth * i),
+				startX + (buttonWidth * i),
+				startY,
 				buttonWidth,
 				buttonHeight,
 				getRecipeItemStack(recipeId),
 				getRecipeTooltip(recipeId),
-				(b) -> {
+				b -> {
 					if (menu.getBlockEntity() instanceof MultiFurnace<?> furnace) {
 						furnace.setRecipeTypeId((short) recipeId);
 					}

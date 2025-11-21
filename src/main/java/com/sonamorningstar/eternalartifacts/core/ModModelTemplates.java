@@ -25,8 +25,9 @@ public class ModModelTemplates {
     public static final ModelTemplate PIPE_SIDE_FILTERING = create("pipe_side_filtering", "_side_filtering", TextureSlot.TEXTURE);
     public static final ModelTemplate PIPE_INVENTORY = create("pipe_inventory", "_inventory", TextureSlot.TEXTURE);
 
-    public static ModelTemplate ENTITY_RENDER_TRANSFORMS = createItem("entity_renderer_transform");
-    public static ModelTemplate SPELL_TOME = createItem("spell_tome", TextureSlot.TEXTURE);
+    public static final ModelTemplate ENTITY_RENDER_TRANSFORMS = createItem("entity_renderer_transform");
+    public static final ModelTemplate CUBE_BOTTOM_TOP_BEWLR = createItem("cube_bottom_top_bewlr");
+    public static final ModelTemplate SPELL_TOME = createItem("spell_tome", TextureSlot.TEXTURE);
 
     private static ModelTemplate create(String blockLoc, TextureSlot... slots) {
         return new ModelTemplate(Optional.of(new ResourceLocation(MODID, "block/" + blockLoc)), Optional.empty(), slots);

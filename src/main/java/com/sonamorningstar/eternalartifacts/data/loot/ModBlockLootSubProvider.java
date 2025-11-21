@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepContentsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepFluidsFunction;
+import com.sonamorningstar.eternalartifacts.loot.function.KeepItemsFunction;
 import com.sonamorningstar.eternalartifacts.loot.function.RetexturedLootFunction;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
@@ -182,6 +183,10 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.ANVILINATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BOOK_DUPLICATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());
+        dropSelfWithFunction(ModBlocks.DEEP_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
+        dropSelfWithFunction(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
+        dropSelfWithFunction(ModBlocks.DEEP_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
+        dropSelfWithFunction(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
         
         add(ModBlocks.SOLAR_PANEL.get(), this::createSlabItemTable);
 

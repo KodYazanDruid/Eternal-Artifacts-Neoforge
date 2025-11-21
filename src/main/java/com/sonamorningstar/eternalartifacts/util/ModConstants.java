@@ -40,7 +40,9 @@ public enum ModConstants {
     GAS_CAPABILITY("capability."+MODID, "gas"),
     BLOCK("block."+MODID),
     FILTER("filter."+MODID),
-    WIDGET("widget."+MODID);
+    WIDGET("widget."+MODID),
+    KEY("key."+MODID),
+    KEY_ETAR_CATEGORY("key.categories", MODID);
     
     final String string;
     @Nullable

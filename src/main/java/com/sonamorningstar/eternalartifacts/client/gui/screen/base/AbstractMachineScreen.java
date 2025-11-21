@@ -24,16 +24,17 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
     protected static final int labelColor = 4210752;
 
-    public AbstractMachineScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
-        super(pMenu, pPlayerInventory, pTitle);
+    public AbstractMachineScreen(T menu, Inventory pPlayerInventory, Component pTitle) {
+        super(menu, pPlayerInventory, pTitle);
         renderEffects = false;
+        if (getMenu().getBeTank() != null) inventoryLabelX = 46;
+        else inventoryLabelX = 28;
     }
     
     protected void renderExtra(GuiGraphics gui, int mx, int my, float partialTick) {}
 
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
-        inventoryLabelX = 46;
         super.render(gui, mx, my, partialTick);
         if (menu.getBeEnergy() != null) renderEnergyTooltip(gui, mx, my);
         if (menu.getBeTank() != null) renderFluidTooltip(gui, mx, my);
@@ -116,7 +117,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     protected void renderBurn(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x + 1, y + 1, 48, 10, 13, 13);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y + 14 - menu.getScaledProgress(14), 48,  37 - menu.getScaledProgress(14), 14, menu.getScaledProgress(14));
-        renderProgressTooltip(guiGraphics, x + 1, y + 1, 13, 13, mx, my, "burn_time");
+        renderProgressTooltip(guiGraphics, x, y, 13, 13, mx, my, "burn_time");
     }
 
     protected void renderProgressArrowWTooltips(GuiGraphics guiGraphics, int x, int y, int mx, int my) {

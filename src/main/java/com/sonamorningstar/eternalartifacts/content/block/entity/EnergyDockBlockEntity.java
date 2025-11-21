@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.block.EnergyDockBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
@@ -21,7 +21,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EnergyDockBlockEntity extends ModBlockEntity implements ITickableServer, AreaRenderer {
+public class EnergyDockBlockEntity extends ModBlockEntity implements TickableServer, AreaRenderer {
     @Nullable
     private final ModEnergyStorage energy;
     private DockPart part;

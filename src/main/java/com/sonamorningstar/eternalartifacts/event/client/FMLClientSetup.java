@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
@@ -9,6 +10,7 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModSkullType;
+import com.sonamorningstar.eternalartifacts.event.custom.CreateConfigWidgetEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
@@ -41,6 +43,7 @@ public class FMLClientSetup {
 
             TabHandler.registeredTabs = ModRegistries.TAB_TYPE.stream().toList();
             ModLoader.get().postEvent(new RegisterTabHoldersEvent(TabHandler.tabHolders));
+            ModLoader.get().postEvent(new CreateConfigWidgetEvent());
             ModLoader.get().postEvent(new RegisterUnrenderableOverridesEvent());
             setupCharmSprites();
         });

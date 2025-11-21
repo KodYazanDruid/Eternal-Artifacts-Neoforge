@@ -8,8 +8,8 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.function.Consumer;
 
-public class DrumBlockItem extends FluidHolderBlockItem {
-    public DrumBlockItem(Block block, Properties props) {
+public class BasicFluidTankItem extends FluidHolderBlockItem {
+    public BasicFluidTankItem(Block block, Properties props) {
         super(block, props);
     }
 

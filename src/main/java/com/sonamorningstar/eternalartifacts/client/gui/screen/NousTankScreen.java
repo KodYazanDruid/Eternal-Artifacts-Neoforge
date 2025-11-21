@@ -13,7 +13,6 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 public class NousTankScreen extends AbstractSidedMachineScreen<NousTankMenu> {
     public NousTankScreen(NousTankMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
-        setRedstoneControllable(false);
     }
 
     @Override

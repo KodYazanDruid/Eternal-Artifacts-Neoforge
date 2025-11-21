@@ -73,15 +73,9 @@ public class Channel {
         registrar.play(PlayerTeleportToServer.ID,
                 PlayerTeleportToServer::create,
                 handler -> handler.server(PlayerTeleportToServer::handle));
-        registrar.play(SidedTransferSideSaveToServer.ID,
-                SidedTransferSideSaveToServer::create,
-                handler -> handler.server(SidedTransferSideSaveToServer::handle));
-        registrar.play(SidedTransferAutoSaveToServer.ID,
-                SidedTransferAutoSaveToServer::create,
-                handler -> handler.server(SidedTransferAutoSaveToServer::handle));
-        registrar.play(SidedTransferRedstoneToServer.ID,
-                SidedTransferRedstoneToServer::create,
-                handler -> handler.server(SidedTransferRedstoneToServer::handle));
+        registrar.play(MachineConfigurationToServer.ID,
+            MachineConfigurationToServer::create,
+            handler -> handler.server(MachineConfigurationToServer::handle));
         registrar.play(ShootSkullsToServer.ID,
                 ShootSkullsToServer::create,
                 handler -> handler.server(ShootSkullsToServer::handle));

@@ -1,13 +1,17 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +34,7 @@ public class SpriteButton extends AbstractButton {
     @Setter
     private ButtonDrawContent sprites;
     private final List<Component> tooltips;
+    private final List<Supplier<Component>> dynamicTooltips;
     protected static final SpriteButton.CreateNarration DEFAULT_NARRATION = Supplier::get;
     protected final SpriteButton.OnPress onPress;
     protected final SpriteButton.CreateNarration createNarration;
@@ -43,17 +48,20 @@ public class SpriteButton extends AbstractButton {
     }
 
     public SpriteButton(Builder builder) {
-        this(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress, builder.createNarration, builder.sprites, builder.tooltips, builder.textures);
+        this(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress, builder.createNarration, builder.sprites,
+            builder.tooltips, builder.dynamicTooltips, builder.textures);
         setTooltip(builder.tooltip);
     }
 
-    private SpriteButton(int x, int y, int width, int hegiht, Component pMessage, SpriteButton.OnPress pOnPress, CreateNarration pCreateNarration, ButtonDrawContent sprites, List<Component> tooltips, ResourceLocation... textures) {
+    private SpriteButton(int x, int y, int width, int hegiht, Component pMessage, SpriteButton.OnPress pOnPress, CreateNarration pCreateNarration, ButtonDrawContent sprites,
+                         List<Component> tooltips, List<Supplier<Component>> dynamicTooltips, ResourceLocation... textures) {
         super(x, y, width, hegiht, pMessage);
         this.onPress = pOnPress;
         this.createNarration = pCreateNarration;
         this.textures = textures;
         this.sprites = sprites;
         this.tooltips = tooltips;
+        this.dynamicTooltips = dynamicTooltips;
     }
 
     @Override
@@ -97,9 +105,13 @@ public class SpriteButton extends AbstractButton {
                 }
 
             }
-
-        if (isMouseOver(mouseX, mouseY) && !tooltips.isEmpty())
-            gui.renderTooltip(Minecraft.getInstance().font, tooltips, Optional.empty(), mouseX, mouseY);
+        
+        List<Component> allTooltips = new ArrayList<>();
+        allTooltips.addAll(tooltips);
+        allTooltips.addAll(dynamicTooltips.stream().map(Supplier::get).toList());
+        if (isMouseOver(mouseX, mouseY) && !allTooltips.isEmpty())
+            gui.renderTooltip(Minecraft.getInstance().font, allTooltips, Optional.empty(), mouseX, mouseY);
+        
         gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
@@ -112,8 +124,23 @@ public class SpriteButton extends AbstractButton {
         super.onClick(mouseX, mouseY, button);
         this.onPress.onPress(this, button);
     }
-
-
+    
+    @Override
+    public boolean isMouseOver(double mX, double mY) {
+        Screen screen = Minecraft.getInstance().screen;
+        if (screen instanceof AbstractModContainerScreen<?> modScreen) {
+              for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
+                  GuiEventListener child = modScreen.upperLayerChildren.get(i);
+                  if (child instanceof ParentalWidget parental) {
+                      if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
+                          return parental.getChildUnderCursorRaw(mX, mY) == this;
+                      } else return super.isMouseOver(mX, mY);
+                  }
+              }
+        }
+        return super.isMouseOver(mX, mY);
+    }
+    
     @Override
     protected boolean isValidClickButton(int button) {
         return button == 0 || button == 1 || button == 2;
@@ -137,6 +164,7 @@ public class SpriteButton extends AbstractButton {
         private int height = 20;
         private final ButtonDrawContent sprites = new ButtonDrawContent(width, height);
         private final List<Component> tooltips = new ArrayList<>();
+        private final List<Supplier<Component>> dynamicTooltips = new ArrayList<>();
 
         private SpriteButton.CreateNarration createNarration = SpriteButton.DEFAULT_NARRATION;
 
@@ -209,6 +237,10 @@ public class SpriteButton extends AbstractButton {
         //region Component adding.
         public SpriteButton.Builder addTooltipHover(Component tooltip) {
             tooltips.add(tooltip);
+            return this;
+        }
+        public SpriteButton.Builder addTooltipHover(Supplier<Component> tooltip) {
+            dynamicTooltips.add(tooltip);
             return this;
         }
         //endregion

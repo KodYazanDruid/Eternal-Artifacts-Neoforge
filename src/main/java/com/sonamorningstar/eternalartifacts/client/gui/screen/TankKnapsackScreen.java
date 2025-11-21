@@ -31,11 +31,11 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
-        renderTankSlots(gui, leftPos, topPos, mx, my);
+        //renderTankSlots(gui, leftPos, topPos, mx, my);
         renderTooltip(gui, mx, my);
     }
 
-    private void renderTankSlots(GuiGraphics gui, int x, int y, int mx, int my) {
+    /*private void renderTankSlots(GuiGraphics gui, int x, int y, int mx, int my) {
         for (int i = 0; i < menu.fluidSlots.size(); i++) {
             FluidSlot slot = menu.getFluidSlot(i);
             FluidStack fluidStack = slot.getFluid();
@@ -58,5 +58,5 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
             }
             renderTankSlot(gui, x, y, slot);
         }
-    }
+    }*/
 }

@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
@@ -190,7 +190,7 @@ public class EnergyDockBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (!level.isClientSide && state.getBlock() instanceof EnergyDockBlock && state.getValue(DOCK_PART) == DockPart.CENTER) {
             return (lvl, pos, st, be) -> {
-                if (be instanceof ITickableServer entity) {
+                if (be instanceof TickableServer entity) {
                     entity.tickServer(lvl, pos, st);
                 }
             };

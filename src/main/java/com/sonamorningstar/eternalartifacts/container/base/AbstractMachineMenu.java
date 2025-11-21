@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container.base;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
@@ -49,6 +50,7 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         addPlayerInventoryAndHotbar(inv, 8, 66);
         addDataSlots(data);
         if (blockEntity instanceof SidedTransferMachine<?> sided) outputSlots.addAll(sided.outputSlots);
+        if (blockEntity instanceof ModBlockEntity mbe) setMachineConfigs(mbe.getConfiguration());
     }
 
     @Override

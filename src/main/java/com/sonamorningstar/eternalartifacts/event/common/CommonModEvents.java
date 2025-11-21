@@ -8,9 +8,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.TesseractEnergyCap;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.*;
-import com.sonamorningstar.eternalartifacts.capabilities.item.MachineItemItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.item.ModScaleableItemItemStorage;
-import com.sonamorningstar.eternalartifacts.capabilities.item.TesseractInventoryCap;
+import com.sonamorningstar.eternalartifacts.capabilities.item.*;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
@@ -49,6 +47,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -88,6 +87,15 @@ public class CommonModEvents {
         registerDrum(event, ModBlocks.DIAMOND_DRUM);
         registerDrum(event, ModBlocks.NETHERITE_DRUM);
 
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), (be, ctx) -> be.inventory);
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new DeepInfiniteItemItemStorageHandler(stack),
+            ModBlocks.DEEP_ITEM_STORAGE_UNIT.asItem(),
+            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.asItem());
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), (be, ctx) -> be.tank);
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE),
+            ModBlocks.DEEP_FLUID_STORAGE_UNIT.asItem(),
+            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.asItem());
+        
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModScaleableItemItemStorage(stack, ModEnchantments.VOLUME.get(), 9), ModItems.KNAPSACK.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
             int volume = stack.getEnchantmentLevel(ModEnchantments.VOLUME.get());

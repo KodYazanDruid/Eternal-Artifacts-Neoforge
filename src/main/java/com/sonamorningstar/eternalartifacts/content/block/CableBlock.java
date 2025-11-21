@@ -68,14 +68,6 @@ public class CableBlock extends AbstractPipeBlock<IEnergyStorage> {
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) { return new Cable(pos, state); }
     
     @Override
-    public InteractionResult use(BlockState pState, Level level, BlockPos pPos, Player pPlayer, InteractionHand hand, BlockHitResult hit) {
-        /*if (!level.isClientSide() && hand == InteractionHand.MAIN_HAND){
-            Direction relativeDir = getClickedRelativePos(hit.getDirection(), pPos, hit.getLocation(), 6);
-        }*/
-        return super.use(pState, level, pPos, pPlayer, hand, hit);
-    }
-    
-    @Override
     public void appendHoverText(ItemStack stack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
         super.appendHoverText(stack, pLevel, pTooltip, pFlag);
         pTooltip.add(Component.translatable(ModConstants.BLOCK.withSuffix("pipe.range"), tier.maxRange).withColor(0xADD8E6));

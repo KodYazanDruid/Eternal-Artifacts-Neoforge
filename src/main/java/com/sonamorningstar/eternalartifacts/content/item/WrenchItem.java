@@ -1,10 +1,12 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
 import com.sonamorningstar.eternalartifacts.client.render.util.DirectionRotationCache;
 import com.sonamorningstar.eternalartifacts.content.block.base.AbstractPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
@@ -63,7 +65,14 @@ public class WrenchItem extends DiggerItem {
         BlockState state = level.getBlockState(pos);
         BlockEntity be = level.getBlockEntity(pos);
         
-        if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {
+        if (be instanceof ModBlockEntity mbe) {
+            MachineConfiguration configs = mbe.getConfiguration();
+            configs.getConfigs().forEach((rl, config) -> {
+                System.out.println(rl.toString() +", "+ config.toString());
+            });
+        }
+        
+        /*if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {
             
             player.sendSystemMessage(Component.literal("Pipe Info:"));
             player.sendSystemMessage(Component.literal(" - Network Size: " + pipe.networkPipes.size()));
@@ -88,7 +97,7 @@ public class WrenchItem extends DiggerItem {
                     player.sendSystemMessage(Component.literal(" - Distance from " + sourcePos + " to " + targetPos + " = " + dist));
                 });
             });
-        }
+        }*/
         
         AtomicBoolean builtMultiblock = new AtomicBoolean(false);
         Multiblock.PATTERNS.forEach((multiblock, pattern) -> {
@@ -144,6 +153,7 @@ public class WrenchItem extends DiggerItem {
             else stack.hurt(1, ctx.getLevel().getRandom(), null);
             return InteractionResult.sidedSuccess(level.isClientSide());
         }
+        
         return super.useOn(ctx);
     }
 

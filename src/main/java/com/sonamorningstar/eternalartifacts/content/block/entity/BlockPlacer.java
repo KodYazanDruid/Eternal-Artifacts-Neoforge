@@ -82,7 +82,7 @@ public class BlockPlacer extends GenericMachine {
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputFluids(lvl, pos);
-		if (!redstoneChecks(redstoneConfigs.get(0), lvl)) return;
+		if (!redstoneChecks(lvl)) return;
 		
 		getFakePlayer();
 		setupFakePlayer(st);

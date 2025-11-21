@@ -61,8 +61,8 @@ public abstract class FluidTankEntityBlock extends BaseEntityBlock {
                 fs = fluidHandler.getFluidInTank(0);
             }
         }
-        IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).get();
-        fhi.fill(fs, IFluidHandler.FluidAction.EXECUTE);
+        IFluidHandlerItem fhi = FluidUtil.getFluidHandler(stack).orElse(null);
+        if (fhi != null) fhi.fill(fs, IFluidHandler.FluidAction.EXECUTE);
         
         return stack;
     }

@@ -2,12 +2,12 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
-import com.sonamorningstar.eternalartifacts.content.block.entity.AlchemicalDynamo;
-import com.sonamorningstar.eternalartifacts.content.block.entity.CulinaryDynamo;
-import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamo;
-import com.sonamorningstar.eternalartifacts.content.block.entity.SolidCombustionDynamo;
+import com.sonamorningstar.eternalartifacts.content.block.MachineWorkbench;
+import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
-import com.sonamorningstar.eternalartifacts.content.item.block.DrumBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.BasicFluidTankItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.DFSUBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.DISUBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
@@ -210,6 +210,15 @@ public class ModBlocks {
         () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.GOLD, ModProperties.Blocks.GOLD_PIPE));
     public static final DeferredBlock<ItemPipeBlock> STEEL_ITEM_PIPE = registerWithItem("steel_item_pipe",
         () -> new ItemPipeBlock(ItemPipeBlock.PipeTier.STEEL, ModProperties.Blocks.STEEL_PIPE));
+    
+    public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_ITEM_STORAGE_UNIT = registerWithItem("deep_item_storage_unit",
+        () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, false), DISUBlockItem.class);
+    public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_INFINITE_ITEM_STORAGE_UNIT = registerWithItem("deep_infinite_item_storage_unit",
+        () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DISUBlockItem.class);
+    public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_FLUID_STORAGE_UNIT = registerWithItem("deep_fluid_storage_unit",
+        () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, false), DFSUBlockItem.class);
+    public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_INFINITE_FLUID_STORAGE_UNIT = registerWithItem("deep_infinite_fluid_storage_unit",
+        () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DFSUBlockItem.class);
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -409,7 +418,7 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<DrumBlock> registerDrum(String name, BlockBehaviour.Properties material, int cap, Item.Properties... itemProps) {
-        return registerWithItem(name, ()-> new DrumBlock(material, cap), DrumBlockItem.class, itemProps.length > 0 ? itemProps[0] : new Item.Properties());
+        return registerWithItem(name, ()-> new DrumBlock(material, cap), BasicFluidTankItem.class, itemProps.length > 0 ? itemProps[0] : new Item.Properties());
     }
 
     private static <T extends Block> DeferredBlock<T> registerWithBewlr(String name, Supplier<T> sup) {

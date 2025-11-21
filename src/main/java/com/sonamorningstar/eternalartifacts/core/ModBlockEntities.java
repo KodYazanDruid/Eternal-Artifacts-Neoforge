@@ -66,6 +66,16 @@ public class ModBlockEntities {
             ModBlocks.GOLD_ITEM_PIPE.get(),
             ModBlocks.STEEL_ITEM_PIPE.get()
         ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DeepItemStorageUnit>> DEEP_ITEM_STORAGE_UNIT = BLOCK_ENTITIES.register("deep_item_storage_unit", ()->
+        BlockEntityType.Builder.of(DeepItemStorageUnit::new,
+            ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(),
+            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get()
+        ).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DeepFluidStorageUnit>> DEEP_FLUID_STORAGE_UNIT = BLOCK_ENTITIES.register("deep_fluid_storage_unit", ()->
+        BlockEntityType.Builder.of(DeepFluidStorageUnit::new,
+            ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(),
+            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get()
+        ).build(null));
     
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
         BlockEntityType.Builder.of(FluidCombustionDynamo::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));

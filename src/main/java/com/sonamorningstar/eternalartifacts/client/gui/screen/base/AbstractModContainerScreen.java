@@ -1,49 +1,118 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
+import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
+import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.CleanButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Overlapping;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.ParentalWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.FluidSlotTransferToServer;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import org.apache.commons.compress.utils.Lists;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends EffectRenderingInventoryScreen<T> {
-    //Margin: 5px
-    //Corner: 5px * 5px
-    //Sides: 5px * -px
-    //Inside of Template: 166px * 156px
-    //Total Size: 176px * 166px
     @Setter
     @Getter
     private int guiTint = 0xFFFFFFFF;
     protected boolean renderEffects = true;
     public final List<GuiEventListener> upperLayerChildren = new ArrayList<>();
+    public final Queue<AbstractWidget> upperLayerUpdateQueue = new ArrayDeque<>();
+    @Nullable
+    private SimpleDraggablePanel configPanel;
 
     public AbstractModContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
     }
-
+    
+    @Override
+    protected void init() {
+        super.init();
+        if (getMenu().machineConfigs != null) setupConfigWidgets();
+    }
+    
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        while (!upperLayerUpdateQueue.isEmpty()) {
+            AbstractWidget widget = upperLayerUpdateQueue.poll();
+            if (widget != null) {
+                shiftElementsToUpperLayer(widget);
+            }
+        }
+    }
+    
+    private void shiftElementsToUpperLayer(AbstractWidget widget) {
+        upperLayerChildren.remove(widget);
+        children.remove(widget);
+        narratables.remove(widget);
+        renderables.remove(widget);
+        
+        addUpperLayerChild(widget);
+    }
+    
+    protected void setupConfigWidgets() {
+        configPanel = new SimpleDraggablePanel(
+            Component.empty(), leftPos + (imageWidth / 2) - 50, topPos + 10, 100, 75,
+            SimpleDraggablePanel.Bounds.full(this)
+        );
+        
+        configPanel.visible = false;
+        configPanel.active = false;
+        configPanel.addClosingButton();
+        
+        MachineConfiguration configs = getMenu().machineConfigs;
+        if (configs == null) return;
+        
+        for (Config config : configs.getConfigs().values()) {
+            createUIFor(config, new ConfigUIRegistry.ConfigUIContext(configPanel, this));
+        }
+        
+        CleanButton configButton = CleanButton.builder(Component.literal(ModKeyMappings.OPEN_MACHINE_CONFIG.getKey().toString()),
+                b -> configPanel.toggle())
+            .bounds(leftPos + imageWidth - 17, topPos + 5, 12, 12).build();
+        addUpperLayerChild(configPanel);
+        addRenderableWidget(configButton);
+    }
+    
+    private <C extends Config> void createUIFor(C config, ConfigUIRegistry.ConfigUIContext ctx) {
+        ConfigUIRegistry.ConfigUIFactory<C> factory = ConfigUIRegistry.get(config);
+        
+        if (factory != null) {
+            factory.createWidgets(config, ctx);
+        }
+    }
+    
     protected void setImageSize(int width, int height) {
         this.imageWidth = width;
         this.imageHeight = height;
@@ -119,19 +188,29 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         if (renderEffects) super.renderEffects(pGuiGraphics, pMouseX, pMouseY);
     }
     
-    public boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, double mx, double my) {
-        Optional<GuiEventListener> child = getChildAt(mx, my);
-        if (child.isPresent()) {
-            if (child.get() instanceof Overlapping) {
-                return false;
+    protected void renderTankSlots(GuiGraphics gui, int x, int y, int mx, int my) {
+        for (int i = 0; i < menu.fluidSlots.size(); i++) {
+            FluidSlot slot = menu.getFluidSlot(i);
+            FluidStack fluidStack = slot.getFluid();
+            if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
+                var tooltipComponents = Lists.<Component>newArrayList();
+                if (!fluidStack.isEmpty()) {
+                    tooltipComponents.addAll(TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+                        minecraft.options.advancedItemTooltips));
+                    tooltipComponents.add(Component.literal(fluidStack.getAmount() + " / " + slot.getMaxSize()));
+                }
+                if (!menu.getCarried().isEmpty()) {
+                    IFluidHandlerItem carriedHandler = menu.getCarried().getCapability(Capabilities.FluidHandler.ITEM);
+                    if (carriedHandler != null) {
+                        if (!tooltipComponents.isEmpty()) tooltipComponents.add(CommonComponents.EMPTY);
+                        tooltipComponents.add(ModConstants.GUI.withSuffixTranslatable("left_click_transfer").withStyle(ChatFormatting.BLUE));
+                        tooltipComponents.add(ModConstants.GUI.withSuffixTranslatable("right_click_transfer").withStyle(ChatFormatting.BLUE));
+                    }
+                }
+                gui.renderTooltip(font, tooltipComponents, Optional.empty(), mx, my);
             }
+            renderTankSlot(gui, x, y, slot);
         }
-        return mx >= startX && mx <= startX + lengthX &&
-                my >= startY && my <= startY + lengthY;
-    }
-
-    protected void renderTankSlots(GuiGraphics gui, int x, int y) {
-        for(FluidSlot slot : menu.fluidSlots) renderTankSlot(gui, x, y, slot);
     }
 
     protected void renderTankSlot(GuiGraphics gui, int x, int y, FluidSlot slot) {
@@ -147,14 +226,28 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     @Override
-    protected boolean isHovering(int pX, int pY, int pWidth, int pHeight, double pMouseX, double pMouseY) {
-        Optional<GuiEventListener> child = getChildAt(pMouseX, pMouseY);
+    protected boolean isHovering(int pX, int pY, int pWidth, int pHeight, double mx, double my) {
+        Optional<GuiEventListener> child = getChildAt(mx, my);
         if (child.isPresent()) {
             if (child.get() instanceof Overlapping) {
                 return false;
             }
         }
-        return super.isHovering(pX, pY, pWidth, pHeight, pMouseX, pMouseY);
+        return super.isHovering(pX, pY, pWidth, pHeight, mx, my);
+    }
+    
+    public boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, double mx, double my) {
+        Optional<GuiEventListener> child = getChildAt(mx, my);
+        if (child.isPresent()) {
+            if (child.get() instanceof Overlapping) {
+                /*if (child.get() instanceof ParentalWidget parental) {
+                    return parental.isMouseOverChild(mx, my);
+                }*/
+                return false;
+            }
+        }
+        return mx >= startX && mx <= startX + lengthX &&
+            my >= startY && my <= startY + lengthY;
     }
     
     @Override
@@ -163,6 +256,9 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         Optional<GuiEventListener> child = getChildAt(mx, my);
         if (child.isPresent()) {
             if (child.get() instanceof Overlapping overlapping) {
+                if (overlapping instanceof AbstractWidget widget) {
+                    upperLayerUpdateQueue.add(widget);
+                }
                 GuiEventListener listener = overlapping.getElementUnderMouse(mx, my);
                 if (listener != null) setFocused(listener);
             }
@@ -174,7 +270,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             Channel.sendToServer(new FluidSlotTransferToServer(slot.index, button));
             return true;
         }
-        
         
         return ret;
     }
@@ -191,17 +286,24 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        if (pKeyCode == 69) { // E key without modifiers
-            GuiEventListener focused = getFocused();
-            if (focused instanceof EditBox box && box.canConsumeInput()) return false; // Prevents closing the screen when typing in a text box
+    public boolean keyPressed(int keyCode, int pScanCode, int pModifiers) {
+        if (keyCode == 69) { // E key without modifiers
+            if (getFocused() instanceof EditBox box && box.canConsumeInput()) return false; // Prevents closing the screen when typing in a text box
         }
-        return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+        KeyMapping configMapping = ModKeyMappings.OPEN_MACHINE_CONFIG;
+        if (keyCode == configMapping.getKey().getValue()) {
+            if (configPanel != null) {
+                configPanel.toggle();
+                return true;
+            }
+        }
+        return super.keyPressed(keyCode, pScanCode, pModifiers);
     }
     
     @Override
     public void render(GuiGraphics gui, int mx, int my, float delta) {
         super.render(gui, mx, my, delta);
+        renderTankSlots(gui, leftPos, topPos, mx, my);
         boolean foundOpenMenu = false;
         for (GuiEventListener child : children) {
             if (child instanceof AbstractWidget widget &&

@@ -8,7 +8,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public interface IParentalWidget {
+public interface ParentalWidget {
 	List<GuiEventListener> getChildren();
 	default AbstractWidget self() {
 		return (AbstractWidget) this;
@@ -26,6 +26,22 @@ public interface IParentalWidget {
 			GuiEventListener child = children.get(i);
 			if (child.isMouseOver(mouseX, mouseY)) {
 				return child;
+			}
+		}
+		return null;
+	}
+	
+	@Nullable
+	default GuiEventListener getChildUnderCursorRaw(double mouseX, double mouseY) {
+		if (!self().isActive() || !self().visible) return null;
+		List<GuiEventListener> children = getChildren();
+		for (int i = children.size() - 1; i >= 0; i--) {
+			GuiEventListener child = children.get(i);
+			if (child instanceof AbstractWidget widget) {
+				if (widget.getX() <= mouseX && widget.getX() + widget.getWidth() >= mouseX &&
+					widget.getY() <= mouseY && widget.getY() + widget.getHeight() >= mouseY) {
+					return child;
+				}
 			}
 		}
 		return null;

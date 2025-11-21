@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.content.item.base.EnergyRendererItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -39,14 +41,16 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
         BlockPos pos = ctx.getClickedPos();
         Player player = ctx.getPlayer();
         BlockEntity blockEntity = level.getBlockEntity(pos);
-        if (blockEntity instanceof SidedTransferMachine<?> machine && player != null) {
+        if (blockEntity instanceof ModBlockEntity mbe && player != null) {
+            MachineConfiguration configs = mbe.getConfiguration();
+            if (configs == null) return InteractionResult.PASS;
             IEnergyStorage energy = stack.getCapability(Capabilities.EnergyStorage.ITEM);
             if (energy == null) return InteractionResult.PASS;
             if (player.isShiftKeyDown()) {
                 int extracted = energy.extractEnergy(250, true);
                 if (extracted == 250) {
                     energy.extractEnergy(250, false);
-                    saveConfiguration(stack, machine);
+                    saveConfiguration(stack, mbe);
                     player.displayClientMessage(
                             ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_saved")
                                     .withStyle(ChatFormatting.YELLOW),
@@ -57,7 +61,7 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                 int extracted = energy.extractEnergy(250, true);
                 if (extracted == 250) {
                     energy.extractEnergy(250, false);
-                    machine.loadConfiguration(stack);
+                    mbe.loadConfiguration(stack);
                     player.displayClientMessage(
                             ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_loaded")
                                     .withStyle(ChatFormatting.YELLOW),
@@ -91,7 +95,8 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         tooltipComponents.add(CommonComponents.EMPTY);
         if (stack.hasTag()) {
-            CompoundTag stackTag = stack.getTag();
+            //CompoundTag configTag = stack.getTag().getCompound(ModBlockEntity.CONFIG_TAG_KEY);
+            /*CompoundTag stackTag = stack.getTag();
             CompoundTag nbt = stackTag.getCompound("SidedTransferConfigs");
             boolean containsSide = nbt.contains("SideConfigs");
             boolean containsAuto = nbt.contains("AutoConfigs");
@@ -160,38 +165,18 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                             .withStyle(ChatFormatting.YELLOW);
                     tooltipComponents.add(redstone);
                 });
-            }
+            }*/
         }
     }
 
-    private void saveConfiguration(ItemStack drive, SidedTransferMachine<?> machine) {
+    private void saveConfiguration(ItemStack drive, ModBlockEntity be) {
         CompoundTag nbt = drive.getOrCreateTag();
         CompoundTag tag = new CompoundTag();
-        ListTag sideConfigs = new ListTag();
-        machine.getSideConfigs().forEach((k, v) -> {
-            CompoundTag entry = new CompoundTag();
-            entry.putInt("Index", k);
-            entry.putString("Type", v.toString());
-            sideConfigs.add(entry);
-        });
-        tag.put("SideConfigs", sideConfigs);
-        ListTag autoConfigs = new ListTag();
-        machine.getAutoConfigs().forEach((k, v) -> {
-            CompoundTag entry = new CompoundTag();
-            entry.putInt("Index", k);
-            entry.putBoolean("Enabled", v);
-            autoConfigs.add(entry);
-        });
-        tag.put("AutoConfigs", autoConfigs);
-        ListTag redstoneConfigs = new ListTag();
-        machine.getRedstoneConfigs().forEach((k, v) -> {
-            CompoundTag entry = new CompoundTag();
-            entry.putInt("Index", k);
-            entry.putString("Type", v.toString());
-            redstoneConfigs.add(entry);
-        });
-        tag.put("RedstoneConfigs", redstoneConfigs);
-        nbt.put("SidedTransferConfigs", tag);
+        MachineConfiguration configuration = be.getConfiguration();
+        if (configuration == null) return;
+        configuration.save(tag);
+        nbt.put(ModBlockEntity.CONFIG_TAG_KEY, tag);
+        
     }
     
     @Override

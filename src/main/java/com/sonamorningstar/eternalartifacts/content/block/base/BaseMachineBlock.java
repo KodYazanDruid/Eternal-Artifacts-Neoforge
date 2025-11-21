@@ -5,9 +5,8 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
-import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableClient;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableClient;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
@@ -48,7 +47,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalInt;
 
 public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     private final BlockEntityType.BlockEntitySupplier<T> supplier;
@@ -115,10 +113,8 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof Machine<?> mbe && mbe.canConstructMenu()) {
-            return mbe.use(state, level, pos, player, hand, hit);
-        }
-        return InteractionResult.PASS;
+        if (be instanceof Machine<?> mbe && mbe.canConstructMenu()) return mbe.use(state, level, pos, player, hand, hit);
+        else return InteractionResult.PASS;
     }
 
     @Nullable
@@ -130,9 +126,8 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     public record SimpleTicker<B extends BlockEntity>(boolean isRemote) implements BlockEntityTicker<B> {
         @Override
         public void tick(Level lvl, BlockPos pos, BlockState st, B be) {
-            if (isRemote) {
-                if (be instanceof ITickableClient en) en.tickClient(lvl, pos, st);
-            } else if (be instanceof ITickableServer en) en.tickServer(lvl, pos, st);
+            if (isRemote && be instanceof TickableClient en) en.tickClient(lvl, pos, st);
+            else if (!isRemote && be instanceof TickableServer en) en.tickServer(lvl, pos, st);
         }
     }
 
@@ -142,7 +137,7 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
         Level actualLevel = level.getBlockEntity(pos) != null ? level.getBlockEntity(pos).getLevel() : null;
         FluidStack fs = FluidStack.EMPTY;
         ItemStack stack = new ItemStack(block);
-        if (actualLevel != null && stack.hasTag()) {
+        if (actualLevel != null) {
             BlockEntity be = actualLevel.getBlockEntity(pos);
             if (be instanceof ModBlockEntity mbe) {
                 mbe.loadEnchants(stack.getEnchantmentTags());

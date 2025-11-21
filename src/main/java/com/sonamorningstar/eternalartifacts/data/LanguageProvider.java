@@ -374,6 +374,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GLOWTORCH.get(), "Glowtorch");
                 add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Alchemical Dynamo");
                 add(ModBlocks.CULINARY_DYNAMO.get(), "Culinary Dynamo");
+                add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Deep Item Storage Unit");
+                add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Deep Infinite Item Storage Unit");
+                add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Deep Fluid Storage Unit");
+                add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Deep Infinite Fluid Storage Unit");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -560,7 +564,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.FILTER.withSuffix("empty_fluid"), "Empty Fluid Tag");
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.on"), "Use Ingredients");
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.off"), "Don't Use Ingredients");
-
+                add(ModConstants.GUI.withSuffix("energy_transportation"), "Energy Transportation");
+                add(ModConstants.GUI.withSuffix("battery_box_export"), "Energy items export setting");
+                add(ModConstants.GUI.withSuffix("battery_box_export_empty"), "Export items when they are empty.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_percentage_below"), "Export items when they are below %d%%.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_percentage_above"), "Export items when they are above %d%%.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), "Export items when they have exactly %d%%.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_full"), "Export items when they are full.");
+                
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
                     if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.getFluidBlockHolder().getId().getPath()));
@@ -993,6 +1004,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Simyasal Dinamo");
                 add(ModBlocks.CULINARY_DYNAMO.get(), "Mutfak Dinamosu");
                 add(ModMachines.HARVESTER.getBlockTranslationKey(), "Hasat Makinesi");
+                add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Derin Eşya Depolama Ünitesi");
+                add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Derin Sonsuz Eşya Depolama Ünitesi");
+                add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Derin Sıvı Depolama Ünitesi");
+                add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Derin Sonsuz Sıvı Depolama Ünitesi");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1206,6 +1221,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.FILTER.withSuffix("empty_fluid"), "Boş Sıvı Etiketi");
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.on"), "Malzemeleri Kullan");
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.off"), "Malzemeleri Kullanma");
+                add(ModConstants.GUI.withSuffix("energy_transportation"), "Enerji Transferi");
+                add(ModConstants.GUI.withSuffix("battery_box_export"), "Enerjili eşyaların transferi");
+                add(ModConstants.GUI.withSuffix("battery_box_export_empty"), "Eşyaları dolu olduklarında aktar.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_percentage_below"), "%%%d seviyesinin altındaki eşyaları aktar.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_percentage_above"), "%%%d seviyesinin üstündeki eşyaları aktar.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), "%%%d seviyesindeki eşyaları aktar.");
+                add(ModConstants.GUI.withSuffix("battery_box_export_full"), "Eşyaları boş olduklarında aktar.");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

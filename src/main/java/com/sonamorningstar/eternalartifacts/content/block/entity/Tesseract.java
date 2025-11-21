@@ -6,7 +6,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwo
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ChunkLoader;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import lombok.Getter;
@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Getter
-public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoader, ITickableServer {
+public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoader, TickableServer {
 	private static final String SELECTED_NETWORK = "SelectedNetwork";
 	@Nullable
 	private UUID networkId = null;

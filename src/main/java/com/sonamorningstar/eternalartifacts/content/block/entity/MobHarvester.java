@@ -43,7 +43,7 @@ public class MobHarvester extends GenericMachine implements AreaRenderer {
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);
-		if (!redstoneChecks(redstoneConfigs.get(0), lvl)) return;
+		if (!redstoneChecks(lvl)) return;
 		
 		FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
 		fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite().toYRot());

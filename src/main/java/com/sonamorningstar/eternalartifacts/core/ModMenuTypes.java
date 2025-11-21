@@ -35,6 +35,10 @@ public class ModMenuTypes {
         ()-> IMenuTypeExtension.create(SolarPanelMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<PictureScreenMenu>> PICTURE_SCREEN = MENUS.register("picture_screen",
         ()-> IMenuTypeExtension.create(PictureScreenMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<DeepItemStorageMenu>> DEEP_ITEM_STORAGE_UNIT = MENUS.register("deep_item_storage_unit",
+        ()-> IMenuTypeExtension.create(DeepItemStorageMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<DeepFluidStorageMenu>> DEEP_FLUID_STORAGE_UNIT = MENUS.register("deep_fluid_storage_unit",
+        ()-> IMenuTypeExtension.create(DeepFluidStorageMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<ScreenWrapperMenu>> SCREEN_WRAPPER = MENUS.register("screen_wrapper",
             ()-> IMenuTypeExtension.create(ScreenWrapperMenu::new));

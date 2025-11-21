@@ -29,8 +29,10 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SkullBlock;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,6 +60,8 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
     private final OilRefinery refinery = new OilRefinery(BlockPos.ZERO, ModMachines.OIL_REFINERY.getBlock().defaultBlockState());
     private final EnergyDockBlockEntity energyDock = new EnergyDockBlockEntity(BlockPos.ZERO, ModBlocks.ENERGY_DOCK.get().defaultBlockState());
     private final Tesseract tesseract = new Tesseract(BlockPos.ZERO, ModBlocks.TESSERACT.get().defaultBlockState());
+    private final DeepItemStorageUnit deepItemStorageUnit = new DeepItemStorageUnit(BlockPos.ZERO, ModBlocks.DEEP_ITEM_STORAGE_UNIT.get().defaultBlockState());
+    private final DeepFluidStorageUnit deepFluidStorageUnit = new DeepFluidStorageUnit(BlockPos.ZERO, ModBlocks.DEEP_FLUID_STORAGE_UNIT.get().defaultBlockState());
     
     @Override
     public void onResourceManagerReload(ResourceManager manager) {
@@ -101,9 +105,16 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
                 } else if (skullModel != null) {
                     SkullBlockRenderer.renderSkull(null, 180, 0, ps, buff, light, skullModel, SkullBlockRenderer.getRenderType(msb.getType(), null));
                 }
+            } else if (block instanceof DeepItemStorageUnitBlock) {
+                IItemHandler itemHandler = stack.getCapability(Capabilities.ItemHandler.ITEM);
+                if (itemHandler != null) deepItemStorageUnit.inventory.setStackInSlot(0, itemHandler.getStackInSlot(0));
+                beRenderer.renderItem(deepItemStorageUnit, ps, buff, light, overlay);
+            } else if (block instanceof DeepFluidStorageUnitBlock) {
+                if (fluidHandlerItem != null) deepFluidStorageUnit.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
+                beRenderer.renderItem(deepFluidStorageUnit, ps, buff, light, overlay);
             }
         } else {
-            if (item instanceof AnimatedSpellTomeItem<?> tome) {
+            if (item instanceof AnimatedSpellTomeItem<?>) {
                 SpellTomeRenderer renderer = new SpellTomeRenderer(entityrendererprovider$context);
                 renderer.render(stack, minecraft.getPartialTick(), ps, buff, light, overlay);
             }

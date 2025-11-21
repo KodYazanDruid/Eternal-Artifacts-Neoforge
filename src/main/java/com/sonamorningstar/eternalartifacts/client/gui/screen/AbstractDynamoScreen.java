@@ -26,6 +26,7 @@ public abstract class AbstractDynamoScreen<M extends DynamoMenu> extends Abstrac
 						.append(": " + cache.getGeneration()+"RF/T"),
 					leftPos + 44, topPos + 46, labelColor, false);
 			}
+			renderBurn(gui, leftPos + 81, topPos + 55, mx, my);
 		}
 	}
 }

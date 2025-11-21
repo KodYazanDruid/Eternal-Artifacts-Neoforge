@@ -117,6 +117,10 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "", "hoe");
         tierAndTool(ModBlocks.ALCHEMICAL_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.CULINARY_DYNAMO.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "iron", "pickaxe");
+        tierAndTool(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "iron", "pickaxe");
 
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),

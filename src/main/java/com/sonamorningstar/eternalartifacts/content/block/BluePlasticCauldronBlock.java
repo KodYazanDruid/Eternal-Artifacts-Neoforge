@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block;
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BluePlasticCauldronBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ITickableServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.BlockPos;
@@ -109,7 +109,7 @@ public class BluePlasticCauldronBlock extends LayeredCauldronBlock implements En
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (!level.isClientSide) {
             return (lvl, pos, st, be) -> {
-                if (be instanceof ITickableServer entity) {
+                if (be instanceof TickableServer entity) {
                     entity.tickServer(lvl, pos, st);
                 }
             };
