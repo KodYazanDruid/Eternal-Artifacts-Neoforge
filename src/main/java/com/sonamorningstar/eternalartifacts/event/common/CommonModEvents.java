@@ -89,12 +89,12 @@ public class CommonModEvents {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), (be, ctx) -> be.inventory);
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new DeepInfiniteItemItemStorageHandler(stack),
-            ModBlocks.DEEP_ITEM_STORAGE_UNIT.asItem(),
-            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.asItem());
+            ModBlocks.DEEP_ITEM_STORAGE_UNIT.asItem()/*,
+            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.asItem()*/);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), (be, ctx) -> be.tank);
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE),
-            ModBlocks.DEEP_FLUID_STORAGE_UNIT.asItem(),
-            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.asItem());
+            ModBlocks.DEEP_FLUID_STORAGE_UNIT.asItem()/*,
+            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.asItem()*/);
         
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModScaleableItemItemStorage(stack, ModEnchantments.VOLUME.get(), 9), ModItems.KNAPSACK.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {

@@ -42,7 +42,7 @@ public class FakePlayerHelper {
     
     private static GameProfile getProfileForMachine(Machine<?> machine) {
         String path = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(machine.getType()).getPath();
-        String name = "EternalArtifacts"+TooltipHelper.prettyNameNoBlanks(path);
+        String name = "EternalArtifacts"+ StringUtils.prettyNameNoBlanks(path);
         return new GameProfile(UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8)), name);
     }
     

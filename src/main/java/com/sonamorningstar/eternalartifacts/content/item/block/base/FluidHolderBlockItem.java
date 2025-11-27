@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.render.ModItemStackBEWLR;
 import com.sonamorningstar.eternalartifacts.content.fluid.PotionFluidType;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -51,7 +51,7 @@ public abstract class FluidHolderBlockItem extends BlockItem implements ICapabil
                             .withColor(BlockHelper.getFluidTintColor(tankFluid))
                     );
                     if (tankFluid.getFluid().getFluidType() instanceof PotionFluidType) {
-                        tooltip.addAll(TooltipHelper.getPotionTooltips(tankFluid, level));
+                        tooltip.addAll(StringUtils.getPotionTooltips(tankFluid, level));
                     }
                 }
             } else {

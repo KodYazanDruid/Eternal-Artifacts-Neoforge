@@ -35,12 +35,11 @@ public class RendererHelper {
         float fill = (float) fluid.getAmount() / fluidHandler.getTankCapacity(0);
         if(fluid.isEmpty()) return;
 
-        //VertexConsumer vertexConsumer = buff.getBuffer(Sheets.translucentCullBlockSheet());
-        VertexConsumer vertexConsumer = buff.getBuffer(RenderType.translucent());
+        VertexConsumer vertexConsumer = buff.getBuffer(RenderType.entityTranslucentCull(InventoryMenu.BLOCK_ATLAS));
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(fluid.getFluid());
         ResourceLocation still = fluidTypeExtensions.getStillTexture(fluid);
 
-        if(still != null){
+        if(still != null) {
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
             int tintColor = fluidTypeExtensions.getTintColor(fluid);
 
@@ -60,39 +59,23 @@ public class RendererHelper {
             float vSide0 = sprite.getV(y0);
             float uSide1 = sprite.getU(x1);
             float vSide1 = sprite.getV(y1);
-
-            //Draws top if not fully filled or force render is true.
-            if((fill < 1 || info.forceRenderUp) && info.shouldRender(Direction.UP)){
-                drawQuad(
-                        vertexConsumer, poseStack,
-                        x0, y1, z0, x1, y1, z1,
-                        uTop0, vTop0, uTop1, vTop1,
-                        tintColor, light, overlay, /*level, jar.getBlockPos().above(),*/
-                        1, 1, 1 /*0, 1, 0*/, true
-                );
+            
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            for (Direction value : Direction.values()) {
+                if (value == Direction.UP) {
+                    if((fill < 1 || info.forceRenderUp) && info.shouldRender(Direction.UP)){
+                        drawQuad(vertexConsumer, poseStack, value, x0, y1, z0, x1, y1, z1,
+                                uTop0, vTop0, uTop1, vTop1,
+                                tintColor, LightTexture.FULL_BRIGHT, overlay);
+                    }
+                } else if (info.shouldRender(value)) {
+                    drawQuad(vertexConsumer, poseStack, value, x0, y0, z0, x1, y1, z1,
+                            uSide0, vSide0, uSide1, vSide1,
+                            tintColor, LightTexture.FULL_BRIGHT, overlay);
+                }
             }
-
-            //Until I fix the lightning these normals will remain 1, 1, 1
-            //Draw sides
-            if(info.shouldRender(Direction.NORTH)) drawQuad(vertexConsumer, poseStack, x0, y0, z0, x1, y1, z0, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().north(),*/1, 1, 1 /*0, -1, 0*/, true);
-            if(info.shouldRender(Direction.EAST)) drawQuad(vertexConsumer, poseStack, x1, y0, z0, x1, y1, z1, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().east(), */1, 1, 1 /*1, 0, 0*/, false);
-            if(info.shouldRender(Direction.SOUTH)) drawQuad(vertexConsumer, poseStack, x1, y0, z1, x0, y1, z1, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().south(),*/1, 1, 1 /*0, 0, 1*/, true);
-            if(info.shouldRender(Direction.WEST)) drawQuad(vertexConsumer, poseStack, x0, y0, z1, x0, y1, z0, uSide0, vSide0, uSide1, vSide1, tintColor, light, overlay, /*level, jar.getBlockPos().west(), */1, 1, 1 /*-1, 0, 0*/, false);
-
-            //Draws bottom overlay,
-            if(info.shouldRender(Direction.DOWN)) {
-                //poseStack.pushPose();
-                /*poseStack.mulPose(Axis.XP.rotationDegrees(180));
-                poseStack.translate(0, 0*//*-2 / 16f*//*, -1);*/
-                drawQuad(
-                        vertexConsumer, poseStack,
-                        x0, y0, z0, x1, y0, z1,
-                        uTop0, vTop0, uTop1, vTop1,
-                        tintColor, light, overlay, /*level, jar.getBlockPos().below(),*/
-                        1, 1, 1 /*0, -1, 0*/, false
-                );
-                //poseStack.popPose();
-            }
+            RenderSystem.disableBlend();
         }
     }
     
@@ -110,45 +93,65 @@ public class RendererHelper {
         float y1 = (yOff + yLen) / 16;
         float z1 = (zOff + zLen) / 16;
 		
-		if (info.shouldRender(Direction.UP)) drawQuad(consumer, poseStack, x0, y1, z0, x1, y1, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, true);
-        if (info.shouldRender(Direction.NORTH)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y1, z0, u, v, u, v, tintColor, light, overlay, 1, 1, 1, true);
-        if (info.shouldRender(Direction.EAST)) drawQuad(consumer, poseStack, x1, y0, z0, x1, y1, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
-        if (info.shouldRender(Direction.SOUTH)) drawQuad(consumer, poseStack, x1, y0, z1, x0, y1, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, true);
-        if (info.shouldRender(Direction.WEST)) drawQuad(consumer, poseStack, x0, y0, z1, x0, y1, z0, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
-        if (info.shouldRender(Direction.DOWN)) drawQuad(consumer, poseStack, x0, y0, z0, x1, y0, z1, u, v, u, v, tintColor, light, overlay, 1, 1, 1, false);
+        for (Direction value : Direction.values()) {
+            if (info.shouldRender(value)) drawQuad(consumer, poseStack, value, x0, y0, z0, x1, y1, z1, u, v, u, v, tintColor, light, overlay);
+        }
     }
     
 
     public static void drawQuad(
-            VertexConsumer vertexConsumer,
-            PoseStack poseStack,
+            VertexConsumer v, PoseStack pose, Direction dir,
             float x0, float y0, float z0,
             float x1, float y1, float z1,
             float u0, float v0,
             float u1, float v1,
-            int tintColor, int light, int overlay, /*Level level, BlockPos pos,*/
-            float normalX, float normalY, float normalZ, boolean isNS){
-        /*int combined = level.getRawBrightness(pos, 0);
-        int lightMapU = combined >> 16 & 65535;
-        int lightMapV = combined & 65535;*/
-
-        if(isNS){
-            vertexConsumer.vertex(poseStack.last().pose(), x0, y0, z0).color(tintColor).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(poseStack.last().pose(), x0, y1, z1).color(tintColor).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(poseStack.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(poseStack.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        }else{
-            vertexConsumer.vertex(poseStack.last().pose(), x0, y0, z0).color(tintColor).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(poseStack.last().pose(), x1, y1, z0).color(tintColor).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(poseStack.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-            vertexConsumer.vertex(poseStack.last().pose(), x0, y0, z1).color(tintColor).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(normalX, normalY, normalZ).endVertex();
+            int color, int light, int overlay) {
+        
+        Matrix4f matrix = pose.last().pose();
+        switch (dir) {
+            case NORTH -> {
+                v.vertex(matrix, x0, y0, z0).color(color).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y1, z0).color(color).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y1, z0).color(color).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y0, z0).color(color).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+            }
+            
+            case SOUTH -> {
+                v.vertex(matrix, x1, y0, z1).color(color).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y1, z1).color(color).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y1, z1).color(color).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y0, z1).color(color).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+            }
+            
+            case EAST -> {
+                v.vertex(matrix, x1, y0, z0).color(color).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y1, z0).color(color).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y1, z1).color(color).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y0, z1).color(color).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+            }
+            
+            case WEST -> {
+                v.vertex(matrix, x0, y0, z1).color(color).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y1, z1).color(color).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y1, z0).color(color).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y0, z0).color(color).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+            }
+            
+            case UP -> {
+                v.vertex(matrix, x0, y1, z0).color(color).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y1, z1).color(color).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y1, z1).color(color).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y1, z0).color(color).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+            }
+            
+            case DOWN -> {
+                v.vertex(matrix, x0, y0, z1).color(color).uv(u0, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x0, y0, z0).color(color).uv(u0, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y0, z0).color(color).uv(u1, v0).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+                v.vertex(matrix, x1, y0, z1).color(color).uv(u1, v1).overlayCoords(overlay).uv2(light).normal(dir.getStepX(), dir.getStepY(), dir.getStepZ()).endVertex();
+            }
         }
-
-        /*vertexConsumer.vertex(pose.last().pose(), x0, y0, z0).color(tintColor).uv(u0, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        vertexConsumer.vertex(pose.last().pose(), x0, y1, z1).color(tintColor).uv(u0, v1).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        vertexConsumer.vertex(pose.last().pose(), x1, y1, z1).color(tintColor).uv(u1, v1).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
-        vertexConsumer.vertex(pose.last().pose(), x1, y0, z0).color(tintColor).uv(u1, v0).overlayCoords(lightMapU, lightMapV).uv2(light).normal(normalX, normalY, normalZ).endVertex();
- */   }
+    }
     
     public static void renderFluidTile(FluidStack fluid, PoseStack pose, MultiBufferSource buff, int color, int overlay) {
         VertexConsumer vertexConsumer = buff.getBuffer(RenderType.translucent());
@@ -157,9 +160,10 @@ public class RendererHelper {
         if (still != null) {
             TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(still);
             int tintColor = fluidTypeExtensions.getTintColor(fluid);
-            drawQuad(vertexConsumer, pose, 0, 0, 0, 1, 1, 0,
+            drawQuad(vertexConsumer, pose, Direction.NORTH,
+                0, 0, 0, 1, 1, 0,
                 sprite.getU(0), sprite.getV(0), sprite.getU(1), sprite.getV(1),
-                tintColor, color, overlay, 1, 1, 1, true);
+                tintColor, color, overlay);
         }
     }
     

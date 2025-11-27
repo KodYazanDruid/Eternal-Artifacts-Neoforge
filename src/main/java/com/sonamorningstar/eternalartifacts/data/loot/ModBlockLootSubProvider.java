@@ -184,9 +184,9 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.BOOK_DUPLICATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.DEEP_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
-        dropSelfWithFunction(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
+        //dropSelfWithFunction(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
         dropSelfWithFunction(ModBlocks.DEEP_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
-        dropSelfWithFunction(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
+        //dropSelfWithFunction(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
         
         add(ModBlocks.SOLAR_PANEL.get(), this::createSlabItemTable);
 

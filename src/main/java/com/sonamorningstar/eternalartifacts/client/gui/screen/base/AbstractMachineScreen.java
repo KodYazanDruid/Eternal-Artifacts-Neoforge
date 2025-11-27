@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +26,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
 
     public AbstractMachineScreen(T menu, Inventory pPlayerInventory, Component pTitle) {
         super(menu, pPlayerInventory, pTitle);
-        renderEffects = false;
         if (getMenu().getBeTank() != null) inventoryLabelX = 46;
         else inventoryLabelX = 28;
     }
@@ -64,7 +63,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
                 var fs = menu.getBeTank().getFluidInTank(tank);
-                var tooltips = TooltipHelper.getTooltipFromContainerFluid(fs, minecraft.level,
+                var tooltips = StringUtils.getTooltipFromContainerFluid(fs, minecraft.level,
                     minecraft.options.advancedItemTooltips);
                 tooltips.add(Component.literal(String.valueOf(fs.getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))));
                 gui.renderTooltip(font, tooltips, Optional.empty(), mx, my);

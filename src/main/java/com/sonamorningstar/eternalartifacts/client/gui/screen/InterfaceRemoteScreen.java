@@ -2,21 +2,10 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.container.InterfaceRemoteMenu;
-import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
-import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
-import org.apache.commons.compress.utils.Lists;
-
-import java.util.Optional;
 
 public class InterfaceRemoteScreen extends AbstractModContainerScreen<InterfaceRemoteMenu> {
 	public InterfaceRemoteScreen(InterfaceRemoteMenu menu, Inventory pPlayerInventory, Component pTitle) {
@@ -40,7 +29,7 @@ public class InterfaceRemoteScreen extends AbstractModContainerScreen<InterfaceR
 			if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
 				var tooltipComponents = Lists.<Component>newArrayList();
 				if (!fluidStack.isEmpty()) {
-					tooltipComponents.addAll(TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+					tooltipComponents.addAll(StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
 						minecraft.options.advancedItemTooltips));
 					tooltipComponents.add(Component.literal(fluidStack.getAmount() + " / " + slot.getMaxSize()));
 				}

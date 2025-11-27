@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Warp;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -50,7 +50,7 @@ public class EnderPaper extends Item {
         if (tag != null && tag.contains("Warp")) {
             Warp warp = Warp.readFromNBT(tag);
             String name = warp.getLabel();
-            String dimension = TooltipHelper.prettyName(warp.getDimension().location().getPath());
+            String dimension = StringUtils.prettyName(warp.getDimension().location().getPath());
             String pos = "X: " + warp.getPosition().getX() + ", Y: " + warp.getPosition().getY() + ", Z: " + warp.getPosition().getZ();
             tooltips.add(Component.literal("Name: " + name).withStyle(ChatFormatting.GREEN));
             tooltips.add(Component.literal("Dimension: " + dimension).withStyle(ChatFormatting.GREEN));

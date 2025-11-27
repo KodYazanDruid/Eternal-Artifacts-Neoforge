@@ -1,12 +1,14 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,17 +19,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.ToolActions;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.List;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
 public class BlockBreaker extends GenericMachine {
-	public boolean blockMode = true;
-	public boolean fluidMode = false;
 	public BlockBreaker(BlockPos pos, BlockState blockState) {
 		super(ModMachines.BLOCK_BREAKER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
@@ -45,15 +42,6 @@ public class BlockBreaker extends GenericMachine {
 		screenInfo.setSlotPosition(82, 53, 6);
 		screenInfo.setSlotPosition(100, 53, 7);
 		screenInfo.setSlotPosition(118, 53, 8);
-		
-		screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 140, 28, 16, 16, () -> {
-			blockMode = !blockMode;
-			if (level != null && !level.isClientSide()) sendUpdate();
-		});
-		screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 140, 48, 16, 16, () -> {
-			fluidMode = !fluidMode;
-			if (level != null && !level.isClientSide()) sendUpdate();
-		});
 	}
 	
 	private boolean canStackDig(ItemStack stack) {
@@ -67,17 +55,10 @@ public class BlockBreaker extends GenericMachine {
 	}
 	
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
-		tag.putBoolean("BlockMode", blockMode);
-		tag.putBoolean("FluidMode", fluidMode);
-	}
-	
-	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		blockMode = tag.getBoolean("BlockMode");
-		fluidMode = tag.getBoolean("FluidMode");
+	public void registerConfigs() {
+		super.registerConfigs();
+		getConfiguration().add(new ReverseToggleConfig("block_mode"));
+		getConfiguration().add(new ReverseToggleConfig("fluid_mode"));
 	}
 	
 	@Override
@@ -102,7 +83,9 @@ public class BlockBreaker extends GenericMachine {
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);
 		ServerPlayerGameMode gameMode = fakePlayer.gameMode;
-		if (blockMode && !lvl.getBlockState(targetPos).isAir() && canWork(energy) &&
+		MachineConfiguration configs = getConfiguration();
+		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "block_mode"))).isDisabled()
+			&& !lvl.getBlockState(targetPos).isAir() && canWork(energy) &&
 				minedState.getBlock().canHarvestBlock(minedState, lvl, targetPos, fakePlayer)){
 			spendEnergy(energy);
 			if (destroyTickStart == -1) {
@@ -114,7 +97,8 @@ public class BlockBreaker extends GenericMachine {
 			gameMode.tick();
 		}
 		FluidState fluidState = lvl.getFluidState(targetPos);
-		if (fluidMode && !fluidState.isEmpty() && canWork(energy) &&
+		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "fluid_mode"))).isDisabled()
+			&& !fluidState.isEmpty() && canWork(energy) &&
 				minedState.getBlock() instanceof BucketPickup bp && fluidState.isSource() &&
 				(tank.getFluid(0).isEmpty() || tank.getFluid(0).is(fluidState.getType()))) {
 			ItemStack bucketStack = bp.pickupBlock(fakePlayer, lvl, targetPos, minedState);

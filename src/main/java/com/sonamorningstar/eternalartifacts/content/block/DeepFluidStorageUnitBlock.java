@@ -15,6 +15,9 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidUtil;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 @Getter
@@ -45,6 +48,9 @@ public class DeepFluidStorageUnitBlock extends FluidTankEntityBlock {
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof IDeepStorage deepStorage) {
+			IFluidHandler dsuTank = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+			if (dsuTank != null && FluidUtil.interactWithFluidHandler(player, hand, dsuTank))
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			return deepStorage.useStorageBlock(state, level, pos, player, hand, hit);
 		}
 		return InteractionResult.PASS;

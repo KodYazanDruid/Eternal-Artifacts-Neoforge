@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
-public class ResonatorBlockEntity extends ModBlockEntity {
-    public ResonatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
+public class Resonator extends ModBlockEntity {
+    public Resonator(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.RESONATOR.get(), pPos, pBlockState);
     }
 

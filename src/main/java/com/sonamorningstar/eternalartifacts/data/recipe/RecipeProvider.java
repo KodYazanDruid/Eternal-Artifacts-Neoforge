@@ -643,6 +643,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .pattern("P").pattern("S").pattern("F")
             .define('P', Tags.Items.DUSTS_PRISMARINE).define('S', Tags.Items.RODS_WOODEN)
             .define('F', Tags.Items.FEATHERS).unlockedBy("has_item", has(Tags.Items.DUSTS_PRISMARINE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DEEP_ITEM_STORAGE_UNIT)
+            .pattern("PAP").pattern("PNP").pattern("SSS")
+            .define('P', ModTags.Items.PLASTIC).define('A', ModTags.Items.INGOTS_ALUMINUM)
+            .define('N', ModItems.OBLIVIUM_INGOT).define('S', ModTags.Items.INGOTS_STEEL)
+            .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.DEEP_FLUID_STORAGE_UNIT)
+            .pattern("PAP").pattern("PNP").pattern("SSS")
+            .define('P', ModTags.Items.PLASTIC).define('A', ModTags.Items.INGOTS_ALUMINUM)
+            .define('N', ModItems.OBLIVIUM_INGOT).define('S', ModTags.Items.INGOTS_BRONZE)
+            .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/aluminum"
+    },
+    "N": {
+      "item": "eternalartifacts:oblivium_ingot"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    "PAP",
+    "PNP",
+    "SSS"
+  ],
+  "result": {
+    "item": "eternalartifacts:deep_item_storage_unit"
+  }
+}

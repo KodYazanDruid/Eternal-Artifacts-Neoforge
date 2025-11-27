@@ -5,7 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.ModListUtils;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -59,7 +59,7 @@ public final class EntityRendererHelper {
 					.withStyle(ChatFormatting.DARK_GRAY));
 			}
 		}
-		TooltipHelper.appendModName(tooltips, ModListUtils.getEntityCreatorModId(living.getType()));
+		StringUtils.appendModName(tooltips, ModListUtils.getEntityCreatorModId(living.getType()));
 		gui.renderTooltip(Minecraft.getInstance().font, tooltips, Optional.empty(), mx, my);
 	}
 }

@@ -25,11 +25,12 @@ import java.util.List;
 public class EntityCatalogueScreen extends ItemStackScreen {
 	private final List<LivingEntity> entities;
 	private List<EntityCapsuleWidget> capsuleWidgets;
-	private int selectedIndex = 0;
+	private int selectedIndex;
 	private ScrollBarWidget scrollBar;
 	public EntityCatalogueScreen(ItemStack stack) {
 		super(stack);
 		this.entities = EntityCatalogueItem.getSavedEntities(stack, Minecraft.getInstance().level);
+		this.selectedIndex = EntityCatalogueItem.getIndex(stack, Minecraft.getInstance().level);
 	}
 	
 	@Override

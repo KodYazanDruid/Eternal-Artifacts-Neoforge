@@ -13,7 +13,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-import static com.sonamorningstar.eternalartifacts.util.TooltipHelper.prettyName;
+import static com.sonamorningstar.eternalartifacts.util.StringUtils.prettyName;
 
 public class LanguageProvider extends net.neoforged.neoforge.common.data.LanguageProvider {
     String locale;
@@ -375,9 +375,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Alchemical Dynamo");
                 add(ModBlocks.CULINARY_DYNAMO.get(), "Culinary Dynamo");
                 add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Deep Item Storage Unit");
-                add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Deep Infinite Item Storage Unit");
+                //add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Deep Infinite Item Storage Unit");
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Deep Fluid Storage Unit");
-                add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Deep Infinite Fluid Storage Unit");
+                //add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Deep Infinite Fluid Storage Unit");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -571,6 +571,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("battery_box_export_percentage_above"), "Export items when they are above %d%%.");
                 add(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), "Export items when they have exactly %d%%.");
                 add(ModConstants.GUI.withSuffix("battery_box_export_full"), "Export items when they are full.");
+                add(ModConstants.GUI.withSuffix("search_warps"), "Search Warps...");
                 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -1005,9 +1006,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.CULINARY_DYNAMO.get(), "Mutfak Dinamosu");
                 add(ModMachines.HARVESTER.getBlockTranslationKey(), "Hasat Makinesi");
                 add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Derin Eşya Depolama Ünitesi");
-                add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Derin Sonsuz Eşya Depolama Ünitesi");
+                //add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Derin Sonsuz Eşya Depolama Ünitesi");
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Derin Sıvı Depolama Ünitesi");
-                add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Derin Sonsuz Sıvı Depolama Ünitesi");
+                //add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Derin Sonsuz Sıvı Depolama Ünitesi");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1228,6 +1229,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("battery_box_export_percentage_above"), "%%%d seviyesinin üstündeki eşyaları aktar.");
                 add(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), "%%%d seviyesindeki eşyaları aktar.");
                 add(ModConstants.GUI.withSuffix("battery_box_export_full"), "Eşyaları boş olduklarında aktar.");
+                add(ModConstants.GUI.withSuffix("search_warps"), "Işınlayıcıları ara...");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

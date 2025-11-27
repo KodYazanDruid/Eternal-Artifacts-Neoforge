@@ -1,12 +1,16 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.Slot;
@@ -16,8 +20,8 @@ import javax.annotation.Nullable;
 
 public class SlotWidget extends AbstractWidget {
 	private final Slot slot;
-	public SlotWidget(Slot slot, int pX, int pY, int pWidth, int pHeight, Component pMessage) {
-		super(pX, pY, pWidth, pHeight, pMessage);
+	public SlotWidget(Slot slot, Component pMessage) {
+		super(slot.x, slot.y, 18, 18, pMessage);
 		this.slot = slot;
 	}
 	
@@ -37,31 +41,39 @@ public class SlotWidget extends AbstractWidget {
 	}
 	
 	@Override
-	protected void renderWidget(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
+	public void playDownSound(SoundManager pHandler) {}
+	
+	@Override
+	protected void renderWidget(GuiGraphics gui, int mx, int my, float pPartialTick) {
+		if (slot.isActive()) {
+			gui.pose().pushPose();
+			gui.blitSprite(new ResourceLocation("container/slot"), getX() - 1, getY() - 1, 0, 18, 18);
+			renderSlot(gui, slot, mx, my);
+			renderSlotHighlight(gui, slot, mx, my, pPartialTick);
+			gui.pose().popPose();
+		}
+	}
+	
+	protected void renderSlot(GuiGraphics gui, Slot pSlot, int mouseX, int mouseY) {
+		ItemStack itemstack = pSlot.getItem();
 		gui.pose().pushPose();
-		gui.blitSprite(new ResourceLocation("container/slot"), getX() + slot.x-1, getY() + slot.y-1, 0, 18, 18);
-		renderSlot(gui, slot);
-		renderSlotHighlight(gui, slot, pMouseX, pMouseY, pPartialTick);
+		renderSlotContents(gui, itemstack, pSlot, getX(), getY(), ChatFormatting.WHITE.toString() + itemstack.getCount());
+		if (slot.isActive() && isMouseOver(mouseX, mouseY)) {
+			gui.pose().translate(0, 0, 100);
+			gui.renderTooltip(Minecraft.getInstance().font, itemstack, mouseX, mouseY);
+		}
 		gui.pose().popPose();
 	}
 	
-	protected void renderSlot(GuiGraphics pGuiGraphics, Slot pSlot) {
-		int i = pSlot.x;
-		int j = pSlot.y;
-		ItemStack itemstack = pSlot.getItem();
-		renderSlotContents(pGuiGraphics, itemstack, pSlot, i, j, ChatFormatting.YELLOW.toString() + itemstack.getCount());
-	}
-	
 	protected void renderSlotContents(GuiGraphics guiGraphics, ItemStack itemstack, Slot slot, int x, int y, @Nullable String countString) {
-		int j1 = slot.x + slot.y * 18;
+		int j1 = getX() + getY() * 18;
 		if (slot.isFake()) {
 			guiGraphics.renderFakeItem(itemstack, x, y, j1);
 		} else {
 			guiGraphics.renderItem(itemstack, x, y, j1);
 		}
 		
-		guiGraphics.renderItemDecorations(Minecraft.getInstance().font, itemstack, x, y, countString);
-	}
+		guiGraphics.renderItemDecorations(Minecraft.getInstance().font, itemstack, x, y, countString);}
 	
 	public static void renderSlotHighlight(GuiGraphics pGuiGraphics, int pX, int pY, int pBlitOffset) {
 		renderSlotHighlight(pGuiGraphics, pX, pY, pBlitOffset, -2130706433);
@@ -71,9 +83,25 @@ public class SlotWidget extends AbstractWidget {
 	}
 	
 	protected void renderSlotHighlight(GuiGraphics guiGraphics, Slot slot, int mouseX, int mouseY, float partialTick) {
-		if (slot.isHighlightable()) {
-			renderSlotHighlight(guiGraphics, slot.x, slot.y, 0, -2130706433);
+		if (slot.isHighlightable() && isMouseOver(mouseX, mouseY)) {
+			renderSlotHighlight(guiGraphics, getX(), getY(), 0, -2130706433);
 		}
+	}
+	
+	@Override
+	public boolean isMouseOver(double mX, double mY) {
+		Screen screen = Minecraft.getInstance().screen;
+		if (screen instanceof AbstractModContainerScreen<?> modScreen) {
+			for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
+				GuiEventListener child = modScreen.upperLayerChildren.get(i);
+				if (child instanceof ParentalWidget parental) {
+					if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
+						return parental.getChildUnderCursorRaw(mX, mY) == this;
+					} else return super.isMouseOver(mX, mY);
+				}
+			}
+		}
+		return super.isMouseOver(mX, mY);
 	}
 	
 	@Override

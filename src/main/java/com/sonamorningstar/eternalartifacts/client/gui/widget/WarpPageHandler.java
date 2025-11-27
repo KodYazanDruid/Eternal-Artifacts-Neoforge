@@ -11,7 +11,6 @@ public class WarpPageHandler {
     private final int warpsPerPage;
     private int pageSize;
     private float pageSizeFloat;
-    private int currentPage = 0;
 
     public WarpPageHandler(List<Warp> warpList, int warpsPerPage) {
         this.warpList = warpList;
@@ -34,6 +33,15 @@ public class WarpPageHandler {
         warpList.remove(index);
         recalculatePageSize();
     }
+    
+    public int getPageSizeFiltered(String filter) {
+        List<Warp> filteredWarps = getWarps(filter);
+        return filteredWarps.size() / warpsPerPage;
+    }
+    public float getPageSizeFilteredFloat(String filter) {
+        List<Warp> filteredWarps = getWarps(filter);
+        return (float) filteredWarps.size() / warpsPerPage;
+    }
 
     public Warp getWarp(int index) {
         return warpList.get(index);
@@ -43,23 +51,37 @@ public class WarpPageHandler {
         this.pageSize = warpList.size() / warpsPerPage;
         this.pageSizeFloat = (float) warpList.size() / warpsPerPage;
     }
-
-    public void turnPageRight() {
-        currentPage = Math.min(currentPage + 1, pageSize);
-    }
-    public void turnPageLeft() {
-        currentPage = Math.max(currentPage -1, 0);
-    }
-
-    public int getWarpCount() {
-        return warpList.size();
-    }
-
-    public List<Warp> getCurrentWarps() {
-        int startIndex = currentPage * warpsPerPage;
+    
+    public List<Warp> getWarps(int page) {
+        int startIndex = page * warpsPerPage;
         int endIndex = Math.min(startIndex + warpsPerPage, warpList.size());
         List<Warp> currentPageWarps = new ArrayList<>();
         for (int i = startIndex; i < endIndex; i++) currentPageWarps.add(warpList.get(i));
         return currentPageWarps;
+    }
+    
+    public List<Warp> getWarps(String filter) {
+        List<Warp> filteredWarps = new ArrayList<>();
+        for (Warp warp : warpList) {
+            if (warp.getLabel().toLowerCase().contains(filter.toLowerCase())) {
+                filteredWarps.add(warp);
+            }
+        }
+        return filteredWarps;
+    }
+    
+    public List<Warp> getWarps(String filter, int page) {
+        List<Warp> filteredWarps = new ArrayList<>();
+        for (Warp warp : warpList) {
+            if (warp.getLabel().toLowerCase().contains(filter.toLowerCase())) {
+                filteredWarps.add(warp);
+            }
+        }
+        
+        int startIndex = page * warpsPerPage;
+        int endIndex = Math.min(startIndex + warpsPerPage, filteredWarps.size());
+        List<Warp> pagedFilteredWarps = new ArrayList<>();
+        for (int i = startIndex; i < endIndex; i++) pagedFilteredWarps.add(filteredWarps.get(i));
+        return pagedFilteredWarps;
     }
 }

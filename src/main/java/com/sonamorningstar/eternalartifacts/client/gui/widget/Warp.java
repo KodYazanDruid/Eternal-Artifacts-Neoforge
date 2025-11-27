@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.widget;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.PlayerTeleportToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.ChatFormatting;
@@ -51,7 +51,7 @@ public class Warp {
     @Override
     public String toString() {
         return "Warp: "+label+", " +
-                "Dimension: " + TooltipHelper.prettyName(dimension.location().getPath()) +
+                "Dimension: " + StringUtils.prettyName(dimension.location().getPath()) +
                 ", X: "+position.getX()+", Y: "+position.getY()+", Z: "+position.getZ();
     }
 

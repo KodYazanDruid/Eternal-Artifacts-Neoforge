@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "eternalartifacts:block/deep_storage_unit"
+      "model": "eternalartifacts:block/deep_fluid_storage_unit"
     }
   }
 }

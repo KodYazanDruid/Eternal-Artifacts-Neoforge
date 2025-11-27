@@ -1,4 +1,4 @@
-// 1.20.4	2025-11-07T23:47:21.3375385	Loot Tables
+// 1.20.4	2025-11-25T13:58:35.9876726	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -35,8 +35,6 @@ fc18319a2ccfdec4e066eed864fa7868821d032e data/eternalartifacts/loot_tables/block
 36b93c29e60730e91048865cb63c2c3a34fe3fc8 data/eternalartifacts/loot_tables/blocks/deepslate_manganese_ore.json
 8f0a3b7b5f1a6baab772df2577f5871e2206c054 data/eternalartifacts/loot_tables/blocks/deepslate_tin_ore.json
 3efe6b99586a5161c8ff3392147e4dee7b39b377 data/eternalartifacts/loot_tables/blocks/deep_fluid_storage_unit.json
-09fedd61c77e8542701838b90bd638168aa33c64 data/eternalartifacts/loot_tables/blocks/deep_infinite_fluid_storage_unit.json
-1268ba4238b01dfcedaac1c9419d886fd8764e8c data/eternalartifacts/loot_tables/blocks/deep_infinite_item_storage_unit.json
 ce366cfc0136f4dc4f8f34043450f37290e4ff38 data/eternalartifacts/loot_tables/blocks/deep_item_storage_unit.json
 2d6dde2dd6a7100ee709a5eb77ab0b47d6c5e31b data/eternalartifacts/loot_tables/blocks/demon_block.json
 da6df7d1d9c5cd9b40a08b6d0ccca9f948aaeadf data/eternalartifacts/loot_tables/blocks/diamond_drum.json

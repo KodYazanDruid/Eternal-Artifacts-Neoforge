@@ -111,9 +111,9 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockWithItem(ModBlocks.INDUSTRIAL_SPONGE.get());
         simpleBlockWithItem(ModBlocks.WET_INDUSTRIAL_SPONGE.get());
         deepStorageUnit(ModBlocks.DEEP_ITEM_STORAGE_UNIT);
-        deepStorageUnit(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT);
+        //deepStorageUnit(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT);
         deepStorageUnit(ModBlocks.DEEP_FLUID_STORAGE_UNIT);
-        deepStorageUnit(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT);
+        //deepStorageUnit(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT);
         
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -219,7 +219,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         simpleBlockItem(holder.get(), model);
     }
     private void deepStorageUnit(DeferredHolder<Block, ? extends Block> holder) {
-        bottomTop(holder, "deep_storage_unit");
+        bottomTop(holder, holder.getId().getPath());
     }
     private void bottomTop(DeferredHolder<Block, ? extends Block> holder, String name) {
         ModelFile model = models().cubeBottomTop(name,

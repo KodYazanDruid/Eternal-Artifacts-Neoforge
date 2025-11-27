@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.core.ModSkullType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.SkullModelBase;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderBuffers;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
@@ -68,12 +69,15 @@ public class ModSkullBlockRenderer extends SkullBlockRenderer {
 		
 		tlsm.setupAnim(mouthAnim, yRot, 0.0F);
 		
-		VertexConsumer baseConsumer = buffer.getBuffer(RenderType.entityCutoutNoCullZOffset(pair.getFirst()));
+		RenderBuffers buffers = Minecraft.getInstance().renderBuffers();
+		
+		MultiBufferSource.BufferSource src1 = buffers.bufferSource();
+		VertexConsumer baseConsumer = src1.getBuffer(RenderType.entityCutoutNoCullZOffset(pair.getFirst()));
 		tlsm.getHead().render(pose, baseConsumer, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-		Minecraft.getInstance().renderBuffers().bufferSource().endLastBatch();
+		//src1.endBatch();
+		
 		VertexConsumer overlayConsumer = buffer.getBuffer(RenderType.entityCutoutNoCullZOffset(pair.getSecond()));
 		tlsm.getOverlay().render(pose, overlayConsumer, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
-		Minecraft.getInstance().renderBuffers().bufferSource().endLastBatch();
 		
 		pose.popPose();
 	}

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
@@ -96,7 +97,13 @@ public interface ParentalWidget {
 	
 	default void renderContents(GuiGraphics gui, int mX, int mY, float deltaTick) {
 		for (GuiEventListener child : getChildren()) {
-			if (child instanceof Renderable renderable) renderable.render(gui, mX, mY, deltaTick);
+			//PoseStack pose = gui.pose();
+			//pose.pushPose();
+			if (child instanceof Renderable renderable) {
+				//pose.translate(0, 0, 50);
+				renderable.render(gui, mX, mY, deltaTick);
+			}
+			//pose.popPose();
 		}
 	}
 	

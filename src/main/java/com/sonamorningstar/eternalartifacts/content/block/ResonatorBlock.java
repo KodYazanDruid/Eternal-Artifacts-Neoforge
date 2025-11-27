@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ResonatorBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Resonator;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -65,18 +65,12 @@ public class ResonatorBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new ResonatorBlockEntity(blockPos, blockState);
+        return new Resonator(blockPos, blockState);
     }
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
-        level.invalidateCapabilities(pos);
     }
 
     @Nullable
@@ -97,7 +91,7 @@ public class ResonatorBlock extends BaseEntityBlock {
             return null;
         } else {
             return (lvl, pos, st, be) -> {
-                if(be instanceof ResonatorBlockEntity entity) {
+                if(be instanceof Resonator entity) {
                     entity.tick(lvl, pos, st, generateRate);
                 }
             };

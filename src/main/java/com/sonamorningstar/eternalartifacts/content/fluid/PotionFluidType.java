@@ -78,7 +78,7 @@ public class PotionFluidType extends BaseFluidType {
 			
 			@Override
 			public int getTintColor(FluidStack stack) {
-				return PotionUtils.getColor(PotionUtils.getPotion(stack.getTag()));
+				return 0xFF000000 | PotionUtils.getColor(PotionUtils.getPotion(stack.getTag()));
 			}
 			
 			@Override

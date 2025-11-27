@@ -1,8 +1,11 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.item.ItemStack;
 
@@ -42,6 +45,10 @@ public abstract class ItemStackScreen extends Screen {
     
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (keyCode == 69) { // E key without modifiers
+            if (getFocused() instanceof EditBox box && box.canConsumeInput()) return false; // Prevents closing the screen when typing in a text box
+        }
+        
         InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
         if (super.keyPressed(keyCode, scanCode, modifiers)) return true;
         else if (mc.options.keyInventory.isActiveAndMatches(mouseKey)) {

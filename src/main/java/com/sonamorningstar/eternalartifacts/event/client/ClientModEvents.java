@@ -30,7 +30,6 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.MachineConfigurationToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import io.netty.buffer.Unpooled;
-import mekanism.api.functions.FloatSupplier;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.EntityModel;
@@ -93,6 +92,12 @@ public class ClientModEvents {
     private static final ResourceLocation batbox_percentage_below = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_below.png");
     private static final ResourceLocation batbox_percentage_above = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_above.png");
     private static final ResourceLocation batbox_percentage_exact = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_exact.png");
+    private static final ResourceLocation block_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/block_mode_enabled.png");
+    private static final ResourceLocation fluid_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_mode_enabled.png");
+    private static final ResourceLocation continuous_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/continuous_mode_enabled.png");
+    private static final ResourceLocation block_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/block_mode_disabled.png");
+    private static final ResourceLocation fluid_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_mode_disabled.png");
+    private static final ResourceLocation continuous_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/continuous_mode_disabled.png");
     
     @SubscribeEvent
     public static void registerConfigWidgets(CreateConfigWidgetEvent event) {
@@ -188,6 +193,51 @@ public class ClientModEvents {
             });
         });
         
+        event.register(ReverseToggleConfig.class, "block_mode", ((config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            BooleanSupplier isDisabled = config::isDisabled;
+            SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+                boolean newValue = !config.isDisabled();
+                config.setDisabled(newValue);
+                button.setTextures(newValue ? block_mode_disabled : block_mode_enabled);
+                FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                config.writeToServer(buf);
+                Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+            }, isDisabled.getAsBoolean() ? block_mode_disabled : block_mode_enabled).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("block_mode")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                btn.setPosition(fx + 64, fy + 4);
+                return btn;
+            });
+        }));
+        event.register(ReverseToggleConfig.class, "fluid_mode", ((config, ctx) -> {
+            SimpleDraggablePanel panel = ctx.panel;
+            if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            BooleanSupplier isDisabled = config::isDisabled;
+            SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+                    boolean newValue = !config.isDisabled();
+                    config.setDisabled(newValue);
+                    button.setTextures(newValue ? fluid_mode_disabled : fluid_mode_enabled);
+                    FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+                    config.writeToServer(buf);
+                    Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+                }, isDisabled.getAsBoolean() ? fluid_mode_disabled : fluid_mode_enabled).size(9, 9)
+                .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("fluid_mode")
+                    .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+            
+            panel.addChildren((fx, fy, fw, fh) -> {
+                btn.setPosition(fx + 64, fy + 14);
+                return btn;
+            });
+        }));
+        
         event.register(ReverseToggleConfig.class, "item_transfer", (config, ctx) -> {
             SimpleDraggablePanel panel = ctx.panel;
             if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
@@ -210,7 +260,6 @@ public class ClientModEvents {
                 return btn;
             });
         });
-        
         event.register(ReverseToggleConfig.class, "fluid_transfer", (config, ctx) -> {
             SimpleDraggablePanel panel = ctx.panel;
             if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
@@ -233,7 +282,6 @@ public class ClientModEvents {
                 return btn;
             });
         });
-        
         event.register(ReverseToggleConfig.class, "energy_transfer", (config, ctx) -> {
             SimpleDraggablePanel panel = ctx.panel;
             if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
@@ -285,7 +333,7 @@ public class ClientModEvents {
             if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
             
             Supplier<BatteryBoxExportConfig.ExportMode> mode = config::getExportMode;
-            FloatSupplier percGetter = config::getPercentage;
+            Supplier<Float> percGetter = config::getPercentage;
             SpriteButton exportButton = SpriteButton.builder(Component.empty(), (button, key) -> {
                 config.cycleNextMode();
                 button.setTextures(getTextureForBatBox(mode.get()));
@@ -294,10 +342,10 @@ public class ClientModEvents {
                 Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
             }, getTextureForBatBox(mode.get())).size(9, 9)
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("battery_box_export")
-                .append(": ").append(getComponentForBatBox(mode.get(), percGetter.getAsFloat()))).build();
+                .append(": ").append(getComponentForBatBox(mode.get(), percGetter.get()))).build();
             
             ExtendedSlider slider = new ExtendedSlider(0, 0, panel.getWidth() - 8, 10, Component.empty(), Component.empty(),
-                0.0d, 100.0d, percGetter.getAsFloat(), 0.1d, 0, false) {
+                0.0d, 100.0d, percGetter.get(), 0.1d, 0, false) {
                 @Override
                 protected void applyValue() {
                     super.applyValue();
@@ -409,7 +457,7 @@ public class ClientModEvents {
 
     @SubscribeEvent
     public static void registerColorHandlerItem(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, ti) ->{
+        event.register((stack, ti) -> {
             BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();
             return BlockColors.createDefault().getColor(blockstate, null, null, ti);
         }, ModBlocks.FOUR_LEAF_CLOVER.asItem());
@@ -548,9 +596,6 @@ public class ClientModEvents {
 
     @SuppressWarnings("unchecked")
     private static <T extends LivingEntity, M extends EntityModel<T>> void attachLayers(LivingEntityRenderer<T, M> renderer, EntityRendererProvider.Context ctx) {
-        /*renderer.addLayer(new HolyDaggerLayer<>(renderer));
-        renderer.addLayer(new ProtectiveAuraLayer<>(renderer));*/
-        
         if (renderer instanceof HumanoidMobRenderer<?, ?> hmr) {
             renderer.addLayer(new HolyDaggerLayer<>(renderer));
             renderer.addLayer(new ProtectiveAuraLayer<>(renderer));

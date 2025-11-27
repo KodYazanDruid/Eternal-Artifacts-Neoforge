@@ -213,12 +213,12 @@ public class ModBlocks {
     
     public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_ITEM_STORAGE_UNIT = registerWithItem("deep_item_storage_unit",
         () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, false), DISUBlockItem.class);
-    public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_INFINITE_ITEM_STORAGE_UNIT = registerWithItem("deep_infinite_item_storage_unit",
-        () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DISUBlockItem.class);
+    /*public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_INFINITE_ITEM_STORAGE_UNIT = registerWithItem("deep_infinite_item_storage_unit",
+        () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DISUBlockItem.class);*/
     public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_FLUID_STORAGE_UNIT = registerWithItem("deep_fluid_storage_unit",
         () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, false), DFSUBlockItem.class);
-    public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_INFINITE_FLUID_STORAGE_UNIT = registerWithItem("deep_infinite_fluid_storage_unit",
-        () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DFSUBlockItem.class);
+    /*public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_INFINITE_FLUID_STORAGE_UNIT = registerWithItem("deep_infinite_fluid_storage_unit",
+        () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DFSUBlockItem.class);*/
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));

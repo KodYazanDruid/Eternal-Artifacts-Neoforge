@@ -65,7 +65,7 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 	@Override
 	protected void renderWidget(GuiGraphics gui, int mx, int my, float delta) {
 		gui.pose().pushPose();
-		gui.pose().translate(0, 0, 360);
+		gui.pose().translate(0, 0, 300);
 		RenderSystem.enableDepthTest();
 		RenderSystem.enableBlend();
 		gui.setColor(FastColor.ARGB32.red(color) / 255.0F,

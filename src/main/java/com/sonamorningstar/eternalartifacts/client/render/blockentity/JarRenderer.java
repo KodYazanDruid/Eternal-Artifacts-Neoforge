@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sonamorningstar.eternalartifacts.client.render.util.RendererHelper;
 import com.sonamorningstar.eternalartifacts.content.block.entity.JarBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModModelLayers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;

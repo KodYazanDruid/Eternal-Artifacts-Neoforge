@@ -12,10 +12,11 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
-public class TooltipHelper {
+public class StringUtils {
     public static String prettyName(String path) {
         String displayName = path.replace('_', ' ');
         String[] pathWords = displayName.split("\\s");
@@ -30,6 +31,69 @@ public class TooltipHelper {
         StringBuilder prettyPath = new StringBuilder();
         for(String word : pathWords) prettyPath.append(Character.toTitleCase(word.charAt(0))).append(word.substring(1)).append(" ");
         return prettyPath.toString().trim().replaceAll(" ", "");
+    }
+    
+    public static String formatNumber(double value, int decimals) {
+        String[] suffixes = {"", "K", "M", "B", "T"};
+        int index = 0;
+        
+        while (value >= 1000 && index < suffixes.length - 1) {
+            value /= 1000.0;
+            index++;
+        }
+        
+        // Floor yapmak için: (value * pow) → floor → pow ile geri böl
+        double pow = Math.pow(10, decimals);
+        value = Math.floor(value * pow) / pow;
+        
+        // Dinamik ondalık formatı
+        StringBuilder decimalPattern = new StringBuilder("0");
+        if (decimals > 0) {
+            decimalPattern.append(".");
+            decimalPattern.append("#".repeat(decimals));
+        }
+        
+        DecimalFormat format = new DecimalFormat(decimalPattern.toString());
+        
+        return format.format(value) + suffixes[index];
+    }
+    
+    public static String formatNumberAuto(double value, int maxLen) {
+        String[] suffixes = {"", "K", "M", "B", "T"};
+        int index = 0;
+        
+        while (value >= 1000 && index < suffixes.length - 1) {
+            value /= 1000.0;
+            index++;
+        }
+        
+        String suffix = suffixes[index];
+        
+        int available = maxLen - suffix.length();
+        if (available <= 0) {
+            return suffix;
+        }
+        
+        int intDigits = (int) Math.floor(Math.log10(value)) + 1;
+        
+        if (intDigits > available) {
+            return ((long) Math.floor(value)) + suffix;
+        }
+        
+        int decimals = available - intDigits;
+        if (decimals < 0) decimals = 0;
+        
+        double pow = Math.pow(10, decimals);
+        double v2 = Math.floor(value * pow) / pow;
+        
+        StringBuilder pattern = new StringBuilder("0");
+        if (decimals > 0) {
+            pattern.append(".");
+            pattern.append("#".repeat(decimals));
+        }
+        
+        DecimalFormat fmt = new DecimalFormat(pattern.toString());
+        return fmt.format(v2) + suffix;
     }
     
     public static List<Component> getTooltipFromContainerFluid(FluidStack stack, @Nullable Level level, boolean isAdvanced) {

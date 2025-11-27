@@ -1,4 +1,4 @@
-// 1.20.4	2025-11-15T16:22:42.2002386	Model Definitions
+// 1.20.4	2025-11-23T13:54:49.6894646	Model Definitions
 102e9522fdec701626ee9e9dcffab9733bfe27d2 assets/eternalartifacts/blockstates/alchemical_dynamo.json
 c5da0d3c77e27e82536536e4e017850e457ded42 assets/eternalartifacts/blockstates/blaze_head.json
 5c0068fd9507179d802aa65c6450e59c6c14691c assets/eternalartifacts/blockstates/blaze_wall_head.json
@@ -151,8 +151,8 @@ fb430253ffbf7ff28e3a9c9fea6520c420a5a2d2 assets/eternalartifacts/models/item/cop
 d76cfc1f51c30c069ec6ca48f680474f7d6d6fd7 assets/eternalartifacts/models/item/covered_gold_cable.json
 fc63d2bca3b04d769d792b5e5d7788fa39f702ce assets/eternalartifacts/models/item/covered_tin_cable.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/culinary_dynamo.json
-3b3cebc4d7d4f5a5c05876fe8a0cb9a69d45584c assets/eternalartifacts/models/item/deep_fluid_storage_unit.json
-3b3cebc4d7d4f5a5c05876fe8a0cb9a69d45584c assets/eternalartifacts/models/item/deep_item_storage_unit.json
+554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/deep_fluid_storage_unit.json
+554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/deep_item_storage_unit.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/eternalartifacts/models/item/drowned_head.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/energy_dock.json
 cf00b6b86cba80ce1952eb3f199a446394f3d78d assets/eternalartifacts/models/item/evokers_tome.json

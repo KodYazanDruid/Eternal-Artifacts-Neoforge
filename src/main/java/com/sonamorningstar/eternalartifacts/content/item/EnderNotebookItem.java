@@ -29,7 +29,7 @@ public class EnderNotebookItem extends Item {
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
         if (other.getItem() instanceof EnderPaper) {
             CompoundTag tag = other.getTag();
-            if (tag != null && tag.contains("Warp") && getWarpAmount(stack) < calculateMaxWarpAmount(stack)) {
+            if (tag != null && tag.contains("Warp") && getWarpAmount(stack) < calculateMaxWarpAmount(stack, 8, 4)) {
                 Warp warp = Warp.readFromNBT(tag);
                 if (!player.getAbilities().instabuild) other.shrink(1);
                 addWarp(stack, warp.getLabel(), warp.getDimension(), warp.getPosition());
@@ -65,8 +65,8 @@ public class EnderNotebookItem extends Item {
         tag.put("Warps", listTag);
     }
 
-    public static int calculateMaxWarpAmount(ItemStack stack) {
-        return 8 + (stack.getEnchantmentLevel(ModEnchantments.VOLUME.get()) * 4);
+    public static int calculateMaxWarpAmount(ItemStack stack, int warpsPerPage, int warpsPerEnchantmentLevel) {
+        return warpsPerPage + (stack.getEnchantmentLevel(ModEnchantments.VOLUME.get()) * warpsPerEnchantmentLevel);
     }
 
     public static int getWarpAmount(ItemStack stack) {

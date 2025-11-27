@@ -33,8 +33,8 @@ public class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PictureScreen>> PICTURE_SCREEN = BLOCK_ENTITIES.register("picture_screen", ()->
         BlockEntityType.Builder.of(PictureScreen::new, ModBlocks.PICTURE_SCREEN.get()).build(null));
 
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonatorBlockEntity>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
-            BlockEntityType.Builder.of(ResonatorBlockEntity::new, ModBlocks.RESONATOR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Resonator>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
+            BlockEntityType.Builder.of(Resonator::new, ModBlocks.RESONATOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DrumBlockEntity>> DRUM = BLOCK_ENTITIES.register("drum", ()->
             BlockEntityType.Builder.of(DrumBlockEntity::new,
                     ModBlocks.COPPER_DRUM.get(),
@@ -68,13 +68,13 @@ public class ModBlockEntities {
         ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DeepItemStorageUnit>> DEEP_ITEM_STORAGE_UNIT = BLOCK_ENTITIES.register("deep_item_storage_unit", ()->
         BlockEntityType.Builder.of(DeepItemStorageUnit::new,
-            ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(),
-            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get()
+            ModBlocks.DEEP_ITEM_STORAGE_UNIT.get()/*,
+            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get()*/
         ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DeepFluidStorageUnit>> DEEP_FLUID_STORAGE_UNIT = BLOCK_ENTITIES.register("deep_fluid_storage_unit", ()->
         BlockEntityType.Builder.of(DeepFluidStorageUnit::new,
-            ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(),
-            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get()
+            ModBlocks.DEEP_FLUID_STORAGE_UNIT.get()/*,
+            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get()*/
         ).build(null));
     
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->

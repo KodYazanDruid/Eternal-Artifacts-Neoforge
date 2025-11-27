@@ -11,11 +11,11 @@ import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookA
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRemoveNbtToServer;
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRenameWarpToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import com.sonamorningstar.eternalartifacts.util.collections.MutableListBuilder;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
-import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -39,19 +39,22 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class EnderNotebookScreen extends ItemStackScreen {
     public static final ResourceLocation background = new ResourceLocation(MODID, "textures/gui/ender_notebook.png");
     public static final ResourceLocation buttons = new ResourceLocation(MODID, "textures/gui/buttons.png");
+    private final List<AbstractWidget> warpWidgets = new ArrayList<>();
     private final WarpPageHandler pageHandler;
     private final int maxWarpAmount;
     int margin = 20;
     int textColor = 16777215;
     private EditBox name;
+    private EditBox searchBox;
     private AbstractButton addWarpButton;
     private AbstractButton renameWarpButton;
     private boolean isRenaming = false;
     private int renamingWarpIndex;
+    private int currentPage = 0;
     public EnderNotebookScreen(ItemStack notebook) {
         super(notebook);
         this.pageHandler = new WarpPageHandler(readWarps(notebook), 8);
-        this.maxWarpAmount = EnderNotebookItem.calculateMaxWarpAmount(notebook);
+        this.maxWarpAmount = EnderNotebookItem.calculateMaxWarpAmount(notebook, 8, 4);
     }
 
     @Override
@@ -59,15 +62,42 @@ public class EnderNotebookScreen extends ItemStackScreen {
         imageWidth = 192;
         imageHeight = 256;
         super.init();
+        
         addWarpButton = CleanButton.builder(ModConstants.TRANSLATE_BUTTON_PREFIX.withSuffixTranslatable("add_warp"), this::addWarpPress)
                 .bounds(leftPos + 107, topPos + 196, 85, 20).build();
+        
         name = new EditBox(font, leftPos + 5, topPos + 196, 100, 20, Component.empty());
         name.setMaxLength(20);
         name.setCanLoseFocus(true);
+        
+        searchBox = new EditBox(font, leftPos + 5, topPos - 13, 185, 20, Component.empty());
+        searchBox.setSuggestion(ModConstants.GUI.withSuffixTranslatable("search_warps").getString(175));
+        searchBox.setResponder(value -> {
+            if (!value.isBlank()) searchBox.setSuggestion("");
+            else searchBox.setSuggestion(ModConstants.GUI.withSuffixTranslatable("search_warps").getString(175));
+            currentPage = 0;
+            resetRenamingState();
+            refreshWarps();
+        });
+        searchBox.setMaxLength(20);
+        searchBox.setCanLoseFocus(true);
+        
         addRenderableWidget(name);
+        addRenderableWidget(searchBox);
         addRenderableWidget(addWarpButton);
-        generateButtons(this::addRenderableWidget);
-        generateTurningButtons(this::addRenderableWidget);
+        
+        warpWidgets.clear();
+        generateButtons(warpWidgets::add);
+        generateTurningButtons(warpWidgets::add);
+        warpWidgets.forEach(this::addRenderableWidget);
+    }
+    
+    private void refreshWarps() {
+        warpWidgets.forEach(this::removeWidget);
+        warpWidgets.clear();
+        generateButtons(warpWidgets::add);
+        generateTurningButtons(warpWidgets::add);
+        warpWidgets.forEach(this::addRenderableWidget);
     }
 
     //region Render stuff
@@ -89,10 +119,14 @@ public class EnderNotebookScreen extends ItemStackScreen {
         renderWarpInfo(guiGraphics);
     }
     private void renderWarpInfo(GuiGraphics gui) {
-        List<Warp> currentWarps = pageHandler.getCurrentWarps();
+        List<Warp> currentWarps;
+        
+        if (searchBox != null && !searchBox.getValue().isBlank()) currentWarps = pageHandler.getWarps(searchBox.getValue(), currentPage);
+        else currentWarps = pageHandler.getWarps(currentPage);
+        
         for (int i = 0; i < currentWarps.size(); i++) {
             Warp warp = currentWarps.get(i);
-            String prettyName = TooltipHelper.prettyName(warp.getDimension().location().getPath());
+            String prettyName = StringUtils.prettyName(warp.getDimension().location().getPath());
             BlockPos pos = warp.getPosition();
             Component info = Component.literal(prettyName).append(" ").append(pos.getX() + " " + pos.getY() + " " + pos.getZ());
             gui.drawString(font, warp.getLabel(), leftPos + 16, topPos + 12 + (margin * i), textColor);
@@ -132,17 +166,23 @@ public class EnderNotebookScreen extends ItemStackScreen {
         renameWarpButton.visible = false;
     }
     private void turnRight(SpriteButton button, int key) {
-        pageHandler.turnPageRight();
-        rebuildWidgets();
+        currentPage = Math.min(currentPage + 1, searchBox.getValue().isBlank() ?
+            pageHandler.getPageSize() :
+            pageHandler.getPageSizeFiltered(searchBox.getValue()));
+        refreshWarps();
     }
     private void turnLeft(SpriteButton button, int key) {
-        pageHandler.turnPageLeft();
-        rebuildWidgets();
+        currentPage = Math.max(currentPage - 1, 0);
+        refreshWarps();
     }
     //endregion
     //region Dynamic button generation.
     private void generateButtons(Function<AbstractButton, ?> func) {
-        List<Warp> currentWarps = pageHandler.getCurrentWarps();
+        List<Warp> currentWarps;
+        
+        if (searchBox != null && !searchBox.getValue().isBlank()) currentWarps = pageHandler.getWarps(searchBox.getValue(), currentPage);
+        else currentWarps = pageHandler.getWarps(currentPage);
+        
         for (int i = 0; i < currentWarps.size(); i++) {
             Warp warp = currentWarps.get(i);
             SpriteButton teleport = warp.getTeleportButton();
@@ -174,8 +214,11 @@ public class EnderNotebookScreen extends ItemStackScreen {
                 .size(16, 9).pos(leftPos + 160, topPos + 175).build();
         SpriteButton leftArrow = SpriteButton.builder(Component.empty(), this::turnLeft, new ResourceLocation(MODID, "textures/gui/sprites/left_arrow.png")
         ).size(16, 9).pos(leftPos + 140, topPos + 175).build();
-        rightArrow.visible = pageHandler.getPageSizeFloat() > pageHandler.getCurrentPage() + 1.0F;
-        leftArrow.visible = pageHandler.getCurrentPage() > 0;
+        if (searchBox != null) {
+            if(searchBox.getValue().isBlank()) rightArrow.visible = pageHandler.getPageSizeFloat() > currentPage + 1.0F;
+            else rightArrow.visible = pageHandler.getPageSizeFilteredFloat(searchBox.getValue()) > currentPage + 1.0F;
+        }
+        leftArrow.visible = currentPage > 0;
         fun.apply(rightArrow);
         fun.apply(leftArrow);
     }
@@ -184,13 +227,13 @@ public class EnderNotebookScreen extends ItemStackScreen {
     private void addWarp(Warp warp) {
         Channel.sendToServer(new EnderNotebookAddNbtToServer(warp.getLabel(), warp.getDimension(), warp.getPosition(), stack));
         pageHandler.addWarp(warp);
-        rebuildWidgets();
+        refreshWarps();
     }
     private void removeWarp(Warp warp) {
         int index = pageHandler.getWarpList().indexOf(warp);
         Channel.sendToServer(new EnderNotebookRemoveNbtToServer(index, stack));
         pageHandler.deleteWarp(warp);
-        rebuildWidgets();
+        refreshWarps();
     }
     //endregion
     //region Reading warps from the tag.

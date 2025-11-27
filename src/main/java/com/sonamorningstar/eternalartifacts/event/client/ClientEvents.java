@@ -21,6 +21,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedM
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
@@ -65,6 +66,8 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -132,10 +135,6 @@ public class ClientEvents {
                 }
                 pose.popPose();
             }
-        }
-    
-        if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_ENTITIES)) {
-            mc.renderBuffers().bufferSource().endBatch(ModRenderTypes.SPELL_CLOUD.get());
         }
     }
     
@@ -402,9 +401,15 @@ public class ClientEvents {
         int my = event.getMouseY();
         float deltaTick = event.getPartialTick();
         if (screen instanceof AbstractModContainerScreen<?> amcs) {
+            PoseStack pose = gui.pose();
+            pose.pushPose();
+            pose.translate(0.0D, 0.0D, 30.0F);
             for (GuiEventListener upperLayerChild : amcs.upperLayerChildren) {
-                if (upperLayerChild instanceof Renderable renderable) renderable.render(gui, mx, my, deltaTick);
+                if (upperLayerChild instanceof Renderable renderable) {
+                    renderable.render(gui, mx, my, deltaTick);
+                }
             }
+            pose.popPose();
         }
     }
     
@@ -457,8 +462,14 @@ public class ClientEvents {
                     filterPanel.visible = true;
                     filterPanel.active = true;
                 }, new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png")).bounds(x + width - 21, y + 3, 18, 18).build());
-                
                 filterPanel.addClosingButton();
+                
+                SlotWidget slotWidget = new SlotWidget(new Slot(new SimpleContainer(Items.APPLE.getDefaultInstance()), 0, 0, 0), Component.empty());
+                
+                filterPanel.addChildren((fx, fy, fW, fH) -> {
+                    slotWidget.setPosition(fx + 10, fy + 10);
+                    return slotWidget;
+                });
                 
                 gsms.addUpperLayerChild(filterPanel);
             }

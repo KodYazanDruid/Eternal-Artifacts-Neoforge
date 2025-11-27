@@ -15,7 +15,7 @@ import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngre
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.network.*;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -202,7 +202,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 			} else if (entry instanceof FluidStackEntry fluidStackEntry) {
 				FluidStack fluidStack = fluidStackEntry.getFilterStack();
 				if (!fluidStack.isEmpty())
-					guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+					guiGraphics.renderTooltip(font, StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
 						minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			} else if (entry instanceof FluidTagEntry fluidTagEntry) {
 				FluidIngredient ingredient = FluidIngredient.of(fluidTagEntry.getTag(), 1000);
@@ -214,7 +214,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 				FluidStack fluidStack = values[(int) ((tick / 20) % values.length)].copy();
 				CompoundTag tag = fluidStack.getOrCreateTag();
 				tag.putString("EtarFluidStackName", fluidTagEntry.getTag().location().toString());
-				guiGraphics.renderTooltip(font, TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+				guiGraphics.renderTooltip(font, StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
 					minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			}  else super.renderTooltip(guiGraphics, x, y);
 			return;

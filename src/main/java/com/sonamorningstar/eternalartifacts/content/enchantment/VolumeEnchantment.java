@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.enchantment;
 
 import com.sonamorningstar.eternalartifacts.content.item.*;
+import com.sonamorningstar.eternalartifacts.content.item.block.DFSUBlockItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.DISUBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.TigrisFlowerItem;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
@@ -21,7 +23,9 @@ public class VolumeEnchantment extends Enchantment {
     private static final Set<Class<?>> blacklistedItems = Set.of(
         BucketItem.class,
         TigrisFlowerItem.class,
-        JarBlockItem.class
+        JarBlockItem.class,
+        DISUBlockItem.class,
+        DFSUBlockItem.class
     );
 
     public static Predicate<ItemStack> isAcceptedItem = stack -> {

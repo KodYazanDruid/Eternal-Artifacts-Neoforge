@@ -4,10 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
 import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.CleanButton;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.Overlapping;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.ParentalWidget;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
@@ -15,7 +12,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.FluidSlotTransferToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import com.sonamorningstar.eternalartifacts.util.TooltipHelper;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.ChatFormatting;
@@ -41,7 +38,11 @@ import org.apache.commons.compress.utils.Lists;
 import javax.annotation.Nullable;
 import java.util.*;
 
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+
 public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends EffectRenderingInventoryScreen<T> {
+    private static final ResourceLocation CONFIG_BUTTON_TEXTURE = new ResourceLocation(MODID, "textures/gui/sprites/widget/machine_config_button.png");
+    
     @Setter
     @Getter
     private int guiTint = 0xFFFFFFFF;
@@ -73,12 +74,13 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     private void shiftElementsToUpperLayer(AbstractWidget widget) {
-        upperLayerChildren.remove(widget);
-        children.remove(widget);
-        narratables.remove(widget);
-        renderables.remove(widget);
-        
-        addUpperLayerChild(widget);
+        if (upperLayerChildren.contains(widget)) {
+            upperLayerChildren.remove(widget);
+            children.remove(widget);
+            narratables.remove(widget);
+            renderables.remove(widget);
+            addUpperLayerChild(widget);
+        }
     }
     
     protected void setupConfigWidgets() {
@@ -98,9 +100,10 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             createUIFor(config, new ConfigUIRegistry.ConfigUIContext(configPanel, this));
         }
         
-        CleanButton configButton = CleanButton.builder(Component.literal(ModKeyMappings.OPEN_MACHINE_CONFIG.getKey().toString()),
-                b -> configPanel.toggle())
-            .bounds(leftPos + imageWidth - 17, topPos + 5, 12, 12).build();
+        SpriteButton configButton = SpriteButton.builder(Component.empty(),
+                (button, key) -> configPanel.toggle(), CONFIG_BUTTON_TEXTURE)
+            .bounds(leftPos + imageWidth - 18, topPos + 4, 13, 13).build();
+        
         addUpperLayerChild(configPanel);
         addRenderableWidget(configButton);
     }
@@ -195,7 +198,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
                 var tooltipComponents = Lists.<Component>newArrayList();
                 if (!fluidStack.isEmpty()) {
-                    tooltipComponents.addAll(TooltipHelper.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+                    tooltipComponents.addAll(StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
                         minecraft.options.advancedItemTooltips));
                     tooltipComponents.add(Component.literal(fluidStack.getAmount() + " / " + slot.getMaxSize()));
                 }

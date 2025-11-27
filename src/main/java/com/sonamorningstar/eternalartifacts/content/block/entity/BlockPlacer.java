@@ -1,11 +1,13 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
-import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,6 +17,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.LiquidBlockContainer;
@@ -24,18 +27,14 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
 public class BlockPlacer extends GenericMachine {
-	public boolean isContinuous = false;
-	public boolean blockMode = true;
-	public boolean fluidMode = false;
 	public BlockPlacer(BlockPos pos, BlockState blockState) {
 		super(ModMachines.BLOCK_PLACER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
@@ -47,35 +46,13 @@ public class BlockPlacer extends GenericMachine {
 		screenInfo.setSlotPosition(98, 35, 1);
 		screenInfo.setSlotPosition(80, 53, 2);
 		screenInfo.setSlotPosition(98, 53, 3);
-		
-		screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 120, 8, 16, 16, () -> {
-			isContinuous = !isContinuous;
-			if (level != null && !level.isClientSide()) sendUpdate();
-		});
-		screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 120, 28, 16, 16, () -> {
-			blockMode = !blockMode;
-			if (level != null && !level.isClientSide()) sendUpdate();
-		});
-		screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 120, 48, 16, 16, () -> {
-			fluidMode = !fluidMode;
-			if (level != null && !level.isClientSide()) sendUpdate();
-		});
 	}
 	
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
-		tag.putBoolean("IsContinuous", isContinuous);
-		tag.putBoolean("BlockMode", blockMode);
-		tag.putBoolean("FluidMode", fluidMode);
-	}
-	
-	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		isContinuous = tag.getBoolean("IsContinuous");
-		blockMode = tag.getBoolean("BlockMode");
-		fluidMode = tag.getBoolean("FluidMode");
+	public void registerConfigs() {
+		super.registerConfigs();
+		getConfiguration().add(new ReverseToggleConfig("block_mode"));
+		getConfiguration().add(new ReverseToggleConfig("fluid_mode"));
 	}
 	
 	@Override
@@ -86,7 +63,8 @@ public class BlockPlacer extends GenericMachine {
 		
 		getFakePlayer();
 		setupFakePlayer(st);
-		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
+		Direction facing = st.getValue(BlockStateProperties.FACING);
+		BlockPos targetPos = getBlockPos().relative(facing);
 		BlockState targetState = lvl.getBlockState(targetPos);
 		ItemStack toPlace = getPlaceableItem();
 		FluidStack toPlaceFluid = tank.getFluid(0);
@@ -95,13 +73,16 @@ public class BlockPlacer extends GenericMachine {
 			fakePlayer.getInventory().items.set(i, stack);
 			if (stack == toPlace) fakePlayer.getInventory().selected = i;
 		}
-		if (blockMode && shouldPlace(lvl, targetPos) && !toPlace.isEmpty() && canWork(energy)) {
-			Direction facing = st.getValue(BlockStateProperties.FACING);
-			InteractionResult result = fakePlayer.gameMode.useItemOn(fakePlayer, level, toPlace, InteractionHand.MAIN_HAND,
-				new BlockHitResult(fakePlayer.position().relative(facing, 1), facing.getOpposite(), targetPos, true));
+		MachineConfiguration configs = getConfiguration();
+		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "block_mode"))).isDisabled()
+			&& !toPlace.isEmpty() && canWork(energy)) {
+			BlockHitResult hitResult = new BlockHitResult(Vec3.atBottomCenterOf(targetPos), facing.getOpposite(), targetPos, true);
+			BlockPlaceContext ctx = new BlockPlaceContext(fakePlayer, InteractionHand.MAIN_HAND, toPlace, hitResult);
+			InteractionResult result = ((BlockItem) toPlace.getItem()).place(ctx);
 			if (result.consumesAction()) spendEnergy(energy);
 		}
-		if (fluidMode && shouldPlaceFluid(fakePlayer, lvl, targetPos, toPlaceFluid) && !toPlaceFluid.isEmpty() && toPlaceFluid.getAmount() >= 1000 &&
+		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "fluid_mode"))).isDisabled()
+			&& shouldPlaceFluid(fakePlayer, lvl, targetPos, toPlaceFluid) && !toPlaceFluid.isEmpty() && toPlaceFluid.getAmount() >= 1000 &&
 				canWork(energy)) {
 			boolean isPlaced = false;
 			if (targetState.getBlock() instanceof LiquidBlockContainer con) {
@@ -119,11 +100,6 @@ public class BlockPlacer extends GenericMachine {
 		}
 	}
 	
-	private boolean shouldPlace(Level level, BlockPos target) {
-		BlockState state = level.getBlockState(target);
-		FluidState fluidState = level.getFluidState(target);
-		return isContinuous || (state.isEmpty() || fluidState.isEmpty());
-	}
 	private boolean shouldPlaceFluid(FakePlayer fakePlayer, Level level, BlockPos target, FluidStack toPlace) {
 		BlockState state = level.getBlockState(target);
 		FluidState fluidState = level.getFluidState(target);
