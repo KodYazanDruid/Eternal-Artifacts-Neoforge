@@ -47,7 +47,6 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -69,7 +68,7 @@ public class CommonModEvents {
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,75000,15000), ModItems.PORTABLE_BATTERY.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,25000,5000), ModItems.LIGHTSABER.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,10000,500), ModItems.CONFIGURATION_DRIVE.get());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,16000,500), ModItems.PORTABLE_FURNACE.get());
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModItemItemStorage(stack, 3), ModItems.PORTABLE_FURNACE.get());
         
         //if (Config.BOTTLE_CAP_ENABLED.get()){
             event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new BottleFluidWrapper(stack),

@@ -181,7 +181,6 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.GREEN_APPLE.get());
         basicItem(ModItems.YELLOW_APPLE.get());
         handheld(ModItems.SPAWNER_EXTRACTOR);
-        handheld(ModItems.BONE_SWORD);
         basicItem(ModItems.MANGANESE_DUST.get());
         basicItem(ModItems.PIPE_EXTRACTOR.get());
         basicItem(ModItems.PIPE_FILTER.get());

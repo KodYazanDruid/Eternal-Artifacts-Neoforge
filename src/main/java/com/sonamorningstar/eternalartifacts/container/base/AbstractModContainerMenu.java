@@ -93,16 +93,70 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         return ret;
     }
     
-    //region Packet send from client to server.
-    public void fakeSlotSynch(UpdateFakeSlotToServer pkt) {
-    
-    }
-    public void receiveStringPkt(SendStringToServer pkt) {
-    
-    }
-    //endregion
-    
     @Override
+    protected boolean moveItemStackTo(ItemStack stack, int start, int end, boolean isReverse) {
+        boolean ret = false;
+        int index = isReverse ? end - 1 : start;
+        
+        if (stack.isStackable()) {
+            while (!stack.isEmpty() && (isReverse ? index >= start : index < end)) {
+                Slot slot = this.slots.get(index);
+                ItemStack slotStack = slot.getItem();
+                
+                if (!slotStack.isEmpty()
+                    && slot.mayPlace(stack)
+                    && ItemStack.isSameItemSameTags(stack, slotStack)) {
+                    
+                    int maxSize = Math.min(slot.getMaxStackSize(stack), slotStack.getMaxStackSize());
+                    int canMove = Math.min(maxSize - slotStack.getCount(), stack.getCount());
+                    
+                    if (canMove > 0) {
+                        ItemStack newSlotStack = slotStack.copy();
+                        newSlotStack.grow(canMove);
+                        
+                        ItemStack newStack = stack.copy();
+                        newStack.shrink(canMove);
+                        
+                        slot.setByPlayer(newSlotStack);
+                        stack.setCount(newStack.getCount());
+                        updateSlot(slot);
+                        
+                        ret = true;
+                    }
+                }
+                
+                index = isReverse ? index - 1 : index + 1;
+            }
+        }
+        
+        if (!stack.isEmpty()) {
+            index = isReverse ? end - 1 : start;
+            
+            while (isReverse ? index >= start : index < end) {
+                Slot slot = this.slots.get(index);
+                
+                if (slot.getItem().isEmpty() && slot.mayPlace(stack)) {
+                    int max = slot.getMaxStackSize(stack);
+                    
+                    if (stack.getCount() > max) {
+                        slot.setByPlayer(stack.split(max));
+                    } else {
+                        slot.setByPlayer(stack.split(stack.getCount()));
+                    }
+                    
+                    updateSlot(slot);
+                    ret = true;
+                    break;
+                }
+                
+                index = isReverse ? index - 1 : index + 1;
+            }
+        }
+        
+        return ret;
+    }
+    
+    /*@Override
     protected boolean moveItemStackTo(ItemStack stack, int start, int end, boolean isReverse) {
         boolean ret = false;
         int index = start;
@@ -158,7 +212,16 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         }
         
         return ret;
+    }*/
+    
+    //region Packet send from client to server.
+    public void fakeSlotSynch(UpdateFakeSlotToServer pkt) {
+    
     }
+    public void receiveStringPkt(SendStringToServer pkt) {
+    
+    }
+    //endregion
     
     protected void updateSlot(Slot slot) {
         if (slot instanceof SlotItemHandler sih) {

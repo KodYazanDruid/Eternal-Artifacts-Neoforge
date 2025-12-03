@@ -653,6 +653,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('P', ModTags.Items.PLASTIC).define('A', ModTags.Items.INGOTS_ALUMINUM)
             .define('N', ModItems.OBLIVIUM_INGOT).define('S', ModTags.Items.INGOTS_BRONZE)
             .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PIPE_FILTER)
+            .pattern("BCB").define('B', Tags.Items.DYES_BLUE).define('C', ModItems.CARBON_PAPER)
+            .unlockedBy("has_item", has(ModItems.CARBON_PAPER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.PIPE_EXTRACTOR)
+            .pattern("OCO").define('O', Tags.Items.DYES_ORANGE).define('C', ModItems.CARBON_PAPER)
+            .unlockedBy("has_item", has(ModItems.CARBON_PAPER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLUEPRINT)
+                .pattern("BBB").pattern("BPB").pattern("BBB")
+                .define('B', Tags.Items.DYES_BLUE).define('P', Items.PAPER)
+                .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -715,6 +725,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .requires(ModTags.Items.DUSTS_COPPER).requires(ModTags.Items.DUSTS_COPPER)
                 .requires(ModTags.Items.DUSTS_COPPER).requires(ModTags.Items.DUSTS_TIN)
                 .unlockedBy("has_item", has(ModTags.Items.DUSTS_COPPER)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.CARBON_PAPER)
+            .requires(Items.PAPER).requires(ModTags.Items.DUSTS_COAL)
+            .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENTITY_CATALOGUE)
+            .requires(Tags.Items.GEMS_AMETHYST).requires(ModTags.Items.SLIMEBALLS_PINK).requires(ModItems.ENDER_TABLET)
+            .unlockedBy("has_item", has(ModItems.ENDER_TABLET)).save(recipeOutput);
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }

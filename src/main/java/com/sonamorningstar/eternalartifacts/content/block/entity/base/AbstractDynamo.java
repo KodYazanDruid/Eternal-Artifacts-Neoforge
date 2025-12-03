@@ -26,7 +26,12 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 		super(type, pos, blockState, quadF);
 		setEnergy(() -> createBasicEnergy(100000, 5000, false, true));
 	}
-	private int tickCounter = 0;
+	
+	private float animProgress = 0f;
+	private float animSpeed = 0f;
+	private float targetAnimSpeed = 0f;
+	float lastWave = 0f;
+	
 	public boolean isWorking = false;
 	@Getter
 	protected DynamoProcessCache cache;
@@ -80,18 +85,26 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 		setMaxProgress(recipe.getDuration() * ((eff / 5) + 1));
 	}
 	
-	public float getAnimationLerp(float tick) {
-		return Mth.lerp((1.0F - Mth.cos((tick + tickCounter) * 0.25F)) / 2F, 6.0F, 9.0F);
+	public float getAnimationLerp(float partialTick) {
+		float anim = animProgress + animSpeed * partialTick;
+		float phase = anim * (float)(Math.PI * 2);
+		float rawWave = (1 - Mth.cos(phase)) * 0.5f;
+		float smoothFactor = isWorking ? 1f : 0.15f;
+		lastWave += (rawWave - lastWave) * smoothFactor;
+		return Mth.lerp(lastWave, 6f, 9f);
+	}
+	
+	@Override
+	public void tickClient(Level lvl, BlockPos pos, BlockState st) {
+		float targetSpeed = isWorking ? 0.1f : 0f;
+		float accel = 0.04f;
+		animSpeed += (targetSpeed - animSpeed) * accel;
+		if (Math.abs(animSpeed) < 0.0001f) animSpeed = 0f;
+		animProgress = (animProgress + animSpeed) % 1f;
 	}
 	
 	@Override
 	protected void applyEfficiency(int level) {}
-	
-	@Override
-	public void tickClient(Level lvl, BlockPos pos, BlockState st) {
-		if(isWorking) tickCounter++;
-		else tickCounter = 0;
-	}
 	
 	@Override
 	public boolean isGenerator() {
@@ -113,6 +126,9 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 			progress = cache.getDuration();
 			if(!cache.isDone() && redstoneChecks(lvl)) {
 				cache.process();
+			} else if (!cache.isDone() && !redstoneChecks(lvl)) {
+				isWorking = false;
+				sendUpdate();
 			} else if (cache.isDone()) {
 				cache = null;
 				progress = 0;

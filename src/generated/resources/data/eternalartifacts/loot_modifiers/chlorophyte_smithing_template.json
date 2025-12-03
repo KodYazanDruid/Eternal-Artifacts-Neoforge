@@ -1,0 +1,15 @@
+{
+  "type": "eternalartifacts:add_item_list",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/jungle_temple"
+    }
+  ],
+  "itemstack": [
+    {
+      "Count": 1,
+      "id": "eternalartifacts:chlorophyte_upgrade_smithing_template"
+    }
+  ]
+}

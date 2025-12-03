@@ -32,22 +32,175 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 	private int color = 0xFFFFFFFF;
 	private final List<Consumer<SimpleDraggablePanel>> onCloseListeners = new ArrayList<>();
 	private final List<Bounds> undragAreas = new ArrayList<>();
+	private final List<Bounds> occupiedAreas = new ArrayList<>();
 	public SimpleDraggablePanel(Component title, int pX, int pY, int pWidth, int pHeight, Bounds bounds) {
 		super(pX, pY, pWidth, pHeight, title);
 		this.bounds = bounds;
 	}
 	
 	public void addClosingButton() {
-		addChildren((fX, fY, fW, fH) -> SpriteButton.builder(Component.empty(), (b, i) -> {
+		addChildren((fX, fY, fW, fH) -> {
+			var button = SpriteButton.builder(Component.empty(), (b, i) -> {
 					this.visible = false;
 					this.active = false;
 					for (Consumer<SimpleDraggablePanel> listener : onCloseListeners) {
 						listener.accept(SimpleDraggablePanel.this);
 					}
 				}, new ResourceLocation(MODID, "textures/gui/sprites/sided_buttons/deny.png"))
-				.bounds(fX + fW - 13, fY + 4, 9, 9).build()
-		);
+				.bounds(fX + fW - 13, fY + 4, 9, 9).build();
+			occupiedAreas.add(new Bounds(button.getX(), button.getY(), button.getWidth(), button.getHeight()));
+			return button;
+		});
 	}
+	
+	public enum PlacementMode {
+		AUTO,
+		VERTICAL,
+		HORIZONTAL,
+		RELATIVE
+	}
+	
+	public void addChildrenToUnoccupied(AbstractWidget widget, PlacementMode mode, int relativeX, int relativeY, int padding) {
+		if (widget == null) return;
+		
+		Position position = switch (mode) {
+			case VERTICAL -> findVerticalPosition(widget.getWidth(), widget.getHeight(), padding);
+			case HORIZONTAL -> findHorizontalPosition(widget.getWidth(), widget.getHeight(), padding);
+			case AUTO -> findAvailablePosition(widget.getWidth(), widget.getHeight(), padding);
+			case RELATIVE -> findRelativePosition(relativeX, relativeY);
+		};
+		
+		if (position != null) {
+			widget.setPosition(position.x(), position.y());
+			
+			addChildren((fx, fy, fw, fh) -> {
+				widget.setPosition(position.x(), position.y());
+				return widget;
+			});
+			
+			int cacheX = mode == PlacementMode.RELATIVE ? relativeX : position.x() - this.getX();
+			int cacheY = mode == PlacementMode.RELATIVE ? relativeY : position.y() - this.getY();
+			
+			occupiedAreas.add(new Bounds(cacheX, cacheY, widget.getWidth(), widget.getHeight()));
+		}
+	}
+	
+	public void addChildrenToUnoccupied(AbstractWidget widget, PlacementMode mode, int padding) {
+		addChildrenToUnoccupied(widget, mode, 0, 0, padding);
+	}
+	
+	public void addChildrenToUnoccupied(AbstractWidget widget, int relativeX, int relativeY, int padding) {
+		addChildrenToUnoccupied(widget, PlacementMode.RELATIVE, relativeX, relativeY, padding);
+	}
+	
+	public void addWidgetGroup(List<WidgetPosition> widgets, int padding) {
+		int leastX = 0;
+		int leastY = 0;
+		int totalWidth = 0;
+		int totalHeight = 0;
+		for (WidgetPosition wp : widgets) {
+			if (wp.relativeX() < leastX) leastX = wp.relativeX();
+			if (wp.relativeY() < leastY) leastY = wp.relativeY();
+			if (wp.relativeX() + wp.widget().getWidth() > totalWidth) {
+				totalWidth = wp.relativeX() + wp.widget().getWidth();
+			}
+			if (wp.relativeY() + wp.widget().getHeight() > totalHeight) {
+				totalHeight = wp.relativeY() + wp.widget().getHeight();
+			}
+		}
+		occupiedAreas.add(new Bounds(leastX, leastY, totalWidth, totalHeight));
+		for (WidgetPosition wp : widgets) {
+			addChildrenToUnoccupied(wp.widget(), PlacementMode.RELATIVE, wp.relativeX(), wp.relativeY(), padding);
+		}
+	}
+	
+	private Position findRelativePosition(int relativeX, int relativeY) {
+		int startX = this.getX() + 4;
+		int startY = this.getY() + 4;
+		return new Position(startX + relativeX, startY + relativeY);
+	}
+	
+	private Position findVerticalPosition(int widgetWidth, int widgetHeight, int padding) {
+		int startX = this.getX() + 4;
+		int startY = this.getY() + 4;
+		int maxY = this.getY() + this.getHeight() - padding;
+		
+		int bottomY = startY;
+		for (Bounds occupied : occupiedAreas) {
+			int occupiedBottom = occupied.y() + occupied.height() + this.getY();
+			if (occupiedBottom > bottomY) {
+				bottomY = occupiedBottom;
+			}
+		}
+		
+		int newY = bottomY + padding;
+		if (newY + widgetHeight <= maxY) {
+			return new Position(startX, newY);
+		}
+		return null;
+	}
+	
+	private Position findHorizontalPosition(int widgetWidth, int widgetHeight, int padding) {
+		int startX = this.getX() + 4;
+		int startY = this.getY() + 4;
+		int maxX = this.getX() + this.getWidth() - padding;
+		
+		int rightX = startX;
+		for (Bounds occupied : occupiedAreas) {
+			int occupiedRight = occupied.x() + occupied.width() + this.getX();
+			if (occupiedRight > rightX) {
+				rightX = occupiedRight;
+			}
+		}
+		
+		int newX = rightX == startX ? rightX : rightX + padding;
+		if (newX + widgetWidth <= maxX) {
+			return new Position(newX, startY);
+		}
+		return null;
+	}
+	
+	private Position findAvailablePosition(int widgetWidth, int widgetHeight, int padding) {
+		int startX = this.getX() + 4;
+		int startY = this.getY() + 16;
+		int maxX = this.getX() + this.getWidth() - padding;
+		int maxY = this.getY() + this.getHeight() - padding;
+		
+		for (int y = startY; y + widgetHeight <= maxY; y += padding) {
+			for (int x = startX; x + widgetWidth <= maxX; x += padding) {
+				Bounds testBounds = new Bounds(
+					x - this.getX(),
+					y - this.getY(),
+					widgetWidth,
+					widgetHeight
+				);
+				
+				if (!hasOverlap(testBounds)) {
+					return new Position(x, y);
+				}
+			}
+		}
+		return null;
+	}
+	
+	private boolean hasOverlap(Bounds testBounds) {
+		for (Bounds occupied : occupiedAreas) {
+			if (boundsOverlap(testBounds, occupied)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean boundsOverlap(Bounds a, Bounds b) {
+		return a.x() < b.x() + b.width() &&
+			a.x() + a.width() > b.x() &&
+			a.y() < b.y() + b.height() &&
+			a.y() + a.height() > b.y();
+	}
+	
+	public record Position(int x, int y) {}
+	public record WidgetPosition(AbstractWidget widget, int relativeX, int relativeY) {}
 	
 	public void addOnCloseListener(Consumer<SimpleDraggablePanel> consumer) {
 		onCloseListeners.add(consumer);

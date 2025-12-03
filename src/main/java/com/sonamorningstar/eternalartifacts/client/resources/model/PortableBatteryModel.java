@@ -28,7 +28,7 @@ public class PortableBatteryModel<L extends LivingEntity> extends HumanoidModel<
         );
         return LayerDefinition.create(mesh, 32, 32);
     }
-
+    
     @Override
     protected Iterable<ModelPart> headParts() {return ImmutableList.of();}
     @Override

@@ -51,6 +51,11 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                         LootItemBlockTagCondition.builder(BlockTags.LEAVES).build()
                 }
         ));
+        add("chlorophyte_smithing_template", new AddItemListModifier(
+            new LootItemCondition[]{
+                LootTableIdCondition.builder(BuiltInLootTables.JUNGLE_TEMPLE).build()
+            }, List.of(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.toStack())
+        ));
         
         
         add("hammering", new HammeringModifier(

@@ -19,6 +19,8 @@ import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BatteryBox;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -56,10 +58,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.gui.overlay.VanillaGuiOverlay;
 import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
@@ -104,13 +109,16 @@ public class ClientModEvents {
         event.register(SideConfig.class, (config, ctx) -> {
             SimpleDraggablePanel panel = ctx.panel;
             AbstractModContainerScreen<?> screen = ctx.screen;
+            
+            if (!(screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+            if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+            
+            List<SimpleDraggablePanel.WidgetPosition> sideButtons = new ArrayList<>();
+            
             for (int i = 0; i < 6; i++) {
-                int finalI = i;
-                if (!(screen.getMenu() instanceof AbstractMachineMenu amm)) continue;
-                if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) continue;
-                
-                Direction dir = Direction.from3DDataValue(finalI);
-                String sideName = switch (finalI)  {
+				
+				Direction dir = Direction.from3DDataValue(i);
+                String sideName = switch (i)  {
                     case 0 -> "up";
                     case 1 -> "left";
                     case 2 -> "front";
@@ -138,6 +146,7 @@ public class ClientModEvents {
                         .append(": ").append(ModConstants.GUI.withSuffixTranslatable(type.apply(dir).toString().toLowerCase())))
                     .size(9, 9).build();
                 
+                /*panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(4, 4, 29, 29));
                 panel.addChildren((fx, fy, fw, fh) -> {
                     switch (finalI) {
                         case 0 -> sideButton.setPosition(fx + 14, fy + 4);
@@ -148,8 +157,25 @@ public class ClientModEvents {
                         case 5 -> sideButton.setPosition(fx + 24, fy + 24);
                     }
                     return sideButton;
-                });
+                });*/
+                // Relative pozisyonlar
+                int relX = switch (i) {
+                    case 0, 2, 4 -> 10; // up, front, down - ortada
+                    case 1 -> 0;        // left
+                    case 3, 5 -> 20;    // right, back
+                    default -> 0;
+                };
+                
+                int relY = switch (i) {
+                    case 0 -> 0;        // up
+                    case 1, 2, 3 -> 10; // left, front, right - ortada
+                    case 4, 5 -> 20;    // down, back
+                    default -> 0;
+                };
+                
+                sideButtons.add(new SimpleDraggablePanel.WidgetPosition(sideButton, relX, relY));
             }
+            panel.addWidgetGroup(sideButtons, 1);
         });
         
         event.register(AutoTransferConfig.class, (config, ctx) -> {
@@ -183,6 +209,7 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("auto_output")
                     .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isOutput() ? "enabled" : "disabled"))).build();
             
+            /*panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(34, 4, 9, 19));
             panel.addChildren((fx, fy, fw, fh) -> {
                 autoInput.setPosition(fx + 34, fy + 4);
                 return autoInput;
@@ -190,7 +217,11 @@ public class ClientModEvents {
             panel.addChildren((fx, fy, fw, fh) -> {
                 autoOutput.setPosition(fx + 34, fy + 14);
                 return autoOutput;
-            });
+            });*/
+            panel.addWidgetGroup(List.of(
+                new SimpleDraggablePanel.WidgetPosition(autoInput, 30, 0),
+                new SimpleDraggablePanel.WidgetPosition(autoOutput, 30, 10)
+            ), 1);
         });
         
         event.register(ReverseToggleConfig.class, "block_mode", ((config, ctx) -> {
@@ -210,6 +241,7 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("block_mode")
                     .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 4, 9, 9));
             panel.addChildren((fx, fy, fw, fh) -> {
                 btn.setPosition(fx + 64, fy + 4);
                 return btn;
@@ -232,6 +264,7 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("fluid_mode")
                     .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
             panel.addChildren((fx, fy, fw, fh) -> {
                 btn.setPosition(fx + 64, fy + 14);
                 return btn;
@@ -255,6 +288,7 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("item_transportation")
                     .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 4, 9, 9));
             panel.addChildren((fx, fy, fw, fh) -> {
                 btn.setPosition(fx + 44, fy + 4);
                 return btn;
@@ -277,8 +311,10 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("fluid_transportation")
                     .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 14, 9, 9));
             panel.addChildren((fx, fy, fw, fh) -> {
-                btn.setPosition(fx + 44, fy + 14);
+                int yOffset = mbe.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, mbe.getBlockPos(), null) == null ? 4 : 14;
+                btn.setPosition(fx + 44, fy + yOffset);
                 return btn;
             });
         });
@@ -299,8 +335,12 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("energy_transportation")
                     .append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 24, 9, 9));
             panel.addChildren((fx, fy, fw, fh) -> {
-                btn.setPosition(fx + 44, fy + 24);
+                boolean hasInv = mbe.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, mbe.getBlockPos(), null) == null;
+                boolean hasTank = mbe.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, mbe.getBlockPos(), null) == null;
+                int yOffset = hasInv && hasTank ? 24 : hasInv || hasTank ? 14 : 4;
+                btn.setPosition(fx + 44, fy + yOffset);
                 return btn;
             });
         });
@@ -321,8 +361,10 @@ public class ClientModEvents {
                 .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("redstone")
                     .append(": ").append(getComponentForRedstone(mode.get()))).build();
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(54, 4, 9, 9));
             panel.addChildren((fx, fy, fw, fh) -> {
-                redstoneButton.setPosition(fx + 54, fy + 4);
+                int xOffset = (mbe instanceof AbstractDynamo<?>) ? 4 : 54;
+                redstoneButton.setPosition(fx + xOffset, fy + 4);
                 return redstoneButton;
             });
         });
@@ -356,6 +398,8 @@ public class ClientModEvents {
                 }
             };
             
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(34, 24, 9, 9));
+            panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(4, 34, panel.getWidth() - 8, 10));
             panel.addChildren((fx, fy, fw, fh) -> {
                 exportButton.setPosition(fx + 34, fy + 24);
                 return exportButton;
@@ -432,6 +476,7 @@ public class ClientModEvents {
         event.register(ModItems.PORTABLE_CRAFTER.get(), ModInventoryTabs.CRAFTER.get());
         event.register(Items.COD, ModInventoryTabs.FISH_TAB.get());
         event.register(ModItems.PORTABLE_BATTERY.get(), ModInventoryTabs.PORTABLE_BATTERY.get());
+        event.register(ModItems.PORTABLE_FURNACE.get(), ModInventoryTabs.PORTABLE_FURNACE.get());
     }
 
     @SubscribeEvent

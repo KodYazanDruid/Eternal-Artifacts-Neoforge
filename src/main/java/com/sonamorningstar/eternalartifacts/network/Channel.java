@@ -36,6 +36,9 @@ public class Channel {
         registrar.play(BlockPlaceOnClient.ID,
                 BlockPlaceOnClient::create,
                 handler -> handler.client(BlockPlaceOnClient::handle));
+        registrar.play(SyncCharmTagsToClient.ID,
+            SyncCharmTagsToClient::create,
+            handler -> handler.client(SyncCharmTagsToClient::handle));
 
         registrar.play(EnderNotebookAddNbtToServer.ID,
                 EnderNotebookAddNbtToServer::create,

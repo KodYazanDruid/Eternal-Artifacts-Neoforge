@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;

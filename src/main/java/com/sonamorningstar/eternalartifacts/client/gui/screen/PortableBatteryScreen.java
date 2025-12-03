@@ -37,7 +37,6 @@ public class PortableBatteryScreen extends AbstractModContainerScreen<PortableBa
 
     public PortableBatteryScreen(PortableBatteryMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
-        this.inventoryLabelY = this.imageHeight - 92;
     }
 
     @Override
@@ -120,9 +119,7 @@ public class PortableBatteryScreen extends AbstractModContainerScreen<PortableBa
     }
 
     @Override
-    protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {
-
-    }
+    protected void renderLabels(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY) {}
 
     private void renderEnergyBar(GuiGraphics gui, int mx, int my) {
         ItemStack stack = CharmManager.findCharm(Minecraft.getInstance().player, PortableBatteryItem.class);

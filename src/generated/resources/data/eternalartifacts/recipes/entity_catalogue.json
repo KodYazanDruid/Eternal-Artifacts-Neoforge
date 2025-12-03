@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "forge:gems/amethyst"
+    },
+    {
+      "tag": "forge:slimeballs/pink"
+    },
+    {
+      "item": "eternalartifacts:ender_tablet"
+    }
+  ],
+  "result": {
+    "item": "eternalartifacts:entity_catalogue"
+  }
+}

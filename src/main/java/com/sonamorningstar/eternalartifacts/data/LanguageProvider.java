@@ -1041,6 +1041,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModInventoryTabs.CRAFTER.get().getDescriptionId(), "Taşınabilir Üretim Masası");
                 add(ModInventoryTabs.FISH_TAB.get().getDescriptionId(), "Balık");
                 add(ModInventoryTabs.PORTABLE_BATTERY.get().getDescriptionId(), "Taşınabilir Pil");
+                add(ModInventoryTabs.PORTABLE_FURNACE.get().getDescriptionId(), "Taşınabilir Ocak");
                 //endregion
                 //region Türkçe Büyüler
                 add(ModEnchantments.VOLUME.get(), "Hacim");

@@ -14,9 +14,8 @@ public class ModItemStorage extends ItemStackHandler {
         super(size);
     }
     
-    public void addListener(IntConsumer listener) {
-        listeners.add(listener);
-    }
+    public void clearListeners() {listeners.clear();}
+    public void addListener(IntConsumer listener) {listeners.add(listener);}
 
     public ItemStack insertItemForced(int slot, ItemStack stack, boolean simulate) {
         if (stack.isEmpty())

@@ -36,6 +36,7 @@ public class ModScreens {
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);
         event.register(ModMenuTypes.BLUEPRINT.get(), BlueprintScreen::new);
         event.register(ModMenuTypes.PORTABLE_BATTERY.get(), PortableBatteryScreen::new);
+        event.register(ModMenuTypes.PORTABLE_FURNACE.get(), PortableFurnaceScreen::new);
         event.register(ModMenuTypes.MACHINE_WORKBENCH.get(), MachineWorkbenchScreen::new);
         event.register(ModMenuTypes.PIPE_FILTER.get(), PipeFilterScreen::new);
         event.register(ModMenuTypes.PIPE_FILTER_ITEM.get(), PipeFilterItemScreen::new);

@@ -24,11 +24,13 @@ public class ModInventoryTabs {
     public static final DeferredHolder<TabType<?>, TabType<TankKnapsackTab>> TANK_KNAPSACK = register("tank_knapsack",
             TabType.create(TankKnapsackTab::new, ModItems.TANK_KNAPSACK));
     public static final DeferredHolder<TabType<?>, TabType<CrafterTab>> CRAFTER = register("crafter",
-            TabType.create(CrafterTab::new, ModItems.PORTABLE_CRAFTER));
+            TabType.create(CrafterTab::new, () -> Items.CRAFTING_TABLE));
     public static final DeferredHolder<TabType<?>, TabType<FishTab>> FISH_TAB = register("fish_tab",
             TabType.create(FishTab::new, () -> Items.COD));
     public static final DeferredHolder<TabType<?>, TabType<PortableBatteryTab>> PORTABLE_BATTERY = register("portable_battery",
             TabType.create(PortableBatteryTab::new, ModItems.PORTABLE_BATTERY));
+    public static final DeferredHolder<TabType<?>, TabType<PortableFurnaceTab>> PORTABLE_FURNACE = register("portable_furnace",
+        TabType.create(PortableFurnaceTab::new, () -> Items.FURNACE));
 
     public static final DeferredHolder<TabType<?>, TabType<CatTab>> CAT = register("cat",
             TabType.create(CatTab::new, ModItems.CHLOROPHYTE_INGOT));

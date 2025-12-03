@@ -96,6 +96,8 @@ public class MobLiquifier extends GenericMachine implements AreaRenderer {
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
+        if (!redstoneChecks(lvl)) return;
+        
         livingList = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos, st))
                         .stream().filter(living -> {
                     EntityType<?> type = living.getType();
@@ -107,22 +109,18 @@ public class MobLiquifier extends GenericMachine implements AreaRenderer {
             return;
         }
 
-        //Entity to hurt
         LivingEntity entityToHurt = null;
         MobLiquifierRecipe recipe = null;
-        //Finding entity to hurt that fits recipe.
         for(LivingEntity living : livingList) {
             findRecipe();
             recipe = (MobLiquifierRecipe) RecipeCache.getCachedRecipe(this);
             if(recipe == null) continue;
             setProcessCondition(new ProcessCondition(this), recipe);
-            //Found entity to hurt.
             if(recipe.getEntity().test(living.getType())) {
                 entityToHurt = living;
                 break;
             }
         }
-        //If recipe is correct and entity is present
         if(recipe != null && entityToHurt != null) {
             NonNullList<FluidStack> outputs = recipe.getResultFluidList();
             LivingEntity finalEntityToHurt = entityToHurt;

@@ -237,7 +237,7 @@ public class ModItems {
     public static final DeferredItem<Item> STEEL_LEGGINGS = registerStacksToOne("steel_leggings", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> STEEL_BOOTS = registerStacksToOne("steel_boots", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<Item> SPAWNER_EXTRACTOR = registerStacksToOne("spawner_extractor", p -> new SpawnerExtractorItem(p.durability(32)));
-    public static final DeferredItem<Item> BONE_SWORD = registerStacksToOne("bone_sword", p -> new SwordItem(ModTiers.BONE, 3, -2.4f, p));
+    //public static final DeferredItem<Item> BONE_SWORD = registerStacksToOne("bone_sword", p -> new SwordItem(ModTiers.BONE, 3, -2.4f, p));
     //public static final DeferredItem<Item> BONE_PICKAXE = registerStacksToOne("bone_pickaxe", p -> new PickaxeItem(ModTiers.BONE, 1, -2.8f, p));
     //public static final DeferredItem<Item> BONE_AXE = registerStacksToOne("bone_axe", p -> new AxeItem(ModTiers.BONE, 7, -3.2f, p));
     //public static final DeferredItem<Item> BONE_SHOVEL = registerStacksToOne("bone_shovel", p -> new ShovelItem(ModTiers.BONE, 1.5F, -3.0f, p));

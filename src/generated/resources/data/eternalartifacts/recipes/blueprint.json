@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "forge:dyes/blue"
+    },
+    "P": {
+      "item": "minecraft:paper"
+    }
+  },
+  "pattern": [
+    "BBB",
+    "BPB",
+    "BBB"
+  ],
+  "result": {
+    "item": "eternalartifacts:blueprint"
+  }
+}

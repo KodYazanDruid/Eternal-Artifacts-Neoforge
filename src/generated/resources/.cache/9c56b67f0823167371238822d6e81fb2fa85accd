@@ -1,4 +1,4 @@
-// 1.20.4	2025-10-28T20:28:54.710538	Item Models: eternalartifacts
+// 1.20.4	2025-11-27T16:00:11.865586	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -26,7 +26,6 @@ db8b9c9664f4691f8d51eb49b90fbd131328adb7 assets/eternalartifacts/models/item/blo
 1ffc3427c887c5d5c465a7e723f7a91153047c2b assets/eternalartifacts/models/item/blueprint.json
 4f3f04bd8fe76afcc7ef40bf91ea8543534c7b2b assets/eternalartifacts/models/item/blueprint_filled.json
 97c8edd3885a1a66a113fd397ebfd3371d838472 assets/eternalartifacts/models/item/blue_shulker_shell.json
-96b27d4376a39cb9393932cb873bdc28f44b91f8 assets/eternalartifacts/models/item/bone_sword.json
 e70beb239a80ccc545f14a4567b781cf9b22eaad assets/eternalartifacts/models/item/bottler.json
 a4ff47382565473dbee87cf9b28ca93ef7a781ef assets/eternalartifacts/models/item/bronze_dust.json
 6cc211a25464771fc73581c9c8bd56538fb0d400 assets/eternalartifacts/models/item/bronze_ingot.json
