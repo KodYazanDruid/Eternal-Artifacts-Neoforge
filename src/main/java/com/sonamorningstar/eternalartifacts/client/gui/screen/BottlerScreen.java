@@ -2,10 +2,8 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.BottlerMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Bottler;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,24 +18,10 @@ public class BottlerScreen extends AbstractSidedMachineScreen<BottlerMenu> {
 	}
 	
 	@Override
-	protected void init() {
-		super.init();
-		addRenderableWidget(Button.builder(Component.empty(), b -> {
-			if (menu.getBlockEntity() instanceof Bottler bottler) {
-				bottler.mode = !bottler.mode;
-				bottler.sendUpdate();
-			}
-			minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 0);
-		}).bounds(leftPos + 130, topPos + 50, 20, 20).build());
-	}
-	
-	@Override
 	public void render(GuiGraphics gui, int mx, int my, float partialTick) {
 		super.render(gui, mx, my, partialTick);
 		renderDefaultEnergyBar(gui);
 		renderFluidBar(gui, leftPos + imageWidth - 24, topPos + 20);
-		gui.drawString(font, menu.getBlockEntity() instanceof Bottler bottler ?
-			bottler.mode ? "Empty" : "Fill" : "Mode", leftPos + 110, topPos + 50, 0x404040, false);
 	}
 	
 	@Override

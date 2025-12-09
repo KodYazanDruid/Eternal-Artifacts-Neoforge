@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInterac
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.api.farm.FarmBehaviorRegistry;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineEnchants;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
@@ -11,6 +12,7 @@ import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModPotions;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterFarmBehaviorEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -44,7 +46,6 @@ public class FMLCommonSetup {
     @SubscribeEvent
     public static void event(final FMLCommonSetupEvent event) {
         event.enqueueWork(()-> {
-            ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.TIGRIS_FLOWER.getId(), ModBlocks.POTTED_TIGRIS);
             registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
             setupCauldronInteractions();
@@ -52,6 +53,7 @@ public class FMLCommonSetup {
             registerDispenserBehaviours();
             registerPotions();
             MachineEnchants.bootstrap();
+            FarmBehaviorRegistry.bootstrap();
             
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.DROWNED, ModItems.DROWNED_HEAD.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.HUSK, ModItems.HUSK_HEAD.get());
@@ -61,6 +63,8 @@ public class FMLCommonSetup {
             TesseractNetwork.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
             TesseractNetwork.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
             TesseractNetwork.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
+            ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
+            ModLoader.get().postEvent(new RegisterFarmBehaviorEvent());
         });
 
     }

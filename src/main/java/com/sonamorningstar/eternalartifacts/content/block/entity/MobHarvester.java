@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
@@ -19,7 +19,7 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 
 import java.util.List;
 
-public class MobHarvester extends GenericMachine implements AreaRenderer {
+public class MobHarvester extends GenericMachine implements WorkingAreaProvider {
 	public MobHarvester(BlockPos pos, BlockState blockState) {
 		super(ModMachines.MOB_HARVESTER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
@@ -58,7 +58,7 @@ public class MobHarvester extends GenericMachine implements AreaRenderer {
 		fakePlayer.detectEquipmentUpdates();
 		if (fakePlayer instanceof LivingEntityExposer exp) exp.incrementAttackStrengthTicker(1);
 		if (canWork(energy) && fakePlayer.getAttackStrengthScale(0) == 1.0F) {
-			List<LivingEntity> targets = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(getBlockPos(), getBlockState()))
+			List<LivingEntity> targets = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(getBlockPos()))
 				.stream().filter(living ->
 					!living.isSpectator() && !living.isDeadOrDying() &&
 						living.isAlive() && !living.isInvulnerable() &&
@@ -71,18 +71,9 @@ public class MobHarvester extends GenericMachine implements AreaRenderer {
 		}
 	}
 	
-	private static AABB getWorkingArea(BlockPos pos, BlockState state) {
-		Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-		return new AABB(pos.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
-	}
-	
 	@Override
-	public boolean shouldRender() {
-		return false;
-	}
-	
-	@Override
-	public AABB getWorkingArea() {
-		return getWorkingArea(getBlockPos(), getBlockState());
+	public AABB getWorkingArea(BlockPos anchor) {
+		Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+		return new AABB(anchor.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
 	}
 }

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
@@ -45,7 +46,9 @@ public class ModBlockEntity extends BlockEntity {
         registerConfigs();
     }
     
-    public void registerConfigs() {}
+    public void registerConfigs() {
+        if (this instanceof WorkingAreaProvider) configuration.add(new ToggleConfig("render_area"));
+    }
     
     public void registerCapabilityConfigs(BlockCapability<?,?> cap) {}
     

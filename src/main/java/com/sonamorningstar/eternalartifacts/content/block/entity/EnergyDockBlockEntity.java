@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.content.block.EnergyDockBlock;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
@@ -21,7 +21,7 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class EnergyDockBlockEntity extends ModBlockEntity implements TickableServer, AreaRenderer {
+public class EnergyDockBlockEntity extends ModBlockEntity implements TickableServer, WorkingAreaProvider {
     @Nullable
     private final ModEnergyStorage energy;
     private DockPart part;
@@ -77,7 +77,7 @@ public class EnergyDockBlockEntity extends ModBlockEntity implements TickableSer
 
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        List<ChargedSheepEntity> entities = lvl.getEntitiesOfClass(ChargedSheepEntity.class, getWorkingArea());
+        List<ChargedSheepEntity> entities = lvl.getEntitiesOfClass(ChargedSheepEntity.class, getWorkingArea(pos));
         for (ChargedSheepEntity sheep : entities) {
             ModEnergyStorage energy = getEnergy();
             IEnergyStorage sheepEnergy = sheep.getCapability(Capabilities.EnergyStorage.ENTITY, null);
@@ -88,13 +88,8 @@ public class EnergyDockBlockEntity extends ModBlockEntity implements TickableSer
     }
 
     @Override
-    public boolean shouldRender() {
-        return false;
-    }
-
-    @Override
-    public AABB getWorkingArea() {
-        if (part == DockPart.CENTER) return new AABB(getBlockPos()).inflate(1, 0.5, 1).move(0, 0.5, 0);
+    public AABB getWorkingArea(BlockPos anchor) {
+        if (part == DockPart.CENTER) return new AABB(anchor).inflate(1, 0.5, 1).move(0, 0.5, 0);
         return null;
     }
 }

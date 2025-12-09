@@ -2,9 +2,11 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
+import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
 import com.sonamorningstar.eternalartifacts.capabilities.HeatStorage;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
@@ -44,7 +46,13 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
             sendUpdate();
         }
     };
-
+    
+    @Override
+    public void registerConfigs() {
+        super.registerConfigs();
+        getConfiguration().add(new ReverseToggleConfig("heat"));
+    }
+    
     @Override
     protected void saveSynced(CompoundTag tag) {
         super.saveSynced(tag);
@@ -178,23 +186,26 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
             heat.heat(1, false);
             energy.extractEnergyForced(heatKeepCost, false);
         } else {
-            if (isThereACoil(lvl, pos) && isEnergyEnough && currentHeat > 0) {
+            if (preventCooling(lvl, pos) && isEnergyEnough && currentHeat > 0) {
                 int energyToExtract = (int)(heatKeepCost * (currentHeat / (float)heat.getMaxHeat()));
                 energy.extractEnergyForced(Math.max(1, energyToExtract), false);
-            }
-            else if (currentHeat > 0) {
+            } else if (currentHeat > 0) {
                 heat.cool(1, false);
             }
         }
     }
 
-    private boolean isThereACoil(Level level, BlockPos pos) {
-        for(Direction dir : Direction.values()) {
+    private boolean preventCooling(Level level, BlockPos pos) {
+        /*for(Direction dir : Direction.values()) {
             BlockState state = level.getBlockState(pos.relative(dir));
             if (state.is(Blocks.LIGHTNING_ROD)) {
                 Direction stateFacing = state.getValue(BlockStateProperties.FACING);
                 if (stateFacing == dir) return true;
             }
+        }*/
+        ReverseToggleConfig heatConfig = getConfiguration().get(ReverseToggleConfig.class, "heat");
+        if (heatConfig != null) {
+            return !heatConfig.isDisabled();
         }
         return false;
     }

@@ -24,6 +24,11 @@ public class MachineConfiguration {
     }
     
     @SuppressWarnings("unchecked")
+    public <T extends Config> @Nullable T get(Class<T> cls, String suffix) {
+        return (T) configs.get(ConfigLocations.getWithSuffix(cls, suffix));
+    }
+    
+    @SuppressWarnings("unchecked")
     public <T extends Config> @Nullable T get(Class<T> configClass) {
         return (T) configs.get(ConfigLocations.getConfigLocation(configClass));
     }

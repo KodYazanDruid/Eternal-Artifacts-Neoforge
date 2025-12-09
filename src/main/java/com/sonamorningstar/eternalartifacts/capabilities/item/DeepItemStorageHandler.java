@@ -24,7 +24,7 @@ public class DeepItemStorageHandler extends ItemStackHandler {
 	
 	@Override
 	protected void onContentsChanged(int slot) {
-		unit.setChanged();
+		unit.sendUpdate();
 	}
 	
 	@Override

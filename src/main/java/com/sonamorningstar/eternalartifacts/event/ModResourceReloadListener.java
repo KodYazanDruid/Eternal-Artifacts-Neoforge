@@ -2,9 +2,11 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Harvester;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Packer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Recycler;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
@@ -12,6 +14,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Map;
@@ -24,7 +27,10 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
     public void onResourceManagerReload(ResourceManager manager) {
         CharmType.itemCharmTypes.clear();
         RecipeCache.clearCache();
-
+        
+        Harvester.hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> Harvester.isHoe(item.getDefaultInstance())).toArray(Item[]::new);
+        Harvester.cachedLootTables.clear();
+        
         ResourceLocation hammeringTags = new ResourceLocation(MODID, "loot_tables/hammering/tags");
         ResourceLocation hammeringBlocks = new ResourceLocation(MODID, "loot_tables/hammering/blocks");
 

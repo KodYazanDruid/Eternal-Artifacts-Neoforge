@@ -10,7 +10,9 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 public class DSUFluidRenderer implements BlockEntityRenderer<DeepFluidStorageUnit> {
@@ -28,9 +30,16 @@ public class DSUFluidRenderer implements BlockEntityRenderer<DeepFluidStorageUni
 			pose.scale(0.5f, 0.5f, 0.5f);
 			pose.translate(1, 0.85, 1);
 			for (Direction dir : Direction.values()) {
-				if (dir.getAxis() == Direction.Axis.Y) continue;
+				if (dir.getAxis().isVertical()) continue;
+				if (dsu.hasLevel()) {
+					BlockPos neighborPos = dsu.getBlockPos().relative(dir);
+					if (!Block.shouldRenderFace(dsu.getBlockState(), dsu.getLevel(), dsu.getBlockPos(),
+						dir, neighborPos)) {
+						continue;
+					}
+				}
 				pose.pushPose();
-				pose.mulPose(Axis.YP.rotationDegrees(90.0F * dir.get2DDataValue()));
+				pose.mulPose(Axis.YP.rotationDegrees(180 - (90.0F * dir.get2DDataValue())));
 				pose.translate(-0.5, 0,-1.005);
 				RendererHelper.renderFluidTile(stored, pose, buff, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY);
 				pose.translate(0.5 - (float)2/16, -0.85 + (float)9/16, 0);

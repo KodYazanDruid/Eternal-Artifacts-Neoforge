@@ -138,7 +138,7 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
             if(potEntity != null){
                 Block neighborBlock = neighborState.getBlock();
                 //Getting drops
-                List<ItemStack> drops = BlockHelper.getBlockDrops(level, neighborState, neighborPos, ItemStack.EMPTY, potEntity, null);
+                List<ItemStack> drops = BlockHelper.getBlockDrops(level, neighborState, neighborPos, ItemStack.EMPTY, level.getBlockEntity(neighborPos), null);
 
                 if (neighborBlock instanceof CropBlock crop) {
                     if (crop.getAge(neighborState) == crop.getMaxAge()) {

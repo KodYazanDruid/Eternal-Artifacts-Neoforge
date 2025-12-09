@@ -156,64 +156,6 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
         return ret;
     }
     
-    /*@Override
-    protected boolean moveItemStackTo(ItemStack stack, int start, int end, boolean isReverse) {
-        boolean ret = false;
-        int index = start;
-        if (isReverse) index = end - 1;
-        
-        if (stack.isStackable()) {
-            while(!stack.isEmpty() && (isReverse ? index >= start : index < end)) {
-                Slot slot = this.slots.get(index);
-                ItemStack slotStack = slot.getItem();
-                if (!slotStack.isEmpty() && ItemStack.isSameItemSameTags(stack, slotStack)) {
-                    int totalCount = slotStack.getCount() + stack.getCount();
-                    int maxSize = Math.min(slot.getMaxStackSize(stack), stack.getMaxStackSize());
-                    if (totalCount <= maxSize) {
-                        stack.setCount(0);
-                        slotStack.setCount(totalCount);
-                        updateSlot(slot);
-                        ret = true;
-                    } else if (slotStack.getCount() < maxSize) {
-                        stack.shrink(maxSize - slotStack.getCount());
-                        slotStack.setCount(maxSize);
-                        updateSlot(slot);
-                        ret = true;
-                    }
-                }
-                
-                if (isReverse) --index;
-                else ++index;
-            }
-        }
-        
-        if (!stack.isEmpty()) {
-            if (isReverse) index = end - 1;
-            else index = start;
-            
-            while(isReverse ? index >= start : index < end) {
-                Slot slot = this.slots.get(index);
-                ItemStack slotStack = slot.getItem();
-                if (slotStack.isEmpty() && slot.mayPlace(stack)) {
-                    if (stack.getCount() > slot.getMaxStackSize(stack)) {
-                        slot.setByPlayer(stack.split(slot.getMaxStackSize(stack)));
-                    } else {
-                        slot.setByPlayer(stack.split(stack.getCount()));
-                    }
-                    
-                    updateSlot(slot);
-                    ret = true;
-                    break;
-                }
-                
-                if (isReverse) --index;
-                else ++index;
-            }
-        }
-        
-        return ret;
-    }*/
-    
     //region Packet send from client to server.
     public void fakeSlotSynch(UpdateFakeSlotToServer pkt) {
     

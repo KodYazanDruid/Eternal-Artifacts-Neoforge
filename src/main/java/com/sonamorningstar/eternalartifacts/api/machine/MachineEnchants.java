@@ -85,7 +85,6 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.PACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.UNPACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ALCHEMICAL_BREWER.getBlockEntity(), commonMachineEnchants);
-		enchantMap.put(ModMachines.HARVESTER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
@@ -93,6 +92,7 @@ public class MachineEnchants {
 		
 		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.BOTTLER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
+		enchantMap.put(ModMachines.HARVESTER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		
 		enchantMap.put(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
 		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), dynamoEnchants);

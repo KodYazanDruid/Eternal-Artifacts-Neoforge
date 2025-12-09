@@ -8,7 +8,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -51,35 +50,6 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
         addDataSlots(data);
         if (blockEntity instanceof SidedTransferMachine<?> sided) outputSlots.addAll(sided.outputSlots);
         if (blockEntity instanceof ModBlockEntity mbe) setMachineConfigs(mbe.getConfiguration());
-    }
-
-    @Override
-    public ItemStack quickMoveStack(Player player, int index) {
-         ItemStack itemstack = ItemStack.EMPTY;
-         Slot slot = this.slots.get(index);
-         if (slot != null && slot.hasItem()) {
-             ItemStack itemstack1 = slot.getItem();
-             itemstack = itemstack1.copy();
-             //Clicked from player inventory
-             if (index < 36) {
-                 for(int i = index; i < this.slots.size(); i++) {
-                     if(outputSlots.contains(i - 36)) return ItemStack.EMPTY;
-                     else if (!this.moveItemStackTo(itemstack1, 36, this.slots.size(), false)) {
-                         return ItemStack.EMPTY;
-                     }
-                 }
-                 //Clicked from opened container
-             } else if (!this.moveItemStackTo(itemstack1, 0, 36, false)) {
-                 return ItemStack.EMPTY;
-             }
-
-             if (itemstack1.isEmpty()) {
-                 slot.setByPlayer(ItemStack.EMPTY);
-             } else {
-                 slot.setChanged();
-             }
-         }
-        return itemstack;
     }
 
     @Override

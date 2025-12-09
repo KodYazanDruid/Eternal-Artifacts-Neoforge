@@ -572,6 +572,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), "Export items when they have exactly %d%%.");
                 add(ModConstants.GUI.withSuffix("battery_box_export_full"), "Export items when they are full.");
                 add(ModConstants.GUI.withSuffix("search_warps"), "Search Warps...");
+                add(ModConstants.GUI.withSuffix("block_mode"), "Block mode");
+                add(ModConstants.GUI.withSuffix("fluid_mode"), "Fluid mode");
+                add(ModConstants.GUI.withSuffix("heat_save"), "Save heat in exchange of energy");
+                add(ModConstants.GUI.withSuffix("render_working_area"), "Render working area");
+                add(ModConstants.GUI.withSuffix("bottler_mode"), "Bottler Mode");
+                add(ModConstants.GUI.withSuffix("fill"), "Fill");
+                add(ModConstants.GUI.withSuffix("empty"), "Empty");
+                add(ModConstants.GUI.withSuffix("harvester_output_mode_enabled"), "All collected items will directly go into output buffer.");
+                add(ModConstants.GUI.withSuffix("harvester_output_mode_disabled"), "Re-plantable items will try to go into planting buffer first.");
                 
                 ModFluids.FLUIDS.getEntries().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
@@ -1231,6 +1240,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("battery_box_export_percentage_exact"), "%%%d seviyesindeki eşyaları aktar.");
                 add(ModConstants.GUI.withSuffix("battery_box_export_full"), "Eşyaları boş olduklarında aktar.");
                 add(ModConstants.GUI.withSuffix("search_warps"), "Işınlayıcıları ara...");
+                add(ModConstants.GUI.withSuffix("block_mode"), "Blok modu");
+                add(ModConstants.GUI.withSuffix("fluid_mode"), "Sıvı modu");
+                add(ModConstants.GUI.withSuffix("heat_save"), "Enerji karşılığında ısıyı sakla");
+                add(ModConstants.GUI.withSuffix("render_working_area"), "Çalışma alanını göster");
+                add(ModConstants.GUI.withSuffix("bottler_mode"), "Şişeleyici Modu");
+                add(ModConstants.GUI.withSuffix("fill"), "Doldur");
+                add(ModConstants.GUI.withSuffix("empty"), "Boşalt");
+                add(ModConstants.GUI.withSuffix("harvester_output_mode_enabled"), "Toplanan tüm eşyalar direkt olarak çıktı kısmına gidecek.");
+                add(ModConstants.GUI.withSuffix("harvester_output_mode_disabled"), "Tekrardan ekilebilir eşyalar önce ekim kısmına gitmeye çalışacak.");
                 //endregion
                 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

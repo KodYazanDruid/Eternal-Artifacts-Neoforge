@@ -47,6 +47,10 @@ public class PortableFurnaceMenu extends TabMenu {
 				public boolean mayPlace(ItemStack stack) {
 					return stack.getBurnTime(RecipeType.SMELTING) > 0 || stack.is(Items.BUCKET);
 				}
+				@Override
+				public int getMaxStackSize(ItemStack stack) {
+					return stack.is(Items.BUCKET) ? 1 : super.getMaxStackSize(stack);
+				}
 			});
 			addSlot(new CapRefreshedItemSlot(() -> furnace.getCapability(Capabilities.ItemHandler.ITEM), 2, 116, 35) {
 				@Override

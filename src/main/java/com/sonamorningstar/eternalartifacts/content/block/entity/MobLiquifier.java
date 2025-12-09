@@ -4,14 +4,13 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.AreaRenderer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,9 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
-
-public class MobLiquifier extends GenericMachine implements AreaRenderer {
+public class MobLiquifier extends GenericMachine implements WorkingAreaProvider {
 
     public MobLiquifier(BlockPos blockPos, BlockState blockState) {
         super(ModMachines.MOB_LIQUIFIER, blockPos, blockState);
@@ -48,39 +45,13 @@ public class MobLiquifier extends GenericMachine implements AreaRenderer {
         screenInfo.setTankPosition(64, 20, 2);
         screenInfo.setTankPosition(84, 20, 3);
         screenInfo.setShouldDrawInventoryTitle(false);
-        screenInfo.addButton(MODID, "textures/gui/sprites/blank_red.png", 110, 8, 16, 16, () -> {
-            shouldRenderArea = !shouldRenderArea;
-            sendUpdate();
-        });
     }
     List<LivingEntity> livingList = new ArrayList<>();
-    private boolean shouldRenderArea = false;
 
     @Override
-    public boolean shouldRender() {
-        return shouldRenderArea;
-    }
-
-    @Override
-    public AABB getWorkingArea() {
-        return getWorkingArea(getBlockPos(), getBlockState());
-    }
-
-    @Override
-    protected void saveSynced(CompoundTag tag) {
-        super.saveSynced(tag);
-        tag.putBoolean("RenderArea", shouldRenderArea);
-    }
-
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        shouldRenderArea = tag.getBoolean("RenderArea");
-    }
-
-    private static AABB getWorkingArea(BlockPos pos, BlockState state) {
-        Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-        return new AABB(pos.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
+    public AABB getWorkingArea(BlockPos anchor) {
+        Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
+        return new AABB(anchor.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
     }
     
     @Override
@@ -98,7 +69,7 @@ public class MobLiquifier extends GenericMachine implements AreaRenderer {
         super.tickServer(lvl, pos, st);
         if (!redstoneChecks(lvl)) return;
         
-        livingList = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos, st))
+        livingList = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos))
                         .stream().filter(living -> {
                     EntityType<?> type = living.getType();
                     return !(EntityType.PLAYER == type || living.isDeadOrDying() || living.isBaby());

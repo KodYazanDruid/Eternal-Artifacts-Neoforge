@@ -20,13 +20,9 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModCo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
-import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
-import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
@@ -66,8 +62,6 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -78,6 +72,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -137,7 +132,6 @@ public class ClientEvents {
             }
         }
     }
-    
     
     @SubscribeEvent
     public static void charmDescriptions(ItemTooltipEvent event) {
@@ -451,7 +445,7 @@ public class ClientEvents {
             int y = gsms.getGuiTop();
             int width = gsms.getXSize();
             int height = gsms.getYSize();
-            if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
+            /*if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
                 SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(Component.empty(),
                     x + 23, y + 8, 129, 70,
                     SimpleDraggablePanel.Bounds.of(0, 0, gsms.width, gsms.height));
@@ -472,7 +466,7 @@ public class ClientEvents {
                 });
                 
                 gsms.addUpperLayerChild(filterPanel);
-            }
+            }*/
         }
     }
     
@@ -488,25 +482,28 @@ public class ClientEvents {
                 ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96);
             }
         }
-        if (menu instanceof GenericMachineMenu gms) {
-            BlockEntity be = gms.getBlockEntity();
-            var inv = gms.getBeInventory();
-            if (be instanceof Disenchanter && inv != null &&
-                    inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
+        if (menu instanceof AbstractMachineMenu amm) {
+            BlockEntity be = amm.getBlockEntity();
+            var inv = amm.getBeInventory();
+            if (be instanceof Disenchanter && inv != null && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
                 ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96);
+            }
+            if (be instanceof Harvester && inv != null && inv.getStackInSlot(13).isEmpty() && slot.index == 49) {
+                ItemRendererHelper.renderItemCarousel(gui, Ingredient.of(Harvester.hoe_tillables).getItems(), event.getX() + 1, event.getY() + 1,
+                    0x00000000, (float) 96 / 255);
             }
             if (be instanceof Smithinator && inv != null) {
                 if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {
                     TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                         .apply(new ResourceLocation("item/empty_slot_smithing_template_netherite_upgrade"));
-                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
-                        1.0F, 1.0F, 1.0F, 1.0F);
+                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16,
+                        sprite, 1, 1, 1, 1);
                 }
                 if (slot.index == 38 && inv.getStackInSlot(2).isEmpty()) {
                     TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
                         .apply(new ResourceLocation("item/empty_slot_ingot"));
-                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16, sprite,
-                        1.0F, 1.0F, 1.0F, 1.0F);
+                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16,
+                        sprite, 1, 1, 1, 1);
                 }
             }
         }

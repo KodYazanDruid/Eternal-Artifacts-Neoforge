@@ -10,9 +10,11 @@ import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 
 public class DSUItemRenderer implements BlockEntityRenderer<DeepItemStorageUnit> {
 	@Override
@@ -29,9 +31,15 @@ public class DSUItemRenderer implements BlockEntityRenderer<DeepItemStorageUnit>
 			pose.scale(0.5f, 0.5f, 0.5f);
 			pose.translate(1, 1.45, 1);
 			for (Direction dir : Direction.values()) {
-				if (dir.getAxis() == Direction.Axis.Y) continue;
+				if (dir.getAxis().isVertical()) continue;
+				if (dsu.hasLevel()) {
+					BlockPos neighborPos = dsu.getBlockPos().relative(dir);
+					if (!Block.shouldRenderFace(dsu.getBlockState(), dsu.getLevel(), dsu.getBlockPos(), dir, neighborPos)) {
+						continue;
+					}
+				}
 				pose.pushPose();
-				pose.mulPose(Axis.YP.rotationDegrees(90.0F * dir.get2DDataValue()));
+				pose.mulPose(Axis.YP.rotationDegrees(180 - (90.0F * dir.get2DDataValue())));
 				pose.translate(0, 0,-1.005);
 				Minecraft.getInstance().getItemRenderer().render(
 					stored, ItemDisplayContext.FIXED, false,

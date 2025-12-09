@@ -57,7 +57,6 @@ public class BlockHelper {
                 || level.getBlockState(pos).getBlock().equals(Blocks.MOSS_CARPET)
                 || (level.getBlockState(pos).getBlock().equals(Blocks.MANGROVE_PROPAGULE) && level.getBlockState(pos).getValue(MangrovePropaguleBlock.HANGING));
     }
-    //This gets state from the server. No client interaction.
     public static List<ItemStack> getBlockDrops(ServerLevel level, BlockPos pos, @Nullable ItemStack tool, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
         BlockState state = level.getBlockState(pos);
         LootParams.Builder lootparams$builder = new LootParams.Builder(level)
@@ -67,7 +66,6 @@ public class BlockHelper {
                 .withOptionalParameter(LootContextParams.THIS_ENTITY, player);
         return state.getDrops(lootparams$builder);
     }
-    //State can be passed in. Might cause duplications if used in common code.
     public static List<ItemStack> getBlockDrops(ServerLevel level, BlockState state, BlockPos pos, @Nullable ItemStack tool, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
         LootParams.Builder lootparams$builder = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))

@@ -29,7 +29,6 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 	
 	private float animProgress = 0f;
 	private float animSpeed = 0f;
-	private float targetAnimSpeed = 0f;
 	float lastWave = 0f;
 	
 	public boolean isWorking = false;
