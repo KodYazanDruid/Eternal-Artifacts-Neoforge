@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.PitcherCropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class PitcherPlantBehavior implements FarmBehavior {
 	@Override
@@ -25,6 +26,11 @@ public class PitcherPlantBehavior implements FarmBehavior {
 	public boolean canHarvest(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		return state.getValue(PitcherCropBlock.AGE) >= PitcherCropBlock.MAX_AGE;
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 20;
 	}
 	
 	@Override

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "eternalartifacts:block/machine_bottom",
+    "east": "eternalartifacts:block/machine_side",
+    "north": "eternalartifacts:block/sludge_refiner_front",
+    "particle": "eternalartifacts:block/machine_side",
+    "south": "eternalartifacts:block/machine_side",
+    "up": "eternalartifacts:block/machine_top",
+    "west": "eternalartifacts:block/machine_side"
+  }
+}

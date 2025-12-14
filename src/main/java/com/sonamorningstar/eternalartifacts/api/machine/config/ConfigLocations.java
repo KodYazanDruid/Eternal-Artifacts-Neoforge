@@ -7,6 +7,7 @@ import java.util.Map;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public final class ConfigLocations {
+	//make an event for this
 	public static final Map<Class<? extends Config>, ResourceLocation> CONFIG_LOCATIONS = Map.of(
 		SideConfig.class, new ResourceLocation(MODID, "side_config"),
 		RedstoneConfig.class, new ResourceLocation(MODID, "redstone_config"),

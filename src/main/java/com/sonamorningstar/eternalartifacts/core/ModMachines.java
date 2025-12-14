@@ -40,6 +40,7 @@ public class ModMachines {
     public static final GenericMachineHolder<Recycler> RECYCLER = registerGeneric("recycler", Recycler::new);
     public static final GenericMachineHolder<Packer> PACKER = registerGeneric("packer", Packer::new);
     public static final GenericMachineHolder<Unpacker> UNPACKER = registerGeneric("unpacker", Unpacker::new);
+    public static final GenericMachineHolder<SludgeRefiner> SLUDGE_REFINER = registerGeneric("sludge_refiner", SludgeRefiner::new);
     
     public static final MachineDeferredHolder<ElectricFurnaceMenu, ElectricFurnace, BaseMachineBlock<ElectricFurnace>, MachineBlockItem>
         ELECTRIC_FURNACE = MACHINES.register("electric_furnace", ElectricFurnaceMenu::new, ElectricFurnace::new);

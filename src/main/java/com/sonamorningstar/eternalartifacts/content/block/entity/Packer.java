@@ -31,8 +31,8 @@ public class Packer extends GenericMachine {
 	
 	@Override
 	public void onLoad() {
-		super.onLoad();
 		initializePackingMap(level);
+		super.onLoad();
 	}
 	
 	private static void initializePackingMap(Level lvl) {

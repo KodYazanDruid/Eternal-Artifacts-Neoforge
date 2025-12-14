@@ -59,6 +59,11 @@ public class ReedBehavior implements FarmBehavior {
 		return drops;
 	}
 	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 25;
+	}
+	
 	private boolean isCorrectState(BlockState state) {
 		return state.is(reed);
 	}

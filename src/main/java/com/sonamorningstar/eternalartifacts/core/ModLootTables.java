@@ -4,6 +4,8 @@ import lombok.Getter;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
@@ -28,6 +30,21 @@ public class ModLootTables {
     public static final ResourceLocation HAMMERING_CHARCOAL = registerHammering(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL);
     public static final ResourceLocation HAMMERING_CLAY = registerHammering(Blocks.CLAY);
     public static final ResourceLocation HAMMERING_SUGAR_CHARCOAL = registerHammering(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
+    
+    public static final ResourceLocation SLUDGE_REFINING_DIRT = registerSludgeRefining(Blocks.DIRT.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_COARSE_DIRT = registerSludgeRefining(Blocks.COARSE_DIRT.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_ROOTED_DIRT = registerSludgeRefining(Blocks.ROOTED_DIRT.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_PODZOL = registerSludgeRefining(Blocks.PODZOL.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_MOSS_BLOCK = registerSludgeRefining(Blocks.MOSS_BLOCK.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_MOSS_CARPET = registerSludgeRefining(Blocks.MOSS_CARPET.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_GRAVEL = registerSludgeRefining(Blocks.GRAVEL.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_SAND = registerSludgeRefining(Blocks.SAND.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_RED_SAND = registerSludgeRefining(Blocks.RED_SAND.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_CLAY_BLOCK = registerSludgeRefining(Blocks.CLAY.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_SOUL_SAND = registerSludgeRefining(Blocks.SOUL_SAND.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_SOUL_SOIL = registerSludgeRefining(Blocks.SOUL_SOIL.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_MUD = registerSludgeRefining(Blocks.MUD.asItem());
+    public static final ResourceLocation SLUDGE_REFINING_BONE_MEAL = registerSludgeRefining(Items.BONE_MEAL);
 
     public static final ResourceLocation CHARGED_SHEEP_WHITE = register("entities/charged_sheep/white");
     public static final ResourceLocation CHARGED_SHEEP_ORANGE = register("entities/charged_sheep/orange");
@@ -60,6 +77,10 @@ public class ModLootTables {
     private static ResourceLocation registerHammering(TagKey<Block> block) {
         ResourceLocation id = block.location();
         return register("hammering/tags/"+id.getNamespace()+"/"+id.getPath());
+    }
+    private static ResourceLocation registerSludgeRefining(Item item) {
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+        return register("sludge_refiner/"+id.getNamespace()+"/"+id.getPath());
     }
 
     private static ResourceLocation register(String id) {

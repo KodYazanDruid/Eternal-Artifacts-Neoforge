@@ -18,7 +18,7 @@ public class JsonHelper {
         if (array.isEmpty()) {
             throw new JsonSyntaxException(name + " must have at least 1 element");
         }
-        // build the list
+        
         ImmutableList.Builder<T> builder = ImmutableList.builder();
         for (int i = 0; i < array.size(); i++) {
             builder.add(mapper.apply(array.get(i), name + "[" + i + "]"));

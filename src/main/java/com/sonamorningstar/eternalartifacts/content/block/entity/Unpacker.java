@@ -22,8 +22,8 @@ public class Unpacker extends GenericMachine {
 	
 	@Override
 	public void onLoad() {
-		super.onLoad();
 		Recycler.initializeRecipeMapAsync(level);
+		super.onLoad();
 	}
 	
 	@Override

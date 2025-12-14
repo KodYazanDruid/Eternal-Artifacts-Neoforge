@@ -152,7 +152,7 @@ public class ModBlockEntity extends BlockEntity {
         return getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0;
     }
 
-    protected ModFluidStorage createDefaultTank() {return createBasicTank(16000);}
+    protected ModFluidStorage createDefaultTank() { return createBasicTank(16000); }
     protected ModFluidStorage createBasicTank(int size, Runnable... listeners) {
         int volume = getVolumeLevel();
         return new ModFluidStorage(size * (volume + 1)) {
@@ -300,15 +300,15 @@ public class ModBlockEntity extends BlockEntity {
             }
         };
     }
-    @SafeVarargs
-    protected final ModItemStorage createBasicInventory(int size, List<Integer> outputSlots, BiFunction<Integer, ItemStack, Boolean> isValid, Consumer<Integer>... consumers) {
+    
+    protected final ModItemStorage createBasicInventory(int size, List<Integer> outputSlots, BiFunction<Integer, ItemStack, Boolean> isValid, IntConsumer... consumers) {
         return new ModItemStorage(size) {
             @Override
             protected void onContentsChanged(int slot) {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
                     machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
                 }
-                for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
+                for (IntConsumer consumer : consumers) consumer.accept(slot);
                 ModBlockEntity.this.sendUpdate();
             }
 

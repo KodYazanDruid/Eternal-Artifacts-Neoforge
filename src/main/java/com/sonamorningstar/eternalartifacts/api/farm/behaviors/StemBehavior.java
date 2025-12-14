@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 @RequiredArgsConstructor
 public class StemBehavior implements FarmBehavior {
@@ -29,6 +30,11 @@ public class StemBehavior implements FarmBehavior {
 	@Override
 	public boolean canHarvest(Level level, BlockPos pos) {
 		return level.getBlockState(pos).is(fruitBlock);
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 60;
 	}
 	
 	@Override

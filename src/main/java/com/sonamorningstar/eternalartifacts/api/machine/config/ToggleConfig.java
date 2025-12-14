@@ -13,7 +13,6 @@ public class ToggleConfig implements Config {
 	private final String tagKey;
 	public final ResourceLocation location;
 	
-	
 	public ToggleConfig(String suffix) {
 		this.location = ConfigLocations.getWithSuffix(this.getClass(), suffix);
 		this.tagKey = location.getPath();

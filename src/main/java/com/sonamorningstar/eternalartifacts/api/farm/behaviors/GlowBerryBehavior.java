@@ -51,6 +51,11 @@ public class GlowBerryBehavior implements FarmBehavior {
 	}
 	
 	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 10;
+	}
+	
+	@Override
 	public boolean supportsReplanting() {
 		return false;
 	}

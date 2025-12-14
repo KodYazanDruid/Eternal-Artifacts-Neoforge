@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Harvester;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Packer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Recycler;
+import com.sonamorningstar.eternalartifacts.content.block.entity.SludgeRefiner;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,6 +17,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.Map;
 
@@ -28,13 +30,10 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
         CharmType.itemCharmTypes.clear();
         RecipeCache.clearCache();
         
-        Harvester.hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> Harvester.isHoe(item.getDefaultInstance())).toArray(Item[]::new);
+        Harvester.hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> Harvester.isCorrectTool(item.getDefaultInstance())).toArray(Item[]::new);
         Harvester.cachedLootTables.clear();
         
         ResourceLocation hammeringTags = new ResourceLocation(MODID, "loot_tables/hammering/tags");
-        ResourceLocation hammeringBlocks = new ResourceLocation(MODID, "loot_tables/hammering/blocks");
-
-        // Process tags
         Map<ResourceLocation, Resource> tagResources = manager.listResources(hammeringTags.getPath(), rl -> true);
         tagResources.forEach((rl, resource) -> {
             String path = rl.toString();
@@ -47,7 +46,7 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
             HammerItem.gatheredTags.add(tagKey);
         });
 
-        // Process blocks
+        ResourceLocation hammeringBlocks = new ResourceLocation(MODID, "loot_tables/hammering/blocks");
         Map<ResourceLocation, Resource> blockResources = manager.listResources(hammeringBlocks.getPath(), rl -> true);
         blockResources.forEach((rl, resource) -> {
             String path = rl.toString();
@@ -58,6 +57,16 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
             String finalPath = strippedPath.substring(namespace.length() + 1);
             Block block = BuiltInRegistries.BLOCK.get(new ResourceLocation(namespace, finalPath));
             HammerItem.gatheredBlocks.add(block);
+        });
+        
+        ResourceLocation sludgeRefiner = new ResourceLocation(MODID, "loot_tables/sludge_refiner");
+        Map<ResourceLocation, Resource> sludgeResources = manager.listResources(sludgeRefiner.getPath(), rl -> true);
+        sludgeResources.forEach((rl, resource) -> {
+            String path = rl.toString();
+            String[] parts = path.split(":");
+            String strippedPath = parts[1].substring("loot_tables/".length(), parts[1].length() - ".json".length());
+            ResourceLocation finalRl = new ResourceLocation(parts[0], strippedPath);
+            SludgeRefiner.SLUDGE_RESULTS.add(finalRl);
         });
         
         Recycler.isRecipeMapInitialized = false;

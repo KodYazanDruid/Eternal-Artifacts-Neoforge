@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CocoaBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class CocoaBeansBehavior implements FarmBehavior {
 	@Override
@@ -25,6 +26,11 @@ public class CocoaBeansBehavior implements FarmBehavior {
 	@Override
 	public boolean canHarvest(Level level, BlockPos pos) {
 		return level.getBlockState(pos).getValue(CocoaBlock.AGE) >= CocoaBlock.MAX_AGE;
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 15;
 	}
 	
 	@Override

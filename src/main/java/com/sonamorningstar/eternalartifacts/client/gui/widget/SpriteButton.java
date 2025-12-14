@@ -97,7 +97,7 @@ public class SpriteButton extends AbstractButton {
                         }
                     }
 
-                    if (style != SpriteStyle.SINGLE){
+                    if (style != SpriteStyle.SINGLE) {
                         gui.blit(sprite.sprite(), getX(), getY(), getWidth(), getHeight(),
                                 info.u(), info.v(), info.width(), info.height(),
                                 width, height);

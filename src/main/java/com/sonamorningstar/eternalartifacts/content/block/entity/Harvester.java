@@ -2,10 +2,12 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehaviorRegistry;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
 import com.sonamorningstar.eternalartifacts.container.HarvesterMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
+import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
@@ -32,6 +34,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,15 +50,14 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 	public Harvester(BlockPos pos, BlockState blockState) {
 		super(ModMachines.HARVESTER.getBlockEntity(), pos, blockState, (a, b, c, d) -> new HarvesterMenu(ModMachines.HARVESTER.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
-		setTank(this::createDefaultTank);
+		setTank(() -> createBasicTank(16000, (fs) -> fs.is(ModFluids.SLUDGE.getFluid()),true, false));
 		this.inputSlots = List.of(0, 1, 2, 3);
 		for (int i = 4; i < 13; i++) {
 			outputSlots.add(i);
 		}
-		hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> isHoe(item.getDefaultInstance())).toArray(Item[]::new);
-		// slot 13 is hoe slot
+		hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> isCorrectTool(item.getDefaultInstance())).toArray(Item[]::new);
 		setInventory(() -> createBasicInventory(14, (slot, stack) -> {
-			if (slot == 13) return isHoe(stack);
+			if (slot == 13) return isCorrectTool(stack);
 			else if (outputSlots.contains(slot)) return false;
 			else return FarmBehaviorRegistry.isValidSeed(stack);
 		}));
@@ -65,6 +67,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 	public void registerConfigs() {
 		super.registerConfigs();
 		getConfiguration().add(new ToggleConfig("harvester_output_mode"));
+		getConfiguration().add(new ReverseToggleConfig("harvester_use_tool"));
 	}
 	
 	@Override
@@ -90,20 +93,24 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		ToggleConfig harvesterOutputMode = getConfiguration().get(ToggleConfig.class, "harvester_output_mode");
 		return harvesterOutputMode != null && !harvesterOutputMode.isEnabled();
 	}
+	private boolean tryUseTool() {
+		ReverseToggleConfig useTool = getConfiguration().get(ReverseToggleConfig.class, "harvester_use_tool");
+		return useTool != null && !useTool.isDisabled();
+	}
 	
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputItems(lvl, pos);
-		performAutoInputFluids(lvl, pos);
 		performAutoOutputItems(lvl, pos);
+		performAutoOutputFluids(lvl, pos);
 		if (workingPoses == null) {
 			workingPoses = BlockPos.MutableBlockPos.betweenClosedStream(getWorkingArea(pos)
 				.contract(1, 1, 1)).map(BlockPos::immutable).toList();
 		}
 		if (!redstoneChecks(lvl) || !canWork(energy)) return;
 		
-		ItemStack hoeStack = inventory.getStackInSlot(13);
+		ItemStack toolStack = inventory.getStackInSlot(13);
 		for (int i = 0; i < progressStep; i++) {
 			BlockPos targetPos = workingPoses.get(workingIndex);
 			BlockState targetState = lvl.getBlockState(targetPos);
@@ -111,8 +118,10 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 			boolean worked = false;
 			FarmBehavior behavior = FarmBehaviorRegistry.get(lvl, targetPos);
 			if (behavior != null && behavior.canHarvest(lvl, targetPos)) {
-				if (!canInsertPossibleItems(lvl, targetState, behavior)) return;
-				List<ItemStack> drops = behavior.harvest(lvl, targetPos, hoeStack);
+				int sludgeAmount = behavior.getSludgeAmount(lvl, targetPos, toolStack);
+				if (!(canInsertPossibleItems(lvl, targetState, behavior) && tank.getEmptySpace(0) >= sludgeAmount)) return;
+				List<ItemStack> drops = behavior.harvest(lvl, targetPos, toolStack);
+				tank.fillForced(ModFluids.SLUDGE.getFluidStack(sludgeAmount), IFluidHandler.FluidAction.EXECUTE);
 				
 				boolean planted = false;
 				for (ItemStack drop : drops) {
@@ -131,13 +140,8 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 						if (behavior.isCorrectSeed(drop) && tryInsertToInput()) {
 							var remainderPair = ItemHelper.insertItemStackedForced(inventory, drop, false, inputSlots);
 							ItemStack remainder = remainderPair.getFirst();
-							if (!remainder.isEmpty()) {
-								ItemHelper.insertItemStackedForced(inventory, remainder, false, outputSlots);
-							}
-						} else {
-							ItemHelper.insertItemStackedForced(inventory, drop, false, outputSlots);
-						}
-						
+							if (!remainder.isEmpty()) ItemHelper.insertItemStackedForced(inventory, remainder, false, outputSlots);
+						} else ItemHelper.insertItemStackedForced(inventory, drop, false, outputSlots);
 					}
 				}
 				
@@ -145,7 +149,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 				worked = true;
 			}
 			
-			if (!worked) worked = tillSoil(hoeStack, lvl, targetPos, targetState);
+			if (!worked && tryUseTool()) worked = useTool(toolStack, lvl, targetPos, targetState);
 			if (!worked) plant(lvl, targetPos);
 			workingIndex++;
 			if (workingIndex >= workingPoses.size()) {
@@ -155,7 +159,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		sendUpdate();
 	}
 	
-	public static boolean isHoe(ItemStack stack) {
+	public static boolean isCorrectTool(ItemStack stack) {
 		return stack.canPerformAction(ToolActions.HOE_TILL);
 	}
 	
@@ -189,20 +193,20 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		return true;
 	}
 	
-	protected boolean tillSoil(ItemStack hoeStack, Level lvl, BlockPos targetPos, BlockState targetState) {
-		if (canWork(energy) && isHoe(hoeStack) && targetState.isAir()) {
+	protected boolean useTool(ItemStack toolStack, Level lvl, BlockPos targetPos, BlockState targetState) {
+		if (canWork(energy) && isCorrectTool(toolStack) && targetState.isAir()) {
 			BlockPos soilPos = targetPos.below();
 			BlockState soilState = lvl.getBlockState(soilPos);
 			FakePlayer fakePlayer = getFakePlayer();
 			Vec3 center = targetPos.getCenter();
-			UseOnContext ctx = new UseOnContext(lvl, fakePlayer, InteractionHand.MAIN_HAND, hoeStack,
+			UseOnContext ctx = new UseOnContext(lvl, fakePlayer, InteractionHand.MAIN_HAND, toolStack,
 				lvl.clip(new ClipContext(center.add(0, 1, 0), center, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, fakePlayer)));
 			BlockState hoedState = soilState.getToolModifiedState(ctx, ToolActions.HOE_TILL, false);
 			if (hoedState != null) {
 				lvl.playSound(null, soilPos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 				lvl.setBlockAndUpdate(soilPos, hoedState);
 				lvl.gameEvent(null, GameEvent.BLOCK_CHANGE, soilPos);
-				hoeStack.hurtAndBreak(1, fakePlayer, p -> {});
+				toolStack.hurtAndBreak(1, fakePlayer, p -> {});
 				spendEnergy(energy);
 				return true;
 			}

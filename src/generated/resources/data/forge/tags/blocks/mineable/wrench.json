@@ -33,6 +33,7 @@
     "eternalartifacts:recycler",
     "eternalartifacts:packer",
     "eternalartifacts:unpacker",
+    "eternalartifacts:sludge_refiner",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:autocutter",
     "eternalartifacts:oil_refinery",

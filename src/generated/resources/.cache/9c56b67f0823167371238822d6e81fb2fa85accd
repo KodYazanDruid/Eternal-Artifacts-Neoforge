@@ -1,4 +1,4 @@
-// 1.20.4	2025-11-27T16:00:11.865586	Item Models: eternalartifacts
+// 1.20.4	2025-12-12T23:42:40.3725539	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -219,6 +219,8 @@ e72431736da0535fae47ba60fdb68fe2e840e8b6 assets/eternalartifacts/models/item/rep
 ae6c73b7eb0852e18e0949431504f95e0f77f1ea assets/eternalartifacts/models/item/shulker_leggings.json
 993fed1f8f5d7d8c000649033a13cbed4a56ab62 assets/eternalartifacts/models/item/skybound_treads.json
 e14b4423cf36a1c875ff676f1bfaf45bf664d7cc assets/eternalartifacts/models/item/slot_lock.json
+acb6734fa94a5c0f10996b29197b304a77079380 assets/eternalartifacts/models/item/sludge_bucket.json
+3952b8cbcb05fde928bf51ee4e1523d6245f8453 assets/eternalartifacts/models/item/sludge_refiner.json
 dc4f4501fd8d54d6a11852fc00f4d0d687a8daa9 assets/eternalartifacts/models/item/smithinator.json
 cf20b2004dc8242fc36ab4c60c8f5b56f8b9bb6c assets/eternalartifacts/models/item/solar_panel_helmet.json
 63c28d2923f588f9e51a8c915ce1347f6cfa3990 assets/eternalartifacts/models/item/solidifier.json

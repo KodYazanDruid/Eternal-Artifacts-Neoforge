@@ -23,6 +23,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
@@ -81,16 +82,23 @@ public abstract class AttachmentablePipeBlock<CAP> extends AbstractPipeBlock<CAP
 	}
 	
 	@Override
-	public void playerDestroy(Level pLevel, Player pPlayer, BlockPos pPos, BlockState state, @Nullable BlockEntity pBlockEntity, ItemStack pTool) {
-		super.playerDestroy(pLevel, pPlayer, pPos, state, pBlockEntity, pTool);
-		for (Direction dir : Direction.values()) {
-			PipeConnection connection = state.getValue(CONNECTION_BY_DIRECTION.get(dir));
-			if (connection == PipeConnection.EXTRACT) {
-				Block.popResource(pLevel, pPos, ModItems.PIPE_EXTRACTOR.toStack());
-			} else if (connection == PipeConnection.FILTERED) {
-				Block.popResource(pLevel, pPos, ModItems.PIPE_FILTER.toStack());
+	public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be instanceof FilterablePipeBlockEntity<?> pipe) {
+			for (Direction dir : Direction.values()) {
+				PipeConnection connection = state.getValue(CONNECTION_BY_DIRECTION.get(dir));
+				if (connection == PipeConnection.EXTRACT) {
+					ItemStack extractorStack = ModItems.PIPE_EXTRACTOR.toStack();
+					extractorStack.setTag(pipe.saveAndRemoveForDir(dir));
+					Block.popResource(level, pos, extractorStack);
+				} else if (connection == PipeConnection.FILTERED) {
+					ItemStack filterStack = ModItems.PIPE_FILTER.toStack();
+					filterStack.setTag(pipe.saveAndRemoveForDir(dir));
+					Block.popResource(level, pos, filterStack);
+				}
 			}
 		}
+		return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
 	}
 	
 	protected abstract boolean checkPipe(BlockState relativeState);

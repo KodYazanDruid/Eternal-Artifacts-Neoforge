@@ -269,7 +269,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        
         chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
         if (needsUpdate()) {
             chunkUpdateCooldown = 100;
@@ -424,10 +423,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             }
         }
     }
-    
-    /*protected void prepareFakePlayer(FakePlayer fakePlayer) {
-    
-    }*/
     
     protected void progress(Runnable result) {
         if (processCondition != null && energy != null) {

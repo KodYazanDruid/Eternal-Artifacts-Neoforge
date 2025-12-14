@@ -41,14 +41,16 @@ public abstract class AbstractPipeBlock<CAP> extends Block implements EntityBloc
 	public static final BooleanProperty EAST = BooleanProperty.create("east");
 	public static final BooleanProperty UP = BooleanProperty.create("up");
 	public static final BooleanProperty DOWN = BooleanProperty.create("down");
-	public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class), map -> {
-		map.put(Direction.NORTH, NORTH);
-		map.put(Direction.EAST, EAST);
-		map.put(Direction.SOUTH, SOUTH);
-		map.put(Direction.WEST, WEST);
-		map.put(Direction.UP, UP);
-		map.put(Direction.DOWN, DOWN);
-	}));
+	public static final Map<Direction, BooleanProperty> PROPERTY_BY_DIRECTION = ImmutableMap.copyOf(Util.make(Maps.newEnumMap(Direction.class),
+		map -> {
+			map.put(Direction.NORTH, NORTH);
+			map.put(Direction.EAST, EAST);
+			map.put(Direction.SOUTH, SOUTH);
+			map.put(Direction.WEST, WEST);
+			map.put(Direction.UP, UP);
+			map.put(Direction.DOWN, DOWN);
+		}
+	));
 	
 	public AbstractPipeBlock(Class<CAP> cls, BlockBehaviour.Properties props) {
 		super(props);
@@ -136,7 +138,6 @@ public abstract class AbstractPipeBlock<CAP> extends Block implements EntityBloc
 		Level level = ctx.getLevel();
 		BlockPos pos = ctx.getClickedPos();
 		FluidState fluidState = level.getFluidState(pos);
-		
 		return defaultBlockState().setValue(WATERLOGGED, fluidState.getType() == Fluids.WATER);
 	}
 	

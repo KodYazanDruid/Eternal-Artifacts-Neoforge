@@ -55,6 +55,11 @@ public class KelpBehavior implements FarmBehavior {
 	}
 	
 	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 35;
+	}
+	
+	@Override
 	public boolean canHarvest(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		int height = 0;

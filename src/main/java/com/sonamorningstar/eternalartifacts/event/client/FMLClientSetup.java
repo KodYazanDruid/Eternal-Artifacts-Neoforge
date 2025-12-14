@@ -13,6 +13,7 @@ import com.sonamorningstar.eternalartifacts.core.ModSkullType;
 import com.sonamorningstar.eternalartifacts.event.custom.CreateConfigWidgetEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
+import com.sonamorningstar.eternalartifacts.registrar.LiquidBlockFluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -47,8 +48,12 @@ public class FMLClientSetup {
             ModLoader.get().postEvent(new RegisterUnrenderableOverridesEvent());
             setupCharmSprites();
         });
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());
+        /*ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());*/
+        setFluidTranslucent(ModFluids.HOT_SPRING_WATER);
+        setFluidTranslucent(ModFluids.GASOLINE);
+        setFluidTranslucent(ModFluids.DIESEL);
+        setFluidTranslucent(ModFluids.NAPHTHA);
         
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_WALL_TORCH.get(), RenderType.cutout());
@@ -60,6 +65,11 @@ public class FMLClientSetup {
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.STRAY, new ResourceLocation("textures/entity/skeleton/stray.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.BLAZE, new ResourceLocation("textures/entity/blaze.png"));
         
+    }
+    
+    private static void setFluidTranslucent(LiquidBlockFluidHolder<?> holder) {
+        ItemBlockRenderTypes.setRenderLayer(holder.getFluid(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(holder.getFlowingFluid(), RenderType.translucent());
     }
     
     private static void registerItemProperty(DeferredHolder<Item, ? extends Item> holder, String prefix) {

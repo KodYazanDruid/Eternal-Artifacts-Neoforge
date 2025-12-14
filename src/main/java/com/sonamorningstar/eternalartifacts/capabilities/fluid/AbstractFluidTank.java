@@ -24,6 +24,10 @@ public abstract class AbstractFluidTank implements IFluidHandler, INBTSerializab
     public abstract int getFluidAmount(int tank);
 
     public abstract AbstractFluidTank get(int i);
+    
+    public int getEmptySpace(int tank) {
+        return Math.max(0, getCapacity(0) - getFluidInTank(0).getAmount());
+    }
 
     public List<FluidStack> toList() {
         List<FluidStack> fluids = new ArrayList<>();

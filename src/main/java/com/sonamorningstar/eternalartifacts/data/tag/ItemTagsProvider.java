@@ -6,7 +6,6 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.BlockFamilies;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
@@ -151,7 +150,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModBlocks.GRAVEL_LAPIS_ORE.asItem(),
             ModBlocks.MOSS_LAPIS_ORE.asItem()
         );
-
         tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
         tag(ItemTags.COALS).add(ModItems.SUGAR_CHARCOAL.get());
@@ -179,6 +177,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.HUSK_HEAD.get(),
             ModItems.STRAY_SKULL.get(),
             ModItems.BLAZE_HEAD.get()
+        );
+        tag(Tags.Items.SEEDS).add(
+            ModItems.ANCIENT_SEED.get()
         );
 
         tag(ItemTags.SWORDS).add(

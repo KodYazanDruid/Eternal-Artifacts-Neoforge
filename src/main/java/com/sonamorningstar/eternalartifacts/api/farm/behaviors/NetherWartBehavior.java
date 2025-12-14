@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class NetherWartBehavior implements FarmBehavior {
 	@Override
@@ -24,6 +25,11 @@ public class NetherWartBehavior implements FarmBehavior {
 	@Override
 	public boolean canHarvest(Level level, BlockPos pos) {
 		return level.getBlockState(pos).getValue(NetherWartBlock.AGE) >= NetherWartBlock.MAX_AGE;
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 25;
 	}
 	
 	@Override

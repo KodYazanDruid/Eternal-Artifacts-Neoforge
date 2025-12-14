@@ -45,6 +45,11 @@ public class SweetBerryBehavior implements FarmBehavior {
 	}
 	
 	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 15;
+	}
+	
+	@Override
 	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
 		if (block instanceof SweetBerryBushBlock berry) {

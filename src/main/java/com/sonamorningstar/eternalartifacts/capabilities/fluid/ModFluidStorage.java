@@ -213,8 +213,4 @@ public class ModFluidStorage extends AbstractFluidTank {
     public boolean isEmpty() {
         return fluid.isEmpty();
     }
-
-    public int getEmptySpace() {
-        return Math.max(0, capacity - fluid.getAmount());
-    }
 }

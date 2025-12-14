@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.config.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
@@ -36,42 +37,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 @SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class CreateConfigWidgets {
-	private static final ResourceLocation allow = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/allow.png");
-	private static final ResourceLocation deny = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/deny.png");
-	private static final ResourceLocation input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/input.png");
-	private static final ResourceLocation output = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/output.png");
-	private static final ResourceLocation auto_input = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_input.png");
-	private static final ResourceLocation auto_output = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_output.png");
-	private static final ResourceLocation auto_input_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_input_enabled.png");
-	private static final ResourceLocation auto_output_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/auto_output_enabled.png");
-	private static final ResourceLocation item_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/item_transfer.png");
-	private static final ResourceLocation fluid_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_transfer.png");
-	private static final ResourceLocation energy_transfer = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/energy_transfer.png");
-	private static final ResourceLocation item_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/item_transfer_disabled.png");
-	private static final ResourceLocation fluid_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_transfer_disabled.png");
-	private static final ResourceLocation energy_transfer_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/energy_transfer_disabled.png");
-	private static final ResourceLocation redstone_active = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_active.png");
-	private static final ResourceLocation redstone_passive = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_passive.png");
-	private static final ResourceLocation redstone_ignored = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/redstone_ignored.png");
-	private static final ResourceLocation batbox_full = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_full.png");
-	private static final ResourceLocation batbox_empty = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_empty.png");
-	private static final ResourceLocation batbox_percentage_below = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_below.png");
-	private static final ResourceLocation batbox_percentage_above = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_above.png");
-	private static final ResourceLocation batbox_percentage_exact = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/batbox_percentage_exact.png");
-	private static final ResourceLocation block_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/block_mode_enabled.png");
-	private static final ResourceLocation fluid_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_mode_enabled.png");
-	private static final ResourceLocation continuous_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/continuous_mode_enabled.png");
-	private static final ResourceLocation block_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/block_mode_disabled.png");
-	private static final ResourceLocation fluid_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/fluid_mode_disabled.png");
-	private static final ResourceLocation continuous_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/continuous_mode_disabled.png");
-	private static final ResourceLocation heat_save_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/heat_save_enabled.png");
-	private static final ResourceLocation heat_save_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/heat_save_disabled.png");
-	private static final ResourceLocation render_area_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/render_area_enabled.png");
-	private static final ResourceLocation render_area_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/render_area_disabled.png");
-	private static final ResourceLocation bottler_mode_empty = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/bottler_mode_empty.png");
-	private static final ResourceLocation bottler_mode_fill = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/bottler_mode_fill.png");
-	private static final ResourceLocation harvester_output_mode_enabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/harvester_output_mode_enabled.png");
-	private static final ResourceLocation harvester_output_mode_disabled = new ResourceLocation(MODID,"textures/gui/sprites/sided_buttons/harvester_output_mode_disabled.png");
+	private static final ResourceLocation CONFIG_SPRITES = new ResourceLocation(MODID,"textures/gui/sprites/config_sprites.png");
 	
 	@SubscribeEvent
 	public static void registerConfigWidgets(CreateConfigWidgetEvent event) {
@@ -106,27 +72,17 @@ public class CreateConfigWidgets {
 							if (key == 0) config.cycleNext(dir);
 							else if (key == 1) config.cyclePrev(dir);
 						}
-						button.setTextures(getTextureForTransferType(type.apply(dir)));
+						button.setSprites(getTextureForTransferType(type.apply(dir)));
+						//button.setSprites(new ButtonDrawContent(9, 9));
 						FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 						config.writeToServer(buf);
 						Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-					}, getTextureForTransferType(config.getSides().get(dir)))
+					})
 					.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable(sideName)
 						.append(": ").append(ModConstants.GUI.withSuffixTranslatable(type.apply(dir).toString().toLowerCase())))
 					.size(9, 9).build();
-                
-                /*panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(4, 4, 29, 29));
-                panel.addChildren((fx, fy, fw, fh) -> {
-                    switch (finalI) {
-                        case 0 -> sideButton.setPosition(fx + 14, fy + 4);
-                        case 1 -> sideButton.setPosition(fx + 4, fy + 14);
-                        case 2 -> sideButton.setPosition(fx + 14, fy + 14);
-                        case 3 -> sideButton.setPosition(fx + 24, fy + 14);
-                        case 4 -> sideButton.setPosition(fx + 14, fy + 24);
-                        case 5 -> sideButton.setPosition(fx + 24, fy + 24);
-                    }
-                    return sideButton;
-                });*/
+				sideButton.setSprites(getTextureForTransferType(type.apply(dir)));
+				
 				// Relative pozisyonlar
 				int relX = switch (i) {
 					case 0, 2, 4 -> 10; // up, front, down - ortada
@@ -154,84 +110,76 @@ public class CreateConfigWidgets {
 			
 			MachineConfiguration configs = mbe.getConfiguration();
 			
+			ButtonDrawContent autoInputEnabledCtx = new ButtonDrawContent(9, 9);
+			autoInputEnabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 45, 0, 9, 9);
+			ButtonDrawContent autoInputCtx = new ButtonDrawContent(9, 9);
+			autoInputCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 36, 0, 9, 9);
+			
 			BooleanSupplier isInput = config::isInput;
 			SpriteButton autoInput = SpriteButton.builder(Component.empty(), (button, key) -> {
 					boolean newValue = !config.isInput();
 					config.setInput(newValue);
-					button.setTextures(newValue ? auto_input_enabled : auto_input);
+					button.setSprites(newValue ? autoInputEnabledCtx : autoInputCtx);
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isInput.getAsBoolean() ? auto_input_enabled : auto_input).size(9, 9)
+				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("auto_input")
 					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isInput() ? "enabled" : "disabled"))).build();
+			autoInput.setSprites(isInput.getAsBoolean() ? autoInputEnabledCtx : autoInputCtx);
+			
+			ButtonDrawContent autoOutputEnabledCtx = new ButtonDrawContent(9, 9);
+			autoOutputEnabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 63, 0, 9, 9);
+			ButtonDrawContent autoOutputCtx = new ButtonDrawContent(9, 9);
+			autoOutputCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 54, 0, 9, 9);
 			
 			BooleanSupplier isOutput = config::isOutput;
 			SpriteButton autoOutput = SpriteButton.builder(Component.empty(), (button, key) -> {
 					boolean newValue = !config.isOutput();
 					config.setOutput(newValue);
-					button.setTextures(newValue ? auto_output_enabled : auto_output);
+					button.setSprites(newValue ? autoOutputEnabledCtx : autoOutputCtx);
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isOutput.getAsBoolean() ? auto_output_enabled : auto_output).size(9, 9)
+				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("auto_output")
 					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isOutput() ? "enabled" : "disabled"))).build();
-            
-            /*panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(34, 4, 9, 19));
-            panel.addChildren((fx, fy, fw, fh) -> {
-                autoInput.setPosition(fx + 34, fy + 4);
-                return autoInput;
-            });
-            panel.addChildren((fx, fy, fw, fh) -> {
-                autoOutput.setPosition(fx + 34, fy + 14);
-                return autoOutput;
-            });*/
+     
+			autoOutput.setSprites(isOutput.getAsBoolean() ? autoOutputEnabledCtx : autoOutputCtx);
+			
 			panel.addWidgetGroup(List.of(
 				new SimpleDraggablePanel.WidgetPosition(autoInput, 30, 0),
 				new SimpleDraggablePanel.WidgetPosition(autoOutput, 30, 10)
 			), 1);
 		});
 		
-		event.register(ReverseToggleConfig.class, "item_transfer", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isDisabled = config::isDisabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isDisabled();
-					config.setDisabled(newValue);
-					button.setTextures(newValue ? item_transfer_disabled : item_transfer);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isDisabled.getAsBoolean() ? item_transfer_disabled : item_transfer).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("item_transportation")
-					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 4, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 44, fy + 4);
-				return btn;
-			});
-		});
+		addReverseToggleConfigWidget(event, "item_transfer",
+			0, 9,
+			0, 18,
+			44, 4);
 		event.register(ReverseToggleConfig.class, "fluid_transfer", (config, ctx) -> {
 			SimpleDraggablePanel panel = ctx.panel;
 			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
 			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
 			
+			ButtonDrawContent disabledCtx = new ButtonDrawContent(9, 9);
+			disabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 9, 18, 9, 9);
+			ButtonDrawContent enabledCtx = new ButtonDrawContent(9, 9);
+			enabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 9, 9, 9, 9);
+			
 			BooleanSupplier isDisabled = config::isDisabled;
 			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
 					boolean newValue = !config.isDisabled();
 					config.setDisabled(newValue);
-					button.setTextures(newValue ? fluid_transfer_disabled : fluid_transfer);
+					button.setSprites(newValue ? disabledCtx : enabledCtx);
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isDisabled.getAsBoolean() ? fluid_transfer_disabled : fluid_transfer).size(9, 9)
+				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("fluid_transportation")
 					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+			
+			btn.setSprites(isDisabled.getAsBoolean() ? disabledCtx : enabledCtx);
 			
 			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 14, 9, 9));
 			panel.addChildren((fx, fy, fw, fh) -> {
@@ -245,17 +193,24 @@ public class CreateConfigWidgets {
 			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
 			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
 			
+			ButtonDrawContent disabledCtx = new ButtonDrawContent(9, 9);
+			disabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 18, 18, 9, 9);
+			ButtonDrawContent enabledCtx = new ButtonDrawContent(9, 9);
+			enabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 18, 9, 9, 9);
+			
 			BooleanSupplier isDisabled = config::isDisabled;
 			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
 					boolean newValue = !config.isDisabled();
 					config.setDisabled(newValue);
-					button.setTextures(newValue ? energy_transfer_disabled : energy_transfer);
+					button.setSprites(newValue ? disabledCtx : enabledCtx);
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isDisabled.getAsBoolean() ? energy_transfer_disabled : energy_transfer).size(9, 9)
+				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("energy_transportation")
 					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+			
+			btn.setSprites(isDisabled.getAsBoolean() ? disabledCtx : enabledCtx);
 			
 			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 24, 9, 9));
 			panel.addChildren((fx, fy, fw, fh) -> {
@@ -266,145 +221,36 @@ public class CreateConfigWidgets {
 				return btn;
 			});
 		});
-		event.register(ReverseToggleConfig.class, "block_mode", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isDisabled = config::isDisabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isDisabled();
-					config.setDisabled(newValue);
-					button.setTextures(newValue ? block_mode_disabled : block_mode_enabled);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isDisabled.getAsBoolean() ? block_mode_disabled : block_mode_enabled).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("block_mode")
-					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 4, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 64, fy + 4);
-				return btn;
-			});
-		});
-		event.register(ReverseToggleConfig.class, "fluid_mode", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isDisabled = config::isDisabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isDisabled();
-					config.setDisabled(newValue);
-					button.setTextures(newValue ? fluid_mode_disabled : fluid_mode_enabled);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isDisabled.getAsBoolean() ? fluid_mode_disabled : fluid_mode_enabled).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("fluid_mode")
-					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 64, fy + 14);
-				return btn;
-			});
-		});
-		event.register(ReverseToggleConfig.class, "heat", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isDisabled = config::isDisabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isDisabled();
-					config.setDisabled(newValue);
-					button.setTextures(newValue ? heat_save_disabled : heat_save_enabled);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isDisabled.getAsBoolean() ? heat_save_disabled : heat_save_enabled).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("heat_save")
-					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 54, fy + 14);
-				return btn;
-			});
-		});
 		
-		event.register(ToggleConfig.class, "render_area", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isEnabled = config::isEnabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isEnabled();
-					config.setEnabled(newValue);
-					button.setTextures(newValue ? render_area_enabled : render_area_disabled);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isEnabled.getAsBoolean() ? render_area_enabled : render_area_disabled).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("render_working_area")
-					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isEnabled() ? "enabled" : "disabled"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 54, fy + 14);
-				return btn;
-			});
-		});
-		event.register(ToggleConfig.class, "bottler_mode", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isEnabled = config::isEnabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isEnabled();
-					config.setEnabled(newValue);
-					button.setTextures(newValue ? bottler_mode_empty : bottler_mode_fill);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isEnabled.getAsBoolean() ? bottler_mode_empty : bottler_mode_fill).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("bottler_mode")
-					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isEnabled() ? "empty" : "fill"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 54, fy + 14);
-				return btn;
-			});
-		});
-		event.register(ToggleConfig.class, "harvester_output_mode", (config, ctx) -> {
-			SimpleDraggablePanel panel = ctx.panel;
-			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
-			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
-			
-			BooleanSupplier isEnabled = config::isEnabled;
-			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
-					boolean newValue = !config.isEnabled();
-					config.setEnabled(newValue);
-					button.setTextures(newValue ? harvester_output_mode_enabled : harvester_output_mode_disabled);
-					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
-					config.writeToServer(buf);
-					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, isEnabled.getAsBoolean() ? harvester_output_mode_enabled : harvester_output_mode_disabled).size(9, 9)
-				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("harvester_output_mode_" +
-					(config.isEnabled() ? "enabled" : "disabled"))).build();
-			
-			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
-			panel.addChildren((fx, fy, fw, fh) -> {
-				btn.setPosition(fx + 54, fy + 24);
-				return btn;
-			});
-		});
+		addReverseToggleConfigWidget(event, "block_mode",
+			27, 9,
+			27, 18,
+			64, 4);
+		addReverseToggleConfigWidget(event, "fluid_mode",
+			36, 9,
+			36, 18,
+			64, 14);
+		addReverseToggleConfigWidget(event, "heat",
+			45, 9,
+			45, 18,
+			54, 14);
+		addReverseToggleConfigWidget(event, "harvester_use_tool",
+			54, 9,
+			54, 18,
+			54, 34);
+
+		addToggleConfigWidget(event, "render_area",
+			0, 27,
+			0, 36,
+			54, 14);
+		addToggleConfigWidget(event, "bottler_mode",
+			9, 27,
+			9, 36,
+			54, 14);
+		addToggleConfigWidget(event, "harvester_output_mode",
+			18, 27,
+			18, 36,
+			54, 24);
 		
 		event.register(RedstoneConfig.class, (config, ctx) -> {
 			SimpleDraggablePanel panel = ctx.panel;
@@ -414,13 +260,15 @@ public class CreateConfigWidgets {
 			Supplier<RedstoneConfig.Mode> mode = config::getMode;
 			SpriteButton redstoneButton = SpriteButton.builder(Component.empty(), (button, key) -> {
 					config.cycleMode();
-					button.setTextures(getTextureForRedstoneType(mode.get()));
+					button.setSprites(getTextureForRedstoneType(mode.get()));
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, getTextureForRedstoneType(config.getMode())).size(9, 9)
+				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("redstone")
 					.append(": ").append(getComponentForRedstone(mode.get()))).build();
+			
+			redstoneButton.setSprites(getTextureForRedstoneType(mode.get()));
 			
 			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(54, 4, 9, 9));
 			panel.addChildren((fx, fy, fw, fh) -> {
@@ -439,13 +287,15 @@ public class CreateConfigWidgets {
 			Supplier<Float> percGetter = config::getPercentage;
 			SpriteButton exportButton = SpriteButton.builder(Component.empty(), (button, key) -> {
 					config.cycleNextMode();
-					button.setTextures(getTextureForBatBox(mode.get()));
+					button.setSprites(getTextureForBatBox(mode.get()));
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
-				}, getTextureForBatBox(mode.get())).size(9, 9)
+				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("battery_box_export")
 					.append(": ").append(getComponentForBatBox(mode.get(), percGetter.get()))).build();
+			
+			exportButton.setSprites(getTextureForBatBox(mode.get()));
 			
 			ExtendedSlider slider = new ExtendedSlider(0, 0, panel.getWidth() - 8, 10, Component.empty(), Component.empty(),
 				0.0d, 100.0d, percGetter.get(), 0.1d, 0, false) {
@@ -472,18 +322,100 @@ public class CreateConfigWidgets {
 		});
 	}
 	
-	private static ResourceLocation getTextureForTransferType(SideConfig.TransferType transferType) {
-		if(transferType == SideConfig.TransferType.NONE) return deny;
-		if(transferType == SideConfig.TransferType.PULL) return input;
-		if(transferType == SideConfig.TransferType.PUSH) return output;
-		return allow;
+	private static void addToggleConfigWidget(CreateConfigWidgetEvent event, String subType,
+											  int spriteUEnabled, int spriteVEnabled,
+											  int spriteUDisabled, int spriteVDisabled,
+											  int x, int y) {
+		event.register(ToggleConfig.class, subType, (config, ctx) -> {
+			SimpleDraggablePanel panel = ctx.panel;
+			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+			
+			ButtonDrawContent enabledCtx = new ButtonDrawContent(9, 9);
+			enabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, spriteUEnabled, spriteVEnabled, 9, 9);
+			ButtonDrawContent disabledCtx = new ButtonDrawContent(9, 9);
+			disabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, spriteUDisabled, spriteVDisabled, 9, 9);
+			
+			BooleanSupplier isEnabled = config::isEnabled;
+			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+					boolean newValue = !config.isEnabled();
+					config.setEnabled(newValue);
+					button.setSprites(newValue ? enabledCtx : disabledCtx);
+					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+					config.writeToServer(buf);
+					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+				}).size(9, 9)
+				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable(subType +
+					(config.isEnabled() ? "_enabled" : "_disabled"))).build();
+			
+			btn.setSprites(isEnabled.getAsBoolean() ? enabledCtx : disabledCtx);
+			
+			panel.addChildren((fx, fy, fw, fh) -> {
+				btn.setPosition(fx + x, fy + y);
+				return btn;
+			});
+		});
+	}
+	private static void addReverseToggleConfigWidget(CreateConfigWidgetEvent event, String subType,
+											  int spriteUEnabled, int spriteVEnabled,
+											  int spriteUDisabled, int spriteVDisabled,
+											  int x, int y) {
+		event.register(ReverseToggleConfig.class, subType, (config, ctx) ->  {
+			SimpleDraggablePanel panel = ctx.panel;
+			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+			
+			ButtonDrawContent disabledCtx = new ButtonDrawContent(9, 9);
+			disabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, spriteUDisabled, spriteVDisabled, 9, 9);
+			ButtonDrawContent enabledCtx = new ButtonDrawContent(9, 9);
+			enabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, spriteUEnabled, spriteVEnabled, 9, 9);
+			
+			BooleanSupplier isDisabled = config::isDisabled;
+			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+					boolean newValue = !config.isDisabled();
+					config.setDisabled(newValue);
+					button.setSprites(newValue ? disabledCtx : enabledCtx);
+					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+					config.writeToServer(buf);
+					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+				}).size(9, 9)
+				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable(subType +
+					(config.isDisabled() ? "_disabled" : "_enabled"))).build();
+			
+			btn.setSprites(isDisabled.getAsBoolean() ? disabledCtx : enabledCtx);
+			
+			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(64, 14, 9, 9));
+			panel.addChildren((fx, fy, fw, fh) -> {
+				btn.setPosition(fx + x, fy + y);
+				return btn;
+			});
+		});
 	}
 	
-	private static ResourceLocation getTextureForRedstoneType(RedstoneConfig.Mode redstoneType) {
-		if(redstoneType == RedstoneConfig.Mode.IGNORE) return redstone_ignored;
-		if(redstoneType == RedstoneConfig.Mode.HIGH) return redstone_active;
-		if(redstoneType == RedstoneConfig.Mode.LOW) return redstone_passive;
-		return redstone_ignored;
+	private static ButtonDrawContent getTextureForTransferType(SideConfig.TransferType transferType) {
+		ButtonDrawContent ctx = new ButtonDrawContent(9, 9);
+		int u = 0;
+		int v = 0;
+		switch (transferType) {
+			case NONE -> u = 9;
+			case PULL -> u = 18;
+			case PUSH -> u = 27;
+		}
+		ctx.addBlitSprite(CONFIG_SPRITES, 180, 180, u, v, 9, 9);
+		return ctx;
+	}
+	
+	private static ButtonDrawContent getTextureForRedstoneType(RedstoneConfig.Mode redstoneType) {
+		ButtonDrawContent ctx = new ButtonDrawContent(9, 9);
+		int u = 0;
+		int v = 0;
+		switch (redstoneType) {
+			case HIGH -> u = 81;
+			case LOW -> u = 90;
+			case IGNORE -> u = 72;
+		}
+		ctx.addBlitSprite(CONFIG_SPRITES, 180, 180, u, v, 9, 9);
+		return ctx;
 	}
 	
 	private static MutableComponent getComponentForRedstone(RedstoneConfig.Mode type) {
@@ -492,12 +424,19 @@ public class CreateConfigWidgets {
 		return ModConstants.GUI.withSuffixTranslatable("redstone_default");
 	}
 	
-	private static ResourceLocation getTextureForBatBox(BatteryBoxExportConfig.ExportMode mode) {
-		if (mode == BatteryBoxExportConfig.ExportMode.EMPTY) return batbox_empty;
-		if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_BELOW) return batbox_percentage_below;
-		if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_ABOVE) return batbox_percentage_above;
-		if (mode == BatteryBoxExportConfig.ExportMode.PERCENTAGE_EXACT) return batbox_percentage_exact;
-		return batbox_full;
+	private static ButtonDrawContent getTextureForBatBox(BatteryBoxExportConfig.ExportMode mode) {
+		ButtonDrawContent ctx = new ButtonDrawContent(9, 9);
+		int u = 0;
+		int v = 0;
+		switch (mode) {
+			case EMPTY -> u = 99;
+			case PERCENTAGE_BELOW -> u = 126;
+			case PERCENTAGE_ABOVE -> u = 117;
+			case PERCENTAGE_EXACT -> u = 135;
+			case FULL -> u = 108;
+		}
+		ctx.addBlitSprite(CONFIG_SPRITES, 180, 180, u, v, 9, 9);
+		return ctx;
 	}
 	
 	private static MutableComponent getComponentForBatBox(BatteryBoxExportConfig.ExportMode mode, float perc) {

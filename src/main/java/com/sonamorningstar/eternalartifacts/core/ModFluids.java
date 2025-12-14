@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.fluid.HotSpringWaterLiquidBlock;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
+import com.sonamorningstar.eternalartifacts.content.fluid.SludgeLiquidBlock;
 import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredRegister;
 import com.sonamorningstar.eternalartifacts.registrar.GenericLiquidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.LiquidBlockFluidHolder;
@@ -44,19 +45,23 @@ public class ModFluids {
     );
     public static final GenericLiquidHolder GASOLINE = FLUIDS.register(
             "gasoline", 0, 750, 400, Rarity.RARE,
-            227, 242, 163, MapColor.TERRACOTTA_LIGHT_GREEN, true, 0xFFE3F2A3
+            227, 242, 163, MapColor.TERRACOTTA_LIGHT_GREEN, true, 0xF0E3F2A3
     );
     public static final GenericLiquidHolder DIESEL = FLUIDS.register(
             "diesel", 0, 830, 900, Rarity.RARE,
-            217, 164, 65, MapColor.TERRACOTTA_ORANGE, true, 0xFFD9A441
+            217, 164, 65, MapColor.TERRACOTTA_ORANGE, true, 0xF0D9A441
     );
     public static final GenericLiquidHolder NAPHTHA = FLUIDS.register(
             "naphtha", 0, 850, 600, Rarity.RARE,
-            245, 213, 128, MapColor.TERRACOTTA_YELLOW, true, 0xFFF5D580
+            245, 213, 128, MapColor.TERRACOTTA_YELLOW, true, 0xF9F5D580
     );
     public static final LiquidBlockFluidHolder<HotSpringWaterLiquidBlock> HOT_SPRING_WATER = FLUIDS.register(
             "hot_spring_water", HotSpringWaterLiquidBlock::new, 0, 1000, 1000, Rarity.RARE,
             22, 54, 58, MapColor.COLOR_LIGHT_BLUE, true, 0xC500A4B3
+    );
+    public static final LiquidBlockFluidHolder<SludgeLiquidBlock> SLUDGE = FLUIDS.register(
+        "sludge", SludgeLiquidBlock::new, 0, 4000, 2000, Rarity.UNCOMMON,
+        44, 11, 1, MapColor.COLOR_PURPLE, true, 0xFF2C0B0B
     );
     
     public static final LiquidBlockFluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion(

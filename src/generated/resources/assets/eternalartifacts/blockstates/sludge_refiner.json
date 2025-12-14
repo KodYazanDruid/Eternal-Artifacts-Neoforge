@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/sludge_refiner",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/sludge_refiner"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/sludge_refiner",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/sludge_refiner",
+      "y": 270
+    }
+  }
+}

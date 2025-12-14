@@ -85,6 +85,7 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.PACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.UNPACKER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ALCHEMICAL_BREWER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.SLUDGE_REFINER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);

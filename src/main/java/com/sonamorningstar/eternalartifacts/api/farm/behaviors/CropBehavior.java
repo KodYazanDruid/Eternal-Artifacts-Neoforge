@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class CropBehavior implements FarmBehavior {
 	
@@ -31,6 +32,11 @@ public class CropBehavior implements FarmBehavior {
 	public boolean canHarvest(Level level, BlockPos pos) {
 		CropBlock crop = (CropBlock) level.getBlockState(pos).getBlock();
 		return crop.getAge(level.getBlockState(pos)) >= crop.getMaxAge();
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 25;
 	}
 	
 	@Override

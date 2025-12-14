@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.TorchflowerCropBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 public class TorchFlowerBehavior implements FarmBehavior {
 	@Override
@@ -30,6 +31,11 @@ public class TorchFlowerBehavior implements FarmBehavior {
 	@Override
 	public boolean supportsReplanting() {
 		return false;
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 20;
 	}
 	
 	@Override

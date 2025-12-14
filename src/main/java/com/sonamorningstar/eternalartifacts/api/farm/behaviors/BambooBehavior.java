@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
+import org.jetbrains.annotations.Nullable;
 
 import static net.minecraft.world.level.block.BambooStalkBlock.AGE;
 
@@ -32,6 +33,11 @@ public class BambooBehavior extends ReedBehavior {
 				return Blocks.AIR.defaultBlockState();
 			}
 		}
+	}
+	
+	@Override
+	public int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool) {
+		return 10;
 	}
 	
 	@Override
