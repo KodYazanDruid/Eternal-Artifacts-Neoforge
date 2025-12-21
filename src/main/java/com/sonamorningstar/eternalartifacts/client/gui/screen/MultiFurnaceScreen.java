@@ -1,15 +1,21 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.ParentalWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.MultiFurnace;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Setter;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,7 +27,7 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 		super(menu, playerInventory, title);
 	}
 	
-	private RecipeTypeButton[] recipeButtons = new RecipeTypeButton[4];
+	private final RecipeTypeButton[] recipeButtons = new RecipeTypeButton[4];
 	
 	@Override
 	protected void init() {
@@ -145,10 +151,27 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 		
 		@Override
 		public void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
+			isHovered = isMouseOver(mouseX, mouseY);
 			ResourceLocation sprite = selected ? RECIPE_SELECTED_SPRITE
 				: isHoveredOrFocused() ? RECIPE_HIGHLIGHTED_SPRITE : RECIPE_SPRITE;
 			gui.blitSprite(sprite, getX(), getY(), width, height);
 			ItemRendererHelper.renderFakeItemTransparent(gui, recipeIcon, getX(), getY(), 255);
+		}
+		
+		@Override
+		public boolean isMouseOver(double mX, double mY) {
+			Screen screen = Minecraft.getInstance().screen;
+			if (screen instanceof AbstractModContainerScreen<?> modScreen) {
+				for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
+					GuiEventListener child = modScreen.upperLayerChildren.get(i);
+					if (child instanceof ParentalWidget parental) {
+						if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
+							return parental.getChildUnderCursorRaw(mX, mY) == this;
+						} else return super.isMouseOver(mX, mY);
+					}
+				}
+			}
+			return super.isMouseOver(mX, mY);
 		}
 		
 		@Override

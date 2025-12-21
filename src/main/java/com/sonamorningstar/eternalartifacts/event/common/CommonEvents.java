@@ -10,6 +10,8 @@ import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwo
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
+import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.DimensionalAnchor;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
@@ -26,6 +28,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.ForcedChunksToClient;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
@@ -514,11 +517,17 @@ public class CommonEvents {
     public static void playerOpenContainerEvent(PlayerContainerEvent.Open event) {
         Player player = event.getEntity();
         AbstractContainerMenu menu = event.getContainer();
-        if (player.level().isClientSide) return;
+        if (player.level().isClientSide()) return;
         CharmStorage.get(player).syncSelf();
-        
-        if (menu instanceof BlueprintMenu bpMenu && player instanceof ServerPlayer sp) {
+        ServerPlayer sp = ((ServerPlayer) player);
+        if (menu instanceof BlueprintMenu bpMenu) {
             bpMenu.synchIngredients(sp);
+        }
+        if (menu instanceof GenericMachineMenu gmMenu) {
+            if (gmMenu.getBlockEntity() instanceof DimensionalAnchor anchor) {
+                BlockPos pos = anchor.getBlockPos();
+                Channel.sendToChunk(new ForcedChunksToClient(anchor.getForcedChunks(), pos), anchor.getLevel().getChunkAt(pos));
+            }
         }
     }
     

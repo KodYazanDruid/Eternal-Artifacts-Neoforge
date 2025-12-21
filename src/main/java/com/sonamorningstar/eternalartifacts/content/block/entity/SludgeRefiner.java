@@ -32,7 +32,7 @@ public class SludgeRefiner extends GenericMachine {
 	public static final List<ResourceLocation> SLUDGE_RESULTS = new ArrayList<>();
 	public static final String CACHED_TABLE_ID_KEY = "CachedTableId";
 	private ResourceLocation cachedTableId = null;
-	private boolean shouldUpdateCache = false;
+	private boolean shouldUpdateCache = true;
 	
 	public SludgeRefiner(BlockPos pos, BlockState blockState) {
 		super(ModMachines.SLUDGE_REFINER, pos, blockState);
@@ -63,6 +63,24 @@ public class SludgeRefiner extends GenericMachine {
 		super.load(tag);
 		if (tag.contains(CACHED_TABLE_ID_KEY)) {
 			cachedTableId = ResourceLocation.tryParse(tag.getString(CACHED_TABLE_ID_KEY));
+			shouldUpdateCache = false;
+		}
+	}
+	
+	@Override
+	public void saveContents(CompoundTag additionalTag) {
+		super.saveContents(additionalTag);
+		if (cachedTableId != null) {
+			additionalTag.putString(CACHED_TABLE_ID_KEY, cachedTableId.toString());
+		}
+	}
+	
+	@Override
+	public void loadContents(CompoundTag additionalTag) {
+		super.loadContents(additionalTag);
+		if (additionalTag.contains(CACHED_TABLE_ID_KEY)) {
+			cachedTableId = ResourceLocation.tryParse(additionalTag.getString(CACHED_TABLE_ID_KEY));
+			shouldUpdateCache = false;
 		}
 	}
 	

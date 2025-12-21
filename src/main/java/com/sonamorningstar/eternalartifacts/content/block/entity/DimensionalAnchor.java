@@ -8,26 +8,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DimensionalAnchor extends GenericMachine {
-	boolean markedForUpdate = false;
 	public DimensionalAnchor(BlockPos pos, BlockState blockState) {
 		super(ModMachines.DIMENSIONAL_ANCHOR, pos, blockState);
 		setEnergy(() -> {
 			int volume = getVolumeLevel();
 			return new ModEnergyStorage(50000 * (volume + 1), 2500, 2500) {
-				@Override
-				public int receiveEnergyForced(int maxReceive, boolean simulate) {
-					int received =  super.receiveEnergyForced(maxReceive, simulate);
-					if (!simulate && received >= DimensionalAnchor.this.energyPerTick) markedForUpdate = true;
-					return received;
-				}
-				
-				@Override
-				public int receiveEnergy(int maxReceive, boolean simulate) {
-					int received = super.receiveEnergy(maxReceive, simulate);
-					if (!simulate && received >= DimensionalAnchor.this.energyPerTick) markedForUpdate = true;
-					return received;
-				}
-				
 				@Override
 				public void onEnergyChanged() {sendUpdate();}
 				@Override
@@ -45,13 +30,12 @@ public class DimensionalAnchor extends GenericMachine {
 		if (!forcedChunks.isEmpty()) {
 			setEnergyPerTick(forcedChunks.size() * 10);
 			spendEnergy(energy);
-			markedForUpdate = false;
 		}
 	}
 	
 	@Override
-	public boolean needsUpdate() {
-		return super.needsUpdate() || !canWork(energy) || markedForUpdate;
+	public boolean needsForceLoaderUpdate() {
+		return super.needsForceLoaderUpdate() || !canWork(energy);
 	}
 	
 	@Override

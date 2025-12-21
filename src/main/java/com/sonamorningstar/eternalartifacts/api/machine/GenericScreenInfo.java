@@ -18,29 +18,24 @@ import java.util.List;
 import java.util.Map;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class GenericScreenInfo {
     private final GenericMachine machine;
     private int arrowXOffset = 0;
     private int arrowYOffset = 0;
-    @Setter
     private int imageWidth = 176;
-    @Setter
     private int imageHeight = 166;
     private int arrowX = 0;
     private int arrowY = 0;
 
-    @Setter
     private boolean shouldBindSlots = true;
-    @Setter
     private boolean overrideArrowPos = false;
-    @Setter
     private boolean shouldDrawArrow = true;
-    @Setter
     private boolean shouldDrawMachineTitle = true;
-    @Setter
     private boolean shouldDrawInventoryTitle = true;
-
+    private boolean showEPT = true;
+    
     private final Int2ObjectMap<Pair<Integer, Integer>> tankPositions = new Int2ObjectOpenHashMap<>();
     private final Map<Integer, Pair<Integer, Integer>> slotPositions = new HashMap<>();
     private final Map<Component, ComponentInfo> components = new HashMap<>();

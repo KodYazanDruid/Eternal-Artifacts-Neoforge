@@ -38,14 +38,17 @@ public record ForcedChunksToClient(Set<ForceLoadManager.ForcedChunkPos> forcedCh
 	}
 	
 	public void handle(PlayPayloadContext ctx) {
-		if(ctx.flow().isClientbound()){
+		if(ctx.flow().isClientbound()) {
 			ctx.workHandler().execute(() -> ctx.player().ifPresent(player -> {
 				Level level = player.level();
 				if (level.isLoaded(pos)) {
 					BlockEntity be = level.getBlockEntity(pos);
 					if (be instanceof ChunkLoader loader) {
 						loader.claimChunks(forcedChunks);
-						System.out.println("Received " + forcedChunks.size() + " forced chunks at " + pos + " for loader: " + loader);
+						Set<ForceLoadManager.ForcedChunkPos> chunks = loader.getForcedChunks();
+						chunks.clear();
+						chunks.addAll(forcedChunks);
+						//System.out.println("Received " + forcedChunks.size() + " forced chunks at " + pos + " for loader: " + loader);
 					}
 				}
 			}));

@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.network.ForcedChunksToClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public interface ChunkLoader {
 	Level getLevel();
 	BlockPos getBlockPos();
 	boolean canLoadChunks();
-	boolean needsUpdate();
+	boolean needsForceLoaderUpdate();
 	int getLoadingRange();
 	int getChunkUnloadCooldown();
 	void setChunkUnloadCooldown(int cooldown);
@@ -40,7 +41,7 @@ public interface ChunkLoader {
 		System.out.println("Claimed " + forcedChunks.size() + " chunks at " + getBlockPos());
 		System.out.println("BlockEntity: " + this);*/
 		if (getLevel() instanceof ServerLevel sLevel) {
-			Channel.sendToChunk(new ForcedChunksToClient(getForcedChunks(), getBlockPos()), sLevel.getChunkAt(getBlockPos()));
+			Channel.sendToChunk(new ForcedChunksToClient(forcedChunks, getBlockPos()), sLevel.getChunkAt(getBlockPos()));
 		}
 	}
 	
@@ -66,7 +67,7 @@ public interface ChunkLoader {
 				new ForceLoadManager.ForcedChunkPos(serverLevel, pos), pos,
 				getLoadingRange(), getForcedChunks());
 		} else if (getChunkUnloadCooldown() == 0) {
-			ForceLoadManager.unforceAllChunks(level.getServer(), pos, getForcedChunks());
+			ForceLoadManager.unforceAllChunks(level.getServer(), this);
 		} else {
 			setChunkUnloadCooldown(getChunkUnloadCooldown() - 1);
 			resetCooldown = false;
@@ -74,5 +75,6 @@ public interface ChunkLoader {
 		if (resetCooldown) {
 			setChunkUnloadCooldown(0);
 		}
+		if (this instanceof BlockEntity be && !be.isRemoved()) Channel.sendToChunk(new ForcedChunksToClient(getForcedChunks(), pos), serverLevel.getChunkAt(pos));
 	}
 }

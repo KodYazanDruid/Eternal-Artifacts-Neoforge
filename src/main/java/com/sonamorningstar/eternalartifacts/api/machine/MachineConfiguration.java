@@ -35,7 +35,7 @@ public class MachineConfiguration {
     }
     
     public <T extends Config> @Nullable T get(Class<T> configClass) {
-        return (T) configs.get(ConfigLocations.getConfigLocation(configClass));
+        return get(ConfigLocations.getConfigLocation(configClass));
     }
     
     public void unregister(ResourceLocation rl) {

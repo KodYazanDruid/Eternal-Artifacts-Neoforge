@@ -248,7 +248,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Decreases the next taken damage by %s%%.");
                 //endregion
                 //region Blocks
-                add(ModBlocks.ANVILINATOR.get(), "Anvilinator");
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
                 add(ModBlocks.RESONATOR.get(), "Resonator");
                 add(ModBlocks.GARDENING_POT.get(), "Gardening Pot");
@@ -257,7 +256,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ROSY_FROGLIGHT.get(), "Rosy Froglight");
                 add(ModBlocks.FORSYTHIA.get(), "Forsythia");
                 add(ModBlocks.MACHINE_BLOCK.get(), "Machine Block");
-                add(ModBlocks.BOOK_DUPLICATOR.get(), "Book Duplicator");
                 add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Block of Sugar Charcoal");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Four Leaf Clover");
                 add(ModBlocks.GRAVEL_MANGANESE_ORE.get(), "Gravel Manganese Ore");
@@ -288,7 +286,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COPPER_ORE_BERRY.get(), "Copper Oreberry");
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Iron Oreberry");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Gold Oreberry");
-                add(ModBlocks.BATTERY_BOX.get(), "Battery Box");
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Experience Oreberry");
                 add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganese Oreberry");
                 add(ModBlocks.JAR.get(), "Jar");
@@ -840,7 +837,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Sonraki alınan hasarı %%%s azaltır.");
                 //endregion
                 //region Türkçe Block
-                add(ModBlocks.ANVILINATOR.get(), "Örsinatör");
+                add(ModMachines.ANVILINATOR.getBlockTranslationKey(), "Örsinatör");
                 add(ModFluids.NOUS.getTranslationKey(), "İdrak");
                 add(ModFluids.NOUS.getFluidBlock(), "İdrak");
                 add(ModFluids.LIQUID_MEAT.getTranslationKey(), "Sıvı Et");
@@ -855,7 +852,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ROSY_FROGLIGHT.get(), "Gülcük Kurbağa Işığı");
                 add(ModBlocks.FORSYTHIA.get(), "Hor Çiçeği");
                 add(ModBlocks.MACHINE_BLOCK.get(), "Makine Bloğu");
-                add(ModBlocks.BOOK_DUPLICATOR.get(), "Kitap Çoğaltıcı");
+                add(ModMachines.BOOK_DUPLICATOR.getBlockTranslationKey(), "Kitap Çoğaltıcı");
                 add(ModBlocks.SUGAR_CHARCOAL_BLOCK.get(), "Şeker Odun Kömürü Bloğu");
                 add(ModBlocks.FOUR_LEAF_CLOVER.get(), "Dört Yapraklı Yonca");
                 add(ModBlocks.GRAVEL_MANGANESE_ORE.get(), "Çakılda Manganez Cevheri");
@@ -888,7 +885,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COPPER_ORE_BERRY.get(), "Bakır Cevherçalısı");
                 add(ModBlocks.IRON_ORE_BERRY.get(), "Demir Cevherçalısı");
                 add(ModBlocks.GOLD_ORE_BERRY.get(), "Altın Cevherçalısı");
-                add(ModBlocks.BATTERY_BOX.get(), "Pil Kutusu");
+                add(ModMachines.BATTERY_BOX.getBlockTranslationKey(), "Pil Kutusu");
                 add(ModFluids.BLOOD.getTranslationKey(), "Kan");
                 add(ModFluids.BLOOD.getFluidBlock(), "Kan");
                 add(ModBlocks.EXPERIENCE_ORE_BERRY.get(), "Tecrübe Cevherçalısı");
@@ -1028,6 +1025,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.SLUDGE.getTranslationKey(), "Çamur");
                 add(ModFluids.SLUDGE.getFluidBlock(), "Çamur");
                 add(ModMachines.SLUDGE_REFINER.getBlockTranslationKey(), "Çamur Arıtıcı");
+                add(ModMachines.FLUID_PUMP.getBlockTranslationKey(), "Sıvı Pompası");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

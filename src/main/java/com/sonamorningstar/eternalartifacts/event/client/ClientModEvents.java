@@ -51,10 +51,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ClientModEvents {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
-        event.register(ModMenuTypes.ANVILINATOR.get(), AnvilinatorScreen::new);
         event.register(ModMenuTypes.BIOFURNACE.get(), BioFurnaceScreen::new);
-        event.register(ModMenuTypes.BOOK_DUPLICATOR.get(), BookDuplicatorScreen::new);
-        event.register(ModMenuTypes.BATTERY_BOX.get(), BatteryBoxScreen::new);
         event.register(ModMenuTypes.DYNAMO_MENU.get(), FluidDynamoScreen::new);
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);

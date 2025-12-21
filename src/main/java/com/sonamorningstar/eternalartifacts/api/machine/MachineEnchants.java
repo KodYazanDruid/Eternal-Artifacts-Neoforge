@@ -76,8 +76,8 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.OIL_REFINERY.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ELECTRIC_FURNACE.getBlockEntity(), commonMachineEnchants);
-		enchantMap.put(ModBlockEntities.ANVILINATOR.get(), commonMachineEnchants);
-		enchantMap.put(ModBlockEntities.BOOK_DUPLICATOR.get(), commonMachineEnchants);
+		enchantMap.put(ModMachines.ANVILINATOR.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.BOOK_DUPLICATOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.SMITHINATOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.AUTOCUTTER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.REPAIRER.getBlockEntity(), commonMachineEnchants);
@@ -94,6 +94,7 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.BOTTLER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.HARVESTER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
+		enchantMap.put(ModMachines.FLUID_PUMP.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		
 		enchantMap.put(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
 		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), dynamoEnchants);

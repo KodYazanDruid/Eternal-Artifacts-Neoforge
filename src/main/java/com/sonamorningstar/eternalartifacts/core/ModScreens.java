@@ -2,11 +2,6 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
-import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
-import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.MenuAccess;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -31,6 +26,7 @@ public class ModScreens {
         event.register(ModMachines.ALCHEMICAL_BREWER.getMenu(), AlchemicalBrewerScreen::new);
         event.register(ModMachines.BOTTLER.getMenu(), BottlerScreen::new);
         event.register(ModMachines.HARVESTER.getMenu(), HarvesterScreen::new);
+        event.register(ModMachines.ANVILINATOR.getMenu(), AnvilinatorScreen::new);
 
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);

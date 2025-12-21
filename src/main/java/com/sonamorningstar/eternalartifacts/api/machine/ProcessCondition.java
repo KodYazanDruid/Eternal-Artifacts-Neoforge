@@ -21,7 +21,7 @@ public class ProcessCondition {
     private final List<FluidStack> queuedFluidStackImports = new ArrayList<>();
     private AbstractFluidTank inputTank;
     private AbstractFluidTank outputTank;
-    private BooleanSupplier supplier;
+    private BooleanSupplier shouldAbort;
     
     public ProcessCondition(Machine<?> machine) {
         this.machine = machine;
@@ -55,29 +55,29 @@ public class ProcessCondition {
         return this;
     }
     public ProcessCondition commitQueuedItemStackImports() {
-        if(supplier == null || !supplier.getAsBoolean()) {
+        if(shouldAbort == null || !shouldAbort.getAsBoolean()) {
             SimpleContainer container = new SimpleContainer(outputSlots.size());
             for (int i = 0; i < outputSlots.size(); i++) container.setItem(i, inventory.getStackInSlot(outputSlots.get(i)).copy());
             for (int i = 0; i < queuedItemStackImports.size(); i++) {
                 if (i >= container.getContainerSize()) {
-                    supplier = preventWorking();
+                    shouldAbort = abort();
                     return this;
                 }
                 ItemStack remainder = container.addItem(queuedItemStackImports.get(i));
                 if (!remainder.isEmpty()) {
-                    supplier = preventWorking();
+                    shouldAbort = abort();
                     return this;
                 }
-                supplier = () -> !remainder.isEmpty();
+                shouldAbort = () -> !remainder.isEmpty();
             }
         }
         return this;
     }
     
     public ProcessCondition commitQueuedFluidStackImports() {
-        if(supplier == null || !supplier.getAsBoolean()) {
+        if(shouldAbort == null || !shouldAbort.getAsBoolean()) {
             if (outputTank == null) {
-                supplier = preventWorking();
+                shouldAbort = abort();
                 return this;
             }
             SimpleFluidContainer container = new SimpleFluidContainer(outputTank.getTanks());
@@ -88,74 +88,74 @@ public class ProcessCondition {
             }
             for(int i = 0; i < queuedFluidStackImports.size(); i++) {
                 if (i >= container.getContainerSize()) {
-                    supplier = preventWorking();
+                    shouldAbort = abort();
                     return this;
                 }
                 FluidStack queuedStack = queuedFluidStackImports.get(i);
                 FluidStack remainder = container.addFluid(queuedStack);
                 if (!remainder.isEmpty()) {
-                    supplier = preventWorking();
+                    shouldAbort = abort();
                     return this;
                 }
-                supplier = () -> !remainder.isEmpty();
+                shouldAbort = () -> !remainder.isEmpty();
             }
         }
         return this;
     }
     
     public ProcessCondition tryExtractItemForced(int count) {
-        if (supplier == null || !supplier.getAsBoolean()) {
+        if (shouldAbort == null || !shouldAbort.getAsBoolean()) {
             for (int i = 0; i < inventory.getSlots(); i++) {
                 ItemStack extracted = inventory.extractItem(i, count, true);
                 if (!extracted.isEmpty()) {
-                    supplier = noCondition();
+                    shouldAbort = noCondition();
                     break;
-                } else supplier = preventWorking();
+                } else shouldAbort = abort();
             }
         }
         return this;
     }
     public ProcessCondition tryExtractItemForced(int count, int slot) {
-        if (supplier == null || !supplier.getAsBoolean()) {
+        if (shouldAbort == null || !shouldAbort.getAsBoolean()) {
             ItemStack extracted = inventory.extractItem(slot, count, true);
-            if (extracted.isEmpty()) supplier = preventWorking();
+            if (extracted.isEmpty()) shouldAbort = abort();
             else {
-                if (extracted.getCount() < count) supplier = preventWorking();
-                else supplier = noCondition();
+                if (extracted.getCount() < count) shouldAbort = abort();
+                else shouldAbort = noCondition();
             }
         }
         return this;
     }
     public ProcessCondition tryExtractFluidForced(int fluidAmount) {
-        if(supplier == null || !supplier.getAsBoolean()) {
+        if(shouldAbort == null || !shouldAbort.getAsBoolean()) {
             FluidStack drained = inputTank.drainForced(fluidAmount, IFluidHandler.FluidAction.SIMULATE);
-            if (drained.getAmount() < fluidAmount) supplier = preventWorking();
-            else supplier = noCondition();
+            if (drained.getAmount() < fluidAmount) shouldAbort = abort();
+            else shouldAbort = noCondition();
         }
         return this;
     }
     public ProcessCondition tryExtractFluidForced(FluidStack stack) {
-        if(supplier == null || !supplier.getAsBoolean()) {
+        if(shouldAbort == null || !shouldAbort.getAsBoolean()) {
             FluidStack drained = inputTank.drainForced(stack, IFluidHandler.FluidAction.SIMULATE);
-            if(drained.isEmpty()) supplier = preventWorking();
-            else supplier = noCondition();
+            if(drained.isEmpty()) shouldAbort = abort();
+            else shouldAbort = noCondition();
         }
         return this;
     }
     
     public ProcessCondition createCustomCondition(BooleanSupplier custom) {
-        if (supplier == null || !supplier.getAsBoolean()) {
-            supplier = custom;
+        if (shouldAbort == null || !shouldAbort.getAsBoolean()) {
+            shouldAbort = custom;
         }
         return this;
     }
     //endregion
     
     public static BooleanSupplier noCondition() { return () -> false; }
-    public static BooleanSupplier preventWorking() { return () -> true; }
+    public static BooleanSupplier abort() { return () -> true; }
 
-    public boolean getResult() {
-        return supplier == null || supplier.getAsBoolean();
+    public boolean shouldAbourt() {
+        return shouldAbort == null || shouldAbort.getAsBoolean();
     }
 
 }

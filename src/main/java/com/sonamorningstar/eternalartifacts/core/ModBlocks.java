@@ -163,13 +163,7 @@ public class ModBlocks {
             ()-> new StairBlock(()-> OBSIDIAN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> OBSIDIAN_BRICK_WALL = registerWithItem("obsidian_brick_wall",
             ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
-
-    public static final DeferredBlock<AnvilinatorBlock> ANVILINATOR = registerMachineWithItem("anvilinator",
-            ()-> new AnvilinatorBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<BookDuplicatorBlock> BOOK_DUPLICATOR = registerMachineWithItem("book_duplicator",
-            ()-> new BookDuplicatorBlock(MACHINE_BLOCK.get().properties()));
-    public static final DeferredBlock<BatteryBoxBlock> BATTERY_BOX = registerWithItem("battery_box",
-            ()-> new BatteryBoxBlock(MACHINE_BLOCK.get().properties()));
+    
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
     public static final DeferredBlock<TrashCanBlock> TRASH_CAN = registerWithItem("trash_can",

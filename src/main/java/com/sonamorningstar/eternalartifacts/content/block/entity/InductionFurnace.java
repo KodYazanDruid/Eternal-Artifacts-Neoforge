@@ -2,24 +2,19 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
-import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
-import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
 import com.sonamorningstar.eternalartifacts.capabilities.HeatStorage;
 import com.sonamorningstar.eternalartifacts.container.InductionFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -161,7 +156,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
         AtomicBoolean shouldHeat = new AtomicBoolean();
         shouldHeat.set(false);
         if (processCondition != null) {
-            progress(processCondition::getResult,
+            progress(processCondition::shouldAbourt,
                 () -> shouldHeat.set(true),
                 () -> {
                     ItemStack remainder0 = ItemStack.EMPTY;

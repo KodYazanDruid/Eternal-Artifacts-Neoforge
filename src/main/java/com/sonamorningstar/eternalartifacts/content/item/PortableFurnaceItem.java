@@ -96,7 +96,7 @@ public class PortableFurnaceItem extends EnergyConsumerItem {
 	
 	private static void syncToClient(int slotId, Player player, ItemStack charm) {
 		if (player instanceof ServerPlayer serverPlayer) {
-			Channel.sendToPlayer( new SyncCharmTagsToClient(slotId, charm.getTag()), serverPlayer);
+			Channel.sendToPlayer(new SyncCharmTagsToClient(slotId, charm.getTag()), serverPlayer);
 		}
 	}
 	

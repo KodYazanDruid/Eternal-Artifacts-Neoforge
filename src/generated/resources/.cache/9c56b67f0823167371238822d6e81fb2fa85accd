@@ -1,4 +1,4 @@
-// 1.20.4	2025-12-12T23:42:40.3725539	Item Models: eternalartifacts
+// 1.20.4	2025-12-18T20:22:54.8729635	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -8,6 +8,7 @@ bd6a296945978ba6967a53d716114b2b32a6e09b assets/eternalartifacts/models/item/alu
 3874b4eb06a830f3936d8daa78e5af98dc9737e2 assets/eternalartifacts/models/item/ancient_fruit.json
 161b1c89008b5b5f4726e0dce0ff4afe982ea306 assets/eternalartifacts/models/item/ancient_seed.json
 c19be92cf04366a84cc5be7c50d5b9094a5ddbb0 assets/eternalartifacts/models/item/angelic_heart.json
+12ba5c35746cc2cbcedb4638dfa2384e7f147009 assets/eternalartifacts/models/item/anvilinator.json
 795fbfa94500c653f69888501a72d2ece95c1970 assets/eternalartifacts/models/item/apple_pie.json
 07cf6c5004aefaf40b7ca147178968641c4d1241 assets/eternalartifacts/models/item/autocutter.json
 78c5feb97b8b1b383354bd72fcd624d1d85adc50 assets/eternalartifacts/models/item/axe_of_regrowth.json
@@ -26,6 +27,7 @@ db8b9c9664f4691f8d51eb49b90fbd131328adb7 assets/eternalartifacts/models/item/blo
 1ffc3427c887c5d5c465a7e723f7a91153047c2b assets/eternalartifacts/models/item/blueprint.json
 4f3f04bd8fe76afcc7ef40bf91ea8543534c7b2b assets/eternalartifacts/models/item/blueprint_filled.json
 97c8edd3885a1a66a113fd397ebfd3371d838472 assets/eternalartifacts/models/item/blue_shulker_shell.json
+6c6e6bc40f3a6d64989c101404960392f9485459 assets/eternalartifacts/models/item/book_duplicator.json
 e70beb239a80ccc545f14a4567b781cf9b22eaad assets/eternalartifacts/models/item/bottler.json
 a4ff47382565473dbee87cf9b28ca93ef7a781ef assets/eternalartifacts/models/item/bronze_dust.json
 6cc211a25464771fc73581c9c8bd56538fb0d400 assets/eternalartifacts/models/item/bronze_ingot.json
@@ -100,6 +102,7 @@ c2fdc74aea92bb242790af24ba4471dd51ca9817 assets/eternalartifacts/models/item/exp
 9b1b466c164aa8f9c2c495d3d6195981378cd460 assets/eternalartifacts/models/item/flour.json
 98db580560adef0538044a44ccd9b7e5b4f12940 assets/eternalartifacts/models/item/fluid_infuser.json
 69903134626f3179b768ddd55348d9aee516a9a1 assets/eternalartifacts/models/item/fluid_mixer.json
+f233ab2885a208fb9c7b955e3a75844834ff8330 assets/eternalartifacts/models/item/fluid_pump.json
 c6268b3004280f28c30616b2767e3a95476ce1fd assets/eternalartifacts/models/item/forsythia.json
 8dbc4a5b8db74c606be2099f6043700716fd7bfd assets/eternalartifacts/models/item/four_leaf_clover.json
 5b5b72db5847d5995c7212078a95b198a9a89493 assets/eternalartifacts/models/item/frog_legs.json

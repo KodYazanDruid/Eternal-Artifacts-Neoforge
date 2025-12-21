@@ -4,7 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.TooltipFlag;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -45,6 +49,12 @@ public class AutoTransferConfig implements Config {
 		input = buf.readBoolean();
 		output = buf.readBoolean();
 	}
+	
+	/*@Override
+	public void collectTooltips(List<Component> tooltips, TooltipFlag flag) {
+		tooltips.add(Component.translatable("config.eternalartifacts.auto_input", input));
+		tooltips.add(Component.translatable("config.eternalartifacts.auto_output", output));
+	}*/
 	
 	@Override
 	public String toString() {

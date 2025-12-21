@@ -97,4 +97,14 @@ public final class ItemRendererHelper {
 		gui.renderItemDecorations(M.font, itemStack, x, y, "");
 		return true;
 	}
+	public static boolean renderItemCarousel(GuiGraphics gui, ItemStack[] stacks, int x, int y, float alpha) {
+		long tick = M.clientTickCount;
+		if (stacks.length == 0) {
+			return false;
+		}
+		ItemStack itemStack = stacks[(int) ((tick / 20) % stacks.length)];
+		renderFakeItemTransparent(gui, itemStack, x, y, (int) (alpha * 255.0F));
+		gui.renderItemDecorations(M.font, itemStack, x, y, "");
+		return true;
+	}
 }

@@ -1,13 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.google.common.util.concurrent.Runnables;
-import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
-import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
-import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,14 +17,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
-import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import oshi.util.Util;
 
@@ -38,45 +31,14 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     public String name = "";
     public boolean enableNaming = false;
     private final int cost = 0;
-    private final FakePlayer fakePlayer;
     private AnvilUpdateEvent anvilUpdateEvent;
 
-    /*INPUT_SLOT = 0;
-    SECONDARY_SLOT = 1;
-    OUTPUT_SLOT = 2;
-    FLUID_SLOT = 3;*/
-
     public Anvilinator(BlockPos pPos, BlockState pBlockState) {
-        super(ModBlockEntities.ANVILINATOR.get(), pPos, pBlockState, AnvilinatorMenu::new);
+        super(ModMachines.ANVILINATOR.getBlockEntity(), pPos, pBlockState, (a, b, c, d) -> new AnvilinatorMenu(ModMachines.ANVILINATOR.getMenu(), a, b, c, d));
         setEnergy(this::createDefaultEnergy);
-        fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
         setTank(() -> createBasicTank(64000, fs-> fs.is(ModTags.Fluids.EXPERIENCE), true, true, Runnables.doNothing()));
         outputSlots.add(2);
-        setInventory(() -> new ModItemStorage(4) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                if(slot != 3 && !outputSlots.contains(slot)) progress = 0;
-                if(slot == 0 && this.getStackInSlot(0).isEmpty()) progress = 0;
-                anvilUpdateEvent = new AnvilUpdateEvent(this.getStackInSlot(0), this.getStackInSlot(1), name, cost, fakePlayer);
-                Anvilinator.this.sendUpdate();
-            }
-            @Override
-            public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-                switch (slot) {
-                    case 0, 1: return true;
-                    case 2: return false;
-                    case 3 :
-                        IFluidHandlerItem fh = FluidUtil.getFluidHandler(stack).orElse(null);
-                        if(fh == null) return false;
-                        else {
-                            FluidStack fluidStack = fh.getFluidInTank(0);
-                            return !fluidStack.isEmpty() && fh.isFluidValid(0, fluidStack);
-                        }
-                    default:
-                        return super.isItemValid(slot, stack);
-                }
-            }
-        });
+        setInventory(() -> createRecipeFinderInventory(3, outputSlots));
     }
 
     public void setName(String name) {
@@ -99,7 +61,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     @Override
     public void onLoad() {
         super.onLoad();
-        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, cost, fakePlayer);
+        fireEvent();
     }
 
     @Override
@@ -113,26 +75,38 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         super.saveAdditional(tag);
         tag.putBoolean("EnableNaming", enableNaming);
     }
-
-    //This is the where magic happens.
+    
+    @Override
+    protected void findRecipe() {
+        fireEvent();
+    }
+    
+    private void fireEvent() {
+        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, cost, getFakePlayer());
+        NeoForge.EVENT_BUS.post(anvilUpdateEvent);
+    }
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        ItemStack input = inventory.getStackInSlot(0);
-        ItemStack secondary = inventory.getStackInSlot(1);
         performAutoOutputItems(lvl, pos);
         performAutoInputFluids(lvl, pos);
         performAutoOutputItems(lvl, pos);
-        fillTankFromSlot(inventory, tank, 3);
-
-        //Check if there is an event first.
-        if(!onAnvilatorChance(anvilUpdateEvent)) return;
-
+        
+        if (!canWork(energy)) return;
+        
+        ItemStack input = inventory.getStackInSlot(0);
+        ItemStack secondary = inventory.getStackInSlot(1);
+        
+        if (!anvilUpdateEvent.isCanceled()) {
+            if(!handleEvent(anvilUpdateEvent)) return;
+        }
+        
         if(!input.isEmpty() && secondary.is(Items.ENCHANTED_BOOK) && !combineEnchants(input, secondary).isEmpty()) {
             //Transferring enchants from stack. Combining books.
             progressAndCraft(input, secondary, combineEnchants(input, secondary));
 
-        }else if(input.isDamageableItem() && input.getItem().isValidRepairItem(input, secondary)) {
+        } else if(input.isDamageableItem() && input.getItem().isValidRepairItem(input, secondary)) {
             //Repairing item with its repair item.
             int damage = input.getDamageValue() - Math.min(input.getDamageValue(), input.getMaxDamage() / 4);
             if(damage <= 0 ) damage = 0;
@@ -140,7 +114,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             copy.setDamageValue(damage);
             progressAndCraft(input, secondary, copy);
 
-        }else if(input.isDamageableItem() && input.is(secondary.getItem())) {
+        } else if(input.isDamageableItem() && input.is(secondary.getItem())) {
             int in1 = input.getMaxDamage() - input.getDamageValue();
             int sec1 = secondary.getMaxDamage() - secondary.getDamageValue();
             int perc = sec1 + input.getMaxDamage() * 12 / 100;
@@ -151,7 +125,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             copy.setDamageValue(repair);
             if(!combineEnchants(input, secondary).isEmpty()) progressAndCraft(input, secondary, combineEnchants(copy, secondary));
             else progressAndCraft(input, secondary, copy);
-        }else if(secondary.isEmpty() && enableNaming) {
+        } else if(secondary.isEmpty() && enableNaming) {
             //Renaming section.
             progressAndCraft(input, null, input.copyWithCount(1));
         }
@@ -193,18 +167,17 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         return copy;
     }
 
-    private boolean onAnvilatorChance(AnvilUpdateEvent event) {
+    private boolean handleEvent(AnvilUpdateEvent event) {
         ItemStack input = inventory.getStackInSlot(0);
-        if(input.isEmpty()) return true;
+        if(input.isEmpty()) return false;
         ItemStack secondary = inventory.getStackInSlot(1);
         ItemStack output = inventory.getStackInSlot(2);
-        if(NeoForge.EVENT_BUS.post(event).isCanceled()) return false;
         ItemStack result = event.getOutput();
-        if(result.isEmpty()) return true;
+        if(result.isEmpty()) return false;
         if(enableNaming && !Util.isBlank(name)) result.setHoverName(Component.literal(name));
         double reelCost = ExperienceHelper.totalXpForLevel(event.getCost());
         int fluidAmount = (int) (reelCost * 20);
-        if(output.getCount() + result.getCount() >= 64) return true;
+        if(output.getCount() + result.getCount() >= 64) return false;
         if((output.isEmpty() || ItemHandlerHelper.canItemStacksStack(output, result)) && tank.getFluidAmount(0) >= fluidAmount) {
             progress++;
             spendEnergy(energy);
@@ -213,18 +186,17 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
                 input.shrink(1);
                 secondary.shrink(1);
                 tank.drainForced(fluidAmount, IFluidHandler.FluidAction.EXECUTE);
-                //result.setCount(result.getCount() + output.getCount());
                 inventory.insertItemForced(2, result, false);
                 progress = 0;
-                return false;
             }
-        }else {
+            return true;
+        } else {
             progress = 0;
         }
         return false;
     }
 
-    private void progressAndCraft(ItemStack input, @Nullable ItemStack secondary, ItemStack result){
+    private void progressAndCraft(ItemStack input, @Nullable ItemStack secondary, ItemStack result) {
         ItemStack output = inventory.getStackInSlot(2);
         if(output.getCount() + result.getCount() >= 64) return;
         if(result.isEmpty() || ( !output.isEmpty() && !ItemHandlerHelper.canItemStacksStack(output, result))) return;

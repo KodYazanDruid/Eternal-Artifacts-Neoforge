@@ -4,9 +4,8 @@ import com.sonamorningstar.eternalartifacts.api.machine.config.BatteryBoxExportC
 import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModularEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
-import com.sonamorningstar.eternalartifacts.container.BatteryBoxMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
-import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,9 +16,10 @@ import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 import java.util.List;
 
-public class BatteryBox extends SidedTransferMachine<BatteryBoxMenu> {
+public class BatteryBox extends GenericMachine {
     public BatteryBox(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.BATTERY_BOX.get(), pos, blockState, BatteryBoxMenu::new);
+        super(ModMachines.BATTERY_BOX, pos, blockState);
+        performAutoTransferItems = false;
         setInventory(() -> new ModItemStorage(4) {
             @Override
             protected void onContentsChanged(int slot) {
@@ -36,6 +36,12 @@ public class BatteryBox extends SidedTransferMachine<BatteryBoxMenu> {
         });
         setEnergyTransferRate(Integer.MAX_VALUE);
         registerCapabilityConfigs(Capabilities.EnergyStorage.BLOCK);
+        screenInfo.setShouldDrawArrow(false);
+        screenInfo.setShowEPT(false);
+        screenInfo.setSlotPosition(80, 35, 0);
+        screenInfo.setSlotPosition(98, 35, 1);
+        screenInfo.setSlotPosition(80, 53, 2);
+        screenInfo.setSlotPosition(98, 53, 3);
     }
     
     @Override

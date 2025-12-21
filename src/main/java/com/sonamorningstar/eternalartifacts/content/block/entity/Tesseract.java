@@ -80,7 +80,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-		if (!level.isClientSide()) {
+		 if (!level.isClientSide()) {
 			TesseractNetworks.get(level).removeTesseractFromNetwork(this);
 			removeFromManager();
 			updateForcedChunks();
@@ -90,7 +90,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
-		if (needsUpdate()) {
+		if (needsForceLoaderUpdate()) {
 			chunkUpdateCooldown = 100;
 			updateForcedChunks();
 		} else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);
@@ -164,7 +164,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	}
 	
 	@Override
-	public boolean needsUpdate() {
+	public boolean needsForceLoaderUpdate() {
 		return chunkUpdateCooldown <= 0;
 	}
 	

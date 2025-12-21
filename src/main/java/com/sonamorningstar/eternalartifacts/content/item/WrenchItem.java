@@ -1,18 +1,23 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
 import com.sonamorningstar.eternalartifacts.client.render.util.DirectionRotationCache;
 import com.sonamorningstar.eternalartifacts.content.block.base.AbstractPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ChunkLoader;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -25,8 +30,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -54,6 +61,13 @@ public class WrenchItem extends DiggerItem {
                 }
             }
         }*/
+        /*if (level instanceof ServerLevel serverLevel) {
+            Map<Item, Pair<Float, Float>> itemsWithCounts = LootTableHelper.getItemsWithCounts(serverLevel, BuiltInLootTables.BASTION_TREASURE);
+            itemsWithCounts.forEach((item, counts) -> {
+                System.out.println("Item: " + item + ", Min Count: " + counts.getFirst() + ", Max Count: " + counts.getSecond());
+            });
+        }*/
+        
         return super.use(level, player, hand);
     }
     
@@ -65,11 +79,17 @@ public class WrenchItem extends DiggerItem {
         BlockState state = level.getBlockState(pos);
         BlockEntity be = level.getBlockEntity(pos);
         
-        if (be instanceof ModBlockEntity mbe) {
+        /*if (be instanceof ModBlockEntity mbe) {
             MachineConfiguration configs = mbe.getConfiguration();
             configs.getConfigs().forEach((rl, config) -> {
                 System.out.println(rl.toString() +", "+ config.toString());
             });
+        }*/
+        if (be instanceof ChunkLoader cl) {
+            System.out.println((cl.getLevel().isClientSide() ?"Client":"Server") + " ChunkLoader Info at " + pos + ":");
+            for (ForceLoadManager.ForcedChunkPos forcedChunk : cl.getForcedChunks()) {
+                System.out.println(" - Forced Chunk: " + forcedChunk);
+            }
         }
         
         /*if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {

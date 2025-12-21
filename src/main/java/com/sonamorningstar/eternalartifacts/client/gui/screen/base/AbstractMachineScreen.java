@@ -128,9 +128,4 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
     }
-
-    protected void renderLArrow(GuiGraphics guiGraphics, int x, int y) {
-        guiGraphics.blit(bars, x, y, 53, 0, 10, 9);
-    }
-
 }

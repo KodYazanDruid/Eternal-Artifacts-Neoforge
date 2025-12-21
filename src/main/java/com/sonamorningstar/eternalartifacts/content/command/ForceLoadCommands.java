@@ -36,6 +36,8 @@ public class ForceLoadCommands {
 	private static void listForcedChunks(CommandSourceStack source) {
 		Set<ForceLoadManager.ForcedChunkPos> forcedChunkList = ForceLoadManager.ALL_LOADERS.stream().map(ChunkLoader::getForcedChunks)
 			.flatMap(Set::stream).collect(Collectors.toSet());
+		forcedChunkList.addAll(ForceLoadManager.ENTITY_LOADED_CHUNKS.values().stream().flatMap(Set::stream).collect(Collectors.toSet()));
+		
 		MutableComponent forcedChunks = Component.empty();
 		forcedChunks.append(
 			Component.translatable(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"), forcedChunkList.size())

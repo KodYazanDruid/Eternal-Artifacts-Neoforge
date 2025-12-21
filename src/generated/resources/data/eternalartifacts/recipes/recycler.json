@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": {
+      "tag": "forge:ingots/tin"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "minecraft:hopper"
+    },
+    "R": {
+      "tag": "forge:ingots/brick"
+    }
+  },
+  "pattern": [
+    "RCR",
+    "AMA",
+    "RPR"
+  ],
+  "result": {
+    "item": "eternalartifacts:recycler"
+  }
+}

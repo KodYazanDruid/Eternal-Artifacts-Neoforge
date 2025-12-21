@@ -134,10 +134,6 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                 ).texture("particle", modLoc("block/machine_side"))
             ).build());
 
-        machineBlock(ModBlocks.ANVILINATOR, false);
-        machineBlock(ModBlocks.BOOK_DUPLICATOR, false);
-        machineBlock(ModBlocks.BATTERY_BOX, true);
-
         createStateForModelWithProperty(ModBlocks.RESONATOR, BlockStateProperties.FACING);
         createStateForModelWithProperty(ModBlocks.FANCY_CHEST, BlockStateProperties.HORIZONTAL_FACING);
         createStateForModel(ModBlocks.GARDENING_POT);

@@ -2,9 +2,9 @@
   "values": [
     "#eternalartifacts:ore_bearing_ground/gravel",
     "#eternalartifacts:ore_bearing_ground/moss",
-    "eternalartifacts:manganese_ore",
-    "eternalartifacts:marin_ore",
-    "eternalartifacts:tin_ore",
-    "eternalartifacts:aluminum_ore"
+    "#forge:ores/manganese",
+    "#forge:ores/aluminum",
+    "#forge:ores/tin",
+    "eternalartifacts:marin_ore"
   ]
 }

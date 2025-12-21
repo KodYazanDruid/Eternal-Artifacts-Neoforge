@@ -8,24 +8,18 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@SuppressWarnings("all")
 public class ModBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
-
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Anvilinator>> ANVILINATOR = BLOCK_ENTITIES.register("anvilinator", ()->
-            BlockEntityType.Builder.of(Anvilinator::new, ModBlocks.ANVILINATOR.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BookDuplicator>> BOOK_DUPLICATOR = BLOCK_ENTITIES.register("book_duplicator", ()->
-            BlockEntityType.Builder.of(BookDuplicator::new, ModBlocks.BOOK_DUPLICATOR.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BatteryBox>> BATTERY_BOX = BLOCK_ENTITIES.register("battery_box", ()->
-            BlockEntityType.Builder.of(BatteryBox::new, ModBlocks.BATTERY_BOX.get()).build(null));
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
+    
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NousTank>> NOUS_TANK = BLOCK_ENTITIES.register("nous_tank", ()->
-            BlockEntityType.Builder.of(NousTank::new, ModBlocks.NOUS_TANK.get()).build(null));
+        BlockEntityType.Builder.of(NousTank::new, ModBlocks.NOUS_TANK.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFurnaceEntity>> BIOFURNACE = BLOCK_ENTITIES.register("biofurnace", ()->
-            BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));
+        BlockEntityType.Builder.of(BioFurnaceEntity::new, ModBlocks.BIOFURNACE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EnergyDockBlockEntity>> ENERGY_DOCK = BLOCK_ENTITIES.register("energy_dock", ()->
-            BlockEntityType.Builder.of(EnergyDockBlockEntity::new, ModBlocks.ENERGY_DOCK.get()).build(null));
+        BlockEntityType.Builder.of(EnergyDockBlockEntity::new, ModBlocks.ENERGY_DOCK.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ShockAbsorber>> SHOCK_ABSORBER = BLOCK_ENTITIES.register("shock_absorber", ()->
-            BlockEntityType.Builder.of(ShockAbsorber::new, ModBlocks.SHOCK_ABSORBER.get()).build(null));
+        BlockEntityType.Builder.of(ShockAbsorber::new, ModBlocks.SHOCK_ABSORBER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Tesseract>> TESSERACT = BLOCK_ENTITIES.register("tesseract", ()->
         BlockEntityType.Builder.of(Tesseract::new, ModBlocks.TESSERACT.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolarPanel>> SOLAR_PANEL = BLOCK_ENTITIES.register("solar_panel", ()->
@@ -34,26 +28,26 @@ public class ModBlockEntities {
         BlockEntityType.Builder.of(PictureScreen::new, ModBlocks.PICTURE_SCREEN.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Resonator>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
-            BlockEntityType.Builder.of(Resonator::new, ModBlocks.RESONATOR.get()).build(null));
+        BlockEntityType.Builder.of(Resonator::new, ModBlocks.RESONATOR.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DrumBlockEntity>> DRUM = BLOCK_ENTITIES.register("drum", ()->
-            BlockEntityType.Builder.of(DrumBlockEntity::new,
-                    ModBlocks.COPPER_DRUM.get(),
-                    ModBlocks.IRON_DRUM.get(),
-                    ModBlocks.GOLD_DRUM.get(),
-                    ModBlocks.STEEL_DRUM.get(),
-                    ModBlocks.DIAMOND_DRUM.get(),
-                    ModBlocks.NETHERITE_DRUM.get()
-            ).build(null));
+        BlockEntityType.Builder.of(DrumBlockEntity::new,
+            ModBlocks.COPPER_DRUM.get(),
+            ModBlocks.IRON_DRUM.get(),
+            ModBlocks.GOLD_DRUM.get(),
+            ModBlocks.STEEL_DRUM.get(),
+            ModBlocks.DIAMOND_DRUM.get(),
+            ModBlocks.NETHERITE_DRUM.get()
+        ).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Cable>> CABLE = BLOCK_ENTITIES.register("cable", ()->
-            BlockEntityType.Builder.of(Cable::new,
-                    ModBlocks.TIN_CABLE.get(),
-                    ModBlocks.COVERED_TIN_CABLE.get(),
-                    ModBlocks.COPPER_CABLE.get(),
-                    ModBlocks.COVERED_COPPER_CABLE.get(),
-                    ModBlocks.GOLD_CABLE.get(),
-                    ModBlocks.COVERED_GOLD_CABLE.get()
-            ).build(null));
+        BlockEntityType.Builder.of(Cable::new,
+            ModBlocks.TIN_CABLE.get(),
+            ModBlocks.COVERED_TIN_CABLE.get(),
+            ModBlocks.COPPER_CABLE.get(),
+            ModBlocks.COVERED_COPPER_CABLE.get(),
+            ModBlocks.GOLD_CABLE.get(),
+            ModBlocks.COVERED_GOLD_CABLE.get()
+        ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidPipe>> FLUID_PIPE = BLOCK_ENTITIES.register("fluid_pipe", ()->
         BlockEntityType.Builder.of(FluidPipe::new,
             ModBlocks.COPPER_FLUID_PIPE.get(),
@@ -68,13 +62,11 @@ public class ModBlockEntities {
         ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DeepItemStorageUnit>> DEEP_ITEM_STORAGE_UNIT = BLOCK_ENTITIES.register("deep_item_storage_unit", ()->
         BlockEntityType.Builder.of(DeepItemStorageUnit::new,
-            ModBlocks.DEEP_ITEM_STORAGE_UNIT.get()/*,
-            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get()*/
+            ModBlocks.DEEP_ITEM_STORAGE_UNIT.get()
         ).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<DeepFluidStorageUnit>> DEEP_FLUID_STORAGE_UNIT = BLOCK_ENTITIES.register("deep_fluid_storage_unit", ()->
         BlockEntityType.Builder.of(DeepFluidStorageUnit::new,
-            ModBlocks.DEEP_FLUID_STORAGE_UNIT.get()/*,
-            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get()*/
+            ModBlocks.DEEP_FLUID_STORAGE_UNIT.get()
         ).build(null));
     
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
@@ -100,14 +92,14 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(MachineWorkbench::new, ModBlocks.MACHINE_WORKBENCH.get()).build(null));
     
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ModSkullBlockEntity>> SKULL = BLOCK_ENTITIES.register("skull", () ->
-            BlockEntityType.Builder.of(ModSkullBlockEntity::new,
-                ModBlocks.DROWNED_HEAD.get(),
-                ModBlocks.DROWNED_WALL_HEAD.get(),
-                ModBlocks.HUSK_HEAD.get(),
-                ModBlocks.HUSK_WALL_HEAD.get(),
-                ModBlocks.STRAY_SKULL.get(),
-                ModBlocks.STRAY_WALL_SKULL.get(),
-                ModBlocks.BLAZE_HEAD.get(),
-                ModBlocks.BLAZE_WALL_HEAD.get()
-            ).build(null));
+        BlockEntityType.Builder.of(ModSkullBlockEntity::new,
+            ModBlocks.DROWNED_HEAD.get(),
+            ModBlocks.DROWNED_WALL_HEAD.get(),
+            ModBlocks.HUSK_HEAD.get(),
+            ModBlocks.HUSK_WALL_HEAD.get(),
+            ModBlocks.STRAY_SKULL.get(),
+            ModBlocks.STRAY_WALL_SKULL.get(),
+            ModBlocks.BLAZE_HEAD.get(),
+            ModBlocks.BLAZE_WALL_HEAD.get()
+        ).build(null));
 }

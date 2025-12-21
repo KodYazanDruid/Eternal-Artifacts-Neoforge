@@ -22,8 +22,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
     @SuppressWarnings(value = "unchecked")
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tierAndTool(ModBlocks.ANVILINATOR.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.BOOK_DUPLICATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.BIOFURNACE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RESONATOR.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.MACHINE_BLOCK.get(), "iron", "pickaxe");
@@ -51,7 +49,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.STRIPPED_CITRUS_LOG.get(), "", "axe");
         tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
-        tierAndTool(ModBlocks.BATTERY_BOX.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
@@ -125,9 +122,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
             ModBlocks.RESONATOR.get(),
-            ModBlocks.ANVILINATOR.get(),
-            ModBlocks.BOOK_DUPLICATOR.get(),
-            ModBlocks.BATTERY_BOX.get(),
             ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
             ModBlocks.NOUS_TANK.get(),
             ModBlocks.SHOCK_ABSORBER.get(),
@@ -299,13 +293,13 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         );
         tag(Tags.Blocks.ORES).addTags(
             ModTags.Blocks.ORE_BEARING_GROUND_GRAVEL,
-            ModTags.Blocks.ORE_BEARING_GROUND_MOSS
+            ModTags.Blocks.ORE_BEARING_GROUND_MOSS,
+            ModTags.Blocks.ORES_MANGANESE,
+            ModTags.Blocks.ORES_ALUMINUM,
+            ModTags.Blocks.ORES_TIN
         );
         tag(Tags.Blocks.ORES).add(
-                ModBlocks.MANGANESE_ORE.get(),
-                ModBlocks.MARIN_ORE.get(),
-                ModBlocks.TIN_ORE.get(),
-                ModBlocks.ALUMINUM_ORE.get()
+                ModBlocks.MARIN_ORE.get()
         );
         tag(ModTags.Blocks.MOSS_ORE_REPLACEABLES).add(Blocks.MOSS_BLOCK);
         tag(Tags.Blocks.STORAGE_BLOCKS).add(

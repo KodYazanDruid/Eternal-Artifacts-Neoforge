@@ -12,15 +12,9 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
-
-    public static final DeferredHolder<MenuType<?>, MenuType<AnvilinatorMenu>> ANVILINATOR = MENUS.register("anvilinator",
-            ()-> IMenuTypeExtension.create(AnvilinatorMenu::new));
+    
     public static final DeferredHolder<MenuType<?>, MenuType<BioFurnaceMenu>> BIOFURNACE = MENUS.register("biofurnace",
             ()-> IMenuTypeExtension.create(BioFurnaceMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<BookDuplicatorMenu>> BOOK_DUPLICATOR = MENUS.register("book_duplicator",
-            ()-> IMenuTypeExtension.create(BookDuplicatorMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<BatteryBoxMenu>> BATTERY_BOX = MENUS.register("battery_box",
-            ()-> IMenuTypeExtension.create(BatteryBoxMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<DynamoMenu>> DYNAMO_MENU = MENUS.register("dynamo_menu",
             ()-> IMenuTypeExtension.create(DynamoMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",

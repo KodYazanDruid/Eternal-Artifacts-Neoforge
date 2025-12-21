@@ -20,7 +20,6 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModCo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
-import com.sonamorningstar.eternalartifacts.container.BookDuplicatorMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
@@ -377,7 +376,8 @@ public class ClientEvents {
             if (owner instanceof DimensionalAnchor anchor) {
                 int x = gsms.getGuiLeft();
                 int y = gsms.getGuiTop();
-                GuiDrawer.drawFramedBackground(gui, x + 37, y + 18, 100, 50, 1, 0xff000000, 0xff404040, 0xffa0a0a0);
+                GuiDrawer.drawFramedBackground(gui, x + 37, y + 18, 100, 50, 1,
+                    0xff000000, 0xff404040, 0xffa0a0a0);
                 gui.drawString(screen.getMinecraft().font,
                     Component.translatable(ModConstants.GUI.withSuffix("forceload.loaded_chunks_count"),
                         anchor.getForcedChunks().size()),
@@ -470,27 +470,30 @@ public class ClientEvents {
         }
     }
     
+    private static final ItemStack[] BOOKS = new ItemStack[] {
+        Items.BOOK.getDefaultInstance(),
+        Items.WRITABLE_BOOK.getDefaultInstance()
+    };
+    
     @SubscribeEvent
     public static void renderEtarSlotEvent(RenderEtarSlotEvent event) {
         AbstractModContainerScreen<?> screen = event.getScreen();
         AbstractModContainerMenu menu = screen.getMenu();
         Slot slot = event.getSlot();
         GuiGraphics gui = event.getGui();
-        if (menu instanceof BookDuplicatorMenu bd) {
-            var inv = bd.getBeInventory();
-            if (slot.index == 38 && inv != null && inv.getStackInSlot(2).isEmpty()) {
-                ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96);
-            }
-        }
         if (menu instanceof AbstractMachineMenu amm) {
             BlockEntity be = amm.getBlockEntity();
             var inv = amm.getBeInventory();
+            if (be instanceof BookDuplicator && inv != null && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
+                ItemRendererHelper.renderItemCarousel(gui, BOOKS, event.getX() + 1, event.getY() + 1, 96);
+            }
             if (be instanceof Disenchanter && inv != null && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
-                ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(), event.getX() + 1, event.getY() + 1, 96);
+                ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(),
+                    event.getX() + 1, event.getY() + 1, 96 * 255);
             }
             if (be instanceof Harvester && inv != null && inv.getStackInSlot(13).isEmpty() && slot.index == 49) {
-                ItemRendererHelper.renderItemCarousel(gui, Ingredient.of(Harvester.hoe_tillables).getItems(), event.getX() + 1, event.getY() + 1,
-                    0x00000000, (float) 96 / 255);
+                ItemRendererHelper.renderItemCarousel(gui, Ingredient.of(Harvester.hoe_tillables).getItems(),
+                    event.getX() + 1, event.getY() + 1, 96);
             }
             if (be instanceof Smithinator && inv != null) {
                 if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {

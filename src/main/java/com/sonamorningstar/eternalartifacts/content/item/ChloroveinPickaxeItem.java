@@ -43,7 +43,7 @@ public class ChloroveinPickaxeItem extends PickaxeItem {
                 living instanceof Player player &&
                 !living.isShiftKeyDown() &&
                 !currentMiners.contains(stack)) {
-            BlockVeinCache cache = new BlockVeinCache(level, pos, 4);
+            BlockVeinCache cache = new BlockVeinCache(level, pos, 4, false);
             cache.scanForBlocks();
             Queue<BlockPos> queuedPos = cache.getCache();
             if (player instanceof ServerPlayer serverPlayer) {

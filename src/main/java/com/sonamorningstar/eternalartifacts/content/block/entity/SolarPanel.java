@@ -29,6 +29,7 @@ public class SolarPanel extends Machine<SolarPanelMenu> {
 	public void setBlockState(BlockState pBlockState) {
 		super.setBlockState(pBlockState);
 		resetEnergy();
+		this.invalidateCapabilities();
 	}
 	
 	@Nullable

@@ -174,18 +174,13 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.DIAMOND_DRUM, KeepFluidsFunction.builder());
         dropSelfWithFunction(ModBlocks.NETHERITE_DRUM, KeepFluidsFunction.builder());
         dropSelfWithFunction(ModBlocks.SHOCK_ABSORBER, KeepContentsFunction.builder());
-        dropSelfWithFunction(ModBlocks.BATTERY_BOX, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.FLUID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.SOLID_COMBUSTION_DYNAMO, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.ALCHEMICAL_DYNAMO, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.CULINARY_DYNAMO, KeepContentsFunction.builder());
-        dropSelfWithFunction(ModBlocks.ANVILINATOR, KeepContentsFunction.builder());
-        dropSelfWithFunction(ModBlocks.BOOK_DUPLICATOR, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.DEEP_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
-        //dropSelfWithFunction(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
         dropSelfWithFunction(ModBlocks.DEEP_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
-        //dropSelfWithFunction(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
         
         add(ModBlocks.SOLAR_PANEL.get(), this::createSlabItemTable);
 

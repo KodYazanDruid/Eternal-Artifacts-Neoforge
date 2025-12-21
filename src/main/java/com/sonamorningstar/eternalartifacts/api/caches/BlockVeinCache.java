@@ -1,8 +1,9 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
+import it.unimi.dsi.fastutil.booleans.Boolean2ObjectFunction;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.longs.LongSet;
+import it.unimi.dsi.fastutil.objects.Object2BooleanFunction;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -16,6 +17,9 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * A utility class for vein-mining connected blocks within a specified range.
@@ -45,36 +49,39 @@ import java.util.*;
  */
 public class BlockVeinCache {
     @Getter
-    private final Queue<BlockPos> cache;
-    private final Level level;
-    private final BlockPos start;
-    private final int startX, startY, startZ;
-    private final double rangeXSq, rangeYSq;
-    private final long startKey;
-    private final int rangeX;
-    private final int rangeY;
-    private final int searchRange;
-    private final Set<Block> mineableBlocks = new HashSet<>();
-    private final Set<TagKey<Block>> mineableTags = new HashSet<>();
     @Setter
-    private boolean useBFS = false;
+    protected Queue<BlockPos> cache;
+    protected final Level level;
+    protected final BlockPos start;
+    protected final int startX, startY, startZ;
+    protected final double rangeXSq, rangeYSq;
+    protected final long startKey;
+    protected final int searchRange;
+    protected final Set<Block> mineableBlocks = new HashSet<>();
+    protected final Set<TagKey<Block>> mineableTags = new HashSet<>();
+    @Setter
+    protected boolean useBFS = false;
     
-    private static final int[][] OFFSETS = generateOffsets();
+    protected static final int[][] OFFSETS = generateOffsets();
     
-    public BlockVeinCache(Level level, BlockPos start, int range) {
-        this(level.getBlockState(start).getBlock(), level, start, range, range, 1);
+    public BlockVeinCache(Level level, BlockPos start, int range, boolean isReverse) {
+        this(level.getBlockState(start).getBlock(), level, start, range, range, 1, isReverse);
     }
     
     public BlockVeinCache(Block minedBlock, Level level, BlockPos start, int range) {
-        this(minedBlock, level, start, range, range, 1);
+        this(minedBlock, level, start, range, range, 1, false);
     }
     
     public BlockVeinCache(Block minedBlock, Level level, BlockPos start, int range, int searchRange) {
-        this(minedBlock, level, start, range, range, searchRange);
+        this(minedBlock, level, start, range, range, searchRange, false);
     }
 
-    public BlockVeinCache(Block minedBlock, Level level, BlockPos start, int rangeX, int rangeY, int searchRange) {
-        this.cache = new PriorityQueue<>(Comparator.comparingDouble(value -> value.distSqr(new Vec3i(start.getX(), start.getY(), start.getZ()))));
+    public BlockVeinCache(Block minedBlock, Level level, BlockPos start, int rangeX, int rangeY, int searchRange, boolean isReverse) {
+        Comparator<BlockPos> comparator = Comparator.comparingDouble(value -> value.distSqr(new Vec3i(start.getX(), start.getY(), start.getZ())));
+        if (isReverse) {
+            comparator = comparator.reversed();
+        }
+        this.cache = new PriorityQueue<>(comparator);
         this.level = level;
         this.start = start;
         this.startX = start.getX();
@@ -83,8 +90,6 @@ public class BlockVeinCache {
         this.startKey = start.asLong();
         this.rangeXSq = rangeX * rangeX;
         this.rangeYSq = rangeY * rangeY;
-        this.rangeX = rangeX;
-        this.rangeY = rangeY;
         this.searchRange = searchRange;
         this.mineableBlocks.add(minedBlock);
     }
@@ -96,7 +101,7 @@ public class BlockVeinCache {
         mineableBlocks.add(block);
     }
 
-    private boolean canMine(BlockPos pos) {
+    protected boolean canMine(BlockPos pos) {
         BlockState state = level.getBlockState(pos);
         for (Block mineableBlock : mineableBlocks) {
             if (state.is(mineableBlock)) return true;
@@ -109,15 +114,21 @@ public class BlockVeinCache {
     private boolean canMine(long posKey) {
         return canMine(BlockPos.of(posKey));
     }
-
+    
     public void mine(Queue<BlockPos> cache, @Nullable ServerPlayer player) {
+        mine(cache, pos -> {
+            if (player != null) player.gameMode.destroyBlock(pos);
+            else level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            return true;
+        });
+    }
+
+    public void mine(Queue<BlockPos> cache, Predicate<BlockPos> miner) {
         BlockPos pos = cache.peek();
         if (pos == null) return;
         if (canMine(pos)) {
-            if (player != null) player.gameMode.destroyBlock(pos);
-            else level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+            if (miner.test(pos)) cache.poll();
         }
-        cache.poll();
     }
 
     public void scanForBlocks() {

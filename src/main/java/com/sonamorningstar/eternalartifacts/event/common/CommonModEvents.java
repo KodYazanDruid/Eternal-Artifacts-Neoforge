@@ -121,9 +121,6 @@ public class CommonModEvents {
         registerMachineItem(event, ModBlocks.SHOCK_ABSORBER);
         registerMachineItem(event, ModBlocks.FLUID_COMBUSTION_DYNAMO);
         registerMachineItem(event, ModBlocks.BIOFURNACE);
-        registerMachineItem(event, ModBlocks.BOOK_DUPLICATOR);
-        registerMachineItem(event, ModBlocks.BATTERY_BOX);
-        registerMachineItem(event, ModBlocks.ANVILINATOR);
         registerMachineItem(event, ModBlocks.SOLID_COMBUSTION_DYNAMO);
         registerMachineItem(event, ModBlocks.SOLAR_PANEL);
         registerMachineItem(event, ModBlocks.ALCHEMICAL_DYNAMO);
@@ -131,18 +128,7 @@ public class CommonModEvents {
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
-
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.BOOK_DUPLICATOR.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
-
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ANVILINATOR.get(), (be, ctx) -> be.energy);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.ANVILINATOR.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, List.of(1)));
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.ANVILINATOR.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
-
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedEnergyCaps(be, be.energy, ctx));
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BATTERY_BOX.get(), (be, ctx) -> CapabilityHelper.regSidedItemCaps(be, be.inventory, ctx, null));
-
+        
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
             ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);

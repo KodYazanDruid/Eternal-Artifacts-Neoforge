@@ -17,12 +17,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModMachines {
+    //add Debug renderer with wrench.
     public static final MachineDeferredRegister MACHINES = new MachineDeferredRegister(MODID);
 
     public static final GenericMachineHolder<MobLiquifier> MOB_LIQUIFIER = registerGeneric("mob_liquifier", MobLiquifier::new);
     public static final GenericMachineHolder<MeatShredder> MEAT_SHREDDER = registerGeneric("meat_shredder", MeatShredder::new);
     public static final GenericMachineHolder<MeatPacker> MEAT_PACKER = registerGeneric("meat_packer", MeatPacker::new);
-
     public static final GenericMachineHolder<FluidInfuser> FLUID_INFUSER = registerGeneric("fluid_infuser", FluidInfuser::new);
     public static final GenericMachineHolder<IndustrialMacerator> INDUSTRIAL_MACERATOR = registerGeneric("industrial_macerator", IndustrialMacerator::new);
     public static final GenericMachineHolder<MeltingCrucible> MELTING_CRUCIBLE = registerGeneric("melting_crucible", MeltingCrucible::new);
@@ -41,6 +41,9 @@ public class ModMachines {
     public static final GenericMachineHolder<Packer> PACKER = registerGeneric("packer", Packer::new);
     public static final GenericMachineHolder<Unpacker> UNPACKER = registerGeneric("unpacker", Unpacker::new);
     public static final GenericMachineHolder<SludgeRefiner> SLUDGE_REFINER = registerGeneric("sludge_refiner", SludgeRefiner::new);
+    public static final GenericMachineHolder<FluidPump> FLUID_PUMP = registerGeneric("fluid_pump", FluidPump::new);
+    public static final GenericMachineHolder<BookDuplicator> BOOK_DUPLICATOR = registerGeneric("book_duplicator", BookDuplicator::new);
+    public static final GenericMachineHolder<BatteryBox> BATTERY_BOX = MACHINES.registerGeneric("battery_box", BatteryBox::new, true);
     
     public static final MachineDeferredHolder<ElectricFurnaceMenu, ElectricFurnace, BaseMachineBlock<ElectricFurnace>, MachineBlockItem>
         ELECTRIC_FURNACE = MACHINES.register("electric_furnace", ElectricFurnaceMenu::new, ElectricFurnace::new);
@@ -58,7 +61,8 @@ public class ModMachines {
         BOTTLER = MACHINES.register("bottler", BottlerMenu::new, Bottler::new);
     public static final MachineDeferredHolder<HarvesterMenu, Harvester, BaseMachineBlock<Harvester>, MachineBlockItem>
         HARVESTER = MACHINES.register("harvester", HarvesterMenu::new, Harvester::new);
-    
+    public static final MachineDeferredHolder<AnvilinatorMenu, Anvilinator, BaseMachineBlock<Anvilinator>, MachineBlockItem>
+        ANVILINATOR = MACHINES.register("anvilinator", AnvilinatorMenu::new, Anvilinator::new);
     
     public static final MachineDeferredHolder<GenericMachineMenu, BlockPlacer, MachineSixWayBlock<BlockPlacer>, MachineBlockItem>
         BLOCK_PLACER = MACHINES.register("block_placer", GenericMachineMenu::new, BlockPlacer::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);

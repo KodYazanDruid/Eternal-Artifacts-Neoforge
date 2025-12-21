@@ -1,4 +1,4 @@
-// 1.20.4	2025-12-13T23:35:19.7641222	Loot Tables
+// 1.20.4	2025-12-14T20:55:43.9675602	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -48,6 +48,7 @@ fbc9e910fc058488ffac7df243ea2dde187cc13e data/eternalartifacts/loot_tables/block
 21e51b1aca963a5e25ef6bc772a1790107871992 data/eternalartifacts/loot_tables/blocks/fluid_combustion_dynamo.json
 62bfc0f93c3a0f0bb1b52f4204de383a443c61db data/eternalartifacts/loot_tables/blocks/fluid_infuser.json
 6699519d4d0751d71b513ba0879895d416458ee1 data/eternalartifacts/loot_tables/blocks/fluid_mixer.json
+e0098b4119169d50830ed875e72de2fedbe2e6ef data/eternalartifacts/loot_tables/blocks/fluid_pump.json
 c1447597e3f4cff0cdd64963fd28122eea363d87 data/eternalartifacts/loot_tables/blocks/forsythia.json
 46352d2960ffae7373ef1f76927fd873a7f6ef86 data/eternalartifacts/loot_tables/blocks/four_leaf_clover.json
 74385ace89cbe48da24c7775d6836e607df6397f data/eternalartifacts/loot_tables/blocks/gardening_pot.json

@@ -2,14 +2,12 @@ package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.content.item.base.EnergyRendererItem;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -52,9 +50,9 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                     energy.extractEnergy(250, false);
                     saveConfiguration(stack, mbe);
                     player.displayClientMessage(
-                            ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_saved")
-                                    .withStyle(ChatFormatting.YELLOW),
-                            true
+                        ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_saved")
+                            .withStyle(ChatFormatting.YELLOW),
+                        true
                     );
                 }
             } else {
@@ -63,9 +61,9 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
                     energy.extractEnergy(250, false);
                     mbe.loadConfiguration(stack);
                     player.displayClientMessage(
-                            ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_loaded")
-                                    .withStyle(ChatFormatting.YELLOW),
-                            true
+                        ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_loaded")
+                            .withStyle(ChatFormatting.YELLOW),
+                        true
                     );
                 }
             }
@@ -81,9 +79,9 @@ public class ConfigurationDriveItem extends EnergyRendererItem {
         if (player.isShiftKeyDown() && ray.getType() == HitResult.Type.MISS) {
             stack.getOrCreateTag().remove("SidedTransferConfigs");
             player.displayClientMessage(
-                    ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_cleared")
-                    .withStyle(ChatFormatting.YELLOW),
-                    true
+                ModConstants.OVERLAY.withSuffixTranslatable("configuration_device_cleared")
+                .withStyle(ChatFormatting.YELLOW),
+                true
             );
         }
         return InteractionResultHolder.success(stack);

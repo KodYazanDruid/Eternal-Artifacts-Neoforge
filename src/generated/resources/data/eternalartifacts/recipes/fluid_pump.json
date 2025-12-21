@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "item": "eternalartifacts:marin_ingot"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "JPJ",
+    "IMI",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:fluid_pump"
+  }
+}

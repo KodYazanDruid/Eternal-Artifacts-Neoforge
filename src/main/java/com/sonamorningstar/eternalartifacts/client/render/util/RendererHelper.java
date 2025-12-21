@@ -64,7 +64,7 @@ public class RendererHelper {
             RenderSystem.defaultBlendFunc();
             for (Direction value : Direction.values()) {
                 if (value == Direction.UP) {
-                    if((fill < 1 || info.forceRenderUp) && info.shouldRender(Direction.UP)){
+                    if((fill < 1 || info.forceRenderUp) && info.shouldRender(Direction.UP)) {
                         drawQuad(vertexConsumer, poseStack, value, x0, y1, z0, x1, y1, z1,
                                 uTop0, vTop0, uTop1, vTop1,
                                 tintColor, LightTexture.FULL_BRIGHT, overlay);

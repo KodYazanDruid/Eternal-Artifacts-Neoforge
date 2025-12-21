@@ -46,7 +46,6 @@ import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
@@ -95,11 +94,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     private int chunkUpdateCooldown = 100;
     protected FakePlayer fakePlayer = null;
     protected boolean isFakePlayerSetUp = false;
-    
-    /*@Getter
-    protected AABB area = null;*/
 
-    /* CONSTRUCTOR */
     public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         this.menuConstructor = quadF;
@@ -170,19 +165,22 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     @Override
     public void onEnchanted(Enchantment enchantment, int level) {
         if (enchantment == ModEnchantments.VOLUME.get()){
-            resetEnergy();
-            resetInventory();
-            resetTank();
+            resetBaseCapabilities();
         }
-        
         if (enchantment == Enchantments.BLOCK_EFFICIENCY) {
-			applyEfficiency(level);
+            applyEfficiency(level);
         }
-        
-       if (enchantment == ModEnchantments.CELERITY.get()) {
-           setProgressStep(level + 1);
-           energyPerTick = defaultEnergyPerTick * (level + 1);
-       }
+        if (enchantment == ModEnchantments.CELERITY.get()) {
+            setProgressStep(level + 1);
+            energyPerTick = defaultEnergyPerTick * (level + 1);
+        }
+    }
+    
+    public void resetBaseCapabilities() {
+        resetEnergy();
+        resetInventory();
+        resetTank();
+        this.invalidateCapabilities();
     }
     
     public void resetEnergy() {
@@ -191,7 +189,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             oldData.put("Energy", energy.serializeNBT());
             this.energy = energySetter.get();
             energy.deserializeNBT(oldData.get("Energy"));
-            this.invalidateCapabilities();
         }
     }
     public void resetInventory() {
@@ -200,7 +197,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             oldData.put("Inventory", inventory.serializeNBT());
             this.inventory = inventorySetter.get();
             inventory.deserializeNBT(oldData.getCompound("Inventory"));
-            this.invalidateCapabilities();
         }
     }
     public void resetTank() {
@@ -209,7 +205,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             oldData.put("Fluid", tank.serializeNBT());
             this.tank = tankSetter.get();
             tank.deserializeNBT(oldData.getCompound("Fluid"));
-            this.invalidateCapabilities();
         }
     }
     
@@ -267,10 +262,11 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         return false;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
-        if (needsUpdate()) {
+        if (needsForceLoaderUpdate()) {
             chunkUpdateCooldown = 100;
             updateForcedChunks();
         } else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);
@@ -352,33 +348,13 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public boolean canConstructMenu() {
         return menuConstructor != null;
     }
-
-    protected void fillTankFromSlot(ModItemStorage inventory, AbstractFluidTank tank, int fluidSlot) {
-        ItemStack stack = inventory.getStackInSlot(fluidSlot);
-        if(!stack.isEmpty() && tank.getFluidAmount(0) < tank.getCapacity(0)) {
-            IFluidHandlerItem itemHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            if(itemHandler != null && tank.isFluidValid(0, itemHandler.getFluidInTank(0)) &&
-                    (tank.getFluid(0).getFluid() == itemHandler.getFluidInTank(0).getFluid() || tank.getFluid(0).isEmpty())) {
-                int amountToDrain = tank.getCapacity(0) - tank.getFluidAmount(0);
-                int amount = itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.SIMULATE).getAmount();
-                if (amount > 0) {
-                    tank.fill(itemHandler.drain(amountToDrain, IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
-                }
-                if (amount <= amountToDrain) {
-                    inventory.setStackInSlot(fluidSlot, itemHandler.getContainer());
-                }
-            }
-        }
-    }
     
     @Override
     public void setRemoved() {
         RecipeCache.clearRecipes(this);
         FakePlayerHelper.removeFakePlayer(this);
-        if (!level.isClientSide()) {
-            removeFromManager();
-            updateForcedChunks();
-        }
+        removeFromManager();
+        updateForcedChunks();
         super.setRemoved();
     }
     
@@ -426,7 +402,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     
     protected void progress(Runnable result) {
         if (processCondition != null && energy != null) {
-            progress(processCondition::getResult, result, energy);
+            progress(processCondition::shouldAbourt, result, energy);
         }
     }
     
@@ -458,9 +434,11 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
 
     protected boolean redstoneChecks(Mode type, Level level) {
-        return type == Mode.IGNORE || type == null ||
-            (type == Mode.HIGH && level.hasNeighborSignal(getBlockPos())) ||
-            (type == Mode.LOW && !level.hasNeighborSignal(getBlockPos()));
+        return switch (type) {
+            case IGNORE -> true;
+            case HIGH -> level.hasNeighborSignal(getBlockPos());
+            case LOW -> !level.hasNeighborSignal(getBlockPos());
+        };
     }
 
     protected boolean canWork(ModEnergyStorage energy) {
@@ -517,9 +495,9 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
                     }else {
                         int transferred = stack.getCount() - remainder.getCount();
                         ItemHandlerHelper.insertItemStacked(targetInv, stack.copyWithCount(transferred), false);
-                        stack.shrink(transferred);
+                        inventory.extractItem(output, transferred, false);
                     }
-                }catch (IndexOutOfBoundsException e) {
+                } catch (IndexOutOfBoundsException e) {
                     EternalArtifacts.LOGGER.error("Output slot {} is out of bounds in {} sized inventory", output, targetInv.getSlots());
                 }
             }
@@ -630,7 +608,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     
     @Override
-    public boolean needsUpdate() {
+    public boolean needsForceLoaderUpdate() {
         return chunkUpdateCooldown <= 0;
     }
     //endregion

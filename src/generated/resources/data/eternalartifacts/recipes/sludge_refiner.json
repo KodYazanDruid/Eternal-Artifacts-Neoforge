@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/brick"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "tag": "forge:ingots/manganese"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "JPB",
+    "IMI",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:sludge_refiner"
+  }
+}

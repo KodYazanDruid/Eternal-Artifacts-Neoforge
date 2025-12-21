@@ -444,11 +444,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('C', Tags.Items.INGOTS_COPPER).define('M', ModTags.Items.INGOTS_MANGANESE)
                 .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE)
                 .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BATTERY_BOX)
-                .pattern("RCR").pattern("CMC").pattern("PPP")
-                .define('C', ModItems.COPPER_TABLET).define('M', ModBlocks.MACHINE_BLOCK)
-                .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE).
-                unlockedBy("has_item", has(ModBlocks.MACHINE_BLOCK)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.JAR)
                 .pattern(" W ").pattern("P P").pattern(" P ")
                 .define('W', ItemTags.LOGS).define('P', Tags.Items.GLASS_PANES_COLORLESS)

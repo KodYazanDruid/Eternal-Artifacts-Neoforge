@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
 import com.sonamorningstar.eternalartifacts.api.machine.records.CustomRenderButtonInfo;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.CleanButton;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -69,5 +68,10 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
             int xOff = menu.getBeTank() != null ? 0 : -18;
             gui.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX + xOff, this.inventoryLabelY, 4210752, false);
         }
+    }
+    
+    @Override
+    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
+        renderEnergyTooltip(gui, mx, my, screenInfo.isShowEPT());
     }
 }

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "item": "eternalartifacts:oblivium_ingot"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "eternalartifacts:demonic_tablet"
+    },
+    "R": {
+      "tag": "forge:ingots/brick"
+    }
+  },
+  "pattern": [
+    "RCR",
+    "IMI",
+    "RPR"
+  ],
+  "result": {
+    "item": "eternalartifacts:dimensional_anchor"
+  }
+}

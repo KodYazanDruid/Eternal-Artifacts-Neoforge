@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 @Getter
 public abstract class GenericMachine extends SidedTransferMachine<GenericMachineMenu> {
     protected final Map<Integer, Consumer<Integer>> buttonConsumerMap = new HashMap<>();
+    protected boolean performAutoTransferItems = true;
     public GenericMachine(MachineDeferredHolder<?, ? ,? ,?> machineHolder, BlockPos pos, BlockState blockState) {
         super(machineHolder.getBlockEntity(), pos, blockState, (a, b, c, d) -> new GenericMachineMenu(machineHolder.getMenu(), a, b ,c ,d));
     }
@@ -24,7 +25,7 @@ public abstract class GenericMachine extends SidedTransferMachine<GenericMachine
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
-        if (inventory != null) {
+        if (inventory != null && performAutoTransferItems) {
             if (inventory.getSlots() - outputSlots.size() > 0) performAutoInputItems(lvl, pos);
             if (!outputSlots.isEmpty()) performAutoOutputItems(lvl, pos);
         }

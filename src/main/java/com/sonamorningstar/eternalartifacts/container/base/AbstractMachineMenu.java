@@ -90,6 +90,7 @@ public abstract class AbstractMachineMenu extends AbstractModContainerMenu {
     public static OptionalInt openContainer(Player player, BlockPos pos) {
         final BlockEntity blockEntity = player.level().getBlockEntity(pos);
         if (!(blockEntity instanceof MenuProvider prov)) return OptionalInt.empty();
+        if (blockEntity instanceof ModBlockEntity mbe && mbe.getConfiguration() == null) return OptionalInt.empty();
         return player.openMenu(prov, pos);
     }
 }
