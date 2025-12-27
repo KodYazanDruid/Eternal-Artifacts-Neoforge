@@ -10,6 +10,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,6 +23,7 @@ import java.util.*;
  * Basically call {@link TesseractNetworks#setDirty()}
 */
 @Getter
+@Setter
 @RequiredArgsConstructor
 public class TesseractNetwork<C> implements Comparable<TesseractNetwork<?>> {
 	public static final Map<Class<?>, Component> CAPABILITY_NAMES = new TreeMap<>(
@@ -29,15 +31,13 @@ public class TesseractNetwork<C> implements Comparable<TesseractNetwork<?>> {
 	);
 	private final List<GameProfile> whitelistedPlayers = new ArrayList<>();
 	private final List<String> pendingWhitelistPlayers = new ArrayList<>();
-	@Setter
-	private Access access = Access.PUBLIC;
-	@Setter
-	private CompoundTag savedData;
 	
 	private final String name;
 	private final UUID uuid;
 	private final GameProfile owner;
 	private final Class<C> capabilityClass;
+	private Access access = Access.PUBLIC;
+	private CompoundTag savedData;
 	
 	@Override
 	public int compareTo(@NotNull TesseractNetwork<?> o) {
@@ -77,7 +77,7 @@ public class TesseractNetwork<C> implements Comparable<TesseractNetwork<?>> {
 		CompoundTag gameProfile = new CompoundTag();
 		NbtUtils.writeGameProfile(gameProfile, owner);
 		networkTag.put("Owner", gameProfile);
-		networkTag.putString("Access", access.name());
+		networkTag.putInt("Access", access.ordinal());
 		ListTag whitelist = new ListTag();
 		for (GameProfile profile : whitelistedPlayers) {
 			CompoundTag idTag = new CompoundTag();
@@ -115,7 +115,9 @@ public class TesseractNetwork<C> implements Comparable<TesseractNetwork<?>> {
 				gameProfile,
 				capClass);
 		if (capData != null) tesseractNetwork.setSavedData(capData);
-		tesseractNetwork.setAccess(Access.valueOf(networkTag.getString("Access")));
+		int accessOrdinal = networkTag.getInt("Access");
+		accessOrdinal = Mth.clamp(accessOrdinal, 0, Access.values().length - 1);
+		tesseractNetwork.setAccess(Access.values()[accessOrdinal]);
 		ListTag whitelist = networkTag.getList("Whitelist", 10);
 		for (int i = 0; i < whitelist.size(); i++) {
 			CompoundTag idTag = whitelist.getCompound(i);

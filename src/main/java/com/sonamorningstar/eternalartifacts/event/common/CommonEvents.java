@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
@@ -31,6 +32,7 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.ForcedChunksToClient;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
+import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
@@ -102,9 +104,11 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -536,14 +540,17 @@ public class CommonEvents {
         ItemTooltipManager.setReload();
         Player player = event.getEntity();
         if (!(player.level() instanceof ServerLevel sl)) return;
-        var networks = TesseractNetworks.get(sl).getTesseractNetworks();
+        var tN = TesseractNetworks.get(sl);
+        var networks = tN.getTesseractNetworks();
         for (TesseractNetwork<?> network : networks) {
-            if (network.getPendingWhitelistPlayers().contains(player.getGameProfile().getName())) {
-                network.getPendingWhitelistPlayers().remove(player.getGameProfile().getName());
-                network.getWhitelistedPlayers().add(player.getGameProfile());
-                EternalArtifacts.LOGGER.info("Player {} has been whitelisted to tesseract network {}.", player.getGameProfile().getName(), network.getUuid());
+            GameProfile gameProfile = player.getGameProfile();
+            if (network.getPendingWhitelistPlayers().contains(gameProfile.getName())) {
+                network.getPendingWhitelistPlayers().remove(gameProfile.getName());
+                tN.mutateNetwork(network, n -> n.addWhiteList(player));
+                EternalArtifacts.LOGGER.info("Player {} has been whitelisted to tesseract network {}.", gameProfile.getName(), network.getUuid());
             }
         }
+        Channel.sendToPlayer(new TesseractNetworksToClient(new HashSet<>(tN.getNetworksForPlayer(player))), (ServerPlayer) player);
     }
     
     @SubscribeEvent

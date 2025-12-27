@@ -1,6 +1,9 @@
 package com.sonamorningstar.eternalartifacts.network.proxy;
 
-import com.sonamorningstar.eternalartifacts.api.client.tesseract.ClientTesseractNetworks;
+import com.mojang.authlib.GameProfile;
+import com.mojang.datafixers.util.Either;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
@@ -8,6 +11,9 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.EnderNotebookScree
 import com.sonamorningstar.eternalartifacts.client.gui.screen.EntityCatalogueScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.LightSaberScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.TesseractScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.TesseractWhitelistComponentWidget;
 import com.sonamorningstar.eternalartifacts.container.slot.BlueprintFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.item.EnderNotebookItem;
 import com.sonamorningstar.eternalartifacts.content.item.EntityCatalogueItem;
@@ -18,10 +24,11 @@ import com.sonamorningstar.eternalartifacts.network.tesseract.RebuildTesseractPa
 import com.sonamorningstar.eternalartifacts.network.UpdateEntityEnergyToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
-import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -35,6 +42,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -152,7 +160,33 @@ public class ClientProxy {
         }
     }
     
-    public static void syncTesseractNetwork(TesseractNetworksToClient pkt) {
-        ClientTesseractNetworks.addNetwork(pkt.network());
+    public static void onTesseractNetworksUpdated(TesseractNetworks clientInstance) {
+        var tesseractNetworks = clientInstance.getTesseractNetworks();
+        var font = mc.font;
+        for (int i = 0; i < tesseractNetworks.size(); i++) {
+            TesseractNetwork<?> tesseractNetwork = clientInstance.getTesseractNetworks().stream().toList().get(i);
+            if(mc.screen instanceof TesseractScreen tesseractScreen && tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED) {
+				tesseractScreen.children().stream()
+					.filter(w -> w instanceof SimpleDraggablePanel panel && isCorrectPanel(tesseractNetwork, panel))
+                    .map(w -> (SimpleDraggablePanel) w)
+                    .forEach(whitelistPanel -> {
+                        whitelistPanel.getChildren().stream()
+                            .filter(w -> w instanceof ScrollablePanel)
+                            .findFirst()
+                            .map(w -> (ScrollablePanel<TesseractWhitelistComponentWidget>) w)
+                            /*.map(w -> w instanceof ScrollablePanel<?> scrollablePanel ? scrollablePanel : null)
+                            .filter(Objects::nonNull)
+                            .findFirst()*/
+                            .ifPresent(panel -> {
+                                panel.getChildren().clear();
+                                TesseractScreen.fillWhitelistPanel(tesseractNetwork, panel, font);
+                            });
+                    });
+            }
+        }
     }
+	
+	private static boolean isCorrectPanel(TesseractNetwork<?> network, SimpleDraggablePanel panel) {
+		return panel.getId() != null && panel.getId().equals(TesseractScreen.WHITELIST_ID_PREFIX + "_" + network.getUuid());
+	}
 }

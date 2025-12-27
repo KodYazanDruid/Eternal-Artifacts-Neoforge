@@ -185,7 +185,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 		}
 	}
 	
-	protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+	protected void renderTooltip(GuiGraphics gui, int x, int y) {
 		if (menu.getCarried().isEmpty() && this.hoveredSlot instanceof FilterFakeSlot fakeSlot) {
 			FilterEntry entry = menu.getFilterEntries().get(fakeSlot.getSlotIndex());
 			long tick = Minecraft.getInstance().clientTickCount;
@@ -193,33 +193,33 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 				Ingredient ingredient = Ingredient.of(tagEntry.getTag());
 				ItemStack[] values = ingredient.getItems();
 				if (values.length == 0) {
-					super.renderTooltip(guiGraphics, x, y);
+					super.renderTooltip(gui, x, y);
 					return;
 				}
 				ItemStack itemStack = values[(int) ((tick / 20) % ingredient.getItems().length)].copy();
 				itemStack.setHoverName(Component.literal(tagEntry.getTag().location().toString()));
-				guiGraphics.renderTooltip(font, getTooltipFromContainerItem(itemStack), itemStack.getTooltipImage(), itemStack, x, y);
+				gui.renderTooltip(font, getTooltipFromContainerItem(itemStack), itemStack.getTooltipImage(), itemStack, x, y);
 			} else if (entry instanceof FluidStackEntry fluidStackEntry) {
 				FluidStack fluidStack = fluidStackEntry.getFilterStack();
 				if (!fluidStack.isEmpty())
-					guiGraphics.renderTooltip(font, StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+					gui.renderTooltip(font, StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
 						minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
 			} else if (entry instanceof FluidTagEntry fluidTagEntry) {
 				FluidIngredient ingredient = FluidIngredient.of(fluidTagEntry.getTag(), 1000);
 				FluidStack[] values = ingredient.getFluidStacks();
 				if (values.length == 0) {
-					super.renderTooltip(guiGraphics, x, y);
+					super.renderTooltip(gui, x, y);
 					return;
 				}
 				FluidStack fluidStack = values[(int) ((tick / 20) % values.length)].copy();
 				CompoundTag tag = fluidStack.getOrCreateTag();
 				tag.putString("EtarFluidStackName", fluidTagEntry.getTag().location().toString());
-				guiGraphics.renderTooltip(font, StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
+				gui.renderTooltip(font, StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
 					minecraft.options.advancedItemTooltips), Optional.empty(), x, y);
-			}  else super.renderTooltip(guiGraphics, x, y);
+			}  else super.renderTooltip(gui, x, y);
 			return;
 		}
-		super.renderTooltip(guiGraphics, x, y);
+		super.renderTooltip(gui, x, y);
 	}
 	
 	@Override

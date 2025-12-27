@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
+import lombok.Getter;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,7 +20,8 @@ import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 
-public class SlotWidget extends AbstractWidget {
+@Getter
+public class SlotWidget extends AbstractWidget implements TooltipRenderable {
 	private final Slot slot;
 	public SlotWidget(Slot slot, Component pMessage) {
 		super(slot.x, slot.y, 18, 18, pMessage);
@@ -49,31 +52,43 @@ public class SlotWidget extends AbstractWidget {
 			gui.pose().pushPose();
 			gui.blitSprite(new ResourceLocation("container/slot"), getX() - 1, getY() - 1, 0, 18, 18);
 			renderSlot(gui, slot, mx, my);
-			renderSlotHighlight(gui, slot, mx, my, pPartialTick);
 			gui.pose().popPose();
+		}
+	}
+	
+	@Override
+	public void renderTooltip(GuiGraphics gui, int mouseX, int mouseY, int tooltipZ) {
+		if (slot.isActive() && isMouseOver(mouseX, mouseY)) {
+			ItemStack itemstack = slot.getItem();
+			if (!itemstack.isEmpty()) {
+				gui.pose().pushPose();
+				gui.pose().translate(0, 0, tooltipZ);
+				RenderSystem.disableDepthTest();
+				gui.renderTooltip(Minecraft.getInstance().font, itemstack, mouseX, mouseY);
+				RenderSystem.enableDepthTest();
+				gui.pose().popPose();
+			}
 		}
 	}
 	
 	protected void renderSlot(GuiGraphics gui, Slot pSlot, int mouseX, int mouseY) {
 		ItemStack itemstack = pSlot.getItem();
-		gui.pose().pushPose();
 		renderSlotContents(gui, itemstack, pSlot, getX(), getY(), ChatFormatting.WHITE.toString() + itemstack.getCount());
-		if (slot.isActive() && isMouseOver(mouseX, mouseY)) {
-			gui.pose().translate(0, 0, 100);
-			gui.renderTooltip(Minecraft.getInstance().font, itemstack, mouseX, mouseY);
-		}
-		gui.pose().popPose();
+		renderSlotHighlight(gui, pSlot, mouseX, mouseY, 0);
 	}
 	
 	protected void renderSlotContents(GuiGraphics guiGraphics, ItemStack itemstack, Slot slot, int x, int y, @Nullable String countString) {
-		int j1 = getX() + getY() * 18;
+		if (itemstack.isEmpty()) return;
+		
+		int seed = 0;
 		if (slot.isFake()) {
-			guiGraphics.renderFakeItem(itemstack, x, y, j1);
+			guiGraphics.renderFakeItem(itemstack, x, y, seed);
 		} else {
-			guiGraphics.renderItem(itemstack, x, y, j1);
+			guiGraphics.renderItem(itemstack, x, y, seed);
 		}
 		
-		guiGraphics.renderItemDecorations(Minecraft.getInstance().font, itemstack, x, y, countString);}
+		guiGraphics.renderItemDecorations(Minecraft.getInstance().font, itemstack, x, y, countString);
+	}
 	
 	public static void renderSlotHighlight(GuiGraphics pGuiGraphics, int pX, int pY, int pBlitOffset) {
 		renderSlotHighlight(pGuiGraphics, pX, pY, pBlitOffset, -2130706433);

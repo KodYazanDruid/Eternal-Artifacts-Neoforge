@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
@@ -13,6 +12,7 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -50,7 +50,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 		if (networkId != null) {
 			tag.putUUID(SELECTED_NETWORK, networkId);
 		}
-		tag.putString("TransferMode", transferMode.name());
+		tag.putInt("TransferMode", transferMode.ordinal());
 	}
 	
 	@Override
@@ -59,12 +59,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 		if (tag.contains(SELECTED_NETWORK)) {
 			networkId = tag.getUUID(SELECTED_NETWORK);
 		}
-		try {
-			transferMode = TransferMode.valueOf(tag.getString("TransferMode"));
-		} catch (IllegalArgumentException e) {
-			EternalArtifacts.LOGGER.error("Invalid transfer mode in Tesseract NBT: \"{}\"", tag.getString("TransferMode"));
-			transferMode = TransferMode.BOTH;
-		}
+		transferMode = TransferMode.values()[Mth.clamp(tag.getInt("TransferMode"), 0, TransferMode.values().length - 1)];
 	}
 	
 	@Override

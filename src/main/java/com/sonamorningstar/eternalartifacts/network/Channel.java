@@ -8,9 +8,7 @@ import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookR
 import com.sonamorningstar.eternalartifacts.network.endernotebook.EnderNotebookRenameWarpToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
-import com.sonamorningstar.eternalartifacts.network.tesseract.AddTesseractNetworkToServer;
-import com.sonamorningstar.eternalartifacts.network.tesseract.RebuildTesseractPanelToClient;
-import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
+import com.sonamorningstar.eternalartifacts.network.tesseract.*;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -118,7 +116,13 @@ public class Channel {
                 handler -> handler.server(SelectEntityMessageToServer::handle));
         registrar.play(TesseractNetworksToClient.ID,
             TesseractNetworksToClient::create,
-            handler -> handler.server(TesseractNetworksToClient::handle));
+            handler -> handler.client(TesseractNetworksToClient::handle));
+        registrar.play(TesseractNetworkWhitelistToServer.ID,
+            TesseractNetworkWhitelistToServer::create,
+            handler -> handler.server(TesseractNetworkWhitelistToServer::handle));
+        registrar.play(TesseractNetworkRemoveWhitelistToServer.ID,
+            TesseractNetworkRemoveWhitelistToServer::create,
+            handler -> handler.server(TesseractNetworkRemoveWhitelistToServer::handle));
         
         registrar.play(BlueprintIngredientsToClient.ID,
             BlueprintIngredientsToClient::create,

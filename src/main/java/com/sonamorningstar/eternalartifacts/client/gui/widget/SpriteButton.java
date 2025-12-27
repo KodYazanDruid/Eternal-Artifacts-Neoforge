@@ -28,7 +28,7 @@ import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.But
 import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent.SpriteStyle;
 import static com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent.SpriteInfo;
 
-public class SpriteButton extends AbstractButton {
+public class SpriteButton extends AbstractButton implements TooltipRenderable {
     private ResourceLocation[] textures;
     @Setter
     private ButtonDrawContent sprites;
@@ -69,8 +69,9 @@ public class SpriteButton extends AbstractButton {
     @Override
     protected void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         gui.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-        RenderSystem.enableBlend();
-        RenderSystem.enableDepthTest();
+        /*RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();*/
+        // Depth test'i devre dışı bırakmıyoruz - parent panel'in z-index'ine uyacak
         if(textures != null)
             for(ResourceLocation texture : textures)
                 gui.blit(texture, getX(), getY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());
@@ -105,13 +106,22 @@ public class SpriteButton extends AbstractButton {
 
             }
         
+        gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+    
+    @Override
+    public void renderTooltip(GuiGraphics gui, int mouseX, int mouseY, int tooltipZ) {
         List<Component> allTooltips = new ArrayList<>();
         allTooltips.addAll(tooltips);
         allTooltips.addAll(dynamicTooltips.stream().map(Supplier::get).toList());
-        if (isMouseOver(mouseX, mouseY) && !allTooltips.isEmpty())
+        if (isMouseOver(mouseX, mouseY) && !allTooltips.isEmpty()) {
+            gui.pose().pushPose();
+            gui.pose().translate(0, 0, tooltipZ);
+            RenderSystem.disableDepthTest();
             gui.renderTooltip(Minecraft.getInstance().font, allTooltips, Optional.empty(), mouseX, mouseY);
-        
-        gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+            RenderSystem.enableDepthTest();
+            gui.pose().popPose();
+        }
     }
 
     public void setTextures(ResourceLocation... textures) {

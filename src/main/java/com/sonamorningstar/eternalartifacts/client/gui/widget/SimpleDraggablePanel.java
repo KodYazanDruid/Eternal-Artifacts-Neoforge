@@ -1,21 +1,24 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
+import net.neoforged.neoforge.client.GlStateBackup;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,16 +26,22 @@ import java.util.function.Consumer;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@Setter
 @Getter
 public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidget, Draggable, Overlapping {
+	public static final int BASE_Z = 100;
+	public static final int Z_INCREMENT = 50;
+	
+	private final GlStateBackup stateBackup = new GlStateBackup();
 	private final List<GuiEventListener> children = new ArrayList<>();
-	@Setter
-	private Bounds bounds;
-	@Setter
-	private int color = 0xFFFFFFFF;
 	private final List<Consumer<SimpleDraggablePanel>> onCloseListeners = new ArrayList<>();
 	private final List<Bounds> undragAreas = new ArrayList<>();
 	private final List<Bounds> occupiedAreas = new ArrayList<>();
+	private Bounds bounds;
+	private int color = 0xFFFFFFFF;
+	@Nullable private String id = "";
+	private int zIndex = BASE_Z;
+	
 	public SimpleDraggablePanel(Component title, int pX, int pY, int pWidth, int pHeight, Bounds bounds) {
 		super(pX, pY, pWidth, pHeight, title);
 		this.bounds = bounds;
@@ -215,23 +224,59 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 		undragAreas.add(bounds);
 	}
 	
+	public void setZIndex(int zIndex) {
+		this.zIndex = zIndex;
+	}
+	
+	public int getZIndex() {
+		return this.zIndex;
+	}
+	
 	@Override
 	protected void renderWidget(GuiGraphics gui, int mx, int my, float delta) {
-		gui.pose().pushPose();
-		gui.pose().translate(0, 0, 300);
-		RenderSystem.enableDepthTest();
-		RenderSystem.enableBlend();
+		PoseStack pose = gui.pose();
+		
+		pose.pushPose();
+		pose.translate(0, 0, zIndex);
+		
+		// Panel arka planını çiz
 		gui.setColor(FastColor.ARGB32.red(color) / 255.0F,
 			FastColor.ARGB32.green(color) / 255.0F,
 			FastColor.ARGB32.blue(color) / 255.0F,
 			FastColor.ARGB32.alpha(color) / 255.0F);
+		
 		GuiDrawer.drawDefaultBackground(gui, this.getX(), this.getY(), this.width, this.height);
-		renderTitle(gui, mx, my, delta);
 		gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-		renderContents(gui, mx, my, delta);
-		RenderSystem.disableDepthTest();
-		RenderSystem.disableBlend();
-		gui.pose().popPose();
+		
+		// Render children with incremental z offset
+		int childZOffset = 1;
+		for (GuiEventListener child : getChildren()) {
+			if (child instanceof Renderable renderable) {
+				pose.pushPose();
+				pose.translate(0, 0, childZOffset);
+				renderable.render(gui, mx, my, delta);
+				pose.popPose();
+				childZOffset++;
+			}
+		}
+		renderTitle(gui, mx, my, delta);
+		pose.popPose();
+	}
+	
+	public void renderChildTooltips(GuiGraphics gui, int mx, int my, int tooltipZ) {
+		Screen screen = Minecraft.getInstance().screen;
+		boolean hasCarriedItem = false;
+		if (screen instanceof AbstractContainerScreen<?> con) hasCarriedItem = !con.getMenu().getCarried().isEmpty();
+		for (GuiEventListener child : getChildren()) {
+			if (child instanceof TooltipRenderable tooltipRenderable) {
+				if (!(tooltipRenderable instanceof SlotWidget && hasCarriedItem)) {
+					tooltipRenderable.renderTooltip(gui, mx, my, tooltipZ);
+				}
+			}
+			if (child instanceof SimpleDraggablePanel nestedPanel) {
+				nestedPanel.renderChildTooltips(gui, mx, my, tooltipZ);
+			}
+		}
 	}
 	
 	protected void renderTitle(GuiGraphics gui, int mx, int my, float delta) {
@@ -293,6 +338,19 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 	}
 	
 	@Override
+	public boolean updateHover(double mx, double my) {
+		if (visible) {
+			for (GuiEventListener child : children) {
+				if (child instanceof Overlapping overlapping) {
+					overlapping.updateHover(mx, my);
+				}
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public boolean mouseClicked(double mx, double my, int pButton) {
 		return mouseClickedChild(mx, my, pButton) || super.mouseClicked(mx, my, pButton);
 	}
@@ -322,11 +380,6 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 	public void mouseMoved(double pMouseX, double pMouseY) {
 		super.mouseMoved(pMouseX, pMouseY);
 		mouseMovedChild(pMouseX, pMouseY);
-	}
-	
-	@Override
-	public void setFocused(boolean pFocused) {
-		super.setFocused(pFocused);
 	}
 	
 	@Override

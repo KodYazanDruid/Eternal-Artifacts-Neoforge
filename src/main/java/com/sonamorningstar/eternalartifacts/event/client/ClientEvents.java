@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
@@ -16,10 +17,14 @@ import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedToolt
 import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
@@ -61,6 +66,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -77,6 +83,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.GlStateBackup;
 import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.TickEvent;
@@ -387,6 +394,7 @@ public class ClientEvents {
         }
     }
     
+    private static final GlStateBackup GL_STATE = new GlStateBackup();
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void renderScreenLowPrio(ScreenEvent.Render.Post event) {
         Screen screen = event.getScreen();
@@ -397,12 +405,59 @@ public class ClientEvents {
         if (screen instanceof AbstractModContainerScreen<?> amcs) {
             PoseStack pose = gui.pose();
             pose.pushPose();
-            pose.translate(0.0D, 0.0D, 30.0F);
-            for (GuiEventListener upperLayerChild : amcs.upperLayerChildren) {
-                if (upperLayerChild instanceof Renderable renderable) {
-                    renderable.render(gui, mx, my, deltaTick);
+            RenderSystem.backupGlState(GL_STATE);
+            
+            // Panelleri z-index'e göre sırala
+            List<SimpleDraggablePanel> visiblePanels = new ArrayList<>();
+            for (GuiEventListener child : amcs.upperLayerChildren) {
+                if (child instanceof SimpleDraggablePanel panel && panel.visible) {
+                    visiblePanels.add(panel);
                 }
             }
+            visiblePanels.sort(Comparator.comparingInt(SimpleDraggablePanel::getZIndex));
+            
+            int panelZ = AbstractModContainerScreen.BASE_PANEL_Z;
+            RenderSystem.enableDepthTest();
+            for (GuiEventListener upperLayerChild : amcs.upperLayerChildren) {
+                if (upperLayerChild instanceof Renderable renderable) {
+                    pose.translate(0, 0, panelZ);
+                    renderable.render(gui, mx, my, deltaTick);
+                    panelZ += AbstractModContainerScreen.PANEL_Z_INCREMENT;
+                }
+            }
+            
+            int tooltipZ = amcs.getMaxPanelZ() + AbstractModContainerScreen.TOOLTIP_Z_OFFSET;
+            RenderSystem.disableDepthTest();
+            pose.pushPose();
+            pose.translate(0, 0, tooltipZ);
+            for (SimpleDraggablePanel panel : visiblePanels) {
+                panel.renderChildTooltips(gui, mx, my, tooltipZ);
+            }
+            pose.popPose();
+            
+            if (amcs instanceof AbstractMachineScreen<?> machineScreen) {
+                machineScreen.renderMachineTooltips(gui, tooltipZ);
+            }
+            
+            renderCarriedItem(gui, amcs, mx, my, tooltipZ + 100);
+            
+            RenderSystem.restoreGlState(GL_STATE);
+            pose.popPose();
+        }
+    }
+    
+    private static void renderCarriedItem(GuiGraphics gui, AbstractModContainerScreen<?> screen, int mx, int my, int zIndex) {
+        ItemStack carried = screen.getMenu().getCarried();
+        if (!carried.isEmpty()) {
+            PoseStack pose = gui.pose();
+            pose.pushPose();
+            pose.translate(0.0F, 0.0F, zIndex);
+            RenderSystem.disableDepthTest();
+            
+            gui.renderItem(carried, mx - 8, my - 8);
+            gui.renderItemDecorations(Minecraft.getInstance().font, carried, mx - 8, my - 8);
+            
+            RenderSystem.enableDepthTest();
             pose.popPose();
         }
     }
@@ -445,7 +500,7 @@ public class ClientEvents {
             int y = gsms.getGuiTop();
             int width = gsms.getXSize();
             int height = gsms.getYSize();
-            /*if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
+            if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
                 SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(Component.empty(),
                     x + 23, y + 8, 129, 70,
                     SimpleDraggablePanel.Bounds.of(0, 0, gsms.width, gsms.height));
@@ -466,7 +521,7 @@ public class ClientEvents {
                 });
                 
                 gsms.addUpperLayerChild(filterPanel);
-            }*/
+            }
         }
     }
     

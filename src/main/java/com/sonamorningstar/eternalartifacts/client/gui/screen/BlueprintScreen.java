@@ -77,7 +77,7 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
         Channel.sendToServer(new UpdateFakeSlotToServer(menuId, slotIndex, stack));
     }
     
-    protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
+    protected void renderTooltip(GuiGraphics gui, int x, int y) {
         if (menu.getCarried().isEmpty() &&
                 this.hoveredSlot != null &&
                 this.hoveredSlot.hasItem()) {
@@ -86,14 +86,14 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
                 long tick = Minecraft.getInstance().clientTickCount;
                 ItemStack[] values = ingredient.getItems();
                 if (values.length == 0) {
-                    super.renderTooltip(guiGraphics, x, y);
+                    super.renderTooltip(gui, x, y);
                     return;
                 }
                 ItemStack itemStack = values[(int) ((tick / 20) % ingredient.getItems().length)];
-                guiGraphics.renderTooltip(font, getTooltipFromContainerItem(itemStack), itemStack.getTooltipImage(), itemStack, x, y);
+                gui.renderTooltip(font, getTooltipFromContainerItem(itemStack), itemStack.getTooltipImage(), itemStack, x, y);
             } else {
                 ItemStack itemstack = hoveredSlot.getItem();
-                guiGraphics.renderTooltip(font, this.getTooltipFromContainerItem(itemstack), itemstack.getTooltipImage(), itemstack, x, y);
+                gui.renderTooltip(font, this.getTooltipFromContainerItem(itemstack), itemstack.getTooltipImage(), itemstack, x, y);
             }
         }
     }

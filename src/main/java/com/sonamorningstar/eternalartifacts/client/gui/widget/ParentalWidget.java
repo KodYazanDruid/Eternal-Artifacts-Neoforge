@@ -96,13 +96,9 @@ public interface ParentalWidget {
 	
 	default void renderContents(GuiGraphics gui, int mX, int mY, float deltaTick) {
 		for (GuiEventListener child : getChildren()) {
-			//PoseStack pose = gui.pose();
-			//pose.pushPose();
 			if (child instanceof Renderable renderable) {
-				//pose.translate(0, 0, 50);
 				renderable.render(gui, mX, mY, deltaTick);
 			}
-			//pose.popPose();
 		}
 	}
 	

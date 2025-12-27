@@ -115,16 +115,17 @@ public class LightSaberScreen extends ItemStackScreen {
         pose.scale(100.0F, 100.0F, 100.0F);
         pose.mulPose(Axis.XP.rotationDegrees(15.0F));
         pose.mulPose(Axis.YP.rotationDegrees((mc.player.tickCount + partTick) * 5.0F));
-        boolean blockLight = !model.usesBlockLight();
-        if (blockLight) Lighting.setupForFlatItems();
+        /*boolean blockLight = !model.usesBlockLight();
+        if (blockLight) Lighting.setupForFlatItems();*/
+        Lighting.setupForEntityInInventory();
         mc.getItemRenderer().renderStatic(
             rendered, ItemDisplayContext.NONE,
             15728880, OverlayTexture.NO_OVERLAY,
             pose, gui.bufferSource(), mc.level,
             mc.player.getId() + ItemDisplayContext.NONE.ordinal()
         );
-        gui.flush();
-        if (blockLight) Lighting.setupFor3DItems();
+        //gui.flush();
+        /*if (blockLight)*/ Lighting.setupFor3DItems();
         pose.popPose();
     }
 }

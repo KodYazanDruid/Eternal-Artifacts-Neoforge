@@ -124,6 +124,9 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	public boolean updateHover(double mx, double my) {
 		if (visible) {
 			for (W child : children) {
+				if (child instanceof Overlapping overlapping) {
+					overlapping.updateHover(mx, my);
+				}
 				if (child instanceof AbstractScrollPanelComponent aspc) {
 					aspc.updateHover(mx, my);
 				}

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.util;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -8,11 +9,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.client.GlStateBackup;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -21,6 +24,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public final class GuiDrawer {
+    private static final GlStateBackup stateBackup = new GlStateBackup();
     private static final ResourceLocation texture = new ResourceLocation(MODID, "textures/gui/template.png");
     public static final ResourceLocation default_edge = new ResourceLocation(MODID, "textures/gui/default_edge.png");
     public static final ResourceLocation dark_edge = new ResourceLocation(MODID, "textures/gui/dark_edge.png");
@@ -284,10 +288,16 @@ public final class GuiDrawer {
         int textWidth = font.width(text);
         int deltaX = maxX - minX;
         int middleX = deltaX / 2;
-        int scrolledMinY = minY - (int)scroll;
-        int scrolledMaxY = maxY - (int)scroll;
+        int scrolledMinY = minY - (int) scroll;
+        int scrolledMaxY = maxY - (int) scroll;
         int wHeight = maxY - minY;
         int j = minY + (wHeight - 8) / 2;
+        RenderSystem.backupGlState(stateBackup);
+        //RenderSystem.enableDepthTest();
+        /*RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();*/
+        RenderSystem.disableBlend();
+        RenderSystem.disableDepthTest();
         if (textWidth > deltaX) {
             int overflow = textWidth - deltaX;
             double d0 = (double) Util.getMillis() / 1000.0;
@@ -295,16 +305,19 @@ public final class GuiDrawer {
             double d2 = Math.sin((Math.PI / 2) * Math.cos((Math.PI * 2) * d0 / d1)) / 2.0 + 0.5;
             double d3 = Mth.lerp(d2, 0.0, overflow);
             gui.enableScissor(minX, scrolledMinY, maxX, scrolledMaxY);
-            gui.drawString(font, text, minX - (int)d3, j, color, dropShadow);
+            gui.drawString(font, text, minX - (int) d3, j, color, dropShadow);
             gui.disableScissor();
         } else {
             int i1 = Mth.clamp(middleX, minX + textWidth / 2, maxX - textWidth / 2);
             drawCenteredString(gui, font, text, i1, j, color, dropShadow);
         }
+        RenderSystem.restoreGlState(stateBackup);
     }
     
     public static void drawCenteredString(GuiGraphics gui, Font pFont, Component pText, int pX, int pY, int pColor, boolean dropShadow) {
-        gui.drawString(pFont, pText, pX - pFont.width(pText) / 2, pY, pColor, dropShadow);
+        //gui.drawString(pFont, pText, pX - pFont.width(pText) / 2, pY, pColor, dropShadow);
+        FormattedCharSequence charSeq = pText.getVisualOrderText();
+        gui.drawString(pFont, charSeq, pX - pFont.width(charSeq) / 2, pY, pColor, dropShadow);
     }
     //endregion
 }

@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
+import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.client.render.util.DirectionRotationCache;
 import com.sonamorningstar.eternalartifacts.content.block.base.AbstractPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
@@ -67,6 +68,11 @@ public class WrenchItem extends DiggerItem {
                 System.out.println("Item: " + item + ", Min Count: " + counts.getFirst() + ", Max Count: " + counts.getSecond());
             });
         }*/
+        if (level.isClientSide()) {
+            TesseractNetworks.get(level).getTesseractNetworks().forEach(network -> {
+                System.out.println("Tesseract Network: " + network.getName() + " (" + network.getUuid() + ")");
+            });
+        }
         
         return super.use(level, player, hand);
     }
@@ -85,12 +91,12 @@ public class WrenchItem extends DiggerItem {
                 System.out.println(rl.toString() +", "+ config.toString());
             });
         }*/
-        if (be instanceof ChunkLoader cl) {
+        /*if (be instanceof ChunkLoader cl) {
             System.out.println((cl.getLevel().isClientSide() ?"Client":"Server") + " ChunkLoader Info at " + pos + ":");
             for (ForceLoadManager.ForcedChunkPos forcedChunk : cl.getForcedChunks()) {
                 System.out.println(" - Forced Chunk: " + forcedChunk);
             }
-        }
+        }*/
         
         /*if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {
             

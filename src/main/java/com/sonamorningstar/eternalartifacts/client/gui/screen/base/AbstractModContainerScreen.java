@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
 import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
@@ -29,6 +31,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -42,6 +45,9 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends EffectRenderingInventoryScreen<T> {
     private static final ResourceLocation CONFIG_BUTTON_TEXTURE = new ResourceLocation(MODID, "textures/gui/sprites/widget/machine_config_button.png");
+    public static final int PANEL_Z_INCREMENT = 50;
+    public static final int BASE_PANEL_Z = 300; // Minecraft item render z-index'inin üstünde (150+)
+    public static final int TOOLTIP_Z_OFFSET = 500;
     
     @Setter
     @Getter
@@ -51,6 +57,8 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     public final Queue<AbstractWidget> upperLayerUpdateQueue = new ArrayDeque<>();
     @Nullable
     private SimpleDraggablePanel configPanel;
+    
+    private int nextPanelZ = BASE_PANEL_Z;
 
     public AbstractModContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -125,12 +133,44 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         children.add(0, child);
         narratables.add(0, child);
         upperLayerChildren.add(child);
+        
+        if (child instanceof SimpleDraggablePanel panel) {
+            panel.setZIndex(nextPanelZ);
+            nextPanelZ += PANEL_Z_INCREMENT;
+        }
+    }
+    
+    private void bringPanelToFront(SimpleDraggablePanel panel) {
+        int maxZ = BASE_PANEL_Z;
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel p && p != panel) {
+                maxZ = Math.max(maxZ, p.getZIndex());
+            }
+        }
+        panel.setZIndex(maxZ + PANEL_Z_INCREMENT);
+        nextPanelZ = Math.max(nextPanelZ, panel.getZIndex() + PANEL_Z_INCREMENT);
+    }
+    
+    public int getMaxPanelZ() {
+        int maxZ = 0;
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel p) {
+                maxZ = Math.max(maxZ, p.getZIndex());
+            }
+        }
+        return maxZ;
     }
     
     @Override
     protected void clearWidgets() {
         super.clearWidgets();
         upperLayerChildren.clear();
+    }
+    
+    @Override
+	public void removeWidget(GuiEventListener listener) {
+        super.removeWidget(listener);
+        upperLayerChildren.remove(listener);
     }
     
     protected void drawExtraBg(GuiGraphics gui, float tickDelta, int x, int y) {
@@ -157,6 +197,18 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             );
             resetGuiTint(event.getGui());
         }
+    }
+    
+    @Override
+    protected void renderTooltip(GuiGraphics gui, int mx, int my) {
+        PoseStack pose = gui.pose();
+        pose.pushPose();
+        RenderSystem.disableDepthTest();
+        int tooltipZ = getMaxPanelZ() + TOOLTIP_Z_OFFSET;
+        pose.translate(0.0F, 0.0F, tooltipZ);
+        super.renderTooltip(gui, mx, my);
+        RenderSystem.enableDepthTest();
+        pose.popPose();
     }
     
     @Override
@@ -243,9 +295,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         Optional<GuiEventListener> child = getChildAt(mx, my);
         if (child.isPresent()) {
             if (child.get() instanceof Overlapping) {
-                /*if (child.get() instanceof ParentalWidget parental) {
-                    return parental.isMouseOverChild(mx, my);
-                }*/
                 return false;
             }
         }
@@ -261,6 +310,9 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             if (child.get() instanceof Overlapping overlapping) {
                 if (overlapping instanceof AbstractWidget widget) {
                     upperLayerUpdateQueue.add(widget);
+                }
+                if (child.get() instanceof SimpleDraggablePanel panel) {
+                    bringPanelToFront(panel);
                 }
                 GuiEventListener listener = overlapping.getElementUnderMouse(mx, my);
                 if (listener != null) setFocused(listener);
@@ -305,8 +357,11 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
     public void render(GuiGraphics gui, int mx, int my, float delta) {
+        // Önce normal renderı çağır
         super.render(gui, mx, my, delta);
         renderTankSlots(gui, leftPos, topPos, mx, my);
+        
+        // Hover durumunu güncelle
         boolean foundOpenMenu = false;
         for (GuiEventListener child : children) {
             if (child instanceof AbstractWidget widget &&
@@ -319,5 +374,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
                 }
             }
         }
+        // NOT: Panel'ler ve tooltip'ler ClientEvents.renderScreenLowPrio'da render ediliyor
     }
 }

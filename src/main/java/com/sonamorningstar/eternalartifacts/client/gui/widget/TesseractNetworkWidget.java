@@ -21,11 +21,6 @@ public class TesseractNetworkWidget extends AbstractScrollPanelComponent {
 	}
 	
 	@Override
-	public void onClick(double mouseX, double mouseY, int button) {
-		super.onClick(mouseX, mouseY, button);
-	}
-	
-	@Override
 	protected void renderWidget(GuiGraphics gui, int mX, int mY, float deltaTick) {
 		int minX = getX();
 		int minY = getY();

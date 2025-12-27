@@ -2,17 +2,18 @@ package com.sonamorningstar.eternalartifacts.api.machine.tesseract;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.saveddata.SavedData;
-import org.jetbrains.annotations.NotNull;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -22,9 +23,13 @@ import java.util.function.Consumer;
 @Getter
 public class TesseractNetworks extends SavedData {
 	private final Set<TesseractNetwork<?>> tesseractNetworks = ConcurrentHashMap.newKeySet();
-	private final Map<TesseractNetwork<?>, Set<Tesseract>> tesseracts = new ConcurrentHashMap<>();
 	private final Map<UUID, TesseractNetwork<?>> networkCache = new ConcurrentHashMap<>();
 	private final Map<String, TesseractNetwork<?>> nameCache = new ConcurrentHashMap<>();
+	
+	//Empty on clients because client can't know information on different dimensions on the server.
+	private final Map<TesseractNetwork<?>, Set<Tesseract>> tesseracts = new ConcurrentHashMap<>();
+	
+	private static final TesseractNetworks CLIENT_INSTANCE = new TesseractNetworks();
 	
 	@Override
 	public CompoundTag save(CompoundTag tag) {
@@ -41,6 +46,7 @@ public class TesseractNetworks extends SavedData {
 	public static TesseractNetworks load(CompoundTag tag) {
 		TesseractNetworks tesseractNetworks = new TesseractNetworks();
 		tesseractNetworks.read(tag);
+		syncToClient(tesseractNetworks.getTesseractNetworks());
 		return tesseractNetworks;
 	}
 	
@@ -91,6 +97,7 @@ public class TesseractNetworks extends SavedData {
 		boolean added = tesseractNetworks.add(tesseractNetwork);
 		if (added) {
 			addNetworkInternal(tesseractNetwork);
+			if (this != CLIENT_INSTANCE) syncToClient(tesseractNetworks);
 			setDirty();
 		}
 		return added;
@@ -102,6 +109,7 @@ public class TesseractNetworks extends SavedData {
 			networkCache.remove(tesseractNetwork.getUuid());
 			nameCache.remove(tesseractNetwork.getName());
 			tesseracts.remove(tesseractNetwork);
+			syncToClient(tesseractNetworks);
 			setDirty();
 		}
 		return removed;
@@ -109,7 +117,9 @@ public class TesseractNetworks extends SavedData {
 	
 	public boolean removeNetwork(UUID uuid) {
 		TesseractNetwork<?> network = networkCache.get(uuid);
-		return network != null && removeNetwork(network);
+		boolean ret = network != null && removeNetwork(network);
+		setDirty();
+		return ret;
 	}
 	
 	public void mutateNetwork(TesseractNetwork<?> tesseractNetwork, Consumer<TesseractNetwork<?>> consumer) {
@@ -141,16 +151,16 @@ public class TesseractNetworks extends SavedData {
 		UUID playerUUID = player.getUUID();
 		return tesseractNetworks.stream()
 			.filter(network -> {
+				if (network.getAccess() == TesseractNetwork.Access.PUBLIC) return true;
 				UUID ownerUUID = network.getOwner().getId();
 				if (ownerUUID.equals(playerUUID)) return true;
-				return network.getWhitelistedPlayers().contains(playerUUID);
-			})
-			.toList();
+				return network.getWhitelistedPlayers().stream().anyMatch(p -> playerUUID.equals(p.getId()));
+			}).toList();
 	}
 	
 	@Nullable
 	public static TesseractNetworks get(LevelAccessor levelAcc) {
-		if (!(levelAcc instanceof ServerLevelAccessor severLevelAcc)) return null;
+		if (!(levelAcc instanceof ServerLevelAccessor severLevelAcc)) return CLIENT_INSTANCE;
 		var server = severLevelAcc.getServer();
 		if (server == null) return null;
 		return server.overworld().getDataStorage().computeIfAbsent(
@@ -159,7 +169,28 @@ public class TesseractNetworks extends SavedData {
 		);
 	}
 	
-	public void syncToClient(TesseractNetwork<?> network, ServerPlayer player) {
-		Channel.sendToPlayer(new TesseractNetworksToClient(network), player);
+	public static void syncToClient(Set<TesseractNetwork<?>> networks) {
+		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
+		currentServer.getPlayerList().getPlayers().forEach(player -> {
+			Set<TesseractNetwork<?>> networksToSync = new HashSet<>();
+			networks.stream()
+				.filter(network -> {
+					UUID ownerUUID = network.getOwner().getId();
+					UUID playerUUID = player.getUUID();
+					if (ownerUUID.equals(playerUUID)) return true;
+					return network.getWhitelistedPlayers().stream().anyMatch(p -> playerUUID.equals(p.getId()));
+				}).forEach(networksToSync::add);
+			Channel.sendToPlayer(new TesseractNetworksToClient(networksToSync), player);
+		});
+	}
+	
+	public static void applyOnClient(Set<TesseractNetwork<?>> networks) {
+		CLIENT_INSTANCE.tesseractNetworks.clear();
+		CLIENT_INSTANCE.networkCache.clear();
+		CLIENT_INSTANCE.nameCache.clear();
+		for (TesseractNetwork<?> network : networks) {
+			CLIENT_INSTANCE.addNetwork(network);
+		}
+		ClientProxy.onTesseractNetworksUpdated(CLIENT_INSTANCE);
 	}
 }

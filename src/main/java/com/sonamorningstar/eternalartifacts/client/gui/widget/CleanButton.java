@@ -60,8 +60,6 @@ public class CleanButton extends AbstractButton {
 	protected void renderWidget(GuiGraphics pGuiGraphics, int pMouseX, int pMouseY, float pPartialTick) {
 		Minecraft minecraft = Minecraft.getInstance();
 		pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-		RenderSystem.enableBlend();
-		RenderSystem.enableDepthTest();
 		pGuiGraphics.blitSprite(CLEAN_SPRITES.get(this.active, this.isHoveredOrFocused()), this.getX(), this.getY(), this.getWidth(), this.getHeight());
 		pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		int i = getFGColor();

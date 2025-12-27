@@ -22,7 +22,8 @@ public abstract class AbstractScrollPanelComponent extends AbstractWidget {
 	private boolean hoveredOnPanel;
 	@Getter
 	protected final int index;
-	protected final Clickable action;
+	@Setter
+	protected Clickable action;
 	protected final Font font;
 	protected final ScrollablePanel<? extends AbstractScrollPanelComponent> panel;
 	public AbstractScrollPanelComponent(int x, int y, int width, int height,

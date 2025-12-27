@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.StringUtils;
+import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -17,12 +18,19 @@ import java.util.*;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@Getter
 public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> extends AbstractModContainerScreen<T> {
     protected static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
     protected static final ResourceLocation buttons = new ResourceLocation(MODID, "textures/gui/buttons.png");
     private final Map<String, Integer> energyLoc = new HashMap<>();
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
     protected static final int labelColor = 4210752;
+    
+    // Tooltip render için cache
+    private int cachedMx, cachedMy;
+    private boolean shouldRenderEnergyTooltip = false;
+    private boolean shouldRenderFluidTooltip = false;
+    private boolean renderEPT = true;
 
     public AbstractMachineScreen(T menu, Inventory pPlayerInventory, Component pTitle) {
         super(menu, pPlayerInventory, pTitle);
@@ -35,10 +43,20 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
-        if (menu.getBeEnergy() != null) renderEnergyTooltip(gui, mx, my);
-        if (menu.getBeTank() != null) renderFluidTooltip(gui, mx, my);
+        cachedMx = mx;
+        cachedMy = my;
+        shouldRenderEnergyTooltip = menu.getBeEnergy() != null;
+        shouldRenderFluidTooltip = menu.getBeTank() != null;
         renderExtra(gui, mx, my, partialTick);
         renderTooltip(gui, mx, my);
+    }
+    
+    /**
+     * ClientEvents tarafından çağrılır - panellerden sonra tooltip'leri render eder
+     */
+    public void renderMachineTooltips(GuiGraphics gui, int tooltipZ) {
+        if (shouldRenderEnergyTooltip) renderEnergyTooltipInternal(gui, cachedMx, cachedMy, tooltipZ);
+        if (shouldRenderFluidTooltip) renderFluidTooltipInternal(gui, cachedMx, cachedMy, tooltipZ);
     }
     
     protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
@@ -46,6 +64,10 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     }
     
     protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my, boolean renderEPT) {
+        this.renderEPT = renderEPT;
+    }
+    
+    private void renderEnergyTooltipInternal(GuiGraphics gui, int mx, int my, int tooltipZ) {
         if(!energyLoc.isEmpty() && isCursorInBounds(energyLoc.get("x"), energyLoc.get("y"), energyLoc.get("width"), energyLoc.get("height"), mx, my)) {
             Machine<?> machine = (Machine<?>) menu.getBlockEntity();
             List<Component> tooltips = new ArrayList<>();
@@ -56,20 +78,36 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
                 String prefix = machine.isGenerator() ? "produce": "consume";
                 tooltips.add(Component.translatable(ModConstants.GUI.withSuffix(prefix+"_energy_per_tick"), machine.getEnergyPerTick()));
             }
+            gui.pose().pushPose();
+            gui.pose().translate(0, 0, tooltipZ);
+            com.mojang.blaze3d.systems.RenderSystem.disableDepthTest();
             gui.renderTooltip(font, tooltips, Optional.empty(), mx, my);
+            com.mojang.blaze3d.systems.RenderSystem.enableDepthTest();
+            gui.pose().popPose();
         }
     }
+    
     protected void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
+        // Eski uyumluluk için - gerçek render ClientEvents'te yapılacak
+    }
+    
+    private void renderFluidTooltipInternal(GuiGraphics gui, int mx, int my, int tooltipZ) {
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
                 var fs = menu.getBeTank().getFluidInTank(tank);
                 var tooltips = StringUtils.getTooltipFromContainerFluid(fs, minecraft.level,
                     minecraft.options.advancedItemTooltips);
                 tooltips.add(Component.literal(String.valueOf(fs.getAmount())).append(" / ").append(String.valueOf(menu.getBeTank().getTankCapacity(tank))));
+                gui.pose().pushPose();
+                gui.pose().translate(0, 0, tooltipZ);
+                com.mojang.blaze3d.systems.RenderSystem.disableDepthTest();
                 gui.renderTooltip(font, tooltips, Optional.empty(), mx, my);
+                com.mojang.blaze3d.systems.RenderSystem.enableDepthTest();
+                gui.pose().popPose();
             }
         });
     }
+    
     protected void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
         if(isCursorInBounds(x, y, xLen, yLen, mx, my)) {
             gui.renderTooltip(font,
