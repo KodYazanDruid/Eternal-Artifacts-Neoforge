@@ -303,15 +303,16 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("progress", progress);
-        if(energy != null) tag.put("Energy", energy.serializeNBT());
-        if(inventory != null) tag.put("Inventory", inventory.serializeNBT());
-        if(tank != null) tag.put("Fluid", tank.serializeNBT());
-        tag.putInt("EnergyPerTick", energyPerTick);
+    public void onLoad() {
+        super.onLoad();
+        findRecipe();
+        setProcessCondition(new ProcessCondition(this), getCachedRecipe());
+        if (!level.isClientSide()) {
+            addToManager();
+            updateForcedChunks();
+        }
     }
-
+    
     @Override
     @SuppressWarnings("ConstantConditions")
     public void load(CompoundTag tag) {
@@ -322,16 +323,15 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if(tank != null && shouldSerializeTank()) tank.deserializeNBT(tag.getCompound("Fluid"));
         energyPerTick = tag.getInt("EnergyPerTick");
     }
-
+    
     @Override
-    public void onLoad() {
-        super.onLoad();
-        findRecipe();
-        setProcessCondition(new ProcessCondition(this), getCachedRecipe());
-        if (!level.isClientSide()) {
-            addToManager();
-            updateForcedChunks();
-        }
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt("progress", progress);
+        if(energy != null) tag.put("Energy", energy.serializeNBT());
+        if(inventory != null) tag.put("Inventory", inventory.serializeNBT());
+        if(tank != null) tag.put("Fluid", tank.serializeNBT());
+        tag.putInt("EnergyPerTick", energyPerTick);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
 import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
@@ -31,7 +32,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -46,7 +46,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends EffectRenderingInventoryScreen<T> {
     private static final ResourceLocation CONFIG_BUTTON_TEXTURE = new ResourceLocation(MODID, "textures/gui/sprites/widget/machine_config_button.png");
     public static final int PANEL_Z_INCREMENT = 50;
-    public static final int BASE_PANEL_Z = 300; // Minecraft item render z-index'inin üstünde (150+)
+    public static final int BASE_PANEL_Z = 300;
     public static final int TOOLTIP_Z_OFFSET = 500;
     
     @Setter
@@ -59,6 +59,20 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     private SimpleDraggablePanel configPanel;
     
     private int nextPanelZ = BASE_PANEL_Z;
+    
+    private final Set<Slot> widgetManagedSlots = new HashSet<>();
+    
+    public void registerWidgetManagedSlot(Slot slot) {
+        widgetManagedSlots.add(slot);
+    }
+    
+    public void unregisterWidgetManagedSlot(Slot slot) {
+        widgetManagedSlots.remove(slot);
+    }
+    
+    public boolean isWidgetManagedSlot(Slot slot) {
+        return widgetManagedSlots.contains(slot);
+    }
 
     public AbstractModContainerScreen(T pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
@@ -161,6 +175,16 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         return maxZ;
     }
     
+    public int getTooltipZ() {
+        int visiblePanelCount = 0;
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel p && p.visible) {
+                visiblePanelCount++;
+            }
+        }
+        return getMaxPanelZ() + TOOLTIP_Z_OFFSET + (visiblePanelCount * PANEL_Z_INCREMENT) + TOOLTIP_Z_OFFSET;
+    }
+    
     @Override
     protected void clearWidgets() {
         super.clearWidgets();
@@ -175,17 +199,18 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     protected void drawExtraBg(GuiGraphics gui, float tickDelta, int x, int y) {
         applyGuiTint(gui);
-        renderSlots(gui);
+        renderSlotBgs(gui);
         clearGuiTint(gui);
     }
     
-    protected void renderSlots(GuiGraphics gui) {
+    protected void renderSlotBgs(GuiGraphics gui) {
         for(Slot slot : menu.slots) {
-            renderSlot(gui, slot, new ResourceLocation("container/slot"));
+            if (isWidgetManagedSlot(slot)) continue;
+            renderSlotBg(gui, slot, new ResourceLocation("container/slot"));
         }
     }
     
-    protected void renderSlot(GuiGraphics gui, Slot slot, ResourceLocation texture) {
+    protected void renderSlotBg(GuiGraphics gui, Slot slot, ResourceLocation texture) {
         int xPos = leftPos + slot.x - 1;
         int yPos = topPos + slot.y - 1;
         var event = NeoForge.EVENT_BUS.post(new RenderEtarSlotEvent(
@@ -200,11 +225,21 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     @Override
+    protected void renderSlot(GuiGraphics gui, Slot slot) {
+        if (!isWidgetManagedSlot(slot)) super.renderSlot(gui, slot);
+    }
+    
+    @Override
+    protected void renderSlotHighlight(GuiGraphics guiGraphics, Slot slot, int mouseX, int mouseY, float partialTick) {
+        if (!isWidgetManagedSlot(slot)) super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
+    }
+    
+    @Override
     protected void renderTooltip(GuiGraphics gui, int mx, int my) {
         PoseStack pose = gui.pose();
         pose.pushPose();
         RenderSystem.disableDepthTest();
-        int tooltipZ = getMaxPanelZ() + TOOLTIP_Z_OFFSET;
+        int tooltipZ = getTooltipZ();
         pose.translate(0.0F, 0.0F, tooltipZ);
         super.renderTooltip(gui, mx, my);
         RenderSystem.enableDepthTest();
@@ -289,6 +324,17 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             }
         }
         return super.isHovering(pX, pY, pWidth, pHeight, mx, my);
+    }
+    
+    @Override
+    protected boolean hasClickedOutside(double mx, double my, int guiLeft, int guiTop, int mouseButton) {
+        // Eğer imlecin altında bir Overlapping widget varsa, dışarı tıklanmış sayma
+        // Bu sayede paneller ekranın dışındayken üzerlerine tıklanınca eşya atılmaz
+        Optional<GuiEventListener> child = getChildAt(mx, my);
+        if (child.isPresent() && child.get() instanceof Overlapping) {
+            return false;
+        }
+        return super.hasClickedOutside(mx, my, guiLeft, guiTop, mouseButton);
     }
     
     public boolean isCursorInBounds(int startX, int startY, int lengthX, int lengthY, double mx, double my) {

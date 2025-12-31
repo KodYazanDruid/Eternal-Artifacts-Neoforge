@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.network.endernotebook;
 
 import com.sonamorningstar.eternalartifacts.core.ModItems;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -11,6 +12,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record EnderNotebookRemoveNbtToServer(int index, ItemStack book) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "endernotebook_nbt_remove");

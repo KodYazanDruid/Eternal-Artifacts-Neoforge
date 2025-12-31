@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.PipeFilterScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.Draggable;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Draggable;
 import com.sonamorningstar.eternalartifacts.registrar.TabType;
 import dev.emi.emi.api.EmiExclusionArea;
 import dev.emi.emi.api.widget.Bounds;

@@ -64,10 +64,10 @@ public class ModMachines {
     public static final MachineDeferredHolder<AnvilinatorMenu, Anvilinator, BaseMachineBlock<Anvilinator>, MachineBlockItem>
         ANVILINATOR = MACHINES.register("anvilinator", AnvilinatorMenu::new, Anvilinator::new);
     
-    public static final MachineDeferredHolder<GenericMachineMenu, BlockPlacer, MachineSixWayBlock<BlockPlacer>, MachineBlockItem>
-        BLOCK_PLACER = MACHINES.register("block_placer", GenericMachineMenu::new, BlockPlacer::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);
-    public static final MachineDeferredHolder<GenericMachineMenu, BlockBreaker, MachineSixWayBlock<BlockBreaker>, MachineBlockItem>
-        BLOCK_BREAKER = MACHINES.register("block_breaker", GenericMachineMenu::new, BlockBreaker::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);
+    public static final MachineDeferredHolder<BlockInteractorMenu, BlockPlacer, MachineSixWayBlock<BlockPlacer>, MachineBlockItem>
+        BLOCK_PLACER = MACHINES.register("block_placer", BlockInteractorMenu::new, BlockPlacer::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);
+    public static final MachineDeferredHolder<BlockInteractorMenu, BlockBreaker, MachineSixWayBlock<BlockBreaker>, MachineBlockItem>
+        BLOCK_BREAKER = MACHINES.register("block_breaker", BlockInteractorMenu::new, BlockBreaker::new, MachineSixWayBlock::new, MachineBlockItem::new, false, false);
 
     private static <T extends GenericMachine> GenericMachineHolder<T> registerGeneric(String name, BlockEntityType.BlockEntitySupplier<T> supp) {
         return MACHINES.registerGeneric(name, supp,false);

@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
 import com.sonamorningstar.eternalartifacts.client.render.EntityRendererHelper;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
@@ -12,7 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
-public class EntityCapsuleWidget extends AbstractWidget {
+public class EntityCapsuleWidget extends AbstractBaseWidget {
 	@Getter
 	private final Entity entity;
 	private final float scale;

@@ -4,19 +4,19 @@ import com.mojang.datafixers.util.Either;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record TesseractNetworkRemoveWhitelistToServer(Either<UUID, String> whitelisted, UUID networkID) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "remove_network_whitelist");
 	

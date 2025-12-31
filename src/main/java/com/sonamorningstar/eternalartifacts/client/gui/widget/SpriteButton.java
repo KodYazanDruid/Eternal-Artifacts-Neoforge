@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.records.ButtonDrawContent;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -138,14 +140,14 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
     public boolean isMouseOver(double mX, double mY) {
         Screen screen = Minecraft.getInstance().screen;
         if (screen instanceof AbstractModContainerScreen<?> modScreen) {
-              for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
-                  GuiEventListener child = modScreen.upperLayerChildren.get(i);
-                  if (child instanceof ParentalWidget parental) {
-                      if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
-                          return parental.getChildUnderCursorRaw(mX, mY) == this;
-                      } else return super.isMouseOver(mX, mY);
-                  }
-              }
+            for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
+                GuiEventListener child = modScreen.upperLayerChildren.get(i);
+                if (child instanceof ParentalWidget parental) {
+                    if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
+                        return parental.getChildUnderCursorRaw(mX, mY) == this;
+                    }
+                }
+            }
         }
         return super.isMouseOver(mX, mY);
     }

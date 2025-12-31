@@ -72,7 +72,7 @@ public interface FluidFilterEntry extends FilterEntry {
 		
 		@Override
 		public boolean isIgnoreNBT() {
-			return false;
+			return true;
 		}
 		
 		@Override
@@ -97,6 +97,8 @@ public interface FluidFilterEntry extends FilterEntry {
 		public CompoundTag serializeNBT() {
 			CompoundTag tag = new CompoundTag();
 			tag.putString("Type", "Stack");
+			tag.put("Stack", FluidStack.EMPTY.writeToNBT(new CompoundTag()));
+			tag.putBoolean("IgnoreNBT", true);
 			tag.putBoolean("IsWhitelist", isWhitelist);
 			return tag;
 		}

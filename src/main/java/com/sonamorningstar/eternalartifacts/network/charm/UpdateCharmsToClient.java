@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network.charm;
 
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
@@ -10,6 +11,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.CLIENT)
 public record UpdateCharmsToClient(int entityId, NonNullList<ItemStack> items) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "update_charms");
 

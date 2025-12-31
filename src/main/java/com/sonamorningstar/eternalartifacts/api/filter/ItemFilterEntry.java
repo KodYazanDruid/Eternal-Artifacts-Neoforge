@@ -98,6 +98,8 @@ public interface ItemFilterEntry extends FilterEntry, INBTSerializable<CompoundT
 		public CompoundTag serializeNBT() {
 			CompoundTag tag = new CompoundTag();
 			tag.putString("Type", "Stack");
+			tag.put("Stack", ItemStack.EMPTY.save(new CompoundTag()));
+			tag.putBoolean("IgnoreNBT", true);
 			tag.putBoolean("IsWhitelist", isWhitelist);
 			return tag;
 		}

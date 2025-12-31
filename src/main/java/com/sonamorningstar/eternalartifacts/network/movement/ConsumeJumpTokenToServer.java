@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.network.movement;
 
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,6 +14,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record ConsumeJumpTokenToServer() implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "consume_jump_token_to_server");
 	

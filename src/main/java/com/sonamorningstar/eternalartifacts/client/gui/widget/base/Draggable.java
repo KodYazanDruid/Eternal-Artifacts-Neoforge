@@ -1,4 +1,4 @@
-package com.sonamorningstar.eternalartifacts.client.gui.widget;
+package com.sonamorningstar.eternalartifacts.client.gui.widget.base;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 

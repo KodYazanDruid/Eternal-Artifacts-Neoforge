@@ -1,13 +1,20 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.filter.FluidFilterEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.FluidStackEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.ItemFilterEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.ItemStackEntry;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
-import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
+import com.sonamorningstar.eternalartifacts.container.BlockInteractorMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -34,18 +41,67 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockPlacer extends GenericMachine {
+@Getter
+public class BlockPlacer extends SidedTransferMachine<BlockInteractorMenu> implements Filterable {
+	private final NonNullList<ItemFilterEntry> itemFilters = NonNullList.withSize(9, ItemStackEntry.EMPTY);
+	private final NonNullList<FluidFilterEntry> fluidFilters = NonNullList.withSize(9, FluidStackEntry.EMPTY);
+	
+	private boolean itemFilterWhitelist = false;
+	private boolean fluidFilterWhitelist = false;
+	private boolean itemFilterIgnoreNBT = true;
+	private boolean fluidFilterIgnoreNBT = true;
+	
 	public BlockPlacer(BlockPos pos, BlockState blockState) {
-		super(ModMachines.BLOCK_PLACER, pos, blockState);
+		super(ModMachines.BLOCK_PLACER.getBlockEntity(), pos, blockState, (a, b, c, d) -> new BlockInteractorMenu(ModMachines.BLOCK_PLACER.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
-		setTank(this::createDefaultTank);
+		setTank(() -> createBasicTank(16000, fs -> !fs.getFluid().defaultFluidState().createLegacyBlock().isEmpty(), true, true));
 		setInventory(() -> createBasicInventory(4, (slot, stack) -> stack.getItem() instanceof BlockItem));
 		setEnergyPerTick(250);
-		screenInfo.setShouldDrawArrow(false);
-		screenInfo.setSlotPosition(80, 35, 0);
-		screenInfo.setSlotPosition(98, 35, 1);
-		screenInfo.setSlotPosition(80, 53, 2);
-		screenInfo.setSlotPosition(98, 53, 3);
+	}
+	
+	@Override
+	public void setItemFilterWhitelist(boolean whitelist) {
+		this.itemFilterWhitelist = whitelist;
+		setChanged();
+	}
+	
+	@Override
+	public void setFluidFilterWhitelist(boolean whitelist) {
+		this.fluidFilterWhitelist = whitelist;
+		setChanged();
+	}
+	
+	@Override
+	public void setItemFilterIgnoreNBT(boolean ignoreNBT) {
+		this.itemFilterIgnoreNBT = ignoreNBT;
+		setChanged();
+	}
+	
+	@Override
+	public void setFluidFilterIgnoreNBT(boolean ignoreNBT) {
+		this.fluidFilterIgnoreNBT = ignoreNBT;
+		setChanged();
+	}
+	
+	// Silent setters for loading from NBT
+	@Override
+	public void setItemFilterWhitelistSilent(boolean whitelist) {
+		this.itemFilterWhitelist = whitelist;
+	}
+	
+	@Override
+	public void setFluidFilterWhitelistSilent(boolean whitelist) {
+		this.fluidFilterWhitelist = whitelist;
+	}
+	
+	@Override
+	public void setItemFilterIgnoreNBTSilent(boolean ignoreNBT) {
+		this.itemFilterIgnoreNBT = ignoreNBT;
+	}
+	
+	@Override
+	public void setFluidFilterIgnoreNBTSilent(boolean ignoreNBT) {
+		this.fluidFilterIgnoreNBT = ignoreNBT;
 	}
 	
 	@Override
@@ -58,6 +114,8 @@ public class BlockPlacer extends GenericMachine {
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
+		performAutoInputItems(lvl, pos);
+		performAutoOutputItems(lvl, pos);
 		performAutoInputFluids(lvl, pos);
 		if (!redstoneChecks(lvl)) return;
 		
@@ -82,8 +140,7 @@ public class BlockPlacer extends GenericMachine {
 			if (result.consumesAction()) spendEnergy(energy);
 		}
 		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "fluid_mode"))).isDisabled()
-			&& shouldPlaceFluid(fakePlayer, lvl, targetPos, toPlaceFluid) && !toPlaceFluid.isEmpty() && toPlaceFluid.getAmount() >= 1000 &&
-				canWork(energy)) {
+			&& shouldPlaceFluid(fakePlayer, lvl, targetPos, toPlaceFluid) && !toPlaceFluid.isEmpty() && toPlaceFluid.getAmount() >= 1000 && canWork(energy)) {
 			boolean isPlaced = false;
 			if (targetState.getBlock() instanceof LiquidBlockContainer con) {
 				con.placeLiquid(lvl, targetPos, targetState, toPlaceFluid.getFluidType().getStateForPlacement(lvl, targetPos, toPlaceFluid));
@@ -101,11 +158,13 @@ public class BlockPlacer extends GenericMachine {
 	}
 	
 	private boolean shouldPlaceFluid(FakePlayer fakePlayer, Level level, BlockPos target, FluidStack toPlace) {
-		BlockState state = level.getBlockState(target);
+		if (!matchesFluidFilter(toPlace)) return false;
+		if (toPlace.getFluid().defaultFluidState().createLegacyBlock().isEmpty()) return false;
 		FluidState fluidState = level.getFluidState(target);
 		if (!fluidState.isEmpty()) return false;
 		if (toPlace.getFluid().getFluidType().isVaporizedOnPlacement(level, target, toPlace)) return false;
-		return state.isAir() || (state.getBlock() instanceof LiquidBlockContainer con && con.canPlaceLiquid(fakePlayer, level, target, state, toPlace.getFluid()));
+		BlockState blockState = level.getBlockState(target);
+		return blockState.isAir() || (blockState.getBlock() instanceof LiquidBlockContainer con && con.canPlaceLiquid(fakePlayer, level, target, blockState, toPlace.getFluid()));
 	}
 	
 	private void playEmptySound(@Nullable Player pPlayer, LevelAccessor pLevel, BlockPos pPos, Fluid toPlace) {
@@ -119,7 +178,7 @@ public class BlockPlacer extends GenericMachine {
 		for (int i = 0; i < inventory.getSlots(); i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
 			if (stack.getItem() instanceof BlockItem) {
-				return stack;
+				if (matchesItemFilter(stack)) return stack;
 			}
 		}
 		return ItemStack.EMPTY;

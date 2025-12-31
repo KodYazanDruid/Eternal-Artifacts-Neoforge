@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.Getter;
 import net.minecraft.client.gui.GuiGraphics;
@@ -143,11 +144,11 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	
 	@Override
 	protected void renderContents(GuiGraphics gui, int mX, int mY, float deltaTick) {
-		gui.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
+		//gui.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
 		for (W child : children) {
 			child.render(gui, mX, mY, deltaTick);
 		}
-		gui.disableScissor();
+		//gui.disableScissor();
 	}
 	
 	@Override

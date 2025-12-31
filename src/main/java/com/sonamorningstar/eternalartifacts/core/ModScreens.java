@@ -19,8 +19,8 @@ public class ModScreens {
         event.register(ModMachines.OIL_REFINERY.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.ELECTRIC_FURNACE.getMenu(), ElectricFurnaceScreen::new);
         event.register(ModMachines.INDUCTION_FURNACE.getMenu(), InductionFurnaceScreen::new);
-        event.register(ModMachines.BLOCK_BREAKER.getMenu(), GenericSidedMachineScreen::new);
-        event.register(ModMachines.BLOCK_PLACER.getMenu(), GenericSidedMachineScreen::new);
+        event.register(ModMachines.BLOCK_BREAKER.getMenu(), BlockInteractorScreen::new);
+        event.register(ModMachines.BLOCK_PLACER.getMenu(), BlockInteractorScreen::new);
         event.register(ModMachines.AUTOCUTTER.getMenu(), AutoCutterScreen::new);
         event.register(ModMachines.ADVANCED_CRAFTER.getMenu(), AdvancedCrafterScreen::new);
         event.register(ModMachines.ALCHEMICAL_BREWER.getMenu(), AlchemicalBrewerScreen::new);

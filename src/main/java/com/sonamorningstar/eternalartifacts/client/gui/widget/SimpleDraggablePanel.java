@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -28,7 +29,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Setter
 @Getter
-public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidget, Draggable, Overlapping {
+public class SimpleDraggablePanel extends AbstractBaseWidget implements ParentalWidget, Draggable, Overlapping {
 	public static final int BASE_Z = 100;
 	public static final int Z_INCREMENT = 50;
 	
@@ -239,7 +240,6 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 		pose.pushPose();
 		pose.translate(0, 0, zIndex);
 		
-		// Panel arka planını çiz
 		gui.setColor(FastColor.ARGB32.red(color) / 255.0F,
 			FastColor.ARGB32.green(color) / 255.0F,
 			FastColor.ARGB32.blue(color) / 255.0F,
@@ -248,7 +248,6 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 		GuiDrawer.drawDefaultBackground(gui, this.getX(), this.getY(), this.width, this.height);
 		gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		// Render children with incremental z offset
 		int childZOffset = 1;
 		for (GuiEventListener child : getChildren()) {
 			if (child instanceof Renderable renderable) {
@@ -281,11 +280,20 @@ public class SimpleDraggablePanel extends AbstractWidget implements ParentalWidg
 	
 	protected void renderTitle(GuiGraphics gui, int mx, int my, float delta) {
 		gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-		gui.drawString(Minecraft.getInstance().font, getMessage(), this.getX() + 8, this.getY() + 6, -1, false);
+		int titleColor = getTitleColorForBackground();
+		gui.drawString(Minecraft.getInstance().font, getMessage(), this.getX() + 8, this.getY() + 6, titleColor, false);
 		gui.setColor(FastColor.ARGB32.red(color) / 255.0F,
 			FastColor.ARGB32.green(color) / 255.0F,
 			FastColor.ARGB32.blue(color) / 255.0F,
 			FastColor.ARGB32.alpha(color) / 255.0F);
+	}
+	
+	private int getTitleColorForBackground() {
+		int r = FastColor.ARGB32.red(color);
+		int g = FastColor.ARGB32.green(color);
+		int b = FastColor.ARGB32.blue(color);
+		double luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255.0;
+		return luminance < 0.65 ? 0xFFE0E0E0 : 0xFF404040;
 	}
 	
 	@Override

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.network;
 
 import com.sonamorningstar.eternalartifacts.content.tabs.base.AbstractInventoryTab;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.registrar.TabType;
 import io.netty.buffer.Unpooled;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record OpenTabMenuToServer(TabType<? extends AbstractInventoryTab> type) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "open_menu");

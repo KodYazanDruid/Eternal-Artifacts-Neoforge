@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
 import lombok.Getter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +16,7 @@ import javax.annotation.Nullable;
 import java.util.function.Consumer;
 
 @Getter
-public class DropdownMenu<W extends AbstractWidget> extends AbstractWidget implements Overlapping {
+public class DropdownMenu<W extends AbstractWidget> extends AbstractBaseWidget implements Overlapping {
 	private static final WidgetSprites SPRITES = new WidgetSprites(
 		new ResourceLocation("widget/text_field"), new ResourceLocation("widget/text_field_highlighted")
 	);

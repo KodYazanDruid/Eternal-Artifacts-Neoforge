@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
 import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
@@ -149,23 +150,23 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 	private List<Component> getListTooltips() {
 		return menu.isWhitelist() ?
 			List.of(
-				ModConstants.GUI.withSuffixTranslatable("whitelist").withStyle(style -> style.withColor(0x00ff00)),
-				ModConstants.GUI.withSuffixTranslatable("pipe_filter_blacklist_swap").withStyle(style -> style.withColor(0xff0000))
+				ModConstants.GUI.withSuffixTranslatable("whitelist").withStyle(style -> style.withColor(0x55FF55)),
+				ModConstants.GUI.withSuffixTranslatable("pipe_filter_blacklist_swap").withStyle(style -> style.withColor(0xAAAAAA))
 			) :
 			List.of(
-				ModConstants.GUI.withSuffixTranslatable("blacklist").withStyle(style -> style.withColor(0xff0000)),
-				ModConstants.GUI.withSuffixTranslatable("pipe_filter_whitelist_swap").withStyle(style -> style.withColor(0x00ff00))
+				ModConstants.GUI.withSuffixTranslatable("blacklist").withStyle(style -> style.withColor(0xFF5555)),
+				ModConstants.GUI.withSuffixTranslatable("pipe_filter_whitelist_swap").withStyle(style -> style.withColor(0xAAAAAA))
 			);
 	}
 	private List<Component> getNbtToleranceTooltips() {
 		return menu.isIgnoresNbt() ?
 			List.of(
-				ModConstants.GUI.withSuffixTranslatable("pipe_filter_ignore_nbt").withStyle(style -> style.withColor(0x00ff00)),
-				ModConstants.GUI.withSuffixTranslatable("pipe_filter_ignore_nbt_swap").withStyle(style -> style.withColor(0xff0000))
+				ModConstants.GUI.withSuffixTranslatable("pipe_filter_ignore_nbt").withStyle(style -> style.withColor(0x55FF55)),
+				ModConstants.GUI.withSuffixTranslatable("pipe_filter_ignore_nbt_swap").withStyle(style -> style.withColor(0xAAAAAA))
 			) :
 			List.of(
-				ModConstants.GUI.withSuffixTranslatable("pipe_filter_nbt_tolerant").withStyle(style -> style.withColor(0xff0000)),
-				ModConstants.GUI.withSuffixTranslatable("pipe_filter_nbt_tolerant_swap").withStyle(style -> style.withColor(0x00ff00))
+				ModConstants.GUI.withSuffixTranslatable("pipe_filter_nbt_tolerant").withStyle(style -> style.withColor(0xFF5555)),
+				ModConstants.GUI.withSuffixTranslatable("pipe_filter_nbt_tolerant_swap").withStyle(style -> style.withColor(0xAAAAAA))
 			);
 	}
 	
@@ -176,6 +177,15 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 			leftPos + 116, topPos + 35, 255);
 		ItemRendererHelper.renderFakeItemTransparent(gui, getNbtToleranceIcon(),
 			leftPos + 134, topPos + 35, 255);
+	}
+	
+	public void renderExtraTooltips(GuiGraphics gui, int mx, int my, int tooltipZ) {
+		gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+		
+		PoseStack pose = gui.pose();
+		pose.pushPose();
+		pose.translate(0, 0, tooltipZ);
+		
 		renderTooltip(gui, mx, my);
 		if (isCursorInBounds(leftPos + 116, topPos + 35, 16, 16, mx, my)) {
 			gui.renderTooltip(font, getListTooltips(), Optional.empty(), mx, my);
@@ -183,6 +193,8 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 		if (isCursorInBounds(leftPos + 134, topPos + 35, 16, 16, mx, my)) {
 			gui.renderTooltip(font, getNbtToleranceTooltips(), Optional.empty(), mx, my);
 		}
+		
+		pose.popPose();
 	}
 	
 	protected void renderTooltip(GuiGraphics gui, int x, int y) {

@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.network;
 
 import com.sonamorningstar.eternalartifacts.api.item.ChiselBlockPlaceContext;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -13,6 +14,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.CLIENT)
 public record BlockPlaceOnClient(ItemStack stack, BlockPos pos, InteractionHand hand, BlockHitResult hitResult) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "block_place");
 

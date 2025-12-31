@@ -1,14 +1,11 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;

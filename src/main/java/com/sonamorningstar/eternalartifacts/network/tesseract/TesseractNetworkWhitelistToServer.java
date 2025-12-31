@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.network.tesseract;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record TesseractNetworkWhitelistToServer(String name, UUID networkID) implements CustomPacketPayload {
 	
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "add_network_whitelist");

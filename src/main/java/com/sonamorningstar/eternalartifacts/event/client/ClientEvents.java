@@ -16,6 +16,7 @@ import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
 import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.AbstractPipeFilterScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
@@ -27,7 +28,10 @@ import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
+import com.sonamorningstar.eternalartifacts.container.slot.FilterFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
 import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -407,7 +411,6 @@ public class ClientEvents {
             pose.pushPose();
             RenderSystem.backupGlState(GL_STATE);
             
-            // Panelleri z-index'e göre sırala
             List<SimpleDraggablePanel> visiblePanels = new ArrayList<>();
             for (GuiEventListener child : amcs.upperLayerChildren) {
                 if (child instanceof SimpleDraggablePanel panel && panel.visible) {
@@ -430,16 +433,25 @@ public class ClientEvents {
             RenderSystem.disableDepthTest();
             pose.pushPose();
             pose.translate(0, 0, tooltipZ);
+            int panelTooltipZ = tooltipZ;
             for (SimpleDraggablePanel panel : visiblePanels) {
-                panel.renderChildTooltips(gui, mx, my, tooltipZ);
+                panel.renderChildTooltips(gui, mx, my, panelTooltipZ);
+                panelTooltipZ += AbstractModContainerScreen.PANEL_Z_INCREMENT;
             }
             pose.popPose();
             
+            // Machine ve PipeFilter tooltip'leri en üstte olmalı
+            int topTooltipZ = panelTooltipZ + AbstractModContainerScreen.TOOLTIP_Z_OFFSET;
+            
             if (amcs instanceof AbstractMachineScreen<?> machineScreen) {
-                machineScreen.renderMachineTooltips(gui, tooltipZ);
+                machineScreen.renderMachineTooltips(gui, topTooltipZ);
             }
             
-            renderCarriedItem(gui, amcs, mx, my, tooltipZ + 100);
+            if (amcs instanceof AbstractPipeFilterScreen<?> pipeFilterScreen) {
+                pipeFilterScreen.renderExtraTooltips(gui, mx, my, topTooltipZ);
+            }
+            
+            renderCarriedItem(gui, amcs, mx, my, topTooltipZ + 100);
             
             RenderSystem.restoreGlState(GL_STATE);
             pose.popPose();
@@ -449,6 +461,8 @@ public class ClientEvents {
     private static void renderCarriedItem(GuiGraphics gui, AbstractModContainerScreen<?> screen, int mx, int my, int zIndex) {
         ItemStack carried = screen.getMenu().getCarried();
         if (!carried.isEmpty()) {
+            gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+            
             PoseStack pose = gui.pose();
             pose.pushPose();
             pose.translate(0.0F, 0.0F, zIndex);
@@ -500,8 +514,9 @@ public class ClientEvents {
             int y = gsms.getGuiTop();
             int width = gsms.getXSize();
             int height = gsms.getYSize();
-            if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
-                SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(Component.empty(),
+            //if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
+            if (gsms.getMachine() instanceof Filterable filterable) {
+                /*SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(Component.empty(),
                     x + 23, y + 8, 129, 70,
                     SimpleDraggablePanel.Bounds.of(0, 0, gsms.width, gsms.height));
                 filterPanel.visible = false;
@@ -510,17 +525,27 @@ public class ClientEvents {
                 event.addListener(SpriteButton.builder(Component.empty(), (b, i) -> {
                     filterPanel.visible = true;
                     filterPanel.active = true;
-                }, new ResourceLocation(MODID, "textures/gui/sprites/blank_ender.png")).bounds(x + width - 21, y + 3, 18, 18).build());
+                }, new ResourceLocation(MODID, "textures/item/machine_item_filter.png"))
+                    .bounds(x + width - 41, y + 3, 18, 18).build());
                 filterPanel.addClosingButton();
                 
-                SlotWidget slotWidget = new SlotWidget(new Slot(new SimpleContainer(Items.APPLE.getDefaultInstance()), 0, 0, 0), Component.empty());
+                NonNullList<ItemFilterEntry> itemFilters = filterable.getItemFilters();
+                SimpleContainer con = new SimpleContainer(9);
+                *//*con.addListener(c -> {
+                    c
+                });*//*
+                for (int i = 0; i < itemFilters.size(); i++) {
+                    ItemFilterEntry filterEntry = itemFilters.get(i);
+                    SlotWidget slotWidget = new SlotWidget(new FilterFakeSlot(con, filterEntry, i, 0, 0, false));
+                    int col = i % 3;
+                    int row = i / 3;
+                    filterPanel.addChildren((fx, fy, fW, fH) -> {
+                        slotWidget.setPosition(fx + 10 + col * 18, fy + 10 + row * 18);
+                        return slotWidget;
+                    });
+                }
                 
-                filterPanel.addChildren((fx, fy, fW, fH) -> {
-                    slotWidget.setPosition(fx + 10, fy + 10);
-                    return slotWidget;
-                });
-                
-                gsms.addUpperLayerChild(filterPanel);
+                gsms.addUpperLayerChild(filterPanel);*/
             }
         }
     }

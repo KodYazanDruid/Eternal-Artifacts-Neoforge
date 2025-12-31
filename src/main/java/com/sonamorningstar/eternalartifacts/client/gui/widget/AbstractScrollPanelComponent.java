@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Font;
@@ -11,7 +12,7 @@ import net.minecraft.util.Mth;
 
 import java.util.function.IntConsumer;
 
-public abstract class AbstractScrollPanelComponent extends AbstractWidget {
+public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 	@Setter
 	protected int color;
 	@Setter
@@ -67,6 +68,11 @@ public abstract class AbstractScrollPanelComponent extends AbstractWidget {
 	
 	@Override
 	public boolean isHovered() {
+		return hoveredOnPanel;
+	}
+	
+	@Override
+	public boolean isMouseOver(double mouseX, double mouseY) {
 		return hoveredOnPanel;
 	}
 	

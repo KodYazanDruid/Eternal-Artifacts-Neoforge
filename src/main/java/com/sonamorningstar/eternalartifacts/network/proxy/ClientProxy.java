@@ -103,17 +103,19 @@ public class ClientProxy {
         });
     }
 
-    public static void handleUpdateSheepEnergy(UpdateEntityEnergyToClient packet, PlayPayloadContext ctx) {
-        mc.executeBlocking(()-> ctx.player().ifPresent(player ->{
-            Level level = player.level();
-            Entity entity = level.getEntity(packet.entityId());
-            if (entity != null) {
-                IEnergyStorage energyStorage = entity.getCapability(Capabilities.EnergyStorage.ENTITY, null);
-                if (energyStorage instanceof ModEnergyStorage mes) {
-                    mes.setEnergy(packet.energy());
+    public static void handleUpdateSheepEnergy(UpdateEntityEnergyToClient packet, Minecraft mc) {
+        mc.executeBlocking(()-> {
+            if (mc.player != null) {
+                Level level = mc.player.level();
+                Entity entity = level.getEntity(packet.entityId());
+                if (entity != null) {
+                    IEnergyStorage energyStorage = entity.getCapability(Capabilities.EnergyStorage.ENTITY, null);
+                    if (energyStorage instanceof ModEnergyStorage mes) {
+                        mes.setEnergy(packet.energy());
+                    }
                 }
             }
-        }));
+        });
     }
     
     public static void handleCycleWildcard(CycleWildcardToClient packet, PlayPayloadContext ctx) {

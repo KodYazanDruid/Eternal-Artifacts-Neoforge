@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -7,6 +8,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.CLIENT)
 public record SavePlayerDataToClient(String key, int value) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "send_player_data_client");
 	

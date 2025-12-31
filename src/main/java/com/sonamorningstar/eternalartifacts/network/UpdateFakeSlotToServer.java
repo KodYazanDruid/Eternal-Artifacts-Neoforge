@@ -1,30 +1,29 @@
 package com.sonamorningstar.eternalartifacts.network;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
+import com.sonamorningstar.eternalartifacts.network.base.ServerPayload;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import static com.sonamorningstar.eternalartifacts.network.base.PacketHelper.*;
+import static com.sonamorningstar.eternalartifacts.network.base.MenuHelper.handleMenu;
 
-public record UpdateFakeSlotToServer(int containerId, int index, ItemStack slotItem) implements CustomPacketPayload {
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
+public record UpdateFakeSlotToServer(int containerId, int index, ItemStack slotItem) implements ServerPayload {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "update_fake_slot_to_server");
 
     public static UpdateFakeSlotToServer create(FriendlyByteBuf buf) {
-        return new UpdateFakeSlotToServer(buf.readByte(), buf.readVarInt(), buf.readItem());
-    }
-
-    public static UpdateFakeSlotToServer create(int id, int index, ItemStack blueprint) {
-        return new UpdateFakeSlotToServer(id, index, blueprint);
+        return new UpdateFakeSlotToServer(readContainerId(buf), readIndex(buf), buf.readItem());
     }
 
     @Override
     public void write(FriendlyByteBuf buff) {
-        buff.writeByte(containerId);
-        buff.writeVarInt(index);
+        writeContainerId(buff, containerId);
+        writeIndex(buff, index);
         buff.writeItem(slotItem);
     }
 
@@ -33,12 +32,9 @@ public record UpdateFakeSlotToServer(int containerId, int index, ItemStack slotI
         return ID;
     }
 
-    public void handle(PlayPayloadContext ctx) {
-        ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
-            AbstractContainerMenu menu = player.containerMenu;
-            if (menu.containerId == containerId && menu instanceof AbstractModContainerMenu modMenu) {
-                modMenu.fakeSlotSynch(this);
-            }
-        }));
+    @Override
+    public void handleOnServer(ServerPlayer player) {
+        handleMenu(player, containerId, AbstractModContainerMenu.class,
+            menu -> menu.fakeSlotSynch(this));
     }
 }

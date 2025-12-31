@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.GuiGraphics;
@@ -13,7 +14,7 @@ import net.minecraft.util.Mth;
 
 import java.util.function.DoubleConsumer;
 
-public class ScrollBarWidget extends AbstractWidget implements Renderable, GuiEventListener {
+public class ScrollBarWidget extends AbstractBaseWidget implements Renderable, GuiEventListener {
 	private static final ResourceLocation SCROLLER_SPRITE = new ResourceLocation("widget/scroller");
 	private static final ResourceLocation BACKGROUND_SPRITE = new ResourceLocation("widget/text_field");
 	

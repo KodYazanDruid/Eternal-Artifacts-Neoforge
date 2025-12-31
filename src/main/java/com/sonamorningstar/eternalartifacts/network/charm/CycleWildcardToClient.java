@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network.charm;
 
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -8,6 +9,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.CLIENT)
 public record CycleWildcardToClient(int entityId, boolean value) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "cycle_wildcard");
 	

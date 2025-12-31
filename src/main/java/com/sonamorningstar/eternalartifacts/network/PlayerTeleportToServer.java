@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record PlayerTeleportToServer(ResourceKey<Level> target, BlockPos pos) implements CustomPacketPayload {
 
     public static final ResourceLocation ID = new ResourceLocation(MODID, "endernotebook_teleport");

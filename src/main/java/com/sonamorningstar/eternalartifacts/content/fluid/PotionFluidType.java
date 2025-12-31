@@ -59,6 +59,11 @@ public class PotionFluidType extends BaseFluidType {
 	}
 	
 	@Override
+	public FluidState getStateForPlacement(BlockAndTintGetter getter, BlockPos pos, FluidStack stack) {
+		return super.getStateForPlacement(getter, pos, stack);
+	}
+	
+	@Override
 	public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 		consumer.accept(new IClientFluidTypeExtensions() {
 			@Override

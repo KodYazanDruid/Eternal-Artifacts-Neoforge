@@ -1,19 +1,17 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
-import com.sonamorningstar.eternalartifacts.container.slot.BlueprintFakeSlot;
-import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import com.sonamorningstar.eternalartifacts.network.proxy.ClientProxy;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.CLIENT)
 public record BlueprintIngredientsToClient(int containerId, NonNullList<Ingredient> ingredients) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "blueprint_ingredients_to_client");
 	

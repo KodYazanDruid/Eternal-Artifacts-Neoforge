@@ -396,6 +396,7 @@ public class CreateConfigWidgets {
 		ButtonDrawContent ctx = new ButtonDrawContent(9, 9);
 		int u = 0;
 		int v = 0;
+		if (transferType == null) return ctx;
 		switch (transferType) {
 			case NONE -> u = 9;
 			case PULL -> u = 18;

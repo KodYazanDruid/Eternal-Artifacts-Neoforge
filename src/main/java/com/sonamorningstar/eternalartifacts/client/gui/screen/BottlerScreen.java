@@ -25,7 +25,7 @@ public class BottlerScreen extends AbstractSidedMachineScreen<BottlerMenu> {
 	}
 	
 	@Override
-	protected void renderSlot(GuiGraphics gui, Slot slot, ResourceLocation texture) {
+	protected void renderSlotBg(GuiGraphics gui, Slot slot, ResourceLocation texture) {
 		if (slot.index == 37) {
 			int xPos = leftPos + slot.x - 5;
 			int yPos = topPos + slot.y - 5;
@@ -38,6 +38,6 @@ public class BottlerScreen extends AbstractSidedMachineScreen<BottlerMenu> {
 				);
 				resetGuiTint(event.getGui());
 			}
-		} else super.renderSlot(gui, slot, texture);
+		} else super.renderSlotBg(gui, slot, texture);
 	}
 }

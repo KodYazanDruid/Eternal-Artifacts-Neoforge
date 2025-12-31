@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.ParentalWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
@@ -167,7 +167,7 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 					if (child instanceof ParentalWidget parental) {
 						if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
 							return parental.getChildUnderCursorRaw(mX, mY) == this;
-						} else return super.isMouseOver(mX, mY);
+						}
 					}
 				}
 			}

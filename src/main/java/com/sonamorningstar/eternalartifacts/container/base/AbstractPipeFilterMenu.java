@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-public abstract class AbstractPipeFilterMenu extends AbstractModContainerMenu {
+public abstract class AbstractPipeFilterMenu extends AbstractModContainerMenu implements FilterSyncable {
 	protected final SimpleContainer fakeSlots;
 	@Getter
 	protected final NonNullList<FilterEntry> filterEntries;
@@ -49,18 +49,21 @@ public abstract class AbstractPipeFilterMenu extends AbstractModContainerMenu {
 		saveFilterEntries();
 	}
 	
+	@Override
 	public void itemTagFilterSynch(ItemTagFilterToServer pkt) {
 		fakeSlots.setItem(pkt.index(), ItemStack.EMPTY);
 		filterEntries.set(pkt.index(), new ItemTagEntry(pkt.tag()));
 		saveFilterEntries();
 	}
 	
+	@Override
 	public void fluidStackFilterSync(FluidStackFilterToServer pkt) {
 		fakeSlots.setItem(pkt.index(), ItemStack.EMPTY);
 		filterEntries.set(pkt.index(), new FluidStackEntry(pkt.fluidStack(), ignoresNbt));
 		saveFilterEntries();
 	}
 	
+	@Override
 	public void fluidTagFilterSync(FluidTagFilterToServer pkt) {
 		fakeSlots.setItem(pkt.index(), ItemStack.EMPTY);
 		filterEntries.set(pkt.index(), new FluidTagEntry(pkt.tag()));

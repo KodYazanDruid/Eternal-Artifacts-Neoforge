@@ -78,6 +78,23 @@ public class ModBlockEntity extends BlockEntity {
         saveAdditional(tag);
         return tag;
     }
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        enchantments.forEach(this::onEnchanted);
+    }
+    
+    @Override
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        loadEnchants(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+        CompoundTag configTag = tag.getCompound(CONFIG_TAG_KEY);
+        configuration.load(configTag);
+        if (this instanceof Filterable filterable) {
+            filterable.loadFilters(tag);
+        }
+    }
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
@@ -97,20 +114,9 @@ public class ModBlockEntity extends BlockEntity {
         CompoundTag configTag = new CompoundTag();
         configuration.save(configTag);
         tag.put(CONFIG_TAG_KEY, configTag);
-    }
-    
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        enchantments.forEach(this::onEnchanted);
-    }
-    
-    @Override
-    public void load(CompoundTag tag) {
-        super.load(tag);
-        loadEnchants(tag.getList("Enchantments", Tag.TAG_COMPOUND));
-        CompoundTag configTag = tag.getCompound(CONFIG_TAG_KEY);
-        configuration.load(configTag);
+        if (this instanceof Filterable filterable) {
+            filterable.saveFilters(tag);
+        }
     }
     
     public void loadConfiguration(ItemStack drive) {

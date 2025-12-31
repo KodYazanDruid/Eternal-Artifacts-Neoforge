@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.network.tesseract;
 
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.CLIENT)
 public record TesseractNetworksToClient(Set<TesseractNetwork<?>> networks) implements CustomPacketPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "sync_tesseract_networks_to_client");
 	

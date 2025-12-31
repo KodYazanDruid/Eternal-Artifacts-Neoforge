@@ -1,5 +1,8 @@
-package com.sonamorningstar.eternalartifacts.client.gui.widget;
+package com.sonamorningstar.eternalartifacts.client.gui.widget.base;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Renderable;
@@ -15,7 +18,15 @@ public interface ParentalWidget {
 	}
 	
 	default void addChildren(ChildAdder adder) {
-		getChildren().add(adder.addChild(self().getX(), self().getY(), self().getWidth(), self().getHeight()));
+		GuiEventListener child = adder.addChild(self().getX(), self().getY(), self().getWidth(), self().getHeight());
+		getChildren().add(child);
+		
+		// SlotWidget eklendiğinde otomatik olarak screen'e kaydet
+		if (child instanceof SlotWidget slotWidget) {
+			if (Minecraft.getInstance().screen instanceof AbstractModContainerScreen<?> screen) {
+				slotWidget.registerToScreen(screen);
+			}
+		}
 	}
 	
 	@Nullable

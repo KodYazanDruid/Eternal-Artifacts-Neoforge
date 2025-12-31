@@ -1,33 +1,35 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.container.base.AbstractPipeFilterMenu;
+import com.sonamorningstar.eternalartifacts.container.base.FilterSyncable;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
+import com.sonamorningstar.eternalartifacts.network.base.ServerPayload;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
+import static com.sonamorningstar.eternalartifacts.network.base.PacketHelper.*;
 
-public record FluidTagFilterToServer(int containerId, int index, TagKey<Fluid> tag) implements CustomPacketPayload {
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
+public record FluidTagFilterToServer(int containerId, int index, TagKey<Fluid> tag) implements ServerPayload {
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "fluid_tag_filter_to_server");
 	
 	public static FluidTagFilterToServer create(FriendlyByteBuf buf) {
-		return new FluidTagFilterToServer(buf.readByte(), buf.readVarInt(),
+		return new FluidTagFilterToServer(
+			readContainerId(buf),
+			readIndex(buf),
 			TagKey.create(Registries.FLUID, buf.readResourceLocation())
 		);
 	}
 	
-	public static FluidTagFilterToServer create(int id, int index, TagKey<Fluid> tag) {
-		return new FluidTagFilterToServer(id, index, tag);
-	}
 	@Override
 	public void write(FriendlyByteBuf buff) {
-		buff.writeByte(containerId);
-		buff.writeVarInt(index);
+		writeContainerId(buff, containerId);
+		writeIndex(buff, index);
 		buff.writeResourceLocation(tag.location());
 	}
 	
@@ -36,12 +38,11 @@ public record FluidTagFilterToServer(int containerId, int index, TagKey<Fluid> t
 		return ID;
 	}
 	
-	public void handle(PlayPayloadContext ctx) {
-		ctx.workHandler().submitAsync(()-> ctx.player().ifPresent(player -> {
-			AbstractContainerMenu menu = player.containerMenu;
-			if (menu.containerId == containerId && menu instanceof AbstractPipeFilterMenu modMenu) {
-				modMenu.fluidTagFilterSync(this);
-			}
-		}));
+	@Override
+	public void handleOnServer(ServerPlayer player) {
+		AbstractContainerMenu menu = player.containerMenu;
+		if (menu.containerId == containerId && menu instanceof FilterSyncable syncable) {
+			syncable.fluidTagFilterSync(this);
+		}
 	}
 }

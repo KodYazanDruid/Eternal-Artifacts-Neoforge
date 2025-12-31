@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.network.tesseract;
 
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
@@ -10,6 +11,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record AddTesseractNetworkToServer(String name, int ownerEntityId, int secIdx, int capIdx) implements CustomPacketPayload {
 	
 	public static final ResourceLocation ID = new ResourceLocation(MODID, "add_network");

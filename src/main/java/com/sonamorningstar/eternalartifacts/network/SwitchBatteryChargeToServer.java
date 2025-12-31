@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.network;
 
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
+import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
@@ -12,6 +13,7 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
+@RegisterPacket(side = RegisterPacket.PacketSide.SERVER)
 public record SwitchBatteryChargeToServer(Item item) implements CustomPacketPayload {
     public static final ResourceLocation ID = new ResourceLocation(MODID, "switch_charge");
 
