@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.data;
 import com.google.gson.JsonElement;
 import com.sonamorningstar.eternalartifacts.content.block.CableBlock;
 import com.sonamorningstar.eternalartifacts.content.block.BluePlasticCauldronBlock;
+import com.sonamorningstar.eternalartifacts.content.block.NaphthaCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
@@ -14,6 +15,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
@@ -41,12 +44,18 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                 .create(ModBlocks.PLASTIC_CAULDRON.get(),
                         TextureMapping.cauldron(TextureMapping.getBlockTexture(ModFluids.LIQUID_PLASTIC.getFluidBlock(), "_still")), modelOutput)
         ));
+        stateOutput.accept(createSimpleBlock(ModBlocks.CRUDE_OIL_CAULDRON.get(),
+            ModelTemplates.CAULDRON_FULL
+                .create(ModBlocks.CRUDE_OIL_CAULDRON.get(),
+                        TextureMapping.cauldron(TextureMapping.getBlockTexture(ModFluids.CRUDE_OIL.getFluidBlock(), "_still")), modelOutput)
+        ));
 
-        createBluePlasticCauldron(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), new ResourceLocation(MODID, "block/blue_plastic"));
+        createLayeredCauldron(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), new ResourceLocation(MODID, "block/blue_plastic"), BluePlasticCauldronBlock.LEVEL, 3);
+        createLayeredCauldron(ModBlocks.NAPHTHA_CAULDRON.get(), TextureMapping.getBlockTexture(ModFluids.NAPHTHA.getFluidBlock(), "_still"), NaphthaCauldronBlock.LEVEL, 4);
 
         createForParticle(ModBlocks.JAR, Blocks.GLASS);
         createForParticle(ModBlocks.NOUS_TANK, Blocks.GLASS);
-        createForParticle(ModMachines.OIL_REFINERY.getBlockHolder(), Blocks.GLASS);
+        createForParticle(ModMachines.OIL_REFINERY.blockHolder(), Blocks.GLASS);
         createForParticle(ModBlocks.ENERGY_DOCK, new ResourceLocation(MODID, "block/machine_side"));
         createForParticle(ModBlocks.FLUID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
         createForParticle(ModBlocks.SOLID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
@@ -89,18 +98,44 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
     }
     //region Functions for block models...
-    private void createBluePlasticCauldron(Block block, ResourceLocation layerTex) {
-        stateOutput
-            .accept(
-                MultiVariantGenerator.multiVariant(block)
-                    .with(
-                        PropertyDispatch.property(BluePlasticCauldronBlock.LEVEL)
-                            .select(
-                                1,
-                                Variant.variant()
-                                    .with(
-                                        VariantProperties.MODEL,
-                                        ModelTemplates.CAULDRON_LEVEL1
+    private void createLayeredCauldron(Block block, ResourceLocation layerTex, IntegerProperty property, int layer) {
+        PropertyDispatch.C1<Integer> propertyDispatch = PropertyDispatch.property(property);
+        ModelTemplate[] variants = null;
+        if (layer == 4) {
+            variants = ModModelTemplates.MOD_CAULDRON_4;
+		} else if (layer == 3) {
+            variants = new ModelTemplate[] {
+                ModelTemplates.CAULDRON_LEVEL1,
+                ModelTemplates.CAULDRON_LEVEL2,
+                ModelTemplates.CAULDRON_FULL
+            };
+        }
+        if (variants != null && variants.length == layer){
+            if (layer == 4) {
+                for (int i = 0; i < layer; i++) {
+                    propertyDispatch.select(i + 1, Variant.variant().with(VariantProperties.MODEL,
+                        variants[i].createWithSuffix(block, "_" + (i + 1) + "_of_" + layer,
+                            TextureMapping.cauldron(layerTex),
+                            modelOutput)
+                    ));
+                }
+            }
+            if (layer == 3) {
+                for (int i = 0; i < layer; i++) {
+                    String suffix = (i + 1 == layer) ? "_full" : "_level" + (i + 1);
+                    propertyDispatch.select(i + 1, Variant.variant().with(VariantProperties.MODEL,
+                        variants[i].createWithSuffix(block, suffix,
+                            TextureMapping.cauldron(layerTex),
+                            modelOutput)
+                    ));
+                }
+            }
+        }
+        stateOutput.accept(MultiVariantGenerator.multiVariant(block).with(propertyDispatch));
+        /*stateOutput.accept(MultiVariantGenerator.multiVariant(block)
+                    .with(PropertyDispatch.property(LayeredCauldronBlock.LEVEL)
+                            .select(1, Variant.variant()
+                                    .with(VariantProperties.MODEL, ModelTemplates.CAULDRON_LEVEL1
                                             .createWithSuffix(
                                                 block,
                                                 "_level1",
@@ -109,12 +144,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                                             )
                                     )
                             )
-                            .select(
-                                2,
-                                Variant.variant()
-                                    .with(
-                                        VariantProperties.MODEL,
-                                        ModelTemplates.CAULDRON_LEVEL2
+                            .select(2, Variant.variant()
+                                    .with(VariantProperties.MODEL, ModelTemplates.CAULDRON_LEVEL2
                                             .createWithSuffix(
                                                 block,
                                                 "_level2",
@@ -123,12 +154,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                                             )
                                     )
                             )
-                            .select(
-                                3,
-                                Variant.variant()
-                                    .with(
-                                        VariantProperties.MODEL,
-                                        ModelTemplates.CAULDRON_FULL
+                            .select(3, Variant.variant()
+                                    .with(VariantProperties.MODEL, ModelTemplates.CAULDRON_FULL
                                             .createWithSuffix(
                                                 block,
                                                 "_full",
@@ -138,7 +165,7 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                                     )
                             )
                     )
-            );
+            );*/
 
 
     }

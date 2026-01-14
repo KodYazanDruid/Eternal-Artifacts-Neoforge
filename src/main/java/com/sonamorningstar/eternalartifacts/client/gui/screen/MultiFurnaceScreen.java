@@ -1,10 +1,13 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.MultiFurnace;
@@ -21,6 +24,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+
+import java.util.Optional;
 
 public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractSidedMachineScreen<M> {
 	public MultiFurnaceScreen(M menu, Inventory playerInventory, Component title) {
@@ -122,18 +127,9 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 	public void render(GuiGraphics gui, int mx, int my, float partialTick) {
 		super.render(gui, mx, my, partialTick);
 		renderDefaultEnergyBar(gui);
-		
-		for (RecipeTypeButton button : recipeButtons) {
-			if (isCursorInBounds(button.getX()+1, button.getY()+1,
-				button.getWidth()-2, button.getHeight()-2, mx, my)) {
-				gui.renderTooltip(font, button.getMessage(), mx, my);
-			}
-		}
-		
-		renderProgressTooltip(gui, leftPos + 81, topPos + 41, 22, 15, mx, my, "progress");
 	}
 	
-	private static class RecipeTypeButton extends AbstractWidget {
+	private static class RecipeTypeButton extends AbstractBaseWidget implements TooltipRenderable {
 		private static final ResourceLocation RECIPE_SELECTED_SPRITE = new ResourceLocation("container/stonecutter/recipe_selected");
 		private static final ResourceLocation RECIPE_HIGHLIGHTED_SPRITE = new ResourceLocation("container/stonecutter/recipe_highlighted");
 		private static final ResourceLocation RECIPE_SPRITE = new ResourceLocation("container/stonecutter/recipe");
@@ -159,22 +155,6 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 		}
 		
 		@Override
-		public boolean isMouseOver(double mX, double mY) {
-			Screen screen = Minecraft.getInstance().screen;
-			if (screen instanceof AbstractModContainerScreen<?> modScreen) {
-				for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
-					GuiEventListener child = modScreen.upperLayerChildren.get(i);
-					if (child instanceof ParentalWidget parental) {
-						if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
-							return parental.getChildUnderCursorRaw(mX, mY) == this;
-						}
-					}
-				}
-			}
-			return super.isMouseOver(mX, mY);
-		}
-		
-		@Override
 		public void onClick(double mouseX, double mouseY, int button) {
 			if (!selected) {
 				onPress.onPress(this);
@@ -184,6 +164,18 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 		@Override
 		public void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
 			defaultButtonNarrationText(narrationElementOutput);
+		}
+		
+		@Override
+		public void renderTooltip(GuiGraphics gui, int mouseX, int mouseY, int tooltipZ) {
+			if (isMouseOver(mouseX, mouseY)) {
+				gui.pose().pushPose();
+				gui.pose().translate(0, 0, tooltipZ);
+				RenderSystem.disableDepthTest();
+				gui.renderTooltip(Minecraft.getInstance().font, getMessage(), mouseX, mouseY);
+				RenderSystem.enableDepthTest();
+				gui.pose().popPose();
+			}
 		}
 		
 		public interface OnPress {

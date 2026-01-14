@@ -207,12 +207,8 @@ public class ModBlocks {
     
     public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_ITEM_STORAGE_UNIT = registerWithItem("deep_item_storage_unit",
         () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, false), DISUBlockItem.class);
-    /*public static final DeferredBlock<DeepItemStorageUnitBlock> DEEP_INFINITE_ITEM_STORAGE_UNIT = registerWithItem("deep_infinite_item_storage_unit",
-        () -> new DeepItemStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DISUBlockItem.class);*/
     public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_FLUID_STORAGE_UNIT = registerWithItem("deep_fluid_storage_unit",
         () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, false), DFSUBlockItem.class);
-    /*public static final DeferredBlock<DeepFluidStorageUnitBlock> DEEP_INFINITE_FLUID_STORAGE_UNIT = registerWithItem("deep_infinite_fluid_storage_unit",
-        () -> new DeepFluidStorageUnitBlock(ModProperties.Blocks.MACHINE, true), DFSUBlockItem.class);*/
 
     public static final DeferredBlock<BioFurnaceBlock> BIOFURNACE = registerMachineWithItem("biofurnace",
             ()-> new BioFurnaceBlock(Blocks.ANVIL.properties()));
@@ -291,9 +287,13 @@ public class ModBlocks {
                 .lootFrom(GLOWTORCH)
             ));
 
-    public static final DeferredBlock<Block> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron", PlasticCauldronBlock::new);
-    public static final DeferredBlock<Block> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
+    public static final DeferredBlock<PlasticCauldronBlock> PLASTIC_CAULDRON = registerNoItem("plastic_cauldron", PlasticCauldronBlock::new);
+    public static final DeferredBlock<BluePlasticCauldronBlock> BLUE_PLASTIC_CAULDRON = registerNoItem("blue_plastic_cauldron",
             ()-> new BluePlasticCauldronBlock(BlockBehaviour.Properties.ofFullCopy(CAULDRON)));
+    public static final DeferredBlock<NaphthaCauldronBlock> NAPHTHA_CAULDRON = registerNoItem("naphtha_cauldron",
+            ()-> new NaphthaCauldronBlock(BlockBehaviour.Properties.ofFullCopy(CAULDRON)));
+    public static final DeferredBlock<CrudeOilCauldronBlock> CRUDE_OIL_CAULDRON = registerNoItem("crude_oil_cauldron",
+            ()-> new CrudeOilCauldronBlock(BlockBehaviour.Properties.ofLegacyCopy(CAULDRON)));
     public static final DeferredBlock<Block> INDUSTRIAL_SPONGE = registerWithItem("industrial_sponge", () ->
         new IndustrialSponge(BlockBehaviour.Properties.ofFullCopy(Blocks.SPONGE).mapColor(MapColor.COLOR_LIGHT_GREEN))
     );

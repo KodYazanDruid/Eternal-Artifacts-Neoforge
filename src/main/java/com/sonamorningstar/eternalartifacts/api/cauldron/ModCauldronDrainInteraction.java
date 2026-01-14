@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.api.cauldron;
 
+import com.sonamorningstar.eternalartifacts.content.block.base.ModLayeredCauldronBlack;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -31,6 +32,8 @@ public class ModCauldronDrainInteraction extends ModCauldronInteraction {
     public static final ModCauldronDrainInteraction WATER = createLayered(Fluids.WATER);
     public static final ModCauldronDrainInteraction PLASTIC = createBasic(ModFluids.LIQUID_PLASTIC.getFluid());
     public static final ModCauldronDrainInteraction LAVA = createBasic(Fluids.LAVA);
+    public static final ModCauldronDrainInteraction CRUDE_OIL = createBasic(ModFluids.CRUDE_OIL.getFluid());
+    public static final ModCauldronDrainInteraction NAPHTHA = createLayered(ModFluids.NAPHTHA.getFluid(), 4);
 
     //Fills the bucket. Empties the cauldron.
     @Override
@@ -57,17 +60,27 @@ public class ModCauldronDrainInteraction extends ModCauldronInteraction {
         SoundEvent fillSound = fluidStack.getFluidType().getSound(player, level, pos, SoundActions.BUCKET_FILL);
         if (fillSound != null) level.playSound(null, pos, fillSound, SoundSource.BLOCKS, 1.0F, 1.0F);
         level.gameEvent(null, GameEvent.FLUID_PICKUP, pos);
+        level.invalidateCapabilities(pos);
     }
 
     private static ModCauldronDrainInteraction createBasic(Fluid fluid) {
         return new ModCauldronDrainInteraction(fluid);
     }
-
+    
     private static ModCauldronDrainInteraction createLayered(Fluid fluid) {
+        return createLayered(fluid, LayeredCauldronBlock.MAX_FILL_LEVEL);
+    }
+
+    private static ModCauldronDrainInteraction createLayered(Fluid fluid, int maxLevel) {
         return new ModCauldronDrainInteraction(fluid) {
             @Override
             public InteractionResult interact(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack) {
-                if (state.getValue(LayeredCauldronBlock.LEVEL) == 3) return super.interact(state, level, pos, player, hand, stack);
+                if (state.getBlock() instanceof ModLayeredCauldronBlack cauldron) {
+                    if (state.getValue(cauldron.getLevelProperty()) == cauldron.getMaxLevel()) {
+                        return super.interact(state, level, pos, player, hand, stack);
+                    }
+                    return InteractionResult.PASS;
+                } else if (state.getValue(LayeredCauldronBlock.LEVEL) == maxLevel) return super.interact(state, level, pos, player, hand, stack);
                 return InteractionResult.PASS;
             }
         };

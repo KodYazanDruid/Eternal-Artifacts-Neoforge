@@ -16,17 +16,20 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class MeatShredderCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory MEAT_SHREDDER_CATEGORY = createCategory(ModRecipes.MEAT_SHREDDING, ModMachines.MEAT_SHREDDER);
+    private final int fluidAmount;
+    
     public MeatShredderCategory(MeatShredderRecipe recipe, ResourceLocation id) {
-        super(MEAT_SHREDDER_CATEGORY, id, 72, 50);
+        super(MEAT_SHREDDER_CATEGORY, id, 76, 56);
         inputs.add(EmiIngredient.of(recipe.getInput()));
-        outputs.add(EmiStack.of(recipe.getOutput().getFluid(), recipe.getOutput().getAmount()));
+        this.fluidAmount = recipe.getOutput().getAmount();
+        outputs.add(EmiStack.of(recipe.getOutput().getFluid(), fluidAmount));
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addSlot(inputs.get(0), 0, 16);
-        widgets.addFillingArrow(24, 16, 10000);
-        widgets.addTank(outputs.get(0).setAmount(outputs.get(0).getAmount()), 54, 0, 18, 50, 16000).recipeContext(this);
+        widgets.addSlot(inputs.get(0), 0, 19);
+        widgets.addFillingArrow(24, 19, 10000);
+        addLargeTank(widgets, outputs.get(0), 54, 0, fluidAmount * 2).recipeContext(this);
     }
 
     public static void fillRecipes(EmiRegistry registry) {

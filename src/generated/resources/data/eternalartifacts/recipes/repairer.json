@@ -8,6 +8,9 @@
     "C": {
       "item": "eternalartifacts:capacitor"
     },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
     "M": {
       "item": "eternalartifacts:machine_block"
     },
@@ -15,11 +18,11 @@
       "item": "minecraft:anvil"
     },
     "R": {
-      "tag": "forge:ingots/brick"
+      "tag": "forge:dusts/redstone"
     }
   },
   "pattern": [
-    "RCR",
+    "ICI",
     "AMA",
     "RPR"
   ],

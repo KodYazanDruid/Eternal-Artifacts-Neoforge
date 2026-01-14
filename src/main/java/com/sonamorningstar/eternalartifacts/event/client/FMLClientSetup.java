@@ -13,7 +13,7 @@ import com.sonamorningstar.eternalartifacts.core.ModSkullType;
 import com.sonamorningstar.eternalartifacts.event.custom.CreateConfigWidgetEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
-import com.sonamorningstar.eternalartifacts.registrar.LiquidBlockFluidHolder;
+import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -67,7 +67,7 @@ public class FMLClientSetup {
         
     }
     
-    private static void setFluidTranslucent(LiquidBlockFluidHolder<?> holder) {
+    private static void setFluidTranslucent(FluidHolder<?> holder) {
         ItemBlockRenderTypes.setRenderLayer(holder.getFluid(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(holder.getFlowingFluid(), RenderType.translucent());
     }

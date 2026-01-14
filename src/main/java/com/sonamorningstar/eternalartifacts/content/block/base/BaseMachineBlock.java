@@ -20,6 +20,7 @@ import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -45,6 +46,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -139,8 +141,9 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
         ItemStack stack = new ItemStack(block);
         if (actualLevel != null) {
             BlockEntity be = actualLevel.getBlockEntity(pos);
+            
             if (be instanceof ModBlockEntity mbe) {
-                mbe.loadEnchants(stack.getEnchantmentTags());
+                EnchantmentHelper.setEnchantments(new HashMap<>(mbe.enchantments), stack);
             }
             
             IFluidHandler fluidHandler = actualLevel.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
@@ -167,8 +170,10 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof Machine<?> mbe && stack.hasTag()) {
-            mbe.loadEnchants(stack.getEnchantmentTags());
+        if (be instanceof ModBlockEntity mbe && stack.hasTag()) {
+            Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+            mbe.enchantments.clear();
+            mbe.enchantments.putAll(enchantments);
             for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
                 mbe.onEnchanted(entry.getKey(), entry.getValue());
             }

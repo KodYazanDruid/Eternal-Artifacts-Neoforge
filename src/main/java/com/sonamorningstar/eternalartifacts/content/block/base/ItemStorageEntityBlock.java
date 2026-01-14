@@ -6,6 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -30,7 +31,9 @@ public abstract class ItemStorageEntityBlock extends BaseEntityBlock {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof ModBlockEntity mbe) {
-			mbe.loadEnchants(stack.getEnchantmentTags());
+			Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+			mbe.enchantments.clear();
+			mbe.enchantments.putAll(enchantments);
 			for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
 				mbe.onEnchanted(entry.getKey(), entry.getValue());
 			}

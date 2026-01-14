@@ -11,7 +11,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 
 import java.util.UUID;
 
@@ -61,7 +60,7 @@ public class TesseractWhitelistComponentWidget extends AbstractScrollPanelCompon
 		int margin = 3;
 		gui.fill(RenderType.guiOverlay(), minX, minY, maxX, maxY, getColor());
 		if (isOwner()) gui.fill(RenderType.guiOverlay(), maxX, minY, maxX + height, maxY, 0xFFFF6655);
-		GuiDrawer.renderScrollingStringForPanel(gui, font, getMessage(), minX + margin, minY + margin,
-			maxX - margin, maxY - margin, Mth.ceil(panel.scrollAmount()),0xFFFFFFFF, false);
+		GuiDrawer.renderScrollingString(gui, font, getMessage(), minX + margin, minY + margin,
+			maxX - margin, maxY - margin,0xFFFFFFFF, false, panel.scrollAmount());
 	}
 }

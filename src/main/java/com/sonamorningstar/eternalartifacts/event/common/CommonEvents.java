@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
@@ -42,8 +43,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -757,7 +759,17 @@ public class CommonEvents {
     public static void serverStartingEvent(ServerStartingEvent event) {
         MinecraftServer server = event.getServer();
         rollHammeringTables(server.overworld());
-        server.getRecipeManager().hadErrorsLoading();
+        
+        setupTagBasedCauldronInteractions();
+    }
+    
+    public static void setupTagBasedCauldronInteractions() {
+        ModCauldronInteraction.NAPHTHA.map().clear();
+        BuiltInRegistries.ITEM.getTagOrEmpty(Tags.Items.SAND).forEach(holder -> {
+            if (holder.isBound()) {
+                ModCauldronInteraction.NAPHTHA.map().put(holder.value(), ModCauldronInteraction.SAND_NAPHTHA);
+            }
+        });
     }
     
     private static void rollHammeringTables(ServerLevel level) {

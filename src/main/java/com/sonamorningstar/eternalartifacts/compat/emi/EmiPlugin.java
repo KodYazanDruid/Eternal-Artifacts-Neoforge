@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.*;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
+import com.sonamorningstar.eternalartifacts.compat.recipeviewer.RecipeViewerInit;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import dev.emi.emi.api.EmiEntrypoint;
@@ -27,10 +28,14 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
     
     @Override
     public void register(EmiRegistry registry) {
+        // Initialize the common RecipeViewer registry first
+        RecipeViewerInit.init();
+        
         registry.addGenericDragDropHandler(new EADragDropHandler());
         registry.addRecipeHandler(ModMenuTypes.BLUEPRINT.get(), new BlueprintRecipeHandler());
         registry.addGenericExclusionArea(new EAExclusionHandler());
 
+        // Machine categories
         registry.addCategory(MeatPackerCategory.MEAT_PACKER_CATEGORY);
         registry.addCategory(MeatShredderCategory.MEAT_SHREDDER_CATEGORY);
         registry.addCategory(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY);
@@ -43,7 +48,12 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addCategory(SolidifierCategory.SOLIDIFIER_CATEGORY);
         registry.addCategory(HammeringCategory.HAMMERING_CATEGORY);
         registry.addCategory(FluidMixingCategory.FLUID_MIXING_CATEGORY);
+        
+        // Register categories from RecipeViewer system
+        EmiCauldronRecipe.registerCategories(registry);
+        EmiInWorldRecipe.registerCategories(registry);
 
+        // Vanilla workstations
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModMachines.ADVANCED_CRAFTER.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModItems.PORTABLE_CRAFTER));
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(ModItems.BLUEPRINT));
@@ -58,6 +68,8 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(VanillaEmiRecipeCategories.SMITHING, EmiStack.of(ModMachines.SMITHINATOR.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.STONECUTTING, EmiStack.of(ModMachines.AUTOCUTTER.getItem()));
         registry.addWorkstation(VanillaEmiRecipeCategories.BREWING, EmiStack.of(ModMachines.ALCHEMICAL_BREWER.getItem()));
+        
+        // Machine workstations
         registry.addWorkstation(MeatPackerCategory.MEAT_PACKER_CATEGORY, EmiStack.of(ModMachines.MEAT_PACKER.getItem()));
         registry.addWorkstation(MeatShredderCategory.MEAT_SHREDDER_CATEGORY, EmiStack.of(ModMachines.MEAT_SHREDDER.getItem()));
         registry.addWorkstation(MobLiquifierCategory.MOB_LIQUIFIER_CATEGORY, EmiStack.of(ModMachines.MOB_LIQUIFIER.getItem()));
@@ -71,9 +83,9 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(HammeringCategory.HAMMERING_CATEGORY, EmiIngredient.of(ModTags.Items.TOOLS_HAMMER));
         registry.addWorkstation(FluidMixingCategory.FLUID_MIXING_CATEGORY, EmiStack.of(ModMachines.FLUID_MIXER.getItem()));
 
+        // Machine recipes
         registry.addRecipe(new MeatPackerCategory());
         HammeringCategory.fillRecipes(registry);
-
         MeatShredderCategory.fillRecipes(registry);
         MobLiquifierCategory.fillRecipes(registry);
         MaceratingCategory.fillRecipes(registry);
@@ -84,10 +96,15 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         MelterCategory.fillRecipes(registry);
         SolidifierCategory.fillRecipes(registry);
         FluidMixingCategory.fillRecipes(registry);
+        
+        // Fill recipes from RecipeViewer system
+        EmiCauldronRecipe.fillRecipes(registry);
+        EmiInWorldRecipe.fillRecipes(registry);
 
+        // Gardening pot retextured recipes
         List<Item> items = BuiltInRegistries.ITEM.getTag(ModTags.Items.GARDENING_POT_SUITABLE)
                 .map(holders -> holders.stream().map(Holder::value).toList()).orElseGet(ArrayList::new);
-        for(Item texture : items){
+        for(Item texture : items) {
             ResourceLocation id = BuiltInRegistries.ITEM.getKey(texture);
             ItemStack stack = new ItemStack(ModItems.GARDENING_POT.get());
             CompoundTag tag = stack.getOrCreateTag();

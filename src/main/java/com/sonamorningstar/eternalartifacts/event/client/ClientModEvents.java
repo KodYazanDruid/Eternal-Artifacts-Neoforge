@@ -13,6 +13,9 @@ import com.sonamorningstar.eternalartifacts.client.render.item.PortableFurnaceLa
 import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
@@ -27,6 +30,7 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -35,6 +39,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GrassColor;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -104,8 +110,9 @@ public class ClientModEvents {
         }, ModBlocks.FOUR_LEAF_CLOVER.asItem());
         event.register(new RetexturedColor(), ModItems.GARDENING_POT.get());
         event.register(new RetexturedColor(), ModItems.FANCY_CHEST.get());
-        ModFluids.FLUIDS.getEntries().forEach(holder -> {
-            if (ModFluids.FLUIDS.isGeneric(holder) && holder.getBucketItem() != null) event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
+        ModFluids.FLUIDS.getFluids().forEach(holder -> {
+            if (holder.isGenericTexture() && holder.getBucketItem() != null)
+                event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
         });
         event.register(ColorUtils::getColorFromNBT, ModItems.LIGHTSABER);
     }
@@ -182,7 +189,8 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 32));
         event.registerLayerDefinition(ModModelLayers.BLAZE_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
     }
-
+    
+    @SuppressWarnings("unchecked")
     @SubscribeEvent
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntities.FANCY_CHEST.get(), FancyChestRenderer::new);
@@ -200,9 +208,16 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), DynamoRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.CULINARY_DYNAMO.get(), DynamoRenderer::new);
 
-        event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
+        /*event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
         event.registerBlockEntityRenderer(ModMachines.MOB_HARVESTER.getBlockEntity(), ctx -> new AreaRenderer<>());
-        event.registerBlockEntityRenderer(ModMachines.HARVESTER.getBlockEntity(), ctx -> new AreaRenderer<>());
+        event.registerBlockEntityRenderer(ModMachines.HARVESTER.getBlockEntity(), ctx -> new AreaRenderer<>());*/
+        ModMachines.MACHINES.getMachines().forEach(machineHolder -> {
+            var blockEntityType = machineHolder.getBlockEntity();
+            var dummyEntity = blockEntityType.create(BlockPos.ZERO, machineHolder.getBlock().defaultBlockState());
+            if (dummyEntity instanceof WorkingAreaProvider) {
+                event.registerBlockEntityRenderer((BlockEntityType<? extends WorkingAreaProvider>) blockEntityType, ctx -> new AreaRenderer<>());
+            }
+        });
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), ctx -> new DSUItemRenderer());
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), ctx -> new DSUFluidRenderer());
 

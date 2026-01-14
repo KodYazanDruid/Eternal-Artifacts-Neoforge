@@ -2,9 +2,6 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "A": {
-      "tag": "forge:ingots/aluminum"
-    },
     "C": {
       "item": "eternalartifacts:capacitor"
     },
@@ -19,11 +16,14 @@
     },
     "S": {
       "tag": "forge:plastic_sheets"
+    },
+    "T": {
+      "tag": "forge:ingots/tin"
     }
   },
   "pattern": [
     "SPS",
-    "AMA",
+    "TMT",
     "RCR"
   ],
   "result": {

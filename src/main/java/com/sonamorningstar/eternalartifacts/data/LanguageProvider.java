@@ -299,8 +299,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MARIN_ORE.get(), "Marin Ore");
                 add(ModBlocks.RAW_MARIN_BLOCK.get(), "Raw Marin Block");
                 add(ModBlocks.MARIN_BLOCK.get(), "Marin Block");
-                add(ModBlocks.PLASTIC_CAULDRON.get(), "Cauldron");
-                add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Cauldron");
+                add(ModBlocks.PLASTIC_CAULDRON.get(), "Plastic Cauldron");
+                add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Blue Plastic Cauldron");
                 add(ModBlocks.SNOW_BRICKS.get(), "Snow Bricks");
                 add(ModBlocks.ICE_BRICKS.get(), "Ice Bricks");
                 add(ModBlocks.COPPER_DRUM.get(), "Copper Drum");
@@ -372,9 +372,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Alchemical Dynamo");
                 add(ModBlocks.CULINARY_DYNAMO.get(), "Culinary Dynamo");
                 add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Deep Item Storage Unit");
-                //add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Deep Infinite Item Storage Unit");
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Deep Fluid Storage Unit");
-                //add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Deep Infinite Fluid Storage Unit");
+                add(ModBlocks.NAPHTHA_CAULDRON.get(), "Naphtha Cauldron");
+                add(ModBlocks.CRUDE_OIL_CAULDRON.get(), "Crude Oil Cauldron");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -410,7 +410,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.WORLDBIND.get(), "Worldbind");
                 add(ModEnchantments.FORTIFICATION.get(), "Fortification");
                 //endregion
-                //region Commands
+                //region Co@mmands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
                 add(ModConstants.COMMAND.withSuffix("charm.given"), "Gave %1$s charm to %2$s.");
                 add(ModConstants.COMMAND.withSuffix("charm.removed"), "Removed charm on %d. index from %s.");
@@ -584,10 +584,29 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("harvester_output_mode_disabled"), "Re-plantable items will try to go into planting buffer first.");
                 add(ModConstants.GUI.withSuffix("harvester_use_tool_enabled"), "Can use the tool on soil.");
                 add(ModConstants.GUI.withSuffix("harvester_use_tool_disabled"), "Disable using the tool on soil.");
+                add(ModConstants.GUI.withSuffix("pipe_filter_properties_tolerant"), "Respects BlockState properties");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_properties"), "Ignores BlockState properties");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_properties_swap"), "Click to swap to respect BlockState properties");
+                add(ModConstants.GUI.withSuffix("pipe_filter_properties_tolerant_swap"), "Click to swap to ignore BlockState properties");
+                add(ModConstants.GUI.withSuffix("block_properties"), "BlockState Properties");
+                add(ModConstants.GUI.withSuffix("block_properties_desc"), "Configure BlockState properties to filter.");
+                add(ModConstants.GUI.withSuffix("add_target_block"), "Add Target Block");
+                add(ModConstants.GUI.withSuffix("add_target_block_desc"), "Add the block in front of the machine to the filter.");
+                add(ModConstants.GUI.withSuffix("change_property_values"), "Change Property Values");
+                add(ModConstants.GUI.withSuffix("apply"), "Apply");
+                add(ModConstants.GUI.withSuffix("property_values"), "Property Values for %s");
+                add(ModConstants.GUI.withSuffix("enchantments"), "Enchantments");
+                add(ModConstants.GUI.withSuffix("clear_selected"), "Clear Selected");
+                add(ModConstants.GUI.withSuffix("cycle_transfer"), "Cycle Transfer");
+                add(ModConstants.TRANSFER_MODE.withSuffix("both"), "Both");
+                add(ModConstants.TRANSFER_MODE.withSuffix("extract_only"), "Extract Only");
+                add(ModConstants.TRANSFER_MODE.withSuffix("insert_only"), "Insert Only");
+                add(ModConstants.TRANSFER_MODE.withSuffix("none"), "None");
                 
-                ModFluids.FLUIDS.getEntries().forEach(holder -> {
-                    if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBucketItemHolder().getId().getPath()));
-                    if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.getFluidBlockHolder().getId().getPath()));
+                
+                ModFluids.FLUIDS.getFluids().forEach(holder -> {
+                    if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBlockHolder().getId().getPath()));
+                    if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                     add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                 });
                 ModMachines.MACHINES.getMachines().forEach(holder -> add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath())));
@@ -906,8 +925,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MARIN_ORE.get(), "Marin Cevheri");
                 add(ModBlocks.RAW_MARIN_BLOCK.get(), "Ham Marin Bloğu");
                 add(ModBlocks.MARIN_BLOCK.get(), "Marin Bloğu");
-                add(ModBlocks.PLASTIC_CAULDRON.get(), "Kazan");
-                add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Kazan");
+                add(ModBlocks.PLASTIC_CAULDRON.get(), "Plastik Kazanı");
+                add(ModBlocks.BLUE_PLASTIC_CAULDRON.get(), "Mavi Plastik Kazanı");
                 add(ModBlocks.SNOW_BRICKS.get(), "Kar Tuğlası");
                 add(ModBlocks.ICE_BRICKS.get(), "Buz Tuğlası");
                 add(ModFluids.CRUDE_OIL.getTranslationKey(), "Ham Petrol");
@@ -1019,13 +1038,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.CULINARY_DYNAMO.get(), "Mutfak Dinamosu");
                 add(ModMachines.HARVESTER.getBlockTranslationKey(), "Hasat Makinesi");
                 add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Derin Eşya Depolama Ünitesi");
-                //add(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "Derin Sonsuz Eşya Depolama Ünitesi");
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Derin Sıvı Depolama Ünitesi");
-                //add(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "Derin Sonsuz Sıvı Depolama Ünitesi");
                 add(ModFluids.SLUDGE.getTranslationKey(), "Çamur");
                 add(ModFluids.SLUDGE.getFluidBlock(), "Çamur");
                 add(ModMachines.SLUDGE_REFINER.getBlockTranslationKey(), "Çamur Arıtıcı");
                 add(ModMachines.FLUID_PUMP.getBlockTranslationKey(), "Sıvı Pompası");
+                add(ModBlocks.NAPHTHA_CAULDRON.get(), "Nafta Kazanı");
+                add(ModBlocks.CRUDE_OIL_CAULDRON.get(), "Ham Petrol Kazanı");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1263,8 +1282,27 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("harvester_output_mode_disabled"), "Dikilebilir eşyalar önce girişe gider.");
                 add(ModConstants.GUI.withSuffix("harvester_use_tool_enabled"), "Toprakta aleti kullanır.");
                 add(ModConstants.GUI.withSuffix("harvester_use_tool_disabled"), "Toprakta aleti kullanmaz.");
-                //endregion
+                add(ModConstants.GUI.withSuffix("pipe_filter_properties_tolerant"), "Blok Durumu özelliklerini dikkate alır");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_properties"), "Blok Durumu özelliklerini yok sayar");
+                add(ModConstants.GUI.withSuffix("pipe_filter_ignore_properties_swap"), "Blok Durumu özelliklerini dikkate almak için tıkla");
+                add(ModConstants.GUI.withSuffix("pipe_filter_properties_tolerant_swap"), "Blok Durumu özelliklerini yok saymak için tıkla");
+                add(ModConstants.GUI.withSuffix("block_properties"), "Blok Durumu Özellikleri");
+                add(ModConstants.GUI.withSuffix("block_properties_desc"), "Filtreler için Blok Durumu Özellikleri ekleyin");
+                add(ModConstants.GUI.withSuffix("add_target_block"), "Hedef Bloğu Ekle");
+                add(ModConstants.GUI.withSuffix("add_target_block_desc"), "Makinenin baktığı bloğu filtreye ekler.");
+                add(ModConstants.GUI.withSuffix("change_property_values"), "Özellik Değerlerini Değiştir");
+                add(ModConstants.GUI.withSuffix("apply"), "Uygula");
+                add(ModConstants.GUI.withSuffix("property_values"), "%s için Özellik Değerleri");
+                add(ModConstants.GUI.withSuffix("enchantments"), "Büyüler");
+                add(ModConstants.GUI.withSuffix("clear_selected"), "Seçiliyi Temizle");
+                add(ModConstants.GUI.withSuffix("cycle_transfer"), "Transfer Modunu Değiştir");
+                add(ModConstants.TRANSFER_MODE.withSuffix("both"), "Hem Al Hem Ver");
+                add(ModConstants.TRANSFER_MODE.withSuffix("extract_only"), "Sadece Ver");
+                add(ModConstants.TRANSFER_MODE.withSuffix("insert_only"), "Sadece Al");
+                add(ModConstants.TRANSFER_MODE.withSuffix("none"), "Hiçbiri");
                 
+                //endregion
+
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
                     if("tr_tr".equals(loc)) add(lang.getFirst(), lang.getSecond());
                 });

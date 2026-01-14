@@ -17,19 +17,22 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class FluidInfuserCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory FLUID_INFUSER_CATEGORY = createCategory(ModRecipes.FLUID_INFUSING, ModMachines.FLUID_INFUSER);
+    private final int fluidAmount;
+    
     public FluidInfuserCategory(FluidInfuserRecipe recipe, ResourceLocation id) {
-        super(FLUID_INFUSER_CATEGORY, id, 90, 50);
+        super(FLUID_INFUSER_CATEGORY, id, 94, 56);
         addFluidIngredient(inputs, recipe.getInputFluid());
+        this.fluidAmount = recipe.getInputFluid().getFluidStacks()[0].getAmount();
         inputs.add(EmiIngredient.of(recipe.getInput()));
         outputs.add(EmiStack.of(recipe.getOutput()));
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addTank(inputs.get(0), 0, 0, 18, 50, 16000);
-        widgets.addSlot(inputs.get(1), 20, 16);
-        widgets.addFillingArrow(42, 16, 10000);
-        widgets.addSlot(outputs.get(0).setAmount(outputs.get(0).getAmount()), 72, 16).recipeContext(this);
+        addLargeTank(widgets, inputs.get(0), 0, 0, fluidAmount * 2);
+        widgets.addSlot(inputs.get(1), 24, 19);
+        widgets.addFillingArrow(46, 19, 10000);
+        widgets.addSlot(outputs.get(0), 76, 19).recipeContext(this);
     }
 
     public static void fillRecipes(EmiRegistry registry) {

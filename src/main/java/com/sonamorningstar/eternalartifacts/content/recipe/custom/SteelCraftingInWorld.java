@@ -5,11 +5,11 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,8 +30,9 @@ public final class SteelCraftingInWorld {
     public static boolean isInCorrectEnvironment(BlockPos pos, Level level) {
         BlockState blockState = level.getBlockState(pos);
         BlockState belowState = level.getBlockState(pos.below());
-        boolean isLit = belowState.is(Blocks.BLAST_FURNACE) && belowState.getValue(BlockStateProperties.LIT);
-        return blockState.is(Blocks.CAULDRON) && isLit;
+        boolean isHeated = belowState.is(Blocks.BLAST_FURNACE) && belowState.getValue(BlockStateProperties.LIT);
+        if (!isHeated) isHeated = belowState.is(Blocks.MAGMA_BLOCK);
+        return blockState.is(Blocks.CAULDRON) && isHeated;
     }
     
     private static boolean isValidIngot(ItemStack stack) {
@@ -54,8 +55,9 @@ public final class SteelCraftingInWorld {
         Level level = itemEntity.level();
         AABB area = new AABB(itemEntity.blockPosition());
         List<ItemEntity> entities = level.getEntities(null, area).stream()
-                .filter(e -> e instanceof ItemEntity ie && !e.isRemoved() && isValidItem(ie.getItem())
-                ).map(e -> (ItemEntity) e).toList();
+            .filter(e -> e instanceof ItemEntity ie && !e.isRemoved() && isValidItem(ie.getItem()))
+            .map(e -> (ItemEntity) e)
+            .toList();
 
         List<ItemStack> cachedItemStacks = new ArrayList<>();
 

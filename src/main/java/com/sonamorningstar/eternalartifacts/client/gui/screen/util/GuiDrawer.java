@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.GlStateBackup;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 
@@ -264,58 +263,40 @@ public final class GuiDrawer {
     //endregion
     
     //region Text drawing.
+    
     public static void renderScrollingString(
         GuiGraphics gui, Font font, Component text,
-        int minX, int minY, int maxX, int maxY, int color
-    ) {
-        renderScrollingString(gui, font, text, minX, minY, maxX, maxY, color, false);
+        int minX, int minY, int maxX, int maxY, int color, boolean dropShadow
+    ){
+        renderScrollingString(gui, font, text, minX, minY, maxX, maxY, color, dropShadow, 0);
     }
     public static void renderScrollingString(
         GuiGraphics gui, Font font, Component text,
-        int minX, int minY, int maxX, int maxY, int color, boolean dropShadow) {
-        renderScrollingStringForPanel(gui, font, text, minX, minY, maxX, maxY, 0, color, dropShadow);
-    }
-    public static void renderScrollingStringForPanel(
-        GuiGraphics gui, Font font, Component text,
-        int minX, int minY, int maxX, int maxY, double scroll, int color
-    ) {
-        renderScrollingStringForPanel(gui, font, text, minX, minY, maxX, maxY, scroll, color, false);
-    }
-    public static void renderScrollingStringForPanel(
-        GuiGraphics gui, Font font, Component text,
-        int minX, int minY, int maxX, int maxY, double scroll, int color, boolean dropShadow
+        int minX, int minY, int maxX, int maxY, int color, boolean dropShadow, double scroll
     ) {
         int textWidth = font.width(text);
         int deltaX = maxX - minX;
-        int middleX = deltaX / 2;
-        int scrolledMinY = minY - (int) scroll;
-        int scrolledMaxY = maxY - (int) scroll;
         int wHeight = maxY - minY;
         int j = minY + (wHeight - 8) / 2;
         RenderSystem.backupGlState(stateBackup);
-        //RenderSystem.enableDepthTest();
-        /*RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();*/
         RenderSystem.disableBlend();
         RenderSystem.disableDepthTest();
         if (textWidth > deltaX) {
             int overflow = textWidth - deltaX;
             double d0 = (double) Util.getMillis() / 1000.0;
-            double d1 = Math.max((double)overflow * 0.5, 3.0);
+            double d1 = Math.max((double) overflow * 0.5, 3.0);
             double d2 = Math.sin((Math.PI / 2) * Math.cos((Math.PI * 2) * d0 / d1)) / 2.0 + 0.5;
             double d3 = Mth.lerp(d2, 0.0, overflow);
-            gui.enableScissor(minX, scrolledMinY, maxX, scrolledMaxY);
+            gui.enableScissor(minX, (int) (minY - scroll), maxX, (int) (maxY - scroll));
             gui.drawString(font, text, minX - (int) d3, j, color, dropShadow);
             gui.disableScissor();
         } else {
-            int i1 = Mth.clamp(middleX, minX + textWidth / 2, maxX - textWidth / 2);
-            drawCenteredString(gui, font, text, i1, j, color, dropShadow);
+            gui.drawString(font, text, minX, j, color, dropShadow);
         }
         RenderSystem.restoreGlState(stateBackup);
     }
     
     public static void drawCenteredString(GuiGraphics gui, Font pFont, Component pText, int pX, int pY, int pColor, boolean dropShadow) {
-        //gui.drawString(pFont, pText, pX - pFont.width(pText) / 2, pY, pColor, dropShadow);
         FormattedCharSequence charSeq = pText.getVisualOrderText();
         gui.drawString(pFont, charSeq, pX - pFont.width(charSeq) / 2, pY, pColor, dropShadow);
     }

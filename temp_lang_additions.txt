@@ -1,0 +1,7 @@
+                add(ModConstants.GUI.withSuffix("clear_selected"), "Clear Selected");
+                add(ModConstants.GUI.withSuffix("cycle_transfer"), "Cycle Transfer");
+                add(ModConstants.TRANSFER_MODE.withSuffix("both"), "Both");
+                add(ModConstants.TRANSFER_MODE.withSuffix("extract_only"), "Extract Only");
+                add(ModConstants.TRANSFER_MODE.withSuffix("insert_only"), "Insert Only");
+                add(ModConstants.TRANSFER_MODE.withSuffix("none"), "None");
+

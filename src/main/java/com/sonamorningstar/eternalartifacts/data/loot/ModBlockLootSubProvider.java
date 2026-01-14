@@ -125,6 +125,8 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.WET_INDUSTRIAL_SPONGE.get());
         dropSelf(ModBlocks.GLOWSTONE_TORCH.get());
         dropSelf(ModBlocks.GLOWTORCH.get());
+        dropOther(ModBlocks.NAPHTHA_CAULDRON.get(), Blocks.CAULDRON);
+        dropOther(ModBlocks.CRUDE_OIL_CAULDRON.get(), Blocks.CAULDRON);
 
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
@@ -212,7 +214,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
             )
         );
 
-        ModMachines.MACHINES.getMachines().forEach(holder -> dropSelfWithFunction(holder.getBlockHolder(), KeepContentsFunction.builder()));
+        ModMachines.MACHINES.getMachines().forEach(holder -> dropSelfWithFunction(holder.blockHolder(), KeepContentsFunction.builder()));
         ModBlockFamilies.getAllFamilies().forEach(family -> {
             dropSelf(family.getBaseBlock());
             family.getVariants().values().forEach(this::dropSelf);

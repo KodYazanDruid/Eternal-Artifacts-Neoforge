@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "level=1": {
+      "model": "eternalartifacts:block/naphtha_cauldron_1_of_4_1_of_4"
+    },
+    "level=2": {
+      "model": "eternalartifacts:block/naphtha_cauldron_2_of_4_2_of_4"
+    },
+    "level=3": {
+      "model": "eternalartifacts:block/naphtha_cauldron_3_of_4_3_of_4"
+    },
+    "level=4": {
+      "model": "eternalartifacts:block/naphtha_cauldron_4_of_4_4_of_4"
+    }
+  }
+}

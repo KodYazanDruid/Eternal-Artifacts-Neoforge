@@ -16,6 +16,8 @@ public class EmiCompat {
 		addLang("en_us", "emi.category.eternalartifacts.melting", "Melting");
 		addLang("en_us", "emi.category.eternalartifacts.solidifying", "Solidifying");
 		addLang("en_us", "emi.category.eternalartifacts.fake_recipe.hammering", "Hammering");
+		addLang("en_us", "emi.category.eternalartifacts.fluid_mixing", "Fluid Mixing");
+		addLang("en_us", "emi.category.eternalartifacts.cauldron", "Cauldron");
 		
 		addLang("tr_tr", "emi.category.eternalartifacts.fake_recipe.meat_packer", "Et Paketleyici");
 		addLang("tr_tr", "emi.category.eternalartifacts.meat_shredding", "Et Parçalayıcı");
@@ -28,6 +30,9 @@ public class EmiCompat {
 		addLang("tr_tr", "emi.category.eternalartifacts.melting", "Eritme");
 		addLang("tr_tr", "emi.category.eternalartifacts.solidifying", "Katılaştırma");
 		addLang("tr_tr", "emi.category.eternalartifacts.fake_recipe.hammering", "Çekiçleme");
+		addLang("en_us", "emi.category.eternalartifacts.fluid_mixing", "Sıvı Karıştırma");
+		addLang("en_us", "emi.category.eternalartifacts.cauldron", "Kazan");
+		
 	}
 	
 	private static void addLang(String loc, String key, String value) {

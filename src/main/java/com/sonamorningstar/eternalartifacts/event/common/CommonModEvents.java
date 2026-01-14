@@ -11,11 +11,14 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.*;
 import com.sonamorningstar.eternalartifacts.capabilities.item.*;
 import com.sonamorningstar.eternalartifacts.content.block.DrumBlock;
 import com.sonamorningstar.eternalartifacts.content.block.FancyChestBlock;
+import com.sonamorningstar.eternalartifacts.content.block.NaphthaCauldronBlock;
+import com.sonamorningstar.eternalartifacts.content.block.PlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
+import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import net.minecraft.world.Container;
@@ -28,6 +31,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -62,7 +66,11 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class CommonModEvents {
     @SubscribeEvent
     public static void registerCaps(RegisterCapabilitiesEvent event) {
-        ModFluids.FLUIDS.forEachBucketEntry(holder -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), holder.get()));
+        for (FluidHolder<?> fluidHolder : ModFluids.FLUIDS.getFluids()) {
+            if (fluidHolder.hasBucket()) {
+                event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), fluidHolder.getBucket());
+            }
+        }
 
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,50000,2500), ModItems.BATTERY.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,75000,15000), ModItems.PORTABLE_BATTERY.get());
@@ -88,12 +96,10 @@ public class CommonModEvents {
 
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), (be, ctx) -> be.inventory);
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new DeepInfiniteItemItemStorageHandler(stack),
-            ModBlocks.DEEP_ITEM_STORAGE_UNIT.asItem()/*,
-            ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.asItem()*/);
+            ModBlocks.DEEP_ITEM_STORAGE_UNIT.asItem());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), (be, ctx) -> be.tank);
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE),
-            ModBlocks.DEEP_FLUID_STORAGE_UNIT.asItem()/*,
-            ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.asItem()*/);
+            ModBlocks.DEEP_FLUID_STORAGE_UNIT.asItem());
         
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModScaleableItemItemStorage(stack, ModEnchantments.VOLUME.get(), 9), ModItems.KNAPSACK.get());
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> {
@@ -144,6 +150,8 @@ public class CommonModEvents {
         
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, PlasticCauldronBlock::createItemHandler, ModBlocks.PLASTIC_CAULDRON.get());
+        event.registerBlock(Capabilities.ItemHandler.BLOCK, NaphthaCauldronBlock::createItemHandler, ModBlocks.NAPHTHA_CAULDRON.get());
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.DRUM.get(), (be, ctx) -> be.tank);
         event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, blockEntity, side) -> {
             Container container = FancyChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
@@ -296,6 +304,8 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void registerCauldronFluidContent(RegisterCauldronFluidContentEvent event) {
         event.register(ModBlocks.PLASTIC_CAULDRON.get(), ModFluids.LIQUID_PLASTIC.getFluid(), FluidType.BUCKET_VOLUME, null);
+        event.register(ModBlocks.CRUDE_OIL_CAULDRON.get(), ModFluids.CRUDE_OIL.getFluid(), FluidType.BUCKET_VOLUME, null);
+        event.register(ModBlocks.NAPHTHA_CAULDRON.get(), ModFluids.NAPHTHA.getFluid(), FluidType.BUCKET_VOLUME, NaphthaCauldronBlock.LEVEL);
     }
 
     @SubscribeEvent

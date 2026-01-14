@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block;
 
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
+import com.sonamorningstar.eternalartifacts.content.block.base.ModLayeredCauldronBlack;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BluePlasticCauldronBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
@@ -15,31 +16,39 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-public class BluePlasticCauldronBlock extends LayeredCauldronBlock implements EntityBlock {
+public class BluePlasticCauldronBlock extends ModLayeredCauldronBlack implements EntityBlock {
+    public static final int MIN_LEVEL = 1;
+    public static final int MAX_LEVEL = 3;
+    public static final IntegerProperty LEVEL = IntegerProperty.create("level", MIN_LEVEL, MAX_LEVEL);
+    
     public BluePlasticCauldronBlock(Properties props) {
-        super(Biome.Precipitation.NONE, ModCauldronInteraction.BLUE_PLASTIC, props);
+        super(ModCauldronInteraction.BLUE_PLASTIC, props);
     }
+    
+    @Override
+    public IntegerProperty getLevelProperty() { return LEVEL; }
+    
+    @Override
+    public int getMinLevel() { return MIN_LEVEL; }
+    
+    @Override
+    public int getMaxLevel() { return MAX_LEVEL; }
 
     @Override
-    public MapCodec<LayeredCauldronBlock> codec() { return simpleCodec(BluePlasticCauldronBlock::new);}
+    public MapCodec<ModLayeredCauldronBlack> codec() { return simpleCodec(BluePlasticCauldronBlock::new);}
 
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
@@ -77,9 +86,9 @@ public class BluePlasticCauldronBlock extends LayeredCauldronBlock implements En
         if(blockEntity instanceof BluePlasticCauldronBlockEntity cauldronBlockEntity) {
             int cooldown = cauldronBlockEntity.cooldown;
             double padding = (random.nextDouble()*10/16D) + 3/16D;
-            double d0 = (double)pos.getX() + padding;
             double d1 = (double)pos.getY() + 1;
             double d2 = (double)pos.getZ() + padding;
+            double d0 = (double)pos.getX() + padding;
             if (cooldown > 0) {
                 if (random.nextDouble() < 0.1) level.playLocalSound(d0, d1, d2, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0F, 1.0F, false);
                 level.addParticle(
@@ -93,11 +102,6 @@ public class BluePlasticCauldronBlock extends LayeredCauldronBlock implements En
                 );
             }
         }
-    }
-
-    @Override
-    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return Items.CAULDRON.getDefaultInstance();
     }
 
     @Nullable

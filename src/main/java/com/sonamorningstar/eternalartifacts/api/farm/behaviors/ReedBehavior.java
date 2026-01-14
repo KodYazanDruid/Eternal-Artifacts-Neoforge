@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.api.farm.behaviors;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,7 +35,7 @@ public class ReedBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public List<ItemStack> harvest(Level level, BlockPos pos, @Nullable ItemStack tool) {
+	public List<ItemStack> harvest(Level level, BlockPos pos, @Nullable ItemStack tool, @Nullable Entity harvester) {
 		List<ItemStack> drops = new ArrayList<>();
 		BlockState state = level.getBlockState(pos);
 		int height = 0;
@@ -50,7 +51,7 @@ public class ReedBehavior implements FarmBehavior {
 				BlockState targetState = level.getBlockState(targetPos);
 				if (isCorrectState(targetState)) {
 					drops.addAll(Block.getDrops(targetState, (ServerLevel) level, targetPos,
-						level.getBlockEntity(pos), null,
+						level.getBlockEntity(pos), harvester,
 						tool == null ? ItemStack.EMPTY : tool));
 					level.destroyBlock(targetPos, false);
 				}

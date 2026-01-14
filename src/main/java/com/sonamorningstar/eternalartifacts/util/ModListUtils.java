@@ -1,12 +1,10 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -19,15 +17,16 @@ import java.util.Optional;
 
 public class ModListUtils {
 	private static final Map<String, String> modIdCache = new HashMap<>();
-
+	
+	public static Optional<String> getBlockCreatorModId(Block block) {
+		return getCreatorModId(BuiltInRegistries.BLOCK, block);
+	}
+	
 	public static Optional<String> getFluidCreatorModId(FluidStack fluid) {
-		//if (fluid.isEmpty()) return Optional.empty();
-		//return Optional.of(getModNameForModId(BuiltInRegistries.FLUID.getKey(fluid.getFluid()).getNamespace()));
 		return getCreatorModId(BuiltInRegistries.FLUID, fluid.getFluid());
 	}
 	
 	public static Optional<String> getEntityCreatorModId(EntityType<?> entityType) {
-		//return Optional.of(getModNameForModId(BuiltInRegistries.ENTITY_TYPE.getKey(entityType).getNamespace()));
 		return getCreatorModId(BuiltInRegistries.ENTITY_TYPE, entityType);
 	}
 	

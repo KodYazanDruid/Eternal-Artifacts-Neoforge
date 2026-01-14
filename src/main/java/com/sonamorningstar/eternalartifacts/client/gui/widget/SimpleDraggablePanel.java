@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.*;
 import lombok.Getter;
@@ -219,6 +220,12 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 	public void toggle() {
 		this.visible = !this.visible;
 		this.active = !this.active;
+		if (visible && active) {
+			Screen screen = Minecraft.getInstance().screen;
+			if (screen instanceof AbstractModContainerScreen<?> amcs) {
+				amcs.bringPanelToFront(this);
+			}
+		}
 	}
 	
 	public void addUndragArea(Bounds bounds) {
@@ -281,7 +288,9 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 	protected void renderTitle(GuiGraphics gui, int mx, int my, float delta) {
 		gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		int titleColor = getTitleColorForBackground();
-		gui.drawString(Minecraft.getInstance().font, getMessage(), this.getX() + 8, this.getY() + 6, titleColor, false);
+		GuiDrawer.renderScrollingString(gui, Minecraft.getInstance().font, getMessage(),
+			this.getX() + 8, this.getY() + 6,
+			this.getX() + this.getWidth() - 16, this.getY() + 15, titleColor, false);
 		gui.setColor(FastColor.ARGB32.red(color) / 255.0F,
 			FastColor.ARGB32.green(color) / 255.0F,
 			FastColor.ARGB32.blue(color) / 255.0F,
@@ -346,16 +355,31 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 	}
 	
 	@Override
-	public boolean updateHover(double mx, double my) {
-		if (visible) {
-			for (GuiEventListener child : children) {
-				if (child instanceof Overlapping overlapping) {
-					overlapping.updateHover(mx, my);
+	public boolean updateHover(double mx, double my, boolean isBlocked) {
+		if (!visible) return false;
+		
+		boolean isOverSelf = isMouseOverSelf(mx, my);
+		boolean anyChildHovered = false;
+		
+		// Child'ları ters sırada kontrol et (en üstteki önce)
+		for (int i = children.size() - 1; i >= 0; i--) {
+			GuiEventListener child = children.get(i);
+			if (child instanceof Overlapping overlapping) {
+				// Eğer bu panel engellenmiş veya başka bir child zaten hover ediliyorsa, diğer child'ları da engelle
+				boolean childBlocked = isBlocked || anyChildHovered;
+				boolean childHovered = overlapping.updateHover(mx, my, childBlocked);
+				if (childHovered && !childBlocked) {
+					anyChildHovered = true;
 				}
+			} else if (child instanceof AbstractWidget widget) {
+				// Normal widgetlar için hover durumunu güncelle
+				boolean shouldHover = !isBlocked && !anyChildHovered &&
+					widget.visible && widget.active && widget.isMouseOver(mx, my);
+				widget.setFocused(shouldHover);
 			}
-			return true;
 		}
-		return false;
+		
+		return isOverSelf || anyChildHovered;
 	}
 	
 	@Override

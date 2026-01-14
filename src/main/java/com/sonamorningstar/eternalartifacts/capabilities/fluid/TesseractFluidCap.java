@@ -74,6 +74,8 @@ public class TesseractFluidCap extends ModFluidStorage {
 		if (network != null) {
 			network.setSavedData(serializeNBT());
 		}
-		TesseractNetworks.get(tesseract.getLevel()).getTesseracts().get(network).forEach(Tesseract::invalidateCapabilities);
+		TesseractNetworks networks = TesseractNetworks.get(tesseract.getLevel());
+		networks.getTesseracts().get(network).forEach(Tesseract::invalidateCapabilities);
+		networks.setDirty();
 	}
 }

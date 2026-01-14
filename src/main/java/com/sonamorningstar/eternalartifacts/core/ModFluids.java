@@ -3,9 +3,9 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.fluid.HotSpringWaterLiquidBlock;
 import com.sonamorningstar.eternalartifacts.content.fluid.PinkSlimeLiquidBlock;
 import com.sonamorningstar.eternalartifacts.content.fluid.SludgeLiquidBlock;
-import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredRegister;
-import com.sonamorningstar.eternalartifacts.registrar.GenericLiquidHolder;
-import com.sonamorningstar.eternalartifacts.registrar.LiquidBlockFluidHolder;
+import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
+import com.sonamorningstar.eternalartifacts.registrar.FluidRegistration;
+import com.sonamorningstar.eternalartifacts.registrar.FluidRegistry;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.MapColor;
@@ -13,59 +13,143 @@ import net.minecraft.world.level.material.MapColor;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class ModFluids {
-    public static final FluidDeferredRegister FLUIDS = new FluidDeferredRegister(MODID);
+    public static final FluidRegistry FLUIDS = new FluidRegistry(MODID);
 
-    public static final GenericLiquidHolder NOUS = FLUIDS.register(
-            "nous", 7, 3000, 4500, Rarity.EPIC,
-            38, 178, 82, MapColor.COLOR_LIGHT_GREEN, false
-    );
-    public static final GenericLiquidHolder LIQUID_MEAT = FLUIDS.register(
-            "liquid_meat", 0, 6000, 5000, Rarity.RARE,
-            23, 61, 49, MapColor.COLOR_BROWN, false
-    );
-    public static final LiquidBlockFluidHolder<PinkSlimeLiquidBlock> PINK_SLIME = FLUIDS.register(
-            "pink_slime", PinkSlimeLiquidBlock::new, 0, 5000, 4500, Rarity.RARE,
-            201, 87, 185, MapColor.COLOR_PINK, false
-    );
-    public static final GenericLiquidHolder BLOOD = FLUIDS.register(
-            "blood", 0, 4000, 3500, Rarity.RARE,
-            186, 26, 16, MapColor.COLOR_RED, false
-    );
-    public static final GenericLiquidHolder LIQUID_PLASTIC = FLUIDS.register(
-            "liquid_plastic", 0, 4500, 3000, Rarity.RARE,
-            232, 225, 213, MapColor.TERRACOTTA_WHITE, false
-    );
-    public static final GenericLiquidHolder BEER = FLUIDS.register(
-            "beer", 0, 1000, 1000, Rarity.COMMON,
-            153, 131, 36, MapColor.TERRACOTTA_ORANGE, false
-    );
-    public static final GenericLiquidHolder CRUDE_OIL = FLUIDS.register(
-            "crude_oil", 0, 1100, 2500, Rarity.UNCOMMON,
-            43, 25, 7, MapColor.COLOR_BLACK, true, 0xFF2B1907
-    );
-    public static final GenericLiquidHolder GASOLINE = FLUIDS.register(
-            "gasoline", 0, 750, 400, Rarity.RARE,
-            227, 242, 163, MapColor.TERRACOTTA_LIGHT_GREEN, true, 0xF0E3F2A3
-    );
-    public static final GenericLiquidHolder DIESEL = FLUIDS.register(
-            "diesel", 0, 830, 900, Rarity.RARE,
-            217, 164, 65, MapColor.TERRACOTTA_ORANGE, true, 0xF0D9A441
-    );
-    public static final GenericLiquidHolder NAPHTHA = FLUIDS.register(
-            "naphtha", 0, 850, 600, Rarity.RARE,
-            245, 213, 128, MapColor.TERRACOTTA_YELLOW, true, 0xF9F5D580
-    );
-    public static final LiquidBlockFluidHolder<HotSpringWaterLiquidBlock> HOT_SPRING_WATER = FLUIDS.register(
-            "hot_spring_water", HotSpringWaterLiquidBlock::new, 0, 1000, 1000, Rarity.RARE,
-            22, 54, 58, MapColor.COLOR_LIGHT_BLUE, true, 0xC500A4B3
-    );
-    public static final LiquidBlockFluidHolder<SludgeLiquidBlock> SLUDGE = FLUIDS.register(
-        "sludge", SludgeLiquidBlock::new, 0, 4000, 2000, Rarity.UNCOMMON,
-        44, 11, 1, MapColor.COLOR_PURPLE, true, 0xFF2C0B0B
-    );
-    
-    public static final LiquidBlockFluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion(
-            "potion", 0, 1000, 1000
+    public static final FluidHolder<LiquidBlock> NOUS = FLUIDS.register(
+            FluidRegistration.create("nous")
+                    .light(7)
+                    .density(3000)
+                    .viscosity(4500)
+                    .rarity(Rarity.EPIC)
+                    .color(38, 178, 82)
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .build()
     );
 
+    public static final FluidHolder<LiquidBlock> LIQUID_MEAT = FLUIDS.register(
+            FluidRegistration.create("liquid_meat")
+                    .density(6000)
+                    .viscosity(5000)
+                    .rarity(Rarity.RARE)
+                    .color(23, 61, 49)
+                    .mapColor(MapColor.COLOR_BROWN)
+                    .build()
+    );
+
+    public static final FluidHolder<PinkSlimeLiquidBlock> PINK_SLIME = FLUIDS.register(
+            FluidRegistration.create("pink_slime")
+                    .block(PinkSlimeLiquidBlock::new)
+                    .density(5000)
+                    .viscosity(4500)
+                    .rarity(Rarity.RARE)
+                    .color(201, 87, 185)
+                    .mapColor(MapColor.COLOR_PINK)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> BLOOD = FLUIDS.register(
+            FluidRegistration.create("blood")
+                    .density(4000)
+                    .viscosity(3500)
+                    .rarity(Rarity.RARE)
+                    .color(186, 26, 16)
+                    .mapColor(MapColor.COLOR_RED)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> LIQUID_PLASTIC = FLUIDS.register(
+            FluidRegistration.create("liquid_plastic")
+                    .density(4500)
+                    .viscosity(3000)
+                    .rarity(Rarity.RARE)
+                    .color(232, 225, 213)
+                    .mapColor(MapColor.TERRACOTTA_WHITE)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> BEER = FLUIDS.register(
+            FluidRegistration.create("beer")
+                    .density(1000)
+                    .viscosity(1000)
+                    .rarity(Rarity.COMMON)
+                    .color(153, 131, 36)
+                    .mapColor(MapColor.TERRACOTTA_ORANGE)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> CRUDE_OIL = FLUIDS.register(
+            FluidRegistration.create("crude_oil")
+                    .density(1100)
+                    .viscosity(2500)
+                    .rarity(Rarity.UNCOMMON)
+                    .color(43, 25, 7)
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .genericTexture()
+                    .tint(0xFF2B1907)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> GASOLINE = FLUIDS.register(
+            FluidRegistration.create("gasoline")
+                    .density(750)
+                    .viscosity(400)
+                    .rarity(Rarity.RARE)
+                    .color(227, 242, 163)
+                    .mapColor(MapColor.TERRACOTTA_LIGHT_GREEN)
+                    .genericTexture()
+                    .tint(0xF0E3F2A3)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> DIESEL = FLUIDS.register(
+            FluidRegistration.create("diesel")
+                    .density(830)
+                    .viscosity(900)
+                    .rarity(Rarity.RARE)
+                    .color(217, 164, 65)
+                    .mapColor(MapColor.TERRACOTTA_ORANGE)
+                    .genericTexture()
+                    .tint(0xF0D9A441)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> NAPHTHA = FLUIDS.register(
+            FluidRegistration.create("naphtha")
+                    .density(850)
+                    .viscosity(600)
+                    .rarity(Rarity.RARE)
+                    .color(245, 213, 128)
+                    .mapColor(MapColor.TERRACOTTA_YELLOW)
+                    .genericTexture()
+                    .tint(0xF9F5D580)
+                    .build()
+    );
+
+    public static final FluidHolder<HotSpringWaterLiquidBlock> HOT_SPRING_WATER = FLUIDS.register(
+            FluidRegistration.create("hot_spring_water")
+                    .block(HotSpringWaterLiquidBlock::new)
+                    .density(1000)
+                    .viscosity(1000)
+                    .rarity(Rarity.RARE)
+                    .color(22, 54, 58)
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .genericTexture()
+                    .tint(0xC500A4B3)
+                    .build()
+    );
+
+    public static final FluidHolder<SludgeLiquidBlock> SLUDGE = FLUIDS.register(
+            FluidRegistration.create("sludge")
+                    .block(SludgeLiquidBlock::new)
+                    .density(4000)
+                    .viscosity(2000)
+                    .rarity(Rarity.UNCOMMON)
+                    .color(44, 11, 1)
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .genericTexture()
+                    .tint(0xFF2C0B0B)
+                    .build()
+    );
+
+    public static final FluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion("potion", 0, 1000, 1000);
 }

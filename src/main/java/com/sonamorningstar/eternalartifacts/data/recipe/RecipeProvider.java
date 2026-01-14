@@ -862,12 +862,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     private static void createMeatShredderRecipe(RecipeOutput recipeOutput, ItemStack input, int output) {
         String path = BuiltInRegistries.ITEM.getKey(input.getItem()).getPath();
-        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT.getStillFluidHolder(), output)))
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT.getStillFluid(), output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+path));
     }
     private static void createMeatShredderRecipe(RecipeOutput recipeOutput, TagKey<Item> input, int output) {
         String path = input.location().getPath();
-        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT.getStillFluidHolder(), output)))
+        SpecialRecipeBuilder.special(category -> new MeatShredderRecipe(Ingredient.of(input), new FluidStack(ModFluids.LIQUID_MEAT.getStillFluid(), output)))
                 .save(recipeOutput, new ResourceLocation(MODID, "meat_shredding/"+ path));
     }
 

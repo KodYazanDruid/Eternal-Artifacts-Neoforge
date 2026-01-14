@@ -1,24 +1,25 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.filter.FluidFilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.FluidStackEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemFilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemStackEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
-import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
+import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
 import com.sonamorningstar.eternalartifacts.container.BlockInteractorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
+import com.sonamorningstar.eternalartifacts.util.ItemHelper;
+import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -30,20 +31,19 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * TODO: Add blockstate and block entity nbt support for filters.
- */
 @Getter
 public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> implements Filterable {
-	private final NonNullList<ItemFilterEntry> itemFilters = NonNullList.withSize(9, ItemStackEntry.EMPTY);
 	private final NonNullList<FluidFilterEntry> fluidFilters = NonNullList.withSize(9, FluidStackEntry.EMPTY);
+	private final NonNullList<BlockFilterEntry> blockFilters = NonNullList.withSize(9, BlockStateEntry.EMPTY);
 	
-	private boolean itemFilterWhitelist = false;
 	private boolean fluidFilterWhitelist = false;
-	private boolean itemFilterIgnoreNBT = true;
+	private boolean blockFilterWhitelist = false;
 	private boolean fluidFilterIgnoreNBT = true;
+	private boolean blockFilterIgnoreProperties = true;
 	
 	public BlockBreaker(BlockPos pos, BlockState blockState) {
 		super(ModMachines.BLOCK_BREAKER.getBlockEntity(), pos, blockState, (a, b, c, d) -> new BlockInteractorMenu(ModMachines.BLOCK_BREAKER.getMenu(), a, b, c, d));
@@ -69,6 +69,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		super.registerConfigs();
 		getConfiguration().add(new ReverseToggleConfig("block_mode"));
 		getConfiguration().add(new ReverseToggleConfig("fluid_mode"));
+		getConfiguration().add(new ToggleConfig("always_mine"));
 	}
 	
 	@Override
@@ -81,49 +82,17 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 	}
 	
 	@Override
-	public void setItemFilterWhitelist(boolean whitelist) {
-		this.itemFilterWhitelist = whitelist;
-		sendUpdate();
-	}
-	
-	@Override
-	public void setFluidFilterWhitelist(boolean whitelist) {
-		this.fluidFilterWhitelist = whitelist;
-		sendUpdate();
-	}
-	
-	@Override
-	public void setItemFilterIgnoreNBT(boolean ignoreNBT) {
-		this.itemFilterIgnoreNBT = ignoreNBT;
-		sendUpdate();
-	}
-	
-	@Override
-	public void setFluidFilterIgnoreNBT(boolean ignoreNBT) {
-		this.fluidFilterIgnoreNBT = ignoreNBT;
-		sendUpdate();
-	}
-	
-	// Silent setters for loading from NBT
-	@Override
-	public void setItemFilterWhitelistSilent(boolean whitelist) {
-		this.itemFilterWhitelist = whitelist;
-	}
-	
-	@Override
 	public void setFluidFilterWhitelistSilent(boolean whitelist) {
 		this.fluidFilterWhitelist = whitelist;
 	}
-	
 	@Override
-	public void setItemFilterIgnoreNBTSilent(boolean ignoreNBT) {
-		this.itemFilterIgnoreNBT = ignoreNBT;
-	}
-	
+	public void setBlockFilterWhitelistSilent(boolean whitelist) {this.blockFilterWhitelist = whitelist;}
 	@Override
 	public void setFluidFilterIgnoreNBTSilent(boolean ignoreNBT) {
 		this.fluidFilterIgnoreNBT = ignoreNBT;
 	}
+	@Override
+	public void setBlockFilterIgnorePropertiesSilent(boolean ignoreProperties) {this.blockFilterIgnoreProperties = ignoreProperties;}
 	
 	public int destroyTickStart = -1;
 	@Override
@@ -142,13 +111,10 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		ServerPlayerGameMode gameMode = fakePlayer.gameMode;
 		MachineConfiguration configs = getConfiguration();
 		
-		// Get the block item to check filter
-		ItemStack blockItem = new ItemStack(minedState.getBlock().asItem());
-		
-		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "block_mode"))).isDisabled()
-			&& !lvl.getBlockState(targetPos).isAir() && canWork(energy) &&
-				minedState.getBlock().canHarvestBlock(minedState, lvl, targetPos, fakePlayer) &&
-				matchesItemFilter(blockItem)){
+		if (!configs.get(ReverseToggleConfig.class, "block_mode").isDisabled() && !lvl.getBlockState(targetPos).isAir() && canWork(energy)
+			&& minedState.getBlock().canHarvestBlock(minedState, lvl, targetPos, fakePlayer) && matchesBlockFilter(minedState)
+			&& shouldMineBlock((ServerLevel) lvl, targetPos)) {
+			
 			spendEnergy(energy);
 			if (destroyTickStart == -1) {
 				gameMode.delayedTickStart = gameMode.gameTicks;
@@ -161,10 +127,10 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		FluidState fluidState = lvl.getFluidState(targetPos);
 		FluidStack fluidStack = new FluidStack(fluidState.getType(), 1000);
 		
-		if (!((ReverseToggleConfig) configs.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "fluid_mode"))).isDisabled()
-			&& !fluidState.isEmpty() && canWork(energy) && minedState.getBlock() instanceof BucketPickup bp && fluidState.isSource() &&
-				(tank.getFluid(0).isEmpty() || tank.getFluid(0).is(fluidState.getType())) &&
-				matchesFluidFilter(fluidStack)) {
+		if (!configs.get(ReverseToggleConfig.class, "fluid_mode").isDisabled() && !fluidState.isEmpty() && canWork(energy)
+			&& minedState.getBlock() instanceof BucketPickup bp && fluidState.isSource() &&
+				(tank.getFluid(0).isEmpty() || tank.getFluid(0).is(fluidState.getType())) && matchesFluidFilter(fluidStack)) {
+			
 			ItemStack bucketStack = bp.pickupBlock(fakePlayer, lvl, targetPos, minedState);
 			if (!bucketStack.isEmpty()) {
 				IFluidHandlerItem itemH = bucketStack.getCapability(Capabilities.FluidHandler.ITEM);
@@ -179,5 +145,27 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 				}
 			}
 		}
+	}
+	
+	public static final Map<Block, List<ItemStack>> cachedLootTables = new HashMap<>();
+	private boolean shouldMineBlock(ServerLevel sLevel, BlockPos targetPos) {
+		ToggleConfig alwaysMine = getConfiguration().get(ToggleConfig.class, "always_mine");
+		if (alwaysMine.isEnabled()) return true;
+		BlockState state = sLevel.getBlockState(targetPos);
+		List<ItemStack> table = cachedLootTables.computeIfAbsent(state.getBlock(), block ->
+			LootTableHelper.getItemsWithCounts(sLevel, state.getBlock().getLootTable())
+				.entrySet().stream()
+				.map(entry -> new ItemStack(entry.getKey(), entry.getValue().getSecond().intValue()))
+				.toList()
+		);
+		for (ItemStack stack : table) {
+			if (!stack.isEmpty()) {
+				var lastPair = ItemHelper.insertItemStackedForced(inventory, stack, true, outputSlots);
+				if (!lastPair.getFirst().isEmpty()) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 }

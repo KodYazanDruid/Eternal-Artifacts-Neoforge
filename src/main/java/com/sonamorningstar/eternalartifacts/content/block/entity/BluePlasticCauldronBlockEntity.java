@@ -9,10 +9,13 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
 public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements TickableServer {
     private final int cooldownValue = 200;
@@ -24,52 +27,36 @@ public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements Ti
 
     public ModItemStorage inventory = new ModItemStorage(1) {
         @Override
-        protected void onContentsChanged(int slot) {
-            BluePlasticCauldronBlockEntity.this.sendUpdate();
-        }
-
-        @Override
         public boolean isItemValid(int slot, ItemStack stack) {
             return false;
         }
-
+        
         @Override
         public ItemStack extractItem(int slot, int amount, boolean simulate) {
             if (amount == 0) return ItemStack.EMPTY;
             validateSlotIndex(slot);
             BluePlasticCauldronBlockEntity thisBe = BluePlasticCauldronBlockEntity.this;
             int layer = thisBe.getBlockState().getValue(BluePlasticCauldronBlock.LEVEL);
-            if (layer <= BluePlasticCauldronBlock.MAX_FILL_LEVEL && layer > 0) {
-                 if(thisBe.cooldown == 0) {
-                     BlockPos pos = thisBe.getBlockPos();
-                     Level level = thisBe.getLevel();
-                     if(layer == BluePlasticCauldronBlock.MIN_FILL_LEVEL) {
-                         if(level != null) {
-                             if(!simulate){
-                                 level.setBlockAndUpdate(pos, Blocks.CAULDRON.defaultBlockState());
-                                 //I am setting state to different block. IDK if these functions do anything lol.
-                                 thisBe.resetCooldown();
-                                 thisBe.sendUpdate();
-                             }
-                             return ModItems.PLASTIC_SHEET.toStack();
-                         }
-                     }else {
-                         if(level != null) {
-                             if(!simulate){
-                                 level.setBlockAndUpdate(pos, ModBlocks.BLUE_PLASTIC_CAULDRON.get().defaultBlockState().setValue(BluePlasticCauldronBlock.LEVEL, layer - 1));
-                                 thisBe.resetCooldown();
-                                 thisBe.sendUpdate();
-                             }
-                             return ModItems.PLASTIC_SHEET.toStack();
-                         }
-                    }
-                }
+             if(thisBe.cooldown == 0) {
+                 BlockPos pos = thisBe.getBlockPos();
+                 Level level = thisBe.getLevel();
+                 BlockState newState = layer == 1 ? Blocks.CAULDRON.defaultBlockState() :
+                     ModBlocks.BLUE_PLASTIC_CAULDRON.get().defaultBlockState().setValue(BluePlasticCauldronBlock.LEVEL, layer - 1);
+                 if (!simulate) {
+                     level.setBlockAndUpdate(pos, newState);
+                     level.playSound(null, pos, SoundEvents.ANCIENT_DEBRIS_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);
+                     level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
+                     thisBe.resetCooldown();
+                     thisBe.sendUpdate();
+                     level.invalidateCapabilities(pos);
+                 }
+                 return ModItems.PLASTIC_SHEET.toStack();
             }
             return ItemStack.EMPTY;
         }
 
         @Override
-        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {return ItemStack.EMPTY;}
+        public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) { return stack; }
     };
 
     @Override

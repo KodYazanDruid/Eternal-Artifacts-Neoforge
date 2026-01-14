@@ -2,13 +2,12 @@ package com.sonamorningstar.eternalartifacts.compat.emi.categories.base;
 
 import com.sonamorningstar.eternalartifacts.compat.emi.widgets.EtarTankWidget;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
-import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredHolder;
+import com.sonamorningstar.eternalartifacts.registrar.MachineHolder;
 import com.sonamorningstar.eternalartifacts.registrar.RecipeDeferredHolder;
 import dev.emi.emi.api.recipe.BasicEmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -31,11 +30,25 @@ public abstract class EAEmiRecipe extends BasicEmiRecipe {
         }
     }
     
-    protected TankWidget addEtarTank(WidgetHolder widgets, EmiIngredient stack, int x, int y, int width, int height, int capacity) {
+    protected EtarTankWidget addEtarTank(WidgetHolder widgets, EmiIngredient stack, int x, int y, int width, int height, int capacity) {
         return widgets.add(new EtarTankWidget(stack, x, y, width, height, capacity));
     }
+    
+    /**
+     * Add a large mod-style tank widget (18x56)
+     */
+    protected EtarTankWidget addLargeTank(WidgetHolder widgets, EmiIngredient stack, int x, int y, int capacity) {
+        return widgets.add(EtarTankWidget.large(stack, x, y, capacity));
+    }
+    
+    /**
+     * Add a small mod-style tank widget (18x18)
+     */
+    protected EtarTankWidget addSmallTank(WidgetHolder widgets, EmiIngredient stack, int x, int y, int capacity) {
+        return widgets.add(EtarTankWidget.small(stack, x, y, capacity));
+    }
 
-    protected static EmiRecipeCategory createCategory(RecipeDeferredHolder<?, ?> recipeHolder, MachineDeferredHolder<?, ?, ?, ?> machineHolder) {
+    protected static EmiRecipeCategory createCategory(RecipeDeferredHolder<?, ?> recipeHolder, MachineHolder<?, ?, ?, ?> machineHolder) {
         return new EmiRecipeCategory(recipeHolder.getKey(), EmiStack.of(machineHolder));
     }
 }

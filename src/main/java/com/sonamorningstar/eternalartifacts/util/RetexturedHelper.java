@@ -14,6 +14,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
 
 import java.text.Normalizer;
+import java.util.Locale;
 import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -24,7 +25,7 @@ public final class RetexturedHelper {
     public static Block getBlock(String name) {
         name = Normalizer.normalize(name, Normalizer.Form.NFD);
         name = name.replaceAll("[^\\p{ASCII}]", "");
-        return name.isEmpty() ? Blocks.AIR : BuiltInRegistries.BLOCK.get(new ResourceLocation(name.toLowerCase()));
+        return name.isEmpty() ? Blocks.AIR : BuiltInRegistries.BLOCK.get(new ResourceLocation(name.toLowerCase(Locale.ROOT)));
     }
 
     public static String getTextureName(CompoundTag tag) {

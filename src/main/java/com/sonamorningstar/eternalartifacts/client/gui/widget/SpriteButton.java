@@ -71,9 +71,6 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
     @Override
     protected void renderWidget(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         gui.setColor(1.0F, 1.0F, 1.0F, this.alpha);
-        /*RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();*/
-        // Depth test'i devre dışı bırakmıyoruz - parent panel'in z-index'ine uyacak
         if(textures != null)
             for(ResourceLocation texture : textures)
                 gui.blit(texture, getX(), getY(), 0, 0, getWidth(), getHeight(), getWidth(), getHeight());

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "G": {
+      "tag": "forge:glass"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    },
+    "L": {
+      "tag": "forge:gems/lapis"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "GCG",
+    "IMI"
+  ],
+  "result": {
+    "item": "eternalartifacts:solar_panel"
+  }
+}

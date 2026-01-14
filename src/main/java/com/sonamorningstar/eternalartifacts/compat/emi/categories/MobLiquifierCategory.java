@@ -37,6 +37,7 @@ import java.util.stream.Stream;
 
 public class MobLiquifierCategory extends EAEmiRecipe {
     private final EntityIngredient entityIngredient;
+    private final List<Integer> fluidAmounts = new java.util.ArrayList<>();
     private LivingEntity living;
     private static final ResourceLocation HEART = new ResourceLocation("textures/gui/sprites/hud/heart/half.png");
     private static final ResourceLocation HEART_CONTAINER = new ResourceLocation("textures/gui/sprites/hud/heart/container.png");
@@ -45,8 +46,11 @@ public class MobLiquifierCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory MOB_LIQUIFIER_CATEGORY = createCategory(ModRecipes.MOB_LIQUIFYING, ModMachines.MOB_LIQUIFIER);
     private static final Minecraft mc = Minecraft.getInstance();
     public MobLiquifierCategory(MobLiquifierRecipe recipe, ResourceLocation id) {
-        super(MOB_LIQUIFIER_CATEGORY, id, 144, 50);
-        recipe.getResultFluidList().forEach(fs -> outputs.add(EmiStack.of(fs.getFluid(), fs.getAmount())));
+        super(MOB_LIQUIFIER_CATEGORY, id, 150, 56);
+        recipe.getResultFluidList().forEach(fs -> {
+            fluidAmounts.add(fs.getAmount());
+            outputs.add(EmiStack.of(fs.getFluid(), fs.getAmount()));
+        });
         this.entityIngredient = recipe.getEntity();
         EntityType<?>[] types = entityIngredient.getEntityTypes();
         if (mc.level != null) this.living = ((LivingEntity) types[0].create(mc.level));
@@ -56,7 +60,7 @@ public class MobLiquifierCategory extends EAEmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         EntityType<?>[] types = entityIngredient.getEntityTypes();
 
-        widgets.addDrawable(0, 24, 38, 38, (gui, mouseX, mouseY, delta) -> {
+        widgets.addDrawable(0, 27, 38, 38, (gui, mouseX, mouseY, delta) -> {
             if (types.length > 1) {
                 EntityType<?> randomized = types[(int) ((mc.clientTickCount / 20) % (types.length))];
                 if (living.getType() != randomized) living = (LivingEntity) randomized.create(mc.level);
@@ -65,19 +69,20 @@ public class MobLiquifierCategory extends EAEmiRecipe {
             if (entityIngredient.values[0] instanceof EntityIngredient.TagValue value)
                 living.setCustomName(Component.literal("#"+value.tag().location()).withStyle(ChatFormatting.ITALIC));
             PoseStack pose = gui.pose();
-            EntityRendererHelper.renderEntityInGui(pose, 12, 24, 25, living);
+            EntityRendererHelper.renderEntityInGui(pose, 12, 27, 25, living);
             pose.pushPose();
             pose.translate(0, 0, 200);
             if (isInBounds(0, 0, 38, 38, mouseX, mouseY))
                 EntityRendererHelper.renderTooltip(gui, living, mouseX, mouseY, mc.options.advancedItemTooltips);
             pose.popPose();
         });
-        widgets.addText(Component.literal("1x "), 34, 10, 0, false);
-        widgets.addTexture(HEART_CONTAINER_TEXTURE, 46, 8);
-        widgets.addTexture(HEART_TEXTURE, 46, 8);
-        widgets.addTexture(EmiTexture.EMPTY_ARROW, 34, 17);
+        widgets.addText(Component.literal("1x "), 34, 13, 0, false);
+        widgets.addTexture(HEART_CONTAINER_TEXTURE, 46, 11);
+        widgets.addTexture(HEART_TEXTURE, 46, 11);
+        widgets.addTexture(EmiTexture.EMPTY_ARROW, 34, 20);
         for(int i = 0; i < outputs.size(); i++) {
-            widgets.addTank(outputs.get(i), 64 + i * 20, 0, 18, 50, 16000);
+            int capacity = fluidAmounts.get(i) * 2;
+            addLargeTank(widgets, outputs.get(i), 64 + i * 22, 0, capacity);
         }
     }
     

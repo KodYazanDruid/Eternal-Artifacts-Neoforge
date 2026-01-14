@@ -20,6 +20,7 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
         super(menu, playerInventory, title);
         this.machine = ((GenericMachine) menu.getBlockEntity());
         this.screenInfo = machine.getScreenInfo();
+        this.renderEPT = screenInfo.isShowEPT();
     }
 
     @Override
@@ -68,10 +69,5 @@ public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<Generi
             int xOff = menu.getBeTank() != null ? 0 : -18;
             gui.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX + xOff, this.inventoryLabelY, 4210752, false);
         }
-    }
-    
-    @Override
-    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
-        renderEnergyTooltip(gui, mx, my, screenInfo.isShowEPT());
     }
 }

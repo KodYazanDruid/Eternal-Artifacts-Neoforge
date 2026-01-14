@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.api.machine.GenericScreenInfo;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
-import com.sonamorningstar.eternalartifacts.registrar.MachineDeferredHolder;
+import com.sonamorningstar.eternalartifacts.registrar.MachineHolder;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 public abstract class GenericMachine extends SidedTransferMachine<GenericMachineMenu> {
     protected final Map<Integer, Consumer<Integer>> buttonConsumerMap = new HashMap<>();
     protected boolean performAutoTransferItems = true;
-    public GenericMachine(MachineDeferredHolder<?, ? ,? ,?> machineHolder, BlockPos pos, BlockState blockState) {
+    public GenericMachine(MachineHolder<?, ? ,? ,?> machineHolder, BlockPos pos, BlockState blockState) {
         super(machineHolder.getBlockEntity(), pos, blockState, (a, b, c, d) -> new GenericMachineMenu(machineHolder.getMenu(), a, b ,c ,d));
     }
 

@@ -1,4 +1,4 @@
-// 1.20.4	2025-12-14T20:55:43.9675602	Loot Tables
+// 1.20.4	2026-01-10T15:15:02.0315948	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -30,6 +30,7 @@ b11d77e28d142f020de3c7d9420c2d6a62216a39 data/eternalartifacts/loot_tables/block
 0c768e77e4b86518ed3ccff9ca952ae769ae6610 data/eternalartifacts/loot_tables/blocks/covered_copper_cable.json
 d62be8cf1703b046786fdbd94d7e2630a6198bd3 data/eternalartifacts/loot_tables/blocks/covered_gold_cable.json
 98e42e1ecf1a9c4b7fd02a39c98f4e02bc0d5e53 data/eternalartifacts/loot_tables/blocks/covered_tin_cable.json
+5b1305859612c61b04c7f14f685b8bd0c1199784 data/eternalartifacts/loot_tables/blocks/crude_oil_cauldron.json
 d1338c87330bfb7a63fb7428938cb6720efc11cc data/eternalartifacts/loot_tables/blocks/culinary_dynamo.json
 fc18319a2ccfdec4e066eed864fa7868821d032e data/eternalartifacts/loot_tables/blocks/deepslate_aluminum_ore.json
 36b93c29e60730e91048865cb63c2c3a34fe3fc8 data/eternalartifacts/loot_tables/blocks/deepslate_manganese_ore.json
@@ -107,6 +108,7 @@ c2b3725bc04aefdf8c582edb19747a9bc9aa57ec data/eternalartifacts/loot_tables/block
 255fdab5991e77492c3a31b460c219af9fb1e61d data/eternalartifacts/loot_tables/blocks/moss_manganese_ore.json
 3ab053a66dd3e964f8272dbe926493f673d368c1 data/eternalartifacts/loot_tables/blocks/moss_redstone_ore.json
 57ee611186a46abe8e88e321160c0755e1e529c3 data/eternalartifacts/loot_tables/blocks/moss_tin_ore.json
+e6b37ee47b85cd6238cf58df7079d8c50c0ef6ea data/eternalartifacts/loot_tables/blocks/naphtha_cauldron.json
 8da1570c327d5c6d174973fbd19fa707ac43155d data/eternalartifacts/loot_tables/blocks/netherite_drum.json
 fb5551f108fb6a5bffc842f182ab8bf1b0f86366 data/eternalartifacts/loot_tables/blocks/nous_tank.json
 4718e3b2d5f05d863b59c5e944d17c9ecce12099 data/eternalartifacts/loot_tables/blocks/obsidian_bricks.json

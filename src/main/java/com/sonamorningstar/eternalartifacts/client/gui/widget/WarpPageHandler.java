@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Getter
 public class WarpPageHandler {
@@ -63,7 +64,7 @@ public class WarpPageHandler {
     public List<Warp> getWarps(String filter) {
         List<Warp> filteredWarps = new ArrayList<>();
         for (Warp warp : warpList) {
-            if (warp.getLabel().toLowerCase().contains(filter.toLowerCase())) {
+            if (warp.getLabel().toLowerCase(Locale.ROOT).contains(filter.toLowerCase(Locale.ROOT))) {
                 filteredWarps.add(warp);
             }
         }
@@ -73,7 +74,7 @@ public class WarpPageHandler {
     public List<Warp> getWarps(String filter, int page) {
         List<Warp> filteredWarps = new ArrayList<>();
         for (Warp warp : warpList) {
-            if (warp.getLabel().toLowerCase().contains(filter.toLowerCase())) {
+            if (warp.getLabel().toLowerCase(Locale.ROOT).contains(filter.toLowerCase(Locale.ROOT))) {
                 filteredWarps.add(warp);
             }
         }

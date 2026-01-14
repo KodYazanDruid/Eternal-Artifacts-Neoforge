@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/bronze"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "M": {
+      "item": "minecraft:brewing_stand"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    " C ",
+    "BMB",
+    "RJR"
+  ],
+  "result": {
+    "item": "eternalartifacts:alchemical_dynamo"
+  }
+}

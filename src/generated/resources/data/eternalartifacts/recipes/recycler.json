@@ -3,7 +3,10 @@
   "category": "redstone",
   "key": {
     "A": {
-      "tag": "forge:ingots/tin"
+      "tag": "forge:ingots/aluminum"
+    },
+    "B": {
+      "tag": "forge:ingots/bronze"
     },
     "C": {
       "item": "eternalartifacts:capacitor"
@@ -15,11 +18,11 @@
       "item": "minecraft:hopper"
     },
     "R": {
-      "tag": "forge:ingots/brick"
+      "tag": "forge:dusts/redstone"
     }
   },
   "pattern": [
-    "RCR",
+    "BCB",
     "AMA",
     "RPR"
   ],

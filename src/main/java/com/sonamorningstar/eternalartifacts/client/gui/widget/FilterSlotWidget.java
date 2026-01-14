@@ -6,15 +6,14 @@ import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.slot.FilterFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
-import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.FluidStackFilterToServer;
-import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
+import com.sonamorningstar.eternalartifacts.network.*;
 import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +21,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 
@@ -41,6 +42,13 @@ public class FilterSlotWidget extends SlotWidget {
 	private BiConsumer<FilterSlotWidget, Either<ItemStack, FluidStack>> onRightClick;
 	@Setter
 	private boolean highlighted = false;
+	@Setter
+	private boolean isBlockFilter = false;
+	
+	private static final int ITEM_STACK_HIGHLIGHT = 0x8054FFA3;  // Yeşil
+	private static final int ITEM_TAG_HIGHLIGHT = 0xC040CC80;    // Koyu yeşil
+	private static final int BLOCK_STATE_HIGHLIGHT = 0x80FFA354; // Turuncu
+	private static final int BLOCK_TAG_HIGHLIGHT = 0xC0CC8040;   // Koyu turuncu
 	
 	public FilterSlotWidget(FilterFakeSlot slot, Supplier<FilterEntry> filterEntrySupplier) {
 		super(slot);
@@ -76,8 +84,10 @@ public class FilterSlotWidget extends SlotWidget {
 			!fluidContained.get().getFluid().defaultFluidState().createLegacyBlock().isEmpty();
 		boolean isBlockItem = carried.getItem() instanceof BlockItem;
 		
-		if (!carried.isEmpty() && !isBlockItem && !hasPlaceableFluid) {
-			return;
+		// Block filter modunda: BlockItem veya dünyaya koyulabilir sıvı kabul et
+		// Item filter modunda: BlockItem (sıvı içeriyorsa) veya dünyaya koyulabilir sıvı kabul et
+		if (!carried.isEmpty()) {
+			if (!isBlockItem && !hasPlaceableFluid) return;
 		}
 		
 		if (button == 1) {
@@ -87,62 +97,140 @@ public class FilterSlotWidget extends SlotWidget {
 		
 		if (!carried.isEmpty()) {
 			FluidStack fluidInItem = fluidContained.orElse(FluidStack.EMPTY);
-			if (isBlockItem && !fluidInItem.isEmpty()) {
-				FilterEntry currentEntry = filterEntrySupplier.get();
-				if (currentEntry instanceof ItemStackEntry ise && !ise.isEmpty()) {
-					FluidStack existingFluid = FluidUtil.getFluidContained(ise.getFilterStack()).orElse(FluidStack.EMPTY);
-					if (!existingFluid.isEmpty() && existingFluid.getFluid().isSame(fluidInItem.getFluid())) {
-						FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
-						filterSlot.setFilter(newEntry);
-						filterSlot.set(ItemStack.EMPTY);
-						Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
-						notifyFilterChanged(newEntry);
-						return;
+			
+			if (isBlockFilter) {
+				// Block filter modu - BlockItem -> BlockStateEntry, sıvı -> FluidStackEntry
+				if (isBlockItem) {
+					BlockItem blockItem = (BlockItem) carried.getItem();
+					BlockState blockState = blockItem.getBlock().defaultBlockState();
+					
+					// Eğer aynı blok zaten varsa ve sıvı içeriyorsa, sıvıya geç
+					if (!fluidInItem.isEmpty()) {
+						FilterEntry currentEntry = filterEntrySupplier.get();
+						if (currentEntry instanceof BlockStateEntry bse && !bse.isEmpty() && bse.getFilterState() != null) {
+							if (bse.getFilterState().getBlock() == blockState.getBlock()) {
+								FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
+								filterSlot.setFilter(newEntry);
+								filterSlot.set(ItemStack.EMPTY);
+								Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
+								notifyFilterChanged(newEntry);
+								return;
+							}
+						}
 					}
+					
+					BlockStateEntry newEntry = BlockStateEntry.matchBlockOnly(blockState);
+					filterSlot.setFilter(newEntry);
+					filterSlot.set(ItemStack.EMPTY);
+					Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, blockState));
+					notifyFilterChanged(newEntry);
+				} else if (!fluidInItem.isEmpty()) {
+					// Sıvı filtresi ekle
+					FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
+					filterSlot.setFilter(newEntry);
+					filterSlot.set(ItemStack.EMPTY);
+					Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
+					notifyFilterChanged(newEntry);
 				}
-				ItemStack filterStack = carried.copyWithCount(1);
-				ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
-				filterSlot.setFilter(newEntry);
-				filterSlot.set(filterStack);
-				Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
-				notifyFilterChanged(newEntry);
-			} else if (!fluidInItem.isEmpty()) {
-				FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
-				filterSlot.setFilter(newEntry);
-				filterSlot.set(ItemStack.EMPTY);
-				Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
-				notifyFilterChanged(newEntry);
 			} else {
-				ItemStack filterStack = carried.copyWithCount(1);
-				ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
-				filterSlot.setFilter(newEntry);
-				filterSlot.set(filterStack);
-				Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
-				notifyFilterChanged(newEntry);
+				// Item filter modu - mevcut mantık
+				if (isBlockItem && !fluidInItem.isEmpty()) {
+					FilterEntry currentEntry = filterEntrySupplier.get();
+					if (currentEntry instanceof ItemStackEntry ise && !ise.isEmpty()) {
+						FluidStack existingFluid = FluidUtil.getFluidContained(ise.getFilterStack()).orElse(FluidStack.EMPTY);
+						if (!existingFluid.isEmpty() && existingFluid.getFluid().isSame(fluidInItem.getFluid())) {
+							FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
+							filterSlot.setFilter(newEntry);
+							filterSlot.set(ItemStack.EMPTY);
+							Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
+							notifyFilterChanged(newEntry);
+							return;
+						}
+					}
+					ItemStack filterStack = carried.copyWithCount(1);
+					ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
+					filterSlot.setFilter(newEntry);
+					filterSlot.set(filterStack);
+					Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
+					notifyFilterChanged(newEntry);
+				} else if (!fluidInItem.isEmpty()) {
+					FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
+					filterSlot.setFilter(newEntry);
+					filterSlot.set(ItemStack.EMPTY);
+					Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
+					notifyFilterChanged(newEntry);
+				} else {
+					ItemStack filterStack = carried.copyWithCount(1);
+					ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
+					filterSlot.setFilter(newEntry);
+					filterSlot.set(filterStack);
+					Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
+					notifyFilterChanged(newEntry);
+				}
 			}
 		} else {
-			filterSlot.setFilter(ItemFilterEntry.Empty.create(true));
+			if (isBlockFilter) {
+				filterSlot.setFilter(BlockFilterEntry.Empty.create(true));
+				Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, null));
+				notifyFilterChanged(BlockFilterEntry.Empty.create(true));
+			} else {
+				filterSlot.setFilter(ItemFilterEntry.Empty.create(true));
+				Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, ItemStack.EMPTY));
+				notifyFilterChanged(ItemFilterEntry.Empty.create(true));
+			}
 			filterSlot.set(ItemStack.EMPTY);
-			Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, ItemStack.EMPTY));
-			notifyFilterChanged(ItemFilterEntry.Empty.create(true));
 		}
 	}
 	
 	private void handleRightClick(ItemStack carried) {
-		if (onRightClick == null) return;
-		
+		FilterEntry entry = filterEntrySupplier.get();
 		if (!carried.isEmpty()) {
+			if (carried.getItem() instanceof BlockItem blockItem && onRightClick != null) {
+				if (entry instanceof ItemStackEntry ise && !ise.isEmpty()) {
+					FluidStack fluidInFilter = FluidUtil.getFluidContained(ise.getFilterStack()).orElse(FluidStack.EMPTY);
+					if (!fluidInFilter.isEmpty()) {
+						onRightClick.accept(this, Either.right(fluidInFilter.copy()));
+						return;
+					}
+				} else if (entry instanceof BlockStateEntry bse && !bse.isEmpty()) {
+					BlockState state = bse.getFilterState();
+					if (state != null && !state.isAir()) {
+						ItemStack carriedBlockStack = new ItemStack(bse.getFilterState().getBlock().asItem());
+						FluidStack fluidInFilter = FluidUtil.getFluidContained(carriedBlockStack).orElse(FluidStack.EMPTY);
+						FluidStack fluidInCarried = FluidUtil.getFluidContained(carried).orElse(FluidStack.EMPTY);
+						if (!fluidInFilter.isEmpty() && !fluidInCarried.isEmpty() && fluidInFilter.isFluidEqual(fluidInCarried)) {
+							onRightClick.accept(this, Either.right(fluidInFilter.copy()));
+							return;
+						}
+					}
+				} else {
+					ItemStack blockStack = new ItemStack(blockItem);
+					if (!blockStack.isEmpty()) {
+						onRightClick.accept(this, Either.left(blockStack));
+						return;
+					}
+				}
+			}
 			FluidStack fluidInItem = FluidUtil.getFluidContained(carried).orElse(FluidStack.EMPTY);
-			if (!fluidInItem.isEmpty()) {
-				onRightClick.accept(this, Either.right(fluidInItem.copy()));
-			} else {
-				onRightClick.accept(this, Either.left(carried.copy()));
+			if (onRightClick != null) {
+				if (!fluidInItem.isEmpty()) {
+					onRightClick.accept(this, Either.right(fluidInItem.copy()));
+				} else {
+					onRightClick.accept(this, Either.left(carried.copy()));
+				}
 			}
 		} else {
-			FilterEntry entry = filterEntrySupplier.get();
-			if (entry instanceof ItemStackEntry ise && !ise.isEmpty()) {
+			if (entry instanceof ItemStackEntry ise && !ise.isEmpty() && onRightClick != null) {
 				onRightClick.accept(this, Either.left(ise.getFilterStack().copy()));
-			} else if (entry instanceof FluidStackEntry fse && !fse.isEmpty()) {
+			} else if (entry instanceof BlockStateEntry bse && !bse.isEmpty() && onRightClick != null) {
+				BlockState state = bse.getFilterState();
+				if (state != null && !state.isAir()) {
+					ItemStack blockStack = new ItemStack(state.getBlock().asItem());
+					if (!blockStack.isEmpty()) {
+						onRightClick.accept(this, Either.left(blockStack));
+					}
+				}
+			}else if (entry instanceof FluidStackEntry fse && !fse.isEmpty() && onRightClick != null) {
 				onRightClick.accept(this, Either.right(fse.getFilterStack().copy()));
 			}
 		}
@@ -176,11 +264,12 @@ public class FilterSlotWidget extends SlotWidget {
 		if (entry instanceof ItemStackEntry itemStackEntry) {
 			ItemStack stack = itemStackEntry.getFilterStack();
 			if (!stack.isEmpty()) {
+				gui.fill(x, y, x + 16, y + 16, ITEM_STACK_HIGHLIGHT);
 				renderSlotContents(gui, stack, filterSlot, x, y, null);
 			}
 		} else if (entry instanceof ItemTagEntry itemTagEntry) {
 			ItemStack[] items = Ingredient.of(itemTagEntry.getTag()).getItems();
-			if (!ItemRendererHelper.renderItemCarousel(gui, items, x, y, 0x8054FFA3, 1.0F)) {
+			if (!ItemRendererHelper.renderItemCarousel(gui, items, x, y, ITEM_TAG_HIGHLIGHT, 1.0F)) {
 				renderSlotContents(gui, filterSlot.getItem(), filterSlot, x, y, null);
 			}
 		} else if (entry instanceof FluidStackEntry fluidStackEntry) {
@@ -191,6 +280,30 @@ public class FilterSlotWidget extends SlotWidget {
 		} else if (entry instanceof FluidTagEntry fluidTagEntry) {
 			FluidStack[] fluidStacks = FluidIngredient.of(fluidTagEntry.getTag(), 1000).getFluidStacks();
 			FluidRendererHelper.renderFluidStackCarousel(gui, fluidStacks, x, y, 16, 16);
+		} else if (entry instanceof BlockStateEntry blockStateEntry) {
+			BlockState state = blockStateEntry.getFilterState();
+			if (state != null && !state.isAir()) {
+				gui.fill(x, y, x + 16, y + 16, BLOCK_STATE_HIGHLIGHT);
+				ItemStack blockStack = new ItemStack(state.getBlock().asItem());
+				if (!blockStack.isEmpty()) {
+					renderSlotContents(gui, blockStack, filterSlot, x, y, null);
+				} else {
+					gui.blit(new ResourceLocation("textures/item/barrier.png"),
+						x, y, 0, 0, 16, 16, 16, 16);
+				}
+			}
+		} else if (entry instanceof BlockTagEntry blockTagEntry) {
+			Block[] blocks = BuiltInRegistries.BLOCK.stream()
+				.filter(block -> block.defaultBlockState().is(blockTagEntry.getTag()))
+				.toArray(Block[]::new);
+			if (blocks.length > 0) {
+				gui.fill(x, y, x + 16, y + 16, BLOCK_TAG_HIGHLIGHT);
+				ItemStack[] items = new ItemStack[blocks.length];
+				for (int i = 0; i < blocks.length; i++) {
+					items[i] = new ItemStack(blocks[i].asItem());
+				}
+				ItemRendererHelper.renderItemCarousel(gui, items, x, y, 0, 1.0F);
+			}
 		} else {
 			ItemStack stack = filterSlot.getItem();
 			if (!stack.isEmpty()) {
@@ -238,6 +351,27 @@ public class FilterSlotWidget extends SlotWidget {
 				tag.putString("EtarFluidStackName", fluidTagEntry.getTag().location().toString());
 				gui.renderTooltip(mc.font, StringUtils.getTooltipFromContainerFluid(stack, mc.level, mc.options.advancedItemTooltips),
 					Optional.empty(),mouseX, mouseY);
+			}
+		} else if (entry instanceof BlockStateEntry blockStateEntry) {
+			BlockState state = blockStateEntry.getFilterState();
+			if (state != null && !state.isAir()) {
+				ItemStack blockStack = new ItemStack(state.getBlock().asItem());
+				if (!blockStack.isEmpty()) {
+					gui.renderTooltip(mc.font, blockStack, mouseX, mouseY);
+				} else {
+					gui.renderTooltip(mc.font, StringUtils.getTooltipForBlockState(null, state, mc.level, mc.options.advancedItemTooltips),
+						Optional.empty(), mouseX, mouseY);
+				}
+			}
+		} else if (entry instanceof BlockTagEntry blockTagEntry) {
+			Block[] blocks = BuiltInRegistries.BLOCK.stream()
+				.filter(block -> block.defaultBlockState().is(blockTagEntry.getTag()))
+				.toArray(Block[]::new);
+			if (blocks.length > 0) {
+				Block block = blocks[(int) ((tick / 20) % blocks.length)];
+				ItemStack stack = new ItemStack(block.asItem());
+				stack.setHoverName(Component.literal(blockTagEntry.getTag().location().toString()));
+				gui.renderTooltip(mc.font, stack, mouseX, mouseY);
 			}
 		} else {
 			super.renderTooltip(gui, mouseX, mouseY, tooltipZ);

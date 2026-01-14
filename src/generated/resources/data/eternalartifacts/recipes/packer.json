@@ -2,17 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "redstone",
   "key": {
-    "A": {
-      "tag": "forge:ingots/aluminum"
-    },
     "C": {
-      "item": "eternalartifacts:capacitor"
+      "item": "minecraft:chest"
+    },
+    "I": {
+      "tag": "forge:ingots/aluminum"
     },
     "M": {
       "item": "eternalartifacts:machine_block"
     },
     "P": {
-      "item": "minecraft:piston"
+      "item": "eternalartifacts:capacitor"
     },
     "R": {
       "tag": "forge:dusts/redstone"
@@ -22,9 +22,9 @@
     }
   },
   "pattern": [
-    "SPS",
-    "AMA",
-    "RCR"
+    "SCS",
+    "IMI",
+    "RPR"
   ],
   "result": {
     "item": "eternalartifacts:packer"

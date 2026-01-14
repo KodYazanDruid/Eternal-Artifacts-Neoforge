@@ -2,8 +2,6 @@ package com.sonamorningstar.eternalartifacts.api.forceload;
 
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ChunkLoader;
-import com.sonamorningstar.eternalartifacts.network.Channel;
-import com.sonamorningstar.eternalartifacts.network.ForcedChunksToClient;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,7 +14,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.common.world.chunk.TicketController;
 import net.neoforged.neoforge.common.world.chunk.TicketHelper;
 
+import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -49,39 +49,29 @@ public class ForceLoadManager {
 		}
 	}
 	
-	/*private static void broadcastForcedChunksUpdate(Set<ForcedChunkPos> forcedChunks) {
-		Set<ForcedChunkPos> updates = new HashSet<>();
-		for (ChunkLoader loader : ALL_LOADERS) {
-			Set<ForcedChunkPos> loaderChunks = new HashSet<>();
-			for (ForcedChunkPos chunk : forcedChunks) {
-				if (loader.getForcedChunks().contains(chunk)) {
-					loaderChunks.add(chunk);
-				}
-			}
-			if (!loaderChunks.isEmpty()) {
-				updates.addAll(loaderChunks);
-			}
-			if (!updates.isEmpty() && loader instanceof BlockEntity be && be.getLevel() instanceof ServerLevel sLevel) {
-				BlockPos pos = be.getBlockPos();
-				Channel.sendToChunk(new ForcedChunksToClient(updates, pos), sLevel.getChunkAt(pos));
-			}
-		}
-	}*/
-	
-	public static <T extends Comparable<? super T>> void updateForcedChunks(MinecraftServer server, ForcedChunkPos center, T owner, int loadingRange, Set<ForcedChunkPos> forcedChunks) {
+	public static <T extends Comparable<? super T>> void updateForcedChunks(
+		MinecraftServer server, ForcedChunkPos center, T owner,
+		int loadingRange, Set<ForcedChunkPos> forcedChunks, @Nullable ChunkLoader loader) {
+		
 		Set<ForcedChunkPos> targetChunks = getChunksAroundCenter(center, loadingRange);
-		updateForcedChunks(server, targetChunks, owner, forcedChunks);
+		updateForcedChunks(server, targetChunks, owner, forcedChunks, loader);
 	}
 	
-	public static <T extends Comparable<? super T>> void updateForcedChunks(MinecraftServer server, Collection<ForcedChunkPos> centers, T owner, int loadingRange, Set<ForcedChunkPos> forcedChunks) {
+	public static <T extends Comparable<? super T>> void updateForcedChunks(
+		MinecraftServer server, Collection<ForcedChunkPos> centers, T owner,
+		int loadingRange, Set<ForcedChunkPos> forcedChunks, @Nullable ChunkLoader loader) {
+		
 		Set<ForcedChunkPos> targetChunks = new HashSet<>();
 		for (ForcedChunkPos center : centers) {
 			targetChunks.addAll(getChunksAroundCenter(center, loadingRange));
 		}
-		updateForcedChunks(server, targetChunks, owner, forcedChunks);
+		updateForcedChunks(server, targetChunks, owner, forcedChunks, loader);
 	}
 	
-	public static <T extends Comparable<? super T>> void updateForcedChunks(MinecraftServer server, Collection<ForcedChunkPos> newChunks, T owner, Set<ForcedChunkPos> forcedChunks) {
+	public static <T extends Comparable<? super T>> void updateForcedChunks(
+		MinecraftServer server, Collection<ForcedChunkPos> newChunks, T owner,
+		Set<ForcedChunkPos> forcedChunks, @Nullable ChunkLoader loader) {
+		
 		Set<ForcedChunkPos> unforcedChunks = new HashSet<>();
 		for (ForcedChunkPos chunk : forcedChunks) {
 			if (newChunks.contains(chunk)) {
@@ -96,6 +86,11 @@ public class ForceLoadManager {
 			forceChunk(server, owner, chunk.dimension(), chunk.getX(), chunk.getZ(), true);
 			forcedChunks.add(chunk);
 		}
+		HashSet<ForcedChunkPos> toClaim = new HashSet<>(forcedChunks);
+		/*Set<ForceLoadManager.ForcedChunkPos> allChunks = ForceLoadManager.ALL_LOADERS.stream()
+			.flatMap(l -> l.getForcedChunks().stream()).collect(Collectors.toSet());
+		toClaim.removeIf(allChunks::contains);*/
+		if (loader != null) loader.claimChunks(toClaim);
 	}
 	
 	public static void enqueueUnforceAll(UUID owner, Set<ForcedChunkPos> forcedChunks) {
@@ -116,9 +111,6 @@ public class ForceLoadManager {
 			forceChunk(server, pos, chunk.dimension(), chunk.getX(), chunk.getZ(), false);
 		}
 		forcedChunks.clear();
-		/*if (owner instanceof BlockEntity be && be.getLevel() instanceof ServerLevel targetLevel) {
-			Channel.sendToChunk(new ForcedChunksToClient(forcedChunks, pos), targetLevel.getChunkAt(pos));
-		}*/
 	}
 	
 	private static Set<ForcedChunkPos> getChunksAroundCenter(ForcedChunkPos center, int radius) {
@@ -153,15 +145,11 @@ public class ForceLoadManager {
 				ticketHelper.removeTicket(pos, chunk, false);
 			}
 			
-			/*Set<ForcedChunkPos> loadedChunks = ALL_LOADERS.stream().map(ChunkLoader::getForcedChunks)
-				.flatMap(Set::stream).collect(Collectors.toSet());*/
 			Set<ForcedChunkPos> forcedChunks = new HashSet<>();
 			for (Long chunk : tickets.ticking()) {
 				ChunkPos chunkPos = new ChunkPos(chunk);
 				ForcedChunkPos forced = new ForcedChunkPos(serverLevel, chunkPos);
-				//if (loadedChunks.contains(forced)) {
-					forcedChunks.add(forced);
-				//}
+				forcedChunks.add(forced);
 			}
 			chunkLoader.claimChunks(forcedChunks);
 		});

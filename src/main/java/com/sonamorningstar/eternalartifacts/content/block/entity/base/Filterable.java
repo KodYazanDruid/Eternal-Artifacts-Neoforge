@@ -1,13 +1,11 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
-import com.sonamorningstar.eternalartifacts.api.filter.FluidFilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.FluidStackEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemFilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemStackEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.*;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.Collections;
@@ -18,38 +16,83 @@ import java.util.Collections;
 public interface Filterable {
 	int FILTER_SIZE = 9;
 	
-	NonNullList<ItemFilterEntry> getItemFilters();
-	NonNullList<FluidFilterEntry> getFluidFilters();
-	
-	boolean isItemFilterWhitelist();
-	void setItemFilterWhitelist(boolean whitelist);
-	
-	boolean isFluidFilterWhitelist();
-	void setFluidFilterWhitelist(boolean whitelist);
-	
-	boolean isItemFilterIgnoreNBT();
-	void setItemFilterIgnoreNBT(boolean ignoreNBT);
-	
-	boolean isFluidFilterIgnoreNBT();
-	void setFluidFilterIgnoreNBT(boolean ignoreNBT);
-	
-	/**
-	 * Silent setters for loading from NBT without triggering setChanged()
-	 */
-	default void setItemFilterWhitelistSilent(boolean whitelist) {
-		setItemFilterWhitelist(whitelist);
+	default NonNullList<ItemFilterEntry> getItemFilters() {
+		return NonNullList.create();
+	}
+	default NonNullList<FluidFilterEntry> getFluidFilters() {
+		return NonNullList.create();
+	}
+	default NonNullList<BlockFilterEntry> getBlockFilters() {
+		return NonNullList.create();
 	}
 	
-	default void setFluidFilterWhitelistSilent(boolean whitelist) {
-		setFluidFilterWhitelist(whitelist);
+	default boolean isItemFilterWhitelist() { return true; }
+	default void setItemFilterWhitelistAndUpdate(boolean whitelist) {
+		setItemFilterWhitelistSilent(whitelist);
+		broadcastChanges();
 	}
 	
-	default void setItemFilterIgnoreNBTSilent(boolean ignoreNBT) {
-		setItemFilterIgnoreNBT(ignoreNBT);
+	default boolean isFluidFilterWhitelist() { return true; }
+	default void setFluidFilterWhitelistAndUpdate(boolean whitelist) {
+		setFluidFilterWhitelistSilent(whitelist);
+		broadcastChanges();
 	}
 	
-	default void setFluidFilterIgnoreNBTSilent(boolean ignoreNBT) {
-		setFluidFilterIgnoreNBT(ignoreNBT);
+	default boolean isBlockFilterWhitelist() { return true; }
+	default void setBlockFilterWhitelistAndUpdate(boolean whitelist) {
+		setBlockFilterWhitelistSilent(whitelist);
+		broadcastChanges();
+	}
+	
+	default boolean isItemFilterIgnoreNBT() { return true; }
+	default void setItemFilterIgnoreNBTAndUpdate(boolean ignoreNBT) {
+		setItemFilterIgnoreNBTSilent(ignoreNBT);
+		broadcastChanges();
+	}
+	
+	default boolean isFluidFilterIgnoreNBT() { return true; }
+	default void setFluidFilterIgnoreNBTAndUpdate(boolean ignoreNBT) {
+		setFluidFilterIgnoreNBTSilent(ignoreNBT);
+		broadcastChanges();
+	}
+	
+	default boolean isBlockFilterIgnoreProperties() { return true; }
+	default void setBlockFilterIgnorePropertiesAndUpdate(boolean ignoreProperties) {
+		setBlockFilterIgnorePropertiesSilent(ignoreProperties);
+		broadcastChanges();
+	}
+	
+	default void setItemFilterWhitelistSilent(boolean whitelist) {}
+	default void setFluidFilterWhitelistSilent(boolean whitelist) {}
+	default void setBlockFilterWhitelistSilent(boolean whitelist) {}
+	default void setItemFilterIgnoreNBTSilent(boolean ignoreNBT) {}
+	default void setFluidFilterIgnoreNBTSilent(boolean ignoreNBT) {}
+	default void setBlockFilterIgnorePropertiesSilent(boolean ignoreProperties) {}
+	
+	default void broadcastChanges() {
+		if (this instanceof ModBlockEntity mbe) mbe.sendUpdate();
+	}
+	
+	default boolean matchesBlockFilter(BlockState state) {
+		NonNullList<BlockFilterEntry> filters = getBlockFilters();
+		boolean isWhitelist = isBlockFilterWhitelist();
+		boolean shouldSkip = false;
+		
+		for (BlockFilterEntry filter : filters) {
+			boolean matches = filter.matches(state);
+			if (!isWhitelist && matches) {
+				shouldSkip = true;
+				break;
+			}
+			if (isWhitelist && matches) {
+				shouldSkip = false;
+				break;
+			} else if (isWhitelist) {
+				shouldSkip = true;
+			}
+		}
+		
+		return !shouldSkip;
 	}
 	
 	default boolean matchesItemFilter(ItemStack stack) {
@@ -60,16 +103,13 @@ public interface Filterable {
 		for (ItemFilterEntry filter : filters) {
 			boolean matches = filter.matches(stack);
 			if (!isWhitelist && matches) {
-				// Blacklist: eşleşirse skip et
 				shouldSkip = true;
 				break;
 			}
 			if (isWhitelist && matches) {
-				// Whitelist: eşleşirse skip etme
 				shouldSkip = false;
 				break;
 			} else if (isWhitelist) {
-				// Whitelist: eşleşmezse skip et
 				shouldSkip = true;
 			}
 		}
@@ -84,16 +124,13 @@ public interface Filterable {
 		for (FluidFilterEntry filter : filters) {
 			boolean matches = filter.matches(stack);
 			if (!isWhitelist && matches) {
-				// Blacklist: eşleşirse skip et
 				shouldSkip = true;
 				break;
 			}
 			if (isWhitelist && matches) {
-				// Whitelist: eşleşirse skip etme
 				shouldSkip = false;
 				break;
 			} else if (isWhitelist) {
-				// Whitelist: eşleşmezse skip et
 				shouldSkip = true;
 			}
 		}
@@ -132,6 +169,21 @@ public interface Filterable {
 		filterData.put("FluidFilters", fluidFilterList);
 		filterData.putBoolean("FluidWhitelist", isFluidFilterWhitelist());
 		filterData.putBoolean("FluidIgnoreNBT", isFluidFilterIgnoreNBT());
+		
+		// Save block filters with index
+		ListTag blockFilterList = new ListTag();
+		NonNullList<BlockFilterEntry> blockFilters = getBlockFilters();
+		for (int i = 0; i < blockFilters.size(); i++) {
+			BlockFilterEntry entry = blockFilters.get(i);
+			if (!entry.isEmpty()) {
+				CompoundTag entryTag = entry.serializeNBT();
+				entryTag.putInt("Slot", i);
+				blockFilterList.add(entryTag);
+			}
+		}
+		filterData.put("BlockFilters", blockFilterList);
+		filterData.putBoolean("BlockWhitelist", isBlockFilterWhitelist());
+		filterData.putBoolean("BlockIgnoreProperties", isBlockFilterIgnoreProperties());
 		
 		tag.put("FilterData", filterData);
 	}
@@ -175,6 +227,24 @@ public interface Filterable {
 			}
 			setFluidFilterWhitelistSilent(filterData.getBoolean("FluidWhitelist"));
 			setFluidFilterIgnoreNBTSilent(filterData.getBoolean("FluidIgnoreNBT"));
+		}
+		
+		// Load block filters with index
+		if (filterData.contains("BlockFilters")) {
+			ListTag blockFilterList = filterData.getList("BlockFilters", 10);
+			NonNullList<BlockFilterEntry> blockFilters = getBlockFilters();
+			// Listeyi varsayılan boş değerlerle temizle
+			Collections.fill(blockFilters, BlockStateEntry.EMPTY);
+			// Index'e göre yükle
+			for (int i = 0; i < blockFilterList.size(); i++) {
+				CompoundTag entryTag = blockFilterList.getCompound(i);
+				int slot = entryTag.getInt("Slot");
+				if (slot >= 0 && slot < blockFilters.size()) {
+					blockFilters.set(slot, BlockFilterEntry.fromNBT(entryTag));
+				}
+			}
+			setBlockFilterWhitelistSilent(filterData.getBoolean("BlockWhitelist"));
+			setBlockFilterIgnorePropertiesSilent(filterData.getBoolean("BlockIgnoreProperties"));
 		}
 	}
 }

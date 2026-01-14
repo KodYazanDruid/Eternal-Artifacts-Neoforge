@@ -23,7 +23,8 @@ public class DrumBlockEntity extends ModBlockEntity {
     
     @Override
     public void onEnchanted(Enchantment enchantment, int level) {
-        if (enchantment == ModEnchantments.VOLUME.get()){
+        super.onEnchanted(enchantment, level);
+        if (enchantment == ModEnchantments.VOLUME.get()) {
             CompoundTag oldData = new CompoundTag();
             oldData.put("Fluid", tank.serializeNBT());
             this.tank = tankSetter.get();

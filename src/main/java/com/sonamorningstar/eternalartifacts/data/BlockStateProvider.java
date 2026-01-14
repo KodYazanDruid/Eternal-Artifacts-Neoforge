@@ -160,11 +160,11 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
-            if(!holder.isHasCustomRender()) {
+            if(!holder.hasCustomRender()) {
                 if (holder.getBlock() instanceof MachineFourWayBlock<?>)
-                    machineBlock(holder.getBlockHolder(), holder.isHasUniqueTexture());
+                    machineBlock(holder.blockHolder(), holder.hasUniqueTexture());
                 else if (holder.getBlock() instanceof MachineSixWayBlock<?>)
-                    machineBlockSixWay(holder.getBlockHolder(), holder.isHasUniqueTexture());
+                    machineBlockSixWay(holder.blockHolder(), holder.hasUniqueTexture());
             }
         });
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel)

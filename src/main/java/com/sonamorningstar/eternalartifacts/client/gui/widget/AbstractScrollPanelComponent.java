@@ -5,25 +5,20 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
-import java.util.function.IntConsumer;
-
+@Setter
 public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
-	@Setter
 	protected int color;
-	@Setter
 	protected int hoverColor;
-	@Setter
 	protected int focusColor;
-	@Setter
 	private boolean hoveredOnPanel;
+	protected boolean canClick = true;
 	@Getter
 	protected final int index;
-	@Setter
 	protected Clickable action;
 	protected final Font font;
 	protected final ScrollablePanel<? extends AbstractScrollPanelComponent> panel;
@@ -47,9 +42,12 @@ public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 	}
 	
 	public boolean updateHover(double mx, double my) {
-		hoveredOnPanel = mx >= getX() && mx <= getX() + getWidth() &&
-			my >= Math.max(getY() - getScrollInt(), panel.getY()) &&
-			my <= Math.min(getY() - getScrollInt() + getHeight(), panel.getY() + panel.getHeight());
+		double originalMy = my - getScrollAmount();
+		boolean withinPanelBounds = originalMy >= panel.getY() && originalMy <= panel.getY() + panel.getHeight();
+		
+		hoveredOnPanel = withinPanelBounds &&
+			mx >= getX() && mx <= getX() + getWidth() &&
+			my >= getY() && my <= getY() + getHeight();
 		return hoveredOnPanel;
 	}
 	
@@ -78,7 +76,12 @@ public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 	
 	@Override
 	public void onClick(double mouseX, double mouseY, int button) {
-		action.onClick(mouseX, mouseY, index);
+		if (canClick) action.onClick(mouseX, mouseY, index);
+	}
+	
+	@Override
+	public void playDownSound(SoundManager pHandler) {
+		if (canClick) super.playDownSound(pHandler);
 	}
 	
 	@Override

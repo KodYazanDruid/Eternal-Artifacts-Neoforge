@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -35,10 +36,10 @@ public class SweetBerryBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public List<ItemStack> harvest(Level level, BlockPos pos, @Nullable ItemStack tool) {
+	public List<ItemStack> harvest(Level level, BlockPos pos, @Nullable ItemStack tool, @Nullable Entity harvester) {
 		BlockState state = level.getBlockState(pos);
 		var drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos),
-			null, tool == null ? ItemStack.EMPTY : tool);
+			harvester, tool == null ? ItemStack.EMPTY : tool);
 		FluidState fluidState = level.getFluidState(pos);
 		level.setBlockAndUpdate(pos, fluidState.isEmpty() ? Blocks.AIR.defaultBlockState() : fluidState.createLegacyBlock());
 		return drops;

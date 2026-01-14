@@ -7,10 +7,7 @@ import com.sonamorningstar.eternalartifacts.container.slot.FilterFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
-import com.sonamorningstar.eternalartifacts.network.FluidStackFilterToServer;
-import com.sonamorningstar.eternalartifacts.network.FluidTagFilterToServer;
-import com.sonamorningstar.eternalartifacts.network.ItemTagFilterToServer;
-import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
+import com.sonamorningstar.eternalartifacts.network.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.NonNullList;
@@ -21,6 +18,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -37,26 +35,42 @@ public class BlockInteractorMenu extends AbstractMachineMenu implements FilterSy
 	public final List<FilterFakeSlot> FAKE_FILTER_SLOTS = new ArrayList<>();
 	@Getter @Setter protected boolean isWhitelist;
 	@Getter @Setter protected boolean ignoresNbt;
+	@Getter protected final boolean isBlockBreaker;
 	
 	public BlockInteractorMenu(@Nullable MenuType<?> menuType, int id, Inventory inv, BlockEntity entity, ContainerData data) {
 		super(menuType, id, inv, entity, data);
 		this.fakeSlots = new SimpleContainer(FILTER_SIZE);
-		this.filterEntries = NonNullList.withSize(FILTER_SIZE, ItemFilterEntry.Empty.create(true));
+		this.isBlockBreaker = entity instanceof BlockBreaker;
+		this.filterEntries = NonNullList.withSize(FILTER_SIZE,
+			isBlockBreaker ? BlockFilterEntry.Empty.create(true) : ItemFilterEntry.Empty.create(true));
 		this.fakeSlots.addListener(this::slotsChanged);
 		
 		if (entity instanceof Filterable filterable) {
-			isWhitelist = filterable.isItemFilterWhitelist();
-			ignoresNbt = filterable.isItemFilterIgnoreNBT();
-			
-			for (int i = 0; i < filterable.getItemFilters().size() && i < FILTER_SIZE; i++) {
-				ItemFilterEntry entry = filterable.getItemFilters().get(i);
-				if (!entry.isEmpty()) {
-					filterEntries.set(i, entry);
-					if (entry instanceof ItemStackEntry ise) {
-						fakeSlots.setItem(i, ise.getFilterStack());
+			if (isBlockBreaker) {
+				isWhitelist = filterable.isBlockFilterWhitelist();
+				ignoresNbt = filterable.isBlockFilterIgnoreProperties();
+				
+				for (int i = 0; i < filterable.getBlockFilters().size() && i < FILTER_SIZE; i++) {
+					BlockFilterEntry entry = filterable.getBlockFilters().get(i);
+					if (!entry.isEmpty()) {
+						filterEntries.set(i, entry);
+					}
+				}
+			} else {
+				isWhitelist = filterable.isItemFilterWhitelist();
+				ignoresNbt = filterable.isItemFilterIgnoreNBT();
+				
+				for (int i = 0; i < filterable.getItemFilters().size() && i < FILTER_SIZE; i++) {
+					ItemFilterEntry entry = filterable.getItemFilters().get(i);
+					if (!entry.isEmpty()) {
+						filterEntries.set(i, entry);
+						if (entry instanceof ItemStackEntry ise) {
+							fakeSlots.setItem(i, ise.getFilterStack());
+						}
 					}
 				}
 			}
+			
 			for (int i = 0; i < filterable.getFluidFilters().size() && i < FILTER_SIZE; i++) {
 				FluidFilterEntry entry = filterable.getFluidFilters().get(i);
 				if (!entry.isEmpty()) {
@@ -75,9 +89,7 @@ public class BlockInteractorMenu extends AbstractMachineMenu implements FilterSy
 		}
 		
 		if (beInventory != null) {
-			boolean isBreaker = entity instanceof BlockBreaker;
-			
-			if (isBreaker) {
+			if (isBlockBreaker) {
 				addSlot(new SlotItemHandler(beInventory, 0, 54, 35));
 				
 				for (int i = 1; i < beInventory.getSlots(); i++) {
@@ -147,6 +159,49 @@ public class BlockInteractorMenu extends AbstractMachineMenu implements FilterSy
 	}
 	
 	@Override
+	public void blockStateFilterSync(BlockStateFilterToServer pkt) {
+		fakeSlots.setItem(pkt.index(), ItemStack.EMPTY);
+		BlockState state = pkt.blockState();
+		if (state == null || state.isAir()) {
+			filterEntries.set(pkt.index(), BlockFilterEntry.Empty.create(isWhitelist));
+			FAKE_FILTER_SLOTS.get(pkt.index()).setFilter(BlockFilterEntry.Empty.create(isWhitelist));
+		} else {
+			BlockStateEntry blockStateEntry = BlockStateEntry.matchBlockOnly(state);
+			blockStateEntry.setIgnoreNBT(ignoresNbt);
+			filterEntries.set(pkt.index(), blockStateEntry);
+			FAKE_FILTER_SLOTS.get(pkt.index()).setFilter(blockStateEntry);
+		}
+		saveFilterEntries();
+	}
+	
+	@Override
+	public void blockTagFilterSync(BlockTagFilterToServer pkt) {
+		fakeSlots.setItem(pkt.index(), ItemStack.EMPTY);
+		BlockTagEntry blockTagEntry = new BlockTagEntry(pkt.tag());
+		filterEntries.set(pkt.index(), blockTagEntry);
+		FAKE_FILTER_SLOTS.get(pkt.index()).setFilter(blockTagEntry);
+		saveFilterEntries();
+	}
+	
+	@Override
+	public void blockStatePropertiesFilterSync(BlockStatePropertiesFilterToServer pkt) {
+		fakeSlots.setItem(pkt.index(), ItemStack.EMPTY);
+		BlockState state = pkt.blockState();
+		if (state == null || state.isAir()) {
+			filterEntries.set(pkt.index(), BlockFilterEntry.Empty.create(isWhitelist));
+			FAKE_FILTER_SLOTS.get(pkt.index()).setFilter(BlockFilterEntry.Empty.create(isWhitelist));
+		} else {
+			BlockStateEntry blockStateEntry = new BlockStateEntry(state, false);
+			blockStateEntry.setMatchingProperties(pkt.matchingProperties());
+			blockStateEntry.setIgnoreNBT(ignoresNbt);
+			blockStateEntry.setWhitelist(isWhitelist);
+			filterEntries.set(pkt.index(), blockStateEntry);
+			FAKE_FILTER_SLOTS.get(pkt.index()).setFilter(blockStateEntry);
+		}
+		saveFilterEntries();
+	}
+	
+	@Override
 	public boolean clickMenuButton(Player pPlayer, int buttonId) {
 		if (buttonId == 0) {
 			isWhitelist = !isWhitelist;
@@ -168,29 +223,51 @@ public class BlockInteractorMenu extends AbstractMachineMenu implements FilterSy
 	
 	protected void saveFilterEntries() {
 		if (blockEntity instanceof Filterable filterable) {
-			NonNullList<ItemFilterEntry> itemFilters = filterable.getItemFilters();
 			NonNullList<FluidFilterEntry> fluidFilters = filterable.getFluidFilters();
-			
-			itemFilters.replaceAll(ignored -> ItemFilterEntry.Empty.create(isWhitelist));
 			fluidFilters.replaceAll(ignored -> FluidFilterEntry.Empty.create(isWhitelist));
 			
-			for (int i = 0; i < filterEntries.size(); i++) {
-				FilterEntry entry = filterEntries.get(i);
-				if (entry instanceof ItemFilterEntry ife && !ife.isEmpty()) {
-					if (i < itemFilters.size()) {
-						itemFilters.set(i, ife);
-					}
-				} else if (entry instanceof FluidFilterEntry ffe && !ffe.isEmpty()) {
-					if (i < fluidFilters.size()) {
-						fluidFilters.set(i, ffe);
+			if (isBlockBreaker) {
+				NonNullList<BlockFilterEntry> blockFilters = filterable.getBlockFilters();
+				blockFilters.replaceAll(ignored -> BlockFilterEntry.Empty.create(isWhitelist));
+				
+				for (int i = 0; i < filterEntries.size(); i++) {
+					FilterEntry entry = filterEntries.get(i);
+					if (entry instanceof BlockFilterEntry bfe && !bfe.isEmpty()) {
+						if (i < blockFilters.size()) {
+							blockFilters.set(i, bfe);
+						}
+					} else if (entry instanceof FluidFilterEntry ffe && !ffe.isEmpty()) {
+						if (i < fluidFilters.size()) {
+							fluidFilters.set(i, ffe);
+						}
 					}
 				}
+				
+				filterable.setBlockFilterWhitelistSilent(isWhitelist);
+				filterable.setBlockFilterIgnorePropertiesSilent(ignoresNbt);
+			} else {
+				NonNullList<ItemFilterEntry> itemFilters = filterable.getItemFilters();
+				itemFilters.replaceAll(ignored -> ItemFilterEntry.Empty.create(isWhitelist));
+				
+				for (int i = 0; i < filterEntries.size(); i++) {
+					FilterEntry entry = filterEntries.get(i);
+					if (entry instanceof ItemFilterEntry ife && !ife.isEmpty()) {
+						if (i < itemFilters.size()) {
+							itemFilters.set(i, ife);
+						}
+					} else if (entry instanceof FluidFilterEntry ffe && !ffe.isEmpty()) {
+						if (i < fluidFilters.size()) {
+							fluidFilters.set(i, ffe);
+						}
+					}
+				}
+				
+				filterable.setItemFilterWhitelistSilent(isWhitelist);
+				filterable.setItemFilterIgnoreNBTSilent(ignoresNbt);
 			}
 			
-			filterable.setItemFilterWhitelist(isWhitelist);
-			filterable.setItemFilterIgnoreNBT(ignoresNbt);
-			filterable.setFluidFilterWhitelist(isWhitelist);
-			filterable.setFluidFilterIgnoreNBT(ignoresNbt);
+			filterable.setFluidFilterWhitelistSilent(isWhitelist);
+			filterable.setFluidFilterIgnoreNBTSilent(ignoresNbt);
 			
 			if (blockEntity instanceof ModBlockEntity mbe) mbe.sendUpdate();
 		}

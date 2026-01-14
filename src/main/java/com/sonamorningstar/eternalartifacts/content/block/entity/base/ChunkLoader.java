@@ -9,7 +9,9 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * An interface for objects that can force-load chunks in the world.
@@ -36,21 +38,23 @@ public interface ChunkLoader {
 	void setChunkUnloadCooldown(int cooldown);
 	
 	default void claimChunks(Set<ForceLoadManager.ForcedChunkPos> forcedChunks) {
+		/*Set<ForceLoadManager.ForcedChunkPos> allChunks = ForceLoadManager.ALL_LOADERS.stream()
+			.flatMap(loader -> loader.getForcedChunks().stream()).collect(Collectors.toSet());
+		forcedChunks.removeIf(allChunks::contains);*/
+		getForcedChunks().clear();
 		getForcedChunks().addAll(forcedChunks);
-		/*System.out.println("*-*-*-*-*-*");
-		System.out.println("Claimed " + forcedChunks.size() + " chunks at " + getBlockPos());
-		System.out.println("BlockEntity: " + this);*/
 		if (getLevel() instanceof ServerLevel sLevel) {
 			Channel.sendToChunk(new ForcedChunksToClient(forcedChunks, getBlockPos()), sLevel.getChunkAt(getBlockPos()));
 		}
 	}
 	
-	default void addToManager() {
-		ForceLoadManager.ALL_LOADERS.add(this);
+	default void receiveFromServer(Set<ForceLoadManager.ForcedChunkPos> forcedChunks) {
+		getForcedChunks().clear();
+		getForcedChunks().addAll(forcedChunks);
 	}
-	default void removeFromManager() {
-		ForceLoadManager.ALL_LOADERS.remove(this);
-	}
+	
+	default void addToManager() { ForceLoadManager.ALL_LOADERS.add(this); }
+	default void removeFromManager() { ForceLoadManager.ALL_LOADERS.remove(this); }
 	
 	/**
 	 * Handles the logic for updating the force-loaded chunks based on the loader's current state.
@@ -65,7 +69,7 @@ public interface ChunkLoader {
 		if (canLoadChunks()) {
 			ForceLoadManager.updateForcedChunks(serverLevel.getServer(),
 				new ForceLoadManager.ForcedChunkPos(serverLevel, pos), pos,
-				getLoadingRange(), getForcedChunks());
+				getLoadingRange(), getForcedChunks(), this);
 		} else if (getChunkUnloadCooldown() == 0) {
 			ForceLoadManager.unforceAllChunks(level.getServer(), this);
 		} else {

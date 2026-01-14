@@ -88,7 +88,11 @@ public class ModBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
-        loadEnchants(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+        if(tag.contains("Enchantments")) {
+            enchantments.clear();
+            var enchs = EnchantmentHelper.deserializeEnchantments(tag.getList("Enchantments", Tag.TAG_COMPOUND));
+            if (!enchs.isEmpty()) enchantments.putAll(enchs);
+        }
         CompoundTag configTag = tag.getCompound(CONFIG_TAG_KEY);
         configuration.load(configTag);
         if (this instanceof Filterable filterable) {
@@ -99,13 +103,11 @@ public class ModBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        saveSynced(tag);
         if (!enchantments.isEmpty()) {
             ListTag listTag = new ListTag();
             for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
                 CompoundTag enchTag = EnchantmentHelper.storeEnchantment(
-                    EnchantmentHelper.getEnchantmentId(entry.getKey()),
-                    (byte) entry.getIntValue()
+                    EnchantmentHelper.getEnchantmentId(entry.getKey()), entry.getIntValue()
                 );
                 listTag.add(enchTag);
             }
@@ -126,7 +128,7 @@ public class ModBlockEntity extends BlockEntity {
         }
     }
     
-    public void sendUpdate(){
+    public void sendUpdate() {
         setChanged();
         if(level != null && !isRemoved() && level.hasChunkAt(worldPosition))
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
@@ -136,12 +138,6 @@ public class ModBlockEntity extends BlockEntity {
         enchantments.put(enchantment, level);
         onEnchanted(enchantment, level);
         sendUpdate();
-    }
-    
-    public void loadEnchants(ListTag listTag) {
-        enchantments.clear();
-        var enchs = EnchantmentHelper.deserializeEnchantments(listTag);
-        if (!enchs.isEmpty()) enchantments.putAll(enchs);
     }
     
     public int getEnchantmentLevel(Enchantment enchantment) {

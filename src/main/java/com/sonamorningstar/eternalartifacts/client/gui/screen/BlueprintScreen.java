@@ -51,7 +51,6 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
         applyGuiTint(gui);
         GuiDrawer.drawEmptyArrow(gui, leftPos + 90, topPos + 35);
         clearGuiTint(gui);
-        renderTooltip(gui, mX, mY);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class BlueprintScreen extends AbstractModContainerScreen<BlueprintMenu> {
         Channel.sendToServer(new UpdateFakeSlotToServer(menuId, slotIndex, stack));
     }
     
-    protected void renderTooltip(GuiGraphics gui, int x, int y) {
+    public void renderTooltip(GuiGraphics gui, int x, int y) {
         if (menu.getCarried().isEmpty() &&
                 this.hoveredSlot != null &&
                 this.hoveredSlot.hasItem()) {

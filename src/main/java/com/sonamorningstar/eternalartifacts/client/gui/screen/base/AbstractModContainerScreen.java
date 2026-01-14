@@ -8,7 +8,9 @@ import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
@@ -16,6 +18,7 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.FluidSlotTransferToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import com.sonamorningstar.eternalartifacts.util.StringUtils;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.ChatFormatting;
@@ -32,6 +35,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -45,6 +49,7 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public abstract class AbstractModContainerScreen<T extends AbstractModContainerMenu> extends EffectRenderingInventoryScreen<T> {
     private static final ResourceLocation CONFIG_BUTTON_TEXTURE = new ResourceLocation(MODID, "textures/gui/sprites/widget/machine_config_button.png");
+    private static final ResourceLocation ENCHANTMENT_BUTTON_TEXTURE = new ResourceLocation("textures/item/enchanted_book.png");
     public static final int PANEL_Z_INCREMENT = 50;
     public static final int BASE_PANEL_Z = 300;
     public static final int TOOLTIP_Z_OFFSET = 500;
@@ -56,20 +61,16 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     public final List<GuiEventListener> upperLayerChildren = new ArrayList<>();
     public final Queue<AbstractWidget> upperLayerUpdateQueue = new ArrayDeque<>();
     @Nullable
-    private SimpleDraggablePanel configPanel;
-    
+    protected SimpleDraggablePanel configPanel;
+    @Nullable
+    protected SimpleDraggablePanel enchantmentPanel;
     private int nextPanelZ = BASE_PANEL_Z;
-    
     private final Set<Slot> widgetManagedSlots = new HashSet<>();
     
-    public void registerWidgetManagedSlot(Slot slot) {
-        widgetManagedSlots.add(slot);
-    }
-    
+    public void registerWidgetManagedSlot(Slot slot) {widgetManagedSlots.add(slot);}
     public void unregisterWidgetManagedSlot(Slot slot) {
         widgetManagedSlots.remove(slot);
     }
-    
     public boolean isWidgetManagedSlot(Slot slot) {
         return widgetManagedSlots.contains(slot);
     }
@@ -82,6 +83,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     protected void init() {
         super.init();
         if (getMenu().machineConfigs != null) setupConfigWidgets();
+        setupEnchantmentWidgets();
     }
     
     @Override
@@ -130,6 +132,67 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         addRenderableWidget(configButton);
     }
     
+    protected void setupEnchantmentWidgets() {
+        if (!(getMenu() instanceof AbstractMachineMenu amm)) {return;}
+        ModBlockEntity mbe = amm.getBlockEntity() instanceof ModBlockEntity m ? m : null;
+        if (mbe == null) return;
+        
+        Object2IntMap<Enchantment> enchantments = mbe.enchantments;
+        if (enchantments == null || enchantments.isEmpty()) return;
+        
+        enchantmentPanel = new SimpleDraggablePanel(
+            ModConstants.GUI.withSuffixTranslatable("enchantments"),
+            leftPos + imageWidth + 5, topPos + 5, 150, 120,
+            SimpleDraggablePanel.Bounds.full(this)
+        );
+        
+        enchantmentPanel.visible = false;
+        enchantmentPanel.active = false;
+        enchantmentPanel.addClosingButton();
+        
+        var innerList = new ScrollablePanel<ScrollablePanelComponent>(
+            enchantmentPanel.getX() + 4, enchantmentPanel.getY() + 17, 134, 95, 10
+        );
+        
+        int componentIndex = 0;
+        for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
+            Enchantment enchantment = entry.getKey();
+            int level = entry.getIntValue();
+            final int idx = componentIndex++;
+            
+            int maxLevel = enchantment.getMaxLevel();
+            int textColor;
+            if (level > maxLevel) textColor = 0xFFFF5555;
+            else if (level == maxLevel) textColor = 0xFFFFAA00;
+            else textColor = 0xFFFFFFFF;
+            
+            Component enchantName = enchantment.getFullname(level).copy().withStyle(s -> s.withColor(textColor));
+            int bgColor = 0xFF2C2F33;
+            innerList.addChild((x, y, width, height) -> {
+                var comp = new ScrollablePanelComponent(
+                    x, y + idx * 18, width, 16, innerList,
+                    (mx, my, btn) -> {}, idx, font, enchantName,
+                    bgColor, bgColor, bgColor
+                );
+                comp.setRenderIcon(false);
+                comp.setCanClick(false);
+                return comp;
+            });
+        }
+        
+        innerList.reCalcInnerHeight();
+        enchantmentPanel.addChildren((x, y, width, height) -> innerList);
+        
+        SpriteButton enchantmentButton = SpriteButton.builder(Component.empty(),
+                (button, key) -> enchantmentPanel.toggle(), ENCHANTMENT_BUTTON_TEXTURE)
+            .bounds(leftPos + imageWidth - 36, topPos + 4, 16, 16)
+            .addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("enchantments"))
+            .build();
+        
+        addUpperLayerChild(enchantmentPanel);
+        addRenderableWidget(enchantmentButton);
+    }
+    
     private <C extends Config> void createUIFor(C config, ConfigUIRegistry.ConfigUIContext ctx) {
         ConfigUIRegistry.ConfigUIFactory<C> factory = ConfigUIRegistry.get(config);
         
@@ -149,20 +212,34 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         upperLayerChildren.add(child);
         
         if (child instanceof SimpleDraggablePanel panel) {
-            panel.setZIndex(nextPanelZ);
-            nextPanelZ += PANEL_Z_INCREMENT;
+            bringPanelToFront(panel);
         }
     }
     
-    private void bringPanelToFront(SimpleDraggablePanel panel) {
-        int maxZ = BASE_PANEL_Z;
+    public void bringPanelToFront(SimpleDraggablePanel panel) {
+        // Listedeki sırayı güncelle - en sona taşı (en üstte render edilecek)
+        if (upperLayerChildren.contains(panel)) {
+            upperLayerChildren.remove(panel);
+            upperLayerChildren.add(panel);
+        }
+        
+        // Z-indexleri normalize et ve paneli en üste çıkar
+        normalizeZIndices();
+    }
+    
+    /**
+     * Tüm panellerin z-indexlerini upperLayerChildren listesindeki sıraya göre yeniden hesaplar.
+     * Bu sayede z-indexler sürekli artmaz ve kontrollü kalır.
+     */
+    private void normalizeZIndices() {
+        int currentZ = BASE_PANEL_Z;
         for (GuiEventListener child : upperLayerChildren) {
-            if (child instanceof SimpleDraggablePanel p && p != panel) {
-                maxZ = Math.max(maxZ, p.getZIndex());
+            if (child instanceof SimpleDraggablePanel p) {
+                p.setZIndex(currentZ);
+                currentZ += PANEL_Z_INCREMENT;
             }
         }
-        panel.setZIndex(maxZ + PANEL_Z_INCREMENT);
-        nextPanelZ = Math.max(nextPanelZ, panel.getZIndex() + PANEL_Z_INCREMENT);
+        nextPanelZ = currentZ;
     }
     
     public int getMaxPanelZ() {
@@ -176,17 +253,25 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     public int getTooltipZ() {
-        int visiblePanelCount = 0;
-        for (GuiEventListener child : upperLayerChildren) {
-            if (child instanceof SimpleDraggablePanel p && p.visible) {
-                visiblePanelCount++;
-            }
+        return getMaxPanelZ() + TOOLTIP_Z_OFFSET;
+    }
+    
+    @Override
+    protected <T extends GuiEventListener & NarratableEntry> T addWidget(T pListener) {
+        T widget = super.addWidget(pListener);
+        if (widget instanceof SlotWidget slotWidget) {
+            slotWidget.registerToScreen(this);
         }
-        return getMaxPanelZ() + TOOLTIP_Z_OFFSET + (visiblePanelCount * PANEL_Z_INCREMENT) + TOOLTIP_Z_OFFSET;
+        return widget;
     }
     
     @Override
     protected void clearWidgets() {
+        for (GuiEventListener child : children()) {
+            if (child instanceof SlotWidget slotWidget) {
+                slotWidget.unregisterFromScreen(this);
+            }
+        }
         super.clearWidgets();
         upperLayerChildren.clear();
     }
@@ -195,6 +280,13 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
 	public void removeWidget(GuiEventListener listener) {
         super.removeWidget(listener);
         upperLayerChildren.remove(listener);
+        if (listener instanceof SlotWidget slotWidget) {
+            slotWidget.unregisterFromScreen(this);
+        }
+        // Panel kaldırıldığında z-indexleri normalize et
+        if (listener instanceof SimpleDraggablePanel) {
+            normalizeZIndices();
+        }
     }
     
     protected void drawExtraBg(GuiGraphics gui, float tickDelta, int x, int y) {
@@ -233,14 +325,19 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     protected void renderSlotHighlight(GuiGraphics guiGraphics, Slot slot, int mouseX, int mouseY, float partialTick) {
         if (!isWidgetManagedSlot(slot)) super.renderSlotHighlight(guiGraphics, slot, mouseX, mouseY, partialTick);
     }
+
+    @Override
+    public boolean isHovering(Slot slot, double mx, double my) {
+        if (isWidgetManagedSlot(slot)) return false;
+        return super.isHovering(slot, mx, my);
+    }
     
     @Override
-    protected void renderTooltip(GuiGraphics gui, int mx, int my) {
+    public void renderTooltip(GuiGraphics gui, int mx, int my) {
         PoseStack pose = gui.pose();
         pose.pushPose();
+        pose.translate(0.0F, 0.0F, getTooltipZ());
         RenderSystem.disableDepthTest();
-        int tooltipZ = getTooltipZ();
-        pose.translate(0.0F, 0.0F, tooltipZ);
         super.renderTooltip(gui, mx, my);
         RenderSystem.enableDepthTest();
         pose.popPose();
@@ -311,6 +408,10 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
     public boolean mouseDragged(double mx, double my, int button, double dragX, double dragY) {
+        // Fokuslanmış panel varsa önce onu kontrol et
+        if (getFocused() instanceof SimpleDraggablePanel panel && isDragging() && button == 0) {
+            return panel.mouseDragged(mx, my, button, dragX, dragY);
+        }
         super.mouseDragged(mx, my, button, dragX, dragY);
         return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mx, my, button, dragX, dragY);
     }
@@ -328,8 +429,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
     protected boolean hasClickedOutside(double mx, double my, int guiLeft, int guiTop, int mouseButton) {
-        // Eğer imlecin altında bir Overlapping widget varsa, dışarı tıklanmış sayma
-        // Bu sayede paneller ekranın dışındayken üzerlerine tıklanınca eşya atılmaz
         Optional<GuiEventListener> child = getChildAt(mx, my);
         if (child.isPresent() && child.get() instanceof Overlapping) {
             return false;
@@ -350,20 +449,43 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
-        boolean ret = super.mouseClicked(mx, my, button);
-        Optional<GuiEventListener> child = getChildAt(mx, my);
-        if (child.isPresent()) {
-            if (child.get() instanceof Overlapping overlapping) {
-                if (overlapping instanceof AbstractWidget widget) {
-                    upperLayerUpdateQueue.add(widget);
-                }
-                if (child.get() instanceof SimpleDraggablePanel panel) {
+        // upperLayerChildren listesini ters sırada kontrol et (en sondaki en üstte)
+        for (int i = upperLayerChildren.size() - 1; i >= 0; i--) {
+            GuiEventListener child = upperLayerChildren.get(i);
+            if (child instanceof SimpleDraggablePanel panel && panel.visible && panel.active) {
+                boolean isOver = mx >= panel.getX() && mx < panel.getX() + panel.getWidth() &&
+                    my >= panel.getY() && my < panel.getY() + panel.getHeight();
+                if (isOver) {
                     bringPanelToFront(panel);
+                    panel.mouseClicked(mx, my, button);
+                    setFocused(panel);
+                    if (button == 0) setDragging(true);
+                    return true;
                 }
-                GuiEventListener listener = overlapping.getElementUnderMouse(mx, my);
-                if (listener != null) setFocused(listener);
             }
         }
+        
+        // Diğer Overlapping widgetları kontrol et (DropdownMenu vb.)
+        for (GuiEventListener child : children()) {
+            if (child instanceof Overlapping overlapping &&
+                child instanceof AbstractWidget widget &&
+                !(child instanceof SimpleDraggablePanel)) {
+                boolean isOver = widget.active && widget.visible &&
+                    mx >= widget.getX() && mx < widget.getX() + widget.getWidth() &&
+                    my >= widget.getY() && my < widget.getY() + widget.getHeight();
+                if (isOver) {
+                    GuiEventListener elementUnder = overlapping.getElementUnderMouse(mx, my);
+                    if (elementUnder != null) {
+                        if (elementUnder.mouseClicked(mx, my, button)) {
+                            setFocused(elementUnder);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
+        boolean ret = super.mouseClicked(mx, my, button);
         
         FluidSlot slot = getTankUnderMouse(mx, my);
         if (slot != null) {
@@ -407,16 +529,33 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         super.render(gui, mx, my, delta);
         renderTankSlots(gui, leftPos, topPos, mx, my);
         
-        // Hover durumunu güncelle
-        boolean foundOpenMenu = false;
+        // Hover durumunu güncelle - z-index sırasına göre (en üstteki önce)
+        boolean isBlocked = false;
+        
+        // Önce upperLayerChildren'ı ters sırada kontrol et (en üstte olan en son eklenen)
+        for (int i = upperLayerChildren.size() - 1; i >= 0; i--) {
+            GuiEventListener child = upperLayerChildren.get(i);
+            if (child instanceof AbstractWidget widget && child instanceof Overlapping overlapping) {
+                if (widget.visible) {
+                    boolean hovered = overlapping.updateHover(mx, my, isBlocked);
+                    // Raw bounds check kullanarak recursive çağrıyı önle
+                    boolean isOver = widget.active &&
+                        mx >= widget.getX() && mx < widget.getX() + widget.getWidth() &&
+                        my >= widget.getY() && my < widget.getY() + widget.getHeight();
+                    if (hovered && isOver) {
+                        isBlocked = true;
+                    }
+                }
+            }
+        }
+        
+        // Sonra normal children'daki Overlapping widgetları kontrol et
         for (GuiEventListener child : children) {
             if (child instanceof AbstractWidget widget &&
-                widget instanceof Overlapping overlapping) {
-                if (!foundOpenMenu && widget.isMouseOver(mx, my)) {
-                    overlapping.updateHover(mx, my);
-                    foundOpenMenu = true;
-                } else {
-                    overlapping.updateHover(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+                child instanceof Overlapping overlapping &&
+                !upperLayerChildren.contains(child)) {
+                if (widget.visible) {
+                    overlapping.updateHover(mx, my, isBlocked);
                 }
             }
         }

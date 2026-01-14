@@ -41,6 +41,7 @@ public enum ModConstants {
     BLOCK("block."+MODID),
     FILTER("filter."+MODID),
     WIDGET("widget."+MODID),
+    TRANSFER_MODE("transfer_mode."+MODID),
     KEY("key."+MODID),
     KEY_ETAR_CATEGORY("key.categories", MODID);
     
@@ -73,6 +74,10 @@ public enum ModConstants {
 
     public MutableComponent withSuffixTranslatable(String suffix) {
         return Component.translatable(withSuffix(suffix));
+    }
+    
+    public MutableComponent withSuffixTranslatable(String suffix, Object... args) {
+        return Component.translatable(withSuffix(suffix), args);
     }
 
     public MutableComponent translatable() {

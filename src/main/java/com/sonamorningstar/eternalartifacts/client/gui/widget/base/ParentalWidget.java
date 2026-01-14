@@ -17,11 +17,32 @@ public interface ParentalWidget {
 		return (AbstractWidget) this;
 	}
 	
+	/**
+	 * Raw bounds check for the parent widget itself (no recursive isMouseOver calls)
+	 */
+	default boolean isMouseOverSelfRaw(double mx, double my) {
+		AbstractWidget self = self();
+		return self.active && self.visible &&
+			mx >= self.getX() && mx < self.getX() + self.getWidth() &&
+			my >= self.getY() && my < self.getY() + self.getHeight();
+	}
+	
+	/**
+	 * Raw bounds check for a child widget (no recursive isMouseOver calls)
+	 */
+	default boolean isChildMouseOverRaw(GuiEventListener child, double mx, double my) {
+		if (child instanceof AbstractWidget widget) {
+			return widget.active && widget.visible &&
+				mx >= widget.getX() && mx < widget.getX() + widget.getWidth() &&
+				my >= widget.getY() && my < widget.getY() + widget.getHeight();
+		}
+		return child.isMouseOver(mx, my);
+	}
+	
 	default void addChildren(ChildAdder adder) {
 		GuiEventListener child = adder.addChild(self().getX(), self().getY(), self().getWidth(), self().getHeight());
 		getChildren().add(child);
 		
-		// SlotWidget eklendiğinde otomatik olarak screen'e kaydet
 		if (child instanceof SlotWidget slotWidget) {
 			if (Minecraft.getInstance().screen instanceof AbstractModContainerScreen<?> screen) {
 				slotWidget.registerToScreen(screen);
@@ -35,7 +56,8 @@ public interface ParentalWidget {
 		List<GuiEventListener> children = getChildren();
 		for (int i = children.size() - 1; i >= 0; i--) {
 			GuiEventListener child = children.get(i);
-			if (child.isMouseOver(mouseX, mouseY)) {
+			// Raw bounds check kullanarak recursive çağrıyı önle
+			if (isChildMouseOverRaw(child, mouseX, mouseY)) {
 				return child;
 			}
 		}
@@ -59,7 +81,8 @@ public interface ParentalWidget {
 	}
 	
 	default boolean mouseClickedChild(double mx, double my, int button) {
-		if (self().isMouseOver(mx,my) ) {
+		// Raw bounds check kullanarak recursive çağrıyı önle
+		if (isMouseOverSelfRaw(mx, my)) {
 			GuiEventListener child = getChildUnderCursor(mx, my);
 			if (child != null) {
 				return child.mouseClicked(mx, my, button);
@@ -68,7 +91,7 @@ public interface ParentalWidget {
 		return false;
 	}
 	default boolean mouseReleasedChild(double mx, double my, int button) {
-		if (self().isMouseOver(mx,my) ) {
+		if (isMouseOverSelfRaw(mx, my)) {
 			GuiEventListener child = getChildUnderCursor(mx, my);
 			if (child != null) {
 				return child.mouseReleased(mx, my, button);
@@ -77,7 +100,7 @@ public interface ParentalWidget {
 		return false;
 	}
 	default boolean mouseDraggedChild(double mx, double my, int button, double dx, double dy) {
-		if (self().isMouseOver(mx,my) ) {
+		if (isMouseOverSelfRaw(mx, my)) {
 			GuiEventListener child = getChildUnderCursor(mx, my);
 			if (child != null) {
 				return child.mouseDragged(mx, my, button, dx, dy);
@@ -86,7 +109,7 @@ public interface ParentalWidget {
 		return false;
 	}
 	default boolean mouseScrolledChild(double mx, double my, double scrollX, double scrollY) {
-		if (self().isMouseOver(mx,my) ) {
+		if (isMouseOverSelfRaw(mx, my)) {
 			GuiEventListener child = getChildUnderCursor(mx, my);
 			if (child != null) {
 				return child.mouseScrolled(mx, my, scrollX, scrollY);

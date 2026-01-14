@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget.base;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -13,6 +12,16 @@ public abstract class AbstractBaseWidget extends AbstractWidget {
 		super(pX, pY, pWidth, pHeight, pMessage);
 	}
 	
+	/**
+	 * Raw bounds check without any Overlapping widget checks.
+	 * Use this to avoid recursive calls.
+	 */
+	public boolean isMouseOverRaw(double mX, double mY) {
+		return this.active && this.visible &&
+			mX >= this.getX() && mX < this.getX() + this.getWidth() &&
+			mY >= this.getY() && mY < this.getY() + this.getHeight();
+	}
+	
 	@Override
 	public boolean isMouseOver(double mX, double mY) {
 		if (this instanceof ParentalWidget) return super.isMouseOver(mX, mY);
@@ -20,9 +29,26 @@ public abstract class AbstractBaseWidget extends AbstractWidget {
 		if (screen instanceof AbstractModContainerScreen<?> modScreen) {
 			for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
 				GuiEventListener child = modScreen.upperLayerChildren.get(i);
-				if (child instanceof ParentalWidget parental) {
-					if (child instanceof SimpleDraggablePanel panel && panel.isMouseOverRaw(mX, mY)) {
-						return parental.getChildUnderCursorRaw(mX, mY) == this;
+				if (child == this) continue;
+				if (child instanceof Overlapping overlapping && child instanceof AbstractWidget widget) {
+					boolean isOver = (widget instanceof AbstractBaseWidget abw)
+						? abw.isMouseOverRaw(mX, mY)
+						: widget.isMouseOver(mX, mY);
+					if (isOver) {
+						GuiEventListener elementUnder = overlapping.getElementUnderMouse(mX, mY);
+						return elementUnder == this;
+					}
+				}
+			}
+			for (GuiEventListener child : modScreen.children()) {
+				if (child == this) continue;
+				if (child instanceof Overlapping overlapping && child instanceof AbstractWidget widget) {
+					boolean isOver = (widget instanceof AbstractBaseWidget abw)
+						? abw.isMouseOverRaw(mX, mY)
+						: widget.isMouseOver(mX, mY);
+					if (isOver) {
+						GuiEventListener elementUnder = overlapping.getElementUnderMouse(mX, mY);
+						return elementUnder == this;
 					}
 				}
 			}

@@ -8,18 +8,21 @@
     "C": {
       "item": "eternalartifacts:capacitor"
     },
+    "H": {
+      "item": "minecraft:iron_hoe"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
     "M": {
       "item": "eternalartifacts:machine_block"
     },
     "R": {
       "tag": "forge:dusts/redstone"
-    },
-    "S": {
-      "tag": "forge:plastic_sheets"
     }
   },
   "pattern": [
-    "SRS",
+    "IHI",
     "AMA",
     "RCR"
   ],

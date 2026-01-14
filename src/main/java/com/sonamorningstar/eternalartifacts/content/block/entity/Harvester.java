@@ -111,6 +111,9 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		if (!redstoneChecks(lvl) || !canWork(energy)) return;
 		
 		ItemStack toolStack = inventory.getStackInSlot(13);
+		getFakePlayer();
+		setupFakePlayer(st);
+		setupFakePlayerInventory(toolStack);
 		for (int i = 0; i < progressStep; i++) {
 			BlockPos targetPos = workingPoses.get(workingIndex);
 			BlockState targetState = lvl.getBlockState(targetPos);
@@ -120,7 +123,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 			if (behavior != null && behavior.canHarvest(lvl, targetPos)) {
 				int sludgeAmount = behavior.getSludgeAmount(lvl, targetPos, toolStack);
 				if (!(canInsertPossibleItems(lvl, targetState, behavior) && tank.getEmptySpace(0) >= sludgeAmount)) return;
-				List<ItemStack> drops = behavior.harvest(lvl, targetPos, toolStack);
+				List<ItemStack> drops = behavior.harvest(lvl, targetPos, toolStack, getFakePlayer());
 				tank.fillForced(ModFluids.SLUDGE.getFluidStack(sludgeAmount), IFluidHandler.FluidAction.EXECUTE);
 				
 				boolean planted = false;

@@ -3,25 +3,28 @@
   "category": "redstone",
   "key": {
     "A": {
+      "item": "eternalartifacts:marin_ingot"
+    },
+    "B": {
       "tag": "forge:ingots/bronze"
     },
     "C": {
       "item": "eternalartifacts:capacitor"
+    },
+    "F": {
+      "item": "minecraft:fishing_rod"
     },
     "M": {
       "item": "eternalartifacts:machine_block"
     },
     "R": {
       "tag": "forge:dusts/redstone"
-    },
-    "S": {
-      "tag": "forge:plastic_sheets"
     }
   },
   "pattern": [
-    "SRS",
+    "FRF",
     "AMA",
-    "RCR"
+    "BCB"
   ],
   "result": {
     "item": "eternalartifacts:marine_fisher"

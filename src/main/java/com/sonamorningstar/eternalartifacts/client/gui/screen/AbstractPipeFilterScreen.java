@@ -186,7 +186,6 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 		pose.pushPose();
 		pose.translate(0, 0, tooltipZ);
 		
-		renderTooltip(gui, mx, my);
 		if (isCursorInBounds(leftPos + 116, topPos + 35, 16, 16, mx, my)) {
 			gui.renderTooltip(font, getListTooltips(), Optional.empty(), mx, my);
 		}
@@ -197,7 +196,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 		pose.popPose();
 	}
 	
-	protected void renderTooltip(GuiGraphics gui, int x, int y) {
+	public void renderTooltip(GuiGraphics gui, int x, int y) {
 		if (menu.getCarried().isEmpty() && this.hoveredSlot instanceof FilterFakeSlot fakeSlot) {
 			FilterEntry entry = menu.getFilterEntries().get(fakeSlot.getSlotIndex());
 			long tick = Minecraft.getInstance().clientTickCount;

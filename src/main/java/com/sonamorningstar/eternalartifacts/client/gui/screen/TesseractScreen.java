@@ -10,6 +10,7 @@ import com.sonamorningstar.eternalartifacts.container.TesseractMenu;
 import com.sonamorningstar.eternalartifacts.network.tesseract.AddTesseractNetworkToServer;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworkWhitelistToServer;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Tesseract;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
 import net.minecraft.client.gui.Font;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -47,47 +49,62 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 	@Override
 	protected void init() {
 		super.init();
-		setupPanel();
-		addRenderableWidget(CleanButton.builder(Component.literal("clear_selected"), this::clearSelected)
-			.bounds(leftPos, topPos-50, imageWidth, 25).build());
-		addRenderableWidget(CleanButton.builder(Component.literal("cycle_transfer"), this::cycleTransfer)
-			.bounds(leftPos, topPos-25, imageWidth, 25).build());
 		List<Component> securities = new ArrayList<>();
 		TesseractNetwork.Access[] values = TesseractNetwork.Access.values();
 		for (TesseractNetwork.Access value : values) {
-			securities.add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffixTranslatable(value.name().toLowerCase()));
+			securities.add(ModConstants.SCROLLABLE_PANEL_COMPONENT.withSuffixTranslatable(value.name().toLowerCase(Locale.ROOT)));
 		}
 		
-		securityMenu = new DropdownMenu<>(leftPos + 95, panel.getY() + panel.getHeight(),
+		int topMargin = menu.tesseract.getNetworkId() == null ? 0 : 28;
+		int panelX = leftPos + 10;
+		int panelY = topPos + 10 + topMargin;
+		int panelWidth = imageWidth - 20;
+		int panelHeight = imageHeight - 20 - topMargin - 25;
+		
+		securityMenu = new DropdownMenu<>(leftPos + 95, panelY + panelHeight + 15,
 			imageWidth - 105, 15, 50, font, builder -> {
 			for (int i = 0; i < securities.size(); i++) {
 				Component component = securities.get(i);
 				ScrollablePanel<ScrollablePanelComponent> panel = builder.menu().getDropPanel();
 				builder.add(new ScrollablePanelComponent(panel.getX(), panel.getY() + (i * 22), panel.getWidth(), 20,
 					panel, (mx, my, index) -> securityMenu.select(index), i,
-					font, component, 0xFF3F3000,0xFF554200, 0xFF6B5200));
+					font, component, 0xFF003D35, 0xFF00524A, 0xFF006B60));
 			}
 		}, ModConstants.DROPDOWN_MENU.withSuffixTranslatable("unselected_security"));
 		List<Component> capabilities = TesseractNetwork.CAPABILITY_NAMES.values().stream().toList();
-		capMenu = new DropdownMenu<>(leftPos + 95, panel.getY() + panel.getHeight() + 15,
+		capMenu = new DropdownMenu<>(leftPos + 95, panelY + panelHeight,
 			imageWidth - 105, 15, 50, font, builder -> {
 			for (int i = 0; i < capabilities.size(); i++) {
 				Component component = capabilities.get(i);
 				ScrollablePanel<ScrollablePanelComponent> panel = builder.menu().getDropPanel();
 				builder.add(new ScrollablePanelComponent(panel.getX(), panel.getY() + (i * 22), panel.getWidth(), 20,
 					panel, (mx, my, index) -> capMenu.select(index), i,
-					font, component, 0xFF2E1065, 0xFF3B0086, 0xFF4C0099));
+					font, component, 0xFF00433B, 0xFF005850, 0xFF007065));
 			}
 		}, ModConstants.DROPDOWN_MENU.withSuffixTranslatable("unselected_capability"));
 		
-		networkName = new EditBox(font, leftPos + 10, panel.getY() + panel.getHeight(), 85, 15, Component.empty());
+		networkName = new EditBox(font, leftPos + 10, panelY + panelHeight, 85, 15, Component.empty());
 		networkName.setMaxLength(20);
 		addNetwork = CleanButton.builder(ModConstants.GUI.withSuffixTranslatable("add"), this::addNetwork)
 			.bounds(leftPos + 10, networkName.getY() + networkName.getHeight(), 60, 15).build();
 		addNetwork.active = false;
-		addRenderableWidget(panel);
-		addWidget(securityMenu);
-		addWidget(capMenu);
+		
+		Tesseract.TransferMode mode = menu.tesseract.getTransferMode();
+		String modeSymbol = switch (mode) {
+			case BOTH -> "⇄";
+			case EXTRACT_ONLY -> "↑";
+			case INSERT_ONLY -> "↓";
+			case NONE -> "⊘";
+		};
+		int bottomButtonY = topPos + imageHeight + 5;
+		addRenderableWidget(CleanButton.builder(ModConstants.GUI.withSuffixTranslatable("clear_selected"), this::clearSelected)
+			.bounds(leftPos, bottomButtonY, imageWidth / 2 - 2, 18).build());
+		addRenderableWidget(CleanButton.builder(Component.literal(modeSymbol+" ")
+				.append(ModConstants.GUI.withSuffixTranslatable("cycle_transfer")), this::cycleTransfer)
+			.bounds(leftPos + imageWidth / 2 + 2, bottomButtonY, imageWidth / 2 - 2, 18).build());
+		
+		addUpperLayerChild(securityMenu);
+		addUpperLayerChild(capMenu);
 		addRenderableWidget(networkName);
 		addRenderableWidget(addNetwork);
 		UUID selectedId = menu.tesseract.getNetworkId();
@@ -96,6 +113,9 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				.filter(n -> n.getUuid().equals(selectedId))
 				.findFirst().ifPresent(this::constructSelected);
 		}
+		
+		setupPanel(panelX, panelY, panelWidth, panelHeight);
+		addRenderableWidget(panel);
 	}
 	
 	@Override
@@ -105,26 +125,24 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		panel.setScrollAmount(scrollAmount);
 	}
 	
-	private void setupPanel() {
+	private void setupPanel(int x, int y, int width, int height) {
 		var tNetworks = TesseractNetworks.get(minecraft.level);
 		var networks = tNetworks.getTesseractNetworks().stream().toList();
-		int topMargin = menu.tesseract.getNetworkId() == null ? 0 : 28;
-		panel = new ScrollablePanel<>(leftPos + 10, topPos + 10 + topMargin,
-			imageWidth - 20, imageHeight - 20 - topMargin - 25, 10);
+		panel = new ScrollablePanel<>(x, y, width, height, 10);
 		int childHeight = 28;
 		AtomicInteger networkIndex = new AtomicInteger();
 		for (int i = 0; i < networks.size(); i++) {
 			TesseractNetwork<?> tesseractNetwork = networks.get(i);
 			int finalI = i;
 			
-			panel.addChild((x, y, width, height) -> {
+			panel.addChild((pX, pY, pWidth, pHeight) -> {
 				int widgetX = panel.getX();
 				int isShort = tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED ? 20 : 0;
 				int widgetY = panel.getY() + (finalI * (childHeight + 1));
 				return new TesseractNetworkWidget(widgetX, widgetY, panel.getWidth() - isShort, childHeight,
 					tesseractNetwork, panel, (mx, my, index) -> selectNetwork(index)
 					,networkIndex.getAndIncrement(), font, Component.empty(),
-					0xFF007A6D, 0xFF005F54, 0xFF004A42);
+					0xFF004A42, 0xFF00635A, 0xFF007A6D);
 			});
 			
 			if (tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED) {
@@ -172,12 +190,12 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				dragPanel.active = false;
 				addUpperLayerChild(dragPanel);
 				
-				panel.addChild((x, y, width, height) -> new ScrollablePanelComponent(widgetX, widgetY, 20, childHeight,
+				panel.addChild((pX, pY, pWidth, pHeight) -> new ScrollablePanelComponent(widgetX, widgetY, 20, childHeight,
 					panel, (mx, my, index) -> {
 					dragPanel.setX(widgetX);
 					dragPanel.setY(widgetY - (int) panel.scrollAmount());
 					dragPanel.toggle();
-				}, finalI, font, Component.empty(), 0xFF2E1065, 0xFF3B0086, 0xFF4C0099));
+				}, finalI, font, Component.empty(), 0xFF005248, 0xFF006B5F, 0xFF008577));
 			}
 		}
 		panel.reCalcInnerHeight();
@@ -194,7 +212,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				whitelistPanel.getWidth(), 15,
 				whitelistPanel, names++, font,
 				Either.left(whitelistedPlayer), tesseractNetwork,
-				0xFF1F2A24, 0xFF2E4238, 0xFF3B6F5A
+				0xFF00302B, 0xFF00433D, 0xFF00564E
 			));
 		}
 		for (int j = 0; j < tesseractNetwork.getPendingWhitelistPlayers().size(); j++) {
@@ -204,7 +222,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				whitelistPanel.getWidth(), 15,
 				whitelistPanel, names++, font,
 				Either.right(whitelistedPlayer), tesseractNetwork,
-				0xFF2A2618, 0xFF3A3522, 0xFF5A4A28
+				0xFF2B3530, 0xFF3D4A43, 0xFF4E5F55
 			));
 		}
 		whitelistPanel.reCalcInnerHeight();
@@ -249,7 +267,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		
 		selectedNetwork = new TesseractNetworkWidget(leftPos + 10, topPos + 9, imageWidth - 20, 26, tesseractNetwork,
 			panel, (mx, my, b) -> this.setFocused(selectedNetwork), -1, font, Component.empty(),
-			0xFF007A6D, 0xFF005F54, 0xFF004A42);
+			0xFF004A42, 0xFF00635A, 0xFF007A6D);
 		if (tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED) {
 			selectedNetwork.setWidth(imageWidth - 40);
 			int dX = leftPos + selectedNetwork.getWidth() + 10;
@@ -298,7 +316,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				selectedWlPanel.setX(dX);
 				selectedWlPanel.setY(selectedNetwork.getY() - (int) panel.scrollAmount());
 				selectedWlPanel.toggle();
-			}, -1, font, Component.empty(), 0xFF2E1065, 0xFF3B0086, 0xFF4C0099);
+			}, -1, font, Component.empty(), 0xFF005248, 0xFF006B5F, 0xFF008577);
 			selectedWlPanel.visible = false;
 			selectedWlPanel.active = false;
 			addRenderableWidget(selectedWlButton);
@@ -314,6 +332,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		securityMenu.render(gui, pMouseX, pMouseY, pPartialTick);
 		UUID selectedNetwork = menu.tesseract.getNetworkId();
 		addNetwork.active = !networkName.getValue().isEmpty() && capMenu.getValue() != null && securityMenu.getValue() != null;
+		
 		if (selectedNetwork != null) {
 			TesseractNetwork<?> tesseractNetwork = TesseractMenu.gatheredTesseractNetworks.stream()
 				.filter(n -> n.getUuid().equals(selectedNetwork))

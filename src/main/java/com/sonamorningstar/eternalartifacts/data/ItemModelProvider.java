@@ -1,20 +1,15 @@
 package com.sonamorningstar.eternalartifacts.data;
 
-import com.sonamorningstar.eternalartifacts.content.fluid.BaseFluidType;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.registrar.FluidDeferredHolder;
+import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -253,9 +248,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.TRASH_CAN);
         withParentBlock(ModBlocks.MACHINE_WORKBENCH);
 
-        ModFluids.FLUIDS.getEntries().stream().filter(p -> p.getBucketItem() != null).forEach(this::bucketItem);
+        ModFluids.FLUIDS.getFluids().stream().filter(FluidHolder::hasBucket).forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {
-            if(!holder.isHasCustomRender()) withParentBlock(holder.getBlockHolder());
+            if(!holder.hasCustomRender()) withParentBlock(holder.blockHolder());
         });
     }
 
@@ -264,15 +259,9 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         singleTexture(path, mcLoc("item/handheld"), "layer0", modLoc("item/"+path));
     }
 
-    private void bucketItem(DeferredHolder<Item, BucketItem> bucket, DeferredHolder<Fluid, BaseFlowingFluid.Source> source) {
-        withExistingParent(bucket.getId().getPath(),
-            new ResourceLocation("neoforge", "item/bucket_drip"))
-                .customLoader(DynamicFluidContainerModelBuilder::begin)
-                .fluid(source.get())
-                .applyTint(true);
-    }
-    private void bucketItem(FluidDeferredHolder<BaseFluidType, BaseFlowingFluid.Source, BaseFlowingFluid.Flowing, BucketItem, ? extends LiquidBlock> holder) {
-        withExistingParent(holder.getBucketItemHolder().getId().getPath(),
+    private void bucketItem(FluidHolder<?> holder) {
+        if (holder.getBucketHolder() == null) return;
+        withExistingParent(holder.getBucketHolder().getId().getPath(),
             new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(holder.getFluid())

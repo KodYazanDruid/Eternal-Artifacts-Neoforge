@@ -46,11 +46,7 @@ public record ForcedChunksToClient(Set<ForceLoadManager.ForcedChunkPos> forcedCh
 				if (level.isLoaded(pos)) {
 					BlockEntity be = level.getBlockEntity(pos);
 					if (be instanceof ChunkLoader loader) {
-						loader.claimChunks(forcedChunks);
-						Set<ForceLoadManager.ForcedChunkPos> chunks = loader.getForcedChunks();
-						chunks.clear();
-						chunks.addAll(forcedChunks);
-						//System.out.println("Received " + forcedChunks.size() + " forced chunks at " + pos + " for loader: " + loader);
+						loader.receiveFromServer(forcedChunks);
 					}
 				}
 			}));

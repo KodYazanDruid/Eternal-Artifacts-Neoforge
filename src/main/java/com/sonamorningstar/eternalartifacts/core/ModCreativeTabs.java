@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -27,8 +28,9 @@ public class ModCreativeTabs {
                 for (var machineHolder : ModMachines.MACHINES.getMachines()) {
                     output.accept(machineHolder.getItem());
                 }
-                for (var bucketHolder : ModFluids.FLUIDS.getBucketEntries()) {
-                    output.accept(bucketHolder.get());
+                for (var fluidHolder : ModFluids.FLUIDS.getFluids()) {
+                    BucketItem bucketItem = fluidHolder.getBucketItem();
+                    if (bucketItem != null) output.accept(bucketItem);
                 }
             }).build());
 

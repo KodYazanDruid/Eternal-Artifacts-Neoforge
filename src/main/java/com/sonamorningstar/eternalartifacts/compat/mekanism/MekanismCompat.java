@@ -59,40 +59,7 @@ public class MekanismCompat {
 		event.registerBlockEntity(Capabilities.GAS.block(), ModBlockEntities.TESSERACT.get(), (be, dir) -> {
 			var network = be.getCachedTesseractNetwork();
 			if (network == null) return null;
-			return network.getCapabilityClass() == IGasHandler.class ? new IGasHandler() {
-				@Override
-				public int getTanks() {
-					return 1;
-				}
-				
-				@Override
-				public GasStack getChemicalInTank(int i) {
-					return GasStack.EMPTY;
-				}
-				
-				@Override
-				public void setChemicalInTank(int i, GasStack stack) {}
-				
-				@Override
-				public long getTankCapacity(int i) {
-					return 16000;
-				}
-				
-				@Override
-				public boolean isValid(int i, GasStack stack) {
-					return true;
-				}
-				
-				@Override
-				public GasStack insertChemical(int i, GasStack stack, Action action) {
-					return GasStack.EMPTY;
-				}
-				
-				@Override
-				public GasStack extractChemical(int i, long l, Action action) {
-					return GasStack.EMPTY;
-				}
-			} : null;
+			return network.getCapabilityClass() == IGasHandler.class ? new TesseractGasCap(be) : null;
 		});
         event.registerBlock(Capabilities.GAS.block(), (a, b, c, d, e) -> new IGasHandler() {
 			@Override

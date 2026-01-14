@@ -26,6 +26,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManage
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
@@ -433,25 +434,28 @@ public class ClientEvents {
             RenderSystem.disableDepthTest();
             pose.pushPose();
             pose.translate(0, 0, tooltipZ);
-            int panelTooltipZ = tooltipZ;
             for (SimpleDraggablePanel panel : visiblePanels) {
-                panel.renderChildTooltips(gui, mx, my, panelTooltipZ);
-                panelTooltipZ += AbstractModContainerScreen.PANEL_Z_INCREMENT;
+                panel.renderChildTooltips(gui, mx, my, tooltipZ);
             }
             pose.popPose();
             
-            // Machine ve PipeFilter tooltip'leri en üstte olmalı
-            int topTooltipZ = panelTooltipZ + AbstractModContainerScreen.TOOLTIP_Z_OFFSET;
-            
             if (amcs instanceof AbstractMachineScreen<?> machineScreen) {
-                machineScreen.renderMachineTooltips(gui, topTooltipZ);
+                machineScreen.renderMachineTooltips(gui, tooltipZ);
             }
             
             if (amcs instanceof AbstractPipeFilterScreen<?> pipeFilterScreen) {
-                pipeFilterScreen.renderExtraTooltips(gui, mx, my, topTooltipZ);
+                pipeFilterScreen.renderExtraTooltips(gui, mx, my, tooltipZ);
             }
             
-            renderCarriedItem(gui, amcs, mx, my, topTooltipZ + 100);
+            for (GuiEventListener child : amcs.children()) {
+                if (child instanceof TooltipRenderable tooltipRenderable) {
+                    tooltipRenderable.renderTooltip(gui, mx, my, tooltipZ);
+                }
+            }
+            
+            amcs.renderTooltip(gui, mx, my);
+            
+            renderCarriedItem(gui, amcs, mx, my, tooltipZ + 100);
             
             RenderSystem.restoreGlState(GL_STATE);
             pose.popPose();

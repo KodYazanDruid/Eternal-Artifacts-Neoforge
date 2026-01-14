@@ -164,7 +164,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     
     @Override
     public void onEnchanted(Enchantment enchantment, int level) {
-        if (enchantment == ModEnchantments.VOLUME.get()){
+        super.onEnchanted(enchantment, level);
+        if (enchantment == ModEnchantments.VOLUME.get()) {
             resetBaseCapabilities();
         }
         if (enchantment == Enchantments.BLOCK_EFFICIENCY) {
@@ -230,7 +231,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected void setupFakePlayer(BlockState st) {
         if (fakePlayer == null || isFakePlayerSetUp) return;
         fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-        fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
         if (st.hasProperty(BlockStateProperties.FACING)) {
             fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
         } else if (st.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
@@ -243,9 +243,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         Inventory fakePlayerInventory = fakePlayer.getInventory();
         fakePlayerInventory.selected = 0;
         fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
-        for (int i = 0; i < fakePlayerInventory.items.size(); i++) {
+        int size = fakePlayerInventory.items.size();
+        for (int i = 1; i < size - 1; i++) {
             for (int j = 0; j < inventory.getSlots(); j++) {
-                if (i == j && i != 0) {
+                if (i == j) {
                     fakePlayerInventory.items.set(i, inventory.getStackInSlot(j).copy());
                 }
             }

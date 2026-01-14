@@ -59,30 +59,6 @@ public class BlockPlacer extends SidedTransferMachine<BlockInteractorMenu> imple
 		setEnergyPerTick(250);
 	}
 	
-	@Override
-	public void setItemFilterWhitelist(boolean whitelist) {
-		this.itemFilterWhitelist = whitelist;
-		setChanged();
-	}
-	
-	@Override
-	public void setFluidFilterWhitelist(boolean whitelist) {
-		this.fluidFilterWhitelist = whitelist;
-		setChanged();
-	}
-	
-	@Override
-	public void setItemFilterIgnoreNBT(boolean ignoreNBT) {
-		this.itemFilterIgnoreNBT = ignoreNBT;
-		setChanged();
-	}
-	
-	@Override
-	public void setFluidFilterIgnoreNBT(boolean ignoreNBT) {
-		this.fluidFilterIgnoreNBT = ignoreNBT;
-		setChanged();
-	}
-	
 	// Silent setters for loading from NBT
 	@Override
 	public void setItemFilterWhitelistSilent(boolean whitelist) {

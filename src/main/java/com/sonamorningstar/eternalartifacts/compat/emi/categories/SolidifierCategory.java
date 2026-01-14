@@ -15,17 +15,20 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class SolidifierCategory extends EAEmiRecipe {
     public static final EmiRecipeCategory SOLIDIFIER_CATEGORY = createCategory(ModRecipes.SOLIDIFYING, ModMachines.SOLIDIFIER);
+    private final int fluidAmount;
+    
     public SolidifierCategory(SolidifierRecipe recipe, ResourceLocation id) {
-        super(SOLIDIFIER_CATEGORY, id, 72, 50);
+        super(SOLIDIFIER_CATEGORY, id, 76, 56);
         addFluidIngredient(inputs, recipe.getInputFluid());
+        this.fluidAmount = recipe.getInputFluid().getFluidStacks()[0].getAmount();
         outputs.add(EmiStack.of(recipe.getOutput()));
     }
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addTank(inputs.get(0), 0, 0, 18, 50, 16000);
-        widgets.addFillingArrow(24, 16, 10000);
-        widgets.addSlot(outputs.get(0).setAmount(outputs.get(0).getAmount()), 54, 16).recipeContext(this);
+        addLargeTank(widgets, inputs.get(0), 0, 0, fluidAmount * 2);
+        widgets.addFillingArrow(24, 19, 10000);
+        widgets.addSlot(outputs.get(0), 54, 19).recipeContext(this);
     }
 
     public static void fillRecipes(EmiRegistry registry) {

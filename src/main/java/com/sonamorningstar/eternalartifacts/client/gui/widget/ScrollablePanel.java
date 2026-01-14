@@ -92,8 +92,14 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	
 	@Nullable
 	public W getChildUnderCursor(double mouseX, double mouseY) {
-		for (W child : children) {
-			if (child.isMouseOver(mouseX, mouseY + scrollAmount())) {
+		// Scroll offset'i hesaba kat
+		double adjustedY = mouseY + scrollAmount();
+		for (int i = children.size() - 1; i >= 0; i--) {
+			W child = children.get(i);
+			// Raw bounds check kullanarak recursive çağrıyı önle
+			if (child.active && child.visible &&
+				mouseX >= child.getX() && mouseX < child.getX() + child.getWidth() &&
+				adjustedY >= child.getY() && adjustedY < child.getY() + child.getHeight()) {
 				return child;
 			}
 		}
@@ -112,29 +118,62 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	}
 	
 	@Override
+	public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+		// Raw bounds check kullan
+		boolean isOver = this.active && this.visible &&
+			mx >= this.getX() && mx < this.getX() + this.getWidth() &&
+			my >= this.getY() && my < this.getY() + this.getHeight();
+		if (visible && isOver) {
+			if (scrollbarVisible()) {
+				return super.mouseDragged(mx, my, button, dx, dy);
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	public void mouseMoved(double mx, double my) {
 		if (visible) {
 			for (W child : children) {
-				child.mouseMoved(mx, my);
+				child.mouseMoved(mx, my + scrollAmount());
 			}
 		}
 		super.mouseMoved(mx, my);
 	}
 	
 	@Override
-	public boolean updateHover(double mx, double my) {
-		if (visible) {
-			for (W child : children) {
-				if (child instanceof Overlapping overlapping) {
-					overlapping.updateHover(mx, my);
+	public boolean updateHover(double mx, double my, boolean isBlocked) {
+		if (!visible) return false;
+		
+		boolean isOverSelf = isMouseOverSelf(mx, my);
+		boolean anyChildHovered = false;
+		
+		double adjustedY = my + scrollAmount();
+		
+		for (int i = children.size() - 1; i >= 0; i--) {
+			W child = children.get(i);
+			boolean isChildOver = child.active && child.visible &&
+				mx >= child.getX() && mx < child.getX() + child.getWidth() &&
+				adjustedY >= child.getY() && adjustedY < child.getY() + child.getHeight();
+			
+			if (child instanceof Overlapping overlapping) {
+				boolean childBlocked = isBlocked || anyChildHovered;
+				boolean childHovered = overlapping.updateHover(mx, adjustedY, childBlocked);
+				if (childHovered && !childBlocked) {
+					anyChildHovered = true;
 				}
-				if (child instanceof AbstractScrollPanelComponent aspc) {
-					aspc.updateHover(mx, my);
-				}
+			} else if (child instanceof AbstractScrollPanelComponent aspc) {
+				boolean shouldHover = !isBlocked && !anyChildHovered && isChildOver;
+				aspc.updateHover(shouldHover ? mx : Double.NEGATIVE_INFINITY, shouldHover ? adjustedY : Double.NEGATIVE_INFINITY);
+				if (shouldHover) anyChildHovered = true;
+			} else {
+				boolean shouldHover = !isBlocked && !anyChildHovered && isChildOver;
+				child.setFocused(shouldHover);
+				if (shouldHover) anyChildHovered = true;
 			}
-			return true;
 		}
-		return false;
+		
+		return isOverSelf || anyChildHovered;
 	}
 	
 	@Override
@@ -144,11 +183,9 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	
 	@Override
 	protected void renderContents(GuiGraphics gui, int mX, int mY, float deltaTick) {
-		//gui.enableScissor(getX(), getY(), getX() + getWidth(), getY() + getHeight());
 		for (W child : children) {
 			child.render(gui, mX, mY, deltaTick);
 		}
-		//gui.disableScissor();
 	}
 	
 	@Override

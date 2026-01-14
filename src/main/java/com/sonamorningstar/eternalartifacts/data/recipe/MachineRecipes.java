@@ -68,14 +68,14 @@ public final class MachineRecipes {
 			)
 		);
 		registerMachineRecipe(output, ModMachines.MEAT_PACKER,
-			"SPS"+"AMA"+"RCR",
+			"SPS"+"TMT"+"RCR",
 			Map.of(
 				'S', Ingredient.of(ModTags.Items.PLASTIC),
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
 				'P', Ingredient.of(Items.PISTON),
-				'A', Ingredient.of(ModTags.Items.INGOTS_ALUMINUM)
+				'T', Ingredient.of(ModTags.Items.INGOTS_TIN)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.MOB_LIQUIFIER,
@@ -201,9 +201,10 @@ public final class MachineRecipes {
 			)
 		);
 		registerMachineRecipe(output, ModMachines.HARVESTER,
-			"SRS"+"AMA"+"RCR",
+			"IHI"+"AMA"+"RCR",
 			Map.of(
-				'S', Ingredient.of(ModTags.Items.PLASTIC),
+				'I', Ingredient.of(Tags.Items.INGOTS_IRON),
+				'H', Ingredient.of(Items.IRON_HOE),
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
@@ -265,45 +266,47 @@ public final class MachineRecipes {
 			)
 		);
 		registerMachineRecipe(output, ModMachines.REPAIRER,
-			"RCR"+"AMA"+"RPR",
+			"ICI"+"AMA"+"RPR",
 			Map.of(
-				'R', Ingredient.of(Tags.Items.INGOTS_BRICK),
+				'I', Ingredient.of(Tags.Items.INGOTS_IRON),
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'P', Ingredient.of(Items.ANVIL),
-				'A', Ingredient.of(ModTags.Items.INGOTS_TIN)
+				'A', Ingredient.of(ModTags.Items.INGOTS_TIN),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.RECYCLER,
-			"RCR"+"AMA"+"RPR",
+			"BCB"+"AMA"+"RPR",
 			Map.of(
-				'R', Ingredient.of(Tags.Items.INGOTS_BRICK),
+				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'P', Ingredient.of(Items.HOPPER),
-				'A', Ingredient.of(ModTags.Items.INGOTS_TIN)
+				'A', Ingredient.of(ModTags.Items.INGOTS_ALUMINUM),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.PACKER,
-			"SPS"+"AMA"+"RCR",
+			"SCS"+"IMI"+"RPR",
 			Map.of(
 				'S', Ingredient.of(ModTags.Items.PLASTIC),
-				'C', Ingredient.of(ModItems.CAPACITOR),
+				'C', Ingredient.of(Items.CHEST),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
-				'P', Ingredient.of(Items.PISTON),
-				'A', Ingredient.of(ModTags.Items.INGOTS_ALUMINUM)
+				'P', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(ModTags.Items.INGOTS_ALUMINUM)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.UNPACKER,
-			"SPS"+"AMA"+"RCR",
+			"SDS"+"IMI"+"RPR",
 			Map.of(
 				'S', Ingredient.of(ModTags.Items.PLASTIC),
-				'C', Ingredient.of(ModItems.CAPACITOR),
+				'D', Ingredient.of(Items.DISPENSER),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
-				'P', Ingredient.of(Items.STICKY_PISTON),
-				'A', Ingredient.of(ModTags.Items.INGOTS_ALUMINUM)
+				'P', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(ModTags.Items.INGOTS_ALUMINUM)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.SLUDGE_REFINER,
@@ -330,13 +333,14 @@ public final class MachineRecipes {
 			)
 		);
 		registerMachineRecipe(output, ModMachines.MARINE_FISHER,
-			"SRS"+"AMA"+"RCR",
+			"FRF"+"AMA"+"BCB",
 			Map.of(
-				'S', Ingredient.of(ModTags.Items.PLASTIC),
+				'F', Ingredient.of(Items.FISHING_ROD),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
-				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
-				'A', Ingredient.of(ModTags.Items.INGOTS_BRONZE)
+				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'A', Ingredient.of(ModItems.MARIN_INGOT)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.SMITHINATOR,
@@ -351,9 +355,9 @@ public final class MachineRecipes {
 			)
 		);
 		registerMachineRecipe(output, ModMachines.DISENCHANTER,
-			"SES"+"AMA"+"RCR",
+			"BEB"+"AMA"+"RCR",
 			Map.of(
-				'S', Ingredient.of(ModTags.Items.PLASTIC),
+				'B', Ingredient.of(Items.BOOK),
 				'E', Ingredient.of(Items.ENCHANTING_TABLE),
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
@@ -370,10 +374,95 @@ public final class MachineRecipes {
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE)
 			)
 		);
-		//registerMachineRecipe(output, ModMachines.AN);
+		registerMachineRecipe(output, ModBlocks.SOLAR_PANEL,
+			"LLL"+"GCG"+"IMI",
+			Map.of(
+				'L', Ingredient.of(Tags.Items.GEMS_LAPIS),
+				'G', Ingredient.of(Tags.Items.GLASS),
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(ModTags.Items.INGOTS_TIN),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK)
+			)
+		);
+		registerMachineRecipe(output, ModBlocks.FLUID_COMBUSTION_DYNAMO,
+			" C "+"BMB"+"RFR",
+			Map.of(
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'M', Ingredient.of(ModItems.JAR),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'F', Ingredient.of(Items.FURNACE)
+			)
+		);
+		registerMachineRecipe(output, ModBlocks.SOLID_COMBUSTION_DYNAMO,
+			" C "+"IMI"+"RFR",
+			Map.of(
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(Tags.Items.INGOTS_IRON),
+				'M', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'F', Ingredient.of(Items.FURNACE)
+			)
+		);
+		registerMachineRecipe(output, ModBlocks.ALCHEMICAL_DYNAMO,
+			" C "+"BMB"+"RJR",
+			Map.of(
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'M', Ingredient.of(Items.BREWING_STAND),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'J', Ingredient.of(ModItems.JAR)
+			)
+		);
+		registerMachineRecipe(output, ModBlocks.CULINARY_DYNAMO,
+			" C "+"IMI"+"RFR",
+			Map.of(
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(Tags.Items.INGOTS_IRON),
+				'M', Ingredient.of(Items.CAMPFIRE),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'F', Ingredient.of(ModTags.Items.INGOTS_BRONZE)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.ANVILINATOR,
+			"ACA"+"IMI"+"RDR",
+			Map.of(
+				'A', Ingredient.of(Items.ANVIL),
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(Tags.Items.INGOTS_IRON),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'D', Ingredient.of(Tags.Items.GEMS_DIAMOND)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.BOOK_DUPLICATOR,
+			"BCB"+"IMI"+"RPR",
+			Map.of(
+				'B', Ingredient.of(Items.BOOK),
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(ModTags.Items.INGOTS_TIN),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'P', Ingredient.of(Items.CRAFTING_TABLE)
+			)
+		);
+		registerMachineRecipe(output, ModItems.TESSERACT,
+			"EPE"+"DCD"+"EOE",
+			Map.of(
+				'E', Ingredient.of(ModItems.ENDER_TABLET),
+				'P', Ingredient.of(Tags.Items.ENDER_PEARLS),
+				'D', Ingredient.of(ModItems.DEMONIC_TABLET),
+				'C', Ingredient.of(ModItems.CHLOROPHYTE_TABLET),
+				'O', Ingredient.of(ModItems.OBLIVIUM_INGOT)
+			), ModItems.OBLIVIUM_INGOT
+		);
 	}
 	
 	static void registerMachineRecipe(RecipeOutput output, ItemLike machine, String pattern, Map<Character, Ingredient> symbols) {
+		registerMachineRecipe(output, machine, pattern, symbols, ModBlocks.MACHINE_BLOCK);
+	}
+	
+	static void registerMachineRecipe(RecipeOutput output, ItemLike machine, String pattern, Map<Character, Ingredient> symbols, ItemLike unlockItem) {
 		var builder = ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, machine)
 			.pattern(pattern.substring(0, 3)).pattern(pattern.substring(3, 6)).pattern(pattern.substring(6, 9));
 		var noDup = Arrays.stream(pattern.split(""))
@@ -383,7 +472,7 @@ public final class MachineRecipes {
 				builder.define(c, symbols.get(c));
 			}
 		}
-		builder.unlockedBy("has_item", has(ModBlocks.MACHINE_BLOCK)).save(output);
+		builder.unlockedBy("has_item", has(unlockItem)).save(output);
 	}
 	
 	static Criterion<InventoryChangeTrigger.TriggerInstance> has(ItemLike pItemLike) {

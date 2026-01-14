@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.api.farm;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -114,10 +115,10 @@ public interface FarmBehavior extends Comparable<FarmBehavior> {
 	 * @param tool  optional tool used to harvest (e.g. hoe), may be null
 	 * @return a list of ItemStacks collected from harvesting
 	 */
-	default List<ItemStack> harvest(Level level, BlockPos pos, @Nullable ItemStack tool) {
+	default List<ItemStack> harvest(Level level, BlockPos pos, @Nullable ItemStack tool, @Nullable Entity harvester) {
 		BlockState state = level.getBlockState(pos);
 		var drops = Block.getDrops(state, (ServerLevel) level, pos, level.getBlockEntity(pos),
-			null, tool == null ? ItemStack.EMPTY : tool);
+			harvester, tool == null ? ItemStack.EMPTY : tool);
 		level.destroyBlock(pos, false);
 		return drops;
 	}

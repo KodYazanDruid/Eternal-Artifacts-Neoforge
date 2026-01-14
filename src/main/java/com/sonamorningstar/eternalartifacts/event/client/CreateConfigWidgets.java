@@ -28,6 +28,7 @@ import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -79,7 +80,7 @@ public class CreateConfigWidgets {
 						Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
 					})
 					.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable(sideName)
-						.append(": ").append(ModConstants.GUI.withSuffixTranslatable(type.apply(dir).toString().toLowerCase())))
+						.append(": ").append(ModConstants.GUI.withSuffixTranslatable(type.apply(dir).toString().toLowerCase(Locale.ROOT))))
 					.size(9, 9).build();
 				sideButton.setSprites(getTextureForTransferType(type.apply(dir)));
 				
@@ -251,6 +252,10 @@ public class CreateConfigWidgets {
 			18, 27,
 			18, 36,
 			54, 24);
+		addToggleConfigWidget(event, "always_mine",
+			63, 9,
+			63, 18,
+			64, 24);
 		
 		event.register(RedstoneConfig.class, (config, ctx) -> {
 			SimpleDraggablePanel panel = ctx.panel;

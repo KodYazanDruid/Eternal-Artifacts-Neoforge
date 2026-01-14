@@ -19,6 +19,7 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -34,6 +35,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -48,11 +50,10 @@ public class FMLCommonSetup {
         event.enqueueWork(()-> {
             ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.TIGRIS_FLOWER.getId(), ModBlocks.POTTED_TIGRIS);
             registerCauldronContextsForItemFluidHandlers(ModItems.JAR.get());
+            
             setupCauldronInteractions();
-            setupCharmSlots();
             registerDispenserBehaviours();
             registerPotions();
-            MachineEnchants.bootstrap();
             FarmBehaviorRegistry.bootstrap();
             
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.DROWNED, ModItems.DROWNED_HEAD.get());
@@ -66,7 +67,9 @@ public class FMLCommonSetup {
             ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
             ModLoader.get().postEvent(new RegisterFarmBehaviorEvent());
         });
-
+        
+        MachineEnchants.bootstrap();
+        setupCharmSlots();
     }
 
     private static void registerCauldronContextsForItemFluidHandlers(Item item) {
@@ -74,11 +77,20 @@ public class FMLCommonSetup {
         CauldronInteraction.WATER.map().put(item, ModCauldronDrainInteraction.WATER);
         CauldronInteraction.LAVA.map().put(item, ModCauldronDrainInteraction.LAVA);
         ModCauldronInteraction.PLASTIC.map().put(item, ModCauldronDrainInteraction.PLASTIC);
+        ModCauldronInteraction.CRUDE_OIL.map().put(item, ModCauldronDrainInteraction.CRUDE_OIL);
+        ModCauldronInteraction.NAPHTHA.map().put(item, ModCauldronDrainInteraction.NAPHTHA);
     }
     private static void setupCauldronInteractions() {
         ModCauldronInteraction.PLASTIC.map().put(Items.BUCKET, ModCauldronDrainInteraction.PLASTIC);
         CauldronInteraction.EMPTY.map().put(ModFluids.LIQUID_PLASTIC.getBucketItem(), ModCauldronInteraction.EMPTY);
+        ModCauldronInteraction.CRUDE_OIL.map().put(Items.BUCKET, ModCauldronDrainInteraction.CRUDE_OIL);
+        CauldronInteraction.EMPTY.map().put(ModFluids.CRUDE_OIL.getBucketItem(), ModCauldronInteraction.EMPTY);
+        ModCauldronInteraction.NAPHTHA.map().put(Items.BUCKET, ModCauldronDrainInteraction.NAPHTHA);
+        CauldronInteraction.EMPTY.map().put(ModFluids.NAPHTHA.getBucketItem(), ModCauldronInteraction.EMPTY);
+        
         ModCauldronInteraction.PLASTIC.map().put(Items.BLUE_DYE, ModCauldronInteraction.DYE_PLASTIC);
+        // Tag-based interactions moved to ServerStartingEvent in CommonEvents
+        // because tags are not loaded yet during FMLCommonSetupEvent
     }
     private static void registerDispenserBehaviours() {
         DispenseItemBehavior dispenseitembehavior = new OptionalDispenseItemBehavior() {

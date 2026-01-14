@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "minecraft:crafting_table"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    "BCB",
+    "IMI",
+    "RPR"
+  ],
+  "result": {
+    "item": "eternalartifacts:book_duplicator"
+  }
+}

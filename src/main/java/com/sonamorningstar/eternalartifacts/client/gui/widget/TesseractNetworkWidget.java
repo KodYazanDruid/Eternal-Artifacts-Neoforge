@@ -7,7 +7,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
+
+import java.util.Locale;
 
 public class TesseractNetworkWidget extends AbstractScrollPanelComponent {
 	private static final Font font = Minecraft.getInstance().font;
@@ -28,31 +29,31 @@ public class TesseractNetworkWidget extends AbstractScrollPanelComponent {
 		int maxY = getY() + height;
 		int midX = (minX + maxX) / 2;
 		int midY = (minY + maxY) / 2;
-		int scrollInt = Mth.ceil(panel.scrollAmount());
 		int margin = 3;
 		super.renderWidget(gui, mX, mY, deltaTick);
 		gui.fill(minX, minY, maxX, maxY, getColor());
-		GuiDrawer.renderScrollingStringForPanel(gui, font, Component.literal(tesseractNetwork.getName()), minX + margin, minY + margin,
-			midX - margin, midY - margin, scrollInt,0xFF38BDF8, false);
+		double scroll = panel == null ? 0 : panel.scrollAmount();
+		GuiDrawer.renderScrollingString(gui, font, Component.literal(tesseractNetwork.getName()), minX + margin, minY + margin,
+			midX - margin, midY - margin,0xFF38BDF8, false, scroll);
 		Component capName = TesseractNetwork.CAPABILITY_NAMES.get(tesseractNetwork.getCapabilityClass());
 		if (capName != null) {
 			int capColor = 0xFFA78BFA;
-			GuiDrawer.renderScrollingStringForPanel(gui, font, capName, minX + margin, midY + margin,
-				midX - margin, maxY - margin, scrollInt, capColor, false);
+			GuiDrawer.renderScrollingString(gui, font, capName, minX + margin, midY + margin,
+				midX - margin, maxY - margin, capColor, false, scroll);
 		}
 		GameProfile profile = tesseractNetwork.getOwner();
 		if (profile != null) {
 			String owner = profile.getName();
 			int ownerColor = 0xFF4ADE80;
-			GuiDrawer.renderScrollingStringForPanel(gui, font, Component.literal(owner), midX + margin, minY + margin,
-				maxX - margin, midY - margin, scrollInt, ownerColor, false);
+			GuiDrawer.renderScrollingString(gui, font, Component.literal(owner), midX + margin, minY + margin,
+				maxX - margin, midY - margin, ownerColor, false, scroll);
 		}
 		TesseractNetwork.Access access = tesseractNetwork.getAccess();
 		if (access != null) {
-			String accessName = access.name().toLowerCase();
+			String accessName = access.name().toLowerCase(Locale.ROOT);
 			int accessColor = 0xFFFBBF24;
-			GuiDrawer.renderScrollingStringForPanel(gui, font, Component.literal(accessName), midX + margin, midY + margin,
-				maxX - margin, maxY - margin, scrollInt, accessColor, false);
+			GuiDrawer.renderScrollingString(gui, font, Component.literal(accessName), midX + margin, midY + margin,
+				maxX - margin, maxY - margin, accessColor, false, scroll);
 		}
 	}
 }

@@ -14,6 +14,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -80,7 +81,9 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof Machine<?> mbe && stack.hasTag()) {
-			mbe.loadEnchants(stack.getEnchantmentTags());
+			Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+			mbe.enchantments.clear();
+			mbe.enchantments.putAll(enchantments);
 			for (Map.Entry<Enchantment, Integer> entry : mbe.enchantments.object2IntEntrySet()) {
 				mbe.onEnchanted(entry.getKey(), entry.getValue());
 			}

@@ -7,10 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public enum CharmType {
     HEAD(ModTags.Items.CHARMS_HEAD),
@@ -38,7 +35,7 @@ public enum CharmType {
     public boolean test(Item item) { return item.builtInRegistryHolder().is(tag);}
 
     public String getLowerCaseName() {
-        return name().toLowerCase();
+        return name().toLowerCase(Locale.ROOT);
     }
 
     public static List<CharmType> getTypesOfItem(Item item) {

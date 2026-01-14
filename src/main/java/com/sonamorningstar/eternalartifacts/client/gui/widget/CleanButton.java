@@ -1,11 +1,18 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -61,6 +68,40 @@ public class CleanButton extends AbstractButton {
 		pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 		int i = getFGColor();
 		this.renderString(pGuiGraphics, minecraft.font, i | Mth.ceil(this.alpha * 255.0F) << 24);
+	}
+	
+	@Override
+	public boolean isMouseOver(double mX, double mY) {
+		if (this instanceof ParentalWidget) return super.isMouseOver(mX, mY);
+		Screen screen = Minecraft.getInstance().screen;
+		if (screen instanceof AbstractModContainerScreen<?> modScreen) {
+			for (int i = modScreen.upperLayerChildren.size() - 1; i >= 0; i--) {
+				GuiEventListener child = modScreen.upperLayerChildren.get(i);
+				if (child == this) continue;
+				if (child instanceof Overlapping overlapping && child instanceof AbstractWidget widget) {
+					boolean isOver = (widget instanceof AbstractBaseWidget abw)
+						? abw.isMouseOverRaw(mX, mY)
+						: widget.isMouseOver(mX, mY);
+					if (isOver) {
+						GuiEventListener elementUnder = overlapping.getElementUnderMouse(mX, mY);
+						return elementUnder == this;
+					}
+				}
+			}
+			for (GuiEventListener child : modScreen.children()) {
+				if (child == this) continue;
+				if (child instanceof Overlapping overlapping && child instanceof AbstractWidget widget) {
+					boolean isOver = (widget instanceof AbstractBaseWidget abw)
+						? abw.isMouseOverRaw(mX, mY)
+						: widget.isMouseOver(mX, mY);
+					if (isOver) {
+						GuiEventListener elementUnder = overlapping.getElementUnderMouse(mX, mY);
+						return elementUnder == this;
+					}
+				}
+			}
+		}
+		return super.isMouseOver(mX, mY);
 	}
 	
 	@Override

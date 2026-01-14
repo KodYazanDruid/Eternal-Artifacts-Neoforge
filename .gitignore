@@ -23,5 +23,6 @@ run
 runs
 run-data
 src/generated/resources/.cache
+temp_lang_additions.txt
 
 repo

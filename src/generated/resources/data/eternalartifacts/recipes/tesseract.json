@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:chlorophyte_tablet"
+    },
+    "D": {
+      "item": "eternalartifacts:demonic_tablet"
+    },
+    "E": {
+      "item": "eternalartifacts:ender_tablet"
+    },
+    "O": {
+      "item": "eternalartifacts:oblivium_ingot"
+    },
+    "P": {
+      "tag": "forge:ender_pearls"
+    }
+  },
+  "pattern": [
+    "EPE",
+    "DCD",
+    "EOE"
+  ],
+  "result": {
+    "item": "eternalartifacts:tesseract"
+  }
+}

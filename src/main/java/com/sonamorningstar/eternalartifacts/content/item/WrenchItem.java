@@ -15,6 +15,7 @@ import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -27,6 +28,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -68,11 +70,11 @@ public class WrenchItem extends DiggerItem {
                 System.out.println("Item: " + item + ", Min Count: " + counts.getFirst() + ", Max Count: " + counts.getSecond());
             });
         }*/
-        if (level.isClientSide()) {
+        /*if (level.isClientSide()) {
             TesseractNetworks.get(level).getTesseractNetworks().forEach(network -> {
                 System.out.println("Tesseract Network: " + network.getName() + " (" + network.getUuid() + ")");
             });
-        }
+        }*/
         
         return super.use(level, player, hand);
     }
@@ -97,7 +99,6 @@ public class WrenchItem extends DiggerItem {
                 System.out.println(" - Forced Chunk: " + forcedChunk);
             }
         }*/
-        
         /*if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {
             
             player.sendSystemMessage(Component.literal("Pipe Info:"));
@@ -123,6 +124,13 @@ public class WrenchItem extends DiggerItem {
                     player.sendSystemMessage(Component.literal(" - Distance from " + sourcePos + " to " + targetPos + " = " + dist));
                 });
             });
+        }*/
+        /*System.out.println(level.isClientSide ? "Client" : "Server");
+        if (be instanceof ModBlockEntity mbe) {
+            Object2IntMap<Enchantment> enchantments = mbe.enchantments;
+            for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
+                System.out.println(" -Enchantment: " + entry.getKey().getDescriptionId() + ", Level: " + entry.getIntValue());
+            }
         }*/
         
         AtomicBoolean builtMultiblock = new AtomicBoolean(false);

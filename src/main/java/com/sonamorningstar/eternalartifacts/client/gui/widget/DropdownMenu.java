@@ -151,11 +151,18 @@ public class DropdownMenu<W extends AbstractWidget> extends AbstractBaseWidget i
 	}
 	
 	@Override
-	public boolean updateHover(double mx, double my) {
+	public boolean updateHover(double mx, double my, boolean isBlocked) {
+		if (!visible) return false;
+		
+		boolean isOverSelf = isMouseOverSelf(mx, my);
+		
 		if (isMenuOpen) {
-			return dropPanel.updateHover(mx, my);
+			// Menü açıkken panel'in hover durumunu güncelle
+			boolean panelHovered = dropPanel.updateHover(mx, my, isBlocked);
+			return isOverSelf || panelHovered;
 		}
-		return false;
+		
+		return isOverSelf && !isBlocked;
 	}
 	
 	@Override

@@ -26,11 +26,13 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     private final Map<Integer, Map<String, Integer>> fluidLocs = new HashMap<>();
     protected static final int labelColor = 4210752;
     
-    // Tooltip render için cache
     private int cachedMx, cachedMy;
     private boolean shouldRenderEnergyTooltip = false;
     private boolean shouldRenderFluidTooltip = false;
-    private boolean renderEPT = true;
+    private boolean shouldRenderProgressTooltip = false;
+    protected boolean renderEPT = true;
+    private int progressTooltipX, progressTooltipY, progressTooltipXLen, progressTooltipYLen;
+    private String progressTooltipKey;
 
     public AbstractMachineScreen(T menu, Inventory pPlayerInventory, Component pTitle) {
         super(menu, pPlayerInventory, pTitle);
@@ -48,7 +50,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         shouldRenderEnergyTooltip = menu.getBeEnergy() != null;
         shouldRenderFluidTooltip = menu.getBeTank() != null;
         renderExtra(gui, mx, my, partialTick);
-        renderTooltip(gui, mx, my);
     }
     
     /**
@@ -57,14 +58,9 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     public void renderMachineTooltips(GuiGraphics gui, int tooltipZ) {
         if (shouldRenderEnergyTooltip) renderEnergyTooltipInternal(gui, cachedMx, cachedMy, tooltipZ);
         if (shouldRenderFluidTooltip) renderFluidTooltipInternal(gui, cachedMx, cachedMy, tooltipZ);
-    }
-    
-    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my) {
-        renderEnergyTooltip(gui, mx, my, true);
-    }
-    
-    protected void renderEnergyTooltip(GuiGraphics gui, int mx, int my, boolean renderEPT) {
-        this.renderEPT = renderEPT;
+        if (shouldRenderProgressTooltip) renderProgressTooltipInternal(gui, cachedMx, cachedMy, tooltipZ);
+        shouldRenderProgressTooltip = false;
+        
     }
     
     private void renderEnergyTooltipInternal(GuiGraphics gui, int mx, int my, int tooltipZ) {
@@ -87,10 +83,6 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         }
     }
     
-    protected void renderFluidTooltip(GuiGraphics gui, int mx, int my) {
-        // Eski uyumluluk için - gerçek render ClientEvents'te yapılacak
-    }
-    
     private void renderFluidTooltipInternal(GuiGraphics gui, int mx, int my, int tooltipZ) {
         fluidLocs.forEach( (tank, fluidLoc) -> {
             if (!fluidLoc.isEmpty() && isCursorInBounds(fluidLoc.get("x"), fluidLoc.get("y"), fluidLoc.get("width"), fluidLoc.get("height"), mx, my)) {
@@ -110,10 +102,26 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     
     protected void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
         if(isCursorInBounds(x, y, xLen, yLen, mx, my)) {
+            shouldRenderProgressTooltip = true;
+            progressTooltipX = x;
+            progressTooltipY = y;
+            progressTooltipXLen = xLen;
+            progressTooltipYLen = yLen;
+            progressTooltipKey = key;
+        }
+    }
+    
+    private void renderProgressTooltipInternal(GuiGraphics gui, int mx, int my, int tooltipZ) {
+        if(isCursorInBounds(progressTooltipX, progressTooltipY, progressTooltipXLen, progressTooltipYLen, mx, my)) {
+            gui.pose().pushPose();
+            gui.pose().translate(0, 0, tooltipZ);
+            com.mojang.blaze3d.systems.RenderSystem.disableDepthTest();
             gui.renderTooltip(font,
-                    Component.translatable(ModConstants.GUI.withSuffix(key)).append(": ")
-                            .append(String.valueOf(menu.data.get(0))).append("/").append(String.valueOf(menu.data.get(1))),
-                    mx, my);
+                Component.translatable(ModConstants.GUI.withSuffix(progressTooltipKey)).append(": ")
+                    .append(String.valueOf(menu.data.get(0))).append("/").append(String.valueOf(menu.data.get(1))),
+                mx, my);
+            com.mojang.blaze3d.systems.RenderSystem.enableDepthTest();
+            gui.pose().popPose();
         }
     }
 

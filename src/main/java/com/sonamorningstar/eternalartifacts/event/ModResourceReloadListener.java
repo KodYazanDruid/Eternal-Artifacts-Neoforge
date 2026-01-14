@@ -2,11 +2,9 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Harvester;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Packer;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Recycler;
-import com.sonamorningstar.eternalartifacts.content.block.entity.SludgeRefiner;
+import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
+import com.sonamorningstar.eternalartifacts.event.common.CommonEvents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -17,7 +15,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.fml.loading.FMLEnvironment;
 
 import java.util.Map;
 
@@ -32,6 +29,7 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
         
         Harvester.hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> Harvester.isCorrectTool(item.getDefaultInstance())).toArray(Item[]::new);
         Harvester.cachedLootTables.clear();
+        BlockBreaker.cachedLootTables.clear();
         
         ResourceLocation hammeringTags = new ResourceLocation(MODID, "loot_tables/hammering/tags");
         Map<ResourceLocation, Resource> tagResources = manager.listResources(hammeringTags.getPath(), rl -> true);
@@ -72,5 +70,7 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
         Recycler.isRecipeMapInitialized = false;
         Recycler.isBreakdownMapInitialized = false;
         Packer.isPackingMapInitialized = false;
+        
+        CommonEvents.setupTagBasedCauldronInteractions();
     }
 }
