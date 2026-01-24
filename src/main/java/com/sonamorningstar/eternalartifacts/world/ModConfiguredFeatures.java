@@ -9,7 +9,6 @@ import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -19,6 +18,7 @@ import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguratio
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockStateMatchTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
@@ -58,6 +58,8 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_LAPIS_ORE = registerKey("moss_lapis_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_TIN_ORE = registerKey("moss_tim_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_ALUMINUM_ORE = registerKey("moss_aluminum_ore");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> MARIN_ORE = registerKey("marin_ore");
+    
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(MODID, name));
     }
@@ -107,6 +109,9 @@ public class ModConfiguredFeatures {
         context.register(TIN_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(tinOres, 4)));
         context.register(ALUMINUM_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(aluminumOres, 9)));
         context.register(ALUMINUM_ORE_SMALL, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(aluminumOres, 4)));
+        context.register(MARIN_ORE, new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(List.of(
+            OreConfiguration.target(new BlockMatchTest(Blocks.NETHERRACK), ModBlocks.MARIN_ORE.get().defaultBlockState())
+        ), 8)));
         
         context.register(TIGRIS_FLOWER, new ConfiguredFeature<>(Feature.NO_BONEMEAL_FLOWER, new RandomPatchConfiguration(64, 6, 2,
             PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,

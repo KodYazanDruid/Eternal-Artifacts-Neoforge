@@ -73,7 +73,7 @@ public class CommonModEvents {
         }
 
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,50000,2500), ModItems.BATTERY.get());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,75000,15000), ModItems.PORTABLE_BATTERY.get());
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,125000,25000), ModItems.PORTABLE_BATTERY.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,25000,5000), ModItems.LIGHTSABER.get());
         event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> CapabilityHelper.regItemEnergyCap(stack,10000,500), ModItems.CONFIGURATION_DRIVE.get());
         event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new ModItemItemStorage(stack, 3), ModItems.PORTABLE_FURNACE.get());

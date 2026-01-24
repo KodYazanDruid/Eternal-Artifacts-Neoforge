@@ -13,6 +13,7 @@ import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,6 +45,10 @@ public class FilterSlotWidget extends SlotWidget {
 	private boolean highlighted = false;
 	@Setter
 	private boolean isBlockFilter = false;
+	
+	@Setter
+	private boolean isDraggingOnRV = false;
+	private final int dragDropHighlightColor = 0x80FFFF00;
 	
 	private static final int ITEM_STACK_HIGHLIGHT = 0x8054FFA3;  // Yeşil
 	private static final int ITEM_TAG_HIGHLIGHT = 0xC040CC80;    // Koyu yeşil
@@ -84,8 +89,6 @@ public class FilterSlotWidget extends SlotWidget {
 			!fluidContained.get().getFluid().defaultFluidState().createLegacyBlock().isEmpty();
 		boolean isBlockItem = carried.getItem() instanceof BlockItem;
 		
-		// Block filter modunda: BlockItem veya dünyaya koyulabilir sıvı kabul et
-		// Item filter modunda: BlockItem (sıvı içeriyorsa) veya dünyaya koyulabilir sıvı kabul et
 		if (!carried.isEmpty()) {
 			if (!isBlockItem && !hasPlaceableFluid) return;
 		}
@@ -99,12 +102,10 @@ public class FilterSlotWidget extends SlotWidget {
 			FluidStack fluidInItem = fluidContained.orElse(FluidStack.EMPTY);
 			
 			if (isBlockFilter) {
-				// Block filter modu - BlockItem -> BlockStateEntry, sıvı -> FluidStackEntry
 				if (isBlockItem) {
 					BlockItem blockItem = (BlockItem) carried.getItem();
 					BlockState blockState = blockItem.getBlock().defaultBlockState();
 					
-					// Eğer aynı blok zaten varsa ve sıvı içeriyorsa, sıvıya geç
 					if (!fluidInItem.isEmpty()) {
 						FilterEntry currentEntry = filterEntrySupplier.get();
 						if (currentEntry instanceof BlockStateEntry bse && !bse.isEmpty() && bse.getFilterState() != null) {
@@ -125,7 +126,6 @@ public class FilterSlotWidget extends SlotWidget {
 					Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, blockState));
 					notifyFilterChanged(newEntry);
 				} else if (!fluidInItem.isEmpty()) {
-					// Sıvı filtresi ekle
 					FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
 					filterSlot.setFilter(newEntry);
 					filterSlot.set(ItemStack.EMPTY);
@@ -133,7 +133,6 @@ public class FilterSlotWidget extends SlotWidget {
 					notifyFilterChanged(newEntry);
 				}
 			} else {
-				// Item filter modu - mevcut mantık
 				if (isBlockItem && !fluidInItem.isEmpty()) {
 					FilterEntry currentEntry = filterEntrySupplier.get();
 					if (currentEntry instanceof ItemStackEntry ise && !ise.isEmpty()) {
@@ -309,6 +308,11 @@ public class FilterSlotWidget extends SlotWidget {
 			if (!stack.isEmpty()) {
 				renderSlotContents(gui, stack, filterSlot, x, y, null);
 			}
+		}
+		
+		if (isDraggingOnRV) {
+			gui.fill(RenderType.guiOverlay(), x, y, x + 16, y + 16, dragDropHighlightColor);
+			isDraggingOnRV = false;
 		}
 		
 		renderSlotHighlight(gui, filterSlot, mouseX, mouseY, 0);

@@ -31,6 +31,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
@@ -66,9 +67,9 @@ public class ModBlocks {
     public static final DeferredBlock<Block> CHARCOAL_BLOCK = registerWithItem("charcoal_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)));
     public static final DeferredBlock<Block> RAW_MARIN_BLOCK = registerWithItem("raw_marin_block",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.RAW_GOLD_BLOCK).mapColor(MapColor.TERRACOTTA_ORANGE)), Item.Properties::fireResistant);
     public static final DeferredBlock<Block> MARIN_BLOCK = registerWithItem("marin_block",
-            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_ORANGE)));
+            () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_ORANGE)), Item.Properties::fireResistant);
     public static final DeferredBlock<Block> STEEL_BLOCK = registerWithItem("steel_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY)));
     public static final DeferredBlock<Block> TEMPERED_GLASS = registerWithItem("tempered_glass",
@@ -93,7 +94,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> MANGANESE_ORE = registerWithItem("manganese_ore",
         () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
     public static final DeferredBlock<Block> MARIN_ORE = registerWithItem("marin_ore",
-        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE).mapColor(DyeColor.ORANGE)));
+        () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.NETHER_GOLD_ORE).mapColor(DyeColor.ORANGE)), Item.Properties::fireResistant);
     public static final DeferredBlock<Block> TIN_ORE = registerWithItem("tin_ore",
         () -> new DropExperienceBlock(ConstantInt.of(0), BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_ORE)));
     public static final DeferredBlock<Block> ALUMINUM_ORE = registerWithItem("aluminum_ore",
@@ -344,9 +345,16 @@ public class ModBlocks {
     //region Registry functions.
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }
 
-    private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier){
+    private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier) {
         DeferredBlock<T> block = BLOCKS.register(name, supplier);
         ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return block;
+    }
+    private static <T extends Block> DeferredBlock<T> registerWithItem(String name, Supplier<T> supplier, Consumer<Item.Properties> propertiesConsumer) {
+        DeferredBlock<T> block = BLOCKS.register(name, supplier);
+        Item.Properties properties = new Item.Properties();
+        propertiesConsumer.accept(properties);
+        ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), properties));
         return block;
     }
     private static <T extends Block> DeferredBlock<T> registerMachineWithItem(String name, Supplier<T> supplier){

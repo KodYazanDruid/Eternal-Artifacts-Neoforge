@@ -1,8 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.client;
 
-import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
-import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
@@ -15,13 +13,10 @@ import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
-import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.neoforged.api.distmarker.Dist;
@@ -48,8 +43,6 @@ public class FMLClientSetup {
             ModLoader.get().postEvent(new RegisterUnrenderableOverridesEvent());
             setupCharmSprites();
         });
-        /*ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFluid(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(ModFluids.HOT_SPRING_WATER.getFlowingFluid(), RenderType.translucent());*/
         setFluidTranslucent(ModFluids.HOT_SPRING_WATER);
         setFluidTranslucent(ModFluids.GASOLINE);
         setFluidTranslucent(ModFluids.DIESEL);

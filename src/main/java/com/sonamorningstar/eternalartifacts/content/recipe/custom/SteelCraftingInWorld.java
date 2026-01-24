@@ -5,7 +5,6 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -77,7 +76,7 @@ public final class SteelCraftingInWorld {
                 else stack.shrink(getDustValue(stack));
                 if(stack.getCount() < 0) itemEntity.discard();
             }
-            ItemEntity steelItemEntity = new ItemEntity(level, itemEntity.xo, itemEntity.yo, itemEntity.zo, ModItems.STEEL_INGOT.toStack(2));
+            ItemEntity steelItemEntity = new ItemEntity(level, itemEntity.xo, itemEntity.yo, itemEntity.zo, ModItems.STEEL_INGOT.toStack());
             level.addFreshEntity(steelItemEntity);
             level.playSound(null, itemEntity.xo, itemEntity.yo, itemEntity.zo, SoundEvents.ANVIL_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
         }

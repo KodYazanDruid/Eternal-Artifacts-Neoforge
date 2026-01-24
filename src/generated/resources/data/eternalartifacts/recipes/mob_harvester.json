@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/bronze"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "D": {
+      "item": "eternalartifacts:copper_tablet"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "pattern": [
+    "DSD",
+    "BMB",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:mob_harvester"
+  }
+}

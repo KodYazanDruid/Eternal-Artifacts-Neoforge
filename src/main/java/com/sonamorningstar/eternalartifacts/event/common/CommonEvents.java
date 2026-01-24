@@ -7,6 +7,9 @@ import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
+import com.sonamorningstar.eternalartifacts.api.machine.PackerRecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.RecyclerRecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.UnpackerRecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
@@ -14,6 +17,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManage
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.DimensionalAnchor;
+import com.sonamorningstar.eternalartifacts.content.block.entity.Packer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
@@ -90,6 +94,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
 import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
@@ -110,7 +115,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -759,6 +763,10 @@ public class CommonEvents {
     public static void serverStartingEvent(ServerStartingEvent event) {
         MinecraftServer server = event.getServer();
         rollHammeringTables(server.overworld());
+        
+        RecyclerRecipeCache.rebuild(server.getRecipeManager(), server.overworld().registryAccess());
+        PackerRecipeCache.rebuild(server.getRecipeManager(), server.overworld());
+        UnpackerRecipeCache.rebuild(server.getRecipeManager(), server.overworld());
         
         setupTagBasedCauldronInteractions();
     }

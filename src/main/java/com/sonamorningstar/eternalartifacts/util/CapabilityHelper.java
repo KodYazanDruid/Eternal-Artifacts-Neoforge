@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import com.sonamorningstar.eternalartifacts.api.machine.config.SideConfig;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.WrappedEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.WrappedFluidStorage;
@@ -10,7 +9,6 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTrans
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
@@ -57,8 +55,10 @@ public class CapabilityHelper {
         if(ctx != null) {
             if(SidedTransferMachine.canPerformTransfer(be, ctx, TransferType.NONE)) return null;
             return new WrappedEnergyStorage(energy,
-                    dir -> SidedTransferMachine.canPerformTransfers(be, dir, TransferType.PUSH, TransferType.DEFAULT),
-                    dir -> SidedTransferMachine.canPerformTransfers(be, dir, TransferType.PULL, TransferType.DEFAULT),
+                    dir -> SidedTransferMachine.canPerformTransfers(be, dir, TransferType.PUSH, TransferType.DEFAULT) &&
+                        be.isEnergyAllowed(),
+                    dir -> SidedTransferMachine.canPerformTransfers(be, dir, TransferType.PULL, TransferType.DEFAULT) &&
+                        be.isEnergyAllowed(),
                     ctx);
         }else return energy;
     }

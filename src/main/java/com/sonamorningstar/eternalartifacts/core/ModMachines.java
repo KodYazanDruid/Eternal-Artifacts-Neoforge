@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlock
 import com.sonamorningstar.eternalartifacts.registrar.MachineHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineRegistration;
 import com.sonamorningstar.eternalartifacts.registrar.MachineRegistry;
+import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -90,6 +91,7 @@ public class ModMachines {
     public static final MachineHolder<GenericMachineMenu, BatteryBox, MachineFourWayBlock<BatteryBox>, MachineBlockItem>
             BATTERY_BOX = MACHINES.register(MachineRegistration.generic("battery_box", BatteryBox::new)
                     .uniqueTexture()
+                    .blockEnergyCap((be, dir) -> be.energy != null ? CapabilityHelper.regSidedEnergyCaps(be, be.energy, dir) : null)
                     .build());
 
     // ==================== Standard Machines ====================

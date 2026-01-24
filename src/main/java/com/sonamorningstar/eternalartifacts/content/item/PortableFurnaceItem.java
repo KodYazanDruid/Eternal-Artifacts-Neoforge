@@ -5,15 +5,21 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.SyncCharmTagsToClient;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.Level;
@@ -23,6 +29,8 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -31,6 +39,28 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class PortableFurnaceItem extends EnergyConsumerItem {
 	public PortableFurnaceItem(Properties props) {
 		super(props);
+	}
+	
+	@Override
+	public boolean isBarVisible(ItemStack stack) {
+		if (!stack.hasTag()) return false;
+		CompoundTag tag = stack.getTag();
+		return tag.getInt("Progress") > 0;
+	}
+	
+	@Override
+	public int getBarWidth(ItemStack stack) {
+		if (!stack.hasTag()) return 0;
+		CompoundTag tag = stack.getTag();
+		int progress = tag.getInt("Progress");
+		int maxProgress = tag.getInt("MaxProgress");
+		if (maxProgress == 0) return 0;
+		return Math.round((float) progress / maxProgress * 13.0F);
+	}
+	
+	@Override
+	public int getBarColor(ItemStack stack) {
+		return 0xFF8000;
 	}
 	
 	@SubscribeEvent
@@ -70,7 +100,7 @@ public class PortableFurnaceItem extends EnergyConsumerItem {
 							setMaxProgress(charm, recipe.getCookingTime(), charmSlot, player);
 							progressFurnace(charm, charmSlot, player);
 							burnAmount--;
-						} else  {
+						} else {
 							resetFurnaceProgress(charm, charmSlot, player);
 						}
 						if (isRecipeComplete(charm, recipe)) {
@@ -82,6 +112,7 @@ public class PortableFurnaceItem extends EnergyConsumerItem {
 							}
 							itemHandler.extractItem(0, 1, false);
 							itemHandler.insertItem(2, result, false);
+							addRecipeUsed(charm, recipeHolder, charmSlot, player);
 							resetFurnaceProgress(charm, charmSlot, player);
 						}
 					}
@@ -92,6 +123,69 @@ public class PortableFurnaceItem extends EnergyConsumerItem {
 			}
 			burnFuel(charm, charmSlot, player, burnAmount);
 		}
+	}
+	
+	public static void addRecipeUsed(ItemStack furnace, RecipeHolder<?> recipe, int slotId, Player player) {
+		CompoundTag tag = furnace.getOrCreateTag();
+		CompoundTag recipesUsed = tag.getCompound("RecipesUsed");
+		String recipeId = recipe.id().toString();
+		int count = recipesUsed.getInt(recipeId);
+		recipesUsed.putInt(recipeId, count + 1);
+		tag.put("RecipesUsed", recipesUsed);
+		syncToClient(slotId, player, furnace);
+	}
+	
+	public static void awardUsedRecipesAndPopExperience(ItemStack furnace, ServerPlayer player, int slotId) {
+		ServerLevel level = player.serverLevel();
+		RecipeManager recipeManager = level.getRecipeManager();
+		Object2IntOpenHashMap<ResourceLocation> recipesUsed = getRecipesUsed(furnace);
+		
+		List<RecipeHolder<?>> awardedRecipes = new ArrayList<>();
+		int totalXp = 0;
+		
+		for (var entry : recipesUsed.object2IntEntrySet()) {
+			ResourceLocation recipeId = entry.getKey();
+			int count = entry.getIntValue();
+			
+			var recipeOpt = recipeManager.byKey(recipeId);
+			if (recipeOpt.isPresent()) {
+				RecipeHolder<?> recipe = recipeOpt.get();
+				awardedRecipes.add(recipe);
+				
+				if (recipe.value() instanceof SmeltingRecipe smeltingRecipe) {
+					float experience = smeltingRecipe.getExperience();
+					for (int i = 0; i < count; i++) {
+						totalXp += Mth.floor(experience);
+						float fractional = Mth.frac(experience);
+						if (fractional != 0.0F && Math.random() < (double) fractional) {
+							totalXp++;
+						}
+					}
+				}
+			}
+		}
+		
+		if (totalXp > 0) {
+			ExperienceOrb.award(level, player.position(), totalXp);
+		}
+		
+		player.awardRecipes(awardedRecipes);
+		
+		furnace.getOrCreateTag().remove("RecipesUsed");
+		syncToClient(slotId, player, furnace);
+	}
+	
+
+	public static Object2IntOpenHashMap<ResourceLocation> getRecipesUsed(ItemStack furnace) {
+		Object2IntOpenHashMap<ResourceLocation> map = new Object2IntOpenHashMap<>();
+		if (furnace.hasTag()) {
+			CompoundTag tag = furnace.getTag();
+			CompoundTag recipesUsed = tag.getCompound("RecipesUsed");
+			for (String key : recipesUsed.getAllKeys()) {
+				map.put(new ResourceLocation(key), recipesUsed.getInt(key));
+			}
+		}
+		return map;
 	}
 	
 	private static void syncToClient(int slotId, Player player, ItemStack charm) {

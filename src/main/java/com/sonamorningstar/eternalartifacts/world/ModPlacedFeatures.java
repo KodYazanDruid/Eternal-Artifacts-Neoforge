@@ -8,6 +8,8 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
@@ -49,6 +51,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_LAPIS_ORE = registerKey("moss_lapis_ore");
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_TIN_ORE = registerKey("moss_tin_ore");
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_ALUMINUM_ORE = registerKey("moss_aluminum_ore");
+    public static final ResourceKey<PlacedFeature> PLACED_MARIN_ORE = registerKey("marin_ore");
     
     public static ResourceKey<PlacedFeature> registerKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(MODID, name));
@@ -88,19 +91,42 @@ public class ModPlacedFeatures {
                 commonOrePlacement(7, HeightRangePlacement.triangle(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(36)))));
         context.register(PLACED_ALUMINUM_ORE_SMALL, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.ALUMINUM_ORE_SMALL),
                 commonOrePlacement(15, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(72)))));
+        context.register(PLACED_MARIN_ORE, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.MARIN_ORE),
+                List.of(
+                    CountPlacement.of(8),
+                    InSquarePlacement.spread(),
+                    PlacementUtils.RANGE_8_8,
+                    EnvironmentScanPlacement.scanningFor(
+                        Direction.UP,
+                        BlockPredicate.alwaysTrue(),
+                        BlockPredicate.matchesBlocks(Blocks.NETHERRACK),
+                        48
+                    ),
+                    EnvironmentScanPlacement.scanningFor(
+                        Direction.DOWN,
+                        BlockPredicate.alwaysTrue(),
+                        BlockPredicate.matchesBlocks(Blocks.NETHERRACK),
+                        48
+                    ),
+                    BiomeFilter.biome()
+                )
+        ));
         
         context.register(PLACED_TIGRIS_FLOWER, new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.TIGRIS_FLOWER),
                 List.of(RarityFilter.onAverageOnceEvery(12), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome())));
         context.register(CRUDE_OIL_LAKE_DEEPSLATE,
             new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.CRUDE_OIL_LAKE_DEEPSLATE),
                 List.of(RarityFilter.onAverageOnceEvery(24),
-                InSquarePlacement.spread(), HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))),
-                EnvironmentScanPlacement.scanningFor(
-                    Direction.DOWN,
-                    BlockPredicate.allOf(BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), BlockPredicate.insideWorld(new BlockPos(0, -5, 0))),
-                    32
-                ), SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5),
-                BiomeFilter.biome())
+                    InSquarePlacement.spread(),
+                    HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.bottom(), VerticalAnchor.absolute(0))),
+                    EnvironmentScanPlacement.scanningFor(
+                        Direction.DOWN,
+                        BlockPredicate.allOf(BlockPredicate.not(BlockPredicate.ONLY_IN_AIR_PREDICATE), BlockPredicate.insideWorld(new BlockPos(0, -5, 0))),
+                        32
+                    ),
+                    SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5),
+                    BiomeFilter.biome()
+                )
             ));
     }
     private static List<PlacementModifier> createListWithRarity(int rarity) {

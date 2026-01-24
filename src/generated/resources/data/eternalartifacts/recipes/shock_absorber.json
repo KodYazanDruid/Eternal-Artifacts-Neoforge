@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:copper_tablet"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "T": {
+      "tag": "forge:hardened_glass"
+    }
+  },
+  "pattern": [
+    "TCT",
+    "CMC",
+    "TPT"
+  ],
+  "result": {
+    "item": "eternalartifacts:shock_absorber"
+  }
+}

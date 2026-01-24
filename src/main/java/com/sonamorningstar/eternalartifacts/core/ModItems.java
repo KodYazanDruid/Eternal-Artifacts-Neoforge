@@ -84,8 +84,8 @@ public class ModItems {
     public static final DeferredItem<Item> CHARCOAL_DUST = register("charcoal_dust");
     public static final DeferredItem<Item> SUGAR_CHARCOAL_DUST = register("sugar_charcoal_dust");
     public static final DeferredItem<Item> CLAY_DUST = register("clay_dust");
-    public static final DeferredItem<Item> MARIN_INGOT = register("marin_ingot");
-    public static final DeferredItem<Item> RAW_MARIN = register("raw_marin");
+    public static final DeferredItem<Item> MARIN_INGOT = register("marin_ingot", p -> new Item(p.fireResistant()));
+    public static final DeferredItem<Item> RAW_MARIN = register("raw_marin", p -> new Item(p.fireResistant()));
     public static final DeferredItem<Item> TAR_BALL = register("tar_ball");
     public static final DeferredItem<Item> BITUMEN = register("bitumen");
     public static final DeferredItem<Item> PINK_SLIME_STEEL_INGOT = register("pink_slime_steel_ingot");

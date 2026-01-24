@@ -202,6 +202,12 @@ public abstract class SidedTransferMachine<T extends AbstractMachineMenu> extend
         return fluidTransferConfig == null || !fluidTransferConfig.isDisabled();
     }
     
+    public boolean isEnergyAllowed() {
+        MachineConfiguration configuration = getConfiguration();
+        ReverseToggleConfig energyTransferConfig = configuration.get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "energy_transfer"));
+        return energyTransferConfig == null || !energyTransferConfig.isDisabled();
+    }
+    
     public static Direction resolveActualDir(BlockState state, int index) {
         if (state.getBlock() instanceof MachineFourWayBlock<?>) {
             Direction facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);

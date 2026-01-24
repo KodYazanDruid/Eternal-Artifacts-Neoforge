@@ -28,6 +28,10 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -135,7 +139,9 @@ public class MachineRegistry {
                 menuHolder, blockEntityHolder, blockHolder, itemHolder,
                 registration.isHasUniqueTexture(),
                 registration.isGeneric(),
-                registration.isHasCustomRender()
+                registration.isHasCustomRender(),
+                registration.getCustomCapabilities(),
+                registration.getExtraCapabilityRegistrars()
         );
 
         allMachines.add(holder);
@@ -176,29 +182,81 @@ public class MachineRegistry {
 
     private <M extends AbstractMachineMenu, BE extends Machine<M>, B extends BaseMachineBlock<BE>, I extends BlockItem>
     void registerMachineCapabilities(RegisterCapabilitiesEvent event, MachineHolder<M, BE, B, I> holder) {
-        // Block capabilities
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.getBlockEntity(), (be, ctx) -> {
-            if (be instanceof SidedTransferMachine<?> sided) {
-                return sided.inventory != null ? CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots) : null;
+        var caps = holder.customCapabilities();
+        
+        if (caps.containsKey(MachineRegistration.CapabilityType.BLOCK_ITEM)) {
+            var provider = holder.<IItemHandler>getBlockCapability(MachineRegistration.CapabilityType.BLOCK_ITEM);
+            if (provider != null) {
+                event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.getBlockEntity(), provider::provide);
             }
-            return be.inventory;
-        });
-
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.getBlockEntity(), (be, ctx) -> {
-            if (be instanceof SidedTransferMachine<?> sided) {
-                return sided.tank != null ? CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx) : null;
+        } else {
+            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, holder.getBlockEntity(), (be, ctx) -> {
+                if (be instanceof SidedTransferMachine<?> sided) {
+                    return sided.inventory != null ? CapabilityHelper.regSidedItemCaps(sided, sided.inventory, ctx, sided.outputSlots) : null;
+                }
+                return be.inventory;
+            });
+        }
+        
+        if (caps.containsKey(MachineRegistration.CapabilityType.BLOCK_FLUID)) {
+            var provider = holder.<IFluidHandler>getBlockCapability(MachineRegistration.CapabilityType.BLOCK_FLUID);
+            if (provider != null) {
+                event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.getBlockEntity(), provider::provide);
             }
-            return be.tank;
-        });
+        } else {
+            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, holder.getBlockEntity(), (be, ctx) -> {
+                if (be instanceof SidedTransferMachine<?> sided) {
+                    return sided.tank != null ? CapabilityHelper.regSidedFluidCaps(sided, sided.tank, ctx) : null;
+                }
+                return be.tank;
+            });
+        }
+        
+        if (caps.containsKey(MachineRegistration.CapabilityType.BLOCK_ENERGY)) {
+            var provider = holder.<IEnergyStorage>getBlockCapability(MachineRegistration.CapabilityType.BLOCK_ENERGY);
+            if (provider != null) {
+                event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.getBlockEntity(), provider::provide);
+            }
+        } else {
+            event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.getBlockEntity(), (be, ctx) ->
+                be.energy != null ? be.energy : null
+            );
+        }
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, holder.getBlockEntity(), (be, ctx) ->
-            be.energy != null ? be.energy : null
-        );
-
-        // Item capabilities
-        event.registerItem(Capabilities.ItemHandler.ITEM, (st, ctx) -> new MachineItemItemStorage(st), holder.getItem());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (st, ctx) -> new MachineItemFluidStorage(st), holder.getItem());
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (st, ctx) -> new MachineItemEnergyStorage(st), holder.getItem());
+        if (caps.containsKey(MachineRegistration.CapabilityType.ITEM_ITEM)) {
+            var provider = holder.<IItemHandler>getItemCapability(MachineRegistration.CapabilityType.ITEM_ITEM);
+            if (provider != null) {
+                event.registerItem(Capabilities.ItemHandler.ITEM, provider::provide, holder.getItem());
+            }
+        } else {
+            event.registerItem(Capabilities.ItemHandler.ITEM, (st, ctx) -> new MachineItemItemStorage(st), holder.getItem());
+        }
+        
+        if (caps.containsKey(MachineRegistration.CapabilityType.ITEM_FLUID)) {
+            var provider = holder.<IFluidHandlerItem>getItemCapability(MachineRegistration.CapabilityType.ITEM_FLUID);
+            if (provider != null) {
+                event.registerItem(Capabilities.FluidHandler.ITEM, provider::provide, holder.getItem());
+            }
+        } else {
+            event.registerItem(Capabilities.FluidHandler.ITEM, (st, ctx) -> new MachineItemFluidStorage(st), holder.getItem());
+        }
+        
+        if (caps.containsKey(MachineRegistration.CapabilityType.ITEM_ENERGY)) {
+            var provider = holder.<IEnergyStorage>getItemCapability(MachineRegistration.CapabilityType.ITEM_ENERGY);
+            if (provider != null) {
+                event.registerItem(Capabilities.EnergyStorage.ITEM, provider::provide, holder.getItem());
+            }
+        } else {
+            event.registerItem(Capabilities.EnergyStorage.ITEM, (st, ctx) -> new MachineItemEnergyStorage(st), holder.getItem());
+        }
+        
+        var extraRegistrars = holder.extraCapabilityRegistrars();
+        if (extraRegistrars != null && !extraRegistrars.isEmpty()) {
+            var context = new MachineRegistration.ExtraCapabilityContext<>(event, holder.getBlockEntity(), holder.getItem());
+            for (var registrar : extraRegistrars) {
+                registrar.register(context);
+            }
+        }
     }
 
     public List<MachineHolder<?, ?, ?, ?>> getMachines() {

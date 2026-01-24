@@ -102,7 +102,6 @@ public class EmiCauldronRecipe implements EmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         BlockState cauldronState = recipe.getCauldronState();
         Minecraft mc = Minecraft.getInstance();
-        // Cauldron input - render as 3D block
         if (cauldronState != null) {
             widgets.addDrawable(5, 17, 24, 24, (gui, mouseX, mouseY, delta) -> {
                 RecipeViewerRenderer.renderBlock(gui, cauldronState, 12, 12, 1.0f);
@@ -112,37 +111,32 @@ public class EmiCauldronRecipe implements EmiRecipe {
                 5, 17, 24, 24);
         }
         
-        // Item input
         if (!inputs.isEmpty()) {
-            widgets.addSlot(inputs.get(0), 28, 21);
+            widgets.addTexture(EmiTexture.PLUS, 28, 23);
+            widgets.addSlot(inputs.get(0), 45, 21);
         }
         
-        // Arrow
-        widgets.addTexture(EmiTexture.EMPTY_ARROW, 52, 22);
-        
-        // Output - check if it's a block or item
+        widgets.addTexture(EmiTexture.EMPTY_ARROW, 69, 21);
         if (!outputs.isEmpty()) {
             EmiStack output = outputs.get(0);
             
-            // Check if output is a cauldron block (render 3D)
             if (hasBlockOutput()) {
                 BlockState outputState = getOutputBlockState();
                 if (outputState != null) {
-                    widgets.addDrawable(83, 17, 24, 24, (gui, mouseX, mouseY, delta) -> {
+                    widgets.addDrawable(98, 17, 24, 24, (gui, mouseX, mouseY, delta) -> {
                         RecipeViewerRenderer.renderBlock(gui, outputState, 12, 12, 1.0f);
                     });
                     widgets.addTooltipText(StringUtils.getTooltipForBlockState(null, outputState,
                             mc.level, mc.options.advancedItemTooltips),
-                        83, 17, 24, 24);
+                        98, 17, 24, 24);
                 } else {
-                    widgets.addSlot(output, 84, 21).recipeContext(this);
+                    widgets.addSlot(output, 98, 21).recipeContext(this);
                 }
             } else {
-                widgets.addSlot(output, 84, 21).recipeContext(this);
+                widgets.addSlot(output, 98, 21).recipeContext(this);
             }
         }
         
-        // Show cauldron level change if applicable
         int inputLevel = recipe.getInputLevel();
         int outputLevel = recipe.getOutputLevel();
         if (inputLevel != outputLevel) {

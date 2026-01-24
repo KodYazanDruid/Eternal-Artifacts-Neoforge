@@ -101,6 +101,8 @@ public class ModTags {
         public static final TagKey<Item> DUSTS_GOLD = forgeTag("dusts/gold");
         public static final TagKey<Item> DUSTS_IRON = forgeTag("dusts/iron");
         public static final TagKey<Item> RECYCLABLE = modTag("recyclable");
+        public static final TagKey<Item> GLASS_HARDENED = forgeTag("glass/hardened");
+        public static final TagKey<Item> HARDENED_GLASS = forgeTag("hardened_glass");
 		
 		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

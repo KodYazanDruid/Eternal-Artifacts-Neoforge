@@ -126,25 +126,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_WALL, ModBlocks.OBSIDIAN_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_SLAB, Blocks.OBSIDIAN, 2);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_SLAB, ModBlocks.OBSIDIAN_BRICKS, 2);
-        
-        // Test için 16 farklı taş kesici tarifi, hepsi aynı materyalden (ör: Blocks.STONE)
-        /*stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICKS, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_STAIRS, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_WALL, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_SLAB, Blocks.STONE, 2);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICKS, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_STAIRS, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_WALL, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_SLAB, Blocks.STONE, 2);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICKS, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_STAIRS, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_WALL, Blocks.STONE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.ICE, Blocks.STONE, 2);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.STEEL_FLUID_PIPE, Blocks.STONE, 4);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.STEEL_ITEM_PIPE, Blocks.STONE, 4);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_SLAB, Blocks.STONE, 4);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, Blocks.ACACIA_BUTTON, Blocks.STONE);*/
-        
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAYERED_PRISMARINE, Blocks.PRISMARINE);
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAYERED_PRISMARINE, Blocks.PRISMARINE_BRICKS);
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PAVED_PRISMARINE_BRICKS, Blocks.PRISMARINE);
+        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PAVED_PRISMARINE_BRICKS, Blocks.PRISMARINE_BRICKS);
+
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_PICKAXE.get(), RecipeCategory.TOOLS, ModItems.CHLOROVEIN_PICKAXE.get());
@@ -157,6 +143,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_HAMMER.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_HAMMER.get());
         modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_CUTLASS.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_CUTLASS.get());
         modNetheriteSmithing(recipeOutput, ModItems.DIAMOND_SICKLE.get(), RecipeCategory.TOOLS, ModItems.NETHERITE_SICKLE.get());
+        modNetheriteSmithing(recipeOutput, ModBlocks.DIAMOND_DRUM.asItem(), RecipeCategory.MISC, ModBlocks.NETHERITE_DRUM.asItem());
 
         createMeatShredderRecipe(recipeOutput, ModTags.Items.INGOTS_RAW_MEAT, 250);
         createMeatShredderRecipe(recipeOutput, Items.BEEF.getDefaultInstance(), 250);
@@ -490,6 +477,22 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('I', ModTags.Items.INGOTS_STEEL)
             .define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_HELMET)
+            .pattern("III").pattern("I I")
+            .define('I', ModTags.Items.INGOTS_STEEL)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_CHESTPLATE)
+            .pattern("I I").pattern("III").pattern("III")
+            .define('I', ModTags.Items.INGOTS_STEEL)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_LEGGINGS)
+            .pattern("III").pattern("I I").pattern("I I")
+            .define('I', ModTags.Items.INGOTS_STEEL)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_BOOTS)
+            .pattern("I I").pattern("I I")
+            .define('I', ModTags.Items.INGOTS_STEEL)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
         createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Tags.Items.COBBLESTONE, Tags.Items.STONE);
         createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
@@ -517,8 +520,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('P', ModTags.Items.PLASTIC).define('R', Tags.Items.DUSTS_REDSTONE)
                 .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.GOLD_RING)
-                .pattern("GGG").pattern("G G").pattern("GGG")
-                .define('G', Tags.Items.INGOTS_GOLD)
+                .pattern("NGN").pattern("G G").pattern("NGN")
+                .define('G', Tags.Items.INGOTS_GOLD).define('N', Tags.Items.NUGGETS_GOLD)
                 .unlockedBy("has_item", has(Tags.Items.INGOTS_GOLD)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SLOT_LOCK)
                 .pattern(" N ").pattern("NPN").pattern(" N ")
@@ -655,9 +658,67 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .pattern("OCO").define('O', Tags.Items.DYES_ORANGE).define('C', ModItems.CARBON_PAPER)
             .unlockedBy("has_item", has(ModItems.CARBON_PAPER)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.BLUEPRINT)
-                .pattern("BBB").pattern("BPB").pattern("BBB")
-                .define('B', Tags.Items.DYES_BLUE).define('P', Items.PAPER)
-                .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
+            .pattern("BBB").pattern("BPB").pattern("BBB")
+            .define('B', Tags.Items.DYES_BLUE).define('P', Items.PAPER)
+            .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
+		ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.PORTABLE_CRAFTER)
+            .pattern(" S ").pattern("LCL").pattern(" S ")
+            .define('S', Tags.Items.STRING)
+            .define('L', Tags.Items.LEATHER)
+            .define('C', Blocks.CRAFTING_TABLE)
+            .unlockedBy("has_item", has(Blocks.CRAFTING_TABLE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.PORTABLE_FURNACE)
+            .pattern(" S ").pattern("LFL").pattern(" S ")
+            .define('S', Tags.Items.STRING)
+            .define('L', Tags.Items.LEATHER)
+            .define('F', Blocks.FURNACE)
+            .unlockedBy("has_item", has(Blocks.FURNACE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.PORTABLE_BATTERY)
+            .pattern(" S ").pattern("BLB").pattern(" S ")
+            .define('S', Tags.Items.STRING)
+            .define('L', Tags.Items.LEATHER)
+            .define('B', ModItems.BATTERY)
+            .unlockedBy("has_item", has(ModItems.BATTERY)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.KNAPSACK)
+            .pattern("LLL").pattern("SCS").pattern("LLL")
+            .define('L', Tags.Items.LEATHER)
+            .define('S', Tags.Items.STRING)
+            .define('C', Tags.Items.CHESTS)
+            .unlockedBy("has_item", has(Tags.Items.CHESTS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.TANK_KNAPSACK)
+            .pattern("PPP").pattern("JCJ").pattern("PPP")
+            .define('P', Tags.Items.GLASS_PANES)
+            .define('J', ModItems.JAR)
+            .define('C', Tags.Items.CHESTS)
+            .unlockedBy("has_item", has(ModItems.JAR)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.ENDER_KNAPSACK)
+            .pattern("LLL").pattern("SCS").pattern("LLL")
+            .define('L', Tags.Items.LEATHER)
+            .define('S', ModItems.STONE_TABLET)
+            .define('C', Tags.Items.CHESTS_ENDER)
+            .unlockedBy("has_item", has(Tags.Items.CHESTS_ENDER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.WRENCH)
+            .pattern("I I").pattern("NIN").pattern(" I ")
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('N', Tags.Items.NUGGETS_IRON)
+            .unlockedBy("has_item", has(Tags.Items.INGOTS_IRON)).save(recipeOutput);
+        createDrumRecipe(recipeOutput, ModBlocks.COPPER_DRUM, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
+        createDrumRecipe(recipeOutput, ModBlocks.IRON_DRUM, Tags.Items.INGOTS_IRON, Tags.Items.STORAGE_BLOCKS_IRON);
+        createDrumRecipe(recipeOutput, ModBlocks.GOLD_DRUM, Tags.Items.INGOTS_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
+        createDrumRecipe(recipeOutput, ModBlocks.STEEL_DRUM, ModTags.Items.INGOTS_STEEL, ModTags.Items.STORAGE_BLOCKS_STEEL);
+        createDrumRecipe(recipeOutput, ModBlocks.DIAMOND_DRUM, Tags.Items.GEMS_DIAMOND, Tags.Items.STORAGE_BLOCKS_DIAMOND);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.TRASH_CAN)
+            .pattern("NNN").pattern("ICI").pattern(" I ")
+            .define('N', Tags.Items.NUGGETS_IRON)
+            .define('I', Tags.Items.INGOTS_IRON)
+            .define('C', Items.CACTUS)
+            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.CHLOROPHYTE_REPEATER)
+            .pattern("IRI").pattern(" C ").pattern(" O ")
+            .define('I', ModItems.CHLOROPHYTE_INGOT).define('R', Items.REPEATER)
+            .define('C', Items.CROSSBOW).define('O', Tags.Items.INGOTS_IRON)
+            .unlockedBy("has_item", has(ModItems.CHLOROPHYTE_INGOT)).save(recipeOutput);
+            
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -726,6 +787,33 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENTITY_CATALOGUE)
             .requires(Tags.Items.GEMS_AMETHYST).requires(ModTags.Items.SLIMEBALLS_PINK).requires(ModItems.ENDER_TABLET)
             .unlockedBy("has_item", has(ModItems.ENDER_TABLET)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModItems.PINK_SLIME, 9)
+            .requires(ModBlocks.PINK_SLIME_BLOCK)
+            .unlockedBy("has_item", has(ModBlocks.PINK_SLIME_BLOCK)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TOOLS, ModItems.SOLAR_PANEL_HELMET)
+            .requires(ModBlocks.SOLAR_PANEL).requires(Items.IRON_HELMET)
+            .unlockedBy("has_item", has(ModBlocks.SOLAR_PANEL)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANDY_STONE_BRICKS, 2)
+            .requires(Blocks.STONE_BRICKS).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(Blocks.STONE_BRICKS)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANDY_PRISMARINE, 2)
+            .requires(Blocks.PRISMARINE).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(Blocks.PRISMARINE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.VERY_SANDY_PRISMARINE, 3)
+            .requires(Blocks.PRISMARINE).requires(Tags.Items.SAND).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(Blocks.PRISMARINE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANDY_DARK_PRISMARINE, 2)
+            .requires(Blocks.DARK_PRISMARINE).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(Blocks.DARK_PRISMARINE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.VERY_SANDY_DARK_PRISMARINE, 3)
+            .requires(Blocks.DARK_PRISMARINE).requires(Tags.Items.SAND).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(Blocks.DARK_PRISMARINE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANDY_PRISMARINE_BRICKS, 2)
+            .requires(Blocks.PRISMARINE_BRICKS).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(Blocks.PRISMARINE_BRICKS)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS, 2)
+            .requires(ModBlocks.PAVED_PRISMARINE_BRICKS).requires(Tags.Items.SAND)
+            .unlockedBy("has_item", has(ModBlocks.PAVED_PRISMARINE_BRICKS)).save(recipeOutput);
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }
@@ -831,6 +919,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('F', ingredient)
                 .define('R', Tags.Items.RODS_WOODEN)
                 .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private static void createDrumRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingotIngredient, TagKey<Item> blockIngredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+            .pattern("III").pattern("I I").pattern("IBI")
+            .define('I', ingotIngredient)
+            .define('B', blockIngredient)
+            .unlockedBy("has_item", has(ingotIngredient)).save(output);
     }
     private static void createColoredShulkerBoxRecipe(RecipeOutput output, ItemLike result, Item shell) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result)

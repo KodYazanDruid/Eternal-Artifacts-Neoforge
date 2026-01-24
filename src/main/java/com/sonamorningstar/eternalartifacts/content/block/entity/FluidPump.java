@@ -8,16 +8,10 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.LongTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
@@ -26,14 +20,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import javax.annotation.Nullable;
 
 public class FluidPump extends GenericMachine {
-	private FluidVeinCache veinCache = null;
-	/*private Queue<BlockPos> savedCacheQueue = null;
-	private List<FluidKey> allowedFluids = null;*/
+	@Nullable
+	public FluidVeinCache veinCache = null;
+	public int veinSize = 0;
 	
 	public FluidPump(BlockPos pos, BlockState blockState) {
 		super(ModMachines.FLUID_PUMP, pos, blockState);
@@ -46,43 +38,13 @@ public class FluidPump extends GenericMachine {
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		/*if (veinCache != null) {
-			ListTag listTag = new ListTag();
-			for (BlockPos pos : veinCache.getCache()) {
-				listTag.add(LongTag.valueOf(pos.asLong()));
-			}
-			tag.put("VeinCache", listTag);
-		}
-		if (allowedFluids != null) {
-			ListTag listTag = new ListTag();
-			for (FluidKey key : allowedFluids) {
-				listTag.add(key.serialize());
-			}
-			tag.put("AllowedFluids", listTag);
-		}*/
+		tag.putInt("VeinSize", veinSize);
 	}
 	
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		/*if (tag.contains("VeinCache", Tag.TAG_LIST)) {
-			Queue<BlockPos> queue = new LinkedList<>();
-			for (Tag t : tag.getList("VeinCache", Tag.TAG_LONG)) {
-				if (t instanceof LongTag longTag) {
-					queue.add(BlockPos.of(longTag.getAsLong()));
-				}
-			}
-			savedCacheQueue = queue;
-		}
-		if (tag.contains("AllowedFluids", Tag.TAG_LIST)) {
-			List<FluidKey> keys = new LinkedList<>();
-			for (Tag t : tag.getList("AllowedFluids", Tag.TAG_COMPOUND)) {
-				if (t instanceof CompoundTag compoundTag) {
-					keys.add(FluidKey.deserialize(compoundTag));
-				}
-			}
-			allowedFluids = keys;
-		}*/
+		veinSize = tag.getInt("VeinSize");
 	}
 	
 	@Override
@@ -90,16 +52,13 @@ public class FluidPump extends GenericMachine {
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);
 		createVeinCacheIfNeeded(lvl, pos);
-		
-		/*if (veinCache != null && savedCacheQueue != null) {
-			veinCache.setCache(savedCacheQueue);
-			savedCacheQueue = null;
-		}*/
+		if (!redstoneChecks(lvl)) return;
 		
 		if (veinCache != null && canWork(energy)) {
 			for (int i = 0; i < 1 + getEnchantmentLevel(ModEnchantments.CELERITY.get()); i++) {
 				if (veinCache.getCache().isEmpty()) {
 					veinCache = null;
+					veinSize = 0;
 					break;
 				}
 				veinCache.mine(veinCache.getCache(), p -> {
@@ -111,42 +70,60 @@ public class FluidPump extends GenericMachine {
 						tank.fillForced(fluidStack, IFluidHandler.FluidAction.EXECUTE);
 						BlockState targetState = lvl.getBlockState(p);
 						Block targetBlock = targetState.getBlock();
-						if (targetBlock instanceof LiquidBlock) {
-							lvl.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
-							spendEnergy(energy);
-							return true;
-						} else if (targetBlock instanceof SimpleWaterloggedBlock && targetState.hasProperty(BlockStateProperties.WATERLOGGED)) {
-							lvl.setBlock(p, targetState.setValue(BlockStateProperties.WATERLOGGED, false), 3);
-							if (!targetState.canSurvive(lvl, p)) {
-								lvl.destroyBlock(p, true);
-							}
-							spendEnergy(energy);
-							return true;
-						}
+						boolean picked = pickFluid(targetBlock, targetState, p, lvl);
+						veinSize = veinCache.getCache().size();
+						if (picked) sendUpdate();
+						return picked;
 					}
 					return false;
 				});
 			}
 		}
 		
+		if (veinCache == null || veinCache.getCache().isEmpty()) {
+			veinSize = 0;
+			sendUpdate();
+		}
+	}
+	
+	private boolean pickFluid(Block targetBlock, BlockState targetState, BlockPos p, Level lvl) {
+		if (targetBlock instanceof LiquidBlock) {
+			lvl.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
+			spendEnergy(energy);
+			return true;
+		} else if (targetBlock instanceof SimpleWaterloggedBlock && targetState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+			lvl.setBlock(p, targetState.setValue(BlockStateProperties.WATERLOGGED, false), 3);
+			if (!targetState.canSurvive(lvl, p)) {
+				lvl.destroyBlock(p, true);
+			}
+			spendEnergy(energy);
+			return true;
+		} else if (targetBlock instanceof BucketPickup bucketPickup) {
+			bucketPickup.pickupBlock(null, lvl, p, targetState);
+			spendEnergy(energy);
+			return true;
+		} else if (targetBlock instanceof LiquidBlockContainer) {
+			lvl.destroyBlock(p, true);
+			lvl.setBlockAndUpdate(p, Blocks.AIR.defaultBlockState());
+			spendEnergy(energy);
+			return true;
+		}
+		return false;
 	}
 	
 	private void createVeinCacheIfNeeded(Level lvl, BlockPos pos) {
 		if (veinCache == null) {
-			/*if (savedCacheQueue != null && allowedFluids != null) {
-				veinCache = new FluidVeinCache(lvl, pos.below(), 25, true);
-				for (FluidKey key : allowedFluids) {
-					key.key.ifLeft(fluid -> veinCache.takeableFluids.add(fluid));
-					key.key.ifRight(fluidTag -> veinCache.takeableFluidTags.add(fluidTag));
-				}
-				veinCache.setCache(savedCacheQueue);
-			} else*/ {
-				BlockState belowState = lvl.getBlockState(pos.below());
-				if (belowState.getFluidState().isEmpty()) return;
-				veinCache = new FluidVeinCache(lvl, pos.below(), 25, true);
-				veinCache.takeableFluids.add(belowState.getFluidState().getType());
-				veinCache.scanForBlocks();
+			BlockState belowState = lvl.getBlockState(pos.below());
+			if (belowState.getFluidState().isEmpty()) {
+				veinSize = 0;
+				sendUpdate();
+				return;
 			}
+			veinCache = new FluidVeinCache(lvl, pos.below(), 25, true);
+			veinCache.takeableFluids.add(belowState.getFluidState().getType());
+			veinCache.scanForBlocks();
+			veinSize = veinCache.getCache().size();
+			sendUpdate();
 		}
 	}
 	

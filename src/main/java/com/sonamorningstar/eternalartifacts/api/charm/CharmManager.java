@@ -51,6 +51,15 @@ public class CharmManager {
         }
         return ItemStack.EMPTY;
     }
+    
+    public static int findCharmSlot(LivingEntity living, Class<? extends Item> charmClass) {
+        CharmStorage charms = living.getData(ModDataAttachments.CHARMS);
+        for (int i = 0; i < charms.getSlots(); i++) {
+            ItemStack c = charms.getStackInSlot(i);
+            if (charmClass.isInstance(c.getItem())) return i;
+        }
+        return -1;
+    }
     public static boolean findCharm(LivingEntity living, ItemStack charm) {
         CharmStorage charms = living.getData(ModDataAttachments.CHARMS);
         return charms.containsStack(charm);

@@ -456,6 +456,26 @@ public final class MachineRecipes {
 				'O', Ingredient.of(ModItems.OBLIVIUM_INGOT)
 			), ModItems.OBLIVIUM_INGOT
 		);
+		registerMachineRecipe(output, ModBlocks.SHOCK_ABSORBER,
+			"TCT"+"CMC"+"TPT",
+			Map.of(
+				'C', Ingredient.of(ModItems.COPPER_TABLET),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'P', Ingredient.of(ModTags.Items.PLASTIC),
+				'T', Ingredient.of(ModTags.Items.HARDENED_GLASS)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.MOB_HARVESTER,
+			"DSD"+"BMB"+"RCR",
+			Map.of(
+				'D', Ingredient.of(ModItems.COPPER_TABLET),
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'S', Ingredient.of(Items.IRON_SWORD),
+				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE)
+			)
+		);
 	}
 	
 	static void registerMachineRecipe(RecipeOutput output, ItemLike machine, String pattern, Map<Character, Ingredient> symbols) {

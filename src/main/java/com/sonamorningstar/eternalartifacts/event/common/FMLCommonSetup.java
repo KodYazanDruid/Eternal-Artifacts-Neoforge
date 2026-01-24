@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModPotions;
+import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddRandomCharmModifier;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterFarmBehaviorEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
@@ -39,6 +40,9 @@ import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+
+import java.util.List;
+import java.util.Set;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -70,6 +74,32 @@ public class FMLCommonSetup {
         
         MachineEnchants.bootstrap();
         setupCharmSlots();
+        
+        AddRandomCharmModifier.CHARM_ITEMS = List.of(
+            ModItems.POWER_GAUNTLET.get(),
+            ModItems.HEART_NECKLACE.get(),
+            ModItems.SAGES_TALISMAN.get(),
+            ModItems.BAND_OF_ARCANE.get(),
+            ModItems.EMERALD_SIGNET.get(),
+            ModItems.SKYBOUND_TREADS.get(),
+            ModItems.GALE_SASH.get(),
+            ModItems.MAGIC_QUIVER.get(),
+            ModItems.IRON_LEATHER_GLOVES.get(),
+            ModItems.FINAL_CUT.get(),
+            ModItems.ODDLY_SHAPED_OPAL.get(),
+            ModItems.RAINCOAT.get(),
+            ModItems.MAGIC_BANE.get(),
+            ModItems.DEATH_CAP.get(),
+            ModItems.MOONGLASS_PENDANT.get(),
+            ModItems.HOLY_DAGGER.get(),
+            ModItems.FROG_LEGS.get(),
+            ModItems.MEDKIT.get(),
+            ModItems.MAGIC_FEATHER.get(),
+            ModItems.COMFY_SHOES.get(),
+            ModItems.MAGNET.get(),
+            ModBlocks.RESONATOR.asItem(),
+            ModItems.LIGHTSABER.get()
+        );
     }
 
     private static void registerCauldronContextsForItemFluidHandlers(Item item) {

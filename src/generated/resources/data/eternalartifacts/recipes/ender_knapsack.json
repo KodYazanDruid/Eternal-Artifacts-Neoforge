@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:chests/ender"
+    },
+    "L": {
+      "tag": "forge:leather"
+    },
+    "S": {
+      "item": "eternalartifacts:stone_tablet"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "SCS",
+    "LLL"
+  ],
+  "result": {
+    "item": "eternalartifacts:ender_knapsack"
+  }
+}

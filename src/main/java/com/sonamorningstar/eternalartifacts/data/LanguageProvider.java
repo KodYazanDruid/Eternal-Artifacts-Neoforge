@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -410,7 +411,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEnchantments.WORLDBIND.get(), "Worldbind");
                 add(ModEnchantments.FORTIFICATION.get(), "Fortification");
                 //endregion
-                //region Co@mmands
+                //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
                 add(ModConstants.COMMAND.withSuffix("charm.given"), "Gave %1$s charm to %2$s.");
                 add(ModConstants.COMMAND.withSuffix("charm.removed"), "Removed charm on %d. index from %s.");
@@ -602,7 +603,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSFER_MODE.withSuffix("extract_only"), "Extract Only");
                 add(ModConstants.TRANSFER_MODE.withSuffix("insert_only"), "Insert Only");
                 add(ModConstants.TRANSFER_MODE.withSuffix("none"), "None");
-                
+                add(ModConstants.GUI.withSuffix("whitelist_for"), "Whitelist for %s");
+                add(ModConstants.GUI.withSuffix("blacklist_for"), "Blacklist for %s");
+                add("recipe.eternalartifacts.in_world.steel_crafting", "Throw ingredients into cauldron.");
+                add("recipe.eternalartifacts.in_world.demon_ingot", "Throw ingredients into lava.");
+                add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Fluid Vein Size: %d");
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBlockHolder().getId().getPath()));
@@ -1300,7 +1305,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TRANSFER_MODE.withSuffix("extract_only"), "Sadece Ver");
                 add(ModConstants.TRANSFER_MODE.withSuffix("insert_only"), "Sadece Al");
                 add(ModConstants.TRANSFER_MODE.withSuffix("none"), "Hiçbiri");
-                
+                add(ModConstants.GUI.withSuffix("whitelist_for"), "%s için beyaz liste");
+                add(ModConstants.GUI.withSuffix("blacklist_for"), "%s için kara liste");
+                add("recipe.eternalartifacts.in_world.steel_crafting", "Malzemeleri kazanın içine at.");
+                add("recipe.eternalartifacts.in_world.demon_ingot", "Malzemeleri lavın içine at.");
+                add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Sıvı Damarı boyu: %d");
                 //endregion
 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

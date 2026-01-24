@@ -39,6 +39,7 @@ public class ModLoots {
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<SmeltDropsModifier>> SMELT_DROPS_SERIALIZER = register("smelt_drops", SmeltDropsModifier.CODEC);
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<ReplaceVanillaAppleModifier>> REPLACE_VANILLA_APPLE_SERIALIZER = register("replace_vanilla_apple", ReplaceVanillaAppleModifier.CODEC);
     public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<ShulkerShellColoringModifier>> SHULKER_SHELL_COLORING_SERIALIZER = register("shulker_shell_coloring", ShulkerShellColoringModifier.CODEC);
+    public static final DeferredHolder<Codec<? extends IGlobalLootModifier>, Codec<AddRandomCharmModifier>> ADD_RANDOM_CHARM_SERIALIZER = register("add_random_charm", AddRandomCharmModifier.CODEC);
 
     public static final DeferredHolder<LootItemConditionType, LootItemConditionType> BLOCK_TAG_CONDITION = CONDITIONS.register("block_tag_condition", ()-> new LootItemConditionType(LootItemBlockTagCondition.CODEC));
 

@@ -5,10 +5,12 @@ import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.data.loot.condition.LootItemBlockTagCondition;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.*;
+import net.minecraft.Util;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Blocks;
@@ -18,7 +20,9 @@ import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.common.loot.LootTableIdCondition;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -96,5 +100,41 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 LootTableIdCondition.builder(EntityType.SHULKER.getDefaultLootTable()).build()
             }
         ));
+        
+        final Map<ResourceLocation, Float> charm_tables = Util.make(new HashMap<>(), map -> {
+            map.put(BuiltInLootTables.SPAWN_BONUS_CHEST, 0.75f);
+            map.put(BuiltInLootTables.SIMPLE_DUNGEON, 0.5f);
+            map.put(BuiltInLootTables.ABANDONED_MINESHAFT, 0.5f);
+            map.put(BuiltInLootTables.JUNGLE_TEMPLE, 0.5f);
+            map.put(BuiltInLootTables.DESERT_PYRAMID, 0.5f);
+            map.put(BuiltInLootTables.STRONGHOLD_CROSSING, 0.5f);
+            map.put(BuiltInLootTables.STRONGHOLD_LIBRARY, 0.5f);
+            map.put(BuiltInLootTables.STRONGHOLD_CORRIDOR, 0.5f);
+            map.put(BuiltInLootTables.NETHER_BRIDGE, 0.35f);
+            map.put(BuiltInLootTables.END_CITY_TREASURE, 0.85f);
+            map.put(BuiltInLootTables.BURIED_TREASURE, 1.0f);
+            map.put(BuiltInLootTables.PILLAGER_OUTPOST, 0.5f);
+            map.put(BuiltInLootTables.WOODLAND_MANSION, 0.5f);
+            map.put(BuiltInLootTables.ANCIENT_CITY, 0.75f);
+            map.put(BuiltInLootTables.SHIPWRECK_TREASURE, 0.75f);
+            map.put(BuiltInLootTables.SHIPWRECK_SUPPLY, 0.5f);
+            map.put(BuiltInLootTables.BASTION_BRIDGE, 0.5f);
+            map.put(BuiltInLootTables.BASTION_OTHER, 0.5f);
+            map.put(BuiltInLootTables.BASTION_HOGLIN_STABLE, 0.5f);
+            map.put(BuiltInLootTables.BASTION_TREASURE, 0.5f);
+            map.put(BuiltInLootTables.TRIAL_CHAMBERS_REWARD, 0.85f);
+            map.put(BuiltInLootTables.TRIAL_CHAMBERS_CORRIDOR, 0.35f);
+            map.put(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION, 0.35f);
+            map.put(BuiltInLootTables.TRIAL_CHAMBERS_INTERSECTION_BARREL, 0.35f);
+            map.put(BuiltInLootTables.FISHING_TREASURE, 0.25f);
+        });
+        
+        charm_tables.forEach((table, chance) -> {
+            add(table.getNamespace() + "_" + table.getPath() + "_random_charm", new AddRandomCharmModifier(
+                new LootItemCondition[]{
+                    LootTableIdCondition.builder(table).build()
+                }, chance
+            ));
+        });
     }
 }

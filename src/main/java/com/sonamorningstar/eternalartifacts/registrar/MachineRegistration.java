@@ -10,16 +10,23 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
 import com.sonamorningstar.eternalartifacts.util.function.MenuConstructor;
 import lombok.Getter;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 /**
@@ -37,6 +44,8 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
     private final boolean hasUniqueTexture;
     private final boolean hasCustomRender;
     private final boolean isGeneric;
+    private final Map<CapabilityType, Object> customCapabilities;
+    private final List<ExtraCapabilityRegistrar<BE, I>> extraCapabilityRegistrars;
 
     private MachineRegistration(Builder<M, BE, B, I> builder) {
         this.name = builder.name;
@@ -48,6 +57,75 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
         this.hasUniqueTexture = builder.hasUniqueTexture;
         this.hasCustomRender = builder.hasCustomRender;
         this.isGeneric = builder.isGeneric;
+        this.customCapabilities = new EnumMap<>(builder.customCapabilities);
+        this.extraCapabilityRegistrars = new ArrayList<>(builder.extraCapabilityRegistrars);
+    }
+    
+    /**
+     * Functional interface for registering extra capabilities from other mods.
+     * Used for compat with Mekanism, Create, etc.
+     *
+     * @param <BE> BlockEntity type
+     * @param <I> Item type
+     */
+    @FunctionalInterface
+    public interface ExtraCapabilityRegistrar<BE extends BlockEntity, I extends Item> {
+        /**
+         * Register extra capabilities for this machine.
+         *
+         * @param context Contains event, block entity type, and item for registration
+         */
+        void register(ExtraCapabilityContext<BE, I> context);
+    }
+    
+    /**
+     * Context object passed to extra capability registrars.
+     */
+    public record ExtraCapabilityContext<BE extends BlockEntity, I extends Item>(
+        net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event,
+        BlockEntityType<BE> blockEntityType,
+        I item
+    ) {}
+    /**
+     * Capability types that can be customized per machine.
+     */
+    public enum CapabilityType {
+        BLOCK_ITEM,
+        BLOCK_FLUID,
+        BLOCK_ENERGY,
+        ITEM_ITEM,
+        ITEM_FLUID,
+        ITEM_ENERGY
+    }
+    
+    /**
+     * Functional interface for block capability providers.
+     */
+    @FunctionalInterface
+    public interface BlockCapabilityProvider<BE extends BlockEntity, T> {
+        @Nullable T provide(BE blockEntity, @Nullable Direction direction);
+    }
+    
+    /**
+     * Functional interface for item capability providers.
+     */
+    @FunctionalInterface
+    public interface ItemCapabilityProvider<T> {
+        @Nullable T provide(ItemStack stack, Void context);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> BlockCapabilityProvider<BE, T> getBlockCapability(CapabilityType type) {
+        return (BlockCapabilityProvider<BE, T>) customCapabilities.get(type);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> ItemCapabilityProvider<T> getItemCapability(CapabilityType type) {
+        return (ItemCapabilityProvider<T>) customCapabilities.get(type);
+    }
+    
+    public boolean hasCustomCapability(CapabilityType type) {
+        return customCapabilities.containsKey(type);
     }
 
     public static <BE extends GenericMachine> Builder<GenericMachineMenu, BE, MachineFourWayBlock<BE>, MachineBlockItem> generic(
@@ -92,6 +170,8 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
         private boolean hasUniqueTexture = false;
         private boolean hasCustomRender = false;
         private boolean isGeneric = false;
+        private final Map<CapabilityType, Object> customCapabilities = new EnumMap<>(CapabilityType.class);
+        private final List<ExtraCapabilityRegistrar<BE, I>> extraCapabilityRegistrars = new ArrayList<>();
 
         public Builder(String name) {
             this.name = name;
@@ -138,6 +218,97 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
 
         private Builder<M, BE, B, I> generic(boolean isGeneric) {
             this.isGeneric = isGeneric;
+            return this;
+        }
+        
+        // ==================== Block Capability Overrides ====================
+        
+        /**
+         * Override the block's item handler capability.
+         * @param provider Custom provider for IItemHandler
+         */
+        public <T> Builder<M, BE, B, I> blockItemCap(BlockCapabilityProvider<BE, T> provider) {
+            customCapabilities.put(CapabilityType.BLOCK_ITEM, provider);
+            return this;
+        }
+        
+        /**
+         * Override the block's fluid handler capability.
+         * @param provider Custom provider for IFluidHandler
+         */
+        public <T> Builder<M, BE, B, I> blockFluidCap(BlockCapabilityProvider<BE, T> provider) {
+            customCapabilities.put(CapabilityType.BLOCK_FLUID, provider);
+            return this;
+        }
+        
+        /**
+         * Override the block's energy storage capability.
+         * @param provider Custom provider for IEnergyStorage
+         */
+        public <T> Builder<M, BE, B, I> blockEnergyCap(BlockCapabilityProvider<BE, T> provider) {
+            customCapabilities.put(CapabilityType.BLOCK_ENERGY, provider);
+            return this;
+        }
+        
+        // ==================== Item Capability Overrides ====================
+        
+        /**
+         * Override the item's item handler capability.
+         * @param provider Custom provider for IItemHandler
+         */
+        public <T> Builder<M, BE, B, I> itemItemCap(ItemCapabilityProvider<T> provider) {
+            customCapabilities.put(CapabilityType.ITEM_ITEM, provider);
+            return this;
+        }
+        
+        /**
+         * Override the item's fluid handler capability.
+         * @param provider Custom provider for IFluidHandler
+         */
+        public <T> Builder<M, BE, B, I> itemFluidCap(ItemCapabilityProvider<T> provider) {
+            customCapabilities.put(CapabilityType.ITEM_FLUID, provider);
+            return this;
+        }
+        
+        /**
+         * Override the item's energy storage capability.
+         * @param provider Custom provider for IEnergyStorage
+         */
+        public <T> Builder<M, BE, B, I> itemEnergyCap(ItemCapabilityProvider<T> provider) {
+            customCapabilities.put(CapabilityType.ITEM_ENERGY, provider);
+            return this;
+        }
+        
+        /**
+         * Disable a specific capability for this machine.
+         * Pass null provider to skip registration entirely.
+         */
+        public Builder<M, BE, B, I> disableBlockCap(CapabilityType type) {
+            customCapabilities.put(type, null);
+            return this;
+        }
+        
+        /**
+         * Register an extra capability from another mod (e.g., Mekanism, Create).
+         * This is useful for addon mods or compat layers.
+         *
+         * <p>Example usage for Mekanism gas handler:</p>
+         * <pre>{@code
+         * .extraCapability(ctx -> {
+         *     if (ModList.get().isLoaded("mekanism")) {
+         *         ctx.event().registerBlockEntity(
+         *             mekanism.common.capabilities.Capabilities.GAS.block(),
+         *             ctx.blockEntityType(),
+         *             (be, dir) -> be.getGasHandler()
+         *         );
+         *     }
+         * })
+         * }</pre>
+         *
+         * @param registrar The capability registrar to add
+         */
+        public Builder<M, BE, B, I> extraCapability(ExtraCapabilityRegistrar<BE, I> registrar) {
+            extraCapabilityRegistrars.add(registrar);
             return this;
         }
 

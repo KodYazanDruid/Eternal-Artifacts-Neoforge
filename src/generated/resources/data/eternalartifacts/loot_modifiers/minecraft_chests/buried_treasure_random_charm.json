@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:add_random_charm",
+  "chance": 1.0,
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/buried_treasure"
+    }
+  ]
+}

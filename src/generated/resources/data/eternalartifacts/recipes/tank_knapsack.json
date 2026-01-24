@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "forge:chests"
+    },
+    "J": {
+      "item": "eternalartifacts:jar"
+    },
+    "P": {
+      "tag": "forge:glass_panes"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "JCJ",
+    "PPP"
+  ],
+  "result": {
+    "item": "eternalartifacts:tank_knapsack"
+  }
+}

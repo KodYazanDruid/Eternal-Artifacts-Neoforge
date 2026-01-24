@@ -1,12 +1,17 @@
 package com.sonamorningstar.eternalartifacts.container;
 
+import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemItemStorage;
 import com.sonamorningstar.eternalartifacts.container.slot.CapRefreshedItemSlot;
+import com.sonamorningstar.eternalartifacts.content.item.PortableFurnaceItem;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -22,6 +27,7 @@ public class PortableFurnaceMenu extends TabMenu {
 	public final ItemStack furnace;
 	public final ContainerData data;
 	public final List<Ingredient> smeltables;
+	
 	public PortableFurnaceMenu(int id, Inventory inv, ItemStack furnace, ContainerData data) {
 		super(ModMenuTypes.PORTABLE_FURNACE.get(), id, inv);
 		this.furnace = furnace;
@@ -57,6 +63,17 @@ public class PortableFurnaceMenu extends TabMenu {
 				public boolean mayPlace(ItemStack stack) {
 					return false;
 				}
+				
+				@Override
+				public void onTake(Player pl, ItemStack stack) {
+					super.onTake(pl, stack);
+					if (pl instanceof ServerPlayer serverPlayer) {
+						int charmSlot = CharmManager.findCharmSlot(pl, PortableFurnaceItem.class);
+						if (charmSlot >= 0) {
+							PortableFurnaceItem.awardUsedRecipesAndPopExperience(furnace, serverPlayer, charmSlot);
+						}
+					}
+				}
 			});
 		}
 	}
@@ -71,6 +88,25 @@ public class PortableFurnaceMenu extends TabMenu {
 	
 	public float getRecipeProgress() {
 		return (float)data.get(2) / (float)data.get(3);
+	}
+	
+	@Override
+	public ItemStack quickMoveStack(Player player, int index) {
+		// Output slot index: 36 (player inv) + 2 (input, fuel) = 38
+		int outputSlotIndex = 36 + 2;
+		Slot slot = slots.get(index);
+		
+		// Shift-click output slotundan alınıyorsa XP ver
+		if (index == outputSlotIndex && slot != null && slot.hasItem()) {
+			if (player instanceof ServerPlayer serverPlayer) {
+				int charmSlot = CharmManager.findCharmSlot(player, PortableFurnaceItem.class);
+				if (charmSlot >= 0) {
+					PortableFurnaceItem.awardUsedRecipesAndPopExperience(furnace, serverPlayer, charmSlot);
+				}
+			}
+		}
+		
+		return super.quickMoveStack(player, index);
 	}
 	
 	public static PortableFurnaceMenu fromNetwork(int id, Inventory inv, FriendlyByteBuf extraData) {

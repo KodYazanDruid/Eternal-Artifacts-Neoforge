@@ -136,7 +136,6 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 				return buton;
 			});
 			
-			// Property seçim paneli açma butonu - sadece BlockBreaker için
 			if (menu.isBlockBreaker()) {
 				filterPanel.addChildren((fx, fy, fW, fH) -> {
 					var bld = SpriteButton.builderNoTexture(Component.empty(), (b, i) -> {
@@ -149,7 +148,6 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 					return buton;
 				});
 				
-				// Baktığı bloğu filtreye ekleyen buton
 				filterPanel.addChildren((fx, fy, fW, fH) -> {
 					var bld = SpriteButton.builderNoTexture(Component.empty(), (b, i) -> {
 						addTargetBlockToFilter();

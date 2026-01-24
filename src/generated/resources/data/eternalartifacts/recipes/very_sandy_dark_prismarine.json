@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "minecraft:dark_prismarine"
+    },
+    {
+      "tag": "forge:sand"
+    },
+    {
+      "tag": "forge:sand"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "item": "eternalartifacts:very_sandy_dark_prismarine"
+  }
+}

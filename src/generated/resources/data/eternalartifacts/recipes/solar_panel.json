@@ -1,26 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "redstone",
+  "category": "misc",
   "key": {
-    "C": {
-      "item": "eternalartifacts:capacitor"
-    },
-    "G": {
-      "tag": "forge:glass"
-    },
     "I": {
       "tag": "forge:ingots/tin"
     },
-    "L": {
-      "tag": "forge:gems/lapis"
-    },
     "M": {
       "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "tag": "forge:glass_panes"
     }
   },
   "pattern": [
-    "LLL",
-    "GCG",
+    "PPP",
     "IMI"
   ],
   "result": {

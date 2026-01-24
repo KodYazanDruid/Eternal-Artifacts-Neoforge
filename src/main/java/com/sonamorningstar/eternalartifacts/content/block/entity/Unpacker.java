@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
+import com.sonamorningstar.eternalartifacts.api.machine.UnpackerRecipeCache;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
@@ -16,38 +17,37 @@ public class Unpacker extends GenericMachine {
 		setEnergy(this::createDefaultEnergy);
 		outputSlots.add(1);
 		setInventory(() -> createBasicInventory(2, (slot, stack) ->
-			slot == 0 && Recycler.ingredientBreakdown.containsKey(stack.getItem()) ||
+			slot == 0 && UnpackerRecipeCache.hasRecipe(stack.getItem()) ||
 			slot == 1 && !outputSlots.contains(slot)));
 	}
 	
-	@Override
-	public void onLoad() {
-		Recycler.initializeRecipeMapAsync(level);
-		super.onLoad();
-	}
 	
 	@Override
 	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		ItemStack input = inventory.getStackInSlot(0);
-		if (!input.isEmpty() && Recycler.ingredientBreakdown.containsKey(input.getItem())) {
-			condition.tryExtractItemForced(1, 0);
-			ItemStack output = Recycler.ingredientBreakdown.get(input.getItem()).toStack();
-			if (!output.isEmpty()) condition.queueImport(output);
+		if (!input.isEmpty() && UnpackerRecipeCache.hasRecipe(input.getItem())) {
+			ItemStack output = UnpackerRecipeCache
+				.getBreakdown(input.getItem())
+				.toStack();
+			condition.queueImport(output).commitQueuedImports();
 		}
-		condition.commitQueuedImports();
 		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-		Recycler.initializeRecipeMapAsync(lvl);
 		super.tickServer(lvl, pos, st);
 		
 		progress(() -> {
 			ItemStack input = inventory.getStackInSlot(0);
-			ItemStack packed = Recycler.ingredientBreakdown.get(input.getItem()).toStack();
+			if (input.isEmpty()) return;
+			
+			ItemStack output = UnpackerRecipeCache
+				.getBreakdown(input.getItem())
+				.toStack();
+			
 			inventory.extractItem(0, 1, false);
-			inventory.insertItemForced(1, packed, false);
+			inventory.insertItemForced(1, output.copy(), false);
 		});
 	}
 	

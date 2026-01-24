@@ -1,4 +1,4 @@
-// 1.20.4	2025-12-11T16:37:57.7062548	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2026-01-23T21:02:25.6304573	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -35,6 +35,8 @@ c6c66e730827f409622e82c9dc0a843c22bb8094 data/forge/tags/items/fruits/ancient.js
 f36fd97d0265cc281f068806274db8d78e53ca1a data/forge/tags/items/fruits/apple.json
 ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.json
 91aab86753deb913a975f3639150d05d0706b6fd data/forge/tags/items/fruits/orange.json
+ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/items/glass/hardened.json
+d67c9fd5e8c499cbc962967777629ed0f0a36204 data/forge/tags/items/hardened_glass.json
 9dc670d8b676a075a5f9225eb5f61243e0f96088 data/forge/tags/items/heads.json
 4312942610caba12e3657f9404120c330cc26b51 data/forge/tags/items/ingots.json
 ea2d8731e74b80ccd52a531d82523ff15ce55e3e data/forge/tags/items/ingots/aluminum.json

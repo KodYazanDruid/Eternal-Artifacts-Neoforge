@@ -8,6 +8,7 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.caches.FluidVeinCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -24,13 +25,10 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedM
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
+import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
-import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
-import com.sonamorningstar.eternalartifacts.container.slot.FilterFakeSlot;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
 import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
@@ -94,6 +92,7 @@ import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
@@ -385,9 +384,9 @@ public class ClientEvents {
         }
         if (screen instanceof GenericSidedMachineScreen gsms) {
             var owner = gsms.getMachine();
+            final int x = gsms.getGuiLeft();
+            final int y = gsms.getGuiTop();
             if (owner instanceof DimensionalAnchor anchor) {
-                int x = gsms.getGuiLeft();
-                int y = gsms.getGuiTop();
                 GuiDrawer.drawFramedBackground(gui, x + 37, y + 18, 100, 50, 1,
                     0xff000000, 0xff404040, 0xffa0a0a0);
                 gui.drawString(screen.getMinecraft().font,
@@ -396,9 +395,22 @@ public class ClientEvents {
                     x + 40, y + 20, 0xfff0f0f0, false
                 );
             }
+            if (owner instanceof FluidPump pump) {
+                GuiDrawer.drawFramedBackground(gui, x + 47, y + 18, 100, 50, 1,
+                    0xff000000, 0xff404040, 0xffa0a0a0);
+                int veinSize = pump.veinSize;
+                if (veinSize > 0) {
+                    gui.drawString(screen.getMinecraft().font,
+                        Component.translatable(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), veinSize),
+                        x + 50, y + 20, 0xfff0f0f0, false
+                    );
+                }
+            }
         }
     }
     
+    public static ItemStack recipeViewDraggedStack = ItemStack.EMPTY;
+    public static FluidStack recipeViewDraggedFluid = FluidStack.EMPTY;
     private static final GlStateBackup GL_STATE = new GlStateBackup();
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void renderScreenLowPrio(ScreenEvent.Render.Post event) {
@@ -457,6 +469,15 @@ public class ClientEvents {
             
             renderCarriedItem(gui, amcs, mx, my, tooltipZ + 100);
             
+            if (!recipeViewDraggedStack.isEmpty()) {
+                renderFloatingItem(gui, recipeViewDraggedStack, amcs, mx, my, tooltipZ + 200);
+                recipeViewDraggedStack = ItemStack.EMPTY;
+            }
+            if (!recipeViewDraggedFluid.isEmpty()) {
+                renderFloatingFluid(gui, recipeViewDraggedFluid, amcs, mx, my, tooltipZ + 200);
+                recipeViewDraggedFluid = FluidStack.EMPTY;
+            }
+            
             RenderSystem.restoreGlState(GL_STATE);
             pose.popPose();
         }
@@ -465,19 +486,33 @@ public class ClientEvents {
     private static void renderCarriedItem(GuiGraphics gui, AbstractModContainerScreen<?> screen, int mx, int my, int zIndex) {
         ItemStack carried = screen.getMenu().getCarried();
         if (!carried.isEmpty()) {
-            gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-            
-            PoseStack pose = gui.pose();
-            pose.pushPose();
-            pose.translate(0.0F, 0.0F, zIndex);
-            RenderSystem.disableDepthTest();
-            
-            gui.renderItem(carried, mx - 8, my - 8);
-            gui.renderItemDecorations(Minecraft.getInstance().font, carried, mx - 8, my - 8);
-            
-            RenderSystem.enableDepthTest();
-            pose.popPose();
+            renderFloatingItem(gui, carried, screen, mx, my, zIndex);
         }
+    }
+    
+    private static void renderFloatingItem(GuiGraphics gui, ItemStack floating, AbstractModContainerScreen<?> screen, int mx, int my, int zIndex) {
+        gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        PoseStack pose = gui.pose();
+        pose.pushPose();
+        pose.translate(0.0F, 0.0F, zIndex);
+        RenderSystem.disableDepthTest();
+        gui.renderItem(floating, mx - 8, my - 8);
+        gui.renderItemDecorations(Minecraft.getInstance().font, floating, mx - 8, my - 8);
+        RenderSystem.enableDepthTest();
+        pose.popPose();
+    }
+    
+    private static void renderFloatingFluid(GuiGraphics gui, FluidStack floating, AbstractModContainerScreen<?> screen, int mx, int my, int zIndex) {
+        gui.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+        
+        PoseStack pose = gui.pose();
+        pose.pushPose();
+        pose.translate(0.0F, 0.0F, zIndex);
+        RenderSystem.disableDepthTest();
+        FluidRendererHelper.renderFluidStack(gui, floating, mx - 8, my - 8, 16, 16);
+        RenderSystem.enableDepthTest();
+        pose.popPose();
     }
     
     @SubscribeEvent

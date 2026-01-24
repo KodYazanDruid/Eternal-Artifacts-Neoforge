@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "minecraft:crossbow"
+    },
+    "I": {
+      "item": "eternalartifacts:chlorophyte_ingot"
+    },
+    "O": {
+      "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    }
+  },
+  "pattern": [
+    "IRI",
+    " C ",
+    " O "
+  ],
+  "result": {
+    "item": "eternalartifacts:chlorophyte_repeater"
+  }
+}

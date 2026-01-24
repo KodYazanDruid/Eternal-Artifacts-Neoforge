@@ -375,6 +375,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ModItems.BLACK_SHULKER_SHELL.get(),
                 Items.SHULKER_SHELL
         );
+        tag(ModTags.Items.GLASS_HARDENED).add(ModBlocks.TEMPERED_GLASS.asItem());
+        tag(ModTags.Items.HARDENED_GLASS).addTag(ModTags.Items.GLASS_HARDENED);
         
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,

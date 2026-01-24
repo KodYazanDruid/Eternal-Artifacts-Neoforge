@@ -82,8 +82,23 @@ public final class RecipeViewerRenderer {
     }
     
     /**
-     * Renders a fluid stack in the GUI
+     * Checks if a block state is a fluid block
      */
+    public static boolean isFluidBlock(BlockState state) {
+        return !state.getFluidState().isEmpty();
+    }
+    
+    /**
+     * Renders a block state, automatically choosing the correct render method for fluids
+     */
+    public static void renderBlockAuto(GuiGraphics gui, BlockState state, int x, int y, float scale) {
+        if (isFluidBlock(state)) {
+            //renderFluidBlock(gui, state, x, y, scale);
+        } else {
+            renderBlock(gui, state, x, y, scale);
+        }
+    }
+    
     public static void renderFluid(GuiGraphics gui, FluidStack fluid, int x, int y, int width, int height) {
         if (fluid.isEmpty()) return;
         

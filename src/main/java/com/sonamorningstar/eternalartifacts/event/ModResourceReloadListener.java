@@ -2,12 +2,16 @@ package com.sonamorningstar.eternalartifacts.event;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
+import com.sonamorningstar.eternalartifacts.api.machine.PackerRecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.RecyclerRecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.UnpackerRecipeCache;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.item.HammerItem;
 import com.sonamorningstar.eternalartifacts.event.common.CommonEvents;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
@@ -15,6 +19,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
 import java.util.Map;
 
@@ -24,8 +29,15 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
 
     @Override
     public void onResourceManagerReload(ResourceManager manager) {
+        MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
         CharmType.itemCharmTypes.clear();
         RecipeCache.clearCache();
+        
+        if (currentServer != null) {
+            RecyclerRecipeCache.rebuild(currentServer.getRecipeManager(), currentServer.overworld().registryAccess());
+            PackerRecipeCache.rebuild(currentServer.getRecipeManager(), currentServer.overworld());
+            UnpackerRecipeCache.rebuild(currentServer.getRecipeManager(), currentServer.overworld());
+        }
         
         Harvester.hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> Harvester.isCorrectTool(item.getDefaultInstance())).toArray(Item[]::new);
         Harvester.cachedLootTables.clear();
@@ -66,10 +78,6 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
             ResourceLocation finalRl = new ResourceLocation(parts[0], strippedPath);
             SludgeRefiner.SLUDGE_RESULTS.add(finalRl);
         });
-        
-        Recycler.isRecipeMapInitialized = false;
-        Recycler.isBreakdownMapInitialized = false;
-        Packer.isPackingMapInitialized = false;
         
         CommonEvents.setupTagBasedCauldronInteractions();
     }

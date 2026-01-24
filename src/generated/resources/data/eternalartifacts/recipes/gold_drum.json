@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "tag": "forge:storage_blocks/gold"
+    },
+    "I": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "pattern": [
+    "III",
+    "I I",
+    "IBI"
+  ],
+  "result": {
+    "item": "eternalartifacts:gold_drum"
+  }
+}

@@ -7,9 +7,12 @@ import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
 import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Draggable;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
@@ -35,8 +38,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
@@ -271,6 +276,13 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             if (child instanceof SlotWidget slotWidget) {
                 slotWidget.unregisterFromScreen(this);
             }
+            if (child instanceof ParentalWidget parent) {
+                for (GuiEventListener grandChild : parent.getChildren()) {
+                    if (grandChild instanceof SlotWidget slotWidget) {
+                        slotWidget.unregisterFromScreen(this);
+                    }
+                }
+            }
         }
         super.clearWidgets();
         upperLayerChildren.clear();
@@ -278,15 +290,85 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
 	public void removeWidget(GuiEventListener listener) {
-        super.removeWidget(listener);
-        upperLayerChildren.remove(listener);
         if (listener instanceof SlotWidget slotWidget) {
             slotWidget.unregisterFromScreen(this);
         }
-        // Panel kaldırıldığında z-indexleri normalize et
-        if (listener instanceof SimpleDraggablePanel) {
-            normalizeZIndices();
+        if (listener instanceof ParentalWidget parent) {
+            for (GuiEventListener child : parent.getChildren()) {
+                if (child instanceof SlotWidget slotWidget) {
+                    slotWidget.unregisterFromScreen(this);
+                }
+            }
         }
+        upperLayerChildren.remove(listener);
+        super.removeWidget(listener);
+        normalizeZIndices();
+    }
+    
+    public List<FakeSlot> getAllFakeSlots() {
+        List<FakeSlot> fakeSlots = new ArrayList<>();
+        for (Slot slot : menu.slots) {
+            if (slot instanceof FakeSlot fs) {
+                fakeSlots.add(fs);
+            }
+        }
+        for (GuiEventListener child : children) {
+            if (child instanceof ParentalWidget parent) {
+                for (GuiEventListener grandChild : parent.getChildren()) {
+                    if (grandChild instanceof SlotWidget slotWidget) {
+                        Slot slot = slotWidget.getSlot();
+                        if (slot instanceof FakeSlot fs && !fakeSlots.contains(fs)) {
+                            fakeSlots.add(fs);
+                        }
+                    }
+                }
+            }
+        }
+        return fakeSlots;
+    }
+    
+    @Nullable
+    public SlotWidget getWidgetForSlot(Slot slot) {
+        for (GuiEventListener child : children) {
+            if (child instanceof SlotWidget slotWidget) {
+                if (slotWidget.getSlot() == slot) {
+                    return slotWidget;
+                }
+            }
+            if (child instanceof ParentalWidget parent) {
+                for (GuiEventListener grandChild : parent.getChildren()) {
+                    if (grandChild instanceof SlotWidget slotWidget) {
+                        if (slotWidget.getSlot() == slot) {
+                            return slotWidget;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    
+    @Nullable
+    public SimpleDraggablePanel getPanelForWidget(GuiEventListener widget) {
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel panel) {
+                if (panel.getChildren().contains(widget)) {
+                    return panel;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public boolean isAnyPanelOpen() {
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel panel) {
+                if (panel.visible || panel.active) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     protected void drawExtraBg(GuiGraphics gui, float tickDelta, int x, int y) {
@@ -350,6 +432,13 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         drawExtraBg(gui, tickDelta, leftPos, topPos);
         clearGuiTint(gui);
     }
+    
+    /**
+     * Floating item rendering handled on
+     * {@link com.sonamorningstar.eternalartifacts.event.client.ClientEvents#renderScreenLowPrio(ScreenEvent.Render.Post)}
+     */
+    @Override
+    public void renderFloatingItem(GuiGraphics pGuiGraphics, ItemStack pStack, int pX, int pY, String pText) {}
     
     public void applyGuiTint(GuiGraphics gui) {
         gui.setColor(FastColor.ARGB32.red(guiTint) / 255.0F, FastColor.ARGB32.green(guiTint) / 255.0F,

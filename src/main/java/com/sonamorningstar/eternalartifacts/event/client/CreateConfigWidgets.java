@@ -74,7 +74,6 @@ public class CreateConfigWidgets {
 							else if (key == 1) config.cyclePrev(dir);
 						}
 						button.setSprites(getTextureForTransferType(type.apply(dir)));
-						//button.setSprites(new ButtonDrawContent(9, 9));
 						FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 						config.writeToServer(buf);
 						Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));

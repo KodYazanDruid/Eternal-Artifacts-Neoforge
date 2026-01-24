@@ -17,7 +17,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractButton;
 import net.minecraft.client.gui.components.EditBox;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -26,9 +25,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
-	public static final Component WHITELIST_TITLE = ModConstants.GUI.withSuffixTranslatable("whitelist");
+	public static final Function<String, Component> WHITELIST_FOR = s -> ModConstants.GUI.withSuffixTranslatable("whitelist_for", s);
 	public static final String WHITELIST_ID_PREFIX = "tesseract_whitelist_panel";
 	private ScrollablePanel<AbstractScrollPanelComponent> panel;
 	private EditBox networkName;
@@ -149,7 +149,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				int widgetX = panel.getX() + panel.getWidth() - 20;
 				int widgetY = panel.getY() + (finalI * (childHeight + 1));
 				
-				SimpleDraggablePanel dragPanel = new SimpleDraggablePanel(WHITELIST_TITLE,
+				SimpleDraggablePanel dragPanel = new SimpleDraggablePanel(WHITELIST_FOR.apply(tesseractNetwork.getName()),
 					widgetX, widgetY, 200, 150,
 					SimpleDraggablePanel.Bounds.full(this));
 				dragPanel.setColor(getGuiTint());
@@ -271,7 +271,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		if (tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED) {
 			selectedNetwork.setWidth(imageWidth - 40);
 			int dX = leftPos + selectedNetwork.getWidth() + 10;
-			selectedWlPanel = new SimpleDraggablePanel(WHITELIST_TITLE,
+			selectedWlPanel = new SimpleDraggablePanel(WHITELIST_FOR.apply(tesseractNetwork.getName()),
 				dX, selectedNetwork.getY(), 200, 150,
 				SimpleDraggablePanel.Bounds.full(this));
 			selectedWlPanel.setColor(getGuiTint());

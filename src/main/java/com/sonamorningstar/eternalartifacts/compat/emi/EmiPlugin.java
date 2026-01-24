@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.*;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
@@ -11,6 +12,7 @@ import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -31,6 +33,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         // Initialize the common RecipeViewer registry first
         RecipeViewerInit.init();
         
+        //registry.addDragDropHandler(AbstractModContainerScreen.class, new EADragDropHandler<>());
         registry.addGenericDragDropHandler(new EADragDropHandler());
         registry.addRecipeHandler(ModMenuTypes.BLUEPRINT.get(), new BlueprintRecipeHandler());
         registry.addGenericExclusionArea(new EAExclusionHandler());
