@@ -20,7 +20,7 @@ public class FluidInfuser extends GenericMachine {
         super(ModMachines.FLUID_INFUSER, pos, blockState);
         outputSlots.add(1);
         setEnergy(this::createDefaultEnergy);
-        setTank(() -> createBasicTank(16000, this::findRecipe));
+        setTank(() -> createRecipeFinderTank(16000));
         setInventory(() -> createRecipeFinderInventory(2, outputSlots));
         setRecipeTypeAndContainer(ModRecipes.FLUID_INFUSING.getType(), () -> new ItemFluidContainer(inventory, tank));
         screenInfo.setArrowXOffset(-20);
@@ -30,6 +30,8 @@ public class FluidInfuser extends GenericMachine {
     protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         if (recipe instanceof FluidInfuserRecipe fluidInfuser) {
             condition
+                .initInputTank(tank)
+                .tryExtractFluidForced(fluidInfuser.getInputFluid().getFluidStacks()[0].getAmount())
                 .queueImport(fluidInfuser.getOutput())
                 .commitQueuedImports();
         }

@@ -39,11 +39,11 @@ public class ProcessCondition {
         return this;
     }
     public ProcessCondition queueImport(ItemStack stack) {
-        this.queuedItemStackImports.add(stack);
+        this.queuedItemStackImports.add(stack.copy());
         return this;
     }
     public ProcessCondition queueImport(FluidStack stack) {
-        this.queuedFluidStackImports.add(stack);
+        this.queuedFluidStackImports.add(stack.copy());
         return this;
     }
     //endregion

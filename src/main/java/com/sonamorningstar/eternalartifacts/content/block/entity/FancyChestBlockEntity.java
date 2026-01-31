@@ -62,7 +62,7 @@ public class FancyChestBlockEntity extends ChestBlockEntity implements IRetextur
         return tag;
     }
 
-    protected void sendUpdate(){
+    protected void sendUpdate() {
         setChanged();
         if(level != null && level.hasChunkAt(worldPosition)) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }

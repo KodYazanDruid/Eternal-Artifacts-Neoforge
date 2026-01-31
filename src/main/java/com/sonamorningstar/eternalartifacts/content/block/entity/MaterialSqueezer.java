@@ -50,8 +50,8 @@ public class MaterialSqueezer extends GenericMachine {
         }
 
         progress(() -> {
-            inventory.insertItemForced(1, recipe.getOutput(), false);
-            tank.fillForced(recipe.getOutputFluid(), IFluidHandler.FluidAction.EXECUTE);
+            inventory.insertItemForced(1, recipe.getResultItem(lvl.registryAccess()).copy(), false);
+            tank.fillForced(recipe.getOutputFluid().copy(), IFluidHandler.FluidAction.EXECUTE);
             inventory.extractItem(0, 1, false);
         });
     }

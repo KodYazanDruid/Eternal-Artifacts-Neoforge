@@ -62,8 +62,9 @@ public class FarmBehaviorRegistry {
 		register(new PitcherPlantBehavior());
 		register(new GlowBerryBehavior());
 		register(new ChorusFlowerBehavior());
-		register(new StemBehavior(Items.MELON_SEEDS, Blocks.MELON_STEM, Blocks.MELON));
-		register(new StemBehavior(Items.PUMPKIN_SEEDS, Blocks.PUMPKIN_STEM, Blocks.PUMPKIN));
+		register(new OreBerryBehavior());
+		register(new StemBehavior(Items.MELON_SEEDS, Blocks.MELON_STEM, Blocks.MELON, Blocks.ATTACHED_MELON_STEM));
+		register(new StemBehavior(Items.PUMPKIN_SEEDS, Blocks.PUMPKIN_STEM, Blocks.PUMPKIN, Blocks.ATTACHED_PUMPKIN_STEM));
 		register(new ReedBehavior(() -> Blocks.SUGAR_CANE));
 		register(new ReedBehavior(() -> Blocks.CACTUS));
 	}

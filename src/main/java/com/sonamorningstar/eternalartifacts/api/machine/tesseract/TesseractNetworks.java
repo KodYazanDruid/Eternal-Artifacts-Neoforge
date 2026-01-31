@@ -171,17 +171,19 @@ public class TesseractNetworks extends SavedData {
 	
 	public static void syncToClient(Set<TesseractNetwork<?>> networks) {
 		MinecraftServer currentServer = ServerLifecycleHooks.getCurrentServer();
-		currentServer.getPlayerList().getPlayers().forEach(player -> {
-			Set<TesseractNetwork<?>> networksToSync = new HashSet<>();
-			networks.stream()
-				.filter(network -> {
-					UUID ownerUUID = network.getOwner().getId();
-					UUID playerUUID = player.getUUID();
-					if (ownerUUID.equals(playerUUID)) return true;
-					return network.getWhitelistedPlayers().stream().anyMatch(p -> playerUUID.equals(p.getId()));
-				}).forEach(networksToSync::add);
-			Channel.sendToPlayer(new TesseractNetworksToClient(networksToSync), player);
-		});
+		if (currentServer != null && currentServer.isRunning()) {
+			currentServer.getPlayerList().getPlayers().forEach(player -> {
+				Set<TesseractNetwork<?>> networksToSync = new HashSet<>();
+				networks.stream()
+					.filter(network -> {
+						UUID ownerUUID = network.getOwner().getId();
+						UUID playerUUID = player.getUUID();
+						if (ownerUUID.equals(playerUUID)) return true;
+						return network.getWhitelistedPlayers().stream().anyMatch(p -> playerUUID.equals(p.getId()));
+					}).forEach(networksToSync::add);
+				Channel.sendToPlayer(new TesseractNetworksToClient(networksToSync), player);
+			});
+		}
 	}
 	
 	public static void applyOnClient(Set<TesseractNetwork<?>> networks) {

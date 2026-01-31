@@ -8,7 +8,6 @@ import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
-import com.sonamorningstar.eternalartifacts.api.caches.FluidVeinCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -16,6 +15,7 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
 import com.sonamorningstar.eternalartifacts.api.filter.*;
+import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.AbstractPipeFilterScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
@@ -46,6 +46,7 @@ import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -420,6 +421,37 @@ public class ClientEvents {
         int my = event.getMouseY();
         float deltaTick = event.getPartialTick();
         if (screen instanceof AbstractModContainerScreen<?> amcs) {
+            int leftPos = amcs.getGuiLeft();
+            int topPos = amcs.getGuiTop();
+            if (amcs.getMenu() instanceof AbstractMachineMenu amm) {
+                BlockEntity be = amm.getBlockEntity();
+                /*if (be instanceof BatteryBox batteryBox) {
+                    ModEnergyStorage energy = batteryBox.energy;
+                    
+                    int avgIn  = energy.getClientAverageReceivedEnergy();
+                    int avgOut = energy.getClientAverageExtractedEnergy();
+                    int avgNet = energy.getClientAverageNetEnergyChange();
+                    
+                    Font font = screen.getMinecraft().font;
+                    
+                    int x = leftPos + 120;
+                    int y = topPos + 36;
+                    gui.drawString(font, "+" + avgIn, x, y, ChatFormatting.GREEN.getColor(), false);
+                    gui.drawString(font, "-" + avgOut, x, y + 10, ChatFormatting.RED.getColor(), false);
+
+                    int netColor = avgNet > 0
+                        ? ChatFormatting.GREEN.getColor()
+                        : avgNet < 0
+                        ? ChatFormatting.RED.getColor()
+                        : ChatFormatting.YELLOW.getColor();
+                    
+                    gui.drawString(font, "~" + avgNet, x, y + 20, netColor, false);
+                    
+                    int avgNetPerSecond = avgNet * 20;
+                    gui.drawString(font, avgNetPerSecond + " FE/s", x, y + 32, ChatFormatting.GRAY.getColor(), false);
+                }*/
+            }
+            
             PoseStack pose = gui.pose();
             pose.pushPose();
             RenderSystem.backupGlState(GL_STATE);
@@ -553,38 +585,8 @@ public class ClientEvents {
             int y = gsms.getGuiTop();
             int width = gsms.getXSize();
             int height = gsms.getYSize();
-            //if (gsms.getMachine() instanceof BlockBreaker breaker || gsms.getMachine() instanceof BlockPlacer placer) {
             if (gsms.getMachine() instanceof Filterable filterable) {
-                /*SimpleDraggablePanel filterPanel = new SimpleDraggablePanel(Component.empty(),
-                    x + 23, y + 8, 129, 70,
-                    SimpleDraggablePanel.Bounds.of(0, 0, gsms.width, gsms.height));
-                filterPanel.visible = false;
-                filterPanel.active = false;
-                
-                event.addListener(SpriteButton.builder(Component.empty(), (b, i) -> {
-                    filterPanel.visible = true;
-                    filterPanel.active = true;
-                }, new ResourceLocation(MODID, "textures/item/machine_item_filter.png"))
-                    .bounds(x + width - 41, y + 3, 18, 18).build());
-                filterPanel.addClosingButton();
-                
-                NonNullList<ItemFilterEntry> itemFilters = filterable.getItemFilters();
-                SimpleContainer con = new SimpleContainer(9);
-                *//*con.addListener(c -> {
-                    c
-                });*//*
-                for (int i = 0; i < itemFilters.size(); i++) {
-                    ItemFilterEntry filterEntry = itemFilters.get(i);
-                    SlotWidget slotWidget = new SlotWidget(new FilterFakeSlot(con, filterEntry, i, 0, 0, false));
-                    int col = i % 3;
-                    int row = i / 3;
-                    filterPanel.addChildren((fx, fy, fW, fH) -> {
-                        slotWidget.setPosition(fx + 10 + col * 18, fy + 10 + row * 18);
-                        return slotWidget;
-                    });
-                }
-                
-                gsms.addUpperLayerChild(filterPanel);*/
+            
             }
         }
     }

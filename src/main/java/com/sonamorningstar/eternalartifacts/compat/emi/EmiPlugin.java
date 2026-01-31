@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.compat.emi.categories.*;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.BlueprintRecipeHandler;
 import com.sonamorningstar.eternalartifacts.compat.emi.recipes.EmiShapedRetexturedRecipe;
@@ -12,7 +11,6 @@ import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -51,6 +49,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addCategory(SolidifierCategory.SOLIDIFIER_CATEGORY);
         registry.addCategory(HammeringCategory.HAMMERING_CATEGORY);
         registry.addCategory(FluidMixingCategory.FLUID_MIXING_CATEGORY);
+        registry.addCategory(FluidCombustingCategory.FLUID_COMBUSTING_CATEGORY);
         
         // Register categories from RecipeViewer system
         EmiCauldronRecipe.registerCategories(registry);
@@ -85,6 +84,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(SolidifierCategory.SOLIDIFIER_CATEGORY, EmiStack.of(ModMachines.SOLIDIFIER.getItem()));
         registry.addWorkstation(HammeringCategory.HAMMERING_CATEGORY, EmiIngredient.of(ModTags.Items.TOOLS_HAMMER));
         registry.addWorkstation(FluidMixingCategory.FLUID_MIXING_CATEGORY, EmiStack.of(ModMachines.FLUID_MIXER.getItem()));
+        registry.addWorkstation(FluidCombustingCategory.FLUID_COMBUSTING_CATEGORY, EmiStack.of(ModBlocks.FLUID_COMBUSTION_DYNAMO.asItem()));
 
         // Machine recipes
         registry.addRecipe(new MeatPackerCategory());
@@ -99,6 +99,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         MelterCategory.fillRecipes(registry);
         SolidifierCategory.fillRecipes(registry);
         FluidMixingCategory.fillRecipes(registry);
+        FluidCombustingCategory.fillRecipes(registry);
         
         // Fill recipes from RecipeViewer system
         EmiCauldronRecipe.fillRecipes(registry);

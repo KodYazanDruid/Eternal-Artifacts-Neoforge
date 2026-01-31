@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.categories.base;
 
+import com.sonamorningstar.eternalartifacts.compat.emi.EmiEnergyStack;
+import com.sonamorningstar.eternalartifacts.compat.emi.widgets.EtarEnergyBarWidget;
 import com.sonamorningstar.eternalartifacts.compat.emi.widgets.EtarTankWidget;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.registrar.MachineHolder;
@@ -46,6 +48,10 @@ public abstract class EAEmiRecipe extends BasicEmiRecipe {
      */
     protected EtarTankWidget addSmallTank(WidgetHolder widgets, EmiIngredient stack, int x, int y, int capacity) {
         return widgets.add(EtarTankWidget.small(stack, x, y, capacity));
+    }
+    
+    protected EtarEnergyBarWidget addEnergyBar(WidgetHolder widgets, long amount, int x, int y, long capacity) {
+        return widgets.add(new EtarEnergyBarWidget(new EmiEnergyStack(amount), x, y, 18, 56, capacity));
     }
 
     protected static EmiRecipeCategory createCategory(RecipeDeferredHolder<?, ?> recipeHolder, MachineHolder<?, ?, ?, ?> machineHolder) {

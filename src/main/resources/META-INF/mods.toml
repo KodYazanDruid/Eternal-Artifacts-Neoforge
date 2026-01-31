@@ -1,21 +1,21 @@
-modLoader="javafml" #mandatory
-loaderVersion="[2,)" #mandatory
+modLoader="javafml"
+loaderVersion="[2,)"
 license="MIT"
 
-[[mods]] #mandatory
-modId="eternalartifacts" #mandatory
-version="1.0.0" #mandatory
-displayName="Eternal Artifacts" #mandatory
+[[mods]]
+modId="eternalartifacts"
+version="1.0.0"
+displayName="Eternal Artifacts"
 logoFile="logo.png"
-authors="SonaMorningstar" #optional
+authors="SonaMorningstar"
 description='''
     Adds various artifacts and gadgets to enhance your minecraft experience.
 '''
 
-[[dependencies.eternalartifacts]] #optional
-    modId="neoforge" #mandatory
-    type="required" #mandatory
-    versionRange="[20.4.0,)" #mandatory
+[[dependencies.eternalartifacts]]
+    modId="neoforge"
+    type="required"
+    versionRange="[20.4.0,)"
     ordering="NONE"
     side="BOTH"
 

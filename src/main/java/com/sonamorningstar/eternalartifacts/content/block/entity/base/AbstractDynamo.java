@@ -79,9 +79,9 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 	
 	protected void prepareDynamo(DynamoRecipe recipe) {
 		int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
-		setEnergyPerTick(recipe.getGeneration() * ((celerity / 3) + 1));
+		setEnergyPerTick((int) (recipe.getGeneration() * ((celerity / (float) 3) + 1)));
 		int eff = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-		setMaxProgress(recipe.getDuration() * ((eff / 5) + 1));
+		setMaxProgress((int) (recipe.getDuration() * ((eff / (float) 5) + 1)));
 	}
 	
 	public float getAnimationLerp(float partialTick) {

@@ -3,7 +3,7 @@
   "category": "redstone",
   "key": {
     "B": {
-      "tag": "forge:ingots/bronze"
+      "tag": "forge:ingots/tin"
     },
     "C": {
       "item": "eternalartifacts:capacitor"

@@ -21,6 +21,7 @@ build
 eclipse
 run
 runs
+logs
 run-data
 src/generated/resources/.cache
 temp_lang_additions.txt

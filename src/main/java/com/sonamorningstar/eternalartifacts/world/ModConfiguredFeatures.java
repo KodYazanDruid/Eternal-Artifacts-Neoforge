@@ -48,6 +48,7 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> ALUMINUM_ORE_SMALL = registerKey("aluminum_ore_small");
     public static final ResourceKey<ConfiguredFeature<?, ?>> TIGRIS_FLOWER = registerKey("tigris_flower");
     public static final ResourceKey<ConfiguredFeature<?, ?>> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("crude_oil_lake_deepslate");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> CRUDE_OIL_LAKE_SURFACE = registerKey("crude_oil_lake_surface");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_COAL_ORE = registerKey("moss_coal_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_COPPER_ORE = registerKey("moss_copper_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_IRON_ORE = registerKey("moss_iron_ore");
@@ -120,6 +121,9 @@ public class ModConfiguredFeatures {
         )));
         context.register(CRUDE_OIL_LAKE_DEEPSLATE, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(
             BlockStateProvider.simple(ModFluids.CRUDE_OIL.getFluidBlock()), BlockStateProvider.simple(Blocks.DEEPSLATE)
+        )));
+        context.register(CRUDE_OIL_LAKE_SURFACE, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(
+            BlockStateProvider.simple(ModFluids.CRUDE_OIL.getFluidBlock()), BlockStateProvider.simple(Blocks.STONE)
         )));
     }
     

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block;
 import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -42,6 +43,7 @@ public class OreBerryBlock extends BushBlock {
     private static final VoxelShape AGE_1_SHAPE = BlockHelper.generateByArea(10, 10, 10, 3, 0, 3);
 
     private final String material;
+    @Getter
     private final ResourceLocation table;
     public OreBerryBlock(Properties pProperties, String material) {
         super(pProperties);

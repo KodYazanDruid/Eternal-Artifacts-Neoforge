@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.recipe.base;
 
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.IngredientUtils;
 import com.sonamorningstar.eternalartifacts.registrar.RecipeDeferredHolder;
 import lombok.Getter;
 import net.minecraft.core.NonNullList;
@@ -24,11 +25,14 @@ public abstract class BasicItemToItemRecipe extends BasicRecipe {
 
     @Override
     public boolean matches(SimpleContainer con, Level lvl) {
-        NonNullList<ItemStack> stacks = con.getItems();
-        for(ItemStack stack : stacks) { return input.test(stack); }
+        for(ItemStack stack : con.getItems()) {
+            if (IngredientUtils.canIngredientSustain(stack, input)) {
+                return true;
+            }
+        }
         return false;
     }
-
+    
     @Override
     public ItemStack getResultItem(RegistryAccess reg) {return output;}
 }

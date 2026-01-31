@@ -37,6 +37,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.attachment.IAttachmentHolder;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -294,11 +295,11 @@ public class CharmStorage extends ItemStackHandler {
         }
         if(charmItem instanceof KnapsackItem knapsack) {
             if (VersatilityEnchantment.has(charm))
-                knapsack.inventoryTick(charm, living.level(), living, -1, false);
+                knapsack.inventoryTick(charm, level, living, -1, false);
         }
         
         if (charmItem instanceof MapItem mapItem) {
-            mapItem.inventoryTick(charm, living.level(), living, -1, true);
+            mapItem.inventoryTick(charm, level, living, -1, true);
         }
         if (charmItem instanceof CompassItem compassItem) {
             compassItem.inventoryTick(charm, living.level(), living, -1, true);
@@ -307,13 +308,17 @@ public class CharmStorage extends ItemStackHandler {
             battery.chargeSlots(player, charm);
         }
         if (charmItem instanceof SolarPanelHelmet solarHelmet) {
-            solarHelmet.generate(charm, living.level(), living.blockPosition());
+            solarHelmet.generate(charm, level, living.blockPosition());
             solarHelmet.chargeInventory(charm, living);
         }
         if (charmItem instanceof MagnetItem && !level.isClientSide()) {
-            var itemEntities = living.level().getEntitiesOfClass(ItemEntity.class, living.getBoundingBox().inflate(5));
+            var itemEntities = level.getEntitiesOfClass(ItemEntity.class, living.getBoundingBox().inflate(5), e -> !e.hasPickUpDelay());
             for (ItemEntity itemEntity : itemEntities) {
-                if (!itemEntity.hasPickUpDelay() && itemEntity.isAlive()) itemEntity.moveTo(living.position());
+                if (itemEntity.distanceTo(living) > 0.001) {
+                    Vec3 posDif = living.position().subtract(itemEntity.position());
+                    Vec3 motion = new Vec3(posDif.x / 20, posDif.y / 20, posDif.z / 20);
+                    itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(motion));
+                }
             }
         }
     }

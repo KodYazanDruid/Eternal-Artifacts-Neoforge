@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.ItemFluidContainer;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.IngredientUtils;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,11 +31,17 @@ public class FluidInfuserRecipe implements Recipe<ItemFluidContainer> {
     public boolean matches(ItemFluidContainer con, Level level) {
         boolean fluidcheck = false;
         for(FluidStack stack : con.getFluidStacks()) {
-            if(inputFluid.test(stack)) fluidcheck = true;
+            if (inputFluid.canSustain(stack)) {
+                fluidcheck = true;
+                break;
+            }
         }
         boolean itemCheck = false;
         for (ItemStack stack : con.getItemStacks()) {
-            if (input.test(stack)) itemCheck = true;
+            if (IngredientUtils.canIngredientSustain(stack, input)) {
+                itemCheck = true;
+                break;
+            }
         }
         return fluidcheck && itemCheck;
     }

@@ -49,6 +49,7 @@ public class ModBiomeModifiers {
     public static final ResourceKey<BiomeModifier> ADD_ALUMINUM_ORE_SMALL = registerKey("feature", "add_aluminum_ore_small");
     public static final ResourceKey<BiomeModifier> ADD_TIGRIS_FLOWERS = registerKey("feature", "add_tigris_flowers");
     public static final ResourceKey<BiomeModifier> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("feature", "crude_oil_deposit");
+    public static final ResourceKey<BiomeModifier> CRUDE_OIL_LAKE_SURFACE = registerKey("feature", "crude_oil_deposit_surface");
     public static final ResourceKey<BiomeModifier> ADD_MARIN_ORE = registerKey("feature", "add_marin_ore");
     
     public static final ResourceKey<BiomeModifier> SPAWN_DUCK = registerKey("spawn", "spawn_duck");
@@ -116,6 +117,10 @@ public class ModBiomeModifiers {
         context.register(CRUDE_OIL_LAKE_DEEPSLATE, new BiomeModifiers.AddFeaturesBiomeModifier(
                 biome.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.CRUDE_OIL_LAKE_DEEPSLATE)),
+                GenerationStep.Decoration.LAKES));
+        context.register(CRUDE_OIL_LAKE_SURFACE, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.CRUDE_OIL_SURFACE)),
                 GenerationStep.Decoration.LAKES));
 
         context.register(SPAWN_DUCK, new BiomeModifiers.AddSpawnsBiomeModifier(

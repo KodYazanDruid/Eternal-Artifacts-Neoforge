@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.IngredientUtils;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -26,8 +27,11 @@ public class MeatShredderRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public boolean matches(SimpleContainer container, Level level) {
-        NonNullList<ItemStack> stacks = container.getItems();
-        for(ItemStack stack : stacks) { return input.test(stack); }
+        for(ItemStack stack : container.getItems()) {
+            if (IngredientUtils.canIngredientSustain(stack, input)){
+                return true;
+            }
+        }
         return false;
     }
 

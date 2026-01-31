@@ -73,7 +73,6 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.ADVANCED_CRAFTER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.FLUID_MIXER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.DISENCHANTER.getBlockEntity(), commonMachineEnchants);
-		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.OIL_REFINERY.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ELECTRIC_FURNACE.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ANVILINATOR.getBlockEntity(), commonMachineEnchants);
@@ -100,6 +99,12 @@ public class MachineEnchants {
 		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
 		enchantMap.put(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), dynamoEnchants);
 		enchantMap.put(ModBlockEntities.CULINARY_DYNAMO.get(), dynamoEnchants);
+		
+		var marineEnchs = new HashSet<>(commonMachineEnchants);
+		marineEnchs.add(Enchantments.MOB_LOOTING);
+		marineEnchs.add(Enchantments.BLOCK_FORTUNE);
+		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), marineEnchs);
+		
 		
 		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
 		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());

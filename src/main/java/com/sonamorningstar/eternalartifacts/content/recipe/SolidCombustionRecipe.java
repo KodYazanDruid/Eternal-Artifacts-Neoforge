@@ -4,11 +4,13 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.content.recipe.base.DynamoRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.base.NoResultItemRecipe;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.IngredientUtils;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -23,8 +25,8 @@ public class SolidCombustionRecipe extends NoResultItemRecipe<SimpleContainer> i
 	
 	@Override
 	public boolean matches(SimpleContainer con, Level lvl) {
-		for(int i = 0; i < con.getContainerSize(); i++) {
-			if(fuel.test(con.getItem(i))) {
+		for (ItemStack item : con.getItems()) {
+			if (IngredientUtils.canIngredientSustain(item, fuel)) {
 				return true;
 			}
 		}

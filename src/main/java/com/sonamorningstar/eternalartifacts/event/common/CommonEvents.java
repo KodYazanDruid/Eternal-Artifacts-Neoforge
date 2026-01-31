@@ -17,7 +17,6 @@ import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManage
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.DimensionalAnchor;
-import com.sonamorningstar.eternalartifacts.content.block.entity.Packer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
@@ -94,7 +93,6 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
 import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
@@ -108,6 +106,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
+import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -406,6 +405,11 @@ public class CommonEvents {
                 cd.addCooldown(Items.DISPENSER, 4);
             }
         }
+    }
+    
+    @SubscribeEvent
+    public static void onServerStopping(ServerStoppingEvent event) {
+        ForceLoadManager.onServerStopping(event.getServer());
     }
     
     @SubscribeEvent

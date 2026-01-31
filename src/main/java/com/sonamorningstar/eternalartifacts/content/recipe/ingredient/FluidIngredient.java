@@ -80,6 +80,21 @@ public class FluidIngredient implements Predicate<FluidStack> {
             return false;
         }
     }
+    
+    public boolean canSustain(FluidStack other) {
+        if (other == null) {
+            return false;
+        } else if (this.isEmpty()) {
+            return other.isEmpty();
+        } else {
+            for(FluidStack stack : this.getFluidStacks()) {
+                if (stack.getAmount() <= other.getAmount() && areStacksEqual(stack, other)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
     protected boolean areStacksEqual(FluidStack left, FluidStack right) {
         return left.is(right.getFluid());

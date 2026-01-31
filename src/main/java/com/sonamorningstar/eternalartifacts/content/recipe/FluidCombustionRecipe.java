@@ -27,7 +27,7 @@ public class FluidCombustionRecipe extends NoResultItemRecipe<SimpleFluidContain
     @Override
     public boolean matches(SimpleFluidContainer con, Level level) {
         for(FluidStack stack : con.getFluidStacks()) {
-            if(fuel.test(stack)) return true;
+            if(fuel.canSustain(stack)) return true;
         }
         return false;
     }

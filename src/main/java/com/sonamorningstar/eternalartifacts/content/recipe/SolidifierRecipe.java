@@ -26,7 +26,7 @@ public class SolidifierRecipe implements Recipe<SimpleFluidContainer> {
     @Override
     public boolean matches(SimpleFluidContainer con, Level lvl) {
         for (FluidStack stack : con.getFluidStacks()) {
-            if (inputFluid.test(stack)) return true;
+            if (inputFluid.canSustain(stack)) return true;
         }
         return false;
     }

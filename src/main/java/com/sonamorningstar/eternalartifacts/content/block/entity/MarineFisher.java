@@ -6,15 +6,12 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -37,9 +34,7 @@ public class MarineFisher extends GenericMachine {
 		setEnergy(this::createDefaultEnergy);
 		setEnergyPerTick(80);
 		outputSlots.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8));
-		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0, s -> {
-			//if (s == 0) FakePlayerHelper.getFakePlayer(this, getLevel());
-		}));
+		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0, s -> {}));
 		screenInfo.setSlotPosition(26, 44, 0);
 		screenInfo.setArrowPos(51, 45);
 		for (int i = 0; i < 8; i++) {
@@ -72,7 +67,7 @@ public class MarineFisher extends GenericMachine {
 		
 		boolean haveWater = true;
 		for (BlockPos blockPos : BlockPos.betweenClosed(pos.below().offset(-1, 0, -1),
-														 pos.below().offset(1, 0, 1))) {
+														pos.below().offset(1, 0, 1))) {
 			if (!lvl.getFluidState(blockPos).is(FluidTags.WATER)) {
 				haveWater = false;
 				break;
@@ -96,12 +91,12 @@ public class MarineFisher extends GenericMachine {
 		fakePlayer.detectEquipmentUpdates();
 		
 		progress(() -> {
+			FishingHook hook = new FishingHook(fakePlayer, lvl, EnchantmentHelper.getFishingSpeedBonus(tool), getLuck(tool));
+			hook.setPosRaw(pos.getX(), pos.getY() - 1, pos.getZ());
 			LootParams lootparams = new LootParams.Builder((ServerLevel)lvl)
 				.withParameter(LootContextParams.ORIGIN, pos.below().getCenter())
 				.withParameter(LootContextParams.TOOL, tool)
-				.withParameter(LootContextParams.THIS_ENTITY, new FishingHook(fakePlayer, lvl,
-					EnchantmentHelper.getFishingSpeedBonus(tool), getLuck(tool)
-				))
+				.withParameter(LootContextParams.THIS_ENTITY, hook)
 				.withParameter(LootContextParams.KILLER_ENTITY, fakePlayer)
 				.withLuck(getLuck(tool) + fakePlayer.getLuck())
 				.create(LootContextParamSets.FISHING);

@@ -112,9 +112,6 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
         }
     }
 
-    @Override
-    public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {return true;}
-
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
@@ -129,7 +126,7 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
         }
     }
 
-    @Override
+    /*@Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
         if(pos.above().equals(neighborPos) && levelAccessor instanceof ServerLevel level) {
             level.invalidateCapabilities(pos);
@@ -191,9 +188,9 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
         }
 
         return super.updateShape(state, direction, neighborState, levelAccessor, pos, neighborPos);
-    }
+    }*/
 
-    private void pushOrPop(List<ItemStack> resources, Level level, BlockPos pos, IItemHandler inventory) {
+    /*private void pushOrPop(List<ItemStack> resources, Level level, BlockPos pos, IItemHandler inventory) {
         for(ItemStack stack : resources) {
             ItemStack remainder = stack;
 
@@ -204,7 +201,7 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
                 Block.popResource(level, pos.above(), remainder);
             }
         }
-    }
+    }*/
 
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction direction, IPlantable plantable) {

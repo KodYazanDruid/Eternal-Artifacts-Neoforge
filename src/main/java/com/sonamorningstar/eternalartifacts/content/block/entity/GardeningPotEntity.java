@@ -1,20 +1,22 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
+import com.sonamorningstar.eternalartifacts.api.farm.FarmBehaviorRegistry;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.DefaultRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
-import com.sonamorningstar.eternalartifacts.util.AutomationHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import java.util.Collections;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class GardeningPotEntity extends DefaultRetexturedBlockEntity {
@@ -24,46 +26,37 @@ public class GardeningPotEntity extends DefaultRetexturedBlockEntity {
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
-        if(level.isClientSide || !(level instanceof ServerLevel)) return;
         IItemHandler inventoryBelow = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
-        BlockState plantState = level.getBlockState(pos.above());
-        if(plantState.getBlock() instanceof SugarCaneBlock ||
-                plantState.getBlock() instanceof CactusBlock ||
-                plantState.getBlock() instanceof BambooStalkBlock) {
-
-            BlockPos toBreak = pos.above(2);
-            List<ItemStack> drops = Collections.emptyList();
-            if (level.getBlockState(toBreak).is(plantState.getBlock())) drops = AutomationHelper.doReedlikeHarvest((ServerLevel) level, toBreak);
-            pushOrPop(drops, level, pos.above(), inventoryBelow);
-        }
-        /*else if(BlockHelper.isLog(level, pos.above())){
-            List<ItemStack> drops = AutomationHelper.doTreeHarvest(level, pos.above(), ItemStack.EMPTY, this);
-            if(!drops.isEmpty()){
-                boolean saplingSet = false;
-                ItemStack sapling = ItemStack.EMPTY;
-                for (int i = 0; i < drops.size(); i++) {
-                    ItemStack stack = drops.get(i);
-                    if (!saplingSet && stack.getItem() instanceof BlockItem bi && bi.getBlock() instanceof SaplingBlock) {
-                        sapling = stack.copyWithCount(1);
-                        saplingSet = true;
-                        drops.set(i, stack.copyWithCount(stack.getCount() - 1));
+        BlockPos targetPos = pos.above();
+        
+        FarmBehavior behavior = FarmBehaviorRegistry.get(level, targetPos);
+        if (behavior != null && behavior.canHarvest(level, targetPos)) {
+            List<ItemStack> drops = behavior.harvest(level, targetPos, null, null);
+            
+            boolean planted = false;
+            for (ItemStack drop : drops) {
+                if (!drop.isEmpty()) {
+                    if (!planted && behavior.isCorrectSeed(drop) && behavior.supportsReplanting()) {
+                        BlockState plantState = behavior.getReplantingState(level, targetPos, drop);
+                        if (!plantState.isAir()) {
+                            level.playSound(null, targetPos, behavior.getReplantSound(plantState), SoundSource.BLOCKS);
+                            level.setBlockAndUpdate(targetPos, plantState);
+                            level.gameEvent(null, GameEvent.BLOCK_CHANGE, targetPos);
+                            drop.shrink(1);
+                            planted = true;
+                        }
                     }
                 }
-                if (sapling.getItem() instanceof BlockItem saplingBlock) {
-                    level.setBlockAndUpdate(pos.above(), saplingBlock.getBlock().defaultBlockState());
-                }
-                pushOrPop(drops, level, pos.above(), inventoryBelow);
-                level.sendBlockUpdated(pos, state, state, 2);
             }
-        }*/
-
+            pushOrPop(drops, level, targetPos, inventoryBelow);
+        }
     }
 
-    private void pushOrPop(List<ItemStack> resources, Level level, BlockPos pos, IItemHandler inventory) {
+    private void pushOrPop(List<ItemStack> resources, Level level, BlockPos pos, @Nullable IItemHandler inventory) {
         for(ItemStack stack : resources) {
             ItemStack remainder = stack;
 
-            if (!remainder.isEmpty()) {
+            if (!remainder.isEmpty() && inventory != null) {
                 remainder = ItemHandlerHelper.insertItemStacked(inventory, remainder, false);
             }
             if(!remainder.isEmpty() && !level.isClientSide()) {

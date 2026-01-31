@@ -1,4 +1,4 @@
-// 1.20.4	2026-01-10T15:15:02.0315948	Loot Tables
+// 1.20.4	2026-01-28T15:29:49.5511549	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -190,6 +190,8 @@ f77676dd05d74ba0ee53cc8e6d6f7feabc537751 data/eternalartifacts/loot_tables/entit
 adc9376497f9c09e0788f0c1c265d8f48955d0cf data/eternalartifacts/loot_tables/entities/pinky.json
 5384871c0c22b0903bfde84b8104af038ed36944 data/eternalartifacts/loot_tables/hammering/blocks/eternalartifacts/sugar_charcoal_block.json
 fda32326cea5d1a86f20bdc5a8d2b99e3ca6d184 data/eternalartifacts/loot_tables/hammering/blocks/minecraft/clay.json
+8c0fc62f9df68fef30fbd9654323d17f35ac2924 data/eternalartifacts/loot_tables/hammering/tags/forge/ores/copper.json
+d3eced75be5042076c992ced7af6bc97b9e1600e data/eternalartifacts/loot_tables/hammering/tags/forge/ores/tin.json
 7a370bb8ba6a5faf11ea8cb52aee61a7105be563 data/eternalartifacts/loot_tables/hammering/tags/forge/storage_blocks/charcoal.json
 c6a0fc1aea57b4fbc56c227c9b90b9cdcd20d2d7 data/eternalartifacts/loot_tables/hammering/tags/forge/storage_blocks/coal.json
 7a827ad232c79d7a5d1e2ef4c32308a36d719a43 data/eternalartifacts/loot_tables/oreberries/copper.json

@@ -51,7 +51,7 @@ public final class MachineRecipes {
 				'C', Ingredient.of(ModItems.CAPACITOR),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
-				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'B', Ingredient.of(ModTags.Items.INGOTS_TIN),
 				'P', Ingredient.of(Items.PISTON)
 			)
 		);

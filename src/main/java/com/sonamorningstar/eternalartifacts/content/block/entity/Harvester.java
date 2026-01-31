@@ -132,7 +132,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 						if (!planted && behavior.isCorrectSeed(drop) && behavior.supportsReplanting()) {
 							BlockState plantState = behavior.getReplantingState(lvl, targetPos, drop);
 							if (!plantState.isAir()) {
-								lvl.playSound(null, targetPos, behavior.getReplantSound(targetState), SoundSource.BLOCKS);
+								lvl.playSound(null, targetPos, behavior.getReplantSound(plantState), SoundSource.BLOCKS);
 								lvl.setBlockAndUpdate(targetPos, plantState);
 								lvl.gameEvent(null, GameEvent.BLOCK_CHANGE, targetPos);
 								drop.shrink(1);

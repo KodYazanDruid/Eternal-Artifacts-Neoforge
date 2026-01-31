@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.entity;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
@@ -34,6 +36,9 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
 
     public final AnimationState idleState = new AnimationState();
     private int idleAnimationTimeout = 0;
+    
+    private int attackCooldownTimer = 0;
+    private static final int ATTACK_COOLDOWN = 20;
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMonsterAttributes()
@@ -56,7 +61,7 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
     protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
         return pSize.height / 2;
     }
-
+    
     @Override
     public void tick() {
         super.tick();
@@ -64,6 +69,8 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
         if(level().isClientSide) {
             setupAnimationStates();
         }
+        
+        attackCooldownTimer = Math.max(0, attackCooldownTimer - 1);
     }
 
     private void setupAnimationStates() {
@@ -77,11 +84,10 @@ public class DemonEyeEntity extends FlyingMob implements Enemy {
     
     @Override
     public void playerTouch(Player player) {
-        if (this.isAlive() && this.hasLineOfSight(player) &&
-                player.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
-            this.playSound(SoundEvents.PLAYER_ATTACK_WEAK,
-                1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
-            this.doEnchantDamageEffects(this, player);
+        if (this.isAlive() && attackCooldownTimer == 0 && this.hasLineOfSight(player) && player.hurt(this.damageSources().mobAttack(this), this.getAttackDamage())) {
+            attackCooldownTimer = ATTACK_COOLDOWN;
+            playSound(SoundEvents.PLAYER_ATTACK_WEAK, 1.0F, (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F);
+            doEnchantDamageEffects(this, player);
             
         }
     }

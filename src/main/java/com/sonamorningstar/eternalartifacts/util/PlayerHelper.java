@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -84,8 +85,8 @@ public class PlayerHelper {
     }
 
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {
-        level.getChunk(new BlockPos((int)targetVec.x, (int)targetVec.y, (int)targetVec.z));
-        player.teleportTo(level, targetVec.x(), targetVec.y(), targetVec.z(), player.getYRot(), player.getXRot());
+        //level.getChunk(new BlockPos((int)targetVec.x, (int)targetVec.y, (int)targetVec.z));
+        player.teleportTo(level, targetVec.x(), targetVec.y(), targetVec.z(), EnumSet.noneOf(RelativeMovement.class), player.getYRot(), player.getXRot());
     }
 
     public static void giveItemOrPop(Player player, ItemStack stack) {

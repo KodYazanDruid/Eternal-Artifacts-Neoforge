@@ -30,6 +30,8 @@ public class ModLootTables {
     public static final ResourceLocation HAMMERING_CHARCOAL = registerHammering(ModTags.Blocks.STORAGE_BLOCKS_CHARCOAL);
     public static final ResourceLocation HAMMERING_CLAY = registerHammering(Blocks.CLAY);
     public static final ResourceLocation HAMMERING_SUGAR_CHARCOAL = registerHammering(ModBlocks.SUGAR_CHARCOAL_BLOCK.get());
+    public static final ResourceLocation HAMMERING_COPPER_ORE = registerHammering(Tags.Blocks.ORES_COPPER);
+    public static final ResourceLocation HAMMERING_TIN_ORE = registerHammering(ModTags.Blocks.ORES_TIN);
     
     public static final ResourceLocation SLUDGE_REFINING_DIRT = registerSludgeRefining(Blocks.DIRT.asItem());
     public static final ResourceLocation SLUDGE_REFINING_COARSE_DIRT = registerSludgeRefining(Blocks.COARSE_DIRT.asItem());

@@ -979,12 +979,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
     private static void createFluidCombustionRecipe(RecipeOutput output, Fluid fluid, int generation, int duration) {
         String path = BuiltInRegistries.FLUID.getKey(fluid).getPath();
-        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(new FluidStack(fluid, 1000)), generation, duration))
+        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(new FluidStack(fluid, 100)), generation, duration))
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
     }
     private static void createFluidCombustionRecipe(RecipeOutput output, TagKey<Fluid> fluid, int generation, int duration) {
         String path = fluid.location().getPath();
-        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid, 1000), generation, duration))
+        SpecialRecipeBuilder.special(category -> new FluidCombustionRecipe(FluidIngredient.of(fluid, 100), generation, duration))
                 .save(output, new ResourceLocation(MODID, "fluid_combusting/"+path));
     }
     private static void createSolidCombustionRecipe(RecipeOutput output, ItemLike item, int generation, int duration) {

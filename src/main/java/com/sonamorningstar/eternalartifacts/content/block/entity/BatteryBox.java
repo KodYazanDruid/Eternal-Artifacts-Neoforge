@@ -67,7 +67,7 @@ public class BatteryBox extends GenericMachine {
         ((ModularEnergyStorage) energy).reloadEnergyHandlers(new RecipeWrapper(inventory));
         sendUpdate();
     }
-
+    
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
@@ -91,5 +91,7 @@ public class BatteryBox extends GenericMachine {
         });
         performAutoInputEnergy(lvl, pos);
         performAutoOutputEnergy(lvl, pos);
+        
+        energy.finalizeEnergyTick();
     }
 }

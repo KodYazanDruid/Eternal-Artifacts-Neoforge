@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.compat.emi;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.PipeFilterScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Draggable;
 import com.sonamorningstar.eternalartifacts.registrar.TabType;
 import dev.emi.emi.api.EmiExclusionArea;
@@ -34,8 +35,8 @@ public class EAExclusionHandler implements EmiExclusionArea<Screen> {
 		if (screen instanceof AbstractModContainerScreen<?> modContainerScreen){
 			var upperLayerChildren = modContainerScreen.upperLayerChildren;
 			for (GuiEventListener upperLayerChild : upperLayerChildren) {
-				if (upperLayerChild instanceof Draggable && upperLayerChild instanceof AbstractWidget widget) {
-					consumer.accept(new Bounds(widget.getX(), widget.getY(), widget.getWidth(), widget.getHeight()));
+				if (upperLayerChild instanceof SimpleDraggablePanel panel && panel.visible ) {
+					consumer.accept(new Bounds(panel.getX(), panel.getY(), panel.getWidth(), panel.getHeight()));
 				}
 			}
 		}

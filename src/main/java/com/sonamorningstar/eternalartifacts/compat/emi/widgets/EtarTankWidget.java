@@ -23,13 +23,11 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class EtarTankWidget extends TankWidget {
 	private static final ResourceLocation BARS_TEXTURE = new ResourceLocation(MODID, "textures/gui/bars.png");
 	
-	// Large tank texture coordinates in bars.png (18x56)
 	private static final int LARGE_TANK_U = 30;
 	private static final int LARGE_TANK_V = 0;
 	private static final int LARGE_TANK_WIDTH = 18;
 	private static final int LARGE_TANK_HEIGHT = 56;
 	
-	// Small tank texture coordinates in bars.png (18x18)
 	private static final int SMALL_TANK_U = 66;
 	private static final int SMALL_TANK_V = 37;
 	private static final int SMALL_TANK_WIDTH = 18;
@@ -77,7 +75,6 @@ public class EtarTankWidget extends TankWidget {
 			return;
 		}
 		
-		// Render fluid first (behind the tank frame)
 		EmiIngredient ingredient = getStack();
 		if (!ingredient.isEmpty()) {
 			for (EmiStack emiStack : ingredient.getEmiStacks()) {
@@ -90,10 +87,8 @@ public class EtarTankWidget extends TankWidget {
 			}
 		}
 		
-		// Render tank frame on top
 		renderTankFrame(gui, x, y);
 		
-		// Render hover highlight if needed
 		Bounds bounds = getBounds();
 		if (mouseX >= bounds.x() && mouseX < bounds.x() + bounds.width() &&
 			mouseY >= bounds.y() && mouseY < bounds.y() + bounds.height()) {
@@ -102,7 +97,6 @@ public class EtarTankWidget extends TankWidget {
 	}
 	
 	private void renderTankFrame(GuiGraphics gui, int x, int y) {
-		// Determine which tank texture to use based on dimensions
 		if (height <= SMALL_TANK_HEIGHT) {
 			gui.blit(BARS_TEXTURE, x, y, SMALL_TANK_U, SMALL_TANK_V, SMALL_TANK_WIDTH, SMALL_TANK_HEIGHT);
 		} else {
@@ -127,7 +121,6 @@ public class EtarTankWidget extends TankWidget {
 		float green = ((tintColor >> 8) & 0xFF) / 255f;
 		float blue = ((tintColor) & 0xFF) / 255f;
 		
-		// Calculate fill percentage
 		long amount = fluidStack.getAmount();
 		int fluidHeight = height - 6; // Account for tank frame padding
 		int fillHeight = capacity > 0 ? (int) (amount * fluidHeight / capacity) : fluidHeight;

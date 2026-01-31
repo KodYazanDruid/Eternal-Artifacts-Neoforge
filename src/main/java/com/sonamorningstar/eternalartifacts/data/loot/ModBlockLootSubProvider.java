@@ -14,6 +14,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.ExplosionCondition;
@@ -60,6 +62,26 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         generateSingleItem(output, ModLootTables.HAMMERING_CHARCOAL, ModItems.CHARCOAL_DUST, UniformGenerator.between(3, 6));
         generateSingleItem(output, ModLootTables.HAMMERING_CLAY, ModItems.CLAY_DUST, UniformGenerator.between(2, 4));
         generateSingleItem(output, ModLootTables.HAMMERING_SUGAR_CHARCOAL, ModItems.SUGAR_CHARCOAL_DUST, UniformGenerator.between(3, 6));
+        output.accept(ModLootTables.HAMMERING_COPPER_ORE, LootTable.lootTable()
+            .withPool(LootPool.lootPool()
+                .when(ExplosionCondition.survivesExplosion())
+                .setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(ModItems.COPPER_DUST)
+                    .apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))
+                    .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+                )
+            )
+        );
+        output.accept(ModLootTables.HAMMERING_TIN_ORE, LootTable.lootTable()
+            .withPool(LootPool.lootPool()
+                .when(ExplosionCondition.survivesExplosion())
+                .setRolls(ConstantValue.exactly(1))
+                .add(LootItem.lootTableItem(ModItems.TIN_DUST)
+                    .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+                    .apply(ApplyBonusCount.addOreBonusCount(Enchantments.BLOCK_FORTUNE))
+                )
+            )
+        );
     }
     
     @Override

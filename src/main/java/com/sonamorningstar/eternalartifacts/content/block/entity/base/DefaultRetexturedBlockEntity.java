@@ -51,8 +51,8 @@ public class DefaultRetexturedBlockEntity extends ModBlockEntity implements IRet
     }
 
     @Override
-    protected void saveSynced(CompoundTag tag) {
-        super.saveSynced(tag);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
         if(texture != Blocks.AIR) tag.putString(TEXTURE_TAG_KEY, getTextureName());
     }
 

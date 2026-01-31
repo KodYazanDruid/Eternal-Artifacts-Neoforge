@@ -16,7 +16,6 @@ import net.neoforged.neoforge.common.world.chunk.TicketHelper;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -47,6 +46,13 @@ public class ForceLoadManager {
 			}
 			UNFORCED_CHUNKS_QUEUE.clear();
 		}
+	}
+	
+	public static void onServerStopping(MinecraftServer server) {
+		ENTITY_LOADED_CHUNKS.clear();
+		UNFORCED_CHUNKS_QUEUE.clear();
+		ALL_LOADERS.clear();
+		CHUNK_DISCARD_COUNTDOWN = 200;
 	}
 	
 	public static <T extends Comparable<? super T>> void updateForcedChunks(

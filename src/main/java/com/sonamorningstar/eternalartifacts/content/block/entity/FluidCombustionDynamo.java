@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
+import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
@@ -23,10 +24,13 @@ public class FluidCombustionDynamo extends AbstractDynamo<DynamoMenu> {
     
     @Override
     protected void executeRecipe(Recipe<?> recipe, QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {
-        FluidStack drained = tank.drainForced(100, IFluidHandler.FluidAction.SIMULATE);
-        if(drained.getAmount() == 100) {
-            tank.drainForced(100, IFluidHandler.FluidAction.EXECUTE);
-            cacheGetter.apply(maxProgress, energy, energyPerTick, this);
+        if (recipe instanceof FluidCombustionRecipe combustion) {
+            int amount = combustion.getFuel().getFluidStacks()[0].getAmount();
+            FluidStack drained = tank.drainForced(amount, IFluidHandler.FluidAction.SIMULATE);
+            if (drained.getAmount() == amount) {
+                tank.drainForced(amount, IFluidHandler.FluidAction.EXECUTE);
+                cacheGetter.apply(maxProgress, energy, energyPerTick, this);
+            }
         }
     }
 }

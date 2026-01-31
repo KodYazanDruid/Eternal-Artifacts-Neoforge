@@ -2,7 +2,7 @@
   "type": "eternalartifacts:fluid_combusting",
   "duration": 360,
   "fuel": {
-    "amount": 1000,
+    "amount": 100,
     "tag": "forge:diesel"
   },
   "generation": 250

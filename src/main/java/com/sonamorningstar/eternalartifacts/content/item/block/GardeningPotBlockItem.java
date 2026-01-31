@@ -27,7 +27,9 @@ public class GardeningPotBlockItem extends RetexturedBlockItem {
     public ItemStack getDefaultInstance() {
         CompoundTag tag = new CompoundTag();
         tag.putString(RetexturedHelper.TEXTURE_TAG_KEY, RetexturedHelper.getTextureName(Blocks.TERRACOTTA));
-        return new ItemStack(this, 1, tag);
+        ItemStack stack = new ItemStack(this, 1);
+        stack.setTag(tag);
+        return stack;
     }
 
     @Override

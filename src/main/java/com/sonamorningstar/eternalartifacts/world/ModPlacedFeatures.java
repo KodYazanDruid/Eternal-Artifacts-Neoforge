@@ -8,7 +8,6 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -41,6 +40,7 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> PLACED_ALUMINUM_ORE_SMALL = registerKey("placed_aluminum_ore_small");
     public static final ResourceKey<PlacedFeature> PLACED_TIGRIS_FLOWER = registerKey("placed_tigris_flower");
     public static final ResourceKey<PlacedFeature> CRUDE_OIL_LAKE_DEEPSLATE = registerKey("crude_oil_deposit");
+    public static final ResourceKey<PlacedFeature> CRUDE_OIL_SURFACE = registerKey("crude_oil_surface_deposit");
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_COAL_ORE = registerKey("moss_coal_ore");
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_COPPER_ORE = registerKey("moss_copper_ore");
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_IRON_ORE = registerKey("moss_iron_ore");
@@ -125,6 +125,15 @@ public class ModPlacedFeatures {
                         32
                     ),
                     SurfaceRelativeThresholdFilter.of(Heightmap.Types.OCEAN_FLOOR_WG, Integer.MIN_VALUE, -5),
+                    BiomeFilter.biome()
+                )
+            ));
+        context.register(CRUDE_OIL_SURFACE,
+            new PlacedFeature(holderGetter.getOrThrow(ModConfiguredFeatures.CRUDE_OIL_LAKE_SURFACE),
+                List.of(RarityFilter.onAverageOnceEvery(48),
+                    InSquarePlacement.spread(),
+                    HeightRangePlacement.of(UniformHeight.of(VerticalAnchor.absolute(1), VerticalAnchor.absolute(64))),
+                    PlacementUtils.HEIGHTMAP_WORLD_SURFACE,
                     BiomeFilter.biome()
                 )
             ));

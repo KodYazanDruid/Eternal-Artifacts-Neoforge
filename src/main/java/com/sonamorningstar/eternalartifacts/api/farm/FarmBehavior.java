@@ -130,7 +130,7 @@ public interface FarmBehavior extends Comparable<FarmBehavior> {
 	 * @param tool  optional tool used to harvest (e.g. hoe), may be null
 	 * @return the {@link com.sonamorningstar.eternalartifacts.core.ModFluids#SLUDGE Sludge} amount that will
 	 * be produced by the {@link com.sonamorningstar.eternalartifacts.content.block.entity.Harvester Harvester} after
-	 * the {@link #harvest(Level, BlockPos, ItemStack) harvesting} process
+	 * the {@link #harvest(Level, BlockPos, ItemStack, Entity) harvesting} process
 	 */
 	int getSludgeAmount(Level level, BlockPos pos, @Nullable ItemStack tool);
 	

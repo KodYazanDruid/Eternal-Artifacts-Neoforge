@@ -33,7 +33,7 @@ public class ModResourceReloadListener implements ResourceManagerReloadListener 
         CharmType.itemCharmTypes.clear();
         RecipeCache.clearCache();
         
-        if (currentServer != null) {
+        if (currentServer != null && currentServer.isRunning()) {
             RecyclerRecipeCache.rebuild(currentServer.getRecipeManager(), currentServer.overworld().registryAccess());
             PackerRecipeCache.rebuild(currentServer.getRecipeManager(), currentServer.overworld());
             UnpackerRecipeCache.rebuild(currentServer.getRecipeManager(), currentServer.overworld());

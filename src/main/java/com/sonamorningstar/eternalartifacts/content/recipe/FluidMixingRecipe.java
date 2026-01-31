@@ -29,15 +29,15 @@ public record FluidMixingRecipe(FluidIngredient fluidInput1, FluidIngredient flu
 		}
 		
 		if (fluidInput1.isEmpty()) {
-			return fluidInput2.test(con.getFluidstack(0)) || fluidInput2.test(con.getFluidstack(1));
+			return fluidInput2.canSustain(con.getFluidstack(0)) || fluidInput2.canSustain(con.getFluidstack(1));
 		}
 		
 		if (fluidInput2.isEmpty()) {
-			return fluidInput1.test(con.getFluidstack(0)) || fluidInput1.test(con.getFluidstack(1));
+			return fluidInput1.canSustain(con.getFluidstack(0)) || fluidInput1.canSustain(con.getFluidstack(1));
 		}
 		
-		return (fluidInput1.test(con.getFluidstack(0)) && fluidInput2.test(con.getFluidstack(1))) ||
-			(fluidInput1.test(con.getFluidstack(1)) && fluidInput2.test(con.getFluidstack(0)));
+		return (fluidInput1.canSustain(con.getFluidstack(0)) && fluidInput2.canSustain(con.getFluidstack(1))) ||
+			(fluidInput1.canSustain(con.getFluidstack(1)) && fluidInput2.canSustain(con.getFluidstack(0)));
 	}
 	
 	@Override
