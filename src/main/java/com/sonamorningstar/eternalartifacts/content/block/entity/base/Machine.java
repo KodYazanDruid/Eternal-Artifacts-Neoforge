@@ -20,6 +20,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -267,7 +269,9 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
-        if (needsForceLoaderUpdate()) {
+        ServerLevel sLevel = (ServerLevel) lvl;
+        MinecraftServer server = sLevel.getServer();
+        if (!server.isStopped() && canLoadChunks() && needsForceLoaderUpdate()) {
             chunkUpdateCooldown = 100;
             updateForcedChunks();
         } else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);
@@ -308,7 +312,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         super.onLoad();
         findRecipe();
         setProcessCondition(new ProcessCondition(this), getCachedRecipe());
-        if (!level.isClientSide()) {
+        if (!level.isClientSide() && canLoadChunks()) {
             addToManager();
             updateForcedChunks();
         }
@@ -355,7 +359,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         RecipeCache.clearRecipes(this);
         FakePlayerHelper.removeFakePlayer(this);
         removeFromManager();
-        updateForcedChunks();
+        forcedChunks.clear();
         super.setRemoved();
     }
     

@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.client.ColorUtils;
 import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.base.MultiBlockRenderer;
 import com.sonamorningstar.eternalartifacts.client.render.entity.*;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableBatteryLayer;
@@ -32,6 +33,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,7 +43,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
@@ -276,6 +279,21 @@ public class ClientModEvents {
     public static void registerTooltipFactories(RegisterClientTooltipComponentFactoriesEvent event) {
         event.register(ClientFilterTooltip.FilterTooltip.class, ClientFilterTooltip::new);
         event.register(ClientFiltersClampedTooltip.FiltersClampedTooltip.class, ClientFiltersClampedTooltip::new);
+    }
+    
+    @SubscribeEvent
+    public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(new SimplePreparableReloadListener<Void>() {
+            @Override
+            protected Void prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+                return null;
+            }
+
+            @Override
+            protected void apply(Void object, ResourceManager resourceManager, ProfilerFiller profiler) {
+                GuiDrawer.clearFluidColorCache();
+            }
+        });
     }
 
 }

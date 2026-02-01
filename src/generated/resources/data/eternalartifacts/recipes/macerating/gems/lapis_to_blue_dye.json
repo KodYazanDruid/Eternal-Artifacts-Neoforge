@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "tag": "forge:gems/lapis"
+  },
+  "output": {
+    "Count": 3,
+    "id": "minecraft:blue_dye"
+  }
+}

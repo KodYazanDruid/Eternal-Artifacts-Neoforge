@@ -68,7 +68,8 @@ public class ModItems {
                             new ResourceLocation("item/empty_slot_axe"),
                             new ResourceLocation("item/empty_slot_shovel"),
                             new ResourceLocation("item/empty_slot_hoe")),
-                    List.of(new ResourceLocation("item/empty_slot_ingot"))));
+                    List.of(new ResourceLocation("item/empty_slot_ingot"))
+            ));
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
     public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
     public static final DeferredItem<Item> COPPER_NUGGET = register("copper_nugget");
@@ -173,7 +174,6 @@ public class ModItems {
     public static final DeferredItem<Item> DEATH_CAP = registerStacksToOne("death_cap");
     public static final DeferredItem<Item> MOONGLASS_PENDANT = registerStacksToOne("moonglass_pendant");
     //endregion
-    
     //region Tools.
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
     public static final DeferredItem<Item> COPPER_PICKAXE = registerStacksToOne("copper_pickaxe", p -> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, p));
@@ -256,6 +256,7 @@ public class ModItems {
     public static final DeferredItem<Item> ENTITY_CATALOGUE = registerStacksToOne("entity_catalogue", EntityCatalogueItem::new);
     public static final DeferredItem<Item> INTERFACE_REMOTE = registerStacksToOne("interface_remote", InterfaceRemote::new);
     public static final DeferredItem<Item> PRISMARINE_ARROW = register("prismarine_arrow", PrismarineArrowItem::new);
+    public static final DeferredItem<Item> LIFTER = register("lifter", p -> new LifterItem(p.durability(64)));
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

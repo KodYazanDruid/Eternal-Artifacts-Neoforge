@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:blue_orchid"
+  },
+  "output": {
+    "Count": 2,
+    "id": "minecraft:blue_dye"
+  }
+}

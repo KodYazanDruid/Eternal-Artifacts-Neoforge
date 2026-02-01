@@ -2,11 +2,8 @@ package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.AbstractBaseWidget;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
@@ -15,17 +12,12 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
-import java.util.Optional;
 
 public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractSidedMachineScreen<M> {
 	public MultiFurnaceScreen(M menu, Inventory playerInventory, Component title) {
@@ -119,7 +111,7 @@ public class MultiFurnaceScreen<M extends AbstractMachineMenu> extends AbstractS
 		super.renderBackground(gui, mx, my, deltaTick);
 		pose.popPose();
 		applyCustomGuiTint(gui, 0xa7ffa7a7);
-		renderProgressArrow(gui, leftPos + 81, topPos + 41, mx, my);
+		renderProgressArrowWTooltips(gui, leftPos + 81, topPos + 41, mx, my);
 		resetGuiTint(gui);
 	}
 	

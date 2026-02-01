@@ -88,6 +88,9 @@ public class EntityCatalogueItem extends Item {
 			if (stack.hasTag() && stack.getTag().contains(NBT_KEY)) entityListTag = stack.getTag().getList(NBT_KEY, 10);
 			else entityListTag = new ListTag();
 			entityListTag.add(entityTag);
+			if (entity instanceof Villager villager) {
+				villager.releaseAllPois();
+			}
 			stack.getOrCreateTag().put(NBT_KEY, entityListTag);
 			entity.discard();
 			return true;
@@ -157,7 +160,6 @@ public class EntityCatalogueItem extends Item {
 					entity.moveTo(releasePos.getX() + 0.5, releasePos.getY(), releasePos.getZ() + 0.5, dir.toYRot(), 0);
 					if (entity instanceof Villager villager && level instanceof ServerLevel sLevel) {
 						villager.refreshBrain(sLevel);
-						villager.releaseAllPois();
 					}
 					level.addFreshEntity(entity);
 					

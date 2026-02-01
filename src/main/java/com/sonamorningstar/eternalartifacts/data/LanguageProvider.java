@@ -7,11 +7,11 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.enchantment.Enchantment;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.StringUtils.prettyName;
@@ -228,6 +228,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 addPotion(ModPotions.ENDURANCE.get(), "Potion of Endurance");
                 add(ModItems.INTERFACE_REMOTE.get(), "Interface Remote");
                 add(ModItems.PRISMARINE_ARROW.get(), "Prismarine Arrow");
+                add(ModItems.LIFTER.get(), "Lifter");
                 //endregion
                 //region Charm Tooltips
                 
@@ -402,14 +403,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 ModInventoryTabs.INVENTORY_TABS.getEntries().forEach(holder -> add(holder.get().getDescriptionId(), prettyName(holder.getId().getPath())));
                 //endregion
                 //region Enchantments
-                add(ModEnchantments.VOLUME.get(), "Volume");
-                add(ModEnchantments.VERSATILITY.get(), "Versatility");
-                add(ModEnchantments.SOULBOUND.get(), "Soulbound");
-                add(ModEnchantments.MELTING_TOUCH.get(), "Melting Touch");
-                add(ModEnchantments.EVERLASTING.get(), "Everlasting");
-                add(ModEnchantments.CELERITY.get(), "Celerity");
-                add(ModEnchantments.WORLDBIND.get(), "Worldbind");
-                add(ModEnchantments.FORTIFICATION.get(), "Fortification");
+                enchWithDesc(ModEnchantments.VOLUME.get(), "Volume", "Increases the capacity of items and machines.");
+                enchWithDesc(ModEnchantments.VERSATILITY.get(), "Versatility", "Allows items and machines to perform different operations.");
+                enchWithDesc(ModEnchantments.SOULBOUND.get(), "Soulbound", "Item is retained upon death.");
+                enchWithDesc(ModEnchantments.MELTING_TOUCH.get(), "Melting Touch", "Automatically smelts mined blocks.");
+                enchWithDesc(ModEnchantments.EVERLASTING.get(), "Everlasting", "Item wont despawn when dropped.");
+                enchWithDesc(ModEnchantments.CELERITY.get(), "Celerity", "Increases operation count per tick in machines.");
+                enchWithDesc(ModEnchantments.WORLDBIND.get(), "Worldbind", "Allows machines to chunkload the chunk they are in.");
+                enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Fortification", "Gives extra armor points.");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -841,6 +842,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.INTERFACE_REMOTE.get(), "Arayüz Kumandası");
                 add(ModItems.PRISMARINE_ARROW.get(), "Prizmarin Ok");
                 add(ModFluids.SLUDGE.getBucketItem(), "Çamur Kovası");
+                add(ModItems.LIFTER.get(), "Kaldıraç");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1085,14 +1087,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModInventoryTabs.PORTABLE_FURNACE.get().getDescriptionId(), "Taşınabilir Ocak");
                 //endregion
                 //region Türkçe Büyüler
-                add(ModEnchantments.VOLUME.get(), "Hacim");
-                add(ModEnchantments.VERSATILITY.get(), "Çeşitlilik");
-                add(ModEnchantments.SOULBOUND.get(), "Ruh Bağı");
-                add(ModEnchantments.MELTING_TOUCH.get(), "Eriten Dokunuş");
-                add(ModEnchantments.EVERLASTING.get(), "Ebedi");
-                add(ModEnchantments.CELERITY.get(), "Sürat");
-                add(ModEnchantments.WORLDBIND.get(), "Dünyabağı");
-                add(ModEnchantments.FORTIFICATION.get(), "Tahkim");
+                enchWithDesc(ModEnchantments.VOLUME.get(), "Hacim", "Eşyaların ve makinelerin kapasitesini arttırır.");
+                enchWithDesc(ModEnchantments.VERSATILITY.get(), "Çeşitlilik", "Eşyaların ve makinelerin farklı fonksiyonlar kazanmasını sağlar.");
+                enchWithDesc(ModEnchantments.SOULBOUND.get(), "Ruh Bağı", "Eşya ölünce envanterde kalır.");
+                enchWithDesc(ModEnchantments.MELTING_TOUCH.get(), "Eriten Dokunuş", "Kırılan blokları anında eritir.");
+                enchWithDesc(ModEnchantments.EVERLASTING.get(), "Ebedi", "Eşya yerdeyken kaybolmaz.");
+                enchWithDesc(ModEnchantments.CELERITY.get(), "Sürat", "Makinelerin tik başına operasyon sayısını arttırır.");
+                enchWithDesc(ModEnchantments.WORLDBIND.get(), "Dünyabağı", "Makinelerin içinde bulunduğı yığını yüklemesini sağlar.");
+                enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Tahkim", "Extra zırh puanı verir.");
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");
@@ -1325,6 +1327,12 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
         add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.LINGERING_POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.TIPPED_ARROW.getDescriptionId() + ".effect."), name);
+    }
+    
+    private void enchWithDesc(Enchantment enchantment, String name, String desc) {
+        add(enchantment, name);
+        ResourceLocation rl = BuiltInRegistries.ENCHANTMENT.getKey(enchantment);
+        add("enchantment."+rl.getNamespace()+"."+rl.getPath()+".desc", desc);
     }
     
     private void tooltipForItem(Item item, String tooltip) {

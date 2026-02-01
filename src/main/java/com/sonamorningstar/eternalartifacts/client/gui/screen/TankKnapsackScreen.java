@@ -20,32 +20,7 @@ public class TankKnapsackScreen extends AbstractModContainerScreen<TankKnapsackM
     @Override
     public void render(GuiGraphics gui, int mx, int my, float partialTick) {
         super.render(gui, mx, my, partialTick);
-        //renderTankSlots(gui, leftPos, topPos, mx, my);
         renderTooltip(gui, mx, my);
     }
-
-    /*private void renderTankSlots(GuiGraphics gui, int x, int y, int mx, int my) {
-        for (int i = 0; i < menu.fluidSlots.size(); i++) {
-            FluidSlot slot = menu.getFluidSlot(i);
-            FluidStack fluidStack = slot.getFluid();
-            if (isHovering(slot.x + 1, slot.y + 1, 16, 16, mx, my)) {
-                var tooltipComponents = Lists.<Component>newArrayList();
-                if (!fluidStack.isEmpty()) {
-                    tooltipComponents.addAll(StringUtils.getTooltipFromContainerFluid(fluidStack, minecraft.level,
-                        minecraft.options.advancedItemTooltips));
-                    tooltipComponents.add(Component.literal(fluidStack.getAmount() + " / " + slot.getMaxSize()));
-                }
-                if (!menu.getCarried().isEmpty()) {
-                    IFluidHandlerItem carriedHandler = menu.getCarried().getCapability(Capabilities.FluidHandler.ITEM);
-                    if (carriedHandler != null) {
-                        if (!tooltipComponents.isEmpty()) tooltipComponents.add(CommonComponents.EMPTY);
-                        tooltipComponents.add(ModConstants.GUI.withSuffixTranslatable("left_click_transfer").withStyle(ChatFormatting.BLUE));
-                        tooltipComponents.add(ModConstants.GUI.withSuffixTranslatable("right_click_transfer").withStyle(ChatFormatting.BLUE));
-                    }
-                }
-                gui.renderTooltip(font, tooltipComponents, Optional.empty(), mx, my);
-            }
-            renderTankSlot(gui, x, y, slot);
-        }
-    }*/
+    
 }

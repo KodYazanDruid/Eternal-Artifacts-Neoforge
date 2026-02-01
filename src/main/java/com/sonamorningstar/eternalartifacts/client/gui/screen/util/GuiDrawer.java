@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +21,9 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public final class GuiDrawer {
@@ -28,6 +32,8 @@ public final class GuiDrawer {
     public static final ResourceLocation default_edge = new ResourceLocation(MODID, "textures/gui/default_edge.png");
     public static final ResourceLocation dark_edge = new ResourceLocation(MODID, "textures/gui/dark_edge.png");
     private static final ResourceLocation bars = new ResourceLocation(MODID, "textures/gui/bars.png");
+    
+    private static final Map<ResourceLocation, Integer> fluidInverseColorCache = new HashMap<>();
 
     public static void drawDefaultBackground(GuiGraphics gui, int x, int y, int width, int height) {
         drawBackground(gui, texture, x, y, width, height, 176, 166, 5);
@@ -46,7 +52,6 @@ public final class GuiDrawer {
     }
     
     public static void drawTiledBackground(GuiGraphics gui, Block texture, int x, int y, int width, int height) {
-        //TextureAtlasSprite sprite = Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getBlockModel(texture.defaultBlockState()).getParticleIcon(ModelData.EMPTY);
         ResourceLocation blockRL = BuiltInRegistries.BLOCK.getKey(texture);
         ResourceLocation textureRL = new ResourceLocation(blockRL.getNamespace(), "textures/block/" + blockRL.getPath() + ".png");
         drawTiledBackground(gui, dark_edge, textureRL, x, y, width, height, 16, 16, 16, 16, 3);
@@ -97,9 +102,81 @@ public final class GuiDrawer {
         gui.blit(bars, x, y, 30, 0, 18, 56);
     }
     public static void drawFluidWithSmallTank(GuiGraphics gui, int x, int y, FluidStack stack, int percentage) {
+        if (!stack.isEmpty()) {
+            int inverseColor = getInverseFluidColor(stack);
+            gui.fill(x + 3, y + 3, x + 15, y + 15, inverseColor);
+        }
         drawTiledFluid(gui, x, y, 12, 12, percentage, stack);
         drawEmptySmallTank(gui, x, y);
     }
+    
+    public static int getInverseFluidColor(FluidStack stack) {
+        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
+        ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(stack);
+        if (stillTexture == null) return 0xFF808080;
+        
+        return fluidInverseColorCache.computeIfAbsent(stillTexture, loc -> {
+            TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(loc);
+            int avgColor = calculateAverageColor(sprite, fluidTypeExtensions.getTintColor(stack));
+            return invertColor(avgColor);
+        });
+    }
+    
+    private static int calculateAverageColor(TextureAtlasSprite sprite, int tintColor) {
+        int totalR = 0, totalG = 0, totalB = 0, count = 0;
+        
+        float tintR = ((tintColor >> 16) & 0xFF) / 255f;
+        float tintG = ((tintColor >> 8) & 0xFF) / 255f;
+        float tintB = (tintColor & 0xFF) / 255f;
+        
+        int width = sprite.contents().width();
+        int height = sprite.contents().height();
+        
+        int sampleCount = 4;
+        for (int sx = 0; sx < sampleCount; sx++) {
+            for (int sy = 0; sy < sampleCount; sy++) {
+                int px = (width * sx) / sampleCount + width / (sampleCount * 2);
+                int py = (height * sy) / sampleCount + height / (sampleCount * 2);
+                
+                px = Math.min(px, width - 1);
+                py = Math.min(py, height - 1);
+                
+                int pixel = sprite.getPixelRGBA(0, px, py);
+                
+                int a = (pixel >> 24) & 0xFF;
+                int b = (pixel >> 16) & 0xFF;
+                int g = (pixel >> 8) & 0xFF;
+                int r = pixel & 0xFF;
+                
+                if (a > 32) {
+                    totalR += (int)(r * tintR);
+                    totalG += (int)(g * tintG);
+                    totalB += (int)(b * tintB);
+                    count++;
+                }
+            }
+        }
+        
+        if (count == 0) return 0xFF808080;
+        
+        int avgR = totalR / count;
+        int avgG = totalG / count;
+        int avgB = totalB / count;
+        
+        return 0xFF000000 | (avgR << 16) | (avgG << 8) | avgB;
+    }
+    
+    private static int invertColor(int color) {
+        int r = 255 - ((color >> 16) & 0xFF);
+        int g = 255 - ((color >> 8) & 0xFF);
+        int b = 255 - (color & 0xFF);
+        return 0xFF000000 | (r << 16) | (g << 8) | b;
+    }
+    
+    public static void clearFluidColorCache() {
+        fluidInverseColorCache.clear();
+    }
+    
     public static void drawEmptySmallTank(GuiGraphics gui, int x, int y) {
         gui.blit(bars, x, y, 66, 37, 18, 18);
     }
@@ -114,19 +191,10 @@ public final class GuiDrawer {
             float green = ((tintColor >> 8) & 0xFF) / 255f;
             float blue = ((tintColor) & 0xFF) / 255f;
             gui.setColor(red, green, blue, alpha);
-            gui.blitTiledSprite(
-                    sprite,
-                    x + 3,
-                    y + 3 + height - percentage,
-                    0, //z - layer
-                    width,
-                    percentage,
-                    0, // these are offsets for atlas x
-                    0, //  y
-                    16, // Sprite dimensions to cut.
-                    16, //
-                    16, // Resolutions. 16x16 works fine.
-                    16);
+            gui.blitTiledSprite(sprite,
+                x + 3, y + 3 + height - percentage, 0,
+                width, percentage,
+            0, 0, 16, 16, 16, 16);
             gui.setColor(1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
@@ -135,6 +203,21 @@ public final class GuiDrawer {
     }
     public static void draw(GuiGraphics gui, ResourceLocation location, int x, int y, int u, int v, int width, int height) {
         gui.blit(location, x, y, u, v, width, height);
+    }
+    
+    /*public static TextureAtlasSprite getSprite(ItemStack stack) {
+        *//*ResourceLocation itemRL = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        ResourceLocation textureRL = new ResourceLocation(itemRL.getNamespace(), "textures/item/" + itemRL.getPath() + ".png");*//*
+        BakedModel model = Minecraft.getInstance().getItemRenderer().getModel(stack, null, null, 42);
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(model.get);
+    }*/
+    public static TextureAtlasSprite getSprite(FluidStack stack) {
+        IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
+        ResourceLocation stillTexture = fluidTypeExtensions.getStillTexture(stack);
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(stillTexture);
+    }
+    public static TextureAtlasSprite getSprite(ResourceLocation location) {
+        return Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(location);
     }
 
     //region Background drawing.

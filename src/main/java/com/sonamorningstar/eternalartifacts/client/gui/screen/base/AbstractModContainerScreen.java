@@ -7,7 +7,6 @@ import com.sonamorningstar.eternalartifacts.api.machine.config.Config;
 import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Draggable;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.Overlapping;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.ParentalWidget;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;

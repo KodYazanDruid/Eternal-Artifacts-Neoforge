@@ -8,6 +8,7 @@
     "eternalartifacts:glasscutter",
     "eternalartifacts:spawner_extractor",
     "eternalartifacts:chisel",
-    "eternalartifacts:configuration_drive"
+    "eternalartifacts:configuration_drive",
+    "eternalartifacts:lifter"
   ]
 }

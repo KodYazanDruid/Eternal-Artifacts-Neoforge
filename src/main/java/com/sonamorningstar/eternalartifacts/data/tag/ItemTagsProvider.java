@@ -254,7 +254,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.GLASSCUTTER.get(),
             ModItems.SPAWNER_EXTRACTOR.get(),
             ModItems.CHISEL.get(),
-            ModItems.CONFIGURATION_DRIVE.get()
+            ModItems.CONFIGURATION_DRIVE.get(),
+            ModItems.LIFTER.get()
         );
         tag(ModTags.Items.TABLETS).add(
             ModItems.STONE_TABLET.get(),

@@ -9,9 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * An interface for objects that can force-load chunks in the world.
@@ -38,9 +36,6 @@ public interface ChunkLoader {
 	void setChunkUnloadCooldown(int cooldown);
 	
 	default void claimChunks(Set<ForceLoadManager.ForcedChunkPos> forcedChunks) {
-		/*Set<ForceLoadManager.ForcedChunkPos> allChunks = ForceLoadManager.ALL_LOADERS.stream()
-			.flatMap(loader -> loader.getForcedChunks().stream()).collect(Collectors.toSet());
-		forcedChunks.removeIf(allChunks::contains);*/
 		getForcedChunks().clear();
 		getForcedChunks().addAll(forcedChunks);
 		if (getLevel() instanceof ServerLevel sLevel) {

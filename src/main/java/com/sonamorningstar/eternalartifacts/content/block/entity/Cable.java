@@ -110,15 +110,25 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
         
         if (maxExtractable == 0) return;
         
-        int targetCount = availableTargets.size();
+        List<BlockPos> receivingTargets = new ArrayList<>();
+        for (BlockPos targetPos : availableTargets) {
+            IEnergyStorage targetES = targets.get(targetPos).getCapability();
+            if (targetES != null && targetES.receiveEnergy(1, true) > 0) {
+                receivingTargets.add(targetPos);
+            }
+        }
+        
+        if (receivingTargets.isEmpty()) return;
+        
+        int targetCount = receivingTargets.size();
         int energyPerTarget = Math.max(1, maxExtractable / targetCount);
         int remainder = maxExtractable % targetCount;
         
         Map<BlockPos, Integer> targetReceptions = new LinkedHashMap<>();
         int totalReceivable = 0;
         
-        for (int i = 0; i < availableTargets.size(); i++) {
-            BlockPos targetPos = availableTargets.get(i);
+        for (int i = 0; i < receivingTargets.size(); i++) {
+            BlockPos targetPos = receivingTargets.get(i);
             IEnergyStorage targetES = targets.get(targetPos).getCapability();
             if (targetES == null) continue;
             

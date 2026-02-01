@@ -49,10 +49,15 @@ public class ForceLoadManager {
 	}
 	
 	public static void onServerStopping(MinecraftServer server) {
+		for (Map.Entry<UUID, Set<ForcedChunkPos>> entry : ENTITY_LOADED_CHUNKS.entrySet()) {
+			unforceAllChunks(server, entry.getKey(), entry.getValue());
+		}
+		ALL_LOADERS.forEach(loader -> unforceAllChunks(server, loader));
 		ENTITY_LOADED_CHUNKS.clear();
 		UNFORCED_CHUNKS_QUEUE.clear();
 		ALL_LOADERS.clear();
-		CHUNK_DISCARD_COUNTDOWN = 200;
+		
+		CHUNK_DISCARD_COUNTDOWN = -1;
 	}
 	
 	public static <T extends Comparable<? super T>> void updateForcedChunks(
@@ -131,11 +136,12 @@ public class ForceLoadManager {
 	
 	private static <T extends Comparable<? super T>> void forceChunk(MinecraftServer server, T owner, ResourceLocation dimension, int chunkX, int chunkZ, boolean add) {
 		ServerLevel targetLevel = server.getLevel(ResourceKey.create(Registries.DIMENSION, dimension));
-		assert targetLevel != null;
-		if (owner instanceof BlockPos pos) {
-			TICKET_CONTROLLER.forceChunk(targetLevel, pos, chunkX, chunkZ, add, true);
-		} else {
-			TICKET_CONTROLLER.forceChunk(targetLevel, (UUID) owner, chunkX, chunkZ, add, true);
+		if (targetLevel != null) {
+			if (owner instanceof BlockPos pos) {
+				TICKET_CONTROLLER.forceChunk(targetLevel, pos, chunkX, chunkZ, add, true);
+			} else {
+				TICKET_CONTROLLER.forceChunk(targetLevel, (UUID) owner, chunkX, chunkZ, add, true);
+			}
 		}
 	}
 	

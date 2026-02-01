@@ -3,20 +3,23 @@ package com.sonamorningstar.eternalartifacts.content.item;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SpawnerBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class SpawnerExtractorItem extends Item {
@@ -43,12 +46,19 @@ public class SpawnerExtractorItem extends Item {
 						ctx.getItemInHand().hurt(1, level.random, null);
 					Direction clickedFace = ctx.getClickedFace();
 					SpawnerBlock.popResourceFromFace(level, blockPos, clickedFace, spawnEgg.getDefaultInstance());
-					entityTag.remove("id");
-					level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+					removeEntityId(spawner.getSpawner(), level, level.getRandom(), blockPos);
+					spawner.setChanged();
+					level.sendBlockUpdated(blockPos, blockState, blockState, Block.UPDATE_ALL);
 					return InteractionResult.sidedSuccess(level.isClientSide());
 				}
 			}
 		}
 		return super.useOn(ctx);
+	}
+	
+	public void removeEntityId(BaseSpawner spawner, @Nullable Level level, RandomSource random, BlockPos pos) {
+		spawner.getOrCreateNextSpawnData(level, random, pos)
+			.getEntityToSpawn()
+			.remove("id");
 	}
 }

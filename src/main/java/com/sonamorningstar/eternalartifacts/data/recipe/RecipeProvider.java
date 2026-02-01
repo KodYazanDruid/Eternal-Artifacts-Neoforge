@@ -226,6 +226,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             Tags.Items.INGOTS_COPPER, 1,
             Tags.Items.RAW_MATERIALS_COPPER, 2,
             Tags.Items.ORES_COPPER, 5), ModItems.COPPER_DUST.get());
+        createMaceratingRecipe(recipeOutput, Tags.Items.GEMS_LAPIS, new ItemStack(Items.BLUE_DYE, 3));
+        createMaceratingRecipe(recipeOutput, Items.BLUE_ORCHID.getDefaultInstance(), new ItemStack(Items.BLUE_DYE, 2));
         //endregion
 
         createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
