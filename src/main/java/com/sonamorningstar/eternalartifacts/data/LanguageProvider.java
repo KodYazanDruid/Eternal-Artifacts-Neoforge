@@ -229,6 +229,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.INTERFACE_REMOTE.get(), "Interface Remote");
                 add(ModItems.PRISMARINE_ARROW.get(), "Prismarine Arrow");
                 add(ModItems.LIFTER.get(), "Lifter");
+                add(ModItems.HONEY_BALL.get(), "Honey Ball");
                 //endregion
                 //region Charm Tooltips
                 
@@ -609,6 +610,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("recipe.eternalartifacts.in_world.steel_crafting", "Throw ingredients into cauldron.");
                 add("recipe.eternalartifacts.in_world.demon_ingot", "Throw ingredients into lava.");
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Fluid Vein Size: %d");
+                add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Stored Block Entity: %s");
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBlockHolder().getId().getPath()));
@@ -843,6 +845,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PRISMARINE_ARROW.get(), "Prizmarin Ok");
                 add(ModFluids.SLUDGE.getBucketItem(), "Çamur Kovası");
                 add(ModItems.LIFTER.get(), "Kaldıraç");
+                add(ModItems.HONEY_BALL.get(), "Bal Topu");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1312,6 +1315,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("recipe.eternalartifacts.in_world.steel_crafting", "Malzemeleri kazanın içine at.");
                 add("recipe.eternalartifacts.in_world.demon_ingot", "Malzemeleri lavın içine at.");
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Sıvı Damarı boyu: %d");
+                add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Depolanan Block Varlığı: %s");
                 //endregion
 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

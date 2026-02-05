@@ -7,7 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.IItemDecorator;
 
-public class BlueprintDecorator implements IItemDecorator {
+public class SubItemRenderDecorator implements IItemDecorator {
 	@Override
 	public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int xOffset, int yOffset) {
 		if (stack.hasTag() && stack.getTag().getBoolean("Filled")) {

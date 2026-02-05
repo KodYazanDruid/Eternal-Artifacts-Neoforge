@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-01T22:26:19.7981304	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2026-02-05T15:13:30.1045631	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -68,7 +68,7 @@ e758efc4b5ef81f0051bbf58344b957307c2274f data/forge/tags/items/raw_materials/alu
 6602563629da6ca1cc5e0f008351a77700de8c54 data/forge/tags/items/raw_materials/manganese.json
 9531f61aa53048c39e1ab8d1f1502b3f6c3433b1 data/forge/tags/items/raw_materials/tin.json
 f8845fe4302e453748266bca7231a3e2f3041869 data/forge/tags/items/seeds.json
-9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs.json
+362403291f84cdae33f32b53d8a141777971cbf9 data/forge/tags/items/slimeballs.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
 8398a7e23256a627957c4a079d3e9e4cbb5c3c95 data/forge/tags/items/storage_blocks/steel.json

@@ -48,24 +48,24 @@ public class BookDuplicator extends GenericMachine {
         ItemStack output = inventory.getStackInSlot(2);
 
         if (inputBook.getItem() == Items.ENCHANTED_BOOK &&
-                consumableBook.getItem() == Items.BOOK &&
-                output.isEmpty() &&
-                canWork(energy)) {
+            consumableBook.getItem() == Items.BOOK &&
+            output.isEmpty() && canWork(energy)) {
 
             Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(inputBook);
             //Book should only have one enchantment.
-            if(enchantmentMap.size() == 1){
-                Map.Entry<Enchantment, Integer> enchant = enchantmentMap.entrySet().stream().findFirst().get();
+            if(enchantmentMap.size() == 1) {
+                Map.Entry<Enchantment, Integer> enchantEntry = enchantmentMap.entrySet().stream().findFirst().get();
                 //Check if it is a treasure or not. Do not allow copying treasure enchantments.
-                if(!enchant.getKey().isTreasureOnly()) {
-                    int level = enchant.getValue();
+                Enchantment enchantment = enchantEntry.getKey();
+                if(canDupeEnch(enchantment)) {
+                    int level = enchantEntry.getValue();
                     //Only level 3 and lower enchantment levels can be duped.
                     if (level > 0 && level <= 3) {
-                        progress(()-> tank.getFluidAmount(0) < 1000 * level, () -> {
-                            consumableBook.shrink(1);
-                            tank.drainForced(1000 * level, IFluidHandler.FluidAction.EXECUTE);
+                        progress(()-> tank.getFluidAmount(0) < 100 * level, () -> {
+                            inventory.extractItem(1, 1, false);
+                            tank.drainForced(100 * level, IFluidHandler.FluidAction.EXECUTE);
                             ItemStack copy = new ItemStack(Items.ENCHANTED_BOOK);
-                            EnchantmentHelper.setEnchantments(Map.of(enchant.getKey(), level), copy);
+                            EnchantmentHelper.setEnchantments(Map.of(enchantment, level), copy);
                             inventory.setStackInSlot(2, copy);
                         }, energy);
                     }
@@ -73,13 +73,13 @@ public class BookDuplicator extends GenericMachine {
             }
             //Written stack copy stuff.
         } else if (inputBook.getItem() == Items.WRITTEN_BOOK &&
-                    consumableBook.getItem() == Items.WRITABLE_BOOK &&
-                    output.isEmpty() &&
-                    inputBook.getTag() != null &&
-                    WrittenBookItem.getGeneration(inputBook) < 2) {
-            progress(()-> tank.getFluidAmount(0) < 500, ()-> {
-                consumableBook.shrink(1);
-                tank.drainForced(500, IFluidHandler.FluidAction.EXECUTE);
+                consumableBook.getItem() == Items.WRITABLE_BOOK &&
+                output.isEmpty() &&
+                inputBook.getTag() != null &&
+                WrittenBookItem.getGeneration(inputBook) < 2) {
+            progress(()-> tank.getFluidAmount(0) < 50, ()-> {
+                inventory.extractItem(1, 1, false);
+                tank.drainForced(50, IFluidHandler.FluidAction.EXECUTE);
                 ItemStack copy = new ItemStack(Items.WRITTEN_BOOK);
                 CompoundTag compoundtag = inputBook.getTag().copy();
                 compoundtag.putInt("generation", WrittenBookItem.getGeneration(inputBook) + 1);
@@ -88,5 +88,9 @@ public class BookDuplicator extends GenericMachine {
                 inventory.setStackInSlot(2, copy);
             }, energy);
         }
+    }
+    
+    protected boolean canDupeEnch(Enchantment enchantment) {
+        return isVersatile() || !enchantment.isTreasureOnly();
     }
 }

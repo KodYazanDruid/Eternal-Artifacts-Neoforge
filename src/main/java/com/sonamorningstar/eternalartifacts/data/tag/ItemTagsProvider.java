@@ -150,7 +150,10 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModBlocks.GRAVEL_LAPIS_ORE.asItem(),
             ModBlocks.MOSS_LAPIS_ORE.asItem()
         );
-        tag(Tags.Items.SLIMEBALLS).add(ModItems.PINK_SLIME.get());
+        tag(Tags.Items.SLIMEBALLS).add(
+            ModItems.PINK_SLIME.get(),
+            ModItems.HONEY_BALL.get()
+        );
         tag(ModTags.Items.SLIMEBALLS_PINK).add(ModItems.PINK_SLIME.get());
         tag(ItemTags.COALS).add(ModItems.SUGAR_CHARCOAL.get());
         tag(Tags.Items.STORAGE_BLOCKS_COAL).add(ModBlocks.SUGAR_CHARCOAL_BLOCK.asItem());

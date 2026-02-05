@@ -19,6 +19,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -135,6 +136,7 @@ public class ModItems {
     public static final DeferredItem<Item> GLOW_INK_DUST = register("glow_ink_dust");
     public static final DeferredItem<Item> GLASS_SPLASH_BOTTLE = register("glass_splash_bottle");
     public static final DeferredItem<Item> GLASS_LINGERING_BOTTLE = register("glass_lingering_bottle");
+    public static final DeferredItem<Item> HONEY_BALL = register("honey_ball", p -> new HoneyBallItem(p.food(Foods.HONEY_BOTTLE)));
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);

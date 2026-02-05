@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
 public class ExperienceHelper {
 
@@ -16,9 +17,9 @@ public class ExperienceHelper {
     }
 
     public static int totalXpForLevel(int level) {
-        if(level <= 16) return level * level + 6 * level;
-        else if(level <= 31) return (int) ( 2.5F * level * level - 40.5F * level + 360);
-        else return (int) (4.5F * level * level - 162.5F * level + 2220);
+        if(level <= 16) return (level * level) + (6 * level);
+        else if(level <= 31) return (int) ((2.5F * level * level) - (40.5F * level) + 360);
+        else return (int) ((4.5F * level * level) - (162.5F * level) + 2220);
     }
 
     public static int totalLevelsFromXp(int total) {
@@ -28,7 +29,7 @@ public class ExperienceHelper {
     }
 
     public static void givePlayerXpSilent(Player player, int xp) {
-        net.neoforged.neoforge.event.entity.player.PlayerXpEvent.XpChange event = new net.neoforged.neoforge.event.entity.player.PlayerXpEvent.XpChange(player, xp);
+        PlayerXpEvent.XpChange event = new PlayerXpEvent.XpChange(player, xp);
         if (net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(event).isCanceled()) return;
         xp = event.getAmount();
 

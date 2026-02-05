@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen.base;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
@@ -597,36 +598,38 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     @Override
-    public boolean keyPressed(int keyCode, int pScanCode, int pModifiers) {
-        if (keyCode == 69) { // E key without modifiers
-            if (getFocused() instanceof EditBox box && box.canConsumeInput()) return false; // Prevents closing the screen when typing in a text box
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+		InputConstants.Key mouseKey = InputConstants.getKey(keyCode, scanCode);
+        
+        if (keyCode == 256) {
+            this.minecraft.player.closeContainer();
+            return true;
         }
+		
+        if (getFocused() instanceof EditBox box && (box.keyPressed(keyCode, scanCode, modifiers) || box.canConsumeInput())) return false;
+        
         KeyMapping configMapping = ModKeyMappings.OPEN_MACHINE_CONFIG;
-        if (keyCode == configMapping.getKey().getValue()) {
+        if (configMapping.isActiveAndMatches(mouseKey)) {
             if (configPanel != null) {
                 configPanel.toggle();
                 return true;
             }
         }
-        return super.keyPressed(keyCode, pScanCode, pModifiers);
+        
+        return super.keyPressed(keyCode, scanCode, modifiers);
     }
     
     @Override
     public void render(GuiGraphics gui, int mx, int my, float delta) {
-        // Önce normal renderı çağır
         super.render(gui, mx, my, delta);
         renderTankSlots(gui, leftPos, topPos, mx, my);
         
-        // Hover durumunu güncelle - z-index sırasına göre (en üstteki önce)
         boolean isBlocked = false;
-        
-        // Önce upperLayerChildren'ı ters sırada kontrol et (en üstte olan en son eklenen)
         for (int i = upperLayerChildren.size() - 1; i >= 0; i--) {
             GuiEventListener child = upperLayerChildren.get(i);
             if (child instanceof AbstractWidget widget && child instanceof Overlapping overlapping) {
                 if (widget.visible) {
                     boolean hovered = overlapping.updateHover(mx, my, isBlocked);
-                    // Raw bounds check kullanarak recursive çağrıyı önle
                     boolean isOver = widget.active &&
                         mx >= widget.getX() && mx < widget.getX() + widget.getWidth() &&
                         my >= widget.getY() && my < widget.getY() + widget.getHeight();
@@ -637,7 +640,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             }
         }
         
-        // Sonra normal children'daki Overlapping widgetları kontrol et
         for (GuiEventListener child : children) {
             if (child instanceof AbstractWidget widget &&
                 child instanceof Overlapping overlapping &&

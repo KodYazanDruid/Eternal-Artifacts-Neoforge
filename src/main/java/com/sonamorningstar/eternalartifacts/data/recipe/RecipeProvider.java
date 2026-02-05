@@ -720,7 +720,15 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('I', ModItems.CHLOROPHYTE_INGOT).define('R', Items.REPEATER)
             .define('C', Items.CROSSBOW).define('O', Tags.Items.INGOTS_IRON)
             .unlockedBy("has_item", has(ModItems.CHLOROPHYTE_INGOT)).save(recipeOutput);
-            
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, Items.HONEY_BLOCK)
+            .pattern("BB").pattern("BB").define('B', ModItems.HONEY_BALL)
+            .unlockedBy("has_item", has(ModItems.HONEY_BALL)).save(recipeOutput, makeID("honey_block_from_honey_balls"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.LIFTER)
+            .pattern(" I ").pattern(" NI").pattern("S  ")
+            .define('I', Tags.Items.INGOTS_GOLD)
+            .define('N', Tags.Items.NUGGETS_GOLD)
+            .define('S', Tags.Items.RODS_WOODEN)
+            .unlockedBy("has_item", has(Tags.Items.INGOTS_GOLD)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -816,6 +824,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SANDY_PAVED_PRISMARINE_BRICKS, 2)
             .requires(ModBlocks.PAVED_PRISMARINE_BRICKS).requires(Tags.Items.SAND)
             .unlockedBy("has_item", has(ModBlocks.PAVED_PRISMARINE_BRICKS)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, Items.HONEY_BOTTLE)
+            .requires(ModItems.HONEY_BALL).requires(Items.GLASS_BOTTLE)
+            .unlockedBy("has_item", has(ModItems.HONEY_BALL)).save(recipeOutput, makeID("honey_bottle_from_honey_ball"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.HONEY_BALL)
+            .requires(Items.HONEY_BOTTLE).unlockedBy("has_item", has(Items.HONEY_BOTTLE)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.HONEY_BALL, 4)
+            .requires(Items.HONEY_BLOCK).unlockedBy("has_item", has(Items.HONEY_BLOCK)).save(recipeOutput, makeID("honey_balls_from_honey_block"));
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }

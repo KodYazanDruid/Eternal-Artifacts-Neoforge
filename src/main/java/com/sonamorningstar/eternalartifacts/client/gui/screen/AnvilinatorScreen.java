@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.Anvilinator;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.PacketAnvilatorSwitchToServer;
+import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -29,7 +30,7 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
     protected void init() {
         super.init();
 
-        name = new EditBox(this.font, leftPos + 73, topPos + 24, 82, 13, Component.empty());
+        name = new EditBox(this.font, leftPos + 50, topPos + 20, 82, 13, Component.empty());
         name.setTextColor(-1);
         name.setTextColorUneditable(-1);
         name.setBordered(false);
@@ -38,7 +39,7 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
         name.setEditable(!anvilinatorBlockEntity.getEnableNaming());
         addRenderableWidget(this.name);
 
-        addWidget(Button.builder(Component.empty(), this::setNameSwitch).bounds(leftPos + 70, topPos + 21, 88, 19).build());
+        addWidget(Button.builder(Component.empty(), this::setNameSwitch).bounds(leftPos + 76, topPos + 38, 90, 12).build());
     }
 
     private void setNameSwitch(Button button) {
@@ -58,27 +59,23 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
         Channel.sendToServer(new PacketAnvilatorSwitchToServer(anvilinatorBlockEntity.getEnableNaming(), menu.getBlockEntity().getBlockPos(), name.getValue()));
         super.onClose();
     }
-
+    
+    @Override
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+        
+    }
+    
     @Override
     protected void renderBg(GuiGraphics gui, float pPartialTick, int mx, int my) {
         super.renderBg(gui, pPartialTick, mx, my);
         renderDefaultEnergyAndFluidBar(gui);
         renderProgressArrowWTooltips(gui, leftPos + 122, topPos + 53, mx, my);
+        gui.blitSprite(anvilinatorBlockEntity.getEnableNaming() ? enabled : disabled, leftPos + 47, topPos + 17, 0, 110, 16);
     }
-
-    // Returns false when typing on the box.
-    @Override
-    public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
-        //TODO: Use Open/Close inventory key instead of hardcoding E.
-        if(name.isFocused() && pKeyCode == 69) return false;
-        else return super.keyPressed(pKeyCode, pScanCode, pModifiers);
-    }
-
+    
     @Override
     public void render(GuiGraphics gui, int pMouseX, int pMouseY, float pPartialTick) {
         super.render(gui, pMouseX, pMouseY, pPartialTick);
-        boolean flag = anvilinatorBlockEntity.getEnableNaming();
-        gui.blitSprite(flag ? enabled : disabled, leftPos + 67, topPos + 17, 0, 110, 16);
         int color;
         String key;
         if(anvilinatorBlockEntity.getEnableNaming()) {
@@ -88,7 +85,22 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
             key = "key." + MODID + ".anvilinator.disabled_naming";
             color = 0x4e0523;
         }
-         gui.drawString(font, Component.translatable(key), leftPos + 76, topPos + 38, color, false);
+         gui.drawString(font, Component.literal("↻ ").append(Component.translatable(key)), leftPos + 76, topPos + 38, color, false);
+
+        int xpCost = anvilinatorBlockEntity.getCurrentXpCost();
+        if (xpCost > 0) {
+            int fluidCost = xpCost * 20;
+            int levelCost = ExperienceHelper.totalLevelsFromXp(xpCost);
+            int tankAmount = anvilinatorBlockEntity.tank.getFluidAmount(0);
+            boolean hasEnough = tankAmount >= fluidCost;
+            int costColor = hasEnough ? 0x80FF20 : 0xFF6060;
+            
+            Component costText = Component.literal(fluidCost + " mB (" + levelCost + " Lvl)");
+            int costX = leftPos + imageWidth - 6 - font.width(costText);
+            int costY = topPos + 71;
+            gui.fill(costX - 2, costY - 1, costX + font.width(costText) + 2, costY + 10, 0x4F000000);
+            gui.drawString(font, costText, costX, costY, costColor, true);
+        }
 
         renderTooltip(gui, pMouseX, pMouseY);
     }

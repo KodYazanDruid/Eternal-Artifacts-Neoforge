@@ -51,7 +51,7 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider 
     @Override
     public AABB getWorkingArea(BlockPos anchor) {
         Direction facing = getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
-        return new AABB(anchor.relative(facing.getOpposite(), 2)).inflate(1).move(0D, 1D, 0D);
+        return new AABB(anchor.relative(facing.getOpposite(), 5)).inflate(4, 1, 4).move(0D, 1D, 0D);
     }
     
     @Override

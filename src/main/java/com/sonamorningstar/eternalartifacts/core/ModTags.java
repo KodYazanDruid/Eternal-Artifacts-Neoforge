@@ -33,7 +33,7 @@ public class ModTags {
         public static final TagKey<Block> ORES_TIN = forgeTag("ores/tin");
         public static final TagKey<Block> ORES_ALUMINUM = forgeTag("ores/aluminum");
         public static final TagKey<Block> MOSS_ORE_REPLACEABLES = modTag("moss_ore_replaceables");
-        
+        public static final TagKey<Block> LIFTER_BLACKLISTED = modTag("lifter_blacklisted");
 
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }

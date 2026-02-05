@@ -25,7 +25,7 @@
               "function": "minecraft:looting_enchant"
             }
           ],
-          "name": "minecraft:honey_bottle"
+          "name": "eternalartifacts:honey_ball"
         },
         {
           "type": "minecraft:item",

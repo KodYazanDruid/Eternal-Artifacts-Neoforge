@@ -3,7 +3,8 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
-import com.sonamorningstar.eternalartifacts.api.item.decorator.BlueprintDecorator;
+import com.sonamorningstar.eternalartifacts.api.item.decorator.BlockRenderDecorator;
+import com.sonamorningstar.eternalartifacts.api.item.decorator.SubItemRenderDecorator;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.TesseractEnergyCap;
@@ -16,11 +17,13 @@ import com.sonamorningstar.eternalartifacts.content.block.PlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
+import com.sonamorningstar.eternalartifacts.content.item.LifterItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -31,7 +34,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.ChestBlock;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -325,7 +327,15 @@ public class CommonModEvents {
     
     @SubscribeEvent
     public static void registerItemDecorations(RegisterItemDecorationsEvent event) {
-        event.register(ModItems.BLUEPRINT, new BlueprintDecorator());
+        event.register(ModItems.BLUEPRINT, new SubItemRenderDecorator());
+        /*event.register(ModItems.LIFTER, new BlockRenderDecorator(stack -> {
+            if (stack.hasTag()) {
+                *//*CompoundTag tag = stack.getTag();
+                CompoundTag beTag = tag.getCompound(LifterItem.TAG_BLOCK_ENTITY);
+                BlockE*//*
+            }
+            return null;
+        }));*/
     }
     
     @SubscribeEvent

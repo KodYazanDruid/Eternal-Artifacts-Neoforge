@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
+import com.sonamorningstar.eternalartifacts.network.SyncPlayerXpToClient;
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -85,8 +87,8 @@ public class PlayerHelper {
     }
 
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {
-        //level.getChunk(new BlockPos((int)targetVec.x, (int)targetVec.y, (int)targetVec.z));
         player.teleportTo(level, targetVec.x(), targetVec.y(), targetVec.z(), EnumSet.noneOf(RelativeMovement.class), player.getYRot(), player.getXRot());
+        Channel.sendToPlayer(new SyncPlayerXpToClient(player.experienceLevel, player.totalExperience, player.experienceProgress), player);
     }
 
     public static void giveItemOrPop(Player player, ItemStack stack) {

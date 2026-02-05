@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
+import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -59,6 +61,7 @@ public class LifterItem extends Item {
 		if (be == null) return InteractionResult.FAIL;
 		
 		BlockState state = level.getBlockState(pos);
+		if (state.is(ModTags.Blocks.LIFTER_BLACKLISTED)) return InteractionResult.FAIL;
 		CompoundTag tag = stack.getOrCreateTag();
 		
 		CompoundTag beTag = be.saveWithoutMetadata();
@@ -66,10 +69,8 @@ public class LifterItem extends Item {
 		tag.putInt(TAG_BLOCK_STATE, Block.getId(state));
 		tag.putString(TAG_BLOCK_ID, state.getBlock().getDescriptionId());
 		
-		//FluidState fluidState = level.getFluidState(pos);
 		level.removeBlockEntity(pos);
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-		//level.setBlock(pos, fluidState.createLegacyBlock(), Block.UPDATE_ALL);
 		
 		return InteractionResult.CONSUME;
 	}
@@ -84,10 +85,8 @@ public class LifterItem extends Item {
 		BlockState state = Block.stateById(stateId);
 		if (state.isAir()) return InteractionResult.FAIL;
 		
-		// Komşulara göre state'i güncelle (sandık, fence vb. için)
 		state = Block.updateFromNeighbourShapes(state, level, pos);
 		
-		// FluidState'i koru (waterlogged bloklar için)
 		FluidState fluidState = level.getFluidState(pos);
 		if (!fluidState.isEmpty() && state.hasProperty(BlockStateProperties.WATERLOGGED)) {
 			state = state.setValue(BlockStateProperties.WATERLOGGED, fluidState.getType() == Fluids.WATER);
@@ -127,10 +126,7 @@ public class LifterItem extends Item {
 			CompoundTag tag = stack.getTag();
 			if (tag != null && tag.contains(TAG_BLOCK_ID)) {
 				String blockId = tag.getString(TAG_BLOCK_ID);
-				tooltip.add(Component.translatable("tooltip.eternalartifacts.lifter.stored")
-					.append(": ")
-					.append(Component.translatable(blockId))
-					.withStyle(ChatFormatting.GRAY));
+				tooltip.add(ModConstants.TOOLTIP.withSuffixTranslatable("lifter.stored", Component.translatable(blockId)).withStyle(ChatFormatting.GRAY));
 			}
 		}
 	}

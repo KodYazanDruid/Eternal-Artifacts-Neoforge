@@ -72,7 +72,7 @@ public class ModEntityLootSubProvider extends net.minecraft.data.loot.EntityLoot
             LootTable.lootTable()
                 .withPool(LootPool.lootPool()
                     .setRolls(ConstantValue.exactly(1))
-                    .add(LootItem.lootTableItem(Items.HONEY_BOTTLE)
+                    .add(LootItem.lootTableItem(ModItems.HONEY_BALL)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
                         .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 2)))
                     )

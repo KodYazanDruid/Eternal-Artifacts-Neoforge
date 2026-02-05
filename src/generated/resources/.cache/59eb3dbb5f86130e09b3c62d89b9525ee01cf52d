@@ -1,4 +1,4 @@
-// 1.20.4	2026-01-28T15:29:49.5511549	Loot Tables
+// 1.20.4	2026-02-05T15:13:30.1005628	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -185,7 +185,7 @@ b0fc78c67b573bc9dc15ea22bd8f1a1f3a8b570c data/eternalartifacts/loot_tables/entit
 1b5ed1edb7ea38f47019b0187a27241665c5771a data/eternalartifacts/loot_tables/entities/charged_sheep/yellow.json
 c0e3731ff79dbcd23191ed8563f789961ec2fb15 data/eternalartifacts/loot_tables/entities/demon_eye.json
 a4611bf5536257aea77d51c82bee632fe5a5953b data/eternalartifacts/loot_tables/entities/duck.json
-f77676dd05d74ba0ee53cc8e6d6f7feabc537751 data/eternalartifacts/loot_tables/entities/honey_slime.json
+ffc2e1b70e710de3b6bd11b25e56ad76ffc476a8 data/eternalartifacts/loot_tables/entities/honey_slime.json
 293be983c103d056b006c6eb21ce99c950f10707 data/eternalartifacts/loot_tables/entities/magical_book.json
 adc9376497f9c09e0788f0c1c265d8f48955d0cf data/eternalartifacts/loot_tables/entities/pinky.json
 5384871c0c22b0903bfde84b8104af038ed36944 data/eternalartifacts/loot_tables/hammering/blocks/eternalartifacts/sugar_charcoal_block.json

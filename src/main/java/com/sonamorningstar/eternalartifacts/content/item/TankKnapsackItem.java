@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.capabilities.helper.FluidTankUtils;
 import com.sonamorningstar.eternalartifacts.container.TankKnapsackMenu;
-import com.sonamorningstar.eternalartifacts.container.TankKnapsacktemMenu;
-import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -25,36 +22,43 @@ public class TankKnapsackItem extends Item {
     
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+        if (!slot.allowModification(player)) return false;
         if(action == ClickAction.SECONDARY && slot.allowModification(player) && other.isEmpty()) {
             if(!player.level().isClientSide()) {
                 openMenu(player, stack);
             }
             return true;
-        } else if (action == ClickAction.SECONDARY && !other.isEmpty()) {
+        }
+        
+        IFluidHandlerItem knapsackCap = stack.getCapability(Capabilities.FluidHandler.ITEM);
+        if (knapsackCap == null || other.isEmpty()) return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+        
+        if (action == ClickAction.PRIMARY) {
             if(!player.level().isClientSide()) {
                 IFluidHandlerItem capability = other.getCapability(Capabilities.FluidHandler.ITEM);
-                if (capability != null && !FluidTankUtils.isFluidHandlerEmpty(capability)) {
-                    var result = FluidUtil.tryFillContainerAndStow(stack, capability, player.getCapability(Capabilities.ItemHandler.ENTITY), Integer.MAX_VALUE, player, true);
+                if (capability != null) {
+                    var result = FluidUtil.tryFillContainerAndStow(other, knapsackCap, player.getCapability(Capabilities.ItemHandler.ENTITY), Integer.MAX_VALUE, player, true);
                     if (result.isSuccess()) {
-                        slot.set(result.getResult());
-                        access.set(capability.getContainer());
-                    }
-				}
-			}
-            return true;
-        } else if (action == ClickAction.PRIMARY && slot.allowModification(player) && !other.isEmpty()) {
-            if(!player.level().isClientSide()) {
-                IFluidHandlerItem capability = other.getCapability(Capabilities.FluidHandler.ITEM);
-                if (capability != null && !FluidTankUtils.isFluidHandlerFull(capability)) {
-                    var result = FluidUtil.tryEmptyContainerAndStow(stack, capability, player.getCapability(Capabilities.ItemHandler.ENTITY), Integer.MAX_VALUE, player, true);
-                    if (result.isSuccess()) {
-                        slot.set(result.getResult());
-                        access.set(capability.getContainer());
+                        access.set(result.getResult());
                     }
                 }
             }
             return true;
         }
+        
+        if (action == ClickAction.SECONDARY) {
+            if(!player.level().isClientSide()) {
+                IFluidHandlerItem capability = other.getCapability(Capabilities.FluidHandler.ITEM);
+                if (capability != null) {
+                    var result = FluidUtil.tryEmptyContainerAndStow(other, knapsackCap, player.getCapability(Capabilities.ItemHandler.ENTITY), Integer.MAX_VALUE, player, true);
+                    if (result.isSuccess()) {
+                        access.set(result.getResult());
+                    }
+                }
+			}
+            return true;
+        }
+        
         return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 	}
     

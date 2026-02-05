@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-01T22:26:19.8281337	Item Models: eternalartifacts
+// 1.20.4	2026-02-05T15:13:30.1205697	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -128,6 +128,7 @@ bea8fef3470b4a38d2f75805362ea521579e4467 assets/eternalartifacts/models/item/gre
 2dd4edacbb3789299d9bb72c2b8e9cc8e9f7be6f assets/eternalartifacts/models/item/harvester.json
 59dc787c520658967dbc687998270ea969a5cbf1 assets/eternalartifacts/models/item/heart_necklace.json
 a78b887fd637d21533285834c711a90a6ae06165 assets/eternalartifacts/models/item/holy_dagger.json
+537f7788ca9c6da276091a68c1780815c03179fc assets/eternalartifacts/models/item/honey_ball.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/eternalartifacts/models/item/honey_slime_spawn_egg.json
 fc4fce82723f7d09cc6fce17f5bfd223b0b48d13 assets/eternalartifacts/models/item/hot_spring_water_bucket.json
 a9070a20a23138343210ca678b8019924f4169e9 assets/eternalartifacts/models/item/ice_brick_slab.json
