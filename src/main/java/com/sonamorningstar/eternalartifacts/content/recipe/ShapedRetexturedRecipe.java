@@ -60,7 +60,7 @@ public class ShapedRetexturedRecipe extends CustomRecipe {
 
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return result;
+        return result != null ? result : ItemStack.EMPTY;
     }
 
     @Override

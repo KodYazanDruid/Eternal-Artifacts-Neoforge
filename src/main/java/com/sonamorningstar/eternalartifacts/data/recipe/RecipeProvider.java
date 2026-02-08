@@ -735,7 +735,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.SUGAR_CHARCOAL_BLOCK)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ENDER_NOTEBOOK)
-                .requires(Items.FEATHER).requires(ModItems.ENDER_TABLET).requires(Items.DIAMOND)
+                .requires(Tags.Items.FEATHERS).requires(ModItems.ENDER_TABLET).requires(Items.DIAMOND)
                 .unlockedBy("has_item", has(ModItems.ENDER_TABLET)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.COPPER_NUGGET, 9)
                 .requires(Items.COPPER_INGOT)

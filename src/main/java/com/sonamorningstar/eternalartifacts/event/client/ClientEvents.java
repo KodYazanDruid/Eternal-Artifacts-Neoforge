@@ -4,6 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
@@ -27,10 +28,12 @@ import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManage
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
+import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
@@ -58,6 +61,7 @@ import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -83,7 +87,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
+import org.joml.Matrix4f;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -142,6 +149,157 @@ public class ClientEvents {
                 pose.popPose();
             }
         }
+        
+        if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES)) {
+            Vec3 camPos = mc.gameRenderer.getMainCamera().getPosition();
+            pose.pushPose();
+            pose.translate(-camPos.x, -camPos.y, -camPos.z);
+            
+            if (mc.level != null && mc.player != null) {
+                int viewDist = mc.options.renderDistance().get();
+                BlockPos playerPos = mc.player.blockPosition();
+                int chunkX = playerPos.getX() >> 4;
+                int chunkZ = playerPos.getZ() >> 4;
+                
+                for (int cx = chunkX - viewDist; cx <= chunkX + viewDist; cx++) {
+                    for (int cz = chunkZ - viewDist; cz <= chunkZ + viewDist; cz++) {
+                        var chunk = mc.level.getChunkSource().getChunkNow(cx, cz);
+                        if (chunk != null) {
+                            for (var be : chunk.getBlockEntities().values()) {
+                                if (be instanceof WorkingAreaProvider wap && wap.shouldRenderArea()) {
+                                    renderWorkingArea(pose, buffer, wap, be.getBlockPos());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            buffer.endBatch(ModRenderTypes.AREA_FACE);
+            buffer.endBatch(ModRenderTypes.AREA_OUTLINE);
+            
+            pose.popPose();
+        }
+    }
+    
+    // Area rendering constants
+    private static final float OUTLINE_R = 0.3f;
+    private static final float OUTLINE_G = 0.6f;
+    private static final float OUTLINE_B = 1.0f;
+    private static final float OUTLINE_A = 1.0f;
+    
+    private static final float FACE_R = 0.2f;
+    private static final float FACE_G = 0.5f;
+    private static final float FACE_B = 0.9f;
+    private static final float FACE_A = 0.15f;
+    
+    private static void renderWorkingArea(PoseStack pose, MultiBufferSource.BufferSource buffer, WorkingAreaProvider wap, BlockPos bePos) {
+        AABB box = wap.getWorkingArea(bePos);
+        
+        float minX = (float) box.minX;
+        float minY = (float) box.minY;
+        float minZ = (float) box.minZ;
+        float maxX = (float) box.maxX;
+        float maxY = (float) box.maxY;
+        float maxZ = (float) box.maxZ;
+        
+        // Render translucent faces
+        renderAreaFaces(pose, buffer, minX, minY, minZ, maxX, maxY, maxZ);
+        
+        // Render thick outline
+        renderAreaOutline(pose, buffer, minX, minY, minZ, maxX, maxY, maxZ);
+    }
+    
+    private static void renderAreaFaces(PoseStack pose, MultiBufferSource buff,
+                             float minX, float minY, float minZ,
+                             float maxX, float maxY, float maxZ) {
+        VertexConsumer consumer = buff.getBuffer(ModRenderTypes.AREA_FACE);
+        Matrix4f matrix = pose.last().pose();
+        
+        int color = ((int)(FACE_A * 255) << 24) | ((int)(FACE_R * 255) << 16) | ((int)(FACE_G * 255) << 8) | (int)(FACE_B * 255);
+        
+        // Bottom face (Y-)
+        consumer.vertex(matrix, minX, minY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, minY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, minY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, minY, maxZ).color(color).endVertex();
+        
+        // Top face (Y+)
+        consumer.vertex(matrix, minX, maxY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, maxY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, maxY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, maxY, minZ).color(color).endVertex();
+        
+        // North face (Z-)
+        consumer.vertex(matrix, minX, minY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, maxY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, maxY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, minY, minZ).color(color).endVertex();
+        
+        // South face (Z+)
+        consumer.vertex(matrix, maxX, minY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, maxY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, maxY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, minY, maxZ).color(color).endVertex();
+        
+        // West face (X-)
+        consumer.vertex(matrix, minX, minY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, maxY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, maxY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, minX, minY, minZ).color(color).endVertex();
+        
+        // East face (X+)
+        consumer.vertex(matrix, maxX, minY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, maxY, minZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, maxY, maxZ).color(color).endVertex();
+        consumer.vertex(matrix, maxX, minY, maxZ).color(color).endVertex();
+    }
+    
+    private static void renderAreaOutline(PoseStack pose, MultiBufferSource buff,
+                               float minX, float minY, float minZ,
+                               float maxX, float maxY, float maxZ) {
+        VertexConsumer consumer = buff.getBuffer(ModRenderTypes.AREA_OUTLINE);
+        Matrix4f matrix = pose.last().pose();
+        
+        // Bottom edges
+        areaLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ);
+        areaLine(consumer, matrix, maxX, minY, minZ, maxX, minY, maxZ);
+        areaLine(consumer, matrix, maxX, minY, maxZ, minX, minY, maxZ);
+        areaLine(consumer, matrix, minX, minY, maxZ, minX, minY, minZ);
+        
+        // Top edges
+        areaLine(consumer, matrix, minX, maxY, minZ, maxX, maxY, minZ);
+        areaLine(consumer, matrix, maxX, maxY, minZ, maxX, maxY, maxZ);
+        areaLine(consumer, matrix, maxX, maxY, maxZ, minX, maxY, maxZ);
+        areaLine(consumer, matrix, minX, maxY, maxZ, minX, maxY, minZ);
+        
+        // Vertical edges
+        areaLine(consumer, matrix, minX, minY, minZ, minX, maxY, minZ);
+        areaLine(consumer, matrix, maxX, minY, minZ, maxX, maxY, minZ);
+        areaLine(consumer, matrix, maxX, minY, maxZ, maxX, maxY, maxZ);
+        areaLine(consumer, matrix, minX, minY, maxZ, minX, maxY, maxZ);
+    }
+    
+    private static void areaLine(VertexConsumer consumer, Matrix4f matrix,
+                      float x1, float y1, float z1,
+                      float x2, float y2, float z2) {
+        float dx = x2 - x1;
+        float dy = y2 - y1;
+        float dz = z2 - z1;
+        float len = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (len == 0) len = 1;
+        float nx = dx / len;
+        float ny = dy / len;
+        float nz = dz / len;
+        
+        consumer.vertex(matrix, x1, y1, z1)
+                .color(OUTLINE_R, OUTLINE_G, OUTLINE_B, OUTLINE_A)
+                .normal(nx, ny, nz)
+                .endVertex();
+        consumer.vertex(matrix, x2, y2, z2)
+                .color(OUTLINE_R, OUTLINE_G, OUTLINE_B, OUTLINE_A)
+                .normal(nx, ny, nz)
+                .endVertex();
     }
     
     @SubscribeEvent

@@ -11,6 +11,7 @@ import java.util.List;
 public abstract class AbstractFluidTank implements IFluidHandler, INBTSerializable<CompoundTag> {
 
     public abstract void setFluid(FluidStack stack, int tank);
+    public abstract void setFluidSilent(FluidStack stack, int tank);
     public abstract FluidStack getFluid(int tank);
 
     public abstract CompoundTag serializeNBT();

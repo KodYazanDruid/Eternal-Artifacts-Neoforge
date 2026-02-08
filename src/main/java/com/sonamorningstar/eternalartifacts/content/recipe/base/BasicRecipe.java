@@ -21,7 +21,7 @@ public abstract class BasicRecipe implements Recipe<SimpleContainer> {
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override
-    public ItemStack getResultItem(RegistryAccess reg) {return null;}
+    public ItemStack getResultItem(RegistryAccess reg) {return ItemStack.EMPTY;}
     @Override
     public RecipeType<?> getType() {return holder.getType();}
     @Override

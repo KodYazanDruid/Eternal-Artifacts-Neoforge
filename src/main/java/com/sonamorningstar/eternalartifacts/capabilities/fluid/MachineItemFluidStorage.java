@@ -34,6 +34,11 @@ public class MachineItemFluidStorage extends AbstractFluidTank implements IFluid
         get(tank).setFluid(stack, tank);
         onContentsChange();
     }
+    
+    @Override
+    public void setFluidSilent(FluidStack stack, int tank) {
+        get(tank).setFluid(stack, tank);
+    }
 
     @Override
     public FluidStack getFluid(int tank) {

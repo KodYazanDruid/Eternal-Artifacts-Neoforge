@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.event.client;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.CharmsScreen;
+import com.sonamorningstar.eternalartifacts.content.item.ChlorophyteRepeaterItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.IActiveStack;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
@@ -19,6 +20,7 @@ import net.minecraft.client.renderer.blockentity.SkullBlockRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
@@ -34,9 +36,6 @@ public class FMLClientSetup {
     @SubscribeEvent
     public static void fmlClient(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            registerItemProperty(ModItems.ENCUMBATOR, "active");
-            registerItemProperty(ModItems.BLUEPRINT, "filled");
-
             TabHandler.registeredTabs = ModRegistries.TAB_TYPE.stream().toList();
             ModLoader.get().postEvent(new RegisterTabHoldersEvent(TabHandler.tabHolders));
             ModLoader.get().postEvent(new CreateConfigWidgetEvent());
@@ -47,6 +46,45 @@ public class FMLClientSetup {
         setFluidTranslucent(ModFluids.GASOLINE);
         setFluidTranslucent(ModFluids.DIESEL);
         setFluidTranslucent(ModFluids.NAPHTHA);
+        
+        registerItemProperty(ModItems.ENCUMBATOR, "active");
+        registerItemProperty(ModItems.BLUEPRINT, "filled");
+        
+        ItemProperties.register(
+            ModItems.CHLOROPHYTE_REPEATER.get(),
+            new ResourceLocation("pull"),
+            (p_174610_, p_174611_, p_174612_, p_174613_) -> {
+                if (p_174612_ == null) {
+                    return 0.0F;
+                } else {
+                    return ChlorophyteRepeaterItem.isCharged(p_174610_)
+                        ? 0.0F
+                        : (float)(p_174610_.getUseDuration() - p_174612_.getUseItemRemainingTicks()) / (float)ChlorophyteRepeaterItem.getChargeDuration(p_174610_);
+                }
+            }
+        );
+        ItemProperties.register(
+            ModItems.CHLOROPHYTE_REPEATER.get(),
+            new ResourceLocation("pulling"),
+            (p_174605_, p_174606_, p_174607_, p_174608_) -> p_174607_ != null
+                && p_174607_.isUsingItem()
+                && p_174607_.getUseItem() == p_174605_
+                && !ChlorophyteRepeaterItem.isCharged(p_174605_)
+                ? 1.0F
+                : 0.0F
+        );
+        ItemProperties.register(
+            ModItems.CHLOROPHYTE_REPEATER.get(),
+            new ResourceLocation("charged"), (p_275891_, p_275892_, p_275893_, p_275894_) -> ChlorophyteRepeaterItem.isCharged(p_275891_) ? 1.0F : 0.0F
+        );
+        ItemProperties.register(
+            ModItems.CHLOROPHYTE_REPEATER.get(),
+            new ResourceLocation("firework"),
+            (p_275887_, p_275888_, p_275889_, p_275890_) -> ChlorophyteRepeaterItem.isCharged(p_275887_)
+                && ChlorophyteRepeaterItem.containsChargedProjectile(p_275887_, Items.FIREWORK_ROCKET)
+                ? 1.0F
+                : 0.0F
+        );
         
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_WALL_TORCH.get(), RenderType.cutout());

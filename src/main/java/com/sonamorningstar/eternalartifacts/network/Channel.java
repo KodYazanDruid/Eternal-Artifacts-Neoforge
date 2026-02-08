@@ -12,18 +12,10 @@ import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 public class Channel {
-    
-    // Artık manuel kayıt gerekmiyor!
-    // @RegisterPacket annotation'ı olan tüm paketler otomatik olarak taranıp kaydedilir.
-    // Sadece annotation ekleyin:
-    //
-    // @RegisterPacket(side = PacketSide.SERVER)
-    // public record MyPacket(...) implements CustomPacketPayload { ... }
 
     public static void onRegisterPayloadHandler(RegisterPayloadHandlerEvent event) {
         final IPayloadRegistrar registrar = event.registrar(MODID).versioned("1.0");
         
-        // Tüm paketleri otomatik kaydet (@RegisterPacket annotation'ı olanlar)
         PacketRegistrar.registerAll(registrar);
     }
 

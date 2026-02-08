@@ -33,7 +33,7 @@ public class HammeringRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack assemble(SimpleContainer con, RegistryAccess reg) {
-        return getResultItem(reg);
+        return getResultItem(reg).copy();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class HammeringRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return output.copy();
+        return output;
     }
 
     @Override

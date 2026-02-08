@@ -1,0 +1,6 @@
+{
+  "parent": "item/crossbow",
+  "textures": {
+    "layer0": "eternalartifacts:item/chlorophyte_repeater_pulling_1"
+  }
+}

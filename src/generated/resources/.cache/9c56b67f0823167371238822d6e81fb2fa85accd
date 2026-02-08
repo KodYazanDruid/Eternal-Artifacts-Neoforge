@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-05T15:13:30.1205697	Item Models: eternalartifacts
+// 1.20.4	2026-02-07T19:39:32.6652345	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -39,7 +39,6 @@ ba4a3361a0134f9fab34b252ee5a769adc1be103 assets/eternalartifacts/models/item/car
 3d6b91b2bde1ae551952f36f0209d1ea3adc599e assets/eternalartifacts/models/item/chisel.json
 80f78501054e377bf122ec5eb833fc3e5184f578 assets/eternalartifacts/models/item/chlorophyte_cutlass.json
 66eec94e2e9ef972b02e8054ef7bccaa254aab86 assets/eternalartifacts/models/item/chlorophyte_ingot.json
-a19b4b66f0650b843283b21f354117604260f523 assets/eternalartifacts/models/item/chlorophyte_repeater.json
 d7c4351197e0e044b26d0043b22dfc21d19a091b assets/eternalartifacts/models/item/chlorophyte_sickle.json
 c28a6e21fcb0b4beeb03ff435bade36ed0b86462 assets/eternalartifacts/models/item/chlorophyte_tablet.json
 cdc897d603b343e881b0dabb96a42c3ab5da8aab assets/eternalartifacts/models/item/chlorophyte_upgrade_smithing_template.json

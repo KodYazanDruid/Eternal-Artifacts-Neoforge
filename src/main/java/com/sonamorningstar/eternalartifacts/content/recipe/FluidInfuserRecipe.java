@@ -47,7 +47,7 @@ public class FluidInfuserRecipe implements Recipe<ItemFluidContainer> {
     }
 
     @Override
-    public ItemStack assemble(ItemFluidContainer pContainer, RegistryAccess pRegistryAccess) {return getResultItem(pRegistryAccess);}
+    public ItemStack assemble(ItemFluidContainer pContainer, RegistryAccess pRegistryAccess) {return getResultItem(pRegistryAccess).copy();}
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override

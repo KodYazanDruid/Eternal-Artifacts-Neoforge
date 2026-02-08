@@ -302,6 +302,11 @@ public class MultiFluidTank<T extends AbstractFluidTank> extends AbstractFluidTa
     public void setFluid(FluidStack stack, int tank) {
         tanks.get(tank).setFluid(stack, 0);
     }
+    
+    @Override
+    public void setFluidSilent(FluidStack stack, int tank) {
+        tanks.get(tank).setFluid(stack, 0);
+    }
 
     @Override
     public FluidStack getFluid(int tank) {

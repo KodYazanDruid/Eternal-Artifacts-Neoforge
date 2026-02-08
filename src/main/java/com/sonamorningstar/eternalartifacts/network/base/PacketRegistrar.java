@@ -57,8 +57,8 @@ public final class PacketRegistrar {
                                 if (!alreadyRegistered) {
                                     register(packetClass, packetAnnotation.side());
                                     count++;
-                                    /*EternalArtifacts.LOGGER.debug("Auto-registered packet: {} with side: {}",
-                                        clazz.getSimpleName(), packetAnnotation.side());*/
+                                    EternalArtifacts.LOGGER.debug("Auto-registered packet: {} with side: {}",
+                                        clazz.getSimpleName(), packetAnnotation.side());
                                 }
                             }
                         }

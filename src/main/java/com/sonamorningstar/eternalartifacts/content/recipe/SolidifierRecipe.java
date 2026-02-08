@@ -32,7 +32,7 @@ public class SolidifierRecipe implements Recipe<SimpleFluidContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleFluidContainer pContainer, RegistryAccess pRegistryAccess) {return getResultItem(pRegistryAccess);}
+    public ItemStack assemble(SimpleFluidContainer pContainer, RegistryAccess pRegistryAccess) {return getResultItem(pRegistryAccess).copy();}
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override

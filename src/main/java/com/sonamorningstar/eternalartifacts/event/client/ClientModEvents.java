@@ -214,13 +214,14 @@ public class ClientModEvents {
         /*event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
         event.registerBlockEntityRenderer(ModMachines.MOB_HARVESTER.getBlockEntity(), ctx -> new AreaRenderer<>());
         event.registerBlockEntityRenderer(ModMachines.HARVESTER.getBlockEntity(), ctx -> new AreaRenderer<>());*/
-        ModMachines.MACHINES.getMachines().forEach(machineHolder -> {
+        // WorkingAreaProvider rendering moved to RenderLevelStageEvent in ClientEvents
+        /*ModMachines.MACHINES.getMachines().forEach(machineHolder -> {
             var blockEntityType = machineHolder.getBlockEntity();
             var dummyEntity = blockEntityType.create(BlockPos.ZERO, machineHolder.getBlock().defaultBlockState());
             if (dummyEntity instanceof WorkingAreaProvider) {
                 event.registerBlockEntityRenderer((BlockEntityType<? extends WorkingAreaProvider>) blockEntityType, ctx -> new AreaRenderer<>());
             }
-        });
+        });*/
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), ctx -> new DSUItemRenderer());
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), ctx -> new DSUFluidRenderer());
 

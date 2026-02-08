@@ -30,7 +30,9 @@ public class BookDuplicator extends GenericMachine {
 			case 0 -> stack.is(Items.ENCHANTED_BOOK) || stack.is(Items.WRITTEN_BOOK);
 			case 1 -> stack.is(Items.BOOK) || stack.is(Items.WRITABLE_BOOK);
 			default -> false;
-		}));
+		}, slot -> {
+            if (slot == 0) progress = 0;
+        }));
         screenInfo.setArrowPos(104, 49);
         screenInfo.setSlotPosition(80, 48, 0);
         screenInfo.setSlotPosition(80, 26, 1);
@@ -40,26 +42,21 @@ public class BookDuplicator extends GenericMachine {
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
-        performAutoInputItems(lvl, pos);
-        performAutoOutputItems(lvl, pos);
         
         ItemStack inputBook = inventory.getStackInSlot(0);
         ItemStack consumableBook = inventory.getStackInSlot(1);
         ItemStack output = inventory.getStackInSlot(2);
 
         if (inputBook.getItem() == Items.ENCHANTED_BOOK &&
-            consumableBook.getItem() == Items.BOOK &&
-            output.isEmpty() && canWork(energy)) {
+                consumableBook.getItem() == Items.BOOK &&
+                output.isEmpty() && canWork(energy)) {
 
             Map<Enchantment, Integer> enchantmentMap = EnchantmentHelper.getEnchantments(inputBook);
-            //Book should only have one enchantment.
             if(enchantmentMap.size() == 1) {
                 Map.Entry<Enchantment, Integer> enchantEntry = enchantmentMap.entrySet().stream().findFirst().get();
-                //Check if it is a treasure or not. Do not allow copying treasure enchantments.
                 Enchantment enchantment = enchantEntry.getKey();
                 if(canDupeEnch(enchantment)) {
                     int level = enchantEntry.getValue();
-                    //Only level 3 and lower enchantment levels can be duped.
                     if (level > 0 && level <= 3) {
                         progress(()-> tank.getFluidAmount(0) < 100 * level, () -> {
                             inventory.extractItem(1, 1, false);
@@ -68,9 +65,9 @@ public class BookDuplicator extends GenericMachine {
                             EnchantmentHelper.setEnchantments(Map.of(enchantment, level), copy);
                             inventory.setStackInSlot(2, copy);
                         }, energy);
-                    }
-                }
-            }
+                    } else progress = 0;
+                } else progress = 0;
+            } else progress = 0;
             //Written stack copy stuff.
         } else if (inputBook.getItem() == Items.WRITTEN_BOOK &&
                 consumableBook.getItem() == Items.WRITABLE_BOOK &&
@@ -87,6 +84,8 @@ public class BookDuplicator extends GenericMachine {
                 AttachmentUtils.copyStackAttachments(inputBook, copy);
                 inventory.setStackInSlot(2, copy);
             }, energy);
+        } else {
+            progress = 0;
         }
     }
     

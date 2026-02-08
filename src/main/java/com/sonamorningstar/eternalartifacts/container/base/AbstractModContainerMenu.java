@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.container.base;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
-import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.container.slot.FluidSlot;
 import com.sonamorningstar.eternalartifacts.network.SendStringToServer;
 import com.sonamorningstar.eternalartifacts.network.UpdateFakeSlotToServer;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
@@ -197,7 +197,7 @@ public abstract class AbstractModContainerMenu extends AbstractContainerMenu {
     }
     private FluidStack emptyContainer(FluidSlot slot, IFluidHandlerItem containerTank, Player player) {
         FluidStack drainable = containerTank.drain(Integer.MAX_VALUE, IFluidHandler.FluidAction.SIMULATE);
-        if (!drainable.isEmpty()) {
+        if (!drainable.isEmpty() && slot.mayPlace(drainable)) {
             Fluid fluid = drainable.getFluid();
             CompoundTag fluidTag = drainable.getTag();
             int fillableAmount = slot.fill(drainable, IFluidHandler.FluidAction.SIMULATE);

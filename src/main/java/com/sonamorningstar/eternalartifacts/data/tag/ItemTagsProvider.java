@@ -246,6 +246,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.CHLOROPHYTE_SICKLE.get(),
             ModItems.STEEL_SICKLE.get()
         );
+        tag(Tags.Items.TOOLS_CROSSBOWS).add(
+            ModItems.CHLOROPHYTE_REPEATER.get()
+        );
         tag(Tags.Items.TOOLS).addTags(
             ModTags.Items.TOOLS_HAMMER,
             ModTags.Items.TOOLS_CUTLASS,

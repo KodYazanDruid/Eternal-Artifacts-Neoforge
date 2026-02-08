@@ -3,7 +3,7 @@ package com.sonamorningstar.eternalartifacts.container;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.Warp;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
-import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.container.slot.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,12 +45,12 @@ public class InterfaceRemoteMenu extends AbstractModContainerMenu {
 					slotIndex++;
 				}
 			}
-			if (fluidHandler != null) {
+			/*if (fluidHandler != null) {
 				for (int i = 0; i < fluidHandler.getTanks(); i++) {
 					addFluidSlot(new FluidSlot(fluidHandler, i, 7 + (slotIndex % 9) * 18, 17 + (slotIndex / 9) * 18));
 					slotIndex++;
 				}
-			}
+			}*/
 			/*IEnergyStorage energyStorage = interfaceLvl.getCapability(Capabilities.EnergyStorage.BLOCK, bindedBlock.getPosition(), null);
 			if (energyStorage != null) {
 				*//*addEnergySlot(8 + (slotIndex % 9) * 18, 18 + (slotIndex / 9) * 18, energyStorage);

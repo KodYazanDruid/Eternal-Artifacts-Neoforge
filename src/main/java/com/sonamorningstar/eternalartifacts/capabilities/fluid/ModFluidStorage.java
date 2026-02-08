@@ -169,7 +169,12 @@ public class ModFluidStorage extends AbstractFluidTank {
         this.fluid = stack;
         onContentsChanged();
     }
-
+    
+    @Override
+    public void setFluidSilent(FluidStack stack, int tank) {
+        this.fluid = stack;
+    }
+    
     @Override
     public FluidStack getFluid(int tank) {
         return getFluidInTank(tank);

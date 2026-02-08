@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.google.common.util.concurrent.Runnables;
+import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.container.AnvilinatorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -23,6 +25,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.AnvilUpdateEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.jetbrains.annotations.Nullable;
 import oshi.util.Util;
 
 import java.util.Map;
@@ -35,6 +38,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     private AnvilUpdateEvent anvilUpdateEvent;
     private ItemStack pendingResult = ItemStack.EMPTY;
     private int pendingFluidCost = 0;
+    private int pendingMaterialCount = 1;
     @Setter
     @Getter
     private int currentXpCost = 0;
@@ -87,6 +91,12 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         fireEvent();
     }
     
+    @Override
+    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        progress = 0;
+        super.setProcessCondition(condition, recipe);
+    }
+    
     private void fireEvent() {
         int xpCost = 0;
         anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, xpCost, getFakePlayer());
@@ -127,7 +137,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         // Vanilla-style enchant combining
         if (!input.isEmpty() && secondary.is(Items.ENCHANTED_BOOK) && !combineEnchants(input, secondary).isEmpty()) {
             ItemStack result = combineEnchants(input, secondary);
-            currentXpCost = calculateEnchantCost(secondary);
+            int levelCost = calculateEnchantCost(input, secondary);
+            currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
             Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
             int fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
@@ -136,15 +147,18 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             } else progress = 0;
         } else if (input.isDamageableItem() && input.getItem().isValidRepairItem(input, secondary)) {
             // Repairing item with its repair material
-            int damage = input.getDamageValue() - Math.min(input.getDamageValue(), input.getMaxDamage() / 4);
-            if (damage < 0) damage = 0;
+            int materialsUsed = calculateMaterialsUsed(input, secondary);
+            int repairPerItem = input.getMaxDamage() / 4;
+            int totalRepair = repairPerItem * materialsUsed;
+            int newDamage = Math.max(0, input.getDamageValue() - totalRepair);
             ItemStack result = input.copyWithCount(1);
-            result.setDamageValue(damage);
-            currentXpCost = calculateRepairCost(input);
+            result.setDamageValue(newDamage);
+            int levelCost = calculateRepairCost(input, secondary);
+            currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
             Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
             int fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
-                setPendingOperation(applyNaming(result), fluidCost);
+                setPendingOperation(applyNaming(result), fluidCost, materialsUsed);
                 progress(() -> pendingResult.isEmpty() || !canOutputResult(pendingResult), this::craftAnvilResult, energy);
             } else progress = 0;
         } else if (input.isDamageableItem() && input.is(secondary.getItem())) {
@@ -158,7 +172,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             ItemStack copy = input.copy();
             copy.setDamageValue(repair);
             ItemStack result = !combineEnchants(input, secondary).isEmpty() ? combineEnchants(copy, secondary) : copy;
-            currentXpCost = calculateCombineCost(input, secondary);
+            int levelCost = calculateCombineCost(input, secondary);
+            currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
             Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
             int fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
@@ -168,7 +183,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         } else if (secondary.isEmpty() && enableNaming && !input.isEmpty()) {
             // Renaming section
             ItemStack result = input.copyWithCount(1);
-            currentXpCost = calculateRenameCost();
+            int levelCost = calculateRenameCost();
+            currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
             Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
             int fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
@@ -182,9 +198,14 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         }
     }
     
-    private void setPendingOperation(ItemStack result, int fluidCost) {
+    private void setPendingOperation(ItemStack result, int fluidCost, int materialCount) {
         this.pendingResult = result;
         this.pendingFluidCost = fluidCost;
+        this.pendingMaterialCount = materialCount;
+    }
+    
+    private void setPendingOperation(ItemStack result, int fluidCost) {
+        setPendingOperation(result, fluidCost, 1);
     }
     
     private boolean canOutputResult(ItemStack result) {
@@ -204,47 +225,102 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     
     private void craftAnvilResult() {
         if (pendingResult.isEmpty()) return;
-        ItemStack input = inventory.getStackInSlot(0);
-        ItemStack secondary = inventory.getStackInSlot(1);
         
-        input.shrink(1);
-        if (!secondary.isEmpty()) secondary.shrink(1);
+        inventory.extractItem(0, 1, false);
+        inventory.extractItem(1, pendingMaterialCount, false);
         tank.drainForced(pendingFluidCost, IFluidHandler.FluidAction.EXECUTE);
         inventory.insertItemForced(2, pendingResult.copy(), false);
         
         pendingResult = ItemStack.EMPTY;
         pendingFluidCost = 0;
+        pendingMaterialCount = 1;
     }
     
-    private int calculateEnchantCost(ItemStack book) {
+    private int calculateEnchantCost(ItemStack input, ItemStack book) {
         Map<Enchantment, Integer> bookEnchs = EnchantmentHelper.getEnchantments(book);
         int levelCost = 0;
         for (var entry : bookEnchs.entrySet()) {
-            levelCost += entry.getValue();
+            Enchantment enchant = entry.getKey();
+            int level = entry.getValue();
+            int rarityMultiplier = getEnchantmentRarityMultiplier(enchant) / 2;
+            levelCost += Math.max(1, rarityMultiplier) * level;
         }
-        return ExperienceHelper.totalXpForLevel(Math.max(1, levelCost));
+        levelCost += input.getBaseRepairCost() + book.getBaseRepairCost();
+        return Math.max(1, levelCost);
     }
     
-    private int calculateRepairCost(ItemStack input) {
-        int levelCost = 1 + (input.getBaseRepairCost() / 2);
-        return ExperienceHelper.totalXpForLevel(levelCost);
+    private int calculateRepairCost(ItemStack input, ItemStack material) {
+        int materialsUsed = calculateMaterialsUsed(input, material);
+        int levelCost = materialsUsed;
+        levelCost += input.getBaseRepairCost();
+        return Math.max(1, levelCost);
+    }
+    
+    private int calculateMaterialsUsed(ItemStack input, ItemStack material) {
+        int damage = input.getDamageValue();
+        int repairPerItem = input.getMaxDamage() / 4;
+        int materialsUsed = 0;
+        
+        while (damage > 0 && materialsUsed < material.getCount()) {
+            damage -= repairPerItem;
+            materialsUsed++;
+        }
+        
+        return Math.max(1, materialsUsed);
     }
     
     private int calculateCombineCost(ItemStack input, ItemStack secondary) {
-        int levelCost = 2;
-        if (!combineEnchants(input, secondary).isEmpty()) {
-            Map<Enchantment, Integer> bookEnchs = EnchantmentHelper.getEnchantments(secondary);
-            for (var entry : bookEnchs.entrySet()) {
-                levelCost += entry.getValue();
+        int levelCost = 0;
+        
+        levelCost += input.getBaseRepairCost() + secondary.getBaseRepairCost();
+        
+        levelCost += 2;
+        
+        Map<Enchantment, Integer> inputEnchs = EnchantmentHelper.getEnchantments(input);
+        Map<Enchantment, Integer> secondaryEnchs = EnchantmentHelper.getEnchantments(secondary);
+        
+        for (var entry : secondaryEnchs.entrySet()) {
+            Enchantment enchant = entry.getKey();
+            int level = entry.getValue();
+            
+            boolean compatible = true;
+            for (Enchantment existing : inputEnchs.keySet()) {
+                if (!existing.equals(enchant) && !enchant.isCompatibleWith(existing)) {
+                    compatible = false;
+                    levelCost += 1;
+                    break;
+                }
+            }
+            
+            if (compatible) {
+                int rarityMultiplier = getEnchantmentRarityMultiplier(enchant);
+                int finalLevel = level;
+                if (inputEnchs.containsKey(enchant)) {
+                    int existingLevel = inputEnchs.get(enchant);
+                    if (existingLevel == level && level < enchant.getMaxLevel()) {
+                        finalLevel = level + 1;
+                    } else {
+                        finalLevel = Math.max(existingLevel, level);
+                    }
+                }
+                levelCost += rarityMultiplier * finalLevel;
             }
         }
-        levelCost += (input.getBaseRepairCost() / 2);
-        return ExperienceHelper.totalXpForLevel(levelCost);
+        
+        return Math.max(1, levelCost);
+    }
+    
+    private int getEnchantmentRarityMultiplier(Enchantment enchant) {
+        return switch (enchant.getRarity()) {
+            case COMMON -> 1;
+            case UNCOMMON -> 2;
+            case RARE -> 4;
+            case VERY_RARE -> 8;
+        };
     }
     
     private int calculateRenameCost() {
-        //return ExperienceHelper.totalXpForLevel(1);
-        //Renaming is from the house.
+        // Renaming is free in Anvilinator
         return 0;
     }
 

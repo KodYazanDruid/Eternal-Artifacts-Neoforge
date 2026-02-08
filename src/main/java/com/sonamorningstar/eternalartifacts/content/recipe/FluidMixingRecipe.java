@@ -42,7 +42,7 @@ public record FluidMixingRecipe(FluidIngredient fluidInput1, FluidIngredient flu
 	
 	@Override
 	public ItemStack assemble(ItemFluidContainer con, RegistryAccess reg) {
-		return getResultItem(reg);
+		return getResultItem(reg).copy();
 	}
 	
 	@Override

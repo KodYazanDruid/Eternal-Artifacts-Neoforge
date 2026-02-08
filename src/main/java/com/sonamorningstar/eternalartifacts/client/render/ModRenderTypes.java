@@ -8,6 +8,7 @@ import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 
+import java.util.OptionalDouble;
 import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -16,6 +17,43 @@ public class ModRenderTypes extends RenderType {
 	private ModRenderTypes(String name, VertexFormat format, VertexFormat.Mode mode, int bufferSize, boolean affectsCrumbling, boolean sortOnUpload, Runnable setupState, Runnable clearState) {
 		super(name, format, mode, bufferSize, affectsCrumbling, sortOnUpload, setupState, clearState);
 	}
+	
+	public static final RenderType AREA_OUTLINE = create(
+			MODID + ":area_outline",
+			DefaultVertexFormat.POSITION_COLOR_NORMAL,
+			VertexFormat.Mode.LINES,
+			256,
+			false,
+			false,
+			RenderType.CompositeState.builder()
+				.setShaderState(RENDERTYPE_LINES_SHADER)
+				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(5.0)))
+				.setLayeringState(POLYGON_OFFSET_LAYERING)
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				//.setOutputState(PARTICLES_TARGET)
+				.setWriteMaskState(COLOR_WRITE)
+				.setCullState(NO_CULL)
+				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.createCompositeState(false)
+	);
+	
+	public static final RenderType AREA_FACE =  create(
+			MODID + ":area_face",
+			DefaultVertexFormat.POSITION_COLOR,
+			VertexFormat.Mode.QUADS,
+			256,
+			false,
+			true,
+			RenderType.CompositeState.builder()
+				.setShaderState(POSITION_COLOR_SHADER)
+				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+				.setLayeringState(POLYGON_OFFSET_LAYERING)
+				.setCullState(NO_CULL)
+				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setWriteMaskState(COLOR_WRITE)
+				//.setOutputState(PARTICLES_TARGET)
+				.createCompositeState(false)
+	);
 	
 	public static final Supplier<RenderType> SPELL_CLOUD = () ->  {
 		RenderType.CompositeState state = RenderType.CompositeState.builder()

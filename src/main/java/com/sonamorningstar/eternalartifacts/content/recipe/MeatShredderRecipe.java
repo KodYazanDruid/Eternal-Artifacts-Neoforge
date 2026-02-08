@@ -36,7 +36,7 @@ public class MeatShredderRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {return ItemStack.EMPTY;}
+    public ItemStack assemble(SimpleContainer pContainer, RegistryAccess pRegistryAccess) {return getResultItem(pRegistryAccess).copy();}
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {return false;}
     @Override

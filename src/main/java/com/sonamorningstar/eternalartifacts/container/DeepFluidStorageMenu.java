@@ -1,8 +1,9 @@
 package com.sonamorningstar.eternalartifacts.container;
 
+import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.DeepFluidStorageUnit;
-import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.container.slot.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModMenuTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -27,7 +28,7 @@ public class DeepFluidStorageMenu extends AbstractModContainerMenu {
 		addPlayerInventoryAndHotbar(inventory, 8, 66);
 		
 		IFluidHandler fh = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
-		if (fh != null) addFluidSlot(new FluidSlot(fh, 0, 80, 30));
+		if (fh instanceof AbstractFluidTank aft) addFluidSlot(new FluidSlot(() -> aft, 0, 80, 30));
 	}
 	
 	@Override

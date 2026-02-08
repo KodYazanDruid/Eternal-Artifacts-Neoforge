@@ -44,6 +44,7 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -80,6 +81,8 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -105,6 +108,7 @@ import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -773,7 +777,27 @@ public class CommonEvents {
         UnpackerRecipeCache.rebuild(server.getRecipeManager(), server.overworld());
         
         setupTagBasedCauldronInteractions();
+        
     }
+    
+    /*@SubscribeEvent
+    public static void serverStartedEvent(ServerStartedEvent event) {
+        *//*MinecraftServer server = event.getServer();
+        RegistryAccess.Frozen regAcc = server.registryAccess();
+        ServerLevel sLevel = server.getLevel(Level.OVERWORLD);
+        if (sLevel != null) {
+            for (RecipeHolder<?> recipe : server.getRecipeManager().getRecipes()) {
+                if (recipe.id().getNamespace().equals(MODID)) {
+                    System.out.println("Testing recipe: " + recipe.id());
+                    Recipe<?> value = recipe.value();
+                    ItemStack resultItem = value.getResultItem(regAcc);
+                    if (resultItem == null) System.out.println("  -> Result item is null!");
+                    else if (resultItem.isEmpty()) System.out.println("  -> Result item is empty!");
+                    else System.out.println("  -> Result item: " + resultItem.getItem());
+                }
+            }
+        }*//*
+    }*/
     
     public static void setupTagBasedCauldronInteractions() {
         ModCauldronInteraction.NAPHTHA.map().clear();

@@ -185,7 +185,6 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.MAGIC_QUIVER.get());
         basicItem(ModItems.IRON_LEATHER_GLOVES.get());
         basicItem(ModItems.MAGNET.get());
-        withParentItemPath(ModItems.CHLOROPHYTE_REPEATER, "crossbow");
         basicItem(ModItems.PORTABLE_FURNACE.get());
         basicItem(ModItems.TIN_INGOT.get());
         basicItem(ModItems.ALUMINUM_INGOT.get());

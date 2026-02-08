@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-05T21:06:00.4087629	Recipes
+// 1.20.4	2026-02-07T19:39:32.6564745	Recipes
 a5977152c10a390a5ad1ce429add954d01d5d7bd data/eternalartifacts/advancements/recipes/building_blocks/honey_block_from_honey_balls.json
 3dda9c7194fb80e5be48c6a526e6e236bab0f1e2 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_slab.json
 07b243e4c363636606d739749024ba8870dfa511 data/eternalartifacts/advancements/recipes/building_blocks/ice_brick_stairs.json
@@ -490,7 +490,7 @@ c7853d7791a12279b434365bfda59370b0eb784a data/eternalartifacts/recipes/dyeing/re
 1b31982ab7718ff6680c28a2771cc1f099a2e7c0 data/eternalartifacts/recipes/dyeing/yellow_shulker_shell.json
 7cda87d051d1883d527dc3c124fd4d8bae1dfd73 data/eternalartifacts/recipes/electric_furnace.json
 cbfd9c4264a15e674ad01849167e76dd3c95a734 data/eternalartifacts/recipes/ender_knapsack.json
-30cb21aa45d4b7420d2e3e3505c85a623fc8fa63 data/eternalartifacts/recipes/ender_notebook.json
+42e711cea28a31fd89a9f8ec510ce09e42575429 data/eternalartifacts/recipes/ender_notebook.json
 7d03c906966ba0e563f60e83df3a8a88fd4a6da2 data/eternalartifacts/recipes/ender_paper.json
 636620b36f0936f35699739a67664daa01762d3f data/eternalartifacts/recipes/ender_tablet.json
 0b33e28e004337450e2f26da83eb28bf3ab66284 data/eternalartifacts/recipes/entity_catalogue.json

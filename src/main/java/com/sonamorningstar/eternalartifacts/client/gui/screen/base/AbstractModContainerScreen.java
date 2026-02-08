@@ -14,7 +14,7 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.recipe.inventory.FluidSlot;
+import com.sonamorningstar.eternalartifacts.container.slot.FluidSlot;
 import com.sonamorningstar.eternalartifacts.core.ModKeyMappings;
 import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
