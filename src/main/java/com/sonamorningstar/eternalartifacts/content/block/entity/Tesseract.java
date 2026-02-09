@@ -12,6 +12,8 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -66,7 +68,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	public void onLoad() {
 		super.onLoad();
 		setNetworkId(networkId);
-		if (!level.isClientSide()) {
+		if (!level.isClientSide() && canLoadChunks()) {
 			addToManager();
 			updateForcedChunks();
 		}
@@ -74,18 +76,17 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	
 	@Override
 	public void setRemoved() {
+		removeFromManager();
+		forcedChunks.clear();
 		super.setRemoved();
-		 if (!level.isClientSide()) {
-			TesseractNetworks.get(level).removeTesseractFromNetwork(this);
-			removeFromManager();
-			updateForcedChunks();
-		}
 	}
 	
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
-		if (needsForceLoaderUpdate()) {
+		ServerLevel sLevel = (ServerLevel) lvl;
+		MinecraftServer server = sLevel.getServer();
+		if (!server.isStopped() && canLoadChunks() && needsForceLoaderUpdate()) {
 			chunkUpdateCooldown = 100;
 			updateForcedChunks();
 		} else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);

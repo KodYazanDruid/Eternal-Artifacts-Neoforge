@@ -150,7 +150,7 @@ public class ClientEvents {
             }
         }
         
-        if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_BLOCK_ENTITIES)) {
+        if (event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES)) {
             Vec3 camPos = mc.gameRenderer.getMainCamera().getPosition();
             pose.pushPose();
             pose.translate(-camPos.x, -camPos.y, -camPos.z);
@@ -182,7 +182,6 @@ public class ClientEvents {
         }
     }
     
-    // Area rendering constants
     private static final float OUTLINE_R = 0.3f;
     private static final float OUTLINE_G = 0.6f;
     private static final float OUTLINE_B = 1.0f;
@@ -203,10 +202,7 @@ public class ClientEvents {
         float maxY = (float) box.maxY;
         float maxZ = (float) box.maxZ;
         
-        // Render translucent faces
         renderAreaFaces(pose, buffer, minX, minY, minZ, maxX, maxY, maxZ);
-        
-        // Render thick outline
         renderAreaOutline(pose, buffer, minX, minY, minZ, maxX, maxY, maxZ);
     }
     

@@ -554,8 +554,9 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             }
         }
         
-        // Diğer Overlapping widgetları kontrol et (DropdownMenu vb.)
-        for (GuiEventListener child : children()) {
+        // Diğer Overlapping widgetları kontrol et (DropdownMenu vb.) - ters sırada (en sondaki en üstte)
+        for (int i = upperLayerChildren.size() - 1; i >= 0; i--) {
+            GuiEventListener child = upperLayerChildren.get(i);
             if (child instanceof Overlapping overlapping &&
                 child instanceof AbstractWidget widget &&
                 !(child instanceof SimpleDraggablePanel)) {

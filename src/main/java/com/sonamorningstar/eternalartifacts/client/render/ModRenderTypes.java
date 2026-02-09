@@ -30,7 +30,6 @@ public class ModRenderTypes extends RenderType {
 				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(5.0)))
 				.setLayeringState(POLYGON_OFFSET_LAYERING)
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-				//.setOutputState(PARTICLES_TARGET)
 				.setWriteMaskState(COLOR_WRITE)
 				.setCullState(NO_CULL)
 				.setDepthTestState(LEQUAL_DEPTH_TEST)
@@ -51,7 +50,6 @@ public class ModRenderTypes extends RenderType {
 				.setCullState(NO_CULL)
 				.setDepthTestState(LEQUAL_DEPTH_TEST)
 				.setWriteMaskState(COLOR_WRITE)
-				//.setOutputState(PARTICLES_TARGET)
 				.createCompositeState(false)
 	);
 	
