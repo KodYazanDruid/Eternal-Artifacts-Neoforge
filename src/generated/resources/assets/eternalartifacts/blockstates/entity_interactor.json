@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/entity_interactor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/entity_interactor"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/entity_interactor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/entity_interactor",
+      "y": 270
+    }
+  }
+}

@@ -39,22 +39,18 @@ public class AdvancedCrafterScreen extends AbstractSidedMachineScreen<AdvancedCr
 						if (holderOptional.isPresent() && BlueprintItem.isUsingTags(blueprint)) {
 							var craftingRecipe = holderOptional.get().value();
 							var ingredients = craftingRecipe.getIngredients();
-							if (index < ingredients.size()) {
-								// Shaped veya shapeless olmasına bakmaksızın, blueprint pattern'deki düzeni kullan
-								var fakeItemStack = pattern.getFakeItems().getItem(index);
-								
-								/*if (!fakeItemStack.isEmpty()) {
-									// İlgili slot için tarif içindeki ingredient'i bul
-									for (Ingredient ingredient : ingredients) {
-										if (ingredient.test(fakeItemStack)) {
-											ItemRendererHelper.renderItemCarousel(guiGraphics, ingredient.getItems(), x, y,
-												0x8054FFA3, 0.375F);
-											return;
-										}
+							var fakeItemStack = pattern.getFakeItems().getItem(index);
+							if (!fakeItemStack.isEmpty()) {
+								// Fake item'a uyan ingredient'ı bul
+								for (var ingredient : ingredients) {
+									if (ingredient.test(fakeItemStack)) {
+										// Ingredient'ın tüm matching item'larını cycling şeklinde göster
+										ItemRendererHelper.renderItemCarousel(guiGraphics, ingredient.getItems(), x, y, 0.375F);
+										return;
 									}
-								}*/
-								return;
+								}
 							}
+							return;
 						} else {
 							var items = pattern.getFakeItems().getItems();
 							if (index < items.size()) {

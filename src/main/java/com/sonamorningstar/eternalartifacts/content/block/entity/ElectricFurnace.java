@@ -43,10 +43,9 @@ public class ElectricFurnace extends MultiFurnace<ElectricFurnaceMenu> {
             return;
         }
 
-        ItemStack result = recipe.assemble(recipeContainer.get(), lvl.registryAccess()).copy();
-        int cost = recipe.getIngredients().get(0).getItems()[0].getCount();
-
         progress(() -> {
+            ItemStack result = recipe.assemble(recipeContainer.get(), lvl.registryAccess()).copy();
+            int cost = recipe.getIngredients().get(0).getItems()[0].getCount();
             result.onCraftedBySystem(lvl);
             inventory.insertItemForced(1, result, false);
             inventory.extractItem(0, cost, false);

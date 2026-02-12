@@ -9,6 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -30,6 +34,8 @@ public class LifterItem extends Item {
 	public static final String TAG_BLOCK_ENTITY = "StoredBlockEntity";
 	public static final String TAG_BLOCK_STATE = "StoredBlockState";
 	public static final String TAG_BLOCK_ID = "StoredBlockId";
+	
+	public static boolean monitoring = false;
 	
 	public LifterItem(Properties properties) {
 		super(properties);
@@ -51,7 +57,9 @@ public class LifterItem extends Item {
 			if (level.isClientSide()) return InteractionResult.SUCCESS;
 			return placeBlockEntity(level, placePos, stack, player);
 		} else {
-			if (level.isClientSide()) return InteractionResult.SUCCESS;
+			if (level.isClientSide())
+				return level.getBlockEntity(clickedPos) == null || level.getBlockState(clickedPos).is(ModTags.Blocks.LIFTER_BLACKLISTED) ?
+					InteractionResult.FAIL : InteractionResult.SUCCESS;
 			return pickupBlockEntity(level, clickedPos, stack, player);
 		}
 	}
@@ -69,10 +77,21 @@ public class LifterItem extends Item {
 		tag.putInt(TAG_BLOCK_STATE, Block.getId(state));
 		tag.putString(TAG_BLOCK_ID, state.getBlock().getDescriptionId());
 		
-		level.removeBlockEntity(pos);
+		monitoring = true;
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
+		monitoring = false;
 		
 		return InteractionResult.CONSUME;
+	}
+	
+	public static void clearDrops(final EntityJoinLevelEvent event) {
+		if (monitoring) {
+			Entity entity = event.getEntity();
+			if (entity instanceof ItemEntity || entity instanceof ExperienceOrb) {
+				entity.discard();
+				event.setCanceled(true);
+			}
+		}
 	}
 	
 	private InteractionResult placeBlockEntity(Level level, BlockPos pos, ItemStack stack, Player player) {

@@ -51,13 +51,13 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		super(ModMachines.HARVESTER.getBlockEntity(), pos, blockState, (a, b, c, d) -> new HarvesterMenu(ModMachines.HARVESTER.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
 		setTank(() -> createBasicTank(16000, (fs) -> fs.is(ModFluids.SLUDGE.getFluid()),true, false));
-		this.inputSlots = List.of(0, 1, 2, 3);
-		for (int i = 4; i < 13; i++) {
+		this.inputSlots = List.of(1, 2, 3, 4);
+		for (int i = 5; i < 14; i++) {
 			outputSlots.add(i);
 		}
 		hoe_tillables = BuiltInRegistries.ITEM.holders().map(Holder.Reference::value).filter(item -> isCorrectTool(item.getDefaultInstance())).toArray(Item[]::new);
 		setInventory(() -> createBasicInventory(14, (slot, stack) -> {
-			if (slot == 13) return isCorrectTool(stack);
+			if (slot == 0) return isCorrectTool(stack);
 			else if (outputSlots.contains(slot)) return false;
 			else return FarmBehaviorRegistry.isValidSeed(stack);
 		}));
@@ -80,6 +80,18 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		this.workingIndex = tag.getInt("WorkingIndex");
+	}
+	
+	@Override
+	public void saveContents(CompoundTag additionalTag) {
+		super.saveContents(additionalTag);
+		additionalTag.putInt("WorkingIndex", workingIndex);
+	}
+	
+	@Override
+	public void loadContents(CompoundTag additionalTag) {
+		super.loadContents(additionalTag);
+		this.workingIndex = additionalTag.getInt("WorkingIndex");
 	}
 	
 	@Override
@@ -110,10 +122,10 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		}
 		if (!redstoneChecks(lvl) || !canWork(energy)) return;
 		
-		ItemStack toolStack = inventory.getStackInSlot(13);
+		ItemStack toolStack = inventory.getStackInSlot(0);
 		getFakePlayer();
 		setupFakePlayer(st);
-		setupFakePlayerInventory(toolStack);
+		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		for (int i = 0; i < progressStep; i++) {
 			BlockPos targetPos = workingPoses.get(workingIndex);
 			BlockState targetState = lvl.getBlockState(targetPos);

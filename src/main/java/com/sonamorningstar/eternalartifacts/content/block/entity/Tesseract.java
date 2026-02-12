@@ -99,8 +99,6 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	}
 	
 	public void setNetworkId(@Nullable UUID newId) {
-		//TesseractNetwork id is only useful on screen and menu layout in client.
-		//TesseractNetwork logic is handled on server side.
 		if (level.isClientSide()) {
 			if (newId == null) {
 				this.networkId = null;

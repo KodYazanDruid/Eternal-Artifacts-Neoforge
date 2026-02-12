@@ -476,6 +476,39 @@ public final class MachineRecipes {
 				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE)
 			)
 		);
+		registerMachineRecipe(output, ModMachines.ENERGY_DISTRIBUTOR,
+			"RCR"+"IMI"+"RPR",
+			Map.of(
+				'R', Ingredient.of(Tags.Items.INGOTS_COPPER),
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'P', Ingredient.of(ModItems.COPPER_TABLET),
+				'I', Ingredient.of(ModItems.MARIN_INGOT)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.ENTITY_INTERACTOR,
+			"BCS"+"IMI"+"RPR",
+			Map.of(
+				'B', Ingredient.of(Items.BUCKET),
+				'S', Ingredient.of(Items.SHEARS),
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'P', Ingredient.of(ModItems.COPPER_TABLET),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'I', Ingredient.of(ModItems.PINK_SLIME_STEEL_INGOT)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.ENCHANTER,
+			"DED"+"BMB"+"RCR",
+			Map.of(
+				'D', Ingredient.of(ModItems.CHLOROPHYTE_TABLET),
+				'E', Ingredient.of(Items.ENCHANTING_TABLE),
+				'B', Ingredient.of(Items.BOOK),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'C', Ingredient.of(ModItems.CAPACITOR)
+			)
+		);
 	}
 	
 	static void registerMachineRecipe(RecipeOutput output, ItemLike machine, String pattern, Map<Character, Ingredient> symbols) {

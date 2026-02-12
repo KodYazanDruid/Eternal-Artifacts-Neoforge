@@ -16,7 +16,6 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
 import com.sonamorningstar.eternalartifacts.api.filter.*;
-import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.AbstractPipeFilterScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
@@ -32,7 +31,7 @@ import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
@@ -49,7 +48,6 @@ import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -74,7 +72,6 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -117,12 +114,12 @@ public class ClientEvents {
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         LivingEntity living = Minecraft.getInstance().player;
 
-        /**
+        /*
          * Source: https://github.com/TeamTwilight/twilightforest/blob/1.20.x/src/main/java/twilightforest/client/renderer/entity/ShieldLayer.java#L25
          * @link{com.sonamorningstar.eternalartifacts.client.renderer.entity.HolyDaggerLayer} for entity layer rendering.
          * This is for first person rendering.
          */
-        if(event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES) && living.hasEffect(ModEffects.DIVINE_PROTECTION.get())) {
+        if(event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES) && living != null && living.hasEffect(ModEffects.DIVINE_PROTECTION.get())) {
             float age = living.tickCount + event.getPartialTick();
             float rotateAngleY = age / -50.0F;
             float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
@@ -562,6 +559,27 @@ public class ClientEvents {
                     );
                 }
             }
+            if (owner instanceof EnergyDistributor eDistributor) {
+                GuiDrawer.drawFramedBackground(gui, x + 27, y + 18, 130, 60, 1,
+                    0xff000000, 0xff404040, 0xffa0a0a0);
+                for (int i = 0; i < eDistributor.targets.size(); i++) {
+                    long target = eDistributor.targets.get(i);
+                    BlockPos targetPos = BlockPos.of(target);
+                    int yOffset = i * 20;
+                    BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(targetPos);
+                    if (blockEntity != null) {
+                        ResourceLocation resourceLocation = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
+                        gui.drawString(screen.getMinecraft().font,
+                            Component.literal(resourceLocation.toString()),
+                            x + 30, y + 20 + yOffset, 0xfff0f0f0, false
+                        );
+                        gui.drawString(screen.getMinecraft().font,
+                            Component.literal(targetPos.toShortString()),
+                            x + 30, y + 30 + yOffset, 0xfff0f0f0, false
+                        );
+                    }
+                }
+            }
         }
     }
     
@@ -740,9 +758,13 @@ public class ClientEvents {
             int y = gsms.getGuiTop();
             int width = gsms.getXSize();
             int height = gsms.getYSize();
-            if (gsms.getMachine() instanceof Filterable filterable) {
+            GenericMachine machine = gsms.getMachine();
+            if (machine instanceof EnergyDistributor eDistributor) {
             
             }
+            /*if (gsms.getMachine() instanceof Filterable filterable) {
+            
+            }*/
         }
     }
     
@@ -751,6 +773,8 @@ public class ClientEvents {
         Items.WRITABLE_BOOK.getDefaultInstance()
     };
     
+    private static final ItemStack RENDERED_BOOK = Items.BOOK.getDefaultInstance();
+    private static final ItemStack RENDERED_LAPIS = Items.LAPIS_LAZULI.getDefaultInstance();
     @SubscribeEvent
     public static void renderEtarSlotEvent(RenderEtarSlotEvent event) {
         AbstractModContainerScreen<?> screen = event.getScreen();
@@ -760,29 +784,35 @@ public class ClientEvents {
         if (menu instanceof AbstractMachineMenu amm) {
             BlockEntity be = amm.getBlockEntity();
             var inv = amm.getBeInventory();
-            if (be instanceof BookDuplicator && inv != null && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
-                ItemRendererHelper.renderItemCarousel(gui, BOOKS, event.getX() + 1, event.getY() + 1, 96);
-            }
-            if (be instanceof Disenchanter && inv != null && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
-                ItemRendererHelper.renderFakeItemTransparent(gui, Items.BOOK.getDefaultInstance(),
-                    event.getX() + 1, event.getY() + 1, 96 * 255);
-            }
-            if (be instanceof Harvester && inv != null && inv.getStackInSlot(13).isEmpty() && slot.index == 49) {
-                ItemRendererHelper.renderItemCarousel(gui, Ingredient.of(Harvester.hoe_tillables).getItems(),
-                    event.getX() + 1, event.getY() + 1, 96);
-            }
-            if (be instanceof Smithinator && inv != null) {
-                if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                        .apply(new ResourceLocation("item/empty_slot_smithing_template_netherite_upgrade"));
-                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16,
-                        sprite, 1, 1, 1, 1);
+            if (inv != null) {
+                if (be instanceof BookDuplicator && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
+                    ItemRendererHelper.renderItemCarousel(gui, BOOKS, event.getX() + 1, event.getY() + 1, 96);
                 }
-                if (slot.index == 38 && inv.getStackInSlot(2).isEmpty()) {
-                    TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-                        .apply(new ResourceLocation("item/empty_slot_ingot"));
-                    gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16,
-                        sprite, 1, 1, 1, 1);
+                if (be instanceof Disenchanter && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
+                    ItemRendererHelper.renderFakeItemTransparent(gui, RENDERED_BOOK,
+                        event.getX() + 1, event.getY() + 1, 96 * 255);
+                }
+                if (be instanceof Harvester && inv.getStackInSlot(0).isEmpty() && slot.index == 36) {
+                    ItemRendererHelper.renderItemCarousel(gui, Ingredient.of(Harvester.hoe_tillables).getItems(),
+                        event.getX() + 1, event.getY() + 1, 96);
+                }
+                if (be instanceof Enchanter && inv.getStackInSlot(1).isEmpty() && slot.index == 37) {
+                    ItemRendererHelper.renderFakeItemTransparent(gui, RENDERED_LAPIS,
+                        event.getX() + 1, event.getY() + 1, 96 * 255);
+                }
+                if (be instanceof Smithinator) {
+                    if (slot.index == 36 && inv.getStackInSlot(0).isEmpty()) {
+                        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+                            .apply(new ResourceLocation("item/empty_slot_smithing_template_netherite_upgrade"));
+                        gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16,
+                            sprite, 1, 1, 1, 1);
+                    }
+                    if (slot.index == 38 && inv.getStackInSlot(2).isEmpty()) {
+                        TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+                            .apply(new ResourceLocation("item/empty_slot_ingot"));
+                        gui.blit(event.getX() + 1, event.getY() + 1, 0, 16, 16,
+                            sprite, 1, 1, 1, 1);
+                    }
                 }
             }
         }

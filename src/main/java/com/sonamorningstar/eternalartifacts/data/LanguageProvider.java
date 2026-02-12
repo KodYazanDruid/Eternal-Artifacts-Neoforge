@@ -611,6 +611,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("recipe.eternalartifacts.in_world.demon_ingot", "Throw ingredients into lava.");
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Fluid Vein Size: %d");
                 add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Stored Block Entity: %s");
+                add(ModConstants.GUI.withSuffix("charge_progress"), "Charge Progress");
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBlockHolder().getId().getPath()));
@@ -1055,6 +1056,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.FLUID_PUMP.getBlockTranslationKey(), "Sıvı Pompası");
                 add(ModBlocks.NAPHTHA_CAULDRON.get(), "Nafta Kazanı");
                 add(ModBlocks.CRUDE_OIL_CAULDRON.get(), "Ham Petrol Kazanı");
+                add(ModMachines.ENERGY_DISTRIBUTOR.getBlockTranslationKey(), "Enerji Dağıtıcısı");
+                add(ModMachines.ENTITY_INTERACTOR.getBlockTranslationKey(), "Varlık Etkileşimcisi");
+                add(ModMachines.ENCHANTER.getBlockTranslationKey(), "Büyüleyici");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1316,6 +1320,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("recipe.eternalartifacts.in_world.demon_ingot", "Malzemeleri lavın içine at.");
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Sıvı Damarı boyu: %d");
                 add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Depolanan Block Varlığı: %s");
+                add(ModConstants.GUI.withSuffix("charge_progress"), "Şarj İlerlemesi");
                 //endregion
 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

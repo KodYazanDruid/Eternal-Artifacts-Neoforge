@@ -168,7 +168,8 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     protected void renderProgressArrowWTooltips(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
-        renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, "progress");
+        String key = menu.getBlockEntity() instanceof Machine<?> machine && machine.isChargeProgress() ? "charge_progress" : "progress";
+        renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, key);
     }
     protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x, y, 0, 56, 22, 15);

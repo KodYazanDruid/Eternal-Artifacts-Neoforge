@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-07T19:39:32.6652345	Item Models: eternalartifacts
+// 1.20.4	2026-02-12T15:42:14.0935987	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -86,13 +86,16 @@ c070b5a02f8a5909a4bd2ea09371cf119c614f22 assets/eternalartifacts/models/item/duc
 3e975e5ad15d0f737abbaf1de5fbe83530932d3d assets/eternalartifacts/models/item/electric_furnace.json
 47f29cd60ab8433a789e5c75d0365c22b4d82725 assets/eternalartifacts/models/item/emerald_signet.json
 9448010b52f766ba963e7846446966ddc53e5dd7 assets/eternalartifacts/models/item/enchanted_golden_ancient_fruit.json
+5ff797cdd36b3e96d4ea9cfbce2e8a61af5334e6 assets/eternalartifacts/models/item/enchanter.json
 917c9fb8d52a3487b58003fa6ac88c0d056be391 assets/eternalartifacts/models/item/encumbator.json
 78bc681824bce9b7f3f76f1c096673a70d98f0de assets/eternalartifacts/models/item/encumbator_active.json
 9537ff00e14fabce9797f951551f057591a74ca0 assets/eternalartifacts/models/item/ender_knapsack.json
 c90643f23e4462e731095ab5da3ec58e9c67289b assets/eternalartifacts/models/item/ender_notebook.json
 cacbc1204e0f048313f4821f660548aa6c1fa736 assets/eternalartifacts/models/item/ender_paper.json
 886377bc2674537be2ca5d4c14dd015e1c75474d assets/eternalartifacts/models/item/ender_tablet.json
+1024245f31b0803900776db2b4287e99fddb5222 assets/eternalartifacts/models/item/energy_distributor.json
 54c53447f92bb77fa41db78dc1b8089ae2ccf0bb assets/eternalartifacts/models/item/entity_catalogue.json
+9505f84c2b63c726faadfb5a0df5bf38e02adab2 assets/eternalartifacts/models/item/entity_interactor.json
 571bbeea77d58fddf32fe5625aa5f4594461a7e4 assets/eternalartifacts/models/item/experience_berry.json
 c2fdc74aea92bb242790af24ba4471dd51ca9817 assets/eternalartifacts/models/item/experience_oreberry.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json

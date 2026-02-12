@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.api.filter.EntityFilterEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
@@ -193,7 +195,9 @@ public class WrenchItem extends DiggerItem {
 
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-        
+        EntityFilterEntry entry = new EntityPredicateEntry(EntityPredicateEntry.EntityPredicate.BABY);
+        boolean matches = entry.matches(target);
+        System.out.println("Entity " + target.getName().getString() + " is " + (matches ? "" : "not ") + "a baby.");
         return InteractionResult.sidedSuccess(player.level().isClientSide());
     }
 }

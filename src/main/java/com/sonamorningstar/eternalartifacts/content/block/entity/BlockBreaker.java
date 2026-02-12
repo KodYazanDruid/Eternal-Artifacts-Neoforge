@@ -105,7 +105,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		
 		getFakePlayer();
 		setupFakePlayer(st);
-		setupFakePlayerInventory(inventory.getStackInSlot(0));
+		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);
 		ServerPlayerGameMode gameMode = fakePlayer.gameMode;

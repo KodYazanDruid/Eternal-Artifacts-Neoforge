@@ -13,13 +13,13 @@ public class HarvesterMenu extends AbstractMachineMenu {
 		super(menuType, id, inv, entity, data);
 		if (getBeInventory() != null) {
 			var itemCap = getBeInventory();
+			addSlot(new SlotItemHandler(itemCap, 0, 56, 55));
 			for (int i = 0; i < 4; i++) {
-				addSlot(new SlotItemHandler(itemCap, i, 56 + (i % 2) * 18,  18 + (i / 2) * 18));
+				addSlot(new SlotItemHandler(itemCap, i + 1, 56 + (i % 2) * 18,  18 + (i / 2) * 18));
 			}
 			for (int i = 0; i < 9; i++) {
-				addSlot(new SlotItemHandler(itemCap, i + 4, 98 + (i % 3) * 18,  18 + (i / 3) * 18));
+				addSlot(new SlotItemHandler(itemCap, i + 5, 98 + (i % 3) * 18,  18 + (i / 3) * 18));
 			}
-			addSlot(new SlotItemHandler(itemCap, 13, 56, 55));
 		}
 	}
 }

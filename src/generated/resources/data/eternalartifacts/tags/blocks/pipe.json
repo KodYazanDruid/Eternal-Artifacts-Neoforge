@@ -1,0 +1,10 @@
+{
+  "values": [
+    "eternalartifacts:copper_item_pipe",
+    "eternalartifacts:gold_item_pipe",
+    "eternalartifacts:steel_item_pipe",
+    "eternalartifacts:copper_fluid_pipe",
+    "eternalartifacts:gold_fluid_pipe",
+    "eternalartifacts:steel_fluid_pipe"
+  ]
+}

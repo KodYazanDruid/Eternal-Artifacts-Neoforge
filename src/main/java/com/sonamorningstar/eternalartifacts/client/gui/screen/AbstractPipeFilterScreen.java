@@ -43,7 +43,6 @@ import java.util.Optional;
 
 public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu> extends AbstractModContainerScreen<M> {
 	
-	protected final int type;
 	@Getter
 	@Nullable
 	protected SimpleDraggablePanel tagList;
@@ -51,6 +50,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 	protected Either<Item, Fluid> toConvert = null;
 	@Nullable
 	protected Slot convertingSlot;
+	protected final int type;
 	
 	public AbstractPipeFilterScreen(M menu, Inventory inv, Component title) {
 		super(menu, inv, title);

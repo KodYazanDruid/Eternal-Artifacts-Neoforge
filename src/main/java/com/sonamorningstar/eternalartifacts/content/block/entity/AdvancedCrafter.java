@@ -21,13 +21,16 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.capabilities.Capabilities;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.util.FakePlayer;
-import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
     @Nullable
@@ -68,6 +71,10 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                 if (slot == 10) {
                     if (getStackInSlot(10).getItem() instanceof BlueprintItem) {
                         pattern = BlueprintItem.getPattern(getStackInSlot(10));
+                        // Find recipe for the new pattern
+                        if (level != null && pattern != null) {
+                            pattern.findRecipe(level);
+                        }
                     } else pattern = null;
                 } else setProcessCondition(new ProcessCondition(AdvancedCrafter.this),
                     RecipeCache.getCachedRecipe(AdvancedCrafter.this));
@@ -78,12 +85,123 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                 if (slot == 10) return stack.getItem() instanceof BlueprintItem;
                 ItemStack blueprint = getStackInSlot(10);
                 if (slot < 9 && !blueprint.isEmpty() && pattern != null) {
-                    return pattern.testForPattern(stack, slot);
+                    // Check if blueprint uses ingredient mode (USE_TAGS)
+                    boolean useIngredients = BlueprintItem.isUsingTags(blueprint);
+                    if (useIngredients) {
+                        // Ensure pattern has recipe for ingredient matching
+                        if (pattern.getRecipe() == null && level != null) {
+                            pattern.findRecipe(level);
+                        }
+                        // Use ingredient-based filtering
+                        return pattern.testForIngredient(stack, slot);
+                    } else {
+                        // Use exact item matching
+                        return pattern.testForPattern(stack, slot);
+                    }
                 }
                 return !outputSlots.contains(slot);
             }
         });
         setRecipeTypeAndContainer(RecipeType.CRAFTING, () -> new SimpleCraftingContainer(inventory, outputSlots));
+    }
+    
+    /**
+     * Blueprint pattern'den gereken kovaları ve sıvılarını hesaplar.
+     * Slotta zaten kova varsa tanktan sıvı kullanılmaz.
+     * @return Map&lt;slotIndex, FluidStack needed&gt;
+     */
+    private Map<Integer, FluidStack> getRequiredBucketFluids() {
+        Map<Integer, FluidStack> requiredFluids = new HashMap<>();
+        if (pattern == null) return requiredFluids;
+        
+        Map<Integer, FluidStack> bucketSlots = pattern.getBucketFluidSlots();
+        for (Map.Entry<Integer, FluidStack> entry : bucketSlots.entrySet()) {
+            int slot = entry.getKey();
+            // Check if we have a bucket in this slot already
+            ItemStack slotStack = inventory.getStackInSlot(slot);
+            if (slotStack.isEmpty()) {
+                // No bucket in slot, need to use tank fluid
+                requiredFluids.put(slot, entry.getValue());
+            }
+        }
+        return requiredFluids;
+    }
+    
+    /**
+     * Tankta yeterli sıvı olup olmadığını kontrol eder
+     */
+    private boolean hasSufficientFluidInTank(Map<Integer, FluidStack> requiredFluids) {
+        if (requiredFluids.isEmpty()) return true;
+        if (tank == null) return false;
+        
+        // Calculate total fluid required by type
+        Map<Fluid, Integer> totalRequired = new HashMap<>();
+        for (FluidStack fluidStack : requiredFluids.values()) {
+            totalRequired.merge(fluidStack.getFluid(), fluidStack.getAmount(), Integer::sum);
+        }
+        
+        // Check if tank has enough
+        FluidStack tankFluid = tank.getFluid(0);
+        for (Map.Entry<Fluid, Integer> entry : totalRequired.entrySet()) {
+            if (tankFluid.isEmpty() || !tankFluid.getFluid().isSame(entry.getKey()) || tankFluid.getAmount() < entry.getValue()) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Tanktan sıvı çeker ve kova remainder'ı döndürür
+     */
+    private void drainFluidFromTank(Map<Integer, FluidStack> requiredFluids) {
+        if (tank == null || requiredFluids.isEmpty()) return;
+        
+        for (FluidStack fluidStack : requiredFluids.values()) {
+            tank.drain(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+        }
+    }
+    
+    /**
+     * Slotta kova yerine tanktan sıvı kullanılıp kullanılamayacağını kontrol eder
+     */
+    private boolean canUseTankFluidForSlot(int slot) {
+        if (pattern == null || tank == null) return false;
+        
+        FluidStack requiredFluid = pattern.getRequiredFluidForSlot(slot);
+        if (requiredFluid.isEmpty()) return false;
+        
+        FluidStack tankFluid = tank.getFluid(0);
+        return !tankFluid.isEmpty()
+            && tankFluid.getFluid().isSame(requiredFluid.getFluid())
+            && tankFluid.getAmount() >= requiredFluid.getAmount();
+    }
+    
+    /**
+     * Tarif için CraftingContainer oluşturur, tanktan sıvı kullanımını destekler.
+     * Blueprint pattern'deki kova item'ını sanal olarak slota koyar.
+     */
+    private CraftingContainer createCraftingContainer() {
+        return new SimpleCraftingContainer(inventory, outputSlots) {
+            @Override
+            public ItemStack getItem(int slot) {
+                ItemStack original = super.getItem(slot);
+                // If slot is empty and pattern needs a bucket, check tank
+                if (original.isEmpty() && canUseTankFluidForSlot(slot)) {
+                    // Return the virtual bucket from pattern for crafting
+                    return pattern.getBucketItemForSlot(slot);
+                }
+                return original;
+            }
+            
+            @Override
+            public List<ItemStack> getItems() {
+                List<ItemStack> items = new ArrayList<>();
+                for (int i = 0; i < 9; i++) {
+                    items.add(getItem(i));
+                }
+                return items;
+            }
+        };
     }
     
     private CraftingRecipe previousRecipe = null;
@@ -109,7 +227,12 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
             if (pattern != null) {
                 pattern.findRecipe(level);
                 condition.createCustomCondition(() -> pattern.getRecipe() == null || pattern.getRecipe() != recipe);
+                
+                // Check if tank has sufficient fluid for bucket requirements (pattern-based)
+                Map<Integer, FluidStack> requiredFluids = getRequiredBucketFluids();
+                condition.createCustomCondition(() -> !hasSufficientFluidInTank(requiredFluids));
             }
+            
             condition.queueImport(craftingRecipe.getResultItem(level.registryAccess()))
                 .commitQueuedImports();
         }
@@ -133,35 +256,56 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
         }
         previousRecipe = recipe;
         
+        // Get required fluids for bucket substitution (pattern-based)
+        Map<Integer, FluidStack> requiredFluids = getRequiredBucketFluids();
+        
         progress(() -> {
             FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, lvl);
             fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
             fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-            ItemStack result = recipe.assemble((CraftingContainer) recipeContainer.get(), lvl.registryAccess());
+            
+            // Create crafting container that substitutes buckets with tank fluid
+            CraftingContainer craftingContainer = requiredFluids.isEmpty()
+                ? (CraftingContainer) recipeContainer.get()
+                : createCraftingContainer();
+            
+            ItemStack result = recipe.assemble(craftingContainer, lvl.registryAccess());
             result.onCraftedBy(lvl, fakePlayer, result.getCount());
-            NonNullList<ItemStack> remainders = lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, (CraftingContainer) recipeContainer.get(), lvl);
+            NonNullList<ItemStack> remainders = lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, craftingContainer, lvl);
             inventory.insertItemForced(9, result, false);
+            
+            // Extract items from slots (skip slots that use tank fluid)
             for (int i = 0; i < 9; i++) {
-                inventory.extractItem(i, 1, false);
+                if (!requiredFluids.containsKey(i)) {
+                    inventory.extractItem(i, 1, false);
+                }
             }
+            
+            // Drain fluid from tank for bucket substitutions
+            drainFluidFromTank(requiredFluids);
+            
+            // Handle remainders (buckets from tank fluid become empty buckets)
             for (int i = 0; i < remainders.size(); i++) {
                 ItemStack remainder = remainders.get(i);
                 if (!remainder.isEmpty()) {
-                    inventory.setStackInSlot(i, remainder);
+                    if (requiredFluids.containsKey(i)) {
+                        // Remainder from tank fluid substitution - insert to output or drop
+                        ItemStack leftover = inventory.insertItemForced(9, remainder, false);
+                        if (!leftover.isEmpty()) {
+                            // Try to insert in any available slot
+                            for (int j = 0; j < 9; j++) {
+                                if (inventory.getStackInSlot(j).isEmpty()) {
+                                    inventory.setStackInSlot(j, leftover);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        inventory.setStackInSlot(i, remainder);
+                    }
                 }
             }
         });
  
-    }
-
-    private List<ItemStack> getContainers() {
-        List<ItemStack> containers = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
-            ItemStack stack = inventory.getStackInSlot(i);
-            if (stack.isEmpty()) continue;
-            IFluidHandlerItem fluidHandler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-            if (fluidHandler != null) containers.add(stack);
-        }
-        return containers;
     }
 }

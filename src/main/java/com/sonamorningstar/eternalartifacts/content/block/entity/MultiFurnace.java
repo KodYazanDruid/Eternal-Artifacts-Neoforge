@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
@@ -57,6 +59,7 @@ public class MultiFurnace<M extends AbstractMachineMenu> extends SidedTransferMa
 	public void setRecipeTypeId(short id) {
 		recipeTypeId = id;
 		findRecipe();
+		setProcessCondition(new ProcessCondition(this), RecipeCache.getCachedRecipe(this));
 		sendUpdate();
 	}
 	
@@ -65,6 +68,4 @@ public class MultiFurnace<M extends AbstractMachineMenu> extends SidedTransferMa
 		recipeType = getSelectedRecipeType();
 		super.findRecipe();
 	}
-	
-	
 }

@@ -48,6 +48,18 @@ public class FluidPump extends GenericMachine {
 	}
 	
 	@Override
+	public void saveContents(CompoundTag additionalTag) {
+		super.saveContents(additionalTag);
+		additionalTag.putInt("VeinSize", veinSize);
+	}
+	
+	@Override
+	public void loadContents(CompoundTag additionalTag) {
+		super.loadContents(additionalTag);
+		veinSize = additionalTag.getInt("VeinSize");
+	}
+	
+	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);

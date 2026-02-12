@@ -60,7 +60,7 @@ public class JarBlockItem extends FluidHolderBlockItem {
     @Override
     public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
         FluidStack fluidStack = getFluidStack(stack, 0);
-        if (target instanceof Cow && fluidStack.isEmpty() || fluidStack.is(NeoForgeMod.MILK.get())) {
+        if (target instanceof Cow && fluidStack.isEmpty() || fluidStack.is(NeoForgeMod.MILK.get()) && fluidStack.getAmount() < 1000) {
             FluidStack milk = new FluidStack(NeoForgeMod.MILK, 1000);
             IFluidHandlerItem jarTank = stack.getCapability(Capabilities.FluidHandler.ITEM);
             if (jarTank != null) {

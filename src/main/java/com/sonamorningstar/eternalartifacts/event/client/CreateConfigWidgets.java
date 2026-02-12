@@ -214,8 +214,8 @@ public class CreateConfigWidgets {
 			
 			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 24, 9, 9));
 			panel.addChildren((fx, fy, fw, fh) -> {
-				boolean hasInv = mbe.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, mbe.getBlockPos(), null) == null;
-				boolean hasTank = mbe.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, mbe.getBlockPos(), null) == null;
+				boolean hasInv = mbe.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, mbe.getBlockPos(), null) != null;
+				boolean hasTank = mbe.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, mbe.getBlockPos(), null) != null;
 				int yOffset = hasInv && hasTank ? 24 : hasInv || hasTank ? 14 : 4;
 				btn.setPosition(fx + 44, fy + yOffset);
 				return btn;

@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.core.ModLoots;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -47,6 +48,9 @@ public class KeepContentsFunction extends LootItemConditionalFunction {
         ItemStack tool = ctx.getParam(LootContextParams.TOOL);
         var enchantments = machine.enchantments;
         enchantments.forEach(stack::enchant);
+        if (machine.hasCustomName()) {
+            stack.setHoverName(machine.getCustomName());
+        }
         if (!tool.is(ModTags.Items.TOOLS_WRENCH)) return stack;
         CompoundTag nbt = stack.getOrCreateTag();
         IFluidHandler tankBe = level.getCapability(Capabilities.FluidHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity, null);

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "item": "eternalartifacts:marin_ingot"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "eternalartifacts:copper_tablet"
+    },
+    "R": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "RCR",
+    "IMI",
+    "RPR"
+  ],
+  "result": {
+    "item": "eternalartifacts:energy_distributor"
+  }
+}

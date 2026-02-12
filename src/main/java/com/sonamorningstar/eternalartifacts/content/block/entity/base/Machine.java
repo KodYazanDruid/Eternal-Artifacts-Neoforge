@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.api.machine.config.*;
+import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
@@ -22,10 +23,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
+import net.minecraft.world.*;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -61,7 +59,7 @@ import java.util.function.Supplier;
 import static com.sonamorningstar.eternalartifacts.api.machine.config.RedstoneConfig.Mode;
 
 @Setter
-public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, TickableServer, ChunkLoader {
+public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, TickableServer, ChunkLoader, Nameable {
     @Nullable
     private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
@@ -78,6 +76,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public int fluidTransferRate = 1000;
     public int energyTransferRate = 1000;
     protected final ContainerData data;
+    @Getter
+    protected boolean isChargeProgress = false;
     protected int progress;
     protected int progressStep = 1;
     protected int defaultMaxProgress = 100;
@@ -96,6 +96,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     private int chunkUpdateCooldown = 100;
     protected FakePlayer fakePlayer = null;
     protected boolean isFakePlayerSetUp = false;
+    @Setter
+    private Component name;
 
     public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
@@ -240,18 +242,39 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
         isFakePlayerSetUp = true;
     }
+    /**
+     * @deprecated ModFakePlayerInventory artık otomatik sync yapıyor.
+     * Bu method sadece geriye uyumluluk ve selected slot ayarı için var.
+     */
+    @Deprecated
     protected void setupFakePlayerInventory(ItemStack mainHandItem) {
         if (fakePlayer == null) return;
         Inventory fakePlayerInventory = fakePlayer.getInventory();
         fakePlayerInventory.selected = 0;
-        fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
-        int size = fakePlayerInventory.items.size();
-        for (int i = 1; i < size - 1; i++) {
-            for (int j = 0; j < inventory.getSlots(); j++) {
-                if (i == j) {
-                    fakePlayerInventory.items.set(i, inventory.getStackInSlot(j).copy());
-                }
+        // ModFakePlayerInventory otomatik sync yapıyor, eski inventory için fallback
+        if (!(fakePlayerInventory instanceof ModFakePlayer.ModFakePlayerInventory)) {
+            fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
+            int size = Math.min(fakePlayerInventory.items.size(), inventory.getSlots());
+            for (int i = 1; i < size; i++) {
+                fakePlayerInventory.items.set(i, inventory.getStackInSlot(i).copy());
             }
+        }
+    }
+    /**
+     * @deprecated ModFakePlayerInventory artık otomatik sync yapıyor.
+     * Bu method sadece geriye uyumluluk için var.
+     */
+    @Deprecated
+    protected void loadInventoryFromFakePlayer() {
+        if (fakePlayer == null) return;
+        Inventory fakePlayerInventory = fakePlayer.getInventory();
+        // ModFakePlayerInventory otomatik sync yapıyor, eski inventory için fallback
+        if (!(fakePlayerInventory instanceof ModFakePlayer.ModFakePlayerInventory)) {
+            int size = Math.min(fakePlayerInventory.items.size(), inventory.getSlots());
+            for (int i = 1; i < size; i++) {
+                inventory.setStackInSlot(i, fakePlayerInventory.items.get(i).copy());
+            }
+            inventory.setStackInSlot(0, fakePlayerInventory.getSelected());
         }
     }
     
@@ -319,6 +342,17 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     
     @Override
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putInt("progress", progress);
+        if(energy != null) tag.put("Energy", energy.serializeNBT());
+        if(inventory != null) tag.put("Inventory", inventory.serializeNBT());
+        if(tank != null) tag.put("Fluid", tank.serializeNBT());
+        tag.putInt("EnergyPerTick", energyPerTick);
+        if (hasCustomName()) tag.putString("CustomName", Component.Serializer.toJson(name));
+    }
+    
+    @Override
     @SuppressWarnings("ConstantConditions")
     public void load(CompoundTag tag) {
         super.load(tag);
@@ -327,21 +361,55 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if(inventory != null && shouldSerializeInventory()) inventory.deserializeNBT(tag.getCompound("Inventory"));
         if(tank != null && shouldSerializeTank()) tank.deserializeNBT(tag.getCompound("Fluid"));
         energyPerTick = tag.getInt("EnergyPerTick");
+        if (tag.contains("CustomName", 8)) name = Component.Serializer.fromJson(tag.getString("CustomName"));
+    }
+    
+    /**
+     * Method used to save machine data when the machine is mined with a wrench.
+     * Machine data is saved to an NBT tag which can later be restored when the machine is placed again.
+     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
+     *
+     * @param additionalTag The NBT tag used to store the machine contents
+     */
+    public void saveContents(CompoundTag additionalTag) {
+        additionalTag.putInt("Progress", progress);
+        additionalTag.putInt("MaxProgress", maxProgress);
+        additionalTag.putInt("EnergyPerTick", energyPerTick);
+        CompoundTag configTag = new CompoundTag();
+        getConfiguration().save(configTag);
+        additionalTag.put(ModBlockEntity.CONFIG_TAG_KEY, configTag);
+    }
+    
+    /**
+     * Method used to load machine data when a machine that was mined with a wrench is placed again.
+     * Reads machine data from an NBT tag and saves it to the dropped machine item.
+     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
+     *
+     * @param additionalTag The NBT tag containing the machine contents to load
+     */
+    public void loadContents(CompoundTag additionalTag) {
+        if (additionalTag.contains("Progress")) progress = additionalTag.getInt("Progress");
+        if (additionalTag.contains("MaxProgress")) maxProgress = additionalTag.getInt("MaxProgress");
+        if (additionalTag.contains("EnergyPerTick")) energyPerTick = additionalTag.getInt("EnergyPerTick");
+        CompoundTag configTag = additionalTag.getCompound(ModBlockEntity.CONFIG_TAG_KEY);
+        getConfiguration().load(configTag);
     }
     
     @Override
-    protected void saveAdditional(CompoundTag tag) {
-        super.saveAdditional(tag);
-        tag.putInt("progress", progress);
-        if(energy != null) tag.put("Energy", energy.serializeNBT());
-        if(inventory != null) tag.put("Inventory", inventory.serializeNBT());
-        if(tank != null) tag.put("Fluid", tank.serializeNBT());
-        tag.putInt("EnergyPerTick", energyPerTick);
+    public Component getName() {
+        Component customName = getCustomName();
+        return customName == null ? Component.translatable(this.getBlockState().getBlock().getDescriptionId()) : customName;
     }
-
+    
+    @Nullable
+    @Override
+    public Component getCustomName() {
+        return name;
+    }
+    
     @Override
     public Component getDisplayName() {
-        return Component.translatable(this.getBlockState().getBlock().getDescriptionId());
+        return getName();
     }
 
     @Nullable
@@ -405,30 +473,89 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
     }
     
+    /**
+     * Simple progress method that uses the machine's process condition.
+     * Runs the result when progress reaches max progress.
+     *
+     * @param result The action to run when progress completes
+     */
     protected void progress(Runnable result) {
         if (processCondition != null && energy != null) {
             progress(processCondition::shouldAbourt, result, energy);
         }
     }
     
-    protected void progress(BooleanSupplier test, Runnable result, ModEnergyStorage energy) {
-        progress(test, Runnables.doNothing(), result, energy);
+    /**
+     * Progress method with halt condition.
+     * Progress increases each tick while the halt condition is {@code false}.
+     * When progress reaches max, the result runs and progress resets.
+     *
+     * @param haltCondition Condition to halt progress (true = halt and reset)
+     * @param result The action to run when progress completes
+     * @param energy Energy storage to consume from
+     */
+    protected void progress(BooleanSupplier haltCondition, Runnable result, ModEnergyStorage energy) {
+        progress(haltCondition, Runnables.doNothing(), result, energy);
     }
 
-    protected void progress(BooleanSupplier test, Runnable running, Runnable result, ModEnergyStorage energy) {
-        if (!canWork(energy) || level == null) return;;
-        if (redstoneChecks(level)) {
-            if (test.getAsBoolean()) {
+    /**
+     * Full progress method with running action.
+     * Progress increases each tick while the halt condition is {@code false}.
+     * The running action executes every tick during progress.
+     * When progress reaches max, the result runs and progress resets.
+     * Energy is consumed every tick during progress.
+     *
+     * @param haltCondition Condition to halt progress ({@code true} = halt and reset)
+     * @param running Action to run every tick during progress
+     * @param result The action to run when progress completes
+     * @param energy Energy storage to consume from
+     */
+    protected void progress(BooleanSupplier haltCondition, Runnable running, Runnable result, ModEnergyStorage energy) {
+        if (level != null && canWork(energy) && redstoneChecks(level)) {
+            if (haltCondition.getAsBoolean()) {
                 progress = 0;
                 return;
             }
-            spendEnergy(energy);
             running.run();
             progress = Math.min(maxProgress, progress + progressStep);
             if (progress >= maxProgress) {
                 result.run();
                 progress = 0;
             }
+            spendEnergy(energy);
+        }
+    }
+    
+    /**
+     * Charge-style progress method. Progress fills up over time, then attempts the action.
+     * If the action succeeds (returns {@code true}), progress resets and charging begins again.
+     * If the action fails (returns {@code false}), progress stays full and no energy is consumed.
+     * The next tick will retry the action without consuming additional energy.
+     * This prevents continuous energy drain when the machine cannot perform useful work.
+     *
+     * @param haltCondition Condition to halt progress (true = halt and reset)
+     * @param action The action to attempt when fully charged, returns true if successful
+     * @param energy Energy storage to consume from during charging
+     */
+    protected void progressCharge(BooleanSupplier haltCondition, BooleanSupplier action, ModEnergyStorage energy) {
+        if (level == null || !redstoneChecks(level)) return;
+        
+        if (haltCondition.getAsBoolean()) {
+            progress = 0;
+            return;
+        }
+        
+        if (progress >= maxProgress) {
+            boolean success = action.getAsBoolean();
+            if (success) {
+                progress = 0;
+            }
+            return;
+        }
+        
+        if (canWork(energy)) {
+            progress = Math.min(maxProgress, progress + progressStep);
+            spendEnergy(energy);
         }
     }
     
@@ -554,37 +681,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     //endregion
     
-    
-    /**
-     * Method used to save machine data when the machine is mined with a wrench.
-     * Machine data is saved to an NBT tag which can later be restored when the machine is placed again.
-     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
-     *
-     * @param additionalTag The NBT tag used to store the machine contents
-     */
-    public void saveContents(CompoundTag additionalTag) {
-        additionalTag.putInt("Progress", progress);
-        additionalTag.putInt("MaxProgress", maxProgress);
-        additionalTag.putInt("EnergyPerTick", energyPerTick);
-        CompoundTag configTag = new CompoundTag();
-        getConfiguration().save(configTag);
-        additionalTag.put(ModBlockEntity.CONFIG_TAG_KEY, configTag);
-    }
-    
-    /**
-     * Method used to load machine data when a machine that was mined with a wrench is placed again.
-     * Reads machine data from an NBT tag and saves it to the dropped machine item.
-     * This allows the machine's contents (e.g., items, fluids, energy) to be preserved during relocation.
-     *
-     * @param additionalTag The NBT tag containing the machine contents to load
-     */
-    public void loadContents(CompoundTag additionalTag) {
-        if (additionalTag.contains("Progress")) progress = additionalTag.getInt("Progress");
-        if (additionalTag.contains("MaxProgress")) maxProgress = additionalTag.getInt("MaxProgress");
-        if (additionalTag.contains("EnergyPerTick")) energyPerTick = additionalTag.getInt("EnergyPerTick");
-        CompoundTag configTag = additionalTag.getCompound(ModBlockEntity.CONFIG_TAG_KEY);
-        getConfiguration().load(configTag);
-    }
     
     //region ChunkLoader implementation
     @Override

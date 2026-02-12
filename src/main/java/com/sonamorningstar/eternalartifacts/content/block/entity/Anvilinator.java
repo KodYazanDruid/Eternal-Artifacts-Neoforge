@@ -33,7 +33,7 @@ import java.util.Objects;
 
 public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     @Getter
-    public String name = "";
+    public String toolRename = "";
     public boolean enableNaming = false;
     private AnvilUpdateEvent anvilUpdateEvent;
     private ItemStack pendingResult = ItemStack.EMPTY;
@@ -51,9 +51,9 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         setInventory(() -> createRecipeFinderInventory(3, outputSlots));
     }
 
-    public void setName(String name) {
-        if(!name.equals(this.name)) {
-            this.name = name;
+    public void setName(String toolRename) {
+        if(!toolRename.equals(this.toolRename)) {
+            this.toolRename = toolRename;
             sendUpdate();
         }
     }
@@ -87,6 +87,18 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     }
     
     @Override
+    public void loadContents(CompoundTag tag) {
+        super.loadContents(tag);
+        enableNaming = tag.getBoolean("EnableNaming");
+    }
+    
+    @Override
+    public void saveContents(CompoundTag tag) {
+        super.saveContents(tag);
+        tag.putBoolean("EnableNaming", enableNaming);
+    }
+    
+    @Override
     protected void findRecipe() {
         fireEvent();
     }
@@ -99,7 +111,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     
     private void fireEvent() {
         int xpCost = 0;
-        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), name, xpCost, getFakePlayer());
+        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), toolRename, xpCost, getFakePlayer());
         NeoForge.EVENT_BUS.post(anvilUpdateEvent);
     }
     
@@ -125,7 +137,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
                     int fluidCost = ExperienceHelper.totalXpForLevel(cost) * 20;
                     if (tank.getFluidAmount(0) >= fluidCost) {
                         ItemStack result = eventResult.copy();
-                        if (enableNaming && !Util.isBlank(name)) result.setHoverName(Component.literal(name));
+                        if (enableNaming && !Util.isBlank(toolRename)) result.setHoverName(Component.literal(toolRename));
                         setPendingOperation(result, fluidCost);
                         progress(() -> pendingResult.isEmpty() || !canOutputResult(pendingResult), this::craftAnvilResult, energy);
                         return;
@@ -215,9 +227,9 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     }
     
     private ItemStack applyNaming(ItemStack result) {
-        if (enableNaming && !Util.isBlank(name) && !result.getHoverName().equals(Component.literal(name))) {
-            result.setHoverName(Component.literal(name));
-        } else if (enableNaming && Util.isBlank(name)) {
+        if (enableNaming && !Util.isBlank(toolRename) && !result.getHoverName().equals(Component.literal(toolRename))) {
+            result.setHoverName(Component.literal(toolRename));
+        } else if (enableNaming && Util.isBlank(toolRename)) {
             result.resetHoverName();
         }
         return result;

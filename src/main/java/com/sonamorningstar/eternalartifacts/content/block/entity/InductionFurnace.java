@@ -75,14 +75,6 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
     }
 
     public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
-    
-    @Override
-    public void setRecipeTypeId(short id) {
-        recipeTypeId = id;
-        findRecipe();
-        setProcessCondition(new ProcessCondition(this), null);
-        sendUpdate();
-    }
 
     @Override
     protected void findRecipe() {

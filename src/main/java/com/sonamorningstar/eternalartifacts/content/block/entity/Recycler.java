@@ -120,7 +120,7 @@ public class Recycler extends GenericMachine {
 		progress(() -> {
 			var recs = getRecycleOutputs(getCachedRecipe());
 			for (ItemStack stack : recs) {
-				ItemHelper.insertItemForced(inventory, stack.copy(), false, outputSlots);
+				ItemHelper.insertItemStackedForced(inventory, stack.copy(), false, outputSlots);
 			}
 			inventory.extractItem(0, 1, false);
 		});

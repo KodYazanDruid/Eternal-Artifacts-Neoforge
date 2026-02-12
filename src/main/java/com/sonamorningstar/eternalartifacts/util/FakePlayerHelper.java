@@ -27,16 +27,26 @@ public class FakePlayerHelper {
 
     public static FakePlayer getFakePlayer(Level level) {
         return FakePlayerHelper.LEVEL_FAKE_PLAYERS.computeIfAbsent(level, l -> {
-            if(l instanceof ServerLevel sl)
-                return new ModFakePlayer(sl, MOD_PROFILE, null);
+            if(l instanceof ServerLevel sl) {
+				try {
+					return new ModFakePlayer(sl, MOD_PROFILE, null);
+				} catch (NoSuchFieldException | IllegalAccessException e) {
+					throw new RuntimeException(e);
+				}
+			}
             else
                 return null;
         });
     }
     public static FakePlayer getFakePlayer(Machine<?> machine, Level level) {
         return FakePlayerHelper.MACHINE_FAKE_PLAYERS.computeIfAbsent(machine, m -> {
-            if(level instanceof ServerLevel sl)
-                return new ModFakePlayer(sl, getProfileForMachine(m), m);
+            if(level instanceof ServerLevel sl) {
+				try {
+					return new ModFakePlayer(sl, getProfileForMachine(m), m);
+				} catch (NoSuchFieldException | IllegalAccessException e) {
+					throw new RuntimeException(e);
+				}
+			}
             else
                 return null;
         });

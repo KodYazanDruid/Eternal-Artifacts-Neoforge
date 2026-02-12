@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/energy_distributor",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/energy_distributor"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/energy_distributor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/energy_distributor",
+      "y": 270
+    }
+  }
+}

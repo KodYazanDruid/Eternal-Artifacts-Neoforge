@@ -5,12 +5,14 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
 import com.sonamorningstar.eternalartifacts.content.fluid.PotionFluidType;
+import com.sonamorningstar.eternalartifacts.content.item.LifterItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructurePieces;
 import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
@@ -19,6 +21,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
 
@@ -81,7 +84,7 @@ public class EternalArtifacts {
         NeoForge.EVENT_BUS.addListener(JarDrinkEvent.class, PotionFluidType::jarDrink);
         ModCommands.addListener();
         NeoForge.EVENT_BUS.addListener(RenderPlayerEvent.Pre.class, MobModelRenderer::playerRenderPre);
-        //NeoForge.EVENT_BUS.addListener(ItemTooltipEvent.class, AttributeEnchantment::mergeTooltips);
+        NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, EntityJoinLevelEvent.class, LifterItem::clearDrops);
 
         new ModHooks().construct(modEventBus);
     }

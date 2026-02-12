@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "eternalartifacts:block/energy_distributor_bottom",
+    "east": "eternalartifacts:block/energy_distributor_side",
+    "north": "eternalartifacts:block/energy_distributor_front",
+    "particle": "eternalartifacts:block/energy_distributor_side",
+    "south": "eternalartifacts:block/energy_distributor_side",
+    "up": "eternalartifacts:block/energy_distributor_top",
+    "west": "eternalartifacts:block/energy_distributor_side"
+  }
+}

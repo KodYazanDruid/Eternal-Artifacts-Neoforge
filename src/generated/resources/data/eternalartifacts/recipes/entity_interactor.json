@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "item": "minecraft:bucket"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "item": "eternalartifacts:pink_slime_steel_ingot"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "P": {
+      "item": "eternalartifacts:copper_tablet"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "item": "minecraft:shears"
+    }
+  },
+  "pattern": [
+    "BCS",
+    "IMI",
+    "RPR"
+  ],
+  "result": {
+    "item": "eternalartifacts:entity_interactor"
+  }
+}

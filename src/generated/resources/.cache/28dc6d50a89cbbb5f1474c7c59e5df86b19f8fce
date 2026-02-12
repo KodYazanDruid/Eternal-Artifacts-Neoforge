@@ -1,4 +1,5 @@
-// 1.20.4	2026-02-08T14:25:53.1727324	vanilla/Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2026-02-12T15:42:14.0925977	vanilla/Tags for minecraft:block mod id eternalartifacts
+376ad572717c696c0f7d51787f3738b43c5ffe64 data/eternalartifacts/tags/blocks/cable.json
 ac1bf6404c14e187fcaa7abdd95e02398a3f3e9d data/eternalartifacts/tags/blocks/drum.json
 bd02464e1c960573d4213bff84b83f239b8f0947 data/eternalartifacts/tags/blocks/mineable/glasscutter.json
 a4e8097fff07f9a74259d6b5dd583f3437ff28a2 data/eternalartifacts/tags/blocks/mineable/grafter.json
@@ -7,11 +8,12 @@ f3e660e89a1134f382a8b3f42bce0dc91d88fe6d data/eternalartifacts/tags/blocks/minea
 158a4877fad0ee79d00e8c9f641ad661e822cdb5 data/eternalartifacts/tags/blocks/moss_ore_replaceables.json
 c07c5b4ab96ae01b0ec7deb16968fc1ef9ddc0d6 data/eternalartifacts/tags/blocks/ore_bearing_ground/gravel.json
 3d7e0a00f85dbfc9527253d9191d4fa15831134a data/eternalartifacts/tags/blocks/ore_bearing_ground/moss.json
+cfad6845ba4f001739d728862dca95124d077083 data/eternalartifacts/tags/blocks/pipe.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/blocks/glass.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/blocks/glass/hardened.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/blocks/hardened_glass.json
 e517276b36e45ee8c7323d191fbe31bc00c68624 data/forge/tags/blocks/mineable/sickle.json
-4d2c835453b47e47cd8d2c12b08e766dc59c3cc3 data/forge/tags/blocks/mineable/wrench.json
+f9b3b0040ed0770952418561c53ec392f91d17fe data/forge/tags/blocks/mineable/wrench.json
 2c703674343a9e87bf062be50ac23af75d52e24d data/forge/tags/blocks/obsidian.json
 d63d8f3b7e63d8371363957e097748c0c18bc1e5 data/forge/tags/blocks/ores.json
 f47a6631904bce0d5f20372c6c1e9d3aaefd9369 data/forge/tags/blocks/ores/aluminum.json
@@ -30,6 +32,7 @@ c5e8f1e5b1fa744ceda92ea326bedc66d028f13c data/forge/tags/blocks/storage_blocks.j
 c730984e92ed36d4487748e4c79cad9e282bab55 data/minecraft/tags/blocks/copper_ores.json
 9766a17ba96ae09504d9ffe34e6814cc0704df2c data/minecraft/tags/blocks/diamond_ores.json
 b9be9151a45b78bcbe394804743b140d1701b1c1 data/minecraft/tags/blocks/emerald_ores.json
+afbfa064e6a95a1442c265a98c8753fb75072797 data/minecraft/tags/blocks/enchantment_power_transmitter.json
 e8769042fa5d86572eec6befb4cd081e9c8d5a8a data/minecraft/tags/blocks/flower_pots.json
 d7f2f69f7e66d7aeffe268fa756b5b673cb4b0f8 data/minecraft/tags/blocks/gold_ores.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/minecraft/tags/blocks/impermeable.json
@@ -38,11 +41,11 @@ da265234fc1f3221e8568661450736c444c9be57 data/minecraft/tags/blocks/iron_ores.js
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
 0226707492dc8be04258cd1c3a165a9d7fc3f266 data/minecraft/tags/blocks/mineable/hoe.json
-05ecb1bcc3c8f684c60eea0679d4a9d17c8105f2 data/minecraft/tags/blocks/mineable/pickaxe.json
+e1791b0bb3b40e68a0fb4e77c55751c939817c93 data/minecraft/tags/blocks/mineable/pickaxe.json
 c07c5b4ab96ae01b0ec7deb16968fc1ef9ddc0d6 data/minecraft/tags/blocks/mineable/shovel.json
 6803f6340fb1b137923a71e19e961414fbd81325 data/minecraft/tags/blocks/needs_diamond_tool.json
 817be6ddb5e2a174a68e631deb1501166647f03f data/minecraft/tags/blocks/needs_iron_tool.json
-efb6d2b33bea503e18b6aa6bce12f35ee10e66b2 data/minecraft/tags/blocks/needs_stone_tool.json
+c4b1be636b94f2cc07cb6840469d06821972c032 data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 017e0b5031c9f6cb9087016c3fae4380007e0a37 data/minecraft/tags/blocks/redstone_ores.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/blocks/small_flowers.json

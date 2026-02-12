@@ -35,7 +35,7 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
         name.setTextColorUneditable(-1);
         name.setBordered(false);
         name.setMaxLength(50);
-        name.setValue(anvilinatorBlockEntity.getName());
+        name.setValue(anvilinatorBlockEntity.getToolRename());
         name.setEditable(!anvilinatorBlockEntity.getEnableNaming());
         addRenderableWidget(this.name);
 

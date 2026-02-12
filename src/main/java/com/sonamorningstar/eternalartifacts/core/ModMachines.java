@@ -88,10 +88,18 @@ public class ModMachines {
     public static final MachineHolder<GenericMachineMenu, BookDuplicator, MachineFourWayBlock<BookDuplicator>, MachineBlockItem>
             BOOK_DUPLICATOR = MACHINES.registerGeneric("book_duplicator", BookDuplicator::new);
     
+    public static final MachineHolder<GenericMachineMenu, Enchanter, MachineFourWayBlock<Enchanter>, MachineBlockItem>
+            ENCHANTER = MACHINES.registerGeneric("enchanter", Enchanter::new);
+    
     public static final MachineHolder<GenericMachineMenu, BatteryBox, MachineFourWayBlock<BatteryBox>, MachineBlockItem>
             BATTERY_BOX = MACHINES.register(MachineRegistration.generic("battery_box", BatteryBox::new)
                     .uniqueTexture()
                     .blockEnergyCap((be, dir) -> be.energy != null ? CapabilityHelper.regSidedEnergyCaps(be, be.energy, dir) : null)
+                    .build());
+    
+    public static final MachineHolder<GenericMachineMenu, EnergyDistributor, MachineFourWayBlock<EnergyDistributor>, MachineBlockItem>
+            ENERGY_DISTRIBUTOR = MACHINES.register(MachineRegistration.generic("energy_distributor", EnergyDistributor::new)
+                    .uniqueTexture()
                     .build());
 
     // ==================== Standard Machines ====================
@@ -143,6 +151,11 @@ public class ModMachines {
     public static final MachineHolder<AnvilinatorMenu, Anvilinator, MachineFourWayBlock<Anvilinator>, MachineBlockItem>
             ANVILINATOR = MACHINES.register(MachineRegistration
                     .standard("anvilinator", AnvilinatorMenu::new, Anvilinator::new)
+                    .build());
+    
+    public static final MachineHolder<EntityInteractorMenu, EntityInteractor, MachineFourWayBlock<EntityInteractor>, MachineBlockItem>
+            ENTITY_INTERACTOR = MACHINES.register(MachineRegistration
+                    .standard("entity_interactor", EntityInteractorMenu::new, EntityInteractor::new)
                     .build());
 
     // ==================== Six-Way Machines ====================

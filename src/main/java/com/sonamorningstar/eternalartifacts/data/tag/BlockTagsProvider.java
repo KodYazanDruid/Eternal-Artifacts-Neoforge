@@ -344,6 +344,29 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
             ModBlocks.GLOWSTONE_TORCH.get(),
             ModBlocks.GLOWTORCH.get()
         );
+        tag(ModTags.Blocks.PIPE).add(
+            ModBlocks.COPPER_ITEM_PIPE.get(),
+            ModBlocks.GOLD_ITEM_PIPE.get(),
+            ModBlocks.STEEL_ITEM_PIPE.get(),
+            ModBlocks.COPPER_FLUID_PIPE.get(),
+            ModBlocks.GOLD_FLUID_PIPE.get(),
+            ModBlocks.STEEL_FLUID_PIPE.get()
+        );
+        tag(ModTags.Blocks.CABLE).add(
+            ModBlocks.COPPER_CABLE.get(),
+            ModBlocks.COVERED_COPPER_CABLE.get(),
+            ModBlocks.GOLD_CABLE.get(),
+            ModBlocks.COVERED_GOLD_CABLE.get(),
+            ModBlocks.TIN_CABLE.get(),
+            ModBlocks.COVERED_TIN_CABLE.get()
+        );
+        tag(BlockTags.ENCHANTMENT_POWER_TRANSMITTER).addTags(
+            ModTags.Blocks.PIPE,
+            ModTags.Blocks.CABLE
+        );
+        tag(BlockTags.ENCHANTMENT_POWER_TRANSMITTER).add(
+            ModBlocks.RESONATOR.get()
+        );
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             tierAndTool(holder.getBlock(), "stone", "pickaxe");

@@ -142,6 +142,10 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
         if (actualLevel != null) {
             BlockEntity be = actualLevel.getBlockEntity(pos);
             
+            if (be instanceof Nameable nameable && nameable.hasCustomName()) {
+                stack.setHoverName(nameable.getCustomName());
+            }
+            
             if (be instanceof ModBlockEntity mbe) {
                 EnchantmentHelper.setEnchantments(new HashMap<>(mbe.enchantments), stack);
             }
@@ -170,6 +174,11 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         BlockEntity be = level.getBlockEntity(pos);
+        if (stack.hasCustomHoverName()) {
+            if (be instanceof Machine<?> machine) {
+                machine.setName(stack.getHoverName());
+            }
+        }
         if (be instanceof ModBlockEntity mbe && stack.hasTag()) {
             Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
             mbe.enchantments.clear();
