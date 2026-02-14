@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "eternalartifacts:placed_gold_oreberry",
+  "step": "underground_decoration"
+}

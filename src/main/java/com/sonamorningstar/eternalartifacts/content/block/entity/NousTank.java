@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class NousTank extends SidedTransferMachine<NousTankMenu> {
     public NousTank(BlockPos pos, BlockState blockState) {
         super(ModBlockEntities.NOUS_TANK.get(), pos, blockState, NousTankMenu::new);
-        setTank(() -> new ModFluidStorage(Integer.MAX_VALUE, fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
+        setTank(() -> new ModFluidStorage(64000 * (getVolumeLevel() + 1), fs -> fs.is(ModTags.Fluids.EXPERIENCE)) {
             @Override
             protected void onContentsChanged() {
                 NousTank.this.requestModelDataUpdate();

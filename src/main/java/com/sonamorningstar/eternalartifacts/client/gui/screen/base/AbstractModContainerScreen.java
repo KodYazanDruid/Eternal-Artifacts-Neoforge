@@ -68,7 +68,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     @Nullable
     protected SimpleDraggablePanel configPanel;
     @Nullable
-    protected SimpleDraggablePanel enchantmentPanel;
+    public SimpleDraggablePanel enchantmentPanel;
     private int nextPanelZ = BASE_PANEL_Z;
     private final Set<Slot> widgetManagedSlots = new HashSet<>();
     
@@ -501,8 +501,42 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         if (getFocused() instanceof SimpleDraggablePanel panel && isDragging() && button == 0) {
             return panel.mouseDragged(mx, my, button, dragX, dragY);
         }
+        
+        if (getFocused() instanceof ScrollablePanel<?> scrollPanel && button == 0) {
+            if (scrollPanel.mouseDragged(mx, my, button, dragX, dragY)) {
+                return true;
+            }
+        }
+        
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel panel && panel.visible && panel.active) {
+                for (GuiEventListener panelChild : panel.getChildren()) {
+                    if (panelChild instanceof ScrollablePanel<?> scrollPanel) {
+                        if (scrollPanel.mouseDragged(mx, my, button, dragX, dragY)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        
         super.mouseDragged(mx, my, button, dragX, dragY);
         return getFocused() != null && isDragging() && button == 0 && getFocused().mouseDragged(mx, my, button, dragX, dragY);
+    }
+    
+    @Override
+    public boolean mouseReleased(double mx, double my, int button) {
+        // SimpleDraggablePanel içindeki ScrollablePanel'ler için mouseReleased
+        for (GuiEventListener child : upperLayerChildren) {
+            if (child instanceof SimpleDraggablePanel panel && panel.visible && panel.active) {
+                for (GuiEventListener panelChild : panel.getChildren()) {
+                    if (panelChild instanceof ScrollablePanel<?> scrollPanel) {
+                        scrollPanel.mouseReleased(mx, my, button);
+                    }
+                }
+            }
+        }
+        return super.mouseReleased(mx, my, button);
     }
     
     @Override
@@ -538,7 +572,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
-        // upperLayerChildren listesini ters sırada kontrol et (en sondaki en üstte)
         for (int i = upperLayerChildren.size() - 1; i >= 0; i--) {
             GuiEventListener child = upperLayerChildren.get(i);
             if (child instanceof SimpleDraggablePanel panel && panel.visible && panel.active) {
@@ -554,7 +587,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             }
         }
         
-        // Diğer Overlapping widgetları kontrol et (DropdownMenu vb.) - ters sırada (en sondaki en üstte)
         for (int i = upperLayerChildren.size() - 1; i >= 0; i--) {
             GuiEventListener child = upperLayerChildren.get(i);
             if (child instanceof Overlapping overlapping &&

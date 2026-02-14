@@ -37,7 +37,7 @@ public class KnapsackTab extends AbstractInventoryTab {
             return new KnapsackMenu(id, inv, stack) {
                 @Override
                 public boolean stillValid(Player player) {
-                    return !player.isDeadOrDying() && charms.contains(stack.getItem());
+                    return !player.isDeadOrDying() && charms.containsExactStack(stack);
                 }
             };
         }

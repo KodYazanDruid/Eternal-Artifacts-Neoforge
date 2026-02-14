@@ -57,7 +57,7 @@ public class TankKnapsackMenu extends AbstractModContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return PlayerHelper.findStack(player, knapsack);
+        return PlayerHelper.findExactStack(player, knapsack);
     }
 
     public static TankKnapsackMenu fromNetwork(int id, Inventory inventory, FriendlyByteBuf buff) {

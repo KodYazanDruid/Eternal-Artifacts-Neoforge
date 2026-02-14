@@ -163,7 +163,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
                 Blocks.TWISTING_VINES_PLANT
         );
         tag(ModTags.Blocks.VERSATILITY_MINEABLES).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_SHOVEL);
-        //tag(ModTags.Blocks.LIFTER_BLACKLISTED).add();
         
         tag(BlockTags.BAMBOO_PLANTABLE_ON).add(ModBlocks.GARDENING_POT.get());
         tag(BlockTags.SMALL_FLOWERS).add(ModBlocks.FOUR_LEAF_CLOVER.get(), ModBlocks.TIGRIS_FLOWER.get());

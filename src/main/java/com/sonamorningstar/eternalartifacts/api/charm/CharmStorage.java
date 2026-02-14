@@ -195,6 +195,14 @@ public class CharmStorage extends ItemStackHandler {
         }
         return false;
     }
+    public boolean containsExactStack(ItemStack stack) {
+        if (!Config.CHARMS_ENABLED.getAsBoolean()) return false;
+        for (int i = 0; i < getSlots(); i++) {
+            ItemStack s = getStackInSlot(i);
+            if (Objects.equals(stack, s)) return true;
+        }
+        return false;
+    }
 
     public void updateCharmAttributes() {
         for (int i = 0; i < getSlots(); i++) calculateAttributeForSlot(i);
@@ -315,9 +323,7 @@ public class CharmStorage extends ItemStackHandler {
             var itemEntities = level.getEntitiesOfClass(ItemEntity.class, living.getBoundingBox().inflate(5), e -> !e.hasPickUpDelay());
             for (ItemEntity itemEntity : itemEntities) {
                 if (itemEntity.distanceTo(living) > 0.001) {
-                    Vec3 posDif = living.position().subtract(itemEntity.position());
-                    Vec3 motion = new Vec3(posDif.x / 20, posDif.y / 20, posDif.z / 20);
-                    itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(motion));
+                    itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(living.position().subtract(itemEntity.position()).normalize().scale(0.5)));
                 }
             }
         }

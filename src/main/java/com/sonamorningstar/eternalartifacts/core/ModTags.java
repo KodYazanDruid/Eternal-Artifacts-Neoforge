@@ -9,6 +9,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -33,7 +34,6 @@ public class ModTags {
         public static final TagKey<Block> ORES_TIN = forgeTag("ores/tin");
         public static final TagKey<Block> ORES_ALUMINUM = forgeTag("ores/aluminum");
         public static final TagKey<Block> MOSS_ORE_REPLACEABLES = modTag("moss_ore_replaceables");
-        public static final TagKey<Block> LIFTER_BLACKLISTED = modTag("lifter_blacklisted");
         public static final TagKey<Block> PIPE = modTag("pipe");
         public static final TagKey<Block> CABLE = modTag("cable");
         
@@ -41,6 +41,13 @@ public class ModTags {
         private static TagKey<Block> forgeTag(String name) { return BlockTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Block> modTag(String name) { return BlockTags.create(new ResourceLocation(MODID, name)); }
         private static TagKey<Block> otherTag(String namespace, String name) { return BlockTags.create(new ResourceLocation(namespace, name)); }
+    }
+    
+    public static class BlockEntityTypes {
+        public static final TagKey<BlockEntityType<?>> LIFTER_BLACKLISTED = modTag("lifter_blacklisted");
+        
+        private static TagKey<BlockEntityType<?>> forgeTag(String name) { return TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation("forge", name)); }
+        private static TagKey<BlockEntityType<?>> modTag(String name) { return TagKey.create(Registries.BLOCK_ENTITY_TYPE, new ResourceLocation(MODID, name)); }
     }
 
     public static class Items {

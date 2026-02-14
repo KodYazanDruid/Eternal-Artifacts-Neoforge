@@ -729,6 +729,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('N', Tags.Items.NUGGETS_GOLD)
             .define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(Tags.Items.INGOTS_GOLD)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.NOUS_TANK)
+            .pattern("PTP").pattern("G G").pattern("PTP")
+            .define('P', ModTags.Items.PLASTIC).define('T', ModItems.STONE_TABLET)
+            .define('G', Tags.Items.GLASS)
+            .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -831,6 +836,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .requires(Items.HONEY_BOTTLE).unlockedBy("has_item", has(Items.HONEY_BOTTLE)).save(recipeOutput);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.HONEY_BALL, 4)
             .requires(Items.HONEY_BLOCK).unlockedBy("has_item", has(Items.HONEY_BLOCK)).save(recipeOutput, makeID("honey_balls_from_honey_block"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.GLASS_SPLASH_BOTTLE)
+            .requires(Items.GLASS_BOTTLE).requires(Tags.Items.GUNPOWDER).unlockedBy("has_item", has(Tags.Items.GUNPOWDER)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BREWING, ModItems.GLASS_LINGERING_BOTTLE)
+            .requires(ModItems.GLASS_SPLASH_BOTTLE).requires(Items.DRAGON_BREATH).unlockedBy("has_item", has(Items.DRAGON_BREATH)).save(recipeOutput);
+        selfCraft(recipeOutput, ModItems.PIPE_EXTRACTOR);
+        selfCraft(recipeOutput, ModItems.PIPE_FILTER);
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }
@@ -1152,5 +1163,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .save(output, new ResourceLocation(MODID, path));
     }
 
+    private static void selfCraft(RecipeOutput output, ItemLike item) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item)
+            .requires(item).unlockedBy("has_item", has(item)).save(output, new ResourceLocation(MODID, "self_crafting/"+getItemName(item)));
+    }
 
 }

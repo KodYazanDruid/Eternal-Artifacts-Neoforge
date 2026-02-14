@@ -21,6 +21,8 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	@Getter
 	private int innerHeight;
 	protected double scrollRate;
+	public boolean scrolling = false;
+	
 	public ScrollablePanel(int x, int y, int width, int height, int scrollRate) {
 		super(x, y, width, height, Component.empty());
 		this.scrollRate = scrollRate;
@@ -90,13 +92,21 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 		super.setY(newY);
 	}
 	
+	@Override
+	public int getWidth() {
+		return scrollbarVisible() ? super.getWidth() + scrollbarWidth() : super.getWidth();
+	}
+	
+	@Override
+	public boolean scrollbarVisible() {
+		return super.scrollbarVisible();
+	}
+	
 	@Nullable
 	public W getChildUnderCursor(double mouseX, double mouseY) {
-		// Scroll offset'i hesaba kat
 		double adjustedY = mouseY + scrollAmount();
 		for (int i = children.size() - 1; i >= 0; i--) {
 			W child = children.get(i);
-			// Raw bounds check kullanarak recursive çağrıyı önle
 			if (child.active && child.visible &&
 				mouseX >= child.getX() && mouseX < child.getX() + child.getWidth() &&
 				adjustedY >= child.getY() && adjustedY < child.getY() + child.getHeight()) {
@@ -108,7 +118,17 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	
 	@Override
 	public boolean mouseClicked(double mx, double my, int button) {
-		if (visible && withinContentAreaPoint(mx, my)) {
+		if (!visible) return false;
+		
+		if (scrollbarVisible() && button == 0) {
+			int scrollbarX = getX() + getWidth() - scrollbarWidth();
+			if (mx > scrollbarX && mx <= scrollbarX + scrollbarWidth() && my >= getY() && my < getY() + getHeight()) {
+				scrolling = true;
+				return true;
+			}
+		}
+		
+		if (withinContentAreaPoint(mx, my)) {
 			W child = getChildUnderCursor(mx, my);
 			if (child != null) {
 				return child.mouseClicked(mx, my + scrollAmount(), button);
@@ -118,16 +138,30 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	}
 	
 	@Override
-	public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
-		// Raw bounds check kullan
-		boolean isOver = this.active && this.visible &&
-			mx >= this.getX() && mx < this.getX() + this.getWidth() &&
-			my >= this.getY() && my < this.getY() + this.getHeight();
-		if (visible && isOver) {
-			if (scrollbarVisible()) {
-				return super.mouseDragged(mx, my, button, dx, dy);
-			}
+	public boolean mouseReleased(double mx, double my, int button) {
+		if (button == 0) {
+			scrolling = false;
 		}
+		return super.mouseReleased(mx, my, button);
+	}
+	
+	@Override
+	public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+		if (!visible || !active) return false;
+		
+		if (scrolling && scrollbarVisible()) {
+			int scrollAreaHeight = getHeight();
+			int thumbHeight = Math.max(10, (int)((float)getHeight() / (float)innerHeight * scrollAreaHeight));
+			int scrollableRange = scrollAreaHeight - thumbHeight;
+			
+			if (scrollableRange > 0) {
+				double maxScroll = Math.max(0, innerHeight - getHeight());
+				double scrollDelta = dy * maxScroll / scrollableRange;
+				setScrollAmount(Math.max(0, Math.min(maxScroll, scrollAmount() + scrollDelta)));
+			}
+			return true;
+		}
+		
 		return false;
 	}
 	

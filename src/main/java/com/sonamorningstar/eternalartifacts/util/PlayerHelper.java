@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
 import com.sonamorningstar.eternalartifacts.network.SyncPlayerXpToClient;
 import com.sonamorningstar.eternalartifacts.util.collections.ListIterator;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
@@ -37,6 +38,16 @@ public class PlayerHelper {
 
     public static boolean findStack(Player player, ItemStack stack) {
         return player.getInventory().contains(stack);
+    }
+    public static boolean findExactStack(Player player, ItemStack stack) {
+        for (NonNullList<ItemStack> compartment : player.getInventory().compartments) {
+            for (ItemStack itemStack : compartment) {
+                if (Objects.equals(itemStack, stack)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public static ItemStack findItemWithTag(Player player, Item item, CompoundTag tag) {
         IItemHandler playerItemCapability = player.getCapability(Capabilities.ItemHandler.ENTITY);

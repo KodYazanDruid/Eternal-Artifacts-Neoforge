@@ -39,6 +39,6 @@ public class KnapsackMenu extends AbstractModContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return PlayerHelper.findStack(player, stack);
+        return PlayerHelper.findExactStack(player, stack);
     }
 }

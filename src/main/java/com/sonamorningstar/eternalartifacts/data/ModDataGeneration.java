@@ -52,5 +52,6 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeServer(), new PaintingVariantTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new SpellTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new DamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        dataGenerator.addProvider(event.includeServer(), new BlockEntityTagsProvider(packOutput, lookupProvider, existingFileHelper));
     }
 }

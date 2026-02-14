@@ -1,19 +1,22 @@
 package com.sonamorningstar.eternalartifacts.world;
 
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModFeatures;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
+import com.sonamorningstar.eternalartifacts.world.feature.GravelOrePileConfiguration;
+import net.minecraft.Util;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.BlockPileConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.RandomPatchConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.SimpleBlockConfiguration;
@@ -24,7 +27,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.neoforged.neoforge.registries.DeferredBlock;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -61,6 +66,13 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> MOSS_ALUMINUM_ORE = registerKey("moss_aluminum_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> MARIN_ORE = registerKey("marin_ore");
     
+    public static final Map<String, ResourceKey<ConfiguredFeature<?, ?>>> ORE_BERRY_FEATURES = Util.make(new HashMap<>(), map -> {
+        for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
+            String name = oreBerry.getId().getPath();
+            map.put(name, registerKey(name));
+        }
+    });
+    
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(MODID, name));
     }
@@ -83,17 +95,17 @@ public class ModConfiguredFeatures {
             OreConfiguration.target(ruleTestDeepslate, ModBlocks.DEEPSLATE_ALUMINUM_ORE.get().defaultBlockState()),
             OreConfiguration.target(ruleTestMoss, ModBlocks.MOSS_ALUMINUM_ORE.get().defaultBlockState())
         );
-        registerGravelOre(context, GRAVEL_MANGANESE_ORE, ModBlocks.GRAVEL_MANGANESE_ORE);
-        registerGravelOre(context, GRAVEL_COAL_ORE, ModBlocks.GRAVEL_COAL_ORE);
-        registerGravelOre(context, GRAVEL_COPPER_ORE, ModBlocks.GRAVEL_COPPER_ORE);
-        registerGravelOre(context, GRAVEL_IRON_ORE, ModBlocks.GRAVEL_IRON_ORE);
-        registerGravelOre(context, GRAVEL_GOLD_ORE, ModBlocks.GRAVEL_GOLD_ORE);
-        registerGravelOre(context, GRAVEL_DIAMOND_ORE, ModBlocks.GRAVEL_DIAMOND_ORE);
-        registerGravelOre(context, GRAVEL_EMERALD_ORE, ModBlocks.GRAVEL_EMERALD_ORE);
-        registerGravelOre(context, GRAVEL_REDSTONE_ORE, ModBlocks.GRAVEL_REDSTONE_ORE);
-        registerGravelOre(context, GRAVEL_LAPIS_ORE, ModBlocks.GRAVEL_LAPIS_ORE);
-        registerGravelOre(context, GRAVEL_TIN_ORE, ModBlocks.GRAVEL_TIN_ORE);
-        registerGravelOre(context, GRAVEL_ALUMINUM_ORE, ModBlocks.GRAVEL_ALUMINUM_ORE);
+        registerGravelOre(context, GRAVEL_MANGANESE_ORE, ModBlocks.GRAVEL_MANGANESE_ORE, 2, 3);
+        registerGravelOre(context, GRAVEL_COAL_ORE, ModBlocks.GRAVEL_COAL_ORE, 3, 5);
+        registerGravelOre(context, GRAVEL_COPPER_ORE, ModBlocks.GRAVEL_COPPER_ORE, 2, 4);
+        registerGravelOre(context, GRAVEL_IRON_ORE, ModBlocks.GRAVEL_IRON_ORE, 2, 4);
+        registerGravelOre(context, GRAVEL_GOLD_ORE, ModBlocks.GRAVEL_GOLD_ORE, 1, 3);
+        registerGravelOre(context, GRAVEL_DIAMOND_ORE, ModBlocks.GRAVEL_DIAMOND_ORE, 1, 2);
+        registerGravelOre(context, GRAVEL_EMERALD_ORE, ModBlocks.GRAVEL_EMERALD_ORE, 1, 2);
+        registerGravelOre(context, GRAVEL_REDSTONE_ORE, ModBlocks.GRAVEL_REDSTONE_ORE, 2, 4);
+        registerGravelOre(context, GRAVEL_LAPIS_ORE, ModBlocks.GRAVEL_LAPIS_ORE, 2, 4);
+        registerGravelOre(context, GRAVEL_TIN_ORE, ModBlocks.GRAVEL_TIN_ORE, 2, 3);
+        registerGravelOre(context, GRAVEL_ALUMINUM_ORE, ModBlocks.GRAVEL_ALUMINUM_ORE, 2, 3);
         registerMossOre(context, MOSS_COAL_ORE, ModBlocks.MOSS_COAL_ORE, 9);
         registerMossOre(context, MOSS_COPPER_ORE, ModBlocks.MOSS_COPPER_ORE, 9);
         registerMossOre(context, MOSS_IRON_ORE, ModBlocks.MOSS_IRON_ORE, 9);
@@ -125,10 +137,18 @@ public class ModConfiguredFeatures {
         context.register(CRUDE_OIL_LAKE_SURFACE, new ConfiguredFeature<>(Feature.LAKE, new LakeFeature.Configuration(
             BlockStateProvider.simple(ModFluids.CRUDE_OIL.getFluidBlock()), BlockStateProvider.simple(Blocks.STONE)
         )));
+        
+        for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
+            String name = oreBerry.getId().getPath();
+            ResourceKey<ConfiguredFeature<?, ?>> key = ORE_BERRY_FEATURES.get(name);
+            context.register(key, new ConfiguredFeature<>(Feature.SIMPLE_BLOCK,
+                new SimpleBlockConfiguration(BlockStateProvider.simple(oreBerry.get()))));
+        }
     }
     
-    private static void registerGravelOre(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, DeferredBlock<?> block) {
-        context.register(key, new ConfiguredFeature<>(Feature.BLOCK_PILE, new BlockPileConfiguration(BlockStateProvider.simple(block.get()))));
+    private static void registerGravelOre(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, DeferredBlock<?> block, int minRadius, int maxRadius) {
+        context.register(key, new ConfiguredFeature<>(ModFeatures.GRAVEL_ORE_PILE.get(),
+            new GravelOrePileConfiguration(BlockStateProvider.simple(block.get()), UniformInt.of(minRadius, maxRadius))));
     }
     
     private static void registerMossOre(BootstapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key,
