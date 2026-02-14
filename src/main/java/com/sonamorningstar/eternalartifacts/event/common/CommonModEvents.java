@@ -3,7 +3,6 @@ package com.sonamorningstar.eternalartifacts.event.common;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
-import com.sonamorningstar.eternalartifacts.api.item.decorator.BlockRenderDecorator;
 import com.sonamorningstar.eternalartifacts.api.item.decorator.SubItemRenderDecorator;
 import com.sonamorningstar.eternalartifacts.capabilities.*;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.MachineItemEnergyStorage;
@@ -17,13 +16,11 @@ import com.sonamorningstar.eternalartifacts.content.block.PlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
-import com.sonamorningstar.eternalartifacts.content.item.LifterItem;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -88,7 +85,7 @@ public class CommonModEvents {
         //}
         
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, Integer.MAX_VALUE), ModBlocks.NOUS_TANK.asItem());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 64000 * (stack.getEnchantmentLevel(ModEnchantments.VOLUME.get()) + 1)), ModBlocks.NOUS_TANK.asItem());
         registerDrum(event, ModBlocks.COPPER_DRUM);
         registerDrum(event, ModBlocks.IRON_DRUM);
         registerDrum(event, ModBlocks.GOLD_DRUM);

@@ -56,7 +56,6 @@ public interface ParentalWidget {
 		List<GuiEventListener> children = getChildren();
 		for (int i = children.size() - 1; i >= 0; i--) {
 			GuiEventListener child = children.get(i);
-			// Raw bounds check kullanarak recursive çağrıyı önle
 			if (isChildMouseOverRaw(child, mouseX, mouseY)) {
 				return child;
 			}

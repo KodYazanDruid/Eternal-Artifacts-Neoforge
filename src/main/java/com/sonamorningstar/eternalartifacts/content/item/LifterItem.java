@@ -25,7 +25,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -55,11 +59,13 @@ public class LifterItem extends Item {
 		if (hasStoredBlockEntity(stack)) {
 			BlockPos placePos = clickedPos.relative(clickedFace);
 			if (level.isClientSide()) return InteractionResult.SUCCESS;
-			return placeBlockEntity(level, placePos, stack, player);
+			return placeBlockEntity(level, placePos, stack, player, clickedFace);
 		} else {
-			if (level.isClientSide())
-				return level.getBlockEntity(clickedPos) == null || level.getBlockState(clickedPos).is(ModTags.Blocks.LIFTER_BLACKLISTED) ?
+			if (level.isClientSide()) {
+				BlockEntity blockEntity = level.getBlockEntity(clickedPos);
+				return blockEntity == null || blockEntity.getType().builtInRegistryHolder().is(ModTags.BlockEntityTypes.LIFTER_BLACKLISTED) ?
 					InteractionResult.FAIL : InteractionResult.SUCCESS;
+			}
 			return pickupBlockEntity(level, clickedPos, stack, player);
 		}
 	}
@@ -69,7 +75,7 @@ public class LifterItem extends Item {
 		if (be == null) return InteractionResult.FAIL;
 		
 		BlockState state = level.getBlockState(pos);
-		if (state.is(ModTags.Blocks.LIFTER_BLACKLISTED)) return InteractionResult.FAIL;
+		if (!canPickUp(level, pos, player)) return InteractionResult.FAIL;
 		CompoundTag tag = stack.getOrCreateTag();
 		
 		CompoundTag beTag = be.saveWithoutMetadata();
@@ -94,8 +100,8 @@ public class LifterItem extends Item {
 		}
 	}
 	
-	private InteractionResult placeBlockEntity(Level level, BlockPos pos, ItemStack stack, Player player) {
-		if (!level.getBlockState(pos).canBeReplaced()) return InteractionResult.FAIL;
+	private InteractionResult placeBlockEntity(Level level, BlockPos pos, ItemStack stack, Player player, Direction clickedFace) {
+		if (!canPlace(level, pos, player, clickedFace)) return InteractionResult.FAIL;
 		
 		CompoundTag tag = stack.getTag();
 		if (tag == null) return InteractionResult.FAIL;
@@ -128,6 +134,20 @@ public class LifterItem extends Item {
 		if (tag.isEmpty()) stack.setTag(null);
 		
 		return InteractionResult.CONSUME;
+	}
+	
+	protected boolean canPickUp(Level level, BlockPos pos, Player player) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be == null || be.getType().builtInRegistryHolder().is(ModTags.BlockEntityTypes.LIFTER_BLACKLISTED) ||
+			NeoForge.EVENT_BUS.post(new BlockEvent.BreakEvent(level, pos, level.getBlockState(pos), player)).isCanceled()
+		) return false;
+		return level.mayInteract(player, pos) && player.mayInteract(level, pos);
+	}
+	
+	protected boolean canPlace(Level level, BlockPos pos, Player player, Direction clickedFace) {
+		if (!level.getBlockState(pos).canBeReplaced()) return false;
+		if (EventHooks.onBlockPlace(player, BlockSnapshot.create(level.dimension(), level, pos), clickedFace)) return false;
+		return level.mayInteract(player, pos) && player.mayInteract(level, pos);
 	}
 	
 	public static boolean hasStoredBlockEntity(ItemStack stack) {

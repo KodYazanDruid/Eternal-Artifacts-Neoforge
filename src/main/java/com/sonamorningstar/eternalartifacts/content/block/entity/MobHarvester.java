@@ -1,13 +1,18 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
+import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +23,17 @@ import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.common.util.FakePlayer;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 
-public class MobHarvester extends GenericMachine implements WorkingAreaProvider {
+@Getter
+@Setter
+public class MobHarvester extends GenericMachine implements WorkingAreaProvider, EntityFilterable {
+	private EntityPredicateEntry entityFilter = new EntityPredicateEntry();
+	Predicate<EntityPredicateEntry.EntityPredicate> filterValidator = e ->
+		!Objects.equals(e, EntityPredicateEntry.EntityPredicate.DEAD) &&
+		!Objects.equals(e, EntityPredicateEntry.EntityPredicate.ALIVE);
+	
 	public MobHarvester(BlockPos pos, BlockState blockState) {
 		super(ModMachines.MOB_HARVESTER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
@@ -35,7 +49,35 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider 
 		for (int i = 0; i < 15; i++) {
 			int x = i % 5;
 			int y = i / 5;
-			screenInfo.setSlotPosition(64 + x * 18, 17 + y * 18, i + 1);
+			screenInfo.setSlotPosition(67 + x * 18, 19 + y * 18, i + 1);
+		}
+	}
+	
+	@Override
+	protected void saveAdditional(CompoundTag tag) {
+		super.saveAdditional(tag);
+		tag.put("EntityFilter", entityFilter.serializeNBT());
+	}
+	
+	@Override
+	public void load(CompoundTag tag) {
+		super.load(tag);
+		if (tag.contains("EntityFilter")) {
+			entityFilter.deserializeNBT(tag.getCompound("EntityFilter"));
+		}
+	}
+	
+	@Override
+	public void saveContents(CompoundTag additionalTag) {
+		super.saveContents(additionalTag);
+		additionalTag.put("EntityFilter", entityFilter.serializeNBT());
+	}
+	
+	@Override
+	public void loadContents(CompoundTag additionalTag) {
+		super.loadContents(additionalTag);
+		if (additionalTag.contains("EntityFilter")) {
+			entityFilter.deserializeNBT(additionalTag.getCompound("EntityFilter"));
 		}
 	}
 	
@@ -60,9 +102,8 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider 
 		if (canWork(energy) && fakePlayer.getAttackStrengthScale(0) == 1.0F) {
 			List<LivingEntity> targets = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(getBlockPos()))
 				.stream().filter(living ->
-					!living.isSpectator() && !living.isDeadOrDying() &&
-						living.isAlive() && !living.isInvulnerable() &&
-						fakePlayer.canAttack(living)
+					!living.isSpectator() && !living.isDeadOrDying() && living.isAlive() && !living.isInvulnerable() &&
+						entityFilter.matches(living) && fakePlayer.canAttack(living)
 				).toList();
 			if (!targets.isEmpty()) {
 				spendEnergy(energy);

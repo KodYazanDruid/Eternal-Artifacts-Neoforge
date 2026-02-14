@@ -74,6 +74,7 @@ public class EternalArtifacts {
         ModStructureTypes.STRUCTURE_TYPES.register(modEventBus);
         ModStructurePieces.PIECE_TYPE.register(modEventBus);
         ModInventoryTabs.INVENTORY_TABS.register(modEventBus);
+        ModFeatures.FEATURES.register(modEventBus);
         ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
 

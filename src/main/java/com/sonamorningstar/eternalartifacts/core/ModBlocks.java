@@ -30,6 +30,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -319,6 +321,7 @@ public class ModBlocks {
     public static final DeferredBlock<FlowerBlock> TIGRIS_FLOWER = registerWithItem("tigris_flower", TigrisFlowerBlock::new, TigrisFlowerItem.class);
     public static final DeferredBlock<FlowerPotBlock> POTTED_TIGRIS = registerNoItem("potted_tigris", ()-> flowerPot(TIGRIS_FLOWER));
 
+    public static final List<DeferredBlock<OreBerryBlock>> ORE_BERRIES = new ArrayList<>();
     public static final DeferredBlock<OreBerryBlock> COPPER_ORE_BERRY = registerOreBerryBlock("copper");
     public static final DeferredBlock<OreBerryBlock> IRON_ORE_BERRY = registerOreBerryBlock("iron");
     public static final DeferredBlock<OreBerryBlock> GOLD_ORE_BERRY = registerOreBerryBlock("gold");
@@ -400,7 +403,9 @@ public class ModBlocks {
     }
 
     private static DeferredBlock<OreBerryBlock> registerOreBerryBlock(String material) {
-        return registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(ModProperties.Blocks.ORE_BERRY, material));
+        DeferredBlock<OreBerryBlock> block = registerWithItem(material+"_oreberry", ()-> new OreBerryBlock(ModProperties.Blocks.ORE_BERRY, material));
+        ORE_BERRIES.add(block);
+        return block;
     }
     private static DeferredBlock<Block> registerGravelOres(String name) {
         return registerGravelOres(name, ConstantInt.of(0));

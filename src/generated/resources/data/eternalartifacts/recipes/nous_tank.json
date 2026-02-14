@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "forge:glass"
+    },
+    "P": {
+      "tag": "forge:plastic_sheets"
+    },
+    "T": {
+      "item": "eternalartifacts:stone_tablet"
+    }
+  },
+  "pattern": [
+    "PTP",
+    "G G",
+    "PTP"
+  ],
+  "result": {
+    "item": "eternalartifacts:nous_tank"
+  }
+}

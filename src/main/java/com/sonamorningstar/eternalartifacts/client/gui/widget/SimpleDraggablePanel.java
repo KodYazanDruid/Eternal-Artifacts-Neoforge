@@ -337,7 +337,14 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 	
 	@Override
 	protected void onDrag(double mx, double my, double dragX, double dragY) {
-		if (!visible || !active) return;
+		boolean hasScrollingChildrenn = false;
+		for (GuiEventListener child : children) {
+			if (child instanceof ScrollablePanel<?> panel && panel.scrolling) {
+				hasScrollingChildrenn = true;
+				break;
+			}
+		}
+		if (!visible || !active || hasScrollingChildrenn) return;
 		for (Bounds undragArea : undragAreas) {
 			if (undragArea.x() <= mx && undragArea.x() + undragArea.width() >= mx &&
 				undragArea.y() <= my && undragArea.y() + undragArea.height() >= my) {
@@ -361,18 +368,15 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 		boolean isOverSelf = isMouseOverSelf(mx, my);
 		boolean anyChildHovered = false;
 		
-		// Child'ları ters sırada kontrol et (en üstteki önce)
 		for (int i = children.size() - 1; i >= 0; i--) {
 			GuiEventListener child = children.get(i);
 			if (child instanceof Overlapping overlapping) {
-				// Eğer bu panel engellenmiş veya başka bir child zaten hover ediliyorsa, diğer child'ları da engelle
 				boolean childBlocked = isBlocked || anyChildHovered;
 				boolean childHovered = overlapping.updateHover(mx, my, childBlocked);
 				if (childHovered && !childBlocked) {
 					anyChildHovered = true;
 				}
 			} else if (child instanceof AbstractWidget widget) {
-				// Normal widgetlar için hover durumunu güncelle
 				boolean shouldHover = !isBlocked && !anyChildHovered &&
 					widget.visible && widget.active && widget.isMouseOver(mx, my);
 				widget.setFocused(shouldHover);

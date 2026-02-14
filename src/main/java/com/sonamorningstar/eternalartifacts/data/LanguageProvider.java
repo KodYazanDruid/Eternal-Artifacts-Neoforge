@@ -534,6 +534,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("repeater.projectiles"), "Projectiles:");
                 add(ModConstants.GUI.withSuffix("whitelist"), "Whitelist");
                 add(ModConstants.GUI.withSuffix("blacklist"), "Blacklist");
+                add(ModConstants.GUI.withSuffix("entity_filter"), "Entity Filter");
+                add(ModConstants.GUI.withSuffix("mode_any"), "Mode: Any (OR)");
+                add(ModConstants.GUI.withSuffix("mode_all"), "Mode: All (AND)");
+                add(ModConstants.GUI.withSuffix("clear_all"), "Clear All");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Click to swap to Whitelist");
                 add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Click to swap to Blacklist");
                 add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt"), "Ignores NBT");
@@ -558,6 +562,77 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"), "Press [%s] for detailed information.");
                 add(ModConstants.FILTER.withSuffix("empty_item"), "Empty Item Tag");
                 add(ModConstants.FILTER.withSuffix("empty_fluid"), "Empty Fluid Tag");
+                
+                // Entity Filter Predicates
+                add("filter.eternalartifacts.entity_any", "Any Entity");
+                add("filter.eternalartifacts.entity_multi", "%d Filters Active");
+                // Life Status
+                add("filter.eternalartifacts.entity.alive", "Alive");
+                add("filter.eternalartifacts.entity.dead", "Dead");
+                // Entity Type
+                add("filter.eternalartifacts.entity.living", "Living Entity");
+                add("filter.eternalartifacts.entity.mob", "Mob");
+                add("filter.eternalartifacts.entity.player", "Player");
+                add("filter.eternalartifacts.entity.monster", "Monster");
+                add("filter.eternalartifacts.entity.animal", "Animal");
+                add("filter.eternalartifacts.entity.water_animal", "Water Animal");
+                add("filter.eternalartifacts.entity.villager", "Villager");
+                add("filter.eternalartifacts.entity.npc", "NPC");
+                add("filter.eternalartifacts.entity.ambient", "Ambient Creature");
+                // Hostility
+                add("filter.eternalartifacts.entity.hostile", "Hostile");
+                add("filter.eternalartifacts.entity.neutral", "Neutral");
+                add("filter.eternalartifacts.entity.passive", "Passive");
+                add("filter.eternalartifacts.entity.tameable", "Tameable");
+                add("filter.eternalartifacts.entity.tamed", "Tamed");
+                // Age Status
+                add("filter.eternalartifacts.entity.baby", "Baby");
+                add("filter.eternalartifacts.entity.adult", "Adult");
+                add("filter.eternalartifacts.entity.ageable", "Ageable");
+                add("filter.eternalartifacts.entity.breedable", "Breedable");
+                // Boss
+                add("filter.eternalartifacts.entity.boss", "Boss");
+                add("filter.eternalartifacts.entity.wither", "Wither");
+                add("filter.eternalartifacts.entity.ender_dragon", "Ender Dragon");
+                // Movement
+                add("filter.eternalartifacts.entity.on_ground", "On Ground");
+                add("filter.eternalartifacts.entity.in_water", "In Water");
+                add("filter.eternalartifacts.entity.in_lava", "In Lava");
+                add("filter.eternalartifacts.entity.underwater", "Underwater");
+                add("filter.eternalartifacts.entity.swimming", "Swimming");
+                add("filter.eternalartifacts.entity.sprinting", "Sprinting");
+                add("filter.eternalartifacts.entity.crouching", "Crouching");
+                add("filter.eternalartifacts.entity.flying", "Flying");
+                add("filter.eternalartifacts.entity.sleeping", "Sleeping");
+                // Status
+                add("filter.eternalartifacts.entity.on_fire", "On Fire");
+                add("filter.eternalartifacts.entity.freezing", "Freezing");
+                add("filter.eternalartifacts.entity.invisible", "Invisible");
+                add("filter.eternalartifacts.entity.glowing", "Glowing");
+                add("filter.eternalartifacts.entity.silent", "Silent");
+                add("filter.eternalartifacts.entity.invulnerable", "Invulnerable");
+                add("filter.eternalartifacts.entity.no_gravity", "No Gravity");
+                // Health
+                add("filter.eternalartifacts.entity.full_health", "Full Health");
+                add("filter.eternalartifacts.entity.low_health", "Low Health");
+                add("filter.eternalartifacts.entity.half_health", "Half Health");
+                // Vehicles
+                add("filter.eternalartifacts.entity.vehicle", "Vehicle");
+                add("filter.eternalartifacts.entity.passenger", "Passenger");
+                add("filter.eternalartifacts.entity.boat", "Boat");
+                add("filter.eternalartifacts.entity.minecart", "Minecart");
+                // Projectile
+                add("filter.eternalartifacts.entity.projectile", "Projectile");
+                // Item & Experience
+                add("filter.eternalartifacts.entity.item_entity", "Item Entity");
+                add("filter.eternalartifacts.entity.experience_orb", "Experience Orb");
+                // Leash
+                add("filter.eternalartifacts.entity.leashable", "Leashable");
+                add("filter.eternalartifacts.entity.leashed", "Leashed");
+                // Spawn
+                add("filter.eternalartifacts.entity.persistent", "Persistent");
+                add("filter.eternalartifacts.entity.can_despawn", "Can Despawn");
+                
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.on"), "Use Ingredients");
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.off"), "Don't Use Ingredients");
                 add(ModConstants.GUI.withSuffix("energy_transportation"), "Energy Transportation");
@@ -1243,6 +1318,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("repeater.projectiles"), "Mühimmatlar:");
                 add(ModConstants.GUI.withSuffix("whitelist"), "Beyaz Liste");
                 add(ModConstants.GUI.withSuffix("blacklist"), "Kara Liste");
+                add(ModConstants.GUI.withSuffix("entity_filter"), "Varlık Filtresi");
+                add(ModConstants.GUI.withSuffix("mode_any"), "Mod: Herhangi biri (VEYA)");
+                add(ModConstants.GUI.withSuffix("mode_all"), "Mod: Hepsi (VE)");
+                add(ModConstants.GUI.withSuffix("clear_all"), "Tümünü Temizle");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Beyaz listeye geçmek için tıkla");
                 add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Kara listeye geçmek için tıkla");
                 add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt"), "NBT'yi yok say");
@@ -1267,6 +1346,77 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"), "Detaylı bilgi için [%s] tuşuna basın.");
                 add(ModConstants.FILTER.withSuffix("empty_item"), "Boş Eşya Etiketi");
                 add(ModConstants.FILTER.withSuffix("empty_fluid"), "Boş Sıvı Etiketi");
+                
+                // Entity Filter Predicates
+                add("filter.eternalartifacts.entity_any", "Herhangi Bir Varlık");
+                add("filter.eternalartifacts.entity_multi", "%d Filtre Aktif");
+                // Yaşam Durumu
+                add("filter.eternalartifacts.entity.alive", "Canlı");
+                add("filter.eternalartifacts.entity.dead", "Ölü");
+                // Varlık Tipi
+                add("filter.eternalartifacts.entity.living", "Canlı Varlık");
+                add("filter.eternalartifacts.entity.mob", "Yaratık");
+                add("filter.eternalartifacts.entity.player", "Oyuncu");
+                add("filter.eternalartifacts.entity.monster", "Canavar");
+                add("filter.eternalartifacts.entity.animal", "Hayvan");
+                add("filter.eternalartifacts.entity.water_animal", "Su Hayvanı");
+                add("filter.eternalartifacts.entity.villager", "Köylü");
+                add("filter.eternalartifacts.entity.npc", "NPC");
+                add("filter.eternalartifacts.entity.ambient", "Ortam Yaratığı");
+                // Düşmanlık
+                add("filter.eternalartifacts.entity.hostile", "Düşman");
+                add("filter.eternalartifacts.entity.neutral", "Nötr");
+                add("filter.eternalartifacts.entity.passive", "Pasif");
+                add("filter.eternalartifacts.entity.tameable", "Evcilleştirilebilir");
+                add("filter.eternalartifacts.entity.tamed", "Evcil");
+                // Yaş Durumu
+                add("filter.eternalartifacts.entity.baby", "Yavru");
+                add("filter.eternalartifacts.entity.adult", "Yetişkin");
+                add("filter.eternalartifacts.entity.ageable", "Yaşlanabilir");
+                add("filter.eternalartifacts.entity.breedable", "Çiftleştirilebilir");
+                // Boss
+                add("filter.eternalartifacts.entity.boss", "Patron");
+                add("filter.eternalartifacts.entity.wither", "Wither");
+                add("filter.eternalartifacts.entity.ender_dragon", "Ender Ejderhası");
+                // Hareket
+                add("filter.eternalartifacts.entity.on_ground", "Yerde");
+                add("filter.eternalartifacts.entity.in_water", "Suda");
+                add("filter.eternalartifacts.entity.in_lava", "Lavda");
+                add("filter.eternalartifacts.entity.underwater", "Su Altında");
+                add("filter.eternalartifacts.entity.swimming", "Yüzüyor");
+                add("filter.eternalartifacts.entity.sprinting", "Koşuyor");
+                add("filter.eternalartifacts.entity.crouching", "Eğiliyor");
+                add("filter.eternalartifacts.entity.flying", "Uçuyor");
+                add("filter.eternalartifacts.entity.sleeping", "Uyuyor");
+                // Durum
+                add("filter.eternalartifacts.entity.on_fire", "Yanıyor");
+                add("filter.eternalartifacts.entity.freezing", "Donuyor");
+                add("filter.eternalartifacts.entity.invisible", "Görünmez");
+                add("filter.eternalartifacts.entity.glowing", "Parlıyor");
+                add("filter.eternalartifacts.entity.silent", "Sessiz");
+                add("filter.eternalartifacts.entity.invulnerable", "Dayanıksız");
+                add("filter.eternalartifacts.entity.no_gravity", "Yerçekimsiz");
+                // Sağlık
+                add("filter.eternalartifacts.entity.full_health", "Tam Can");
+                add("filter.eternalartifacts.entity.low_health", "Düşük Can");
+                add("filter.eternalartifacts.entity.half_health", "Yarı Can");
+                // Araçlar
+                add("filter.eternalartifacts.entity.vehicle", "Taşıt");
+                add("filter.eternalartifacts.entity.passenger", "Yolcu");
+                add("filter.eternalartifacts.entity.boat", "Tekne");
+                add("filter.eternalartifacts.entity.minecart", "Maden Arabası");
+                // Mermi
+                add("filter.eternalartifacts.entity.projectile", "Mermi");
+                // Eşya & Tecrübe
+                add("filter.eternalartifacts.entity.item_entity", "Eşya Varlığı");
+                add("filter.eternalartifacts.entity.experience_orb", "Tecrübe Küresı");
+                // Tasma
+                add("filter.eternalartifacts.entity.leashable", "Tasmalanabilir");
+                add("filter.eternalartifacts.entity.leashed", "Tasmalı");
+                // Spawn
+                add("filter.eternalartifacts.entity.persistent", "Kalıcı");
+                add("filter.eternalartifacts.entity.can_despawn", "Kaybolabilir");
+                
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.on"), "Malzemeleri Kullan");
                 add(ModConstants.WIDGET.withSuffix("use_ingredients.off"), "Malzemeleri Kullanma");
                 add(ModConstants.GUI.withSuffix("energy_transportation"), "Enerji Transferi");

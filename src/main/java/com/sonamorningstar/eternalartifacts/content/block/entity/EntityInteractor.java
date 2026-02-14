@@ -1,17 +1,18 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
-import com.sonamorningstar.eternalartifacts.container.EntityInteractorMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
+import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
@@ -29,48 +30,63 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
-public class EntityInteractor extends SidedTransferMachine<EntityInteractorMenu> implements WorkingAreaProvider {
-	public int entityPredicateOrdinal = -1;
+@Getter
+@Setter
+public class EntityInteractor extends GenericMachine implements WorkingAreaProvider, EntityFilterable {
+	private EntityPredicateEntry entityFilter = new EntityPredicateEntry();
+	Predicate<EntityPredicateEntry.EntityPredicate> filterValidator = e -> !Objects.equals(e, EntityPredicateEntry.EntityPredicate.PLAYER);
 	private int workingIndex = 0;
 	
 	public EntityInteractor(BlockPos pos, BlockState blockState) {
-		super(ModMachines.ENTITY_INTERACTOR.getBlockEntity(), pos, blockState, (a, b, c, d) -> new EntityInteractorMenu(ModMachines.ENTITY_INTERACTOR.getMenu(), a, b, c, d));
+		super(ModMachines.ENTITY_INTERACTOR, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
 		setTank(() -> createBasicTank(16000, true, false));
-		for (int i = 1; i < 9; i++) {
+		for (int i = 1; i < 13; i++) {
 			outputSlots.add(i);
 		}
-		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0));
+		setInventory(() -> createBasicInventory(13, outputSlots, (slot, stack) -> slot == 0));
 		this.isChargeProgress = true;
+		screenInfo.setSlotPosition(45, 37, 0);
+		screenInfo.setArrowPos(67, 34);
+		for (int i = 0; i < 12; i++) {
+			int x = i % 4;
+			int y = i / 4;
+			screenInfo.setSlotPosition(97 + x * 18, 19 + y * 18, i + 1);
+		}
 	}
 	
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		tag.putInt("EntityPredicate", entityPredicateOrdinal);
+		tag.put("EntityFilter", entityFilter.serializeNBT());
 		tag.putInt("WorkingIndex", workingIndex);
 	}
 	
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
-		entityPredicateOrdinal = tag.getInt("EntityPredicate");
+		if (tag.contains("EntityFilter")) {
+			entityFilter.deserializeNBT(tag.getCompound("EntityFilter"));
+		}
 		workingIndex = tag.getInt("WorkingIndex");
 	}
 	
 	@Override
 	public void saveContents(CompoundTag additionalTag) {
 		super.saveContents(additionalTag);
-		additionalTag.putInt("EntityPredicate", entityPredicateOrdinal);
+		additionalTag.put("EntityFilter", entityFilter.serializeNBT());
 		additionalTag.putInt("WorkingIndex", workingIndex);
 	}
 	
 	@Override
 	public void loadContents(CompoundTag additionalTag) {
 		super.loadContents(additionalTag);
-		entityPredicateOrdinal = additionalTag.getInt("EntityPredicate");
+		if (additionalTag.contains("EntityFilter")) {
+			entityFilter.deserializeNBT(additionalTag.getCompound("EntityFilter"));
+		}
 		workingIndex = additionalTag.getInt("WorkingIndex");
 	}
 	
@@ -93,12 +109,8 @@ public class EntityInteractor extends SidedTransferMachine<EntityInteractorMenu>
 		
 		transferFluidToTank(interactStack);
 		
-		List<LivingEntity> entities;
-		EntityPredicateEntry.EntityPredicate[] entityPredicates = EntityPredicateEntry.EntityPredicate.values();
-		if (entityPredicateOrdinal >= 0 && entityPredicateOrdinal < entityPredicates.length) {
-			Predicate<Entity> predicate = entityPredicates[entityPredicateOrdinal];
-			entities = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos), predicate.and(EntityPredicateEntry.EntityPredicate.ANIMAL).and(EntityPredicateEntry.EntityPredicate.PLAYER.negate()));
-		} else entities = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos), e -> !(e instanceof Player));
+		List<LivingEntity> entities = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos),
+			e -> !(e instanceof Player) && entityFilter.matches(e));
 		
 		if (entities.isEmpty()) {
 			progress = 0;

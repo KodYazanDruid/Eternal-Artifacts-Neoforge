@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.world;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
+import net.minecraft.Util;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -17,9 +19,12 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -54,6 +59,13 @@ public class ModBiomeModifiers {
     
     public static final ResourceKey<BiomeModifier> SPAWN_DUCK = registerKey("spawn", "spawn_duck");
     public static final ResourceKey<BiomeModifier> SPAWN_DEMON_EYE = registerKey("spawn", "spawn_demon_eye");
+    
+    public static final Map<String, ResourceKey<BiomeModifier>> ORE_BERRY_MODIFIERS = Util.make(new HashMap<>(), map -> {
+        for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
+            String name = oreBerry.getId().getPath();
+            map.put(name, registerKey("feature", "add_" + name));
+        }
+    });
 
     private static ResourceKey<BiomeModifier> registerKey(String type, String name) {
         return ResourceKey.create(NeoForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(MODID, type+"/"+name));
@@ -131,6 +143,16 @@ public class ModBiomeModifiers {
                 HolderSet.direct(biome.getOrThrow(Biomes.CRIMSON_FOREST)),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.DEMON_EYE.get(), 10, 2, 6))
         ));
+        
+        for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
+            String name = oreBerry.getId().getPath();
+            ResourceKey<BiomeModifier> modifierKey = ORE_BERRY_MODIFIERS.get(name);
+            ResourceKey<PlacedFeature> placedKey = ModPlacedFeatures.ORE_BERRY_PLACED.get(name);
+            context.register(modifierKey, new BiomeModifiers.AddFeaturesBiomeModifier(
+                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                HolderSet.direct(placedFeatures.getOrThrow(placedKey)),
+                GenerationStep.Decoration.UNDERGROUND_DECORATION));
+        }
     }
     
     private static void registerGravelOre(BootstapContext<BiomeModifier> context,

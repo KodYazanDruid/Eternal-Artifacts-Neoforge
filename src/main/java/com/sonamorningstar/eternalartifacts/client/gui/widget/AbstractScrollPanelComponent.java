@@ -56,6 +56,12 @@ public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 		return isFocused() ? focusColor : color;
 	}
 	
+	public void setColors(int color, int hoverColor, int focusColor) {
+		this.color = color;
+		this.hoverColor = hoverColor;
+		this.focusColor = focusColor;
+	}
+	
 	public int getScrollInt() {
 		return Mth.ceil(getScrollAmount());
 	}

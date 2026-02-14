@@ -33,6 +33,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.common.CommonHooks;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -79,22 +80,22 @@ public class OreBerryBlock extends BushBlock {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(AGE);
-        if(age < 3 && level.getRawBrightness(pos, 0) < 10 && net.neoforged.neoforge.common.CommonHooks.onCropsGrowPre(level, pos, state, random.nextInt(5) == 0)) {
+        if(age < 3 && level.getRawBrightness(pos, 0) < 10 && CommonHooks.onCropsGrowPre(level, pos, state, random.nextInt(5) == 0)) {
             BlockState newState = state.setValue(AGE, age + 1);
             level.setBlock(pos, newState, 2);
             level.gameEvent(GameEvent.BLOCK_CHANGE, pos, GameEvent.Context.of(newState));
-            net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost(level, pos, state);
+            CommonHooks.onCropsGrowPost(level, pos, state);
         }
 
         if (level.isEmptyBlock(pos.above()) && (age == MAX_AGE || age == MAX_AGE - 1) && level.getRawBrightness(pos, 0) < 10 &&
-                net.neoforged.neoforge.common.CommonHooks.onCropsGrowPre(level, pos, state, true)) {
+                CommonHooks.onCropsGrowPre(level, pos, state, true)) {
             int i = 1;
             while (level.getBlockState(pos.below(i)).is(this)) {
                 ++i;
             }
             if(i < 3){
                 level.setBlockAndUpdate(pos.above(), this.defaultBlockState());
-                net.neoforged.neoforge.common.CommonHooks.onCropsGrowPost(level, pos.above(), this.defaultBlockState());
+                CommonHooks.onCropsGrowPost(level, pos.above(), this.defaultBlockState());
             }
         }
 
@@ -104,7 +105,7 @@ public class OreBerryBlock extends BushBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         int age = state.getValue(AGE);
         if(age == MAX_AGE) {
-            if(level instanceof ServerLevel serverLevel){
+            if(level instanceof ServerLevel serverLevel) {
                 LootTable lootTable = level.getServer().getLootData().getLootTable(table);
                 LootParams ctx = new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY);
                 ObjectArrayList<ItemStack> loot = lootTable.getRandomItems(ctx);

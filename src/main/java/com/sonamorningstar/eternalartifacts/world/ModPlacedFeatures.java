@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.world;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderGetter;
@@ -8,6 +10,7 @@ import net.minecraft.data.worldgen.BootstapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -15,8 +18,11 @@ import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.heightproviders.UniformHeight;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -53,6 +59,13 @@ public class ModPlacedFeatures {
     public static final ResourceKey<PlacedFeature> PLACED_MOSS_ALUMINUM_ORE = registerKey("moss_aluminum_ore");
     public static final ResourceKey<PlacedFeature> PLACED_MARIN_ORE = registerKey("marin_ore");
     
+    public static final Map<String, ResourceKey<PlacedFeature>> ORE_BERRY_PLACED = Util.make(new HashMap<>(), map ->{
+        for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
+            String name = oreBerry.getId().getPath();
+            map.put(name, registerKey("placed_" + name));
+        }
+    });
+    
     public static ResourceKey<PlacedFeature> registerKey(String name) {
         return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(MODID, name));
     }
@@ -61,14 +74,14 @@ public class ModPlacedFeatures {
         registerGravelOre(context, holderGetter, PLACED_GRAVEL_MANGANESE_ORE, ModConfiguredFeatures.GRAVEL_MANGANESE_ORE, 250);
         registerGravelOre(context, holderGetter, PLACED_GRAVEL_COAL_ORE, ModConfiguredFeatures.GRAVEL_COAL_ORE, 100);
         registerGravelOre(context, holderGetter, PLACED_GRAVEL_COPPER_ORE, ModConfiguredFeatures.GRAVEL_COPPER_ORE, 200);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_IRON_ORE, ModConfiguredFeatures.GRAVEL_IRON_ORE, 250);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_GOLD_ORE, ModConfiguredFeatures.GRAVEL_GOLD_ORE, 350);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_DIAMOND_ORE, ModConfiguredFeatures.GRAVEL_DIAMOND_ORE, 500);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_EMERALD_ORE, ModConfiguredFeatures.GRAVEL_EMERALD_ORE, 500);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_LAPIS_ORE, ModConfiguredFeatures.GRAVEL_LAPIS_ORE, 300);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_REDSTONE_ORE, ModConfiguredFeatures.GRAVEL_REDSTONE_ORE, 300);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_TIN_ORE, ModConfiguredFeatures.GRAVEL_TIN_ORE, 250);
-        registerGravelOre(context, holderGetter, PLACED_GRAVEL_ALUMINUM_ORE, ModConfiguredFeatures.GRAVEL_ALUMINUM_ORE, 250);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_IRON_ORE, ModConfiguredFeatures.GRAVEL_IRON_ORE, 240);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_GOLD_ORE, ModConfiguredFeatures.GRAVEL_GOLD_ORE, 320);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_DIAMOND_ORE, ModConfiguredFeatures.GRAVEL_DIAMOND_ORE, 640);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_EMERALD_ORE, ModConfiguredFeatures.GRAVEL_EMERALD_ORE, 640);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_LAPIS_ORE, ModConfiguredFeatures.GRAVEL_LAPIS_ORE, 280);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_REDSTONE_ORE, ModConfiguredFeatures.GRAVEL_REDSTONE_ORE, 280);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_TIN_ORE, ModConfiguredFeatures.GRAVEL_TIN_ORE, 240);
+        registerGravelOre(context, holderGetter, PLACED_GRAVEL_ALUMINUM_ORE, ModConfiguredFeatures.GRAVEL_ALUMINUM_ORE, 240);
         registerMossOre(context, holderGetter, PLACED_MOSS_COAL_ORE, ModConfiguredFeatures.MOSS_COAL_ORE, 10);
         registerMossOre(context, holderGetter, PLACED_MOSS_COPPER_ORE, ModConfiguredFeatures.MOSS_COPPER_ORE, 10);
         registerMossOre(context, holderGetter, PLACED_MOSS_IRON_ORE, ModConfiguredFeatures.MOSS_IRON_ORE, 8);
@@ -137,6 +150,22 @@ public class ModPlacedFeatures {
                     BiomeFilter.biome()
                 )
             ));
+        
+        for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
+            String name = oreBerry.getId().getPath();
+            ResourceKey<PlacedFeature> placedKey = ORE_BERRY_PLACED.get(name);
+            ResourceKey<ConfiguredFeature<?, ?>> configuredKey = ModConfiguredFeatures.ORE_BERRY_FEATURES.get(name);
+            context.register(placedKey, new PlacedFeature(holderGetter.getOrThrow(configuredKey),
+                List.of(
+                    CountPlacement.of(2),
+                    InSquarePlacement.spread(),
+                    HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(8)),
+                    EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),
+                    RandomOffsetPlacement.vertical(ConstantInt.of(1)),
+                    BiomeFilter.biome()
+                )
+            ));
+        }
     }
     private static List<PlacementModifier> createListWithRarity(int rarity) {
         return List.of(RarityFilter.onAverageOnceEvery(rarity), InSquarePlacement.spread(), PlacementUtils.HEIGHTMAP, BiomeFilter.biome());

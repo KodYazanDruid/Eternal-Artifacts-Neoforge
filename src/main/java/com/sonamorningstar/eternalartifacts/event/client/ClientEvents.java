@@ -24,12 +24,15 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModCo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.EntityFilterPanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
+import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
@@ -41,6 +44,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.EntityPredicateFilterToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
@@ -48,6 +52,7 @@ import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
@@ -759,12 +764,20 @@ public class ClientEvents {
             int width = gsms.getXSize();
             int height = gsms.getYSize();
             GenericMachine machine = gsms.getMachine();
-            if (machine instanceof EnergyDistributor eDistributor) {
-            
+            if (machine instanceof EntityFilterable efilterable) {
+                Font font = screen.getMinecraft().font;
+                EntityFilterPanel entityFilterPanel = new EntityFilterPanel(
+                    x + 23, y + 8, screen.width, screen.height,
+                    efilterable::getEntityFilter, efilterable.getFilterValidator(), font
+                );
+                entityFilterPanel.withColor(gsms.getGuiTint());
+                entityFilterPanel.withOnFilterChanged(filter -> {
+                    Channel.sendToServer(EntityPredicateFilterToServer.create(machine.getBlockPos(), filter));
+                });
+                event.addListener(entityFilterPanel.createFilterButton(
+                    x + width - (gsms.enchantmentPanel != null ? 54 : 36), y + 3));
+                gsms.addUpperLayerChild(entityFilterPanel.getPanel());
             }
-            /*if (gsms.getMachine() instanceof Filterable filterable) {
-            
-            }*/
         }
     }
     

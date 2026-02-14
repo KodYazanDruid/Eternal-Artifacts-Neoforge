@@ -91,6 +91,9 @@ public class ModMachines {
     public static final MachineHolder<GenericMachineMenu, Enchanter, MachineFourWayBlock<Enchanter>, MachineBlockItem>
             ENCHANTER = MACHINES.registerGeneric("enchanter", Enchanter::new);
     
+    public static final MachineHolder<GenericMachineMenu, EntityInteractor, MachineFourWayBlock<EntityInteractor>, MachineBlockItem>
+            ENTITY_INTERACTOR = MACHINES.registerGeneric("entity_interactor", EntityInteractor::new);
+    
     public static final MachineHolder<GenericMachineMenu, BatteryBox, MachineFourWayBlock<BatteryBox>, MachineBlockItem>
             BATTERY_BOX = MACHINES.register(MachineRegistration.generic("battery_box", BatteryBox::new)
                     .uniqueTexture()
@@ -151,11 +154,6 @@ public class ModMachines {
     public static final MachineHolder<AnvilinatorMenu, Anvilinator, MachineFourWayBlock<Anvilinator>, MachineBlockItem>
             ANVILINATOR = MACHINES.register(MachineRegistration
                     .standard("anvilinator", AnvilinatorMenu::new, Anvilinator::new)
-                    .build());
-    
-    public static final MachineHolder<EntityInteractorMenu, EntityInteractor, MachineFourWayBlock<EntityInteractor>, MachineBlockItem>
-            ENTITY_INTERACTOR = MACHINES.register(MachineRegistration
-                    .standard("entity_interactor", EntityInteractorMenu::new, EntityInteractor::new)
                     .build());
 
     // ==================== Six-Way Machines ====================

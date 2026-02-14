@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "eternalartifacts:pipe_filter"
+    }
+  ],
+  "result": {
+    "item": "eternalartifacts:pipe_filter"
+  }
+}
