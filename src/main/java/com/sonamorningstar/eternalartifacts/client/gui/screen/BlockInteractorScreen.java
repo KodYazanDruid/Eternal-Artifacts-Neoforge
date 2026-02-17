@@ -227,7 +227,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 			innerList.addChild((x, y, width, height) -> {
 				var comp = new ScrollablePanelComponent(
 					x, y + finalI * 18, width, 16, innerList,
-					(mx, my, btn) -> setBlockTagFilter(tag, slotWidget),
+					(mx, my, btn, c) -> setBlockTagFilter(tag, slotWidget),
 					finalI, font, Component.literal(tagLocation),
 					0xff2C2F33, 0xff3C8DBC, 0xff68C8FA
 				);
@@ -282,7 +282,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 			innerList.addChild((x, y, width, height) -> {
 				var comp = new ScrollablePanelComponent(
 					x, y + finalI * 18, width, 16, innerList,
-					(mx, my, btn) -> setFluidTagFilter(tag, slotWidget),
+					(mx, my, btn, c) -> setFluidTagFilter(tag, slotWidget),
 					finalI, font, Component.literal(tagLocation),
 					0xff2C2F33, 0xff3C8DBC, 0xff68C8FA
 				);
@@ -316,7 +316,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 		}
 		
 		convertingSlot = slotWidget;
-		slotWidget.setHighlighted(true); // Highlight'ı aç
+		slotWidget.setHighlighted(true);
 		
 		Component desc = toConvert.map(
 			ItemStack::getHoverName,
@@ -332,7 +332,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 		tagList.setColor(getGuiTint());
 		tagList.addOnCloseListener(panel -> {
 			if (convertingSlot != null) {
-				convertingSlot.setHighlighted(false); // Highlight'ı kapat
+				convertingSlot.setHighlighted(false);
 			}
 			convertingSlot = null;
 			removeWidget(tagList);
@@ -356,7 +356,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 				innerList.addChild((x, y, width, height) -> {
 					var comp = new ScrollablePanelComponent(
 						x, y + finalI * 18, width, 16, innerList,
-						(mx, my, btn) -> setItemTagFilter(tag, slotWidget),
+						(mx, my, btn, c) -> setItemTagFilter(tag, slotWidget),
 						finalI, font, Component.literal(tagLocation),
 						0xff2C2F33, 0xff3C8DBC, 0xff68C8FA
 					);
@@ -379,7 +379,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 				innerList.addChild((x, y, width, height) -> {
 					var comp = new ScrollablePanelComponent(
 					 x, y + finalI * 18, width, 16, innerList,
-						(mx, my, btn) -> setFluidTagFilter(tag, slotWidget),
+						(mx, my, btn, c) -> setFluidTagFilter(tag, slotWidget),
 						finalI, font, Component.literal(tagLocation),
 						0xff2C2F33, 0xff3C8DBC, 0xff68C8FA
 					);
@@ -492,7 +492,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 			innerList.addChild((x, y, width, height) -> {
 				var comp = new ScrollablePanelComponent(
 					x, y + headerIndex * 18, width, 16, innerList,
-					(mx, my, btn) -> {}, headerIndex, font,
+					(mx, my, btn, c) -> {}, headerIndex, font,
 					Component.literal("§e" + block.getName().getString()),
 					0xff1a1a2e, 0xff1a1a2e, 0xff1a1a2e
 				);
@@ -512,7 +512,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 					String prefix = isSelected ? "§a✓ " : "§7✗ ";
 					var comp = new ScrollablePanelComponent(
 						x, y + propIndex * 18, width, 16, innerList,
-						(mx, my, btn) -> toggleProperty(finalSlotIndex, propName),
+						(mx, my, btn, c) -> toggleProperty(finalSlotIndex, propName),
 						propIndex, font,
 						Component.literal(prefix + propName + ": " + valueStr),
 						isSelected ? 0xff2d4a3e : 0xff2C2F33,
@@ -529,7 +529,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 			innerList.addChild((x, y, width, height) -> {
 				var comp = new ScrollablePanelComponent(
 					x, y + cycleIndex * 18, width, 16, innerList,
-					(mx, my, btn) -> openPropertyValuePanel(finalSlotIdx),
+					(mx, my, btn, c) -> openPropertyValuePanel(finalSlotIdx),
 					cycleIndex, font,
 					Component.literal("§b⚙ " + ModConstants.GUI.withSuffixTranslatable("change_property_values").getString()),
 					0xff1e3a5f, 0xff2e5a8f, 0xff3e7abf
@@ -603,7 +603,7 @@ public class BlockInteractorScreen extends AbstractSidedMachineScreen<BlockInter
 			innerList.addChild((x, y, width, height) -> {
 				var comp = new ScrollablePanelComponent(
 					x, y + idx * 18, width, 16, innerList,
-					(mx, my, btn) -> cyclePropertyValue(slotIndex, propName, innerList),
+					(mx, my, btn, c) -> cyclePropertyValue(slotIndex, propName, innerList),
 					idx, font,
 					Component.literal("↻ " + propName + ": §f" + currentValue),
 					0xff2C2F33, 0xff3C8DBC, 0xff68C8FA

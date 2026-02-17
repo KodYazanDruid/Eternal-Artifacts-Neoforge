@@ -23,7 +23,7 @@ public class Disenchanter extends GenericMachine {
 		setTank(() -> createBasicTank(16000, fs -> fs.is(ModTags.Fluids.EXPERIENCE),true, false));
 		setInventory(() -> createBasicInventory(4, (i, s) -> {
 			if (i == 0 && (s.isEnchanted() ||
-				(s.getItem() == Items.ENCHANTED_BOOK && !EnchantedBookItem.getEnchantments(s).isEmpty())
+				(s.getItem() == Items.ENCHANTED_BOOK && EnchantedBookItem.getEnchantments(s).size() > 1)
 			)) return true;
 			else if (i == 1 && s.getItem() == Items.BOOK) return true;
 			else if (i != 0 && i != 1) return !outputSlots.contains(i);

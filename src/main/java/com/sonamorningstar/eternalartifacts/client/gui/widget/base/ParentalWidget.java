@@ -13,6 +13,10 @@ import java.util.List;
 
 public interface ParentalWidget {
 	List<GuiEventListener> getChildren();
+	
+	void setFocused(@Nullable GuiEventListener listener);
+	@Nullable GuiEventListener getFocused();
+	
 	default AbstractWidget self() {
 		return (AbstractWidget) this;
 	}
@@ -84,8 +88,15 @@ public interface ParentalWidget {
 		if (isMouseOverSelfRaw(mx, my)) {
 			GuiEventListener child = getChildUnderCursor(mx, my);
 			if (child != null) {
-				return child.mouseClicked(mx, my, button);
+				boolean result = child.mouseClicked(mx, my, button);
+				if (result) {
+					setFocused(child);
+				} else {
+					setFocused(null);
+				}
+				return result;
 			}
+			setFocused(null);
 		}
 		return false;
 	}

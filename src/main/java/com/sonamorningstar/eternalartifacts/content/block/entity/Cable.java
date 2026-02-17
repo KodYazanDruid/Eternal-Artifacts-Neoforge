@@ -54,10 +54,10 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
         IEnergyStorage cap = cache.getCapability();
         boolean ret = false;
         if (cap != null){
-            if (cap.canExtract()) {
+            if (cap.canExtract() || cap.extractEnergy(tier.getTransferRate(), true) > 0) {
                 sources.put(pos, cache);
                 ret = true;
-            } else if (cap.canReceive()) {
+            } else if (cap.canReceive() || cap.receiveEnergy(tier.getTransferRate(), true) > 0) {
                 targets.put(pos, cache);
                 ret = true;
             }

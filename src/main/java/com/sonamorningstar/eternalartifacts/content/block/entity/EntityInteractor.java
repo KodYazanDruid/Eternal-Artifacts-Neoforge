@@ -122,35 +122,33 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 			workingIndex = 0;
 		}
 
-		LivingEntity entity = entities.get(workingIndex);
-		progressCharge(entities::isEmpty, () -> {
-			boolean isShears = interactStack.is(Tags.Items.SHEARS);
-			var result = isShears ? InteractionResult.PASS : interactStack.interactLivingEntity(fakePlayer, entity, InteractionHand.MAIN_HAND);
-			boolean success = false;
-			if (!result.consumesAction()) {
-				if (isShears && entity instanceof IShearable shearable && shearable.isShearable(interactStack, lvl, entity.blockPosition())) {
-					var items = shearable.onSheared(fakePlayer, interactStack, lvl, entity.blockPosition(), interactStack.getEnchantmentLevel(Enchantments.MOB_LOOTING));
-					interactStack.hurtAndBreak(1, fakePlayer, e -> {});
-					for (ItemStack drop : items) {
-						ItemStack remaining = ItemHelper.insertItemStackedForced(inventory, drop, false, outputSlots).getFirst();
-						if (!remaining.isEmpty()) {
-							shearable.spawnShearedDrop(lvl, entity.blockPosition(), drop);
-						}
-					}
-					success = true;
-				}
-				if (entity instanceof Animal animal) {
-					InteractionResult animalResult = animal.mobInteract(fakePlayer, InteractionHand.MAIN_HAND);
-					if (animalResult.consumesAction()) {
-						success = true;
+		progressCharge(entities::isEmpty, () -> handleEntity(interactStack, entities.get(workingIndex++), lvl), energy);
+	}
+	
+	private boolean handleEntity(ItemStack interactStack, LivingEntity entity, Level lvl) {
+		boolean isShears = interactStack.is(Tags.Items.SHEARS);
+		var result = isShears ? InteractionResult.PASS : interactStack.interactLivingEntity(fakePlayer, entity, InteractionHand.MAIN_HAND);
+		boolean success = result.consumesAction();
+		if (!success) {
+			if (isShears && entity instanceof IShearable shearable && shearable.isShearable(interactStack, lvl, entity.blockPosition())) {
+				var items = shearable.onSheared(fakePlayer, interactStack, lvl, entity.blockPosition(), interactStack.getEnchantmentLevel(Enchantments.MOB_LOOTING));
+				interactStack.hurtAndBreak(1, fakePlayer, e -> {});
+				for (ItemStack drop : items) {
+					ItemStack remaining = ItemHelper.insertItemStackedForced(inventory, drop, false, outputSlots).getFirst();
+					if (!remaining.isEmpty()) {
+						shearable.spawnShearedDrop(lvl, entity.blockPosition(), drop);
 					}
 				}
-			} else {
 				success = true;
 			}
-			workingIndex++;
-			return success;
-		}, energy);
+			if (entity instanceof Animal animal) {
+				InteractionResult animalResult = animal.mobInteract(fakePlayer, InteractionHand.MAIN_HAND);
+				if (animalResult.consumesAction()) {
+					success = true;
+				}
+			}
+		}
+		return success;
 	}
 	
 	/**

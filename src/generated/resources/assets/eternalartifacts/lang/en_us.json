@@ -448,6 +448,7 @@
   "gui.eternalartifacts.render_area_enabled": "Rendering working area.",
   "gui.eternalartifacts.right": "Right",
   "gui.eternalartifacts.right_click_transfer": "Right Click to deposit the fluid.",
+  "gui.eternalartifacts.search": "Search...",
   "gui.eternalartifacts.search_warps": "Search Warps...",
   "gui.eternalartifacts.spawn": "Spawn",
   "gui.eternalartifacts.stored_energy": "Stored Energy",

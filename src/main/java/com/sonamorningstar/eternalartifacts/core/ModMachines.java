@@ -99,11 +99,6 @@ public class ModMachines {
                     .uniqueTexture()
                     .blockEnergyCap((be, dir) -> be.energy != null ? CapabilityHelper.regSidedEnergyCaps(be, be.energy, dir) : null)
                     .build());
-    
-    public static final MachineHolder<GenericMachineMenu, EnergyDistributor, MachineFourWayBlock<EnergyDistributor>, MachineBlockItem>
-            ENERGY_DISTRIBUTOR = MACHINES.register(MachineRegistration.generic("energy_distributor", EnergyDistributor::new)
-                    .uniqueTexture()
-                    .build());
 
     // ==================== Standard Machines ====================
     public static final MachineHolder<ElectricFurnaceMenu, ElectricFurnace, MachineFourWayBlock<ElectricFurnace>, MachineBlockItem>
@@ -154,6 +149,11 @@ public class ModMachines {
     public static final MachineHolder<AnvilinatorMenu, Anvilinator, MachineFourWayBlock<Anvilinator>, MachineBlockItem>
             ANVILINATOR = MACHINES.register(MachineRegistration
                     .standard("anvilinator", AnvilinatorMenu::new, Anvilinator::new)
+                    .build());
+    
+    public static final MachineHolder<EnergyDistributorMenu, EnergyDistributor, MachineFourWayBlock<EnergyDistributor>, MachineBlockItem>
+            ENERGY_DISTRIBUTOR = MACHINES.register(MachineRegistration.standard("energy_distributor", EnergyDistributorMenu::new, EnergyDistributor::new)
+                    .uniqueTexture()
                     .build());
 
     // ==================== Six-Way Machines ====================

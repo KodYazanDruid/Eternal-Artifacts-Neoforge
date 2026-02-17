@@ -111,7 +111,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     
     private void fireEvent() {
         int xpCost = 0;
-        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0), inventory.getStackInSlot(1), toolRename, xpCost, getFakePlayer());
+        anvilUpdateEvent = new AnvilUpdateEvent(inventory.getStackInSlot(0).copyWithCount(1), inventory.getStackInSlot(1).copyWithCount(1), toolRename, xpCost, getFakePlayer());
         NeoForge.EVENT_BUS.post(anvilUpdateEvent);
     }
     
@@ -126,7 +126,6 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         ItemStack secondary = inventory.getStackInSlot(1);
         ItemStack output = inventory.getStackInSlot(2);
         
-        // Event-based anvil operations
         if (anvilUpdateEvent != null && !anvilUpdateEvent.isCanceled() && !anvilUpdateEvent.getOutput().isEmpty()) {
             ItemStack eventResult = anvilUpdateEvent.getOutput();
             if (ItemHandlerHelper.canItemStacksStack(output, eventResult) || output.isEmpty()) {
@@ -146,7 +145,6 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             }
         }
         
-        // Vanilla-style enchant combining
         if (!input.isEmpty() && secondary.is(Items.ENCHANTED_BOOK) && !combineEnchants(input, secondary).isEmpty()) {
             ItemStack result = combineEnchants(input, secondary);
             int levelCost = calculateEnchantCost(input, secondary);
@@ -241,7 +239,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         inventory.extractItem(0, 1, false);
         inventory.extractItem(1, pendingMaterialCount, false);
         tank.drainForced(pendingFluidCost, IFluidHandler.FluidAction.EXECUTE);
-        inventory.insertItemForced(2, pendingResult.copy(), false);
+        inventory.insertItemForced(2, pendingResult.copyWithCount(1), false);
         
         pendingResult = ItemStack.EMPTY;
         pendingFluidCost = 0;

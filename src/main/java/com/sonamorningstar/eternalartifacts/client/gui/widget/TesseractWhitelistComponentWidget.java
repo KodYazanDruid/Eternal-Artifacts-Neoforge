@@ -22,12 +22,12 @@ public class TesseractWhitelistComponentWidget extends AbstractScrollPanelCompon
 			ScrollablePanel<? extends AbstractScrollPanelComponent> panel,
 			int index, Font font, Either<GameProfile, String> whitelisted, TesseractNetwork<?> network,
 			int color, int hoverColor, int focusColor) {
-		super(x, y, width, height, panel, (a, b, c) -> {}, index, font,
+		super(x, y, width, height, panel, (a, b, c, d) -> {}, index, font,
 			whitelisted.map(r -> Component.literal(r.getName()), Component::literal),
 			color, hoverColor, focusColor);
 		this.whitelisted = whitelisted;
 		this.network = network;
-		setAction((mX, mY, button) -> {
+		setAction((mX, mY, button, c) -> {
 			Minecraft.getInstance().screen.setFocused(this);
 		});
 	}

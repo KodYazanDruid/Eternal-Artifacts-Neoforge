@@ -2,8 +2,8 @@
   "feature": "eternalartifacts:iron_oreberry",
   "placement": [
     {
-      "type": "minecraft:count",
-      "count": 2
+      "type": "minecraft:rarity_filter",
+      "chance": 64
     },
     {
       "type": "minecraft:in_square"

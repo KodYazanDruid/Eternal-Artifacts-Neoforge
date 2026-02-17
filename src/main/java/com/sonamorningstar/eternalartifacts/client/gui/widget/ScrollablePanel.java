@@ -22,6 +22,7 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	private int innerHeight;
 	protected double scrollRate;
 	public boolean scrolling = false;
+	public boolean clickable = true;
 	
 	public ScrollablePanel(int x, int y, int width, int height, int scrollRate) {
 		super(x, y, width, height, Component.empty());
@@ -118,7 +119,7 @@ public class ScrollablePanel<W extends AbstractWidget> extends AbstractScrollWid
 	
 	@Override
 	public boolean mouseClicked(double mx, double my, int button) {
-		if (!visible) return false;
+		if (!visible || !clickable) return false;
 		
 		if (scrollbarVisible() && button == 0) {
 			int scrollbarX = getX() + getWidth() - scrollbarWidth();

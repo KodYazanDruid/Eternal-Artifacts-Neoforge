@@ -42,6 +42,14 @@ public class EntityPredicateEntry implements EntityFilterEntry {
 		this.activePredicates.addAll(Arrays.asList(predicates));
 	}
 	
+	public EntityPredicateEntry copy() {
+		EntityPredicateEntry copy = new EntityPredicateEntry();
+		copy.isWhitelist = this.isWhitelist;
+		copy.mode = this.mode;
+		copy.activePredicates.addAll(this.activePredicates);
+		return copy;
+	}
+	
 	@Override
 	public boolean matches(Entity entity) {
 		if (entity == null) return !isWhitelist;
@@ -80,7 +88,7 @@ public class EntityPredicateEntry implements EntityFilterEntry {
 	
 	@Override
 	public void setIgnoreNBT(boolean ignoreNBT) {
-		// Entity filtreleme için NBT kontrolü yok
+	
 	}
 	
 	public void addPredicate(EntityPredicate predicate) {

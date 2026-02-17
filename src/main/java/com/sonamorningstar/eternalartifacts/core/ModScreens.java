@@ -27,6 +27,7 @@ public class ModScreens {
         event.register(ModMachines.BOTTLER.getMenu(), BottlerScreen::new);
         event.register(ModMachines.HARVESTER.getMenu(), HarvesterScreen::new);
         event.register(ModMachines.ANVILINATOR.getMenu(), AnvilinatorScreen::new);
+        event.register(ModMachines.ENERGY_DISTRIBUTOR.getMenu(), EnergyDistributorScreen::new);
 
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);

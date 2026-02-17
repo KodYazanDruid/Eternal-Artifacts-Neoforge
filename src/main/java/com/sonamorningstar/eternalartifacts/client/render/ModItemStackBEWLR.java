@@ -84,6 +84,7 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             } else if(block instanceof DynamoBlock<?> dynamo) {
                 beRenderer.renderItem(dynamoMap.computeIfAbsent(dynamo, d -> (AbstractDynamo<?>) d.newBlockEntity(BlockPos.ZERO, d.defaultBlockState())), ps, buff, light, overlay);
             }else if(block instanceof NousTankBlock) {
+                stack.getAllEnchantments().forEach(nousTank::enchant);
                 if(fluidHandlerItem != null) nousTank.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 beRenderer.renderItem(nousTank, ps, buff, light, overlay);
             }else if(block instanceof OilRefineryBlock<? extends OilRefinery>) {

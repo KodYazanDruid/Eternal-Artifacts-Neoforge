@@ -90,7 +90,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 					String tagLocation = tags.get(i).location().toString();
 					innerList.addChild((x, y, width, height) -> {
 							var comp = new ScrollablePanelComponent(x, y + finalI * 18, width, 16, innerList,
-								(mx, my, button) -> setItemTagFilter(tag, fakeSlot.getSlotIndex()), finalI, font, Component.literal(tagLocation),
+								(mx, my, button, c) -> setItemTagFilter(tag, fakeSlot.getSlotIndex()), finalI, font, Component.literal(tagLocation),
 								0xff2C2F33, 0xff3C8DBC, 0xff68C8FA);
 							comp.setRenderIcon(false);
 							return comp;
@@ -106,7 +106,7 @@ public abstract class AbstractPipeFilterScreen<M extends AbstractPipeFilterMenu>
 					String tagLocation = tags.get(i).location().toString();
 					innerList.addChild((x, y, width, height) -> {
 							var comp = new ScrollablePanelComponent(x, y + finalI * 18, width, 16, innerList,
-								(mx, my, button) -> setFluidTagFilter(tag, fakeSlot.getSlotIndex()), finalI, font, Component.literal(tagLocation),
+								(mx, my, button, c) -> setFluidTagFilter(tag, fakeSlot.getSlotIndex()), finalI, font, Component.literal(tagLocation),
 								0xff2C2F33, 0xff3C8DBC, 0xff68C8FA);
 							comp.setRenderIcon(false);
 							return comp;

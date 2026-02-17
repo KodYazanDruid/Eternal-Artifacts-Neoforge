@@ -538,6 +538,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("mode_any"), "Mode: Any (OR)");
                 add(ModConstants.GUI.withSuffix("mode_all"), "Mode: All (AND)");
                 add(ModConstants.GUI.withSuffix("clear_all"), "Clear All");
+                add(ModConstants.GUI.withSuffix("no_active_filters"), "No active filters");
+                add(ModConstants.GUI.withSuffix("search"), "Search...");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Click to swap to Whitelist");
                 add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Click to swap to Blacklist");
                 add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt"), "Ignores NBT");
@@ -1322,6 +1324,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("mode_any"), "Mod: Herhangi biri (VEYA)");
                 add(ModConstants.GUI.withSuffix("mode_all"), "Mod: Hepsi (VE)");
                 add(ModConstants.GUI.withSuffix("clear_all"), "Tümünü Temizle");
+                add(ModConstants.GUI.withSuffix("no_active_filters"), "Aktif filtre yok");
+                add(ModConstants.GUI.withSuffix("search"), "Ara...");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Beyaz listeye geçmek için tıkla");
                 add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Kara listeye geçmek için tıkla");
                 add(ModConstants.GUI.withSuffix("pipe_filter_ignore_nbt"), "NBT'yi yok say");

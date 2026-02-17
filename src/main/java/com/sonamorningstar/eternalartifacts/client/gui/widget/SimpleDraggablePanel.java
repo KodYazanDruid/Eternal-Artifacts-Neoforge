@@ -43,6 +43,7 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 	private int color = 0xFFFFFFFF;
 	@Nullable private String id = "";
 	private int zIndex = BASE_Z;
+	@Nullable private GuiEventListener focusedChild;
 	
 	public SimpleDraggablePanel(Component title, int pX, int pY, int pWidth, int pHeight, Bounds bounds) {
 		super(pX, pY, pWidth, pHeight, title);
@@ -344,7 +345,7 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 				break;
 			}
 		}
-		if (!visible || !active || hasScrollingChildrenn) return;
+		//if (!visible || !active || hasScrollingChildrenn) return;
 		for (Bounds undragArea : undragAreas) {
 			if (undragArea.x() <= mx && undragArea.x() + undragArea.width() >= mx &&
 				undragArea.y() <= my && undragArea.y() + undragArea.height() >= my) {
@@ -377,6 +378,12 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 					anyChildHovered = true;
 				}
 			} else if (child instanceof AbstractWidget widget) {
+				if (child == focusedChild) {
+					if (widget.isMouseOver(mx, my)) {
+						anyChildHovered = true;
+					}
+					continue;
+				}
 				boolean shouldHover = !isBlocked && !anyChildHovered &&
 					widget.visible && widget.active && widget.isMouseOver(mx, my);
 				widget.setFocused(shouldHover);
@@ -430,6 +437,23 @@ public class SimpleDraggablePanel extends AbstractBaseWidget implements Parental
 	@Override
 	public GuiEventListener getElementUnderMouse(double mx, double my) {
 		return getChildUnderCursor(mx, my);
+	}
+	
+	@Override
+	@Nullable
+	public GuiEventListener getFocused() {
+		return focusedChild;
+	}
+	
+	@Override
+	public void setFocused(@Nullable GuiEventListener listener) {
+		if (this.focusedChild != null && this.focusedChild != listener) {
+			this.focusedChild.setFocused(false);
+		}
+		this.focusedChild = listener;
+		if (listener != null) {
+			listener.setFocused(true);
+		}
 	}
 	
 	public record Bounds(int x, int y, int width, int height) {

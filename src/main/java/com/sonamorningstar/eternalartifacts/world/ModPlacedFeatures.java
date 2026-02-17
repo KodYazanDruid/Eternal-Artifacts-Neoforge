@@ -157,7 +157,7 @@ public class ModPlacedFeatures {
             ResourceKey<ConfiguredFeature<?, ?>> configuredKey = ModConfiguredFeatures.ORE_BERRY_FEATURES.get(name);
             context.register(placedKey, new PlacedFeature(holderGetter.getOrThrow(configuredKey),
                 List.of(
-                    CountPlacement.of(2),
+                    RarityFilter.onAverageOnceEvery(64),
                     InSquarePlacement.spread(),
                     HeightRangePlacement.uniform(VerticalAnchor.absolute(-64), VerticalAnchor.absolute(8)),
                     EnvironmentScanPlacement.scanningFor(Direction.DOWN, BlockPredicate.solid(), BlockPredicate.ONLY_IN_AIR_PREDICATE, 12),

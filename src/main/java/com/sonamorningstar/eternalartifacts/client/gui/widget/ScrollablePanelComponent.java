@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.widget;
 
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
+import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -10,8 +11,11 @@ import net.minecraft.resources.ResourceLocation;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Setter
+@Getter
 public class ScrollablePanelComponent extends AbstractScrollPanelComponent {
 	private boolean renderIcon = true;
+	private Object data;
+	
 	public ScrollablePanelComponent(int x, int y, int width, int height,
 				ScrollablePanel<? extends AbstractScrollPanelComponent> panel, Clickable action,
 				int index, Font font, Component message, int color, int hoverColor, int focusColor) {

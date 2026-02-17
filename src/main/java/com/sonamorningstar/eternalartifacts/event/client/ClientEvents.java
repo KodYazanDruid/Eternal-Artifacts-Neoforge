@@ -24,14 +24,15 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModCo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.EntityFilterPanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanelComponent;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
-import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
@@ -54,6 +55,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
@@ -106,6 +108,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -564,27 +567,6 @@ public class ClientEvents {
                     );
                 }
             }
-            if (owner instanceof EnergyDistributor eDistributor) {
-                GuiDrawer.drawFramedBackground(gui, x + 27, y + 18, 130, 60, 1,
-                    0xff000000, 0xff404040, 0xffa0a0a0);
-                for (int i = 0; i < eDistributor.targets.size(); i++) {
-                    long target = eDistributor.targets.get(i);
-                    BlockPos targetPos = BlockPos.of(target);
-                    int yOffset = i * 20;
-                    BlockEntity blockEntity = Minecraft.getInstance().level.getBlockEntity(targetPos);
-                    if (blockEntity != null) {
-                        ResourceLocation resourceLocation = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(blockEntity.getType());
-                        gui.drawString(screen.getMinecraft().font,
-                            Component.literal(resourceLocation.toString()),
-                            x + 30, y + 20 + yOffset, 0xfff0f0f0, false
-                        );
-                        gui.drawString(screen.getMinecraft().font,
-                            Component.literal(targetPos.toShortString()),
-                            x + 30, y + 30 + yOffset, 0xfff0f0f0, false
-                        );
-                    }
-                }
-            }
         }
     }
     
@@ -762,23 +744,192 @@ public class ClientEvents {
             int x = gsms.getGuiLeft();
             int y = gsms.getGuiTop();
             int width = gsms.getXSize();
-            int height = gsms.getYSize();
             GenericMachine machine = gsms.getMachine();
             if (machine instanceof EntityFilterable efilterable) {
                 Font font = screen.getMinecraft().font;
-                EntityFilterPanel entityFilterPanel = new EntityFilterPanel(
+                
+                SimpleDraggablePanel panel = createEntityFilterPanel(
                     x + 23, y + 8, screen.width, screen.height,
-                    efilterable::getEntityFilter, efilterable.getFilterValidator(), font
+                    efilterable, machine, font, gsms.getGuiTint()
                 );
-                entityFilterPanel.withColor(gsms.getGuiTint());
-                entityFilterPanel.withOnFilterChanged(filter -> {
-                    Channel.sendToServer(EntityPredicateFilterToServer.create(machine.getBlockPos(), filter));
-                });
-                event.addListener(entityFilterPanel.createFilterButton(
-                    x + width - (gsms.enchantmentPanel != null ? 54 : 36), y + 3));
-                gsms.addUpperLayerChild(entityFilterPanel.getPanel());
+                
+                SpriteButton filterButton = SpriteButton.builder(Component.empty(), (b, i) -> panel.toggle(),
+                        new ResourceLocation(MODID, "textures/item/machine_item_filter.png"))
+                    .bounds(x + width - (gsms.enchantmentPanel != null ? 54 : 36), y + 3, 16, 16).build();
+                
+                event.addListener(filterButton);
+                gsms.addUpperLayerChild(panel);
             }
         }
+    }
+    
+    private static SimpleDraggablePanel createEntityFilterPanel(int x, int y, int screenWidth, int screenHeight,
+                                                                  EntityFilterable efilterable, GenericMachine machine,
+                                                                  Font font, int guiTint) {
+        SimpleDraggablePanel panel = new SimpleDraggablePanel(
+            Component.translatable("gui.eternalartifacts.entity_filter"),
+            x, y, 160, 160,
+            SimpleDraggablePanel.Bounds.of(0, 0, screenWidth, screenHeight)
+        );
+        panel.visible = false;
+        panel.active = false;
+        panel.setColor(guiTint);
+        panel.addClosingButton();
+        
+        ScrollablePanel<ScrollablePanelComponent> predicateList = new ScrollablePanel<>(panel.getX() + 4, panel.getY() + 35, 144, 108, 10);
+        final String[] searchQuery = {""};
+        
+        panel.addChildren((fx, fy, fW, fH) -> {
+            EditBox searchBox = new EditBox(font, fx + 4, fy + 17, 144, 14, Component.empty());
+            searchBox.setHint(ModConstants.GUI.withSuffixTranslatable("search"));
+            searchBox.setResponder(query -> {
+                searchQuery[0] = query.toLowerCase();
+                rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0]);
+            });
+            searchBox.setBordered(true);
+            return searchBox;
+        });
+        
+        var wlButtonBld = SpriteButton.builderNoTexture(Component.empty(), (b, i) -> {
+            EntityPredicateEntry currentFilter = efilterable.getEntityFilter();
+            EntityPredicateEntry newFilter = currentFilter.copy();
+            newFilter.setWhitelist(!newFilter.isWhitelist());
+            Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
+            b.setTextures(getListIcon(newFilter.isWhitelist()));
+        }).bounds(8, 142, 16, 16);
+        wlButtonBld.addTooltipHover(() -> efilterable.getEntityFilter().isWhitelist() ?
+            ModConstants.GUI.withSuffixTranslatable("whitelist").withStyle(style -> style.withColor(0x55FF55)) :
+            ModConstants.GUI.withSuffixTranslatable("blacklist").withStyle(style -> style.withColor(0xFF5555)));
+        var wlButon = wlButtonBld.build();
+        wlButon.setTextures(getListIcon(efilterable.getEntityFilter().isWhitelist()));
+        panel.addChildren((fx, fy, fW, fH) -> {
+            wlButon.setX(fx + 8);
+            wlButon.setY(fy + 142);
+            return wlButon;
+        });
+        
+        var modeButtonBld = SpriteButton.builderNoTexture(Component.empty(), (b, i) -> {
+            EntityPredicateEntry currentFilter = efilterable.getEntityFilter();
+            EntityPredicateEntry newFilter = currentFilter.copy();
+            EntityPredicateEntry.PredicateMode currentMode = newFilter.getMode();
+            EntityPredicateEntry.PredicateMode newMode = currentMode == EntityPredicateEntry.PredicateMode.ANY ?
+                EntityPredicateEntry.PredicateMode.ALL : EntityPredicateEntry.PredicateMode.ANY;
+            newFilter.setMode(newMode);
+            Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
+            b.setTextures(getModeIcon(newFilter.getMode()));
+        }).bounds(26, 142, 16, 16);
+        modeButtonBld.addTooltipHover(() -> efilterable.getEntityFilter().getMode() == EntityPredicateEntry.PredicateMode.ANY ?
+            ModConstants.GUI.withSuffixTranslatable("mode_any").withStyle(style -> style.withColor(0x55AAFF)) :
+            ModConstants.GUI.withSuffixTranslatable("mode_all").withStyle(style -> style.withColor(0xFFAA55)));
+        var modeButton = modeButtonBld.build();
+        modeButton.setTextures(getModeIcon(efilterable.getEntityFilter().getMode()));
+        panel.addChildren((fx, fy, fW, fH) -> {
+            modeButton.setX(fx + 26);
+            modeButton.setY(fy + 142);
+            return modeButton;
+        });
+        
+        var clearAllBld = SpriteButton.builderNoTexture(Component.empty(), (b, i) -> {
+            EntityPredicateEntry newFilter = new EntityPredicateEntry();
+            newFilter.setWhitelist(efilterable.getEntityFilter().isWhitelist());
+            newFilter.setMode(efilterable.getEntityFilter().getMode());
+            Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
+            for (ScrollablePanelComponent child : predicateList.getChildren()) {
+                if (child.getData() instanceof EntityPredicateEntry.EntityPredicate predicate) {
+                    boolean active = newFilter.hasPredicate(predicate);
+                    child.setActive(active);
+                    child.setColors(
+                        active ? 0xff2E7D32 : 0xff2C2F33,
+                        active ? 0xff43A047 : 0xff3C8DBC,
+                        active ? 0xff66BB6A : 0xff68C8FA
+                    );
+                }
+            }
+        }).bounds(26, 142, 16, 16);
+        clearAllBld.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("clear_all").withStyle(style -> style.withColor(0xFF5555)));
+        var clearAllButton = clearAllBld.build();
+        clearAllButton.setTextures(new ResourceLocation("textures/item/brush.png"));
+        panel.addChildren((fx, fy, fW, fH) -> {
+            clearAllButton.setX(fx + fW - 26);
+            clearAllButton.setY(fy + 142);
+            return clearAllButton;
+        });
+        
+        rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0]);
+        
+        panel.addChildren((fx, fy, fW, fH) -> {
+            predicateList.setX(fx + 4);
+            predicateList.setY(fy + 35);
+            return predicateList;
+        });
+        
+        return panel;
+    }
+    
+    private static void rebuildPredicateList(ScrollablePanel<ScrollablePanelComponent> predicateList,
+                                              EntityFilterable efilterable, GenericMachine machine,
+                                              Font font, String searchQuery) {
+        predicateList.clearChildren();
+        
+        EntityPredicateEntry.EntityPredicate[] predicates = EntityPredicateEntry.EntityPredicate.values();
+        Predicate<EntityPredicateEntry.EntityPredicate> filterValidator = efilterable.getFilterValidator();
+        EntityPredicateEntry.EntityPredicate[] filtered = Arrays.stream(predicates)
+            .filter(filterValidator)
+            .filter(p -> searchQuery.isEmpty() || p.getDisplayName().getString().toLowerCase().contains(searchQuery))
+            .toArray(EntityPredicateEntry.EntityPredicate[]::new);
+        for (int i = 0; i < filtered.length; i++) {
+            EntityPredicateEntry.EntityPredicate predicate = filtered[i];
+            int finalI = i;
+            boolean isActive = efilterable.getEntityFilter().hasPredicate(predicate);
+            int baseColor = isActive ? 0xff2E7D32 : 0xff2C2F33;
+            int hoverColor = isActive ? 0xff43A047 : 0xff3C8DBC;
+            int focusColor = isActive ? 0xff66BB6A : 0xff68C8FA;
+            
+            var comp = new ScrollablePanelComponent(
+                0, 0, 0, 16, predicateList,
+                (mx, my, btn, c) -> {
+                    EntityPredicateEntry currentFilter = efilterable.getEntityFilter();
+                    EntityPredicateEntry newFilter = currentFilter.copy();
+                    newFilter.togglePredicate(predicate);
+                    
+                    Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
+                    
+                    boolean nowActive = newFilter.hasPredicate(predicate);
+                    c.setActive(nowActive);
+                    ((ScrollablePanelComponent) c).setData(predicate);
+                    c.setColors(
+                        nowActive ? 0xff2E7D32 : 0xff2C2F33,
+                        nowActive ? 0xff43A047 : 0xff3C8DBC,
+                        nowActive ? 0xff66BB6A : 0xff68C8FA
+                    );
+                }, i, font, predicate.getDisplayName(),
+                baseColor, hoverColor, focusColor
+            );
+            comp.setActive(isActive);
+            comp.setRenderIcon(false);
+            comp.setData(predicate);
+            
+            predicateList.addChild((x, y, width, height) -> {
+                comp.setPosition(x, y + finalI * 18);
+                int barPadding = predicateList.scrollbarVisible() ? -predicateList.scrollbarWidth() : 0;
+                comp.setWidth(width + barPadding);
+                return comp;
+            });
+        }
+        predicateList.setScrollAmount(0);
+        predicateList.reCalcInnerHeight();
+    }
+    
+    private static ResourceLocation getListIcon(boolean isWhitelist) {
+        return isWhitelist ?
+            new ResourceLocation("textures/item/paper.png") :
+            new ResourceLocation(MODID, "textures/item/carbon_paper.png");
+    }
+    
+    private static ResourceLocation getModeIcon(EntityPredicateEntry.PredicateMode mode) {
+        return mode == EntityPredicateEntry.PredicateMode.ANY ?
+            new ResourceLocation("textures/item/ender_pearl.png") :
+            new ResourceLocation("textures/item/ender_eye.png");
     }
     
     private static final ItemStack[] BOOKS = new ItemStack[] {

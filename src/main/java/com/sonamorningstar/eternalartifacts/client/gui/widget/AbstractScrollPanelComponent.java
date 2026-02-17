@@ -11,12 +11,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 @Setter
+@Getter
 public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 	protected int color;
 	protected int hoverColor;
 	protected int focusColor;
 	private boolean hoveredOnPanel;
 	protected boolean canClick = true;
+	protected boolean active = false;
 	@Getter
 	protected final int index;
 	protected Clickable action;
@@ -82,7 +84,7 @@ public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 	
 	@Override
 	public void onClick(double mouseX, double mouseY, int button) {
-		if (canClick) action.onClick(mouseX, mouseY, index);
+		if (canClick) action.onClick(mouseX, mouseY, index, this);
 	}
 	
 	@Override
@@ -96,6 +98,6 @@ public abstract class AbstractScrollPanelComponent extends AbstractBaseWidget {
 	}
 	
 	public interface Clickable {
-		void onClick(double mouseX, double mouseY, int button);
+		void onClick(double mouseX, double mouseY, int button, AbstractScrollPanelComponent component);
 	}
 }

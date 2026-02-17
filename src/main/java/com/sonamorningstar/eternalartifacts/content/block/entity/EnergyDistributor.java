@@ -2,7 +2,8 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.machine.config.ConfigLocations;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
+import com.sonamorningstar.eternalartifacts.container.EnergyDistributorMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.network.Channel;
@@ -18,16 +19,13 @@ import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
-public class EnergyDistributor extends GenericMachine implements WorkingAreaProvider {
+public class EnergyDistributor extends SidedTransferMachine<EnergyDistributorMenu> implements WorkingAreaProvider {
 	public LongList targets;
 	public long[] workingPositions;
 	public EnergyDistributor(BlockPos pos, BlockState blockState) {
-		super(ModMachines.ENERGY_DISTRIBUTOR, pos, blockState);
+		super(ModMachines.ENERGY_DISTRIBUTOR.getBlockEntity(), pos, blockState, (a, b, c, d) -> new EnergyDistributorMenu(ModMachines.ENERGY_DISTRIBUTOR.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
 		registerCapabilityConfigs(Capabilities.EnergyStorage.BLOCK);
-		screenInfo.setShowEPT(false);
-		screenInfo.setShouldDrawArrow(false);
-		screenInfo.setShouldDrawInventoryTitle(false);
 	}
 	
 	@Override
@@ -51,6 +49,7 @@ public class EnergyDistributor extends GenericMachine implements WorkingAreaProv
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
+		performAutoInputEnergy(lvl, pos);
 		
 		boolean updateTargets = targets != null && !targets.isEmpty();
 		targets = new LongArrayList();
@@ -95,4 +94,5 @@ public class EnergyDistributor extends GenericMachine implements WorkingAreaProv
 			}
 		}
 	}
+	
 }

@@ -67,7 +67,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				Component component = securities.get(i);
 				ScrollablePanel<ScrollablePanelComponent> panel = builder.menu().getDropPanel();
 				builder.add(new ScrollablePanelComponent(panel.getX(), panel.getY() + (i * 22), panel.getWidth(), 20,
-					panel, (mx, my, index) -> securityMenu.select(index), i,
+					panel, (mx, my, index, c) -> securityMenu.select(index), i,
 					font, component, 0xFF003D35, 0xFF00524A, 0xFF006B60));
 			}
 		}, ModConstants.DROPDOWN_MENU.withSuffixTranslatable("unselected_security"));
@@ -78,7 +78,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				Component component = capabilities.get(i);
 				ScrollablePanel<ScrollablePanelComponent> panel = builder.menu().getDropPanel();
 				builder.add(new ScrollablePanelComponent(panel.getX(), panel.getY() + (i * 22), panel.getWidth(), 20,
-					panel, (mx, my, index) -> capMenu.select(index), i,
+					panel, (mx, my, index, c) -> capMenu.select(index), i,
 					font, component, 0xFF00433B, 0xFF005850, 0xFF007065));
 			}
 		}, ModConstants.DROPDOWN_MENU.withSuffixTranslatable("unselected_capability"));
@@ -140,7 +140,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				int isShort = tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED ? 20 : 0;
 				int widgetY = panel.getY() + (finalI * (childHeight + 1));
 				return new TesseractNetworkWidget(widgetX, widgetY, panel.getWidth() - isShort, childHeight,
-					tesseractNetwork, panel, (mx, my, index) -> selectNetwork(index)
+					tesseractNetwork, panel, (mx, my, index, c) -> selectNetwork(index)
 					,networkIndex.getAndIncrement(), font, Component.empty(),
 					0xFF004A42, 0xFF00635A, 0xFF007A6D);
 			});
@@ -191,7 +191,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				addUpperLayerChild(dragPanel);
 				
 				panel.addChild((pX, pY, pWidth, pHeight) -> new ScrollablePanelComponent(widgetX, widgetY, 20, childHeight,
-					panel, (mx, my, index) -> {
+					panel, (mx, my, index, c) -> {
 					dragPanel.setX(widgetX);
 					dragPanel.setY(widgetY - (int) panel.scrollAmount());
 					dragPanel.toggle();
@@ -266,7 +266,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		if (selectedWlPanel != null) removeWidget(selectedWlPanel);
 		
 		selectedNetwork = new TesseractNetworkWidget(leftPos + 10, topPos + 9, imageWidth - 20, 26, tesseractNetwork,
-			panel, (mx, my, b) -> this.setFocused(selectedNetwork), -1, font, Component.empty(),
+			panel, (mx, my, b, c) -> this.setFocused(selectedNetwork), -1, font, Component.empty(),
 			0xFF004A42, 0xFF00635A, 0xFF007A6D);
 		if (tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED) {
 			selectedNetwork.setWidth(imageWidth - 40);
@@ -312,7 +312,7 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 			
 			selectedWlButton = new ScrollablePanelComponent(dX, selectedNetwork.getY(),
 				20, selectedNetwork.getHeight(),
-				panel, (mx, my, index) -> {
+				panel, (mx, my, index, c) -> {
 				selectedWlPanel.setX(dX);
 				selectedWlPanel.setY(selectedNetwork.getY() - (int) panel.scrollAmount());
 				selectedWlPanel.toggle();

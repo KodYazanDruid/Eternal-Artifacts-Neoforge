@@ -158,6 +158,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         var innerList = new ScrollablePanel<ScrollablePanelComponent>(
             enchantmentPanel.getX() + 4, enchantmentPanel.getY() + 17, 134, 95, 10
         );
+        //innerList.clickable = false;
         
         int componentIndex = 0;
         for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
@@ -176,7 +177,7 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
             innerList.addChild((x, y, width, height) -> {
                 var comp = new ScrollablePanelComponent(
                     x, y + idx * 18, width, 16, innerList,
-                    (mx, my, btn) -> {}, idx, font, enchantName,
+                    (mx, my, btn, c) -> {}, idx, font, enchantName,
                     bgColor, bgColor, bgColor
                 );
                 comp.setRenderIcon(false);
@@ -497,7 +498,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     
     @Override
     public boolean mouseDragged(double mx, double my, int button, double dragX, double dragY) {
-        // Fokuslanmış panel varsa önce onu kontrol et
         if (getFocused() instanceof SimpleDraggablePanel panel && isDragging() && button == 0) {
             return panel.mouseDragged(mx, my, button, dragX, dragY);
         }
@@ -580,7 +580,8 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
                 if (isOver) {
                     bringPanelToFront(panel);
                     panel.mouseClicked(mx, my, button);
-                    setFocused(panel);
+                    GuiEventListener focusedChild = panel.getFocused();
+					setFocused(Objects.requireNonNullElse(focusedChild, panel));
                     if (button == 0) setDragging(true);
                     return true;
                 }
