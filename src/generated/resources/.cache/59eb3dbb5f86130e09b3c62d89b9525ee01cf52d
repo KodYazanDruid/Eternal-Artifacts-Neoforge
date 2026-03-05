@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-12T15:42:14.0765985	Loot Tables
+// 1.20.4	2026-03-02T18:04:45.9821681	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -85,6 +85,7 @@ f09629946be7ec7740eee479386966dbddd12253 data/eternalartifacts/loot_tables/block
 a810febb586f4934841b95cd042469b3ade26773 data/eternalartifacts/loot_tables/blocks/industrial_sponge.json
 708a2310dba2ae5c82c0edb666d4e824ccd1fdb4 data/eternalartifacts/loot_tables/blocks/iron_drum.json
 a709af7db8afbcad6df2b635fb76c314cd37f548 data/eternalartifacts/loot_tables/blocks/iron_oreberry.json
+6589cac2e6d92145af710741af1c615e271a07b6 data/eternalartifacts/loot_tables/blocks/item_collector.json
 f8fae0081f4b1e76be661983cf1e472e47ec89c4 data/eternalartifacts/loot_tables/blocks/jar.json
 aa1c0b1a5edffd2b76901862d04388f9b6b2cefe data/eternalartifacts/loot_tables/blocks/layered_prismarine.json
 7083b03ba6d338c8ea57d3f694a207337198a836 data/eternalartifacts/loot_tables/blocks/machine_block.json

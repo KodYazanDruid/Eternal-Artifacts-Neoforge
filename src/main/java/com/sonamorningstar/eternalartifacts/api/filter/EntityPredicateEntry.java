@@ -66,6 +66,14 @@ public class EntityPredicateEntry implements EntityFilterEntry {
 	}
 	
 	@Override
+	public boolean matchesRaw(Entity entity) {
+		if (entity == null) return false;
+		if (activePredicates.isEmpty()) return true;
+		
+		return activePredicates.stream().anyMatch(p -> p.test(entity));
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return activePredicates.isEmpty();
 	}

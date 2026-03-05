@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 
+import java.util.Objects;
 import javax.annotation.Nullable;
 
 @Getter
@@ -35,6 +36,12 @@ public class EntityTypeEntry implements EntityFilterEntry {
 	}
 	
 	@Override
+	public boolean matchesRaw(Entity entity) {
+		if (entity == null || filterType == null) return false;
+		return entity.getType() == filterType;
+	}
+	
+	@Override
 	public boolean isEmpty() {
 		return filterType == null;
 	}
@@ -51,7 +58,6 @@ public class EntityTypeEntry implements EntityFilterEntry {
 	
 	@Override
 	public void setIgnoreNBT(boolean ignoreNBT) {
-		// Entity type filtreleme için NBT kontrolü yok
 	}
 	
 	@Override
@@ -102,6 +108,19 @@ public class EntityTypeEntry implements EntityFilterEntry {
 		} else {
 			this.filterType = null;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EntityTypeEntry that = (EntityTypeEntry) o;
+		return isWhitelist == that.isWhitelist && Objects.equals(filterType, that.filterType);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(filterType, isWhitelist);
 	}
 	
 	@Override

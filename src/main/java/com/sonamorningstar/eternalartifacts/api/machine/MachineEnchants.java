@@ -76,7 +76,6 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.OIL_REFINERY.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ELECTRIC_FURNACE.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ANVILINATOR.getBlockEntity(), commonMachineEnchants);
-		enchantMap.put(ModMachines.BOOK_DUPLICATOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.SMITHINATOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.AUTOCUTTER.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.REPAIRER.getBlockEntity(), commonMachineEnchants);
@@ -92,6 +91,7 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), nonProgressMachineEnchants);
+		enchantMap.put(ModMachines.ITEM_COLLECTOR.getBlockEntity(), nonProgressMachineEnchants);
 		
 		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.BOTTLER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
@@ -108,6 +108,9 @@ public class MachineEnchants {
 		marineEnchs.add(Enchantments.BLOCK_FORTUNE);
 		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), marineEnchs);
 		
+		var bookDuplicatorEnchants = new HashSet<>(commonMachineEnchants);
+		bookDuplicatorEnchants.add(ModEnchantments.VERSATILITY.get());
+		enchantMap.put(ModMachines.BOOK_DUPLICATOR.getBlockEntity(), bookDuplicatorEnchants);
 		
 		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
 		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());

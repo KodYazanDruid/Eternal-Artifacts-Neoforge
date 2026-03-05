@@ -104,7 +104,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		if (!redstoneChecks(lvl)) return;
 		
 		getFakePlayer();
-		setupFakePlayer(st);
+		setupFakePlayer(st, ((ServerLevel) lvl));
 		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);

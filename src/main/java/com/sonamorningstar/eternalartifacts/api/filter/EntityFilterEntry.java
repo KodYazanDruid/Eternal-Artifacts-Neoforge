@@ -12,6 +12,12 @@ import net.minecraft.world.entity.Entity;
 public interface EntityFilterEntry extends FilterEntry {
 	boolean matches(Entity entity);
 	
+	/**
+	 * Tests if the entity matches the filter criteria without applying the whitelist/blacklist inversion.
+	 * Used by EntityFilterable to apply a global whitelist setting across all filter types.
+	 */
+	boolean matchesRaw(Entity entity);
+	
 	static EntityFilterEntry fromNBT(CompoundTag tagData) {
 		String type = tagData.getString("Type");
 		EntityFilterEntry entry = switch (type) {
@@ -50,6 +56,11 @@ public interface EntityFilterEntry extends FilterEntry {
 		@Override
 		public boolean matches(Entity entity) {
 			return !isWhitelist;
+		}
+		
+		@Override
+		public boolean matchesRaw(Entity entity) {
+			return false;
 		}
 		
 		@Override

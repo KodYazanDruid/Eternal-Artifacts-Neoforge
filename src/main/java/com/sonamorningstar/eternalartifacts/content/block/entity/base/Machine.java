@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -232,8 +233,9 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
 		return fakePlayer;
     }
-    protected void setupFakePlayer(BlockState st) {
+    protected void setupFakePlayer(BlockState st, ServerLevel lvl) {
         if (fakePlayer == null || isFakePlayerSetUp) return;
+        fakePlayer.setServerLevel(lvl);
         fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
         if (st.hasProperty(BlockStateProperties.FACING)) {
             fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
@@ -241,41 +243,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
         }
         isFakePlayerSetUp = true;
-    }
-    /**
-     * @deprecated ModFakePlayerInventory artık otomatik sync yapıyor.
-     * Bu method sadece geriye uyumluluk ve selected slot ayarı için var.
-     */
-    @Deprecated
-    protected void setupFakePlayerInventory(ItemStack mainHandItem) {
-        if (fakePlayer == null) return;
-        Inventory fakePlayerInventory = fakePlayer.getInventory();
-        fakePlayerInventory.selected = 0;
-        // ModFakePlayerInventory otomatik sync yapıyor, eski inventory için fallback
-        if (!(fakePlayerInventory instanceof ModFakePlayer.ModFakePlayerInventory)) {
-            fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, mainHandItem);
-            int size = Math.min(fakePlayerInventory.items.size(), inventory.getSlots());
-            for (int i = 1; i < size; i++) {
-                fakePlayerInventory.items.set(i, inventory.getStackInSlot(i).copy());
-            }
-        }
-    }
-    /**
-     * @deprecated ModFakePlayerInventory artık otomatik sync yapıyor.
-     * Bu method sadece geriye uyumluluk için var.
-     */
-    @Deprecated
-    protected void loadInventoryFromFakePlayer() {
-        if (fakePlayer == null) return;
-        Inventory fakePlayerInventory = fakePlayer.getInventory();
-        // ModFakePlayerInventory otomatik sync yapıyor, eski inventory için fallback
-        if (!(fakePlayerInventory instanceof ModFakePlayer.ModFakePlayerInventory)) {
-            int size = Math.min(fakePlayerInventory.items.size(), inventory.getSlots());
-            for (int i = 1; i < size; i++) {
-                inventory.setStackInSlot(i, fakePlayerInventory.items.get(i).copy());
-            }
-            inventory.setStackInSlot(0, fakePlayerInventory.getSelected());
-        }
     }
     
     protected void applyEfficiency(int level) {

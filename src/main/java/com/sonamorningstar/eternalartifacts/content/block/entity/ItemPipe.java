@@ -171,8 +171,27 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 			BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
 			NonNullList<FilterEntry> sourceFilters = null;
 			
+			List<BlockPos> prioritizedTargets = new ArrayList<>();
 			if (sourceBe instanceof ItemPipe sourcePipe) {
 				sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
+			}
+			
+			for (BlockPos targetPos : sortedTargets) {
+				BlockCapabilityCache<IItemHandler, Direction> targetCache = targets.get(targetPos);
+				Direction targetDir = targetCache.context();
+				BlockEntity targetBe = level.getBlockEntity(targetPos.relative(targetDir));
+				if (targetBe instanceof ItemPipe targetPipe) {
+					PipeConnection connection = targetPipe.getBlockState().getValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(targetDir.getOpposite()));
+					if (connection == PipeConnection.FILTERED) {
+						prioritizedTargets.add(targetPos);
+					}
+				}
+			}
+			
+			if (!prioritizedTargets.isEmpty()) {
+				sortedTargets = new ArrayList<>(sortedTargets);
+				sortedTargets.removeAll(prioritizedTargets);
+				sortedTargets.addAll(0, prioritizedTargets);
 			}
 			
 			sourceLoop: for (int sourceSlot = 0; sourceSlot < source.getSlots(); sourceSlot++) {

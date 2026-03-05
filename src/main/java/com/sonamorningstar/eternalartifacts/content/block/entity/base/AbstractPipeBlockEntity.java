@@ -35,7 +35,7 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	
 	
 	public boolean isDirty = false;
-	private boolean updateNetwork = false;
+	protected boolean updateNetwork = false;
 	protected boolean isUpdatingConnections = false;
 	
 	@Getter

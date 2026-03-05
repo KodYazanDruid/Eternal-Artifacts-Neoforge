@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-12T15:42:14.0935987	Item Models: eternalartifacts
+// 1.20.4	2026-03-02T18:04:46.0403867	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -145,6 +145,7 @@ db1884568509aa8f4eb08063f93fb00cce6f6bd6 assets/eternalartifacts/models/item/iro
 ec8d1314836ce0e4ff6096b4bd8b55e1b5ea1fac assets/eternalartifacts/models/item/iron_leather_gloves.json
 22d616680d46d49c8e5d3928a400d64a51d3d028 assets/eternalartifacts/models/item/iron_oreberry.json
 bfa23e64038c7579f02e9937a13fa9a8fe36bbea assets/eternalartifacts/models/item/iron_sickle.json
+37457bba7f6a09bea400e9c465b7460585904b66 assets/eternalartifacts/models/item/item_collector.json
 17706b97425221c1e07f00cb5e6e88ced1f84039 assets/eternalartifacts/models/item/knapsack.json
 f244cc9ae51e0947ad50cb4f4e7d4a5c36861a92 assets/eternalartifacts/models/item/lens.json
 108ed758ddbd82f81b78612d837a15ff0f0b9ed5 assets/eternalartifacts/models/item/lifter.json

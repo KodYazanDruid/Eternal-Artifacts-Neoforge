@@ -15,6 +15,7 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -96,7 +97,7 @@ public class BlockPlacer extends SidedTransferMachine<BlockInteractorMenu> imple
 		if (!redstoneChecks(lvl)) return;
 		
 		getFakePlayer();
-		setupFakePlayer(st);
+		setupFakePlayer(st, ((ServerLevel) lvl));
 		Direction facing = st.getValue(BlockStateProperties.FACING);
 		BlockPos targetPos = getBlockPos().relative(facing);
 		BlockState targetState = lvl.getBlockState(targetPos);

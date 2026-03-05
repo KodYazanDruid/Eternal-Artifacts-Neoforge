@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.EntityTagEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.EntityTypeEntry;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
@@ -10,6 +12,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAre
 import com.sonamorningstar.eternalartifacts.content.recipe.MobLiquifierRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleEntityContainer;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.util.EntityFilterHelper;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -28,15 +31,15 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Getter
 @Setter
 public class MobLiquifier extends GenericMachine implements WorkingAreaProvider, EntityFilterable {
     private EntityPredicateEntry entityFilter = new EntityPredicateEntry();
+    private List<EntityTypeEntry> entityTypeEntries = new ArrayList<>();
+    private List<EntityTagEntry> entityTagEntries = new ArrayList<>();
     Predicate<EntityPredicateEntry.EntityPredicate> filterValidator = e ->
         !Objects.equals(e, EntityPredicateEntry.EntityPredicate.PLAYER) &&
         !Objects.equals(e, EntityPredicateEntry.EntityPredicate.BABY) &&
@@ -74,6 +77,8 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("EntityFilter", entityFilter.serializeNBT());
+        EntityFilterHelper.saveTypeEntries(tag, entityTypeEntries);
+        EntityFilterHelper.saveTagEntries(tag, entityTagEntries);
     }
     
     @Override
@@ -82,12 +87,16 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
         if (tag.contains("EntityFilter")) {
             entityFilter.deserializeNBT(tag.getCompound("EntityFilter"));
         }
+        EntityFilterHelper.loadTypeEntries(tag, entityTypeEntries);
+        EntityFilterHelper.loadTagEntries(tag, entityTagEntries);
     }
     
     @Override
     public void saveContents(CompoundTag additionalTag) {
         super.saveContents(additionalTag);
         additionalTag.put("EntityFilter", entityFilter.serializeNBT());
+        EntityFilterHelper.saveTypeEntries(additionalTag, entityTypeEntries);
+        EntityFilterHelper.saveTagEntries(additionalTag, entityTagEntries);
     }
     
     @Override
@@ -96,6 +105,8 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
         if (additionalTag.contains("EntityFilter")) {
             entityFilter.deserializeNBT(additionalTag.getCompound("EntityFilter"));
         }
+        EntityFilterHelper.loadTypeEntries(additionalTag, entityTypeEntries);
+        EntityFilterHelper.loadTagEntries(additionalTag, entityTagEntries);
     }
     
     @Override
@@ -115,7 +126,7 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
         
         livingList = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos)).stream().filter(living -> {
                     EntityType<?> type = living.getType();
-                    return !(EntityType.PLAYER == type || living.isDeadOrDying() || living.isBaby()) && entityFilter.matches(living);
+                    return !(EntityType.PLAYER == type || living.isDeadOrDying() || living.isBaby()) && matchesAllFilters(living);
                 }).toList();
 
         if(livingList.isEmpty()) {

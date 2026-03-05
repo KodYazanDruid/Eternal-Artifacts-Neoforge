@@ -11,6 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 
+import java.util.Objects;
 import javax.annotation.Nullable;
 
 @Getter
@@ -31,6 +32,12 @@ public class EntityTagEntry implements EntityFilterEntry {
 		
 		boolean result = entity.getType().is(tag);
 		return isWhitelist == result;
+	}
+	
+	@Override
+	public boolean matchesRaw(Entity entity) {
+		if (entity == null || tag == null) return false;
+		return entity.getType().is(tag);
 	}
 	
 	@Override
@@ -102,6 +109,19 @@ public class EntityTagEntry implements EntityFilterEntry {
 		} else {
 			this.tag = null;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EntityTagEntry that = (EntityTagEntry) o;
+		return isWhitelist == that.isWhitelist && Objects.equals(tag, that.tag);
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(tag, isWhitelist);
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-14T23:58:46.8059158	Recipes
+// 1.20.4	2026-03-02T18:04:45.9901674	Recipes
 4f62814fb6c375947e0bb6e9ec411c72eecbe641 data/eternalartifacts/advancements/recipes/brewing/glass_lingering_bottle.json
 336be76878694abd0a065874e3922ec9d7978ba3 data/eternalartifacts/advancements/recipes/brewing/glass_splash_bottle.json
 a5977152c10a390a5ad1ce429add954d01d5d7bd data/eternalartifacts/advancements/recipes/building_blocks/honey_block_from_honey_balls.json
@@ -280,6 +280,7 @@ f2b9870a00b849d21ddabc1a19d2afdddfca4222 data/eternalartifacts/advancements/reci
 6985489758671ed2ec6a041819060bd0af591486 data/eternalartifacts/advancements/recipes/redstone/harvester.json
 ca032be0525f22587f64b5e84a498c12834836d8 data/eternalartifacts/advancements/recipes/redstone/induction_furnace.json
 a55f3e03e61c6266fe58319cd3f8631c9a8b6d52 data/eternalartifacts/advancements/recipes/redstone/industrial_macerator.json
+11e1c098217142f30ae6c1bd4291086de9e77be0 data/eternalartifacts/advancements/recipes/redstone/item_collector.json
 a1933335c4af339348ffb55a8275fe70ff64f96e data/eternalartifacts/advancements/recipes/redstone/machine_block.json
 4b9c7c58104ecfe6d9e69f32f6d98ac6c7705e88 data/eternalartifacts/advancements/recipes/redstone/marine_fisher.json
 20c50698e0fd0eb555fdeecbd589420cfa228fef data/eternalartifacts/advancements/recipes/redstone/material_squeezer.json
@@ -551,6 +552,7 @@ ff35226876caea35ccb2c6fae33f4f115be9abbe data/eternalartifacts/recipes/ice_brick
 0c45a40c126efe77a167b708e2a026d669006aa5 data/eternalartifacts/recipes/iron_drum.json
 215c07ead8374a6c94c4412f8e129f2829de2290 data/eternalartifacts/recipes/iron_hammer.json
 ca709ca2f167efa0bbf23d022140c90d3ebf564b data/eternalartifacts/recipes/iron_sickle.json
+85ff07535ef6d96f824f758ba8760f283a966d97 data/eternalartifacts/recipes/item_collector.json
 4869086b44f1afbe5e27837898b1880faefa2df1 data/eternalartifacts/recipes/jar.json
 eb0b67a762f517bc569685c60b22c5a2307b2ff6 data/eternalartifacts/recipes/knapsack.json
 31b0029419017bffa63ee3a20be219f4fe235939 data/eternalartifacts/recipes/lifter.json

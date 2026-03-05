@@ -1,16 +1,20 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.EntityTagEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.EntityTypeEntry;
 import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import com.sonamorningstar.eternalartifacts.util.EntityFilterHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,14 +33,15 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 
 @Getter
 @Setter
 public class EntityInteractor extends GenericMachine implements WorkingAreaProvider, EntityFilterable {
 	private EntityPredicateEntry entityFilter = new EntityPredicateEntry();
+	private List<EntityTypeEntry> entityTypeEntries = new ArrayList<>();
+	private List<EntityTagEntry> entityTagEntries = new ArrayList<>();
 	Predicate<EntityPredicateEntry.EntityPredicate> filterValidator = e -> !Objects.equals(e, EntityPredicateEntry.EntityPredicate.PLAYER);
 	private int workingIndex = 0;
 	
@@ -63,6 +68,8 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 		super.saveAdditional(tag);
 		tag.put("EntityFilter", entityFilter.serializeNBT());
 		tag.putInt("WorkingIndex", workingIndex);
+		EntityFilterHelper.saveTypeEntries(tag, entityTypeEntries);
+		EntityFilterHelper.saveTagEntries(tag, entityTagEntries);
 	}
 	
 	@Override
@@ -72,6 +79,8 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 			entityFilter.deserializeNBT(tag.getCompound("EntityFilter"));
 		}
 		workingIndex = tag.getInt("WorkingIndex");
+		EntityFilterHelper.loadTypeEntries(tag, entityTypeEntries);
+		EntityFilterHelper.loadTagEntries(tag, entityTagEntries);
 	}
 	
 	@Override
@@ -79,6 +88,8 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 		super.saveContents(additionalTag);
 		additionalTag.put("EntityFilter", entityFilter.serializeNBT());
 		additionalTag.putInt("WorkingIndex", workingIndex);
+		EntityFilterHelper.saveTypeEntries(additionalTag, entityTypeEntries);
+		EntityFilterHelper.saveTagEntries(additionalTag, entityTagEntries);
 	}
 	
 	@Override
@@ -88,6 +99,8 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 			entityFilter.deserializeNBT(additionalTag.getCompound("EntityFilter"));
 		}
 		workingIndex = additionalTag.getInt("WorkingIndex");
+		EntityFilterHelper.loadTypeEntries(additionalTag, entityTypeEntries);
+		EntityFilterHelper.loadTagEntries(additionalTag, entityTagEntries);
 	}
 	
 	@Override
@@ -104,13 +117,12 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 		
 		ItemStack interactStack = inventory.getStackInSlot(0);
 		getFakePlayer();
-		setupFakePlayer(st);
-		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
+		setupFakePlayer(st, ((ServerLevel) lvl));
 		
 		transferFluidToTank(interactStack);
 		
 		List<LivingEntity> entities = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(pos),
-			e -> !(e instanceof Player) && entityFilter.matches(e));
+			e -> !(e instanceof Player) && matchesAllFilters(e));
 		
 		if (entities.isEmpty()) {
 			progress = 0;
@@ -151,10 +163,6 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 		return success;
 	}
 	
-	/**
-	 * Transfers fluid from the modified item to the tank and restores the original empty container.
-	 * For example: empty bucket -> milk bucket, extracts milk to tank and keeps empty bucket.
-	 */
 	private void transferFluidToTank(ItemStack after) {
 		if (after.isEmpty() || tank == null) return;
 		

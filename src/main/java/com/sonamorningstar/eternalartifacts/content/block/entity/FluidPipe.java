@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.filter.FilterEntry;
 import com.sonamorningstar.eternalartifacts.api.filter.FluidFilterEntry;
 import com.sonamorningstar.eternalartifacts.container.PipeFilterMenu;
 import com.sonamorningstar.eternalartifacts.content.block.FluidPipeBlock;
+import com.sonamorningstar.eternalartifacts.content.block.ItemPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.FilterablePipeBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
@@ -27,6 +28,7 @@ import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -172,11 +174,30 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 			Direction sourceDir = sourceCache.context();
 			BlockEntity sourceBe = level.getBlockEntity(sourcePos.relative(sourceDir));
 			
+			List<BlockPos> prioritizedTargets = new ArrayList<>();
 			if (sourceBe instanceof FluidPipe sourcePipe) {
 				var sourceFilters = sourcePipe.filterEntries.get(sourceDir.getOpposite());
 				if (sourceFilters != null && checkFilters(sourcePipe, sourceFilters, extracted, sourceDir)) {
 					continue;
 				}
+			}
+			
+			for (BlockPos targetPos : sortedTargets) {
+				BlockCapabilityCache<IFluidHandler, Direction> targetCache = targets.get(targetPos);
+				Direction targetDir = targetCache.context();
+				BlockEntity targetBe = level.getBlockEntity(targetPos.relative(targetDir));
+				if (targetBe instanceof FluidPipe targetPipe) {
+					PipeConnection connection = targetPipe.getBlockState().getValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(targetDir.getOpposite()));
+					if (connection == PipeConnection.FILTERED) {
+						prioritizedTargets.add(targetPos);
+					}
+				}
+			}
+			
+			if (!prioritizedTargets.isEmpty()) {
+				sortedTargets = new ArrayList<>(sortedTargets);
+				sortedTargets.removeAll(prioritizedTargets);
+				sortedTargets.addAll(0, prioritizedTargets);
 			}
 			
 			int remainingAmount = Math.min(extracted.getAmount(), maxTransferRate);

@@ -10,6 +10,7 @@ import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.item.MagnetItem;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.content.item.SolarPanelHelmet;
+import com.sonamorningstar.eternalartifacts.content.item.base.CharmInventoryTickable;
 import com.sonamorningstar.eternalartifacts.core.ModDataAttachments;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -27,6 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -301,17 +303,15 @@ public class CharmStorage extends ItemStackHandler {
                 player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 25, 1, false, false, false));
             }
         }
-        if(charmItem instanceof KnapsackItem knapsack) {
-            if (VersatilityEnchantment.has(charm))
-                knapsack.inventoryTick(charm, level, living, -1, false);
+        
+        if (charmItem instanceof CharmInventoryTickable tickable && tickable.shouldTick(charm, slot)) {
+            charmItem.inventoryTick(charm, level, living, tickable.getTickedSlot(), tickable.isSelected(charm, slot));
         }
         
-        if (charmItem instanceof MapItem mapItem) {
-            mapItem.inventoryTick(charm, level, living, -1, true);
+        if (charmItem instanceof MapItem || charmItem instanceof CompassItem) {
+            charmItem.inventoryTick(charm, level, living, -1, true);
         }
-        if (charmItem instanceof CompassItem compassItem) {
-            compassItem.inventoryTick(charm, living.level(), living, -1, true);
-        }
+        
         if (charmItem instanceof PortableBatteryItem battery && living instanceof Player player) {
             battery.chargeSlots(player, charm);
         }
@@ -319,11 +319,27 @@ public class CharmStorage extends ItemStackHandler {
             solarHelmet.generate(charm, level, living.blockPosition());
             solarHelmet.chargeInventory(charm, living);
         }
-        if (charmItem instanceof MagnetItem && !level.isClientSide()) {
-            var itemEntities = level.getEntitiesOfClass(ItemEntity.class, living.getBoundingBox().inflate(5), e -> !e.hasPickUpDelay());
-            for (ItemEntity itemEntity : itemEntities) {
-                if (itemEntity.distanceTo(living) > 0.001) {
-                    itemEntity.setDeltaMovement(itemEntity.getDeltaMovement().add(living.position().subtract(itemEntity.position()).normalize().scale(0.5)));
+        if (charmItem instanceof MagnetItem && !level.isClientSide() && living instanceof Player) {
+            double range = 5.0;
+            var aabb = living.getBoundingBox().inflate(range);
+            Vec3 target = living.position().add(0, 0.5, 0);
+            
+            List<Entity> pullable = new ArrayList<>();
+            pullable.addAll(level.getEntitiesOfClass(ItemEntity.class, aabb, e -> !e.hasPickUpDelay()));
+            pullable.addAll(level.getEntitiesOfClass(ExperienceOrb.class, aabb));
+            
+            for (var entity : pullable) {
+                Vec3 entityPos = entity.position();
+                Vec3 diff = target.subtract(entityPos);
+                double dist = diff.length();
+                if (dist > 1.0) {
+                    double factor = 0.6;
+                    Vec3 newPos = entityPos.add(diff.normalize().scale(dist * factor));
+                    entity.setPos(newPos.x, newPos.y, newPos.z);
+                    entity.setDeltaMovement(Vec3.ZERO);
+                    entity.setNoGravity(true);
+                } else {
+                    entity.setNoGravity(false);
                 }
             }
         }

@@ -1,6 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.container.KnapsackMenu;
+import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
+import com.sonamorningstar.eternalartifacts.content.item.base.CharmInventoryTickable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.SimpleMenuProvider;
@@ -15,11 +17,21 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 
-public class KnapsackItem extends Item {
+public class KnapsackItem extends Item implements CharmInventoryTickable {
     public KnapsackItem(Properties pProperties) {
         super(pProperties);
     }
-
+    
+    @Override
+    public boolean isSelected(ItemStack charm, int charmSlot) {
+        return false;
+    }
+    
+    @Override
+    public boolean shouldTick(ItemStack charm, int charmSlot) {
+        return VersatilityEnchantment.has(charm);
+    }
+    
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
         if(action == ClickAction.SECONDARY && slot.allowModification(player) && other.isEmpty()){

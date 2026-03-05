@@ -8,6 +8,7 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +35,9 @@ public class ModFakePlayer extends FakePlayer {
 			inventory.set(this, new ModFakePlayerInventory(this));
 		}
 	}
+	
+	@Override
+	public boolean canBeAffected(MobEffectInstance effectInstance) { return false; }
 	
 	@Override
 	public void initMenu(AbstractContainerMenu pMenu) {}

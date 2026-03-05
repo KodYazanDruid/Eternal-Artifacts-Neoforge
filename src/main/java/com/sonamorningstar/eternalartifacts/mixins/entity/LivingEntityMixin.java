@@ -23,6 +23,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
@@ -115,19 +116,26 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
     @WrapOperation(method = "dropExperience", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"))
     private void dropExp(ServerLevel serverLevel, Vec3 pos, int reward, Operation<Void> original) {
         Player player = this.lastHurtByPlayer;
+        int xpToInsert = reward;
         if (player instanceof FakePlayer fakePlayer && "EternalArtifactsMobHarvester".equals(fakePlayer.getGameProfile().getName())) {
             BlockEntity be = fakePlayer.level().getBlockEntity(fakePlayer.blockPosition());
             if (be instanceof MobHarvester harvester) {
-                while (reward > 0) {
+                ItemStack tool = harvester.inventory.getStackInSlot(0);
+                if (!tool.isEmpty() && tool.getEnchantmentLevel(Enchantments.MENDING) > 0) {
+                    int repairAmount = Math.min((int) (reward * tool.getXpRepairRatio()), tool.getDamageValue());
+                    tool.setDamageValue(tool.getDamageValue() - repairAmount);
+                    xpToInsert = xpToInsert - repairAmount / 2;
+                }
+                while (xpToInsert > 0) {
                     int filled = harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.SIMULATE);
                     if (filled == 20) {
                         harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.EXECUTE);
-                        reward--;
+                        xpToInsert--;
                     } else break;
                 }
             }
         }
-        original.call(serverLevel, pos, reward);
+        original.call(serverLevel, pos, xpToInsert);
     }
     
     @Unique

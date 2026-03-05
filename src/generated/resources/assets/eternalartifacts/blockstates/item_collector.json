@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/item_collector",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/item_collector"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/item_collector",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/item_collector",
+      "y": 270
+    }
+  }
+}

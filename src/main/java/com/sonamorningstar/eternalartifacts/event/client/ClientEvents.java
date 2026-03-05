@@ -24,10 +24,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModCo
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanel;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.ScrollablePanelComponent;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
-import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
+import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
 import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
@@ -45,11 +42,13 @@ import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.EntityFilterEntryToServer;
 import com.sonamorningstar.eternalartifacts.network.EntityPredicateFilterToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
+import com.sonamorningstar.eternalartifacts.util.EntityFilterHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -768,7 +767,7 @@ public class ClientEvents {
                                                                   Font font, int guiTint) {
         SimpleDraggablePanel panel = new SimpleDraggablePanel(
             Component.translatable("gui.eternalartifacts.entity_filter"),
-            x, y, 160, 160,
+            x, y, 160, 180,
             SimpleDraggablePanel.Bounds.of(0, 0, screenWidth, screenHeight)
         );
         panel.visible = false;
@@ -776,19 +775,60 @@ public class ClientEvents {
         panel.setColor(guiTint);
         panel.addClosingButton();
         
-        ScrollablePanel<ScrollablePanelComponent> predicateList = new ScrollablePanel<>(panel.getX() + 4, panel.getY() + 35, 144, 108, 10);
+        ScrollablePanel<ScrollablePanelComponent> predicateList = new ScrollablePanel<>(panel.getX() + 4, panel.getY() + 35, 144, 110, 10);
         final String[] searchQuery = {""};
         
         panel.addChildren((fx, fy, fW, fH) -> {
             EditBox searchBox = new EditBox(font, fx + 4, fy + 17, 144, 14, Component.empty());
-            searchBox.setHint(ModConstants.GUI.withSuffixTranslatable("search"));
+            searchBox.setHint(ModConstants.GUI.withSuffixTranslatable("search")
+                .withStyle(ChatFormatting.ITALIC)
+                .withStyle(ChatFormatting.GRAY));
             searchBox.setResponder(query -> {
                 searchQuery[0] = query.toLowerCase();
-                rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0]);
+                rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0], 0);
             });
             searchBox.setBordered(true);
             return searchBox;
         });
+        
+        final EditBox[] entryInputRef = {null};
+        panel.addChildren((fx, fy, fW, fH) -> {
+            EditBox entryInput = new EditBox(font, fx + 4, fy + 145, 122, 14, Component.empty());
+            entryInput.setHint(ModConstants.GUI.withSuffixTranslatable("add_entry")
+                .withStyle(ChatFormatting.ITALIC)
+                .withStyle(ChatFormatting.GRAY));
+            entryInput.setBordered(true);
+            entryInput.setMaxLength(256);
+            entryInputRef[0] = entryInput;
+            return entryInput;
+        });
+        
+        panel.addChildren((fx, fy, fW, fH) -> CleanButton.builder(Component.literal("+"), b -> {
+			if (entryInputRef[0] == null) return;
+			String input = entryInputRef[0].getValue().trim();
+			if (input.isEmpty()) return;
+			
+			Object parsed = EntityFilterHelper.parseFilterInput(input);
+			if (parsed == null) return;
+			
+			List<EntityTypeEntry> types = new ArrayList<>(efilterable.getEntityTypeEntries());
+			List<EntityTagEntry> tags = new ArrayList<>(efilterable.getEntityTagEntries());
+			
+			if (parsed instanceof EntityTypeEntry typeEntry) {
+				if (!types.contains(typeEntry)) types.add(typeEntry);
+			} else if (parsed instanceof EntityTagEntry tagEntry) {
+				if (!tags.contains(tagEntry)) tags.add(tagEntry);
+			}
+			List<EntityFilterEntry> combined = new ArrayList<>();
+			combined.addAll(types);
+			combined.addAll(tags);
+			Channel.sendToServer(new EntityFilterEntryToServer(machine.getBlockPos(), combined));
+			efilterable.setEntityTypeEntries(types);
+			efilterable.setEntityTagEntries(tags);
+			
+			entryInputRef[0].setValue("");
+			rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0], predicateList.scrollAmount());
+		}).bounds(fx + 130, fy + 145, 20, 14).build());
         
         var wlButtonBld = SpriteButton.builderNoTexture(Component.empty(), (b, i) -> {
             EntityPredicateEntry currentFilter = efilterable.getEntityFilter();
@@ -796,15 +836,15 @@ public class ClientEvents {
             newFilter.setWhitelist(!newFilter.isWhitelist());
             Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
             b.setTextures(getListIcon(newFilter.isWhitelist()));
-        }).bounds(8, 142, 16, 16);
+        }).bounds(4, 161, 16, 16);
         wlButtonBld.addTooltipHover(() -> efilterable.getEntityFilter().isWhitelist() ?
             ModConstants.GUI.withSuffixTranslatable("whitelist").withStyle(style -> style.withColor(0x55FF55)) :
             ModConstants.GUI.withSuffixTranslatable("blacklist").withStyle(style -> style.withColor(0xFF5555)));
         var wlButon = wlButtonBld.build();
         wlButon.setTextures(getListIcon(efilterable.getEntityFilter().isWhitelist()));
         panel.addChildren((fx, fy, fW, fH) -> {
-            wlButon.setX(fx + 8);
-            wlButon.setY(fy + 142);
+            wlButon.setX(fx + 4);
+            wlButon.setY(fy + 161);
             return wlButon;
         });
         
@@ -817,15 +857,15 @@ public class ClientEvents {
             newFilter.setMode(newMode);
             Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
             b.setTextures(getModeIcon(newFilter.getMode()));
-        }).bounds(26, 142, 16, 16);
+        }).bounds(22, 161, 16, 16);
         modeButtonBld.addTooltipHover(() -> efilterable.getEntityFilter().getMode() == EntityPredicateEntry.PredicateMode.ANY ?
             ModConstants.GUI.withSuffixTranslatable("mode_any").withStyle(style -> style.withColor(0x55AAFF)) :
             ModConstants.GUI.withSuffixTranslatable("mode_all").withStyle(style -> style.withColor(0xFFAA55)));
         var modeButton = modeButtonBld.build();
         modeButton.setTextures(getModeIcon(efilterable.getEntityFilter().getMode()));
         panel.addChildren((fx, fy, fW, fH) -> {
-            modeButton.setX(fx + 26);
-            modeButton.setY(fy + 142);
+            modeButton.setX(fx + 22);
+            modeButton.setY(fy + 161);
             return modeButton;
         });
         
@@ -834,28 +874,21 @@ public class ClientEvents {
             newFilter.setWhitelist(efilterable.getEntityFilter().isWhitelist());
             newFilter.setMode(efilterable.getEntityFilter().getMode());
             Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
-            for (ScrollablePanelComponent child : predicateList.getChildren()) {
-                if (child.getData() instanceof EntityPredicateEntry.EntityPredicate predicate) {
-                    boolean active = newFilter.hasPredicate(predicate);
-                    child.setActive(active);
-                    child.setColors(
-                        active ? 0xff2E7D32 : 0xff2C2F33,
-                        active ? 0xff43A047 : 0xff3C8DBC,
-                        active ? 0xff66BB6A : 0xff68C8FA
-                    );
-                }
-            }
-        }).bounds(26, 142, 16, 16);
+            Channel.sendToServer(new EntityFilterEntryToServer(machine.getBlockPos(), new ArrayList<>()));
+            efilterable.setEntityTypeEntries(new ArrayList<>());
+            efilterable.setEntityTagEntries(new ArrayList<>());
+            rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0], 0);
+        }).bounds(26, 161, 16, 16);
         clearAllBld.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("clear_all").withStyle(style -> style.withColor(0xFF5555)));
         var clearAllButton = clearAllBld.build();
         clearAllButton.setTextures(new ResourceLocation("textures/item/brush.png"));
         panel.addChildren((fx, fy, fW, fH) -> {
-            clearAllButton.setX(fx + fW - 26);
-            clearAllButton.setY(fy + 142);
+            clearAllButton.setX(fx + fW - 20);
+            clearAllButton.setY(fy + 161);
             return clearAllButton;
         });
         
-        rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0]);
+        rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery[0], 0);
         
         panel.addChildren((fx, fy, fW, fH) -> {
             predicateList.setX(fx + 4);
@@ -868,8 +901,9 @@ public class ClientEvents {
     
     private static void rebuildPredicateList(ScrollablePanel<ScrollablePanelComponent> predicateList,
                                               EntityFilterable efilterable, GenericMachine machine,
-                                              Font font, String searchQuery) {
+                                              Font font, String searchQuery, double scrollAmount) {
         predicateList.clearChildren();
+        int idx = 0;
         
         EntityPredicateEntry.EntityPredicate[] predicates = EntityPredicateEntry.EntityPredicate.values();
         Predicate<EntityPredicateEntry.EntityPredicate> filterValidator = efilterable.getFilterValidator();
@@ -877,47 +911,117 @@ public class ClientEvents {
             .filter(filterValidator)
             .filter(p -> searchQuery.isEmpty() || p.getDisplayName().getString().toLowerCase().contains(searchQuery))
             .toArray(EntityPredicateEntry.EntityPredicate[]::new);
-        for (int i = 0; i < filtered.length; i++) {
-            EntityPredicateEntry.EntityPredicate predicate = filtered[i];
-            int finalI = i;
-            boolean isActive = efilterable.getEntityFilter().hasPredicate(predicate);
-            int baseColor = isActive ? 0xff2E7D32 : 0xff2C2F33;
-            int hoverColor = isActive ? 0xff43A047 : 0xff3C8DBC;
-            int focusColor = isActive ? 0xff66BB6A : 0xff68C8FA;
+		for (EntityPredicateEntry.EntityPredicate predicate : filtered) {
+			int finalIdx = idx++;
+			boolean isActive = efilterable.getEntityFilter().hasPredicate(predicate);
+			int baseColor = isActive ? 0xff2E7D32 : 0xff2C2F33;
+			int hoverColor = isActive ? 0xff43A047 : 0xff3C8DBC;
+			int focusColor = isActive ? 0xff66BB6A : 0xff68C8FA;
+			
+			var comp = new ScrollablePanelComponent(
+				0, 0, 0, 16, predicateList,
+				(mx, my, btn, c) -> {
+					EntityPredicateEntry currentFilter = efilterable.getEntityFilter();
+					EntityPredicateEntry newFilter = currentFilter.copy();
+					newFilter.togglePredicate(predicate);
+					
+					Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
+					
+					boolean nowActive = newFilter.hasPredicate(predicate);
+					c.setActive(nowActive);
+					((ScrollablePanelComponent) c).setData(predicate);
+					c.setColors(
+						nowActive ? 0xff2E7D32 : 0xff2C2F33,
+						nowActive ? 0xff43A047 : 0xff3C8DBC,
+						nowActive ? 0xff66BB6A : 0xff68C8FA
+					);
+				}, finalIdx, font, predicate.getDisplayName(),
+				baseColor, hoverColor, focusColor
+			);
+			comp.setActive(isActive);
+			comp.setRenderIcon(false);
+			comp.setData(predicate);
+			
+			predicateList.addChild((x, y, width, height) -> {
+				comp.setPosition(x, y + finalIdx * 18);
+				int barPadding = predicateList.scrollbarVisible() ? -predicateList.scrollbarWidth() : 0;
+				comp.setWidth(width + barPadding);
+				return comp;
+			});
+		}
+        
+        for (EntityTypeEntry typeEntry : efilterable.getEntityTypeEntries()) {
+            if (typeEntry.getFilterType() == null) continue;
+            Component displayName = typeEntry.getFilterType().getDescription();
+            if (!searchQuery.isEmpty() && !displayName.getString().toLowerCase().contains(searchQuery)) continue;
+            int finalIdx = idx++;
+            int baseColor = 0xff1565C0;
+            int hoverColor = 0xff1976D2;
+            int focusColor = 0xff42A5F5;
             
             var comp = new ScrollablePanelComponent(
                 0, 0, 0, 16, predicateList,
                 (mx, my, btn, c) -> {
-                    EntityPredicateEntry currentFilter = efilterable.getEntityFilter();
-                    EntityPredicateEntry newFilter = currentFilter.copy();
-                    newFilter.togglePredicate(predicate);
-                    
-                    Channel.sendToServer(new EntityPredicateFilterToServer(machine.getBlockPos(), newFilter));
-                    
-                    boolean nowActive = newFilter.hasPredicate(predicate);
-                    c.setActive(nowActive);
-                    ((ScrollablePanelComponent) c).setData(predicate);
-                    c.setColors(
-                        nowActive ? 0xff2E7D32 : 0xff2C2F33,
-                        nowActive ? 0xff43A047 : 0xff3C8DBC,
-                        nowActive ? 0xff66BB6A : 0xff68C8FA
-                    );
-                }, i, font, predicate.getDisplayName(),
+                    List<EntityTypeEntry> types = new ArrayList<>(efilterable.getEntityTypeEntries());
+                    types.remove(typeEntry);
+                    efilterable.setEntityTypeEntries(types);
+                    List<EntityFilterEntry> combined = new ArrayList<>();
+                    combined.addAll(types);
+                    combined.addAll(efilterable.getEntityTagEntries());
+                    Channel.sendToServer(new EntityFilterEntryToServer(machine.getBlockPos(), combined));
+                    rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery, c.getScrollAmount());
+                }, finalIdx, font, displayName,
                 baseColor, hoverColor, focusColor
             );
-            comp.setActive(isActive);
+            comp.setActive(true);
             comp.setRenderIcon(false);
-            comp.setData(predicate);
+            comp.setData(typeEntry);
             
             predicateList.addChild((x, y, width, height) -> {
-                comp.setPosition(x, y + finalI * 18);
+                comp.setPosition(x, y + finalIdx * 18);
                 int barPadding = predicateList.scrollbarVisible() ? -predicateList.scrollbarWidth() : 0;
                 comp.setWidth(width + barPadding);
                 return comp;
             });
         }
-        predicateList.setScrollAmount(0);
+        
+        for (EntityTagEntry tagEntry : efilterable.getEntityTagEntries()) {
+            if (tagEntry.getTag() == null) continue;
+            Component displayName = Component.literal("#" + tagEntry.getTag().location()).withStyle(ChatFormatting.DARK_AQUA);
+            if (!searchQuery.isEmpty() && !displayName.getString().toLowerCase().contains(searchQuery)) continue;
+            int finalIdx = idx++;
+            int baseColor = 0xff6A1B9A;
+            int hoverColor = 0xff7B1FA2;
+            int focusColor = 0xffAB47BC;
+            
+            var comp = new ScrollablePanelComponent(
+                0, 0, 0, 16, predicateList,
+                (mx, my, btn, c) -> {
+                    List<EntityTagEntry> tags = new ArrayList<>(efilterable.getEntityTagEntries());
+                    tags.remove(tagEntry);
+                    efilterable.setEntityTagEntries(tags);
+                    List<EntityFilterEntry> combined = new ArrayList<>();
+                    combined.addAll(efilterable.getEntityTypeEntries());
+                    combined.addAll(tags);
+                    Channel.sendToServer(new EntityFilterEntryToServer(machine.getBlockPos(), combined));
+                    rebuildPredicateList(predicateList, efilterable, machine, font, searchQuery, c.getScrollAmount());
+                }, finalIdx, font, displayName,
+                baseColor, hoverColor, focusColor
+            );
+            comp.setActive(true);
+            comp.setRenderIcon(false);
+            comp.setData(tagEntry);
+            
+            predicateList.addChild((x, y, width, height) -> {
+                comp.setPosition(x, y + finalIdx * 18);
+                int barPadding = predicateList.scrollbarVisible() ? -predicateList.scrollbarWidth() : 0;
+                comp.setWidth(width + barPadding);
+                return comp;
+            });
+        }
+        
         predicateList.reCalcInnerHeight();
+        predicateList.setScrollAmount(scrollAmount);
     }
     
     private static ResourceLocation getListIcon(boolean isWhitelist) {

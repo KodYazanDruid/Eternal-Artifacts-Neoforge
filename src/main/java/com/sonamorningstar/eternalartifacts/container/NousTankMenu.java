@@ -43,9 +43,8 @@ public class NousTankMenu extends AbstractMachineMenu {
             return true;
         }
         return false;
-    }
-    
-    public boolean takeLevels(Player player, int levels) {
+    }*/
+    /*public boolean takeLevels(Player player, int levels) {
         int wantedXp = levels == Integer.MAX_VALUE ? Integer.MAX_VALUE : ExperienceHelper.totalXpForLevel(levels);
         AbstractFluidTank tank = nousTank.tank;
         int availableXp = tank.getFluidInTank(0).getAmount() / 20;

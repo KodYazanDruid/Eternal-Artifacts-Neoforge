@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "T": {
+      "item": "eternalartifacts:copper_tablet"
+    },
+    "W": {
+      "tag": "forge:chests/wooden"
+    }
+  },
+  "pattern": [
+    "HTW",
+    "IMI",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:item_collector"
+  }
+}

@@ -124,7 +124,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		
 		ItemStack toolStack = inventory.getStackInSlot(0);
 		getFakePlayer();
-		setupFakePlayer(st);
+		setupFakePlayer(st, ((ServerLevel) lvl));
 		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		for (int i = 0; i < progressStep; i++) {
 			BlockPos targetPos = workingPoses.get(workingIndex);

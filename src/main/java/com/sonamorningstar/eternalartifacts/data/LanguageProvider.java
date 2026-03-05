@@ -538,6 +538,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("mode_any"), "Mode: Any (OR)");
                 add(ModConstants.GUI.withSuffix("mode_all"), "Mode: All (AND)");
                 add(ModConstants.GUI.withSuffix("clear_all"), "Clear All");
+                add(ModConstants.GUI.withSuffix("add_entry"), "Add Entry");
                 add(ModConstants.GUI.withSuffix("no_active_filters"), "No active filters");
                 add(ModConstants.GUI.withSuffix("search"), "Search...");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Click to swap to Whitelist");
@@ -1136,6 +1137,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.ENERGY_DISTRIBUTOR.getBlockTranslationKey(), "Enerji Dağıtıcısı");
                 add(ModMachines.ENTITY_INTERACTOR.getBlockTranslationKey(), "Varlık Etkileşimcisi");
                 add(ModMachines.ENCHANTER.getBlockTranslationKey(), "Büyüleyici");
+                add(ModMachines.ITEM_COLLECTOR.getBlockTranslationKey(), "Eşya Toplayıcı");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1324,6 +1326,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("mode_any"), "Mod: Herhangi biri (VEYA)");
                 add(ModConstants.GUI.withSuffix("mode_all"), "Mod: Hepsi (VE)");
                 add(ModConstants.GUI.withSuffix("clear_all"), "Tümünü Temizle");
+                add(ModConstants.GUI.withSuffix("add_entry"), "Girdi Ekle");
                 add(ModConstants.GUI.withSuffix("no_active_filters"), "Aktif filtre yok");
                 add(ModConstants.GUI.withSuffix("search"), "Ara...");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Beyaz listeye geçmek için tıkla");

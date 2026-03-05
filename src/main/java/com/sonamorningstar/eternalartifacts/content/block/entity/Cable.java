@@ -53,14 +53,9 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
                                             BlockPos pos, Direction dir) {
         IEnergyStorage cap = cache.getCapability();
         boolean ret = false;
-        if (cap != null){
-            if (cap.canExtract() || cap.extractEnergy(tier.getTransferRate(), true) > 0) {
-                sources.put(pos, cache);
-                ret = true;
-            } else if (cap.canReceive() || cap.receiveEnergy(tier.getTransferRate(), true) > 0) {
-                targets.put(pos, cache);
-                ret = true;
-            }
+        if (cap != null) {
+            sources.put(pos, cache);
+            return true;
         }
         return ret;
     }
@@ -72,6 +67,132 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
     }
     
     @Override
+    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        if (isDirty) {
+            updateConnections(lvl);
+            isDirty = false;
+        }
+        
+        if (updateNetwork) {
+            updateNetwork = false;
+            collectNetworkDevicesWithDistances(lvl);
+        }
+        
+        if (allSources.isEmpty() || isUpdatingConnections) return;
+        
+        doTransfer(Map.copyOf(allSources), Map.of());
+    }
+    
+    @Override
+    protected void doTransfer(Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> sources,
+                              Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> targets) {
+        for (BlockPos blockPos : this.sources.keySet()) {
+            if (!sources.containsKey(blockPos)) return;
+        }
+        int maxTransferRate = tier.getTransferRate();
+        
+        int maxExtractable = 0;
+        Map<BlockPos, Integer> sourceExtractions = new LinkedHashMap<>();
+        Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> nonSources = new HashMap<>();
+        for (BlockPos sourcePos : sources.keySet()) {
+            BlockCapabilityCache<IEnergyStorage, Direction> value = sources.get(sourcePos);
+            IEnergyStorage sourceES = value.getCapability();
+            if (sourceES == null) continue;
+            
+            int canExtract = sourceES.extractEnergy(maxTransferRate - maxExtractable, true);
+            
+            if (canExtract > 0 && maxExtractable < maxTransferRate) {
+                sourceExtractions.put(sourcePos, canExtract);
+                maxExtractable += canExtract;
+            } else nonSources.put(sourcePos, value);
+        }
+        
+        if (maxExtractable == 0) return;
+        
+        List<BlockPos> receivingTargets = new ArrayList<>();
+        for (BlockPos targetPos : nonSources.keySet()) {
+            IEnergyStorage targetES = nonSources.get(targetPos).getCapability();
+            if (targetES != null && targetES.receiveEnergy(maxTransferRate, true) > 0) {
+                receivingTargets.add(targetPos);
+            }
+        }
+        
+        if (receivingTargets.isEmpty()) return;
+        
+        int targetCount = receivingTargets.size();
+        int energyPerTarget = Math.max(1, maxExtractable / targetCount);
+        int remainder = maxExtractable % targetCount;
+        
+        Map<BlockPos, Integer> targetReceptions = new LinkedHashMap<>();
+        int totalReceivable = 0;
+        
+        for (int i = 0; i < receivingTargets.size(); i++) {
+            BlockPos targetPos = receivingTargets.get(i);
+            IEnergyStorage targetES = nonSources.get(targetPos).getCapability();
+            if (targetES == null) continue;
+            
+            int toReceive = energyPerTarget;
+            if (i < remainder) {
+                toReceive++;
+            }
+            
+            int canReceive = targetES.receiveEnergy(toReceive, true);
+            if (canReceive > 0) {
+                targetReceptions.put(targetPos, canReceive);
+                totalReceivable += canReceive;
+            }
+        }
+        
+        if (totalReceivable == 0) return;
+        
+        int transferAmount = Math.min(maxExtractable, totalReceivable);
+        int extracted = 0;
+        
+        for (var entry : sourceExtractions.entrySet()) {
+            if (extracted >= transferAmount) break;
+            
+            BlockPos pos = entry.getKey();
+            int toExtract = Math.min(entry.getValue(), transferAmount - extracted);
+            
+            IEnergyStorage sourceES = sources.get(pos).getCapability();
+            if (sourceES != null) {
+                extracted += sourceES.extractEnergy(toExtract, false);
+            }
+        }
+        
+        if (extracted <= 0) return;
+        
+        List<BlockPos> receiveTargets = new ArrayList<>(targetReceptions.keySet());
+        int remaining = extracted;
+        
+        for (int i = 0; i < receiveTargets.size() && remaining > 0; i++) {
+            BlockPos targetPos = receiveTargets.get(i);
+            IEnergyStorage targetES = nonSources.get(targetPos).getCapability();
+            if (targetES == null) continue;
+            
+            int baseAmount = extracted * targetReceptions.get(targetPos) / totalReceivable;
+            int toReceive = Math.min(baseAmount, remaining);
+            
+            if (toReceive > 0) {
+                int received = targetES.receiveEnergy(toReceive, false);
+                remaining -= received;
+            }
+        }
+        
+        if (remaining > 0) {
+            for (BlockPos targetPos : receiveTargets) {
+                if (remaining <= 0) break;
+                
+                IEnergyStorage targetES = nonSources.get(targetPos).getCapability();
+                if (targetES == null) continue;
+                
+                int received = targetES.receiveEnergy(remaining, false);
+                remaining -= received;
+            }
+        }
+    }
+    
+    /*@Override
     protected void doTransfer(Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> sources,
                               Map<BlockPos, BlockCapabilityCache<IEnergyStorage, Direction>> targets) {
         int maxTransferRate = tier.getTransferRate();
@@ -113,7 +234,7 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
         List<BlockPos> receivingTargets = new ArrayList<>();
         for (BlockPos targetPos : availableTargets) {
             IEnergyStorage targetES = targets.get(targetPos).getCapability();
-            if (targetES != null && targetES.receiveEnergy(1, true) > 0) {
+            if (targetES != null && targetES.receiveEnergy(tier.getTransferRate(), true) > 0) {
                 receivingTargets.add(targetPos);
             }
         }
@@ -191,7 +312,7 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
                 remaining -= received;
             }
         }
-    }
+    }*/
     
     public int extractEnergyFromReachableSources(BlockPos cablePos, int maxAmount, boolean simulate) {
         Map<BlockPos, Integer> sourceDistances = positionToSourceDistances.computeIfAbsent(cablePos, pos -> {
