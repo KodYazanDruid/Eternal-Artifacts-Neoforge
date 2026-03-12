@@ -1,6 +1,6 @@
 {
-  "parent": "eternalartifacts:item/spell_tome",
+  "parent": "minecraft:item/generated",
   "textures": {
-    "texture": "eternalartifacts:item/tornado_tome"
+    "layer0": "eternalartifacts:item/tornado_tome"
   }
 }

@@ -1,4 +1,7 @@
-// 1.20.4	2024-12-11T16:02:55.4062544	Tags for eternalartifacts:spell mod id eternalartifacts
-96a79154118de30edb3d3a7a23ee7adf3bc3859a data/forge/tags/eternalartifacts/spell/air.json
-f0dd66b392ac6bed33af05e42627e04e4ea58bde data/forge/tags/eternalartifacts/spell/earth.json
+// 1.20.4	2026-03-11T14:32:42.2641706	Tags for eternalartifacts:spell mod id eternalartifacts
+ab3dd080b167cb55b789e4b60d301ce82dd6f688 data/forge/tags/eternalartifacts/spell/air.json
+a580ec56dce34901b4a37914d890f0c1000210cd data/forge/tags/eternalartifacts/spell/arcane.json
+45bda11b015386aae48e6019949b0023182e9262 data/forge/tags/eternalartifacts/spell/earth.json
+c59eba09cdc54816d0914f9b234463b81bf620f7 data/forge/tags/eternalartifacts/spell/ender.json
 20530da2522a414ed0b8b72bee04fe146d85f4ac data/forge/tags/eternalartifacts/spell/fire.json
+4c4825e6f22c0d07a2a3a7eb380ebcef37077a30 data/forge/tags/eternalartifacts/spell/lightning.json

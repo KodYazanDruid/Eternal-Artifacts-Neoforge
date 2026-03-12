@@ -54,7 +54,7 @@ public abstract class AbstractProjectileSpell extends Spell {
         return true;
     }
     protected boolean ignoreBlocks() {
-        return false;
+        return true;
     }
 
     protected HitResult getHitResultForPlayer(Player player, double reach, ClipContext.Block blockMode, ClipContext.Fluid fluidMode) {

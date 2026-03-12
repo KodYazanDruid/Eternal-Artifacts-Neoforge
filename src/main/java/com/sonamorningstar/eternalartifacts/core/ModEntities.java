@@ -29,6 +29,9 @@ public class ModEntities {
 
     public static final DeferredHolder<EntityType<?>, EntityType<PrimedBlockEntity>> PRIMED_BLOCK = ENTITY_TYPES.register("primed_drum",
         ()-> EntityType.Builder.<PrimedBlockEntity>of(PrimedBlockEntity::new, MobCategory.MISC).fireImmune().sized(0.98f, 0.98f).clientTrackingRange(10).updateInterval(10).build("primed_drum"));
+    
+    public static final DeferredHolder<EntityType<?>, EntityType<ThrownLightningInABottleItem>> THROWN_LIGHTNING_IN_A_BOTTLE = ENTITY_TYPES.register("thrown_lightning_in_a_bottle",
+            ()-> EntityType.Builder.<ThrownLightningInABottleItem>of(ThrownLightningInABottleItem::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(4).updateInterval(10).build("primed_drum"));
 
     //Projectiles
     public static final DeferredHolder<EntityType<?>, EntityType<Tornado>> TORNADO = ENTITY_TYPES.register("tornado",
@@ -37,11 +40,25 @@ public class ModEntities {
             ()-> EntityType.Builder.<Meteorite>of(Meteorite::new, MobCategory.MISC).fireImmune().sized(2.0f, 2.0f).canSpawnFarFromPlayer().clientTrackingRange(4).updateInterval(20).build("meteorite"));
     public static final DeferredHolder<EntityType<?>, EntityType<Missile>> MISSILE = ENTITY_TYPES.register("missile",
             ()-> EntityType.Builder.<Missile>of(Missile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("missile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpellSmallFireball>> SPELL_SMALL_FIREBALL = ENTITY_TYPES.register("spell_small_fireball",
+            ()-> EntityType.Builder.<SpellSmallFireball>of(SpellSmallFireball::new, MobCategory.MISC).fireImmune().sized(0.3125f, 0.3125f).clientTrackingRange(4).updateInterval(10).build("spell_small_fireball"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpellShulkerBullet>> SPELL_SHULKER_BULLET = ENTITY_TYPES.register("spell_shulker_bullet",
+            ()-> EntityType.Builder.<SpellShulkerBullet>of(SpellShulkerBullet::new, MobCategory.MISC).fireImmune().sized(0.3125f, 0.3125f).clientTrackingRange(8).updateInterval(3).build("spell_shulker_bullet"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SpellEvokerFangs>> SPELL_EVOKER_FANGS = ENTITY_TYPES.register("spell_evoker_fangs",
+            ()-> EntityType.Builder.<SpellEvokerFangs>of(SpellEvokerFangs::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.8f).clientTrackingRange(6).updateInterval(2).build("spell_evoker_fangs"));
     public static final DeferredHolder<EntityType<?>, EntityType<SpellProjectile>> SPELL_PROJECTILE = ENTITY_TYPES.register("spell_projectile",
         ()-> EntityType.Builder.of(SpellProjectile::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("spell_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<AmethystArrow>> AMETHYST_ARROW = ENTITY_TYPES.register("amethyst_arrow",
         ()-> EntityType.Builder.<AmethystArrow>of(AmethystArrow::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("amethyst_arrow"));
     public static final DeferredHolder<EntityType<?>, EntityType<PrismarineArrow>> PRISMARINE_ARROW = ENTITY_TYPES.register("prismarine_arrow",
         ()-> EntityType.Builder.<PrismarineArrow>of(PrismarineArrow::new, MobCategory.MISC).fireImmune().sized(0.5f, 0.5f).clientTrackingRange(4).updateInterval(20).build("prismarine_arrow"));
+    public static final DeferredHolder<EntityType<?>, EntityType<SonicBoomSpellEntity>> SPELL_SONIC_BOOM = ENTITY_TYPES.register("spell_sonic_boom",
+        ()-> EntityType.Builder.<SonicBoomSpellEntity>of(SonicBoomSpellEntity::new, MobCategory.MISC).fireImmune().sized(0.25f, 0.25f).clientTrackingRange(8).updateInterval(2).build("spell_sonic_boom"));
+    public static final DeferredHolder<EntityType<?>, EntityType<MagicMissileEntity>> MAGIC_MISSILE = ENTITY_TYPES.register("magic_missile",
+        ()-> EntityType.Builder.<MagicMissileEntity>of(MagicMissileEntity::new, MobCategory.MISC).fireImmune().sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build("magic_missile"));
+    public static final DeferredHolder<EntityType<?>, EntityType<PrismBeamEntity>> PRISM_BEAM = ENTITY_TYPES.register("prism_beam",
+        ()-> EntityType.Builder.<PrismBeamEntity>of(PrismBeamEntity::new, MobCategory.MISC).fireImmune().sized(0.25f, 0.25f).clientTrackingRange(10).updateInterval(1).build("prism_beam"));
+    public static final DeferredHolder<EntityType<?>, EntityType<LightningStrikeProjectile>> LIGHTNING_STRIKE_PROJECTILE = ENTITY_TYPES.register("lightning_strike_projectile",
+        ()-> EntityType.Builder.<LightningStrikeProjectile>of(LightningStrikeProjectile::new, MobCategory.MISC).fireImmune().sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build("lightning_strike_projectile"));
 
 }

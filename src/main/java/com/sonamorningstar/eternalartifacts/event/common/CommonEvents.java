@@ -40,11 +40,11 @@ import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksT
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
 import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -73,6 +73,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -81,8 +83,6 @@ import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -108,16 +108,13 @@ import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
-import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
+import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -777,27 +774,7 @@ public class CommonEvents {
         UnpackerRecipeCache.rebuild(server.getRecipeManager(), server.overworld());
         
         setupTagBasedCauldronInteractions();
-        
     }
-    
-    /*@SubscribeEvent
-    public static void serverStartedEvent(ServerStartedEvent event) {
-        *//*MinecraftServer server = event.getServer();
-        RegistryAccess.Frozen regAcc = server.registryAccess();
-        ServerLevel sLevel = server.getLevel(Level.OVERWORLD);
-        if (sLevel != null) {
-            for (RecipeHolder<?> recipe : server.getRecipeManager().getRecipes()) {
-                if (recipe.id().getNamespace().equals(MODID)) {
-                    System.out.println("Testing recipe: " + recipe.id());
-                    Recipe<?> value = recipe.value();
-                    ItemStack resultItem = value.getResultItem(regAcc);
-                    if (resultItem == null) System.out.println("  -> Result item is null!");
-                    else if (resultItem.isEmpty()) System.out.println("  -> Result item is empty!");
-                    else System.out.println("  -> Result item: " + resultItem.getItem());
-                }
-            }
-        }*//*
-    }*/
     
     public static void setupTagBasedCauldronInteractions() {
         ModCauldronInteraction.NAPHTHA.map().clear();
@@ -838,6 +815,44 @@ public class CommonEvents {
                 player.awardStat(Stats.ITEM_USED.get(stack.getItem()));
             }
             player.swing(event.getHand());
+        }
+    }
+    
+    @SubscribeEvent
+    public static void villagerTradesEvent(VillagerTradesEvent event) {
+        VillagerProfession profession = event.getType();
+        Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
+        
+        if (profession == ModVillagers.MECHANIC.get()) {
+            List<VillagerTrades.ItemListing> lvlOneTrades = List.of(
+                new VillagerTrades.EmeraldForItems(ModItems.MANGANESE_INGOT, 4, 12, 2),
+                new VillagerTrades.EmeraldForItems(ModItems.TIN_INGOT, 4, 12, 2),
+                new VillagerTrades.EmeraldForItems(ModItems.ALUMINUM_INGOT, 4, 12, 2),
+                new VillagerTrades.ItemsForEmeralds(ModBlocks.COVERED_TIN_CABLE.asItem(), 1, 4, 8, 2)
+            );
+            List<VillagerTrades.ItemListing> lvlTwoTrades = List.of(
+                new VillagerTrades.EmeraldForItems(ModItems.BRONZE_INGOT, 3, 8, 4),
+                new VillagerTrades.EmeraldForItems(ModItems.COPPER_DUST, 6, 16, 3),
+                new VillagerTrades.ItemsForEmeralds(ModBlocks.COVERED_COPPER_CABLE.asItem(), 1, 4, 12, 3)
+            );
+            List<VillagerTrades.ItemListing> lvlThreeTrades = List.of(
+                new VillagerTrades.EmeraldForItems(ModItems.STEEL_INGOT, 3, 8, 5),
+                new VillagerTrades.ItemsForEmeralds(ModBlocks.MACHINE_BLOCK.asItem(), 8, 1, 8, 6),
+                new VillagerTrades.ItemsForEmeralds(ModBlocks.COVERED_GOLD_CABLE.asItem(), 3, 4, 12, 5)
+            );
+            List<VillagerTrades.ItemListing> lvlFourTrades = List.of(
+                new VillagerTrades.ItemsForEmeralds(ModItems.PIPE_EXTRACTOR.get(), 2, 1, 6, 6),
+                new VillagerTrades.ItemsForEmeralds(ModItems.PIPE_FILTER.get(), 2, 1, 6, 6)
+            );
+            List<VillagerTrades.ItemListing> lvlFiveTrades = List.of(
+                new VillagerTrades.EmeraldForItems(ModItems.PLASTIC_SHEET, 2, 12, 8),
+                new VillagerTrades.ItemsForEmeralds(ModItems.CAPACITOR.get(), 2, 1, 8, 8)
+            );
+            trades.put(1, lvlOneTrades);
+            trades.put(2, lvlTwoTrades);
+            trades.put(3, lvlThreeTrades);
+            trades.put(4, lvlFourTrades);
+            trades.put(5, lvlFiveTrades);
         }
     }
 }

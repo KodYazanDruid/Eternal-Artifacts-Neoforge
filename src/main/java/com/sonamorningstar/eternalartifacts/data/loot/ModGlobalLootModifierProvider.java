@@ -60,6 +60,24 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 LootTableIdCondition.builder(BuiltInLootTables.JUNGLE_TEMPLE).build()
             }, List.of(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.toStack())
         ));
+        add("evokers_tome_from_evoker", new AddItemListModifier(
+            new LootItemCondition[]{
+                LootTableIdCondition.builder(EntityType.EVOKER.getDefaultLootTable()).build(),
+                LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.05f, 0.02F).build()
+            }, List.of(ModItems.EVOKERS_TOME.get().getDefaultInstance())
+        ));
+        add("tornado_tome_from_desert_temples", new AddItemListModifier(
+            new LootItemCondition[]{
+                LootTableIdCondition.builder(BuiltInLootTables.DESERT_PYRAMID).build(),
+                LootItemRandomChanceCondition.randomChance(0.1f).build()
+            }, List.of(ModItems.TORNADO_TOME.get().getDefaultInstance())
+        ));
+        add("meteorite_tome_from_bastion_treasure", new AddItemListModifier(
+            new LootItemCondition[]{
+                LootTableIdCondition.builder(BuiltInLootTables.BASTION_TREASURE).build(),
+                LootItemRandomChanceCondition.randomChance(0.2f).build()
+            }, List.of(ModItems.METEORITE_TOME.get().getDefaultInstance())
+        ));
         
         
         add("hammering", new HammeringModifier(

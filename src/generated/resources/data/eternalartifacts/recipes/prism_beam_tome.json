@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "minecraft:beacon"
+    },
+    "C": {
+      "tag": "forge:gems/diamond"
+    },
+    "P": {
+      "item": "eternalartifacts:glow_ink_dust"
+    },
+    "S": {
+      "item": "eternalartifacts:chlorophyte_ingot"
+    },
+    "T": {
+      "item": "eternalartifacts:tome"
+    }
+  },
+  "pattern": [
+    "CBC",
+    "PTP",
+    "CSC"
+  ],
+  "result": {
+    "item": "eternalartifacts:prism_beam_tome"
+  }
+}

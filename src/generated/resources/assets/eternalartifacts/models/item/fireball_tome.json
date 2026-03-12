@@ -1,3 +1,6 @@
 {
-  "parent": "eternalartifacts:item/entity_renderer_transform"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "eternalartifacts:item/fireball_tome"
+  }
 }

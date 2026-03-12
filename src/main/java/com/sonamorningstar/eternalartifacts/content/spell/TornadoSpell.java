@@ -21,11 +21,6 @@ public class TornadoSpell extends AbstractProjectileSpell {
     }
 
     @Override
-    protected boolean ignoreBlocks() {
-        return true;
-    }
-
-    @Override
     protected Vec3 getStartVector(LivingEntity caster) {
         return caster.position().add(0, 0.2, 0);
     }
@@ -34,7 +29,7 @@ public class TornadoSpell extends AbstractProjectileSpell {
     protected Vec3 getShootVector(LivingEntity caster, Vec3 start, HitResult result) {
         Vec3 direction = result.getLocation();
         Vec3 ray = start.vectorTo(new Vec3(direction.x, direction.y, direction.z));
-        ray = new Vec3(ray.x, Math.min(ray.y, 0.5), ray.z);
+        ray = new Vec3(ray.x, 0, ray.z).normalize();
         return ray;
     }
 }

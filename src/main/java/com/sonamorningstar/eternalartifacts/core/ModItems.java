@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.block.BewlrStandingAndWallBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
+import com.sonamorningstar.eternalartifacts.content.item.base.ChanneledSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
@@ -137,6 +138,9 @@ public class ModItems {
     public static final DeferredItem<Item> GLASS_SPLASH_BOTTLE = register("glass_splash_bottle");
     public static final DeferredItem<Item> GLASS_LINGERING_BOTTLE = register("glass_lingering_bottle");
     public static final DeferredItem<Item> HONEY_BALL = register("honey_ball", p -> new HoneyBallItem(p.food(Foods.HONEY_BOTTLE)));
+    public static final DeferredItem<Item> TOME = register("tome");
+    public static final DeferredItem<Item> REINFORCED_GLASS_BOTTLE = register("reinforced_glass_bottle");
+    public static final DeferredItem<Item> LIGHTNING_IN_A_BOTTLE = register("lightning_in_a_bottle", LightningInABottleItem::new);
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -156,10 +160,14 @@ public class ModItems {
     public static final DeferredItem<Item> COMFY_SHOES = registerStacksToOne("comfy_shoes");
     public static final DeferredItem<Item> ENDER_NOTEBOOK = registerStacksToOne("ender_notebook", EnderNotebookItem::new);
     public static final DeferredItem<SpellTomeItem<EvokerFangsSpell>> EVOKERS_TOME = registerTome("evokers_tome", ModSpells.EVOKER_FANGS);
-    public static final DeferredItem<AnimatedSpellTomeItem<FireballSpell>> FIREBALL_TOME = registerAnimatedTome("fireball_tome", ModSpells.FIREBALL);
+    public static final DeferredItem<SpellTomeItem<FireballSpell>> FIREBALL_TOME = registerTome("fireball_tome", ModSpells.FIREBALL);
     public static final DeferredItem<SpellTomeItem<TornadoSpell>> TORNADO_TOME = registerTome("tornado_tome", ModSpells.TORNADO);
     public static final DeferredItem<SpellTomeItem<ShulkerBulletsSpell>> SHULKER_BULLETS_TOME = registerTome("shulker_bullets_tome", ModSpells.SHULKER_BULLETS);
     public static final DeferredItem<SpellTomeItem<MeteoriteSpell>> METEORITE_TOME = registerTome("meteorite_tome", ModSpells.METEORITE);
+    public static final DeferredItem<SpellTomeItem<SonicBoomSpell>> SONIC_BOOM_TOME = registerTome("sonic_boom_tome", ModSpells.SONIC_BOOM);
+    public static final DeferredItem<ChanneledSpellTomeItem<MagicMissileSpell>> MAGIC_MISSILE_TOME = registerChanneledTome("magic_missile_tome", ModSpells.MAGIC_MISSILE, 4);
+    public static final DeferredItem<ChanneledSpellTomeItem<PrismBeamSpell>> PRISM_BEAM_TOME = registerChanneledTome("prism_beam_tome", ModSpells.PRISM_BEAM, 4);
+    public static final DeferredItem<SpellTomeItem<LightningStrikeSpell>> LIGHTNING_STRIKE_TOME = registerTome("lightning_strike_tome", ModSpells.LIGHTNING_STRIKE);
     public static final DeferredItem<Item> POWER_GAUNTLET = registerStacksToOne("power_gauntlet");
     public static final DeferredItem<Item> HEART_NECKLACE = registerStacksToOne("heart_necklace");
     public static final DeferredItem<Item> SAGES_TALISMAN = registerStacksToOne("sages_talisman");
@@ -319,6 +327,9 @@ public class ModItems {
     }
     private static <S extends Spell> DeferredItem<AnimatedSpellTomeItem<S>> registerAnimatedTome(String name, DeferredHolder<Spell, S> spellHolder) {
         return register(name, () -> new AnimatedSpellTomeItem<>(spellHolder, new Item.Properties().stacksTo(1)));
+    }
+    private static <S extends Spell> DeferredItem<ChanneledSpellTomeItem<S>> registerChanneledTome(String name, DeferredHolder<Spell, S> spellHolder, int fireInterval) {
+        return register(name, () -> new ChanneledSpellTomeItem<>(spellHolder, fireInterval, new Item.Properties().stacksTo(1)));
     }
     //endregion
 }

@@ -111,7 +111,7 @@ public class JarBlockItem extends FluidHolderBlockItem {
             if(isOpen(itemstack)) {
                 if(NeoForge.EVENT_BUS.post(event).isCanceled()) return super.use(level, player, hand);
                 else if(event.getUseTime() > 0 &&
-                        fluidStack.getAmount() >= event.getDrinkingAmount()) return ItemUtils.startUsingInstantly(level, player, hand);
+                    fluidStack.getAmount() >= event.getDrinkingAmount()) return ItemUtils.startUsingInstantly(level, player, hand);
             }
         }
         return super.use(level, player, hand);

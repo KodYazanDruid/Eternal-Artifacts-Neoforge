@@ -1,0 +1,20 @@
+{
+  "type": "eternalartifacts:add_item_list",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:entities/evoker"
+    },
+    {
+      "chance": 0.05,
+      "condition": "minecraft:random_chance_with_looting",
+      "looting_multiplier": 0.02
+    }
+  ],
+  "itemstack": [
+    {
+      "Count": 1,
+      "id": "eternalartifacts:evokers_tome"
+    }
+  ]
+}

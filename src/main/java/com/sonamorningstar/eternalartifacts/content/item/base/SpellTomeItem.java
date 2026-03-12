@@ -24,10 +24,10 @@ public class SpellTomeItem<S extends Spell> extends Item {
 
     @Override
     public Rarity getRarity(ItemStack stack) {
-        return spellHolder.get().rarity;
+        return getSpell().rarity;
     }
 
-    public Spell getSpell() {
+    public S getSpell() {
         return spellHolder.get();
     }
 
@@ -43,13 +43,13 @@ public class SpellTomeItem<S extends Spell> extends Item {
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack tome = player.getItemInHand(hand);
         if (!player.getCooldowns().isOnCooldown(tome.getItem())){
-            S spell = spellHolder.get();
+            S spell = getSpell();
             float amplifiedDamage = spell.getAmplifiedDamage(player);
             SpellCastEvent event = new SpellCastEvent(player, level, tome, amplifiedDamage, spell);
             if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                 amplifiedDamage = event.getAmplifiedDamage();
                 if (castSpell(event.getTome(), level, player, hand, player.getRandom(), amplifiedDamage)) {
-                    player.getCooldowns().addCooldown(event.getTome().getItem(), event.getCooldown());
+                    player.getCooldowns().addCooldown(event.getTome().getItem(), spell.getDecreasedCooldown(player));
                     player.awardStat(Stats.ITEM_USED.get(this));
                     return InteractionResultHolder.sidedSuccess(tome, level.isClientSide);
                 } else {
@@ -73,6 +73,6 @@ public class SpellTomeItem<S extends Spell> extends Item {
      * @return {@code true} if the spell was successfully cast, {@code false} otherwise.
      */
     protected boolean castSpell(ItemStack tome, Level level, LivingEntity caster, InteractionHand hand, RandomSource random, float amplifiedDamage) {
-        return spellHolder.get().cast(tome, caster, hand, level, random, amplifiedDamage);
+        return getSpell().cast(tome, caster, hand, level, random, amplifiedDamage);
     }
 }

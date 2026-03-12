@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:tome"
+    },
+    "D": {
+      "item": "eternalartifacts:glow_ink_dust"
+    },
+    "P": {
+      "item": "minecraft:purpur_block"
+    },
+    "S": {
+      "tag": "eternalartifacts:shulker_shell"
+    }
+  },
+  "pattern": [
+    "SPS",
+    "DBD",
+    "SPS"
+  ],
+  "result": {
+    "item": "eternalartifacts:shulker_bullets_tome"
+  }
+}

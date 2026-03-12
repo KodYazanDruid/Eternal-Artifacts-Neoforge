@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "forge:gems/diamond"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    },
+    "P": {
+      "item": "eternalartifacts:lightning_in_a_bottle"
+    },
+    "T": {
+      "item": "eternalartifacts:tome"
+    }
+  },
+  "pattern": [
+    "CIC",
+    "PTP",
+    "CIC"
+  ],
+  "result": {
+    "item": "eternalartifacts:lightning_strike_tome"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "eternalartifacts:add_item_list",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/bastion_treasure"
+    },
+    {
+      "chance": 0.2,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "itemstack": [
+    {
+      "Count": 1,
+      "id": "eternalartifacts:meteorite_tome"
+    }
+  ]
+}

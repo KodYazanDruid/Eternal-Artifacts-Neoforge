@@ -1,13 +1,12 @@
 package com.sonamorningstar.eternalartifacts.content.entity.projectile;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
-import net.minecraft.world.damagesource.DamageTypes;
+import com.sonamorningstar.eternalartifacts.util.SpellDamageHelper;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -58,8 +57,8 @@ public class Meteorite extends AbstractHurtingProjectile {
         super.onHitEntity(pResult);
         if (!this.level().isClientSide) {
             Entity entity = pResult.getEntity();
+            SpellDamageHelper.hurtWithSpellDamage(this, entity, damage);
             Entity owner = this.getOwner();
-            entity.hurt(this.damageSources().source(DamageTypes.MOB_PROJECTILE, this, owner), damage);
             if (owner instanceof LivingEntity) {
                 this.doEnchantDamageEffects((LivingEntity)owner, entity);
             }

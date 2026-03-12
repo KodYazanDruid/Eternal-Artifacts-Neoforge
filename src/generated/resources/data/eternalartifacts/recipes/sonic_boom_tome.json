@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:tome"
+    },
+    "D": {
+      "item": "eternalartifacts:glow_ink_dust"
+    },
+    "E": {
+      "item": "minecraft:experience_bottle"
+    },
+    "S": {
+      "item": "minecraft:echo_shard"
+    }
+  },
+  "pattern": [
+    "SES",
+    "DBD",
+    "SES"
+  ],
+  "result": {
+    "item": "eternalartifacts:sonic_boom_tome"
+  }
+}

@@ -36,6 +36,7 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
     private ButtonDrawContent sprites;
     private final List<Component> tooltips;
     private final List<Supplier<Component>> dynamicTooltips;
+    private final List<Supplier<List<Component>>> dynamicTooltipLists;
     protected static final SpriteButton.CreateNarration DEFAULT_NARRATION = Supplier::get;
     protected final SpriteButton.OnPress onPress;
     protected final SpriteButton.CreateNarration createNarration;
@@ -50,12 +51,12 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
 
     public SpriteButton(Builder builder) {
         this(builder.x, builder.y, builder.width, builder.height, builder.message, builder.onPress, builder.createNarration, builder.sprites,
-            builder.tooltips, builder.dynamicTooltips, builder.textures);
+            builder.tooltips, builder.dynamicTooltips, builder.dynamicTooltipLists, builder.textures);
         setTooltip(builder.tooltip);
     }
 
     private SpriteButton(int x, int y, int width, int hegiht, Component pMessage, SpriteButton.OnPress pOnPress, CreateNarration pCreateNarration, ButtonDrawContent sprites,
-                         List<Component> tooltips, List<Supplier<Component>> dynamicTooltips, ResourceLocation... textures) {
+                         List<Component> tooltips, List<Supplier<Component>> dynamicTooltips, List<Supplier<List<Component>>> dynamicTooltipLists, ResourceLocation... textures) {
         super(x, y, width, hegiht, pMessage);
         this.onPress = pOnPress;
         this.createNarration = pCreateNarration;
@@ -63,6 +64,7 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
         this.sprites = sprites;
         this.tooltips = tooltips;
         this.dynamicTooltips = dynamicTooltips;
+        this.dynamicTooltipLists = dynamicTooltipLists;
     }
 
     @Override
@@ -112,7 +114,11 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
     public void renderTooltip(GuiGraphics gui, int mouseX, int mouseY, int tooltipZ) {
         List<Component> allTooltips = new ArrayList<>();
         allTooltips.addAll(tooltips);
-        allTooltips.addAll(dynamicTooltips.stream().map(Supplier::get).toList());
+        allTooltips.addAll(dynamicTooltips.stream().map(Supplier::get).filter(java.util.Objects::nonNull).toList());
+        for (Supplier<List<Component>> listSupplier : dynamicTooltipLists) {
+            List<Component> list = listSupplier.get();
+            if (list != null) allTooltips.addAll(list);
+        }
         if (isMouseOver(mouseX, mouseY) && !allTooltips.isEmpty()) {
             gui.pose().pushPose();
             gui.pose().translate(0, 0, tooltipZ);
@@ -173,6 +179,7 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
         private final ButtonDrawContent sprites = new ButtonDrawContent(width, height);
         private final List<Component> tooltips = new ArrayList<>();
         private final List<Supplier<Component>> dynamicTooltips = new ArrayList<>();
+        private final List<Supplier<List<Component>>> dynamicTooltipLists = new ArrayList<>();
 
         private SpriteButton.CreateNarration createNarration = SpriteButton.DEFAULT_NARRATION;
 
@@ -249,6 +256,10 @@ public class SpriteButton extends AbstractButton implements TooltipRenderable {
         }
         public SpriteButton.Builder addTooltipHover(Supplier<Component> tooltip) {
             dynamicTooltips.add(tooltip);
+            return this;
+        }
+        public SpriteButton.Builder addDynamicTooltips(Supplier<List<Component>> tooltipList) {
+            dynamicTooltipLists.add(tooltipList);
             return this;
         }
         //endregion

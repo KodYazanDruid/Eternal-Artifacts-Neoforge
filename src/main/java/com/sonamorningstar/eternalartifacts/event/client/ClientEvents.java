@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.datafixers.util.Either;
 import com.mojang.math.Axis;
 import com.sonamorningstar.eternalartifacts.Config;
@@ -27,7 +26,9 @@ import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManage
 import com.sonamorningstar.eternalartifacts.client.gui.widget.*;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.base.TooltipRenderable;
 import com.sonamorningstar.eternalartifacts.client.render.FluidRendererHelper;
-import com.sonamorningstar.eternalartifacts.client.render.ModRenderTypes;
+import com.sonamorningstar.eternalartifacts.client.render.entity.PrismBeamWorldRenderer;
+import com.sonamorningstar.eternalartifacts.client.render.util.AreaRenderHelper;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.PrismBeamEntity;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
@@ -35,6 +36,9 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.item.PipeAttachmentItem;
+import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
+import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
+import com.sonamorningstar.eternalartifacts.core.ModAttributes;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
@@ -80,6 +84,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -93,7 +98,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.api.distmarker.Dist;
-import org.joml.Matrix4f;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -159,6 +163,8 @@ public class ClientEvents {
             pose.pushPose();
             pose.translate(-camPos.x, -camPos.y, -camPos.z);
             
+            PrismBeamWorldRenderer.renderAll(pose, buffer, event.getPartialTick());
+            
             if (mc.level != null && mc.player != null) {
                 int viewDist = mc.options.renderDistance().get();
                 BlockPos playerPos = mc.player.blockPosition();
@@ -171,142 +177,163 @@ public class ClientEvents {
                         if (chunk != null) {
                             for (var be : chunk.getBlockEntities().values()) {
                                 if (be instanceof WorkingAreaProvider wap && wap.shouldRenderArea()) {
-                                    renderWorkingArea(pose, buffer, wap, be.getBlockPos());
+                                    AreaRenderHelper.renderBox(pose, buffer, wap.getWorkingArea(be.getBlockPos()));
                                 }
                             }
                         }
                     }
                 }
+                
+                for (PrismBeamEntity beam : mc.level.getEntitiesOfClass(PrismBeamEntity.class,
+                        mc.player.getBoundingBox().inflate(viewDist * 16), e -> true)) {
+                    for (long posLong : beam.getTickAcceleratedBlocks().keySet()) {
+                        BlockPos bp = BlockPos.of(posLong);
+                        AABB blockBox = new AABB(bp);
+                        AreaRenderHelper.renderBox(pose, buffer, blockBox,
+                            0.9f, 0.6f, 0.2f, 0.18f,
+                            1.0f, 0.8f, 0.3f, 1.0f);
+                    }
+                }
             }
             
-            buffer.endBatch(ModRenderTypes.AREA_FACE);
-            buffer.endBatch(ModRenderTypes.AREA_OUTLINE);
+            AreaRenderHelper.endBatch(buffer);
             
             pose.popPose();
         }
     }
     
-    private static final float OUTLINE_R = 0.3f;
-    private static final float OUTLINE_G = 0.6f;
-    private static final float OUTLINE_B = 1.0f;
-    private static final float OUTLINE_A = 1.0f;
-    
-    private static final float FACE_R = 0.2f;
-    private static final float FACE_G = 0.5f;
-    private static final float FACE_B = 0.9f;
-    private static final float FACE_A = 0.15f;
-    
-    private static void renderWorkingArea(PoseStack pose, MultiBufferSource.BufferSource buffer, WorkingAreaProvider wap, BlockPos bePos) {
-        AABB box = wap.getWorkingArea(bePos);
-        
-        float minX = (float) box.minX;
-        float minY = (float) box.minY;
-        float minZ = (float) box.minZ;
-        float maxX = (float) box.maxX;
-        float maxY = (float) box.maxY;
-        float maxZ = (float) box.maxZ;
-        
-        renderAreaFaces(pose, buffer, minX, minY, minZ, maxX, maxY, maxZ);
-        renderAreaOutline(pose, buffer, minX, minY, minZ, maxX, maxY, maxZ);
-    }
-    
-    private static void renderAreaFaces(PoseStack pose, MultiBufferSource buff,
-                             float minX, float minY, float minZ,
-                             float maxX, float maxY, float maxZ) {
-        VertexConsumer consumer = buff.getBuffer(ModRenderTypes.AREA_FACE);
-        Matrix4f matrix = pose.last().pose();
-        
-        int color = ((int)(FACE_A * 255) << 24) | ((int)(FACE_R * 255) << 16) | ((int)(FACE_G * 255) << 8) | (int)(FACE_B * 255);
-        
-        // Bottom face (Y-)
-        consumer.vertex(matrix, minX, minY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, minY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, minY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, minY, maxZ).color(color).endVertex();
-        
-        // Top face (Y+)
-        consumer.vertex(matrix, minX, maxY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, maxY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, maxY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, maxY, minZ).color(color).endVertex();
-        
-        // North face (Z-)
-        consumer.vertex(matrix, minX, minY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, maxY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, maxY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, minY, minZ).color(color).endVertex();
-        
-        // South face (Z+)
-        consumer.vertex(matrix, maxX, minY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, maxY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, maxY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, minY, maxZ).color(color).endVertex();
-        
-        // West face (X-)
-        consumer.vertex(matrix, minX, minY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, maxY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, maxY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, minX, minY, minZ).color(color).endVertex();
-        
-        // East face (X+)
-        consumer.vertex(matrix, maxX, minY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, maxY, minZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, maxY, maxZ).color(color).endVertex();
-        consumer.vertex(matrix, maxX, minY, maxZ).color(color).endVertex();
-    }
-    
-    private static void renderAreaOutline(PoseStack pose, MultiBufferSource buff,
-                               float minX, float minY, float minZ,
-                               float maxX, float maxY, float maxZ) {
-        VertexConsumer consumer = buff.getBuffer(ModRenderTypes.AREA_OUTLINE);
-        Matrix4f matrix = pose.last().pose();
-        
-        // Bottom edges
-        areaLine(consumer, matrix, minX, minY, minZ, maxX, minY, minZ);
-        areaLine(consumer, matrix, maxX, minY, minZ, maxX, minY, maxZ);
-        areaLine(consumer, matrix, maxX, minY, maxZ, minX, minY, maxZ);
-        areaLine(consumer, matrix, minX, minY, maxZ, minX, minY, minZ);
-        
-        // Top edges
-        areaLine(consumer, matrix, minX, maxY, minZ, maxX, maxY, minZ);
-        areaLine(consumer, matrix, maxX, maxY, minZ, maxX, maxY, maxZ);
-        areaLine(consumer, matrix, maxX, maxY, maxZ, minX, maxY, maxZ);
-        areaLine(consumer, matrix, minX, maxY, maxZ, minX, maxY, minZ);
-        
-        // Vertical edges
-        areaLine(consumer, matrix, minX, minY, minZ, minX, maxY, minZ);
-        areaLine(consumer, matrix, maxX, minY, minZ, maxX, maxY, minZ);
-        areaLine(consumer, matrix, maxX, minY, maxZ, maxX, maxY, maxZ);
-        areaLine(consumer, matrix, minX, minY, maxZ, minX, maxY, maxZ);
-    }
-    
-    private static void areaLine(VertexConsumer consumer, Matrix4f matrix,
-                      float x1, float y1, float z1,
-                      float x2, float y2, float z2) {
-        float dx = x2 - x1;
-        float dy = y2 - y1;
-        float dz = z2 - z1;
-        float len = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-        if (len == 0) len = 1;
-        float nx = dx / len;
-        float ny = dy / len;
-        float nz = dz / len;
-        
-        consumer.vertex(matrix, x1, y1, z1)
-                .color(OUTLINE_R, OUTLINE_G, OUTLINE_B, OUTLINE_A)
-                .normal(nx, ny, nz)
-                .endVertex();
-        consumer.vertex(matrix, x2, y2, z2)
-                .color(OUTLINE_R, OUTLINE_G, OUTLINE_B, OUTLINE_A)
-                .normal(nx, ny, nz)
-                .endVertex();
-    }
-    
     @SubscribeEvent
-    public static void charmDescriptions(ItemTooltipEvent event) {
+    public static void itemTooltipEvent(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
-        List<Component> toolTips = event.getToolTip();
-        ItemTooltipManager.applyTooltips(stack, toolTips);
+        Player player = event.getEntity();
+        List<Component> tooltip = event.getToolTip();
+        ItemTooltipManager.applyTooltips(stack, tooltip);
+        
+        if (stack.getItem() instanceof SpellTomeItem<?> tomeItem && player != null) {
+            Spell spell = tomeItem.getSpell();
+            Spell.DamageCategory category = spell.damageCategory;
+            boolean detailed = Screen.hasShiftDown();
+            
+            tooltip.add(spell.getSpellDescription().withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+            tooltip.add(Component.empty());
+            
+            if (spell.baseDamage > 0) {
+                double baseDmg = spell.baseDamage;
+                double bonusDmg = 0;
+                
+                AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
+                if (spellPower != null) {
+                    double spellPowerValue = spellPower.getValue();
+                    bonusDmg = baseDmg * (spellPowerValue - 100.0) / 100.0;
+                }
+                
+                MutableComponent damageText = Component.translatable("tooltip.eternalartifacts.spell.damage")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(": ");
+                
+                if (detailed) {
+                    damageText.append(Component.literal(formatNumber(baseDmg)).withStyle(ChatFormatting.WHITE));
+                    if (bonusDmg != 0) {
+                        String sign = bonusDmg > 0 ? "+" : "";
+                        damageText.append(Component.literal(" (" + sign + formatNumber(bonusDmg) + ")")
+                            .withStyle(ChatFormatting.LIGHT_PURPLE));
+                    }
+                } else {
+                    double totalDmg = baseDmg + bonusDmg;
+                    MutableComponent totalDmgComponent = Component.literal(formatNumber(totalDmg));
+                    if (bonusDmg > 0) {
+                        category.applyStyle(totalDmgComponent);
+                    } else if (bonusDmg < 0) {
+                        totalDmgComponent.withStyle(ChatFormatting.RED);
+                    } else {
+                        totalDmgComponent.withStyle(ChatFormatting.WHITE);
+                    }
+                    damageText.append(totalDmgComponent);
+                }
+                
+                tooltip.add(damageText);
+            }
+            
+            if (spell.cooldown > 0) {
+                double baseCooldown = spell.cooldown / 20.0;
+                double cooldownReduction = 0;
+                
+                AttributeInstance cdrAttr = player.getAttribute(ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
+                if (cdrAttr != null) {
+                    cooldownReduction = cdrAttr.getValue();
+                }
+                double reducedCooldown = baseCooldown * (1 - cooldownReduction / 100.0);
+                
+                MutableComponent cooldownText = Component.translatable("tooltip.eternalartifacts.spell.cooldown")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(": ");
+                
+                if (detailed) {
+                    cooldownText.append(Component.literal(formatNumber(baseCooldown) + "s").withStyle(ChatFormatting.WHITE));
+                    if (cooldownReduction > 0) {
+                        double reductionAmount = baseCooldown - reducedCooldown;
+                        cooldownText.append(Component.literal(" (-" + formatNumber(reductionAmount) + "s)")
+                            .withStyle(ChatFormatting.AQUA));
+                    }
+                } else {
+                    MutableComponent cooldownValue = Component.literal(formatNumber(reducedCooldown) + "s");
+                    if (cooldownReduction > 0) {
+                        cooldownValue.withStyle(ChatFormatting.AQUA);
+                    } else {
+                        cooldownValue.withStyle(ChatFormatting.WHITE);
+                    }
+                    cooldownText.append(cooldownValue);
+                }
+                
+                tooltip.add(cooldownText);
+            }
+            
+            if (spell.baseDamage > 0) {
+                MutableComponent damageTypeText = Component.translatable("tooltip.eternalartifacts.spell.damage_type")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(": ")
+                    .append(category.getDisplayName());
+                tooltip.add(damageTypeText);
+            }
+            
+            tooltip.add(Component.empty());
+            
+            if (detailed) {
+                AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
+                if (spellPower != null) {
+                    int spellPowerTotal = (int) spellPower.getValue();
+                    int spellPowerBonus = spellPowerTotal - 100;
+                    MutableComponent spellPowerText = Component.translatable("tooltip.eternalartifacts.spell.spell_power")
+                        .withStyle(ChatFormatting.GRAY)
+                        .append(": ")
+                        .append(Component.literal(String.valueOf(spellPowerTotal)).withStyle(ChatFormatting.LIGHT_PURPLE))
+                        .append(Component.literal(" (" + (spellPowerBonus >= 0 ? "+" : "") + spellPowerBonus + "% ")
+                            .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
+                        .append(Component.translatable("tooltip.eternalartifacts.spell.bonus_damage")
+                            .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
+                        .append(Component.literal(")").withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED));
+                    tooltip.add(spellPowerText);
+                }
+                
+                AttributeInstance cdrAttr = player.getAttribute(ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
+                if (cdrAttr != null) {
+                    int cdrValue = (int) cdrAttr.getValue();
+                    MutableComponent cdrText = Component.translatable("tooltip.eternalartifacts.spell.cooldown_reduction")
+                        .withStyle(ChatFormatting.GRAY)
+                        .append(": ")
+                        .append(Component.literal(cdrValue + "%").withStyle(ChatFormatting.AQUA));
+                    tooltip.add(cdrText);
+                }
+            } else {
+                tooltip.add(Component.translatable("tooltip.eternalartifacts.spell.hold_shift")
+                    .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            }
+        }
+    }
+    
+    private static String formatNumber(double value) {
+        if (value == Math.floor(value) && !Double.isInfinite(value)) return String.valueOf((int) value);
+        return String.format("%.2f", value);
     }
     
     @SubscribeEvent(priority = EventPriority.HIGH)
@@ -752,9 +779,33 @@ public class ClientEvents {
                     efilterable, machine, font, gsms.getGuiTint()
                 );
                 
-                SpriteButton filterButton = SpriteButton.builder(Component.empty(), (b, i) -> panel.toggle(),
+                var filterButtonBld = SpriteButton.builder(Component.empty(), (b, i) -> panel.toggle(),
                         new ResourceLocation(MODID, "textures/item/machine_item_filter.png"))
-                    .bounds(x + width - (gsms.enchantmentPanel != null ? 54 : 36), y + 3, 16, 16).build();
+                    .bounds(x + width - (gsms.enchantmentPanel != null ? 54 : 36), y + 3, 16, 16);
+                filterButtonBld.addDynamicTooltips(() -> {
+                    List<Component> tips = new ArrayList<>();
+                    int count = efilterable.getEntityFilter().getActivePredicates().size()
+                        + efilterable.getEntityTypeEntries().size()
+                        + efilterable.getEntityTagEntries().size();
+                    tips.add(ModConstants.GUI.withSuffixTranslatable("active_filters", count)
+                        .withStyle(count > 0 ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+                    for (EntityPredicateEntry.EntityPredicate p : efilterable.getEntityFilter().getActivePredicates()) {
+                        tips.add(Component.literal(" ▸ ").withStyle(ChatFormatting.GREEN)
+                            .append(p.getDisplayName().copy().withStyle(ChatFormatting.WHITE)));
+                    }
+                    for (EntityTypeEntry entry : efilterable.getEntityTypeEntries()) {
+                        if (entry.getFilterType() == null) continue;
+                        tips.add(Component.literal(" ▸ ").withStyle(ChatFormatting.BLUE)
+                            .append(entry.getDisplayName().copy().withStyle(ChatFormatting.WHITE)));
+                    }
+                    for (EntityTagEntry entry : efilterable.getEntityTagEntries()) {
+                        if (entry.getTag() == null) continue;
+                        tips.add(Component.literal(" ▸ ").withStyle(ChatFormatting.DARK_PURPLE)
+                            .append(entry.getDisplayName().copy().withStyle(ChatFormatting.WHITE)));
+                    }
+                    return tips;
+                });
+                SpriteButton filterButton = filterButtonBld.build();
                 
                 event.addListener(filterButton);
                 gsms.addUpperLayerChild(panel);

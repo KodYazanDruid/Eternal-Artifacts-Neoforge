@@ -1,4 +1,4 @@
-// 1.20.4	2026-01-11T16:58:50.9187147	Model Definitions
+// 1.20.4	2026-03-08T18:25:07.1203643	Model Definitions
 102e9522fdec701626ee9e9dcffab9733bfe27d2 assets/eternalartifacts/blockstates/alchemical_dynamo.json
 c5da0d3c77e27e82536536e4e017850e457ded42 assets/eternalartifacts/blockstates/blaze_head.json
 5c0068fd9507179d802aa65c6450e59c6c14691c assets/eternalartifacts/blockstates/blaze_wall_head.json
@@ -162,8 +162,6 @@ fc63d2bca3b04d769d792b5e5d7788fa39f702ce assets/eternalartifacts/models/item/cov
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/deep_item_storage_unit.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/eternalartifacts/models/item/drowned_head.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/energy_dock.json
-cf00b6b86cba80ce1952eb3f199a446394f3d78d assets/eternalartifacts/models/item/evokers_tome.json
-554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/fireball_tome.json
 554c65015425da6052147610a8e0e0e93d3cb89a assets/eternalartifacts/models/item/fluid_combustion_dynamo.json
 5beb305af4a2eeb98c8af0682a12feaa3e5e0f7d assets/eternalartifacts/models/item/glowstone_torch.json
 2e951387a674115b24ff17f88d62bc841ff369ea assets/eternalartifacts/models/item/glowtorch.json
@@ -187,4 +185,3 @@ d15e6cdb8a7ce08282e6ca1aa98a9d43f482e843 assets/eternalartifacts/models/item/sno
 76807fbda20fac2583aed92d67a5ca34bcea3860 assets/eternalartifacts/models/item/steel_item_pipe.json
 43d32e7d031485f83a1b4eb56ecb3cc40a456163 assets/eternalartifacts/models/item/stray_skull.json
 4ee4f60e53b8374192c0ecb9a85c85470149a1c9 assets/eternalartifacts/models/item/tin_cable.json
-0365f0754992e1da0d8db5c9fac5b8fedfe3093f assets/eternalartifacts/models/item/tornado_tome.json

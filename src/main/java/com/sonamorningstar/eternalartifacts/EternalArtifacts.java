@@ -77,6 +77,8 @@ public class EternalArtifacts {
         ModFeatures.FEATURES.register(modEventBus);
         ModDataAttachments.ATTACHMENT_TYPES.register(modEventBus);
         ModPotions.POTIONS.register(modEventBus);
+        ModVillagers.POI_TYPES.register(modEventBus);
+        ModVillagers.PROFESSIONS.register(modEventBus);
 
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMachines.MACHINES::registerCapabilities);
         modEventBus.addListener(RegisterCapabilitiesEvent.class, ModMultiblocks.MULTIBLOCKS::registerCapabilities);

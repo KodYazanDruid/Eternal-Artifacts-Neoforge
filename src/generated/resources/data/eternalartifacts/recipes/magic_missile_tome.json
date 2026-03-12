@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:tome"
+    },
+    "C": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "N": {
+      "tag": "forge:gems/lapis"
+    },
+    "P": {
+      "item": "eternalartifacts:glow_ink_dust"
+    }
+  },
+  "pattern": [
+    "CNC",
+    "PBP",
+    "CNC"
+  ],
+  "result": {
+    "item": "eternalartifacts:magic_missile_tome"
+  }
+}

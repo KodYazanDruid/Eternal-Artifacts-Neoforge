@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.spell;
 
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.SpellEvokerFangs;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,7 +9,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.EvokerFangs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,7 +30,7 @@ public class EvokerFangsSpell extends Spell {
                 float f = (float) Mth.atan2(vector3d.z, vector3d.x);
                 for (int i = 0; i < 8; i++) {
                     double d2 = 1.25D * (double) (i + 1);
-                    this.spawnFangs(caster, caster.getX() + (double) Mth.cos(f) * d2, caster.getZ() + (double) Mth.sin(f) * d2, caster.getY() - 1, caster.getY() + 1, f, i * 5);
+                    this.spawnFangs(caster, caster.getX() + (double) Mth.cos(f) * d2, caster.getZ() + (double) Mth.sin(f) * d2, caster.getY() - 1, caster.getY() + 1, f, i * 5, amplifiedDamage);
                 }
             }
             //if (caster instanceof Player player && cooldown > 0) player.getCooldowns().addCooldown(tome.getItem(), cooldown);
@@ -39,7 +39,7 @@ public class EvokerFangsSpell extends Spell {
         return false;
     }
 
-    private void spawnFangs(LivingEntity caster, double x, double z, double minY, double maxY, float rotation, int delay) {
+    private void spawnFangs(LivingEntity caster, double x, double z, double minY, double maxY, float rotation, int delay, float damage) {
         BlockPos blockPos = BlockPos.containing(x, maxY, z);
         boolean flag = false;
         double d0 = 0.0D;
@@ -60,7 +60,7 @@ public class EvokerFangsSpell extends Spell {
             blockPos = blockPos.below();
         } while (blockPos.getY() >= Mth.floor(minY) - 1);
         if (flag) {
-            caster.level().addFreshEntity(new EvokerFangs(caster.level(), x, (double) blockPos.getY() + d0, z, rotation, delay, caster));
+            caster.level().addFreshEntity(new SpellEvokerFangs(caster.level(), x, (double) blockPos.getY() + d0, z, rotation, delay, caster, damage));
         }
     }
 }

@@ -7,11 +7,15 @@ import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 import static com.sonamorningstar.eternalartifacts.util.StringUtils.prettyName;
@@ -230,9 +234,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.PRISMARINE_ARROW.get(), "Prismarine Arrow");
                 add(ModItems.LIFTER.get(), "Lifter");
                 add(ModItems.HONEY_BALL.get(), "Honey Ball");
+                add(ModItems.SONIC_BOOM_TOME.get(), "Sonic Boom Tome");
+                add(ModItems.MAGIC_MISSILE_TOME.get(), "Magic Missile Tome");
+                add(ModItems.PRISM_BEAM_TOME.get(), "Prism Beam Tome");
+                add(ModItems.LIGHTNING_STRIKE_TOME.get(), "Lightning Strike Tome");
+                add(ModItems.TOME.get(), "Tome");
+                add(ModItems.REINFORCED_GLASS_BOTTLE.get(), "Reinforced Glass Bottle");
+                add(ModItems.LIGHTNING_IN_A_BOTTLE.get(), "Lightning in a Bottle");
                 //endregion
                 //region Charm Tooltips
-                
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
                 tooltipForItem(ModItems.HOLY_DAGGER.get(), "When you drop below %1$s%% health, grant user %2$s effect for %3$s seconds.");
                 tooltipForItem(ModItems.MEDKIT.get(), "Gives user %s effect whilst out of combat.");
@@ -249,6 +259,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.GALE_SASH.get(), "Allows user to dash in the direction they are moving. Resets after jumping.");
                 tooltipForItem(ModItems.RAINCOAT.get(), "Negates the next bad effect.");
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Decreases the next taken damage by %s%%.");
+                tooltipForItem(ModItems.MOONGLASS_PENDANT.get(), "Heals the user for %s%% of the magic damage they dealt.");
                 //endregion
                 //region Blocks
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
@@ -389,6 +400,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.HONEY_SLIME.get(), "Honey Slime");
                 add(ModEntities.AMETHYST_ARROW.get(), "Amethyst Arrow");
                 add(ModEntities.PRISMARINE_ARROW.get(), "Prismarine Arrow");
+                add(ModEntities.MAGIC_MISSILE.get(), "Magic Missile");
+                add(ModEntities.PRISM_BEAM.get(), "Prism Beam");
+                addVillagerType(ModVillagers.MECHANIC, "Mechanic");
+                add(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), "Thrown Lightning in a Bottle");
                 //endregion
                 //region Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -412,6 +427,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 enchWithDesc(ModEnchantments.CELERITY.get(), "Celerity", "Increases operation count per tick in machines.");
                 enchWithDesc(ModEnchantments.WORLDBIND.get(), "Worldbind", "Allows machines to chunkload the chunk they are in.");
                 enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Fortification", "Gives extra armor points.");
+                enchWithDesc(ModEnchantments.MAGIC_PROTECTION.get(), "Magic Protection", "Provides protection against magic damage types.");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -540,6 +556,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("clear_all"), "Clear All");
                 add(ModConstants.GUI.withSuffix("add_entry"), "Add Entry");
                 add(ModConstants.GUI.withSuffix("no_active_filters"), "No active filters");
+                add(ModConstants.GUI.withSuffix("active_filters"), "Active Filters: %s");
                 add(ModConstants.GUI.withSuffix("search"), "Search...");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Click to swap to Whitelist");
                 add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Click to swap to Blacklist");
@@ -690,6 +707,39 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Fluid Vein Size: %d");
                 add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Stored Block Entity: %s");
                 add(ModConstants.GUI.withSuffix("charge_progress"), "Charge Progress");
+                
+                //region Spell Tooltips
+                add("tooltip.eternalartifacts.spell.damage", "Damage");
+                add("tooltip.eternalartifacts.spell.cooldown", "Cooldown");
+                add("tooltip.eternalartifacts.spell.spell_power", "Spell Power");
+                add("tooltip.eternalartifacts.spell.bonus_damage", "bonus damage");
+                add("tooltip.eternalartifacts.spell.damage_type", "Type");
+                add("tooltip.eternalartifacts.spell.damage_type.magic", "Magic");
+                add("tooltip.eternalartifacts.spell.damage_type.physical", "Physical");
+                add("tooltip.eternalartifacts.spell.damage_type.armor_piercing", "Armor Piercing");
+                add("tooltip.eternalartifacts.spell.hold_shift", "Hold [Shift] for details");
+                add("tooltip.eternalartifacts.spell.cooldown_reduction", "Cooldown Reduction");
+                // Spell Names
+                add("spell.eternalartifacts.fireball", "Fireball");
+                add("spell.eternalartifacts.evoker_fangs", "Evoker Fangs");
+                add("spell.eternalartifacts.tornado", "Tornado");
+                add("spell.eternalartifacts.shulker_bullets", "Shulker Bullets");
+                add("spell.eternalartifacts.meteorite", "Meteorite");
+                add("spell.eternalartifacts.sonic_boom", "Sonic Boom");
+                add("spell.eternalartifacts.magic_missile", "Magic Missile");
+                add("spell.eternalartifacts.prism_beam", "Prism Beam");
+                add("spell.eternalartifacts.lightning_strike", "Lightning Strike");
+                // Spell Descriptions
+                add("spell.eternalartifacts.fireball.desc", "Launches a small fireball that ignites enemies on impact.");
+                add("spell.eternalartifacts.evoker_fangs.desc", "Summons a line of fangs from the ground that bite enemies in their path.");
+                add("spell.eternalartifacts.tornado.desc", "Conjures a tornado that sweeps up and damages nearby entities.");
+                add("spell.eternalartifacts.shulker_bullets.desc", "Fires homing shulker bullets that chase down targets. Fires straight while sneaking.");
+                add("spell.eternalartifacts.meteorite.desc", "Calls down a devastating meteorite from the sky, dealing massive area damage on impact.");
+                add("spell.eternalartifacts.sonic_boom.desc", "Unleashes a piercing sonic wave in a line, damaging all entities in its path.");
+                add("spell.eternalartifacts.magic_missile.desc", "Hold to rapidly fire arcane bolts in the direction you are looking.");
+                add("spell.eternalartifacts.prism_beam.desc", "Hold to channel a devastating prismatic beam that pierces through all enemies in its path.");
+                add("spell.eternalartifacts.lightning_strike.desc", "Hurls a lightning bolt that chains to up to 4 nearby enemies, briefly stunning them. Charges blocks with energy on impact.");
+                //endregion
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
                     if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBlockHolder().getId().getPath()));
@@ -925,6 +975,13 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.SLUDGE.getBucketItem(), "Çamur Kovası");
                 add(ModItems.LIFTER.get(), "Kaldıraç");
                 add(ModItems.HONEY_BALL.get(), "Bal Topu");
+                add(ModItems.SONIC_BOOM_TOME.get(), "Sonik Patlama Kitabı");
+                add(ModItems.MAGIC_MISSILE_TOME.get(), "Sihirli Mermi Kitabı");
+                add(ModItems.PRISM_BEAM_TOME.get(), "Prizma Işını Kitabı");
+                add(ModItems.LIGHTNING_STRIKE_TOME.get(), "Yıldırım Darbesi Kitabı");
+                add(ModItems.TOME.get(),  "Büyü Kitabı");
+                add(ModItems.REINFORCED_GLASS_BOTTLE.get(), "Güçlendirilmiş Cam Şişe");
+                add(ModItems.LIGHTNING_IN_A_BOTTLE.get(), "Şişedeki Yıldırım");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -943,6 +1000,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.GALE_SASH.get(), "Kullanıcıya havada hareket yönünde atılma yeteneği verir. Zıpladıktan sonra yenilenir.");
                 tooltipForItem(ModItems.RAINCOAT.get(), "Sonraki kötü efekti engeller.");
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Sonraki alınan hasarı %%%s azaltır.");
+                tooltipForItem(ModItems.MOONGLASS_PENDANT.get(), "Kullanıcıyı verilen büyü hasarının %%%s kadar iyileştirir.");
                 //endregion
                 //region Türkçe Block
                 add(ModMachines.ANVILINATOR.getBlockTranslationKey(), "Örsinatör");
@@ -1149,6 +1207,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.HONEY_SLIME.get(), "Bal Balçığı");
                 add(ModEntities.AMETHYST_ARROW.get(), "Ametist Ok");
                 add(ModEntities.PRISMARINE_ARROW.get(), "Prizmarin Ok");
+                add(ModEntities.MAGIC_MISSILE.get(), "Sihirli Mermi");
+                add(ModEntities.PRISM_BEAM.get(), "Prizma Işını");
+                addVillagerType(ModVillagers.MECHANIC, "Mekanikçi");
+                add(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), "Fırlatılmış Şişedeki Yıldırım");
                 //endregion
                 //region Türkçe Efekt
                 add(ModEffects.FLIGHT.get(), "Uçuş");
@@ -1181,6 +1243,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 enchWithDesc(ModEnchantments.CELERITY.get(), "Sürat", "Makinelerin tik başına operasyon sayısını arttırır.");
                 enchWithDesc(ModEnchantments.WORLDBIND.get(), "Dünyabağı", "Makinelerin içinde bulunduğı yığını yüklemesini sağlar.");
                 enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Tahkim", "Extra zırh puanı verir.");
+                enchWithDesc(ModEnchantments.MAGIC_PROTECTION.get(), "Magic Protection", "Büyü hasar tiplerine karşı koruma sağlar.");
+                
                 //endregion
                 //region Türkçe Komutler
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s'in tılsımları temizlendi.");
@@ -1328,6 +1392,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("clear_all"), "Tümünü Temizle");
                 add(ModConstants.GUI.withSuffix("add_entry"), "Girdi Ekle");
                 add(ModConstants.GUI.withSuffix("no_active_filters"), "Aktif filtre yok");
+                add(ModConstants.GUI.withSuffix("active_filters"), "Aktif Filtreler: %s");
                 add(ModConstants.GUI.withSuffix("search"), "Ara...");
                 add(ModConstants.GUI.withSuffix("pipe_filter_whitelist_swap"), "Beyaz listeye geçmek için tıkla");
                 add(ModConstants.GUI.withSuffix("pipe_filter_blacklist_swap"), "Kara listeye geçmek için tıkla");
@@ -1479,6 +1544,38 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Depolanan Block Varlığı: %s");
                 add(ModConstants.GUI.withSuffix("charge_progress"), "Şarj İlerlemesi");
                 //endregion
+                //region Türkçe Büyü Araç İpuçları
+                add("tooltip.eternalartifacts.spell.damage", "Hasar");
+                add("tooltip.eternalartifacts.spell.cooldown", "Bekleme Süresi");
+                add("tooltip.eternalartifacts.spell.spell_power", "Büyü Gücü");
+                add("tooltip.eternalartifacts.spell.bonus_damage", "bonus hasar");
+                add("tooltip.eternalartifacts.spell.damage_type", "Tür");
+                add("tooltip.eternalartifacts.spell.damage_type.magic", "Büyü");
+                add("tooltip.eternalartifacts.spell.damage_type.physical", "Fiziksel");
+                add("tooltip.eternalartifacts.spell.damage_type.armor_piercing", "Zırh Delici");
+                add("tooltip.eternalartifacts.spell.hold_shift", "Detaylar için [Shift] basılı tut");
+                add("tooltip.eternalartifacts.spell.cooldown_reduction", "Bekleme Süresi Azaltması");
+                // Büyü İsimleri
+                add("spell.eternalartifacts.fireball", "Ateş Topu");
+                add("spell.eternalartifacts.evoker_fangs", "Büyücü Dişleri");
+                add("spell.eternalartifacts.tornado", "Kasırga");
+                add("spell.eternalartifacts.shulker_bullets", "Shulker Mermileri");
+                add("spell.eternalartifacts.meteorite", "Göktaşı");
+                add("spell.eternalartifacts.sonic_boom", "Sonik Patlama");
+                add("spell.eternalartifacts.magic_missile", "Sihirli Mermi");
+                add("spell.eternalartifacts.prism_beam", "Prizma Işını");
+                add("spell.eternalartifacts.lightning_strike", "Yıldırım Darbesi");
+                // Büyü Açıklamaları
+                add("spell.eternalartifacts.fireball.desc", "Çarpma anında düşmanları tutuşturan küçük bir ateş topu fırlatır.");
+                add("spell.eternalartifacts.evoker_fangs.desc", "Yolundaki düşmanları ısıran bir sıra diş yerden çağırır.");
+                add("spell.eternalartifacts.tornado.desc", "Yakındaki varlıkları savurup hasar veren bir kasırga oluşturur.");
+                add("spell.eternalartifacts.shulker_bullets.desc", "Hedefleri takip eden güdümlü shulker mermileri ateşler. Eğilirken düz ateş eder.");
+                add("spell.eternalartifacts.meteorite.desc", "Gökten yıkıcı bir göktaşı çağırarak çarpma noktasında büyük alan hasarı verir.");
+                add("spell.eternalartifacts.sonic_boom.desc", "Bir doğrultuda delici bir sonik dalga salarak yolundaki tüm varlıklara hasar verir.");
+                add("spell.eternalartifacts.magic_missile.desc", "Basılı tutarak baktığın yönde hızlıca büyülü mermiler fırlatır.");
+                add("spell.eternalartifacts.prism_beam.desc", "Basılı tutarak yolundaki tüm düşmanları delip geçen yıkıcı bir prizma ışını kanalize eder.");
+                add("spell.eternalartifacts.lightning_strike.desc", "Yakındaki 4 düşmana zincirleme hasar veren ve kısa süreliğine sersemletip bloklara çarptığında enerji veren bir yıldırım fırlatır.");
+                //endregion
 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {
                     if("tr_tr".equals(loc)) add(lang.getFirst(), lang.getSecond());
@@ -1487,7 +1584,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
         }
     }
     
-    //FIXME
+    private void addVillagerType(DeferredHolder<VillagerProfession, ?> holder, String desc) {
+        ResourceLocation rl = holder.getKey().location();
+        add(EntityType.VILLAGER.getDescriptionId()+"."+rl.getNamespace()+"."+rl.getPath(), desc);
+    }
+    
     private void addPotion(Potion potion, String name) {
         add(potion.getName(Items.POTION.getDescriptionId() + ".effect."), name);
         add(potion.getName(Items.SPLASH_POTION.getDescriptionId() + ".effect."), name);

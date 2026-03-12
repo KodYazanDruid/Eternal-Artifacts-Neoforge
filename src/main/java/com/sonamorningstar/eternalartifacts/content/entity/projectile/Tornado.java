@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.entity.projectile;
 
 import com.sonamorningstar.eternalartifacts.core.ModEntities;
+import com.sonamorningstar.eternalartifacts.util.SpellDamageHelper;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -50,8 +51,7 @@ public class Tornado extends AbstractHurtingProjectile {
     protected void onHitEntity(EntityHitResult result) {
         if (!level().isClientSide()) {
             Entity hit = result.getEntity();
-            Entity owner = this.getOwner();
-            hit.hurt(this.damageSources().mobProjectile(this, owner instanceof LivingEntity living ? living : null), damage);
+            SpellDamageHelper.hurtWithSpellDamage(this, hit, damage);
             hit.hurtMarked = true;
             hit.setDeltaMovement(hit.getDeltaMovement().add(0, 0.2, 0));
         }
@@ -61,9 +61,21 @@ public class Tornado extends AbstractHurtingProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         Direction dir = result.getDirection();
-        if (dir != Direction.UP) {
-            discard();
+        if (dir == Direction.UP) return;
+
+        if (dir.getAxis().isHorizontal()) {
+            BlockPos hitPos = result.getBlockPos();
+            BlockPos aboveHit = hitPos.above();
+            BlockPos twoAboveHit = hitPos.above(2);
+            if (level().getBlockState(aboveHit).getCollisionShape(level(), aboveHit).isEmpty()
+                    && level().getBlockState(twoAboveHit).getCollisionShape(level(), twoAboveHit).isEmpty()) {
+                Vec3 delta = getDeltaMovement();
+                setPos(getX(), aboveHit.getY(), getZ());
+                setDeltaMovement(delta.x, 0, delta.z);
+                return;
+            }
         }
+        discard();
     }
 
     @Override
@@ -71,7 +83,7 @@ public class Tornado extends AbstractHurtingProjectile {
         if (state.is(BlockTags.FIRE)) {
             BlockPos posToDestroy = this.getOnPos(0);
             if (level().getBlockState(posToDestroy).is(BlockTags.FIRE))
-                this.level().destroyBlock(posToDestroy, false, this);
+                this.level().destroyBlock(posToDestroy, true, this);
         }
     }
 

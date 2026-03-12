@@ -734,6 +734,39 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('P', ModTags.Items.PLASTIC).define('T', ModItems.STONE_TABLET)
             .define('G', Tags.Items.GLASS)
             .unlockedBy("has_item", has(ModTags.Items.PLASTIC)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SONIC_BOOM_TOME)
+            .pattern("SES").pattern("DBD").pattern("SES")
+            .define('S', Items.ECHO_SHARD).define('E', Items.EXPERIENCE_BOTTLE)
+            .define('D', ModItems.GLOW_INK_DUST).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(Items.ECHO_SHARD)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SHULKER_BULLETS_TOME)
+            .pattern("SPS").pattern("DBD").pattern("SPS")
+            .define('S', ModTags.Items.SHULKER_SHELL).define('P', Items.PURPUR_BLOCK)
+            .define('D', ModItems.GLOW_INK_DUST).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(ModTags.Items.SHULKER_SHELL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.FIREBALL_TOME)
+            .pattern("CNC").pattern("PBP").pattern("CNC")
+            .define('C', Items.FIRE_CHARGE).define('N', Tags.Items.INGOTS_NETHER_BRICK)
+            .define('P', Items.BLAZE_POWDER).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(Items.FIRE_CHARGE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MAGIC_MISSILE_TOME)
+            .pattern("CNC").pattern("PBP").pattern("CNC")
+            .define('C', Items.AMETHYST_SHARD).define('N', Tags.Items.GEMS_LAPIS)
+            .define('P', ModItems.GLOW_INK_DUST).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(Items.AMETHYST_SHARD)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.PRISM_BEAM_TOME)
+            .pattern("CBC").pattern("PTP").pattern("CSC")
+            .define('C', Tags.Items.GEMS_DIAMOND).define('B', Items.BEACON).define('T', ModItems.TOME)
+            .define('P', ModItems.GLOW_INK_DUST).define('S', ModItems.CHLOROPHYTE_INGOT)
+            .unlockedBy("has_item", has(Items.BEACON)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.LIGHTNING_STRIKE_TOME)
+            .pattern("CIC").pattern("PTP").pattern("CIC")
+            .define('C', Tags.Items.GEMS_DIAMOND).define('I', Tags.Items.INGOTS_COPPER)
+            .define('T', ModItems.TOME).define('P', ModItems.LIGHTNING_IN_A_BOTTLE)
+            .unlockedBy("has_item", has(ModItems.LIGHTNING_IN_A_BOTTLE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.REINFORCED_GLASS_BOTTLE, 3)
+            .pattern("G G").pattern(" G ").define('G', ModTags.Items.GLASS_HARDENED)
+            .unlockedBy("has_item", has(ModTags.Items.GLASS_HARDENED)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

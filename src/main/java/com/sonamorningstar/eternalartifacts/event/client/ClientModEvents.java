@@ -238,9 +238,17 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.METEORITE.get(), MeteoriteRenderer::new);
         event.registerEntityRenderer(ModEntities.MISSILE.get(), MissileRenderer::new);
         event.registerEntityRenderer(ModEntities.SPELL_PROJECTILE.get(), SpellProjectileRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPELL_SMALL_FIREBALL.get(), ctx -> new ThrownItemRenderer<>(ctx, 0.75F, true));
+        event.registerEntityRenderer(ModEntities.SPELL_SHULKER_BULLET.get(), ShulkerBulletRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPELL_EVOKER_FANGS.get(), EvokerFangsRenderer::new);
         event.registerEntityRenderer(ModEntities.AMETHYST_ARROW.get(), AmethystArrowRenderer::new);
         event.registerEntityRenderer(ModEntities.HONEY_SLIME.get(), HoneySlimeRenderer::new);
         event.registerEntityRenderer(ModEntities.PRISMARINE_ARROW.get(), PrismarineArrowRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPELL_SONIC_BOOM.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.MAGIC_MISSILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.PRISM_BEAM.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.LIGHTNING_STRIKE_PROJECTILE.get(), NoopRenderer::new);
+        event.registerEntityRenderer(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), ThrownItemRenderer::new);
     }
 
     @SubscribeEvent

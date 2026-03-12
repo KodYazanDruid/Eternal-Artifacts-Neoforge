@@ -24,7 +24,6 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 public class ModEnchantments {
     private static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     
-    
     public static final DeferredRegister<Enchantment> ENCHANTMENTS = DeferredRegister.create(Registries.ENCHANTMENT, MODID);
 
     public static final DeferredHolder<Enchantment, VolumeEnchantment> VOLUME = ENCHANTMENTS.register("volume", VolumeEnchantment::new);
@@ -34,6 +33,7 @@ public class ModEnchantments {
     public static final DeferredHolder<Enchantment, EverlastingEnchantment> EVERLASTING = ENCHANTMENTS.register("everlasting", EverlastingEnchantment::new);
     public static final DeferredHolder<Enchantment, CelerityEnchantment> CELERITY = ENCHANTMENTS.register("celerity", CelerityEnchantment::new);
     public static final DeferredHolder<Enchantment, MachineEnchantment> WORLDBIND = ENCHANTMENTS.register("worldbind", () -> new MachineEnchantment(Enchantment.Rarity.VERY_RARE));
+    public static final DeferredHolder<Enchantment, MagicProtectionEnchantment> MAGIC_PROTECTION = ENCHANTMENTS.register("magic_protection", MagicProtectionEnchantment::new);
     public static final DeferredHolder<Enchantment, AttributeEnchantment> FORTIFICATION = ENCHANTMENTS.register("fortification",
         () -> new FortificationEnchantment(Enchantment.Rarity.RARE, Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS),
             EnchantmentCategory.ARMOR, ARMOR_SLOTS)

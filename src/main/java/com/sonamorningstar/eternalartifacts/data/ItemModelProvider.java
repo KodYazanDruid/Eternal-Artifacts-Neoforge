@@ -214,6 +214,16 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.PRISMARINE_ARROW.get());
         basicItem(ModItems.LIFTER.get());
         basicItem(ModItems.HONEY_BALL.get());
+        basicItem(ModItems.EVOKERS_TOME.get());
+        basicItem(ModItems.FIREBALL_TOME.get());
+        basicItem(ModItems.TORNADO_TOME.get());
+        basicItem(ModItems.SONIC_BOOM_TOME.get());
+        basicItem(ModItems.MAGIC_MISSILE_TOME.get());
+        basicItem(ModItems.PRISM_BEAM_TOME.get());
+        basicItem(ModItems.LIGHTNING_STRIKE_TOME.get());
+        basicItem(ModItems.TOME.get());
+        basicItem(ModItems.REINFORCED_GLASS_BOTTLE.get());
+        basicItem(ModItems.LIGHTNING_IN_A_BOTTLE.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));

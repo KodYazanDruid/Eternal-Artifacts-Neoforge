@@ -44,10 +44,6 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         createBEWLRTransforms(ModBlocks.DEEP_FLUID_STORAGE_UNIT);
         /*dsuItemModel(ModBlocks.DEEP_ITEM_STORAGE_UNIT);
         dsuItemModel(ModBlocks.DEEP_FLUID_STORAGE_UNIT);*/
-        
-        createBEWLRTransforms(ModItems.FIREBALL_TOME);
-        createSpellTome(ModItems.EVOKERS_TOME);
-        createSpellTome(ModItems.TORNADO_TOME);
     }
 
     private void createBEWLRTransforms(ItemLike itemLike) {

@@ -66,12 +66,23 @@ public class SpellTagsProvider extends IntrinsicHolderTagsProvider<Spell> {
         );
         tag(ModTags.Spells.AIR).add(
             ModSpells.TORNADO.get(),
-            ModSpells.SHULKER_BULLETS.get()
+            ModSpells.SONIC_BOOM.get()
         );
         tag(ModTags.Spells.EARTH).add(
-            ModSpells.METEORITE.get()
+            ModSpells.METEORITE.get(),
+            ModSpells.EVOKER_FANGS.get()
         );
-
-
+        tag(ModTags.Spells.ARCANE).add(
+            ModSpells.MAGIC_MISSILE.get(),
+            ModSpells.SONIC_BOOM.get(),
+            ModSpells.EVOKER_FANGS.get(),
+            ModSpells.PRISM_BEAM.get()
+        );
+        tag(ModTags.Spells.ENDER).add(
+            ModSpells.SHULKER_BULLETS.get()
+        );
+        tag(ModTags.Spells.LIGHTNING).add(
+            ModSpells.LIGHTNING_STRIKE.get()
+        );
     }
 }
