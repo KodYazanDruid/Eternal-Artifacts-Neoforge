@@ -14,7 +14,8 @@ public final class ConfigLocations {
 		AutoTransferConfig.class, new ResourceLocation(MODID, "auto_transfer_config"),
 		ToggleConfig.class, new ResourceLocation(MODID, "toggle_config"),
 		ReverseToggleConfig.class, new ResourceLocation(MODID, "reverse_toggle_config"),
-		BatteryBoxExportConfig.class, new ResourceLocation(MODID, "battery_box_export_config")
+		BatteryBoxExportConfig.class, new ResourceLocation(MODID, "battery_box_export_config"),
+		RedstoneOutputThreshold.class, new ResourceLocation(MODID, "redstone_output_threshold")
 	);
 	
 	public static ResourceLocation getConfigLocation(Config config) {

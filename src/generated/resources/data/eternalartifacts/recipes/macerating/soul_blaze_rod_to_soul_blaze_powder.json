@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "eternalartifacts:soul_blaze_rod"
+  },
+  "output": {
+    "Count": 5,
+    "id": "eternalartifacts:soul_blaze_powder"
+  }
+}

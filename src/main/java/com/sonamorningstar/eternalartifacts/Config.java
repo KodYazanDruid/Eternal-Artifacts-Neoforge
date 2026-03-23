@@ -37,7 +37,7 @@ public class Config {
     static{COMMON.push("Artifacts");}
     public static final ModConfigSpec.DoubleValue FINAL_CUT_EXECUTE_THRESHOLD =
         COMMON.comment("Percentage of health that the Final Cut artifact will execute at.")
-                    .defineInRange("final_cut_execute_threshold", 0.20D, 0.01D, 1D);
+                    .defineInRange("final_cut_execute_threshold", 0.2D, 0.01D, 1D);
     public static final ModConfigSpec.DoubleValue MAGIC_BANE_DAMAGE_CONVERT_MULTIPLIER =
         COMMON.comment("Damage multiplier for the Magic Bane artifact.")
                     .defineInRange("magic_bane_damage_convert_multiplier", 0.2D, 0.1D, 1.0D);
@@ -52,10 +52,10 @@ public class Config {
             .defineInRange("brew_amount", 1000, 1, Integer.MAX_VALUE);
     static {SERVER.pop();}
     
-    static{SERVER.push("Capabilities");}
+    /*static{SERVER.push("Capabilities");}
     public static final ModConfigSpec.BooleanValue BOTTLE_CAP_ENABLED = SERVER.comment("Should bottle fluid capability be enabled?")
             .define("bottle_cap_enabled", true);
-    static {SERVER.pop();}
+    static {SERVER.pop();}*/
     
     static final ModConfigSpec COMMON_SPEC = COMMON.build();
     static final ModConfigSpec CLIENT_SPEC = CLIENT.build();

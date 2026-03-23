@@ -36,6 +36,7 @@
     "eternalartifacts:enchanter",
     "eternalartifacts:entity_interactor",
     "eternalartifacts:item_collector",
+    "eternalartifacts:entity_watcher",
     "eternalartifacts:battery_box",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:autocutter",

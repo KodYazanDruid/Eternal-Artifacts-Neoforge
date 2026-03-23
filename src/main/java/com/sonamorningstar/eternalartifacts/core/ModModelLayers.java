@@ -27,6 +27,7 @@ public class ModModelLayers {
     public static final ModelLayerLocation STRAY_SKULL = create("stray_skull");
     public static final ModelLayerLocation STRAY_SKULL_OVERLAY = create("stray_skull_overlay");
     public static final ModelLayerLocation BLAZE_HEAD = create("blaze_head");
+    public static final ModelLayerLocation SOUL_BLAZE_HEAD = create("soul_blaze_head");
 
     private static ModelLayerLocation create(String name) {
         return create(name, "main");

@@ -6,7 +6,6 @@ import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.api.machine.config.*;
-import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.AbstractFluidTank;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
@@ -24,7 +23,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.*;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -39,7 +37,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -84,6 +81,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected int defaultMaxProgress = 100;
     protected int maxProgress;
     protected int defaultEnergyPerTick = 40;
+    @Getter
+    protected boolean isWorking;
     @Getter
     protected int energyPerTick;
     public final List<Integer> outputSlots = new ArrayList<>();
@@ -269,10 +268,12 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         Recipe<Container> recipe = (Recipe<Container>) RecipeCache.getCachedRecipe(this);
         if (recipeType != null && recipe == null) {
             progress = 0;
+            isWorking = false;
             return;
         }
         if (previousRecipe != null && previousRecipe != recipe) {
             progress = 0;
+            isWorking = false;
         }
         previousRecipe = recipe;
     }
@@ -289,8 +290,13 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         return InteractionResult.PASS;
     }
     
+    
     protected InteractionResult useAfter(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         return InteractionResult.PASS;
+    }
+    
+    public int getRedstoneOutput() {
+        return 0;
     }
     
     protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
@@ -481,8 +487,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if (level != null && canWork(energy) && redstoneChecks(level)) {
             if (haltCondition.getAsBoolean()) {
                 progress = 0;
+                isWorking = false;
                 return;
             }
+            isWorking = true;
             running.run();
             progress = Math.min(maxProgress, progress + progressStep);
             if (progress >= maxProgress) {
@@ -490,6 +498,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
                 progress = 0;
             }
             spendEnergy(energy);
+        } else {
+            isWorking = false;
         }
     }
     
@@ -648,7 +658,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     //endregion
     
-    
     //region ChunkLoader implementation
     @Override
     public Set<ForceLoadManager.ForcedChunkPos> getForcedChunks() {
@@ -679,5 +688,5 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public boolean needsForceLoaderUpdate() {
         return chunkUpdateCooldown <= 0;
     }
-    //endregion
+	//endregion
 }

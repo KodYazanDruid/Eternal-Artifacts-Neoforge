@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "eternalartifacts:block/entity_watcher",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/entity_watcher"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/entity_watcher",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/entity_watcher",
+      "y": 270
+    }
+  }
+}

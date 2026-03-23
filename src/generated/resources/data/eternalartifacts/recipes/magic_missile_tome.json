@@ -12,7 +12,7 @@
       "tag": "forge:gems/lapis"
     },
     "P": {
-      "item": "eternalartifacts:glow_ink_dust"
+      "tag": "forge:dusts/amethyst"
     }
   },
   "pattern": [

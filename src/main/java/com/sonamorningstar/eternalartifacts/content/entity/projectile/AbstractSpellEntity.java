@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.entity.projectile;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;

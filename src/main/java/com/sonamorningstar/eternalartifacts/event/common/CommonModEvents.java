@@ -27,6 +27,7 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Items;
@@ -206,6 +207,7 @@ public class CommonModEvents {
         event.put(ModEntities.PINKY.get(), PinkyEntity.createAttributes().build());
         event.put(ModEntities.MAGICAL_BOOK.get(), MagicalBookEntity.createAttributes().build());
         event.put(ModEntities.HONEY_SLIME.get(), Monster.createMonsterAttributes().build());
+        event.put(ModEntities.SOUL_BLAZE.get(), Blaze.createAttributes().build());
 
         event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
         event.put(ModEntities.CHARGED_SHEEP.get(), ChargedSheepEntity.createAttributes().build());

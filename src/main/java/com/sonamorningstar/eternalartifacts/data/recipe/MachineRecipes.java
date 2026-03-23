@@ -521,6 +521,17 @@ public final class MachineRecipes {
 			'C', Ingredient.of(ModItems.CAPACITOR)
 			)
 		);
+		registerMachineRecipe(output, ModMachines.ENTITY_WATCHER,
+			"DED"+"BMB"+"RCR",
+			Map.of(
+				'D', Ingredient.of(Tags.Items.INGOTS_IRON),
+				'E', Ingredient.of(Items.ENDER_EYE),
+				'B', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'C', Ingredient.of(ModItems.CAPACITOR)
+			)
+		);
 	}
 	
 	static void registerMachineRecipe(RecipeOutput output, ItemLike machine, String pattern, Map<Character, Ingredient> symbols) {

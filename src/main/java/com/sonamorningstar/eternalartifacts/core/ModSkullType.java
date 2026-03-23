@@ -6,7 +6,8 @@ public enum ModSkullType implements SkullBlock.Type{
 	DROWNED("drowned"),
 	HUSK("husk"),
 	STRAY("stray"),
-	BLAZE("blaze");
+	BLAZE("blaze"),
+	SOUL_BLAZE("soul_blaze");
 	
 	private final String name;
 	

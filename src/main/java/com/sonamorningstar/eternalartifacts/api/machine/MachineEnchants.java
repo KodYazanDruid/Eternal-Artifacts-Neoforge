@@ -92,6 +92,7 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.ITEM_COLLECTOR.getBlockEntity(), nonProgressMachineEnchants);
+		enchantMap.put(ModMachines.ENTITY_WATCHER.getBlockEntity(), nonProgressMachineEnchants);
 		
 		enchantMap.put(ModMachines.INDUCTION_FURNACE.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.BOTTLER.getBlockEntity(), nonProgressSpeedableMachineEnchants);

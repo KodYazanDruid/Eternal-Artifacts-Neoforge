@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.config.*;
+import com.sonamorningstar.eternalartifacts.client.config.ConfigUIRegistry;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SpriteButton;
@@ -14,6 +15,7 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.MachineConfigurationToServer;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import io.netty.buffer.Unpooled;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
@@ -25,6 +27,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.gui.widget.ExtendedSlider;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -324,6 +327,47 @@ public class CreateConfigWidgets {
 				return slider;
 			});
 		});
+		
+		event.register(RedstoneOutputThreshold.class, ((config, ctx) -> {
+			SimpleDraggablePanel panel = ctx.panel;
+			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+			
+			SpriteButton modeButton = SpriteButton.builder(Component.empty(), (button, key) -> {
+					config.cycleNextMode();
+					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+					config.writeToServer(buf);
+					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+				}).size(9, 9)
+				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("redstone_output_threshold")
+					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.getMode().toString().toLowerCase(Locale.ROOT)))).build();
+			
+			EditBox thresholdInput = getThresholdInputBox(config, ctx, mbe);
+			
+			panel.addChildren((fx, fy, fw, fh) -> {
+				modeButton.setPosition(fx + 54, fy + 24);
+				return modeButton;
+			});
+			panel.addChildren((fx, fy, fw, fh) -> {
+				thresholdInput.setPosition(fx + 64, fy + 24);
+				return thresholdInput;
+			});
+		}));
+	}
+	
+	private static EditBox getThresholdInputBox(RedstoneOutputThreshold config, ConfigUIRegistry.ConfigUIContext ctx, ModBlockEntity mbe) {
+		EditBox thresholdInput = new EditBox(ctx.screen.getMinecraft().font, 0, 0, 20, 10, Component.empty());
+		thresholdInput.setValue(String.valueOf(config.getThreshold()));
+		thresholdInput.setResponder(newValue -> {
+			try {
+				int val = Integer.parseInt(newValue);
+				config.setThreshold(val);
+				FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+				config.writeToServer(buf);
+				Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+			} catch (NumberFormatException ignored) {}
+		});
+		return thresholdInput;
 	}
 	
 	private static void addToggleConfigWidget(CreateConfigWidgetEvent event, String subType,

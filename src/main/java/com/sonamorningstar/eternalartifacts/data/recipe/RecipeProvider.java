@@ -228,6 +228,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             Tags.Items.ORES_COPPER, 5), ModItems.COPPER_DUST.get());
         createMaceratingRecipe(recipeOutput, Tags.Items.GEMS_LAPIS, new ItemStack(Items.BLUE_DYE, 3));
         createMaceratingRecipe(recipeOutput, Items.BLUE_ORCHID.getDefaultInstance(), new ItemStack(Items.BLUE_DYE, 2));
+        createMaceratingRecipe(recipeOutput, ModItems.SOUL_BLAZE_ROD.toStack(), new ItemStack(ModItems.SOUL_BLAZE_POWDER.get(), 5));
+        createMaceratingRecipe(recipeOutput, Items.AMETHYST_SHARD.getDefaultInstance(), ModItems.AMETHYST_DUST.toStack());
         //endregion
 
         createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
@@ -742,7 +744,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SHULKER_BULLETS_TOME)
             .pattern("SPS").pattern("DBD").pattern("SPS")
             .define('S', ModTags.Items.SHULKER_SHELL).define('P', Items.PURPUR_BLOCK)
-            .define('D', ModItems.GLOW_INK_DUST).define('B', ModItems.TOME)
+            .define('D', ModItems.SOUL_BLAZE_POWDER).define('B', ModItems.TOME)
             .unlockedBy("has_item", has(ModTags.Items.SHULKER_SHELL)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.FIREBALL_TOME)
             .pattern("CNC").pattern("PBP").pattern("CNC")
@@ -752,12 +754,12 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.MAGIC_MISSILE_TOME)
             .pattern("CNC").pattern("PBP").pattern("CNC")
             .define('C', Items.AMETHYST_SHARD).define('N', Tags.Items.GEMS_LAPIS)
-            .define('P', ModItems.GLOW_INK_DUST).define('B', ModItems.TOME)
+            .define('P', ModTags.Items.DUSTS_AMETHYST).define('B', ModItems.TOME)
             .unlockedBy("has_item", has(Items.AMETHYST_SHARD)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.PRISM_BEAM_TOME)
             .pattern("CBC").pattern("PTP").pattern("CSC")
             .define('C', Tags.Items.GEMS_DIAMOND).define('B', Items.BEACON).define('T', ModItems.TOME)
-            .define('P', ModItems.GLOW_INK_DUST).define('S', ModItems.CHLOROPHYTE_INGOT)
+            .define('P', ModTags.Items.DUSTS_AMETHYST).define('S', ModItems.CHLOROPHYTE_INGOT)
             .unlockedBy("has_item", has(Items.BEACON)).save(recipeOutput);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.LIGHTNING_STRIKE_TOME)
             .pattern("CIC").pattern("PTP").pattern("CIC")
@@ -875,6 +877,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .requires(ModItems.GLASS_SPLASH_BOTTLE).requires(Items.DRAGON_BREATH).unlockedBy("has_item", has(Items.DRAGON_BREATH)).save(recipeOutput);
         selfCraft(recipeOutput, ModItems.PIPE_EXTRACTOR);
         selfCraft(recipeOutput, ModItems.PIPE_FILTER);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, Items.SUGAR, 3)
+            .requires(ModItems.HONEY_BALL).unlockedBy("has_item", has(ModItems.HONEY_BALL)).save(recipeOutput, makeID("sugar_from_honey_ball"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SOUL_BLAZE_POWDER, 2)
+            .requires(ModItems.SOUL_BLAZE_ROD).unlockedBy("has_item", has(ModItems.SOUL_BLAZE_ROD)).save(recipeOutput);
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }

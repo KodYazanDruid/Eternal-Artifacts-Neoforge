@@ -69,6 +69,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createForParticle(ModBlocks.STRAY_WALL_SKULL, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.BLAZE_HEAD, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.BLAZE_WALL_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.SOUL_BLAZE_HEAD, Blocks.SOUL_SAND);
+        createForParticle(ModBlocks.SOUL_BLAZE_WALL_HEAD, Blocks.SOUL_SAND);
         
         for (DeferredHolder<Block, ? extends Block> holder : ModMultiblocks.MULTIBLOCKS.getBlockHolders()) {
             createForParticle(holder, Blocks.POLISHED_DEEPSLATE_SLAB);

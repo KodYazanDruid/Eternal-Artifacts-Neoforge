@@ -1,7 +1,5 @@
 package com.sonamorningstar.eternalartifacts.client.render;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
@@ -9,7 +7,6 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 
 import java.util.OptionalDouble;
-import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -27,16 +24,17 @@ public class ModRenderTypes extends RenderType {
 			false,
 			RenderType.CompositeState.builder()
 				.setShaderState(RENDERTYPE_LINES_SHADER)
-				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(5.0)))
-				.setLayeringState(POLYGON_OFFSET_LAYERING)
+				.setLineState(new RenderStateShard.LineStateShard(OptionalDouble.of(2.0)))
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-				.setWriteMaskState(COLOR_WRITE)
 				.setCullState(NO_CULL)
-				.setDepthTestState(LEQUAL_DEPTH_TEST)
+				.setLightmapState(NO_LIGHTMAP)
+				.setLayeringState(POLYGON_OFFSET_LAYERING)
+				.setDepthTestState(NO_DEPTH_TEST)
+				.setWriteMaskState(COLOR_WRITE)
 				.createCompositeState(false)
 	);
 	
-	public static final RenderType AREA_FACE =  create(
+	public static final RenderType AREA_FACE = create(
 			MODID + ":area_face",
 			DefaultVertexFormat.POSITION_COLOR,
 			VertexFormat.Mode.QUADS,
@@ -46,46 +44,39 @@ public class ModRenderTypes extends RenderType {
 			RenderType.CompositeState.builder()
 				.setShaderState(POSITION_COLOR_SHADER)
 				.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
-				.setLayeringState(POLYGON_OFFSET_LAYERING)
 				.setCullState(NO_CULL)
-				.setDepthTestState(LEQUAL_DEPTH_TEST)
-				.setWriteMaskState(COLOR_WRITE)
+				.setLightmapState(NO_LIGHTMAP)
+				.setLayeringState(POLYGON_OFFSET_LAYERING)
 				.createCompositeState(false)
 	);
 	
-	public static final Supplier<RenderType> SPELL_CLOUD = () ->  {
-		RenderType.CompositeState state = RenderType.CompositeState.builder()
-			.setShaderState(new RenderStateShard.ShaderStateShard(() -> SpellShaders.SPELL_CLOUD.get()))
-			.setTransparencyState(new RenderStateShard.TransparencyStateShard(
-				"spell_cloud_transparency",
-				() -> {
-					RenderSystem.enableBlend();
-					RenderSystem.blendFuncSeparate(
-						GlStateManager.SourceFactor.SRC_ALPHA,
-						GlStateManager.DestFactor.ONE,
-						GlStateManager.SourceFactor.ONE,
-						GlStateManager.DestFactor.ZERO
-					);
-				},
-				() -> {
-					RenderSystem.disableBlend();
-					RenderSystem.defaultBlendFunc();
-				}
-			))
+	public static final RenderType BLACK_HOLE = create(
+		MODID + ":black_hole",
+		DefaultVertexFormat.POSITION,
+		VertexFormat.Mode.QUADS,
+		256,
+		false,
+		false,
+		RenderType.CompositeState.builder()
+			.setShaderState(new RenderStateShard.ShaderStateShard(() -> SpellShaders.BLACK_HOLE))
+			.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
 			.setCullState(NO_CULL)
-			.setLightmapState(LIGHTMAP)
-			.setWriteMaskState(COLOR_WRITE)
-			.setOutputState(TRANSLUCENT_TARGET)
-			.createCompositeState(false);
-		
-		return create(
-			MODID + ":spell_cloud",
-			DefaultVertexFormat.POSITION_COLOR,
-			VertexFormat.Mode.QUADS,
-			256,
-			false,
-			false,
-			state
-		);
-	};
+			.setLightmapState(NO_LIGHTMAP)
+			.createCompositeState(false)
+	);
+	
+	public static final RenderType SPELL_CLOUD = create(
+		MODID + ":spell_cloud",
+		DefaultVertexFormat.POSITION_COLOR,
+		VertexFormat.Mode.QUADS,
+		256,
+		false,
+		false,
+		RenderType.CompositeState.builder()
+			.setShaderState(new RenderStateShard.ShaderStateShard(() -> SpellShaders.SPELL_CLOUD))
+			.setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+			.setCullState(NO_CULL)
+			.setLightmapState(NO_LIGHTMAP)
+			.createCompositeState(false)
+	);
 }

@@ -44,6 +44,8 @@ public class Spell {
     public final int cooldown;
     public final float baseDamage;
     public final DamageCategory damageCategory;
+    public final float baseHealing;
+    public final float healingRadius;
 
     public Spell(Spell.Properties props) {
         this.rarity = props.rarity;
@@ -51,6 +53,8 @@ public class Spell {
         this.cooldown = props.cooldown;
         this.baseDamage = props.baseDamage;
         this.damageCategory = props.damageCategory;
+        this.baseHealing = props.baseHealing;
+        this.healingRadius = props.healingRadius;
     }
 
     /**
@@ -84,6 +88,19 @@ public class Spell {
         if (spellDamage == null) return baseDamage;
         double amp = spellDamage.getValue();
         return (float) (baseDamage * amp / 100);
+    }
+
+    /**
+     * Calculates the amplified healing for the spell based on the caster's attributes.
+     *
+     * @param caster The entity casting the spell.
+     * @return The amplified healing value.
+     */
+    public float getAmplifiedHealing(LivingEntity caster) {
+        AttributeInstance spellDamage = caster.getAttribute(ModAttributes.SPELL_POWER.get());
+        if (spellDamage == null) return baseHealing;
+        double amp = spellDamage.getValue();
+        return (float) (baseHealing * amp / 100);
     }
     
     /**
@@ -132,6 +149,8 @@ public class Spell {
         int cooldown = 0;
         float baseDamage = 0;
         DamageCategory damageCategory = DamageCategory.MAGIC;
+        float baseHealing = 0;
+        float healingRadius = 0;
 
         public Properties rarity(Rarity rarity) {
             this.rarity = rarity;
@@ -155,6 +174,16 @@ public class Spell {
 
         public Properties damageCategory(DamageCategory damageCategory) {
             this.damageCategory = damageCategory;
+            return this;
+        }
+
+        public Properties baseHealing(float baseHealing) {
+            this.baseHealing = baseHealing;
+            return this;
+        }
+
+        public Properties healingRadius(float healingRadius) {
+            this.healingRadius = healingRadius;
             return this;
         }
     }

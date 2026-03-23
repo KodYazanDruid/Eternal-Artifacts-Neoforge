@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts;
 
 import com.mojang.logging.LogUtils;
+import com.sonamorningstar.eternalartifacts.api.bible.BibleAPI;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.compat.ModHooks;
@@ -12,6 +13,7 @@ import com.sonamorningstar.eternalartifacts.core.structure.ModStructureTypes;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import net.minecraft.util.RandomSource;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModLoadingContext;
@@ -24,6 +26,8 @@ import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import org.slf4j.Logger;
+
+import java.util.Optional;
 
 @Mod(EternalArtifacts.MODID)
 public class EternalArtifacts {
@@ -88,7 +92,14 @@ public class EternalArtifacts {
         ModCommands.addListener();
         NeoForge.EVENT_BUS.addListener(RenderPlayerEvent.Pre.class, MobModelRenderer::playerRenderPre);
         NeoForge.EVENT_BUS.addListener(EventPriority.HIGHEST, EntityJoinLevelEvent.class, LifterItem::clearDrops);
-
+        
+        /*System.out.println("Fetching random chapter");
+        RandomSource randomSource = RandomSource.createNewThreadLocalInstance();
+        BibleAPI.BookInfo bookInfo = BibleAPI.BOOKS.get(randomSource.nextInt(BibleAPI.BOOKS.size()));
+        String chapter = BibleAPI.fetch("en-asv", bookInfo.name(), randomSource.nextInt(1, bookInfo.chapters() + 1));
+        if (!chapter.isBlank()) System.out.println("Fetched random Bible chapter: " + chapter);
+        else System.out.println("Failed to fetch random Bible chapter.");*/
+        
         new ModHooks().construct(modEventBus);
     }
 }

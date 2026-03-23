@@ -163,13 +163,12 @@ public class PrismBeamEntity extends AbstractSpellEntity {
         }
 
         if (!this.level().isClientSide()) {
-
             dealDamage();
-
-            if (getAge() % 20 == 0) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
-                    SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.5F, 1.5F);
-            }
+        }
+        
+        if (getAge() % 20 == 0) {
+            this.level().playSound(owner instanceof Player p ? p : null, this.getX(), this.getY(), this.getZ(),
+                SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.5F, 1.5F);
         }
     }
     

@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.client.render.blockentity.base.Multi
 import com.sonamorningstar.eternalartifacts.client.render.entity.*;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableBatteryLayer;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableFurnaceLayer;
+import com.sonamorningstar.eternalartifacts.client.renderer.entity.BlackHoleRenderer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
@@ -164,6 +165,7 @@ public class ClientModEvents {
             )
         );
         event.registerSkullModel(ModSkullType.BLAZE, new SkullModel(modelSet.bakeLayer(ModModelLayers.BLAZE_HEAD)));
+        event.registerSkullModel(ModSkullType.SOUL_BLAZE, new SkullModel(modelSet.bakeLayer(ModModelLayers.SOUL_BLAZE_HEAD)));
     }
 
     @SubscribeEvent
@@ -191,6 +193,7 @@ public class ClientModEvents {
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
         event.registerLayerDefinition(ModModelLayers.STRAY_SKULL_OVERLAY, () -> TwoLayerSkullModel.createOverlayLayer(64, 32));
         event.registerLayerDefinition(ModModelLayers.BLAZE_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
+        event.registerLayerDefinition(ModModelLayers.SOUL_BLAZE_HEAD, () -> TwoLayerSkullModel.createBaseLayer(64, 32));
     }
     
     @SuppressWarnings("unchecked")
@@ -249,6 +252,9 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.PRISM_BEAM.get(), NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.LIGHTNING_STRIKE_PROJECTILE.get(), NoopRenderer::new);
         event.registerEntityRenderer(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), ThrownItemRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPELL_WITHER_SKULL.get(), WitherSkullRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOUL_BLAZE.get(), SoulBlazeRenderer::new);
+        event.registerEntityRenderer(ModEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
     }
 
     @SubscribeEvent

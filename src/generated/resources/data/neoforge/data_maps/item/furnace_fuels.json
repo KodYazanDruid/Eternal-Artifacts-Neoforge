@@ -3,6 +3,9 @@
     "eternalartifacts:bitumen": {
       "burn_time": 1600
     },
+    "eternalartifacts:soul_blaze_rod": {
+      "burn_time": 3200
+    },
     "eternalartifacts:sugar_charcoal": {
       "burn_time": 400
     },

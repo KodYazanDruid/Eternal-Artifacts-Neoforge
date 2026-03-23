@@ -102,6 +102,8 @@ public class ModBlockEntities {
             ModBlocks.STRAY_SKULL.get(),
             ModBlocks.STRAY_WALL_SKULL.get(),
             ModBlocks.BLAZE_HEAD.get(),
-            ModBlocks.BLAZE_WALL_HEAD.get()
+            ModBlocks.BLAZE_WALL_HEAD.get(),
+            ModBlocks.SOUL_BLAZE_HEAD.get(),
+            ModBlocks.SOUL_BLAZE_WALL_HEAD.get()
         ).build(null));
 }

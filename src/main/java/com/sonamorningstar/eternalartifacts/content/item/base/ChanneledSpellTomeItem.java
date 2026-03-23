@@ -61,7 +61,7 @@ public class ChanneledSpellTomeItem<S extends Spell> extends SpellTomeItem<S> {
                 SpellCastEvent event = new SpellCastEvent(player, level, stack, amplifiedDamage, spell);
                 if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                     amplifiedDamage = event.getAmplifiedDamage();
-                    castSpell(event.getTome(), level, player, hand, player.getRandom(), amplifiedDamage);
+                    castSpell(event.getSpell(), event.getTome(), level, player, hand, player.getRandom(), amplifiedDamage);
                 }
             }
         }

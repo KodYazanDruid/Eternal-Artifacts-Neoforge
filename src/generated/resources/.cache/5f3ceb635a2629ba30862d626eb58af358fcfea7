@@ -1,4 +1,4 @@
-// 1.20.4	2026-02-07T19:39:32.6489265	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2026-03-21T22:34:09.9535706	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -19,6 +19,7 @@ a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 8b5cea59f396e1e2df266fab2db65e27e0d091e5 data/forge/tags/items/dough/wheat.json
 d94eef9f2d49f8f38cc0efc65f96524b023b6ab5 data/forge/tags/items/dusts.json
 b94119fa456164e2667263dd467799e2b897f0ca data/forge/tags/items/dusts/aluminum.json
+a87801f9fc425afd9219ad18e0553d7635ef67f3 data/forge/tags/items/dusts/amethyst.json
 39081f7795593304a37bc9a020d5125bd5e5c003 data/forge/tags/items/dusts/bronze.json
 823cdebeedb138c0ae6b910e89a0318c87613ef4 data/forge/tags/items/dusts/charcoal.json
 6d6361a976c7e7b2ae41d984df4714648a48aece data/forge/tags/items/dusts/clay.json
@@ -37,7 +38,7 @@ ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.jso
 91aab86753deb913a975f3639150d05d0706b6fd data/forge/tags/items/fruits/orange.json
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/items/glass/hardened.json
 d67c9fd5e8c499cbc962967777629ed0f0a36204 data/forge/tags/items/hardened_glass.json
-9dc670d8b676a075a5f9225eb5f61243e0f96088 data/forge/tags/items/heads.json
+b205a5c572bcadc3eb3cb74cdff02d68cff247cb data/forge/tags/items/heads.json
 4312942610caba12e3657f9404120c330cc26b51 data/forge/tags/items/ingots.json
 ea2d8731e74b80ccd52a531d82523ff15ce55e3e data/forge/tags/items/ingots/aluminum.json
 14fd303c44c858bd6ca164c7f375cf7431147720 data/forge/tags/items/ingots/bronze.json
@@ -67,6 +68,7 @@ bc5216995fbc1af0ccb662a4f8008aaed727fb70 data/forge/tags/items/plastic_sheets.js
 e758efc4b5ef81f0051bbf58344b957307c2274f data/forge/tags/items/raw_materials/aluminum.json
 6602563629da6ca1cc5e0f008351a77700de8c54 data/forge/tags/items/raw_materials/manganese.json
 9531f61aa53048c39e1ab8d1f1502b3f6c3433b1 data/forge/tags/items/raw_materials/tin.json
+bffc1496b707fc7b1984a909a7922e7038e0c0d9 data/forge/tags/items/rods.json
 f8845fe4302e453748266bca7231a3e2f3041869 data/forge/tags/items/seeds.json
 362403291f84cdae33f32b53d8a141777971cbf9 data/forge/tags/items/slimeballs.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json

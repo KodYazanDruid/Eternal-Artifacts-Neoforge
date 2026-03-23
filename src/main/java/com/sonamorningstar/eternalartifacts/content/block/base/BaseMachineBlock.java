@@ -11,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.Entity;
@@ -118,7 +119,14 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
         if (be instanceof Machine<?> mbe && mbe.canConstructMenu()) return mbe.use(state, level, pos, player, hand, hit);
         else return InteractionResult.PASS;
     }
-
+    
+    @Override
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof Machine<?> machine) return machine.getRedstoneOutput();
+        return super.getSignal(state, level, pos, direction);
+    }
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {

@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.spell.*;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell.DamageCategory;
+import com.sonamorningstar.eternalartifacts.content.spell.WitherSkullSpell;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -34,6 +35,13 @@ public class ModSpells {
         () -> new PrismBeamSpell(new Spell.Properties().rarity(Rarity.EPIC).cooldown(100).baseDamage(2.0F)));
     public static final DeferredHolder<Spell, LightningStrikeSpell> LIGHTNING_STRIKE = register("lightning_strike",
         () -> new LightningStrikeSpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(50).baseDamage(4.0F)));
+    public static final DeferredHolder<Spell, DivineProtectionSpell> DIVINE_PROTECTION = register("divine_protection",
+        () -> new DivineProtectionSpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(600).baseHealing(8.0f).healingRadius(5.0f)));
+    public static final DeferredHolder<Spell, WitherSkullSpell> WITHER_SKULL = register("wither_skull",
+        () -> new WitherSkullSpell(new Spell.Properties().rarity(Rarity.UNCOMMON).cooldown(20).baseDamage(4.0F)));
+
+    public static final DeferredHolder<Spell, BlackHoleSpell> BLACK_HOLE = register("black_hole",
+        () -> new BlackHoleSpell(new Spell.Properties().rarity(Rarity.EPIC).cooldown(300).baseDamage(4.0F)));
     
     private static <S extends Spell> DeferredHolder<Spell, S> register(String name, Function<Spell.Properties, S> props, float damage) {
         return register(name, () -> props.apply(new Spell.Properties().baseDamage(damage)));

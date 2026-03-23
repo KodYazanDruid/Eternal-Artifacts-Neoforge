@@ -33,7 +33,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
@@ -344,6 +343,10 @@ public class ModBlocks {
         ()-> new ModSkullBlock(ModSkullType.BLAZE, BlockBehaviour.Properties.ofFullCopy(Blocks.WITHER_SKELETON_SKULL)));
     public static final DeferredBlock<WallSkullBlock> BLAZE_WALL_HEAD = registerNoItem("blaze_wall_head",
         ()-> new ModWallSkullBlock(ModSkullType.BLAZE, BlockBehaviour.Properties.ofFullCopy(Blocks.WITHER_SKELETON_WALL_SKULL).lootFrom(BLAZE_HEAD)));
+    public static final DeferredBlock<SkullBlock> SOUL_BLAZE_HEAD = registerNoItem("soul_blaze_head",
+        ()-> new ModSkullBlock(ModSkullType.SOUL_BLAZE, BlockBehaviour.Properties.ofFullCopy(Blocks.WITHER_SKELETON_SKULL)));
+    public static final DeferredBlock<WallSkullBlock> SOUL_BLAZE_WALL_HEAD = registerNoItem("soul_blaze_wall_head",
+        ()-> new ModWallSkullBlock(ModSkullType.SOUL_BLAZE, BlockBehaviour.Properties.ofFullCopy(Blocks.WITHER_SKELETON_WALL_SKULL).lootFrom(SOUL_BLAZE_HEAD)));
 
     //region Registry functions.
     private static <T extends Block> DeferredBlock<T> registerNoItem(String name, Supplier<T> supplier) { return BLOCKS.register(name, supplier); }

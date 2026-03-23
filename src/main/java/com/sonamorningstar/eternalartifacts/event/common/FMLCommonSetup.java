@@ -69,6 +69,7 @@ FMLCommonSetup {
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.HUSK, ModItems.HUSK_HEAD.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.STRAY, ModItems.STRAY_SKULL.get());
             CutlassModifier.ENTITY_HEAD_MAP.put(EntityType.BLAZE, ModItems.BLAZE_HEAD.get());
+            CutlassModifier.ENTITY_HEAD_MAP.put(ModEntities.SOUL_BLAZE.get(), ModItems.SOUL_BLAZE_HEAD.get());
             
             TesseractNetwork.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
             TesseractNetwork.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
@@ -140,6 +141,7 @@ FMLCommonSetup {
         DispenserBlock.registerBehavior(ModItems.HUSK_HEAD, dispenseitembehavior);
         DispenserBlock.registerBehavior(ModItems.STRAY_SKULL, dispenseitembehavior);
         DispenserBlock.registerBehavior(ModItems.BLAZE_HEAD, dispenseitembehavior);
+        DispenserBlock.registerBehavior(ModItems.SOUL_BLAZE_HEAD, dispenseitembehavior);
     }
     
     private static void registerPotions() {

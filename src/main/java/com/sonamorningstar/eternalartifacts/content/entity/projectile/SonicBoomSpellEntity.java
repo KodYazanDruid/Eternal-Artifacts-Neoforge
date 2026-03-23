@@ -11,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -92,9 +93,11 @@ public class SonicBoomSpellEntity extends AbstractSpellEntity {
         if (this.level().isClientSide() && !spawnedParticles) {
             spawnParticles();
         }
-
-        if (!this.level().isClientSide() && !hasDamaged && getAge() >= 8) {
-            dealDamage();
+        
+        if (!hasDamaged){
+            if (!this.level().isClientSide() && getAge() >= 8) {
+                dealDamage();
+            }
         }
     }
     
@@ -143,11 +146,9 @@ public class SonicBoomSpellEntity extends AbstractSpellEntity {
                 damagedEntities.add(target.getUUID());
             }
         }
-    
+        
         this.level().playSound(null, this.getX(), this.getY(), this.getZ(),
             SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 3.0F, 1.0F);
-        
-
     }
     
     private double distanceToBeam(Vec3 startPos, Vec3 direction, Vec3 point) {

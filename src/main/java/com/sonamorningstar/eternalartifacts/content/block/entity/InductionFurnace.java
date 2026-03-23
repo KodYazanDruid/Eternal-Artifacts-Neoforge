@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
 public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
@@ -144,36 +143,28 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
         } else resultItem1 = ItemStack.EMPTY;
 
         setMaxProgressForHeat();
-
-        AtomicBoolean shouldHeat = new AtomicBoolean();
-        shouldHeat.set(false);
-        if (processCondition != null) {
-            progress(processCondition::shouldAbourt,
-                () -> shouldHeat.set(true),
-                () -> {
-                    ItemStack remainder0 = ItemStack.EMPTY;
-                    ItemStack remainder1 = ItemStack.EMPTY;
-                    if (recipe0 != null) {
-                        remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0, false, outputSlots).getFirst();
-                    }
-                    if (recipe1 != null) {
-                        remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1, false, outputSlots).getFirst();
-                    }
-                    if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
-                    if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
-                }, energy);
-        } else {
-            progress = 0;
-        }
+        
+        progress(() -> {
+            ItemStack remainder0 = ItemStack.EMPTY;
+            ItemStack remainder1 = ItemStack.EMPTY;
+            if (recipe0 != null) {
+                remainder0 = ItemHelper.insertItemStackedForced(inventory, resultItem0, false, outputSlots).getFirst();
+            }
+            if (recipe1 != null) {
+                remainder1 = ItemHelper.insertItemStackedForced(inventory, resultItem1, false, outputSlots).getFirst();
+            }
+            if (recipe0 != null && remainder0.isEmpty()) inventory.extractItem(0, 1, false);
+            if (recipe1 != null && remainder1.isEmpty()) inventory.extractItem(1, 1, false);
+        });
         
         boolean isEnergyEnough = energy.getEnergyStored() >= heatKeepCost;
         int currentHeat = heat.getHeat();
 
-        if (shouldHeat.get() && isEnergyEnough) {
+        if (isWorking && isEnergyEnough) {
             heat.heat(1, false);
             energy.extractEnergyForced(heatKeepCost, false);
         } else {
-            if (preventCooling(lvl, pos) && isEnergyEnough && currentHeat > 0) {
+            if (preventCooling() && isEnergyEnough && currentHeat > 0) {
                 int energyToExtract = (int)(heatKeepCost * (currentHeat / (float)heat.getMaxHeat()));
                 energy.extractEnergyForced(Math.max(1, energyToExtract), false);
             } else if (currentHeat > 0) {
@@ -182,14 +173,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
         }
     }
 
-    private boolean preventCooling(Level level, BlockPos pos) {
-        /*for(Direction dir : Direction.values()) {
-            BlockState state = level.getBlockState(pos.relative(dir));
-            if (state.is(Blocks.LIGHTNING_ROD)) {
-                Direction stateFacing = state.getValue(BlockStateProperties.FACING);
-                if (stateFacing == dir) return true;
-            }
-        }*/
+    private boolean preventCooling() {
         ReverseToggleConfig heatConfig = getConfiguration().get(ReverseToggleConfig.class, "heat");
         if (heatConfig != null) {
             return !heatConfig.isDisabled();

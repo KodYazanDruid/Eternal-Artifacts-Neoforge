@@ -50,7 +50,6 @@ import com.sonamorningstar.eternalartifacts.network.EntityFilterEntryToServer;
 import com.sonamorningstar.eternalartifacts.network.EntityPredicateFilterToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeJumpTokenToServer;
-import com.sonamorningstar.eternalartifacts.network.ShootSkullsToServer;
 import com.sonamorningstar.eternalartifacts.client.render.ItemRendererHelper;
 import com.sonamorningstar.eternalartifacts.util.EntityFilterHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -254,6 +253,43 @@ public class ClientEvents {
                 tooltip.add(damageText);
             }
             
+            if (spell.baseHealing > 0) {
+                double baseHeal = spell.baseHealing;
+                double bonusHeal = 0;
+                
+                AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
+                if (spellPower != null) {
+                    double spellPowerValue = spellPower.getValue();
+                    bonusHeal = baseHeal * (spellPowerValue - 100.0) / 100.0;
+                }
+                
+                MutableComponent healingText = Component.translatable("tooltip.eternalartifacts.spell.healing")
+                    .withStyle(ChatFormatting.GRAY)
+                    .append(": ");
+                
+                if (detailed) {
+                    healingText.append(Component.literal(formatNumber(baseHeal)).withStyle(ChatFormatting.WHITE));
+                    if (bonusHeal != 0) {
+                        String sign = bonusHeal > 0 ? "+" : "";
+                        healingText.append(Component.literal(" (" + sign + formatNumber(bonusHeal) + ")")
+                            .withStyle(ChatFormatting.LIGHT_PURPLE));
+                    }
+                } else {
+                    double totalHeal = baseHeal + bonusHeal;
+                    MutableComponent totalHealComponent = Component.literal(formatNumber(totalHeal));
+                    if (bonusHeal > 0) {
+                        totalHealComponent.withStyle(ChatFormatting.GREEN);
+                    } else if (bonusHeal < 0) {
+                        totalHealComponent.withStyle(ChatFormatting.RED);
+                    } else {
+                        totalHealComponent.withStyle(ChatFormatting.WHITE);
+                    }
+                    healingText.append(totalHealComponent);
+                }
+                
+                tooltip.add(healingText);
+            }
+            
             if (spell.cooldown > 0) {
                 double baseCooldown = spell.cooldown / 20.0;
                 double cooldownReduction = 0;
@@ -309,7 +345,7 @@ public class ClientEvents {
                         .append(Component.literal(String.valueOf(spellPowerTotal)).withStyle(ChatFormatting.LIGHT_PURPLE))
                         .append(Component.literal(" (" + (spellPowerBonus >= 0 ? "+" : "") + spellPowerBonus + "% ")
                             .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
-                        .append(Component.translatable("tooltip.eternalartifacts.spell.bonus_damage")
+                        .append(Component.translatable("tooltip.eternalartifacts.spell.bonus_power")
                             .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
                         .append(Component.literal(")").withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED));
                     tooltip.add(spellPowerText);
@@ -514,7 +550,7 @@ public class ClientEvents {
     public static void leftClickEvent(PlayerInteractEvent.LeftClickEmpty event) {
         ItemStack stack = event.getItemStack();
         Player player = event.getEntity();
-        if (stack.is(ModItems.WITHERING_SWORD) && !player.getCooldowns().isOnCooldown(stack.getItem())) Channel.sendToServer(new ShootSkullsToServer(stack, event.getHand()));
+        
     }
 
     @SubscribeEvent
@@ -590,6 +626,20 @@ public class ClientEvents {
                     gui.drawString(screen.getMinecraft().font,
                         Component.translatable(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), veinSize),
                         x + 50, y + 20, 0xfff0f0f0, false
+                    );
+                }
+            }
+            if (owner instanceof EntityWatcher watcher) {
+                GuiDrawer.drawFramedBackground(gui, x + 37, y + 20, 120, 50, 1,
+                    0xff000000, 0xff404040, 0xffa0a0a0);
+                int entityCount = watcher.entityCount;
+                if (entityCount > 0) {
+                    gui.drawString(screen.getMinecraft().font,
+                        Component.translatable(ModConstants.GUI.withSuffix("entity_watcher.watched_entities_count")),
+                        x + 40, y + 22, 0xfff0f0f0, false
+                    );
+                    gui.drawString(screen.getMinecraft().font, Component.literal(String.valueOf(entityCount)),
+                        x + 40, y + 32, 0xfff0f0f0, false
                     );
                 }
             }
@@ -795,14 +845,22 @@ public class ClientEvents {
                     }
                     for (EntityTypeEntry entry : efilterable.getEntityTypeEntries()) {
                         if (entry.getFilterType() == null) continue;
-                        tips.add(Component.literal(" ▸ ").withStyle(ChatFormatting.BLUE)
+                        tips.add(Component.literal(" ▶ ").withStyle(ChatFormatting.BLUE)
                             .append(entry.getDisplayName().copy().withStyle(ChatFormatting.WHITE)));
                     }
                     for (EntityTagEntry entry : efilterable.getEntityTagEntries()) {
                         if (entry.getTag() == null) continue;
-                        tips.add(Component.literal(" ▸ ").withStyle(ChatFormatting.DARK_PURPLE)
+                        tips.add(Component.literal(" ▶ ").withStyle(ChatFormatting.DARK_PURPLE)
                             .append(entry.getDisplayName().copy().withStyle(ChatFormatting.WHITE)));
                     }
+                    tips.add(Component.literal(" ♦ ").withStyle(ChatFormatting.DARK_GREEN)
+                        .append(efilterable.getEntityFilter().isWhitelist() ?
+                            ModConstants.GUI.withSuffixTranslatable("whitelist").withStyle(ChatFormatting.GREEN) :
+                            ModConstants.GUI.withSuffixTranslatable("blacklist").withStyle(ChatFormatting.RED)));
+                    tips.add(Component.literal(" ♦ ").withStyle(ChatFormatting.DARK_AQUA)
+                        .append(efilterable.getEntityFilter().getMode() == EntityPredicateEntry.PredicateMode.ANY ?
+                            ModConstants.GUI.withSuffixTranslatable("mode_any").withStyle(style -> style.withColor(0x55AAFF)) :
+                            ModConstants.GUI.withSuffixTranslatable("mode_all").withStyle(style -> style.withColor(0xFFAA55))));
                     return tips;
                 });
                 SpriteButton filterButton = filterButtonBld.build();

@@ -56,6 +56,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.BRONZE_INGOT.get(),
             ModItems.OBLIVIUM_INGOT.get()
         );
+        tag(Tags.Items.RODS).add(
+            ModItems.SOUL_BLAZE_ROD.get()
+        );
         tag(ModTags.Items.INGOTS_MEAT).add(ModItems.COOKED_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_RAW_MEAT).add(ModItems.RAW_MEAT_INGOT.get());
         tag(ModTags.Items.INGOTS_MANGANESE).add(ModItems.MANGANESE_INGOT.get());
@@ -87,11 +90,13 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.ALUMINUM_DUST.get(),
             ModItems.BRONZE_DUST.get(),
             ModItems.COPPER_DUST.get(),
-            ModItems.GLOW_INK_DUST.get()
+            ModItems.GLOW_INK_DUST.get(),
+            ModItems.AMETHYST_DUST.get()
         );
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
         tag(ModTags.Items.DUSTS_SUGAR_CHARCOAL).add(ModItems.SUGAR_CHARCOAL_DUST.get());
+        tag(ModTags.Items.DUSTS_AMETHYST).add(ModItems.AMETHYST_DUST.get());
         tag(Tags.Items.RAW_MATERIALS).add(
             ModItems.RAW_MANGANESE.get(),
             ModItems.RAW_MARIN.get(),
@@ -179,7 +184,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.DROWNED_HEAD.get(),
             ModItems.HUSK_HEAD.get(),
             ModItems.STRAY_SKULL.get(),
-            ModItems.BLAZE_HEAD.get()
+            ModItems.BLAZE_HEAD.get(),
+            ModItems.SOUL_BLAZE_HEAD.get()
         );
         tag(Tags.Items.SEEDS).add(
             ModItems.ANCIENT_SEED.get()

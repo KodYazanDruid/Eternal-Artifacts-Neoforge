@@ -97,6 +97,9 @@ public class ModMachines {
     public static final MachineHolder<GenericMachineMenu, ItemCollector, MachineFourWayBlock<ItemCollector>, MachineBlockItem>
             ITEM_COLLECTOR = MACHINES.registerGeneric("item_collector", ItemCollector::new);
     
+    public static final MachineHolder<GenericMachineMenu, EntityWatcher, MachineFourWayBlock<EntityWatcher>, MachineBlockItem>
+            ENTITY_WATCHER = MACHINES.registerGeneric("entity_watcher", EntityWatcher::new);
+    
     public static final MachineHolder<GenericMachineMenu, BatteryBox, MachineFourWayBlock<BatteryBox>, MachineBlockItem>
             BATTERY_BOX = MACHINES.register(MachineRegistration.generic("battery_box", BatteryBox::new)
                     .uniqueTexture()

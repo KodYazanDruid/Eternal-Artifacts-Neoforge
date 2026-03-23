@@ -34,7 +34,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
     /**
      *
      * If you want to change spell casting logic (giving tome an energy/xp cost etc.) override
-     * {@link #castSpell(ItemStack, Level, LivingEntity, InteractionHand, RandomSource, float)} instead. <br><br>
+     * {@link #castSpell(Spell, ItemStack, Level, LivingEntity, InteractionHand, RandomSource, float)} instead. <br><br>
      *
      * Overriding this method is fine but make sure to call {@code super} for this method so spell will cast.
      */
@@ -47,8 +47,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
             float amplifiedDamage = spell.getAmplifiedDamage(player);
             SpellCastEvent event = new SpellCastEvent(player, level, tome, amplifiedDamage, spell);
             if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
-                amplifiedDamage = event.getAmplifiedDamage();
-                if (castSpell(event.getTome(), level, player, hand, player.getRandom(), amplifiedDamage)) {
+                if (castSpell(event.getSpell(), event.getTome(), level, player, hand, player.getRandom(), event.getAmplifiedDamage())) {
                     player.getCooldowns().addCooldown(event.getTome().getItem(), spell.getDecreasedCooldown(player));
                     player.awardStat(Stats.ITEM_USED.get(this));
                     return InteractionResultHolder.sidedSuccess(tome, level.isClientSide);
@@ -72,7 +71,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
      * @param hand   The hand (main or offhand) used to cast the spell.
      * @return {@code true} if the spell was successfully cast, {@code false} otherwise.
      */
-    protected boolean castSpell(ItemStack tome, Level level, LivingEntity caster, InteractionHand hand, RandomSource random, float amplifiedDamage) {
-        return getSpell().cast(tome, caster, hand, level, random, amplifiedDamage);
+    protected boolean castSpell(Spell spell, ItemStack tome, Level level, LivingEntity caster, InteractionHand hand, RandomSource random, float amplifiedDamage) {
+        return spell.cast(tome, caster, hand, level, random, amplifiedDamage);
     }
 }

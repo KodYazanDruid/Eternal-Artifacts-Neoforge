@@ -95,6 +95,7 @@ public class FMLClientSetup {
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.HUSK, new ResourceLocation("textures/entity/zombie/husk.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.STRAY, new ResourceLocation("textures/entity/skeleton/stray.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.BLAZE, new ResourceLocation("textures/entity/blaze.png"));
+        SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.SOUL_BLAZE, new ResourceLocation(MODID, "textures/entity/soul_blaze.png"));
         
     }
     

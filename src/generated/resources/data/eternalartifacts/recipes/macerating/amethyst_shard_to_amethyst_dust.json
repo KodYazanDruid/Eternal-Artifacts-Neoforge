@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:macerating",
+  "input": {
+    "item": "minecraft:amethyst_shard"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:amethyst_dust"
+  }
+}

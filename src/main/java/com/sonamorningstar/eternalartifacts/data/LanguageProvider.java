@@ -238,9 +238,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MAGIC_MISSILE_TOME.get(), "Magic Missile Tome");
                 add(ModItems.PRISM_BEAM_TOME.get(), "Prism Beam Tome");
                 add(ModItems.LIGHTNING_STRIKE_TOME.get(), "Lightning Strike Tome");
+                add(ModItems.DIVINE_PROTECTION_TOME.get(), "Divine Protection Tome");
                 add(ModItems.TOME.get(), "Tome");
                 add(ModItems.REINFORCED_GLASS_BOTTLE.get(), "Reinforced Glass Bottle");
                 add(ModItems.LIGHTNING_IN_A_BOTTLE.get(), "Lightning in a Bottle");
+                add(ModItems.SOUL_BLAZE_SPAWN_EGG.get(), "Soul Blaze Spawn Egg");
+                add(ModItems.SOUL_BLAZE_ROD.get(), "Soul Blaze Rod");
+                add(ModItems.SOUL_BLAZE_POWDER.get(), "Soul Blaze Powder");
+                add(ModItems.AMETHYST_DUST.get(), "Amethyst Dust");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -389,6 +394,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Deep Fluid Storage Unit");
                 add(ModBlocks.NAPHTHA_CAULDRON.get(), "Naphtha Cauldron");
                 add(ModBlocks.CRUDE_OIL_CAULDRON.get(), "Crude Oil Cauldron");
+                add(ModBlocks.SOUL_BLAZE_HEAD.get(), "Soul Blaze Head");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -404,6 +410,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.PRISM_BEAM.get(), "Prism Beam");
                 addVillagerType(ModVillagers.MECHANIC, "Mechanic");
                 add(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), "Thrown Lightning in a Bottle");
+                add(ModEntities.SOUL_BLAZE.get(), "Soul Blaze");
                 //endregion
                 //region Effects
                 add(ModEffects.FLIGHT.get(), "Flight");
@@ -707,12 +714,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Fluid Vein Size: %d");
                 add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Stored Block Entity: %s");
                 add(ModConstants.GUI.withSuffix("charge_progress"), "Charge Progress");
+                add(ModConstants.GUI.withSuffix("entity_watcher.watched_entities_count"), "Entities being watched:");
                 
                 //region Spell Tooltips
                 add("tooltip.eternalartifacts.spell.damage", "Damage");
+                add("tooltip.eternalartifacts.spell.healing", "Healing");
                 add("tooltip.eternalartifacts.spell.cooldown", "Cooldown");
                 add("tooltip.eternalartifacts.spell.spell_power", "Spell Power");
-                add("tooltip.eternalartifacts.spell.bonus_damage", "bonus damage");
+                add("tooltip.eternalartifacts.spell.bonus_power", "bonus power");
                 add("tooltip.eternalartifacts.spell.damage_type", "Type");
                 add("tooltip.eternalartifacts.spell.damage_type.magic", "Magic");
                 add("tooltip.eternalartifacts.spell.damage_type.physical", "Physical");
@@ -729,6 +738,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.magic_missile", "Magic Missile");
                 add("spell.eternalartifacts.prism_beam", "Prism Beam");
                 add("spell.eternalartifacts.lightning_strike", "Lightning Strike");
+                add("spell.eternalartifacts.divine_protection", "Divine Protection");
                 // Spell Descriptions
                 add("spell.eternalartifacts.fireball.desc", "Launches a small fireball that ignites enemies on impact.");
                 add("spell.eternalartifacts.evoker_fangs.desc", "Summons a line of fangs from the ground that bite enemies in their path.");
@@ -739,6 +749,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.magic_missile.desc", "Hold to rapidly fire arcane bolts in the direction you are looking.");
                 add("spell.eternalartifacts.prism_beam.desc", "Hold to channel a devastating prismatic beam that pierces through all enemies in its path.");
                 add("spell.eternalartifacts.lightning_strike.desc", "Hurls a lightning bolt that chains to up to 4 nearby enemies, briefly stunning them. Charges blocks with energy on impact.");
+                add("spell.eternalartifacts.divine_protection.desc", "Heals and blesses nearby allies and pets with divine protection and regeneration effects.");
                 //endregion
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
@@ -979,9 +990,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.MAGIC_MISSILE_TOME.get(), "Sihirli Mermi Kitabı");
                 add(ModItems.PRISM_BEAM_TOME.get(), "Prizma Işını Kitabı");
                 add(ModItems.LIGHTNING_STRIKE_TOME.get(), "Yıldırım Darbesi Kitabı");
+                add(ModItems.DIVINE_PROTECTION_TOME.get(), "Kutsal Koruma Kitabı");
                 add(ModItems.TOME.get(),  "Büyü Kitabı");
                 add(ModItems.REINFORCED_GLASS_BOTTLE.get(), "Güçlendirilmiş Cam Şişe");
                 add(ModItems.LIGHTNING_IN_A_BOTTLE.get(), "Şişedeki Yıldırım");
+                add(ModItems.SOUL_BLAZE_SPAWN_EGG.get(), "Ruh Alazı Çağırma Yumurtası");
+                add(ModItems.SOUL_BLAZE_ROD.get(), "Ruh Alazı Çubuğu");
+                add(ModItems.SOUL_BLAZE_POWDER.get(), "Ruh Alazı Tozu");
+                add(ModItems.AMETHYST_DUST.get(), "Ametist Tozu");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1196,6 +1212,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.ENTITY_INTERACTOR.getBlockTranslationKey(), "Varlık Etkileşimcisi");
                 add(ModMachines.ENCHANTER.getBlockTranslationKey(), "Büyüleyici");
                 add(ModMachines.ITEM_COLLECTOR.getBlockTranslationKey(), "Eşya Toplayıcı");
+                add(ModMachines.ENTITY_WATCHER.getBlockTranslationKey(), "Varlık Gözcüsü");
+                add(ModBlocks.SOUL_BLAZE_HEAD.get(), "Ruh Alazı Kafası");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1211,6 +1229,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModEntities.PRISM_BEAM.get(), "Prizma Işını");
                 addVillagerType(ModVillagers.MECHANIC, "Mekanikçi");
                 add(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), "Fırlatılmış Şişedeki Yıldırım");
+                add(ModEntities.SOUL_BLAZE.get(), "Ruh Alazı");
                 //endregion
                 //region Türkçe Efekt
                 add(ModEffects.FLIGHT.get(), "Uçuş");
@@ -1543,12 +1562,14 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("fluid_pump.vein_size"), "Sıvı Damarı boyu: %d");
                 add(ModConstants.TOOLTIP.withSuffix("lifter.stored"), "Depolanan Block Varlığı: %s");
                 add(ModConstants.GUI.withSuffix("charge_progress"), "Şarj İlerlemesi");
+                add(ModConstants.GUI.withSuffix("entity_watcher.watched_entities_count"), "Gözlenen varlıklar:");
                 //endregion
                 //region Türkçe Büyü Araç İpuçları
                 add("tooltip.eternalartifacts.spell.damage", "Hasar");
+                add("tooltip.eternalartifacts.spell.healing", "İyileştirme");
                 add("tooltip.eternalartifacts.spell.cooldown", "Bekleme Süresi");
                 add("tooltip.eternalartifacts.spell.spell_power", "Büyü Gücü");
-                add("tooltip.eternalartifacts.spell.bonus_damage", "bonus hasar");
+                add("tooltip.eternalartifacts.spell.bonus_power", "bonus güç");
                 add("tooltip.eternalartifacts.spell.damage_type", "Tür");
                 add("tooltip.eternalartifacts.spell.damage_type.magic", "Büyü");
                 add("tooltip.eternalartifacts.spell.damage_type.physical", "Fiziksel");
@@ -1565,6 +1586,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.magic_missile", "Sihirli Mermi");
                 add("spell.eternalartifacts.prism_beam", "Prizma Işını");
                 add("spell.eternalartifacts.lightning_strike", "Yıldırım Darbesi");
+                add("spell.eternalartifacts.divine_protection", "Kutsal Koruma");
                 // Büyü Açıklamaları
                 add("spell.eternalartifacts.fireball.desc", "Çarpma anında düşmanları tutuşturan küçük bir ateş topu fırlatır.");
                 add("spell.eternalartifacts.evoker_fangs.desc", "Yolundaki düşmanları ısıran bir sıra diş yerden çağırır.");
@@ -1575,6 +1597,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.magic_missile.desc", "Basılı tutarak baktığın yönde hızlıca büyülü mermiler fırlatır.");
                 add("spell.eternalartifacts.prism_beam.desc", "Basılı tutarak yolundaki tüm düşmanları delip geçen yıkıcı bir prizma ışını kanalize eder.");
                 add("spell.eternalartifacts.lightning_strike.desc", "Yakındaki 4 düşmana zincirleme hasar veren ve kısa süreliğine sersemletip bloklara çarptığında enerji veren bir yıldırım fırlatır.");
+                add("spell.eternalartifacts.divine_protection.desc", "Yakındaki müttefikleri ve petleri iyileştirip kutsal koruma ve yenilenme efektleri verir.");
                 //endregion
 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

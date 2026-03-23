@@ -3,12 +3,10 @@ package com.sonamorningstar.eternalartifacts.client.render;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.ModSkullBlockRenderer;
-import com.sonamorningstar.eternalartifacts.client.render.item.SpellTomeRenderer;
 import com.sonamorningstar.eternalartifacts.client.resources.model.TwoLayerSkullModel;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
-import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -113,11 +111,6 @@ public class ModItemStackBEWLR extends BlockEntityWithoutLevelRenderer {
             } else if (block instanceof DeepFluidStorageUnitBlock) {
                 if (fluidHandlerItem != null) deepFluidStorageUnit.tank.setFluid(fluidHandlerItem.getFluidInTank(0), 0);
                 beRenderer.renderItem(deepFluidStorageUnit, ps, buff, light, overlay);
-            }
-        } else {
-            if (item instanceof AnimatedSpellTomeItem<?>) {
-                SpellTomeRenderer renderer = new SpellTomeRenderer(entityrendererprovider$context);
-                renderer.render(stack, minecraft.getPartialTick(), ps, buff, light, overlay);
             }
         }
     }

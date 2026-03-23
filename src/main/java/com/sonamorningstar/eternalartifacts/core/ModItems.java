@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.content.block.BewlrStandingAndWallBlockItem;
 import com.sonamorningstar.eternalartifacts.content.item.*;
-import com.sonamorningstar.eternalartifacts.content.item.base.AnimatedSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.ChanneledSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
@@ -141,6 +140,9 @@ public class ModItems {
     public static final DeferredItem<Item> TOME = register("tome");
     public static final DeferredItem<Item> REINFORCED_GLASS_BOTTLE = register("reinforced_glass_bottle");
     public static final DeferredItem<Item> LIGHTNING_IN_A_BOTTLE = register("lightning_in_a_bottle", LightningInABottleItem::new);
+    public static final DeferredItem<Item> SOUL_BLAZE_ROD = register("soul_blaze_rod");
+    public static final DeferredItem<Item> SOUL_BLAZE_POWDER = register("soul_blaze_powder");
+    public static final DeferredItem<Item> AMETHYST_DUST = register("amethyst_dust");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -148,6 +150,7 @@ public class ModItems {
     public static final DeferredItem<DeferredSpawnEggItem> DUCK_SPAWN_EGG = registerSpawnEgg("duck_spawn_egg", ModEntities.DUCK, 0x126700, 0xF2691B);
     public static final DeferredItem<DeferredSpawnEggItem> CHARGED_SHEEP_SPAWN_EGG = registerSpawnEgg("charged_sheep_spawn_egg", ModEntities.CHARGED_SHEEP, 0xF8D0FF, 0xFFA1D7);
     public static final DeferredItem<DeferredSpawnEggItem> HONEY_SLIME_SPAWN_EGG = registerSpawnEgg("honey_slime_spawn_egg", ModEntities.HONEY_SLIME, 0xe9981f, 0xe0e90c);
+    public static final DeferredItem<DeferredSpawnEggItem> SOUL_BLAZE_SPAWN_EGG = registerSpawnEgg("soul_blaze_spawn_egg", ModEntities.SOUL_BLAZE, 0x149194, 0x5be3e8);
     //endregion
     //region Actual artifacts.
     public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger");
@@ -168,6 +171,8 @@ public class ModItems {
     public static final DeferredItem<ChanneledSpellTomeItem<MagicMissileSpell>> MAGIC_MISSILE_TOME = registerChanneledTome("magic_missile_tome", ModSpells.MAGIC_MISSILE, 4);
     public static final DeferredItem<ChanneledSpellTomeItem<PrismBeamSpell>> PRISM_BEAM_TOME = registerChanneledTome("prism_beam_tome", ModSpells.PRISM_BEAM, 4);
     public static final DeferredItem<SpellTomeItem<LightningStrikeSpell>> LIGHTNING_STRIKE_TOME = registerTome("lightning_strike_tome", ModSpells.LIGHTNING_STRIKE);
+    public static final DeferredItem<SpellTomeItem<DivineProtectionSpell>> DIVINE_PROTECTION_TOME = registerTome("divine_protection_tome", ModSpells.DIVINE_PROTECTION);
+    public static final DeferredItem<SpellTomeItem<BlackHoleSpell>> BLACK_HOLE_TOME = registerTome("black_hole_tome", ModSpells.BLACK_HOLE);
     public static final DeferredItem<Item> POWER_GAUNTLET = registerStacksToOne("power_gauntlet");
     public static final DeferredItem<Item> HEART_NECKLACE = registerStacksToOne("heart_necklace");
     public static final DeferredItem<Item> SAGES_TALISMAN = registerStacksToOne("sages_talisman");
@@ -299,6 +304,10 @@ public class ModItems {
         new BewlrStandingAndWallBlockItem(ModBlocks.BLAZE_HEAD.get(), ModBlocks.BLAZE_WALL_HEAD.get(),
             new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
     );
+    public static final DeferredItem<Item> SOUL_BLAZE_HEAD = register("soul_blaze_head", () ->
+        new BewlrStandingAndWallBlockItem(ModBlocks.SOUL_BLAZE_HEAD.get(), ModBlocks.SOUL_BLAZE_WALL_HEAD.get(),
+            new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN)
+    );
     
     //region Register methods.
     private static <T extends Item> DeferredItem<T> register(String name, Supplier<T> supplier) {
@@ -325,9 +334,7 @@ public class ModItems {
     private static <S extends Spell> DeferredItem<SpellTomeItem<S>> registerTome(String name, DeferredHolder<Spell, S> spellHolder) {
         return register(name, () -> new SpellTomeItem<>(spellHolder, new Item.Properties().stacksTo(1)));
     }
-    private static <S extends Spell> DeferredItem<AnimatedSpellTomeItem<S>> registerAnimatedTome(String name, DeferredHolder<Spell, S> spellHolder) {
-        return register(name, () -> new AnimatedSpellTomeItem<>(spellHolder, new Item.Properties().stacksTo(1)));
-    }
+    
     private static <S extends Spell> DeferredItem<ChanneledSpellTomeItem<S>> registerChanneledTome(String name, DeferredHolder<Spell, S> spellHolder, int fireInterval) {
         return register(name, () -> new ChanneledSpellTomeItem<>(spellHolder, fireInterval, new Item.Properties().stacksTo(1)));
     }

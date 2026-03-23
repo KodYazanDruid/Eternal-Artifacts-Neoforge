@@ -18,6 +18,7 @@ import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SmeltItemFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -80,6 +81,18 @@ public class ModEntityLootSubProvider extends net.minecraft.data.loot.EntityLoot
                         .apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0F)))
                         .when(killedByFrog())
                     )
+                )
+        );
+        
+        add(ModEntities.SOUL_BLAZE.get(),
+            LootTable.lootTable()
+                .withPool(LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1))
+                    .add(LootItem.lootTableItem(ModItems.SOUL_BLAZE_ROD.get())
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))
+                        .apply(LootingEnchantFunction.lootingMultiplier(UniformGenerator.between(0, 1)))
+                    )
+                    .when(LootItemKilledByPlayerCondition.killedByPlayer())
                 )
         );
 
