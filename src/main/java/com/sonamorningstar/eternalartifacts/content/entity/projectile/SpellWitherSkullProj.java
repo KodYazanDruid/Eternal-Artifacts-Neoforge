@@ -11,14 +11,14 @@ import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 
-public class SpellWitherSkull extends WitherSkull {
+public class SpellWitherSkullProj extends WitherSkull {
 	private float damage;
 	
-	public SpellWitherSkull(EntityType<? extends WitherSkull> entityType, Level level) {
+	public SpellWitherSkullProj(EntityType<? extends WitherSkull> entityType, Level level) {
 		super(entityType, level);
 	}
 	
-	public SpellWitherSkull(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, float damage) {
+	public SpellWitherSkullProj(Level level, LivingEntity shooter, double offsetX, double offsetY, double offsetZ, float damage) {
 		super(level, shooter, offsetX, offsetY, offsetZ);
 		this.damage = damage;
 	}

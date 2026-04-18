@@ -7,6 +7,10 @@ import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSetRegistry;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSets;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.ArmorSet;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.AttributeArmorSet;
 import com.sonamorningstar.eternalartifacts.api.machine.PackerRecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.RecyclerRecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.UnpackerRecipeCache;
@@ -19,6 +23,8 @@ import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.DimensionalAnchor;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
+import com.sonamorningstar.eternalartifacts.content.entity.MimicEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.VoidlockSpellProj;
 import com.sonamorningstar.eternalartifacts.event.ModResourceReloadListener;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -64,11 +70,13 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -80,6 +88,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.FishingHook;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
@@ -92,16 +101,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.*;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.TickEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityStruckByLightningEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
 import net.neoforged.neoforge.event.entity.item.ItemTossEvent;
 import net.neoforged.neoforge.event.entity.living.*;
 import net.neoforged.neoforge.event.entity.player.*;
@@ -112,6 +125,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -234,6 +248,10 @@ public class CommonEvents {
                 }
             }
         }
+        ArmorSetRegistry.ArmorSetBonus activeBonus = ArmorSetRegistry.getActiveBonus(hurtEntity);
+        if (attacker != null && !source.is(DamageTypes.THORNS) && activeBonus != null && activeBonus.armorSet().is(ArmorSets.CACTUS_ARMOR)) {
+            attacker.hurt(hurtEntity.damageSources().thorns(hurtEntity), damage * 0.25F);
+        }
     }
     
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -355,6 +373,34 @@ public class CommonEvents {
                 living.getPersistentData().putInt(ILivingJumper.KEY, 1);
             }
         }
+        
+        ArmorSetRegistry.ARMOR_SET_BONUSES.forEach((set, bonus) -> {
+            if (set instanceof AttributeArmorSet attributeSet) {
+                attributeSet.getModifiers().forEach((attr, mod) -> {
+                    AttributeInstance attrInstance = living.getAttribute(attr);
+                    if (attrInstance != null) {
+                        attrInstance.removeModifier(mod.getId());
+                    }
+                });
+            }
+            List<ItemStack> equippedArmor = new ArrayList<>();
+            living.getArmorSlots().forEach(equippedArmor::add);
+            if (set.canActivate(equippedArmor)) {
+                bonus.effect().accept(living);
+                if (set instanceof AttributeArmorSet attributeSet) {
+                    attributeSet.getModifiers().forEach((attr, mod) -> {
+                        AttributeInstance attrInstance = living.getAttribute(attr);
+                        if (attrInstance != null) {
+                            AttributeModifier existing = attrInstance.getModifier(mod.getId());
+                            if (existing == null) {
+                                attrInstance.addTransientModifier(mod);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        
     }
 
     @SubscribeEvent
@@ -610,14 +656,14 @@ public class CommonEvents {
         }
     }
     
-    @SubscribeEvent
+    /*@SubscribeEvent
     public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
         Entity entity = event.getEntity();
         LevelAccessor levelAcc = event.getLevel();
         BlockPos pos = event.getPos();
         BlockState placedState = event.getPlacedBlock();
         
-    }
+    }*/
 
     @SubscribeEvent
     public static void preExplosionEvent(ExplosionEvent.Start event) {
@@ -683,7 +729,8 @@ public class CommonEvents {
         InteractionHand hand = event.getHand();
         ItemStack otherHandStack = player.getItemInHand(hand == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND);
         UseOnContext context = event.getUseOnContext();
-        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK && VersatilityEnchantment.has(itemStack)){
+        UseItemOnBlockEvent.UsePhase usePhase = event.getUsePhase();
+        if (usePhase == UseItemOnBlockEvent.UsePhase.ITEM_AFTER_BLOCK && VersatilityEnchantment.has(itemStack)) {
             BlockState axeModifiedState = calculateStateForAxe(level, blockPos, player, blockState, context);
             if (axeModifiedState != null) {
                 level.setBlock(blockPos, axeModifiedState, 11);
@@ -716,13 +763,13 @@ public class CommonEvents {
                         level.setBlock(blockPos, newState, 11);
                         level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, newState));
                         itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(context.getHand()));
-                    }else player.swing(hand);
+                    } else player.swing(hand);
 
                 }
             }
         }
 
-        if (event.getUsePhase() == UseItemOnBlockEvent.UsePhase.ITEM_BEFORE_BLOCK &&
+        if (usePhase == UseItemOnBlockEvent.UsePhase.ITEM_BEFORE_BLOCK &&
                 blockState.is(Blocks.CHEST) &&
                 (itemStack.is(Items.SHULKER_SHELL) || otherHandStack.is(Items.SHULKER_SHELL))) {
             byte result = ColoredShulkerShellItem.handleTransform(level, blockPos, itemStack, otherHandStack, player, blockState);
@@ -732,6 +779,33 @@ public class CommonEvents {
                 event.setCanceled(true);
             }
         }
+        
+        if (usePhase == UseItemOnBlockEvent.UsePhase.BLOCK) {
+           if (blockState.is(Blocks.CHEST)) {
+               IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, null);
+               if (!level.isClientSide() && itemHandler != null) {
+                   for (int i = 0; i < itemHandler.getSlots(); i++) {
+                       ItemStack stack = itemHandler.getStackInSlot(i);
+                       if (stack.is(ModItems.GOLD_KEY)) {
+                           MimicEntity mimic = ModEntities.MIMIC.get().create(level);
+                           if (mimic == null) return;
+                           float yRot = blockState.getValue(ChestBlock.FACING).toYRot();
+                           mimic.moveTo(blockPos, yRot, 0);
+                           ServerLevel serverLevel = (ServerLevel) level;
+                           EventHooks.onFinalizeSpawn(mimic, serverLevel, serverLevel.getCurrentDifficultyAt(blockPos), MobSpawnType.TRIGGERED, null, null);
+                           serverLevel.addFreshEntityWithPassengers(mimic);
+                           if (mimic.isAddedToWorld()) {
+                               LifterItem.itemAndXpDeleteMonitoring = true;
+                               level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                               LifterItem.itemAndXpDeleteMonitoring = false;
+                               event.setCanceled(true);
+                           }
+                       }
+                   }
+               }
+           }
+        }
+        
     }
 
     @Nullable
@@ -853,6 +927,15 @@ public class CommonEvents {
             trades.put(3, lvlThreeTrades);
             trades.put(4, lvlFourTrades);
             trades.put(5, lvlFiveTrades);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void projectileImpactEvent(ProjectileImpactEvent event) {
+        Projectile projectile = event.getProjectile();
+        HitResult hitResult = event.getRayTraceResult();
+        if (projectile instanceof VoidlockSpellProj && hitResult.getType() == HitResult.Type.BLOCK) {
+            event.setCanceled(true);
         }
     }
 }

@@ -39,7 +39,7 @@ public class LifterItem extends Item {
 	public static final String TAG_BLOCK_STATE = "StoredBlockState";
 	public static final String TAG_BLOCK_ID = "StoredBlockId";
 	
-	public static boolean monitoring = false;
+	public static boolean itemAndXpDeleteMonitoring = false;
 	
 	public LifterItem(Properties properties) {
 		super(properties);
@@ -83,15 +83,15 @@ public class LifterItem extends Item {
 		tag.putInt(TAG_BLOCK_STATE, Block.getId(state));
 		tag.putString(TAG_BLOCK_ID, state.getBlock().getDescriptionId());
 		
-		monitoring = true;
+		itemAndXpDeleteMonitoring = true;
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL);
-		monitoring = false;
+		itemAndXpDeleteMonitoring = false;
 		
 		return InteractionResult.CONSUME;
 	}
 	
 	public static void clearDrops(final EntityJoinLevelEvent event) {
-		if (monitoring) {
+		if (itemAndXpDeleteMonitoring) {
 			Entity entity = event.getEntity();
 			if (entity instanceof ItemEntity || entity instanceof ExperienceOrb) {
 				entity.discard();

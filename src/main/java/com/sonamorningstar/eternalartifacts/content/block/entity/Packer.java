@@ -24,7 +24,7 @@ public class Packer extends GenericMachine {
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		ItemStack input = inventory.getStackInSlot(0);
 		if (!input.isEmpty() && PackerRecipeCache.contains(input.getItem())) {
 			ItemWithCount itemWithCount = PackerRecipeCache.get(input.getItem());
@@ -33,7 +33,6 @@ public class Packer extends GenericMachine {
 			if (!output.isEmpty()) condition.queueImport(output);
 			condition.commitQueuedImports();
 		}
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "minecraft:book"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "L": {
+      "tag": "forge:leather"
+    }
+  },
+  "pattern": [
+    " C ",
+    "LBL",
+    " C "
+  ],
+  "result": {
+    "item": "eternalartifacts:tome"
+  }
+}

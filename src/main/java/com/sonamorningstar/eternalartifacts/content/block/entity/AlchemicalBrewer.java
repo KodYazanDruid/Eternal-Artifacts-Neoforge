@@ -50,9 +50,8 @@ public class AlchemicalBrewer extends SidedTransferMachine<AlchemicalBrewerMenu>
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		condition.createCustomCondition(() -> !isBrewable());
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override

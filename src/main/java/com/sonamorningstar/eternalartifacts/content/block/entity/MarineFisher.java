@@ -45,7 +45,7 @@ public class MarineFisher extends GenericMachine {
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		condition.createCustomCondition(() -> {
 			boolean hasEmptySlot = false;
 			for (Integer outputSlot : outputSlots) {
@@ -58,7 +58,6 @@ public class MarineFisher extends GenericMachine {
 			ItemStack tool = inventory.getStackInSlot(0);
 			return tool.isEmpty() || !tool.is(Tags.Items.TOOLS_FISHING_RODS) || !hasEmptySlot;
 		});
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override

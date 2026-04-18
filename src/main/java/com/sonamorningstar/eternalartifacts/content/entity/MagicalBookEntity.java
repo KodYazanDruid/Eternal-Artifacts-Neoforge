@@ -42,12 +42,11 @@ public class MagicalBookEntity extends FlyingMob implements Enemy {
 
     @Override
     protected void registerGoals() {
-        goalSelector.addGoal(5, new FloatGoal(this));
         goalSelector.addGoal(1, new BookAttackGoal(this));
+        goalSelector.addGoal(3, new FloatGoal(this));
         goalSelector.addGoal(5, new RandomFloatAroundGoal(this));
         goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         goalSelector.addGoal(9, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));
-        goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
         targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 

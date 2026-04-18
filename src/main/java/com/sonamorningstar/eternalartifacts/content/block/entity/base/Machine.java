@@ -98,6 +98,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected boolean isFakePlayerSetUp = false;
     @Setter
     private Component name;
+    private boolean isInitializing = false;
 
     public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
@@ -298,16 +299,32 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public int getRedstoneOutput() {
         return 0;
     }
+
+    /**
+     * Automatically updates the ProcessCondition. Called whenever inventory, tank, or recipe changes.
+     */
+    protected final void updateProcessCondition() {
+        Recipe<?> recipe = getCachedRecipe();
+        ProcessCondition newCondition = new ProcessCondition(this);
+        configureProcessCondition(newCondition, recipe);
+        this.processCondition = newCondition;
+    }
+
+    /**
+     * Override this method to configure the ProcessCondition for your machine.
+     *
+     * @param condition The ProcessCondition to configure
+     * @param recipe The current recipe (can be null)
+     */
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
     
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
-        processCondition = condition;
     }
     
     @Override
     public void onLoad() {
         super.onLoad();
         findRecipe();
-        setProcessCondition(new ProcessCondition(this), getCachedRecipe());
+        updateProcessCondition();
         if (!level.isClientSide() && canLoadChunks()) {
             addToManager();
             updateForcedChunks();

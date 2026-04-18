@@ -1,0 +1,19 @@
+{
+  "type": "eternalartifacts:add_item_list",
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/stronghold_crossing"
+    },
+    {
+      "chance": 0.25,
+      "condition": "minecraft:random_chance"
+    }
+  ],
+  "itemstack": [
+    {
+      "Count": 1,
+      "id": "eternalartifacts:tome"
+    }
+  ]
+}

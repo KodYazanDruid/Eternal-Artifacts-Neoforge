@@ -59,6 +59,7 @@ public class SpellTagsProvider extends IntrinsicHolderTagsProvider<Spell> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void addTags(HolderLookup.Provider provider) {
         tag(ModTags.Spells.FIRE).add(
             ModSpells.FIREBALL.get(),
@@ -79,10 +80,22 @@ public class SpellTagsProvider extends IntrinsicHolderTagsProvider<Spell> {
             ModSpells.PRISM_BEAM.get()
         );
         tag(ModTags.Spells.ENDER).add(
-            ModSpells.SHULKER_BULLETS.get()
+            ModSpells.SHULKER_BULLETS.get(),
+            ModSpells.VOIDLOCK.get()
         );
         tag(ModTags.Spells.LIGHTNING).add(
             ModSpells.LIGHTNING_STRIKE.get()
+        );
+        tag(ModTags.Spells.NATURE).add(
+            ModSpells.BOUNCING_HONEY.get()
+        );
+        
+        tag(ModTags.Spells.NATURE).addTags(
+            ModTags.Spells.AIR,
+            ModTags.Spells.EARTH,
+            ModTags.Spells.FIRE,
+            //ModTags.Spells.WATER,
+            ModTags.Spells.LIGHTNING
         );
     }
 }

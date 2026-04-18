@@ -43,7 +43,9 @@ public enum ModConstants {
     WIDGET("widget."+MODID),
     TRANSFER_MODE("transfer_mode."+MODID),
     KEY("key."+MODID),
-    KEY_ETAR_CATEGORY("key.categories", MODID);
+    KEY_ETAR_CATEGORY("key.categories", MODID),
+    ADVANCEMENT("advancement."+MODID),
+    SET_BONUS("tooltip."+MODID, "set_bonus");
     
     final String string;
     @Nullable

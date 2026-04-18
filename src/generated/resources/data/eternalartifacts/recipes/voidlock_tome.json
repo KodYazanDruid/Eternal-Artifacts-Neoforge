@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "forge:ender_pearls"
+    },
+    "I": {
+      "tag": "forge:ingots/gold"
+    },
+    "P": {
+      "item": "eternalartifacts:glow_ink_dust"
+    },
+    "T": {
+      "item": "eternalartifacts:tome"
+    }
+  },
+  "pattern": [
+    "CIC",
+    "PTP",
+    "CIC"
+  ],
+  "result": {
+    "item": "eternalartifacts:voidlock_tome"
+  }
+}

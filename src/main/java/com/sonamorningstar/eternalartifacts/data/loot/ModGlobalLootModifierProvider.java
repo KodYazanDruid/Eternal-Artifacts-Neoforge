@@ -78,7 +78,19 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 LootItemRandomChanceCondition.randomChance(0.2f).build()
             }, List.of(ModItems.METEORITE_TOME.get().getDefaultInstance())
         ));
-        
+        final Map<ResourceLocation, Float> tome_tables = Map.of(
+            BuiltInLootTables.STRONGHOLD_CORRIDOR, 0.25f,
+            BuiltInLootTables.STRONGHOLD_LIBRARY, 1.0f,
+            BuiltInLootTables.STRONGHOLD_CROSSING, 0.25f
+        );
+        tome_tables.forEach((table, chance) -> {
+            add(table.getNamespace() + "_" + table.getPath() + "_tome", new AddItemListModifier(
+                new LootItemCondition[]{
+                    LootTableIdCondition.builder(table).build(),
+                    LootItemRandomChanceCondition.randomChance(chance).build()
+                }, List.of(ModItems.TOME.get().getDefaultInstance())
+            ));
+        });
         
         add("hammering", new HammeringModifier(
                 new LootItemCondition[]{

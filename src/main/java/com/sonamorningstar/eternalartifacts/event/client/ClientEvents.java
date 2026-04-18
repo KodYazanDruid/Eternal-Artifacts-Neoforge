@@ -2,6 +2,8 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Streams;
+import com.google.common.primitives.Booleans;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Either;
@@ -15,6 +17,9 @@ import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFilterTooltip;
 import com.sonamorningstar.eternalartifacts.api.client.ClientFiltersClampedTooltip;
 import com.sonamorningstar.eternalartifacts.api.filter.*;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSetRegistry;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.ArmorSet;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.AttributeArmorSet;
 import com.sonamorningstar.eternalartifacts.client.gui.TabHandler;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.AbstractPipeFilterScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
@@ -90,6 +95,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -109,8 +115,10 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.apache.commons.lang3.ArrayUtils;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -208,163 +216,209 @@ public class ClientEvents {
         List<Component> tooltip = event.getToolTip();
         ItemTooltipManager.applyTooltips(stack, tooltip);
         
-        if (stack.getItem() instanceof SpellTomeItem<?> tomeItem && player != null) {
-            Spell spell = tomeItem.getSpell();
-            Spell.DamageCategory category = spell.damageCategory;
-            boolean detailed = Screen.hasShiftDown();
-            
-            tooltip.add(spell.getSpellDescription().withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
-            tooltip.add(Component.empty());
-            
-            if (spell.baseDamage > 0) {
-                double baseDmg = spell.baseDamage;
-                double bonusDmg = 0;
+        if (player != null) {
+            if (stack.getItem() instanceof SpellTomeItem<?> tomeItem) {
+                Spell spell = tomeItem.getSpell();
+                Spell.DamageCategory category = spell.damageCategory;
+                boolean detailed = Screen.hasShiftDown();
                 
-                AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
-                if (spellPower != null) {
-                    double spellPowerValue = spellPower.getValue();
-                    bonusDmg = baseDmg * (spellPowerValue - 100.0) / 100.0;
-                }
+                tooltip.add(spell.getSpellDescription().withStyle(ChatFormatting.GRAY, ChatFormatting.ITALIC));
+                tooltip.add(Component.empty());
                 
-                MutableComponent damageText = Component.translatable("tooltip.eternalartifacts.spell.damage")
-                    .withStyle(ChatFormatting.GRAY)
-                    .append(": ");
-                
-                if (detailed) {
-                    damageText.append(Component.literal(formatNumber(baseDmg)).withStyle(ChatFormatting.WHITE));
-                    if (bonusDmg != 0) {
-                        String sign = bonusDmg > 0 ? "+" : "";
-                        damageText.append(Component.literal(" (" + sign + formatNumber(bonusDmg) + ")")
-                            .withStyle(ChatFormatting.LIGHT_PURPLE));
+                if (spell.baseDamage > 0) {
+                    double baseDmg = spell.baseDamage;
+                    double bonusDmg = 0;
+                    
+                    AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
+                    if (spellPower != null) {
+                        double spellPowerValue = spellPower.getValue();
+                        bonusDmg = baseDmg * (spellPowerValue - 100.0) / 100.0;
                     }
-                } else {
-                    double totalDmg = baseDmg + bonusDmg;
-                    MutableComponent totalDmgComponent = Component.literal(formatNumber(totalDmg));
-                    if (bonusDmg > 0) {
-                        category.applyStyle(totalDmgComponent);
-                    } else if (bonusDmg < 0) {
-                        totalDmgComponent.withStyle(ChatFormatting.RED);
+                    
+                    MutableComponent damageText = Component.translatable("tooltip.eternalartifacts.spell.damage")
+                        .withStyle(ChatFormatting.GRAY)
+                        .append(": ");
+                    
+                    if (detailed) {
+                        damageText.append(Component.literal(formatNumber(baseDmg)).withStyle(ChatFormatting.WHITE));
+                        if (bonusDmg != 0) {
+                            String sign = bonusDmg > 0 ? "+" : "";
+                            damageText.append(Component.literal(" (" + sign + formatNumber(bonusDmg) + ")")
+                                .withStyle(ChatFormatting.LIGHT_PURPLE));
+                        }
                     } else {
-                        totalDmgComponent.withStyle(ChatFormatting.WHITE);
+                        double totalDmg = baseDmg + bonusDmg;
+                        MutableComponent totalDmgComponent = Component.literal(formatNumber(totalDmg));
+                        if (bonusDmg > 0) {
+                            category.applyStyle(totalDmgComponent);
+                        } else if (bonusDmg < 0) {
+                            totalDmgComponent.withStyle(ChatFormatting.RED);
+                        } else {
+                            totalDmgComponent.withStyle(ChatFormatting.WHITE);
+                        }
+                        damageText.append(totalDmgComponent);
                     }
-                    damageText.append(totalDmgComponent);
+                    
+                    tooltip.add(damageText);
                 }
                 
-                tooltip.add(damageText);
-            }
-            
-            if (spell.baseHealing > 0) {
-                double baseHeal = spell.baseHealing;
-                double bonusHeal = 0;
-                
-                AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
-                if (spellPower != null) {
-                    double spellPowerValue = spellPower.getValue();
-                    bonusHeal = baseHeal * (spellPowerValue - 100.0) / 100.0;
-                }
-                
-                MutableComponent healingText = Component.translatable("tooltip.eternalartifacts.spell.healing")
-                    .withStyle(ChatFormatting.GRAY)
-                    .append(": ");
-                
-                if (detailed) {
-                    healingText.append(Component.literal(formatNumber(baseHeal)).withStyle(ChatFormatting.WHITE));
-                    if (bonusHeal != 0) {
-                        String sign = bonusHeal > 0 ? "+" : "";
-                        healingText.append(Component.literal(" (" + sign + formatNumber(bonusHeal) + ")")
-                            .withStyle(ChatFormatting.LIGHT_PURPLE));
+                if (spell.baseHealing > 0) {
+                    double baseHeal = spell.baseHealing;
+                    double bonusHeal = 0;
+                    
+                    AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
+                    if (spellPower != null) {
+                        double spellPowerValue = spellPower.getValue();
+                        bonusHeal = baseHeal * (spellPowerValue - 100.0) / 100.0;
                     }
-                } else {
-                    double totalHeal = baseHeal + bonusHeal;
-                    MutableComponent totalHealComponent = Component.literal(formatNumber(totalHeal));
-                    if (bonusHeal > 0) {
-                        totalHealComponent.withStyle(ChatFormatting.GREEN);
-                    } else if (bonusHeal < 0) {
-                        totalHealComponent.withStyle(ChatFormatting.RED);
+                    
+                    MutableComponent healingText = Component.translatable("tooltip.eternalartifacts.spell.healing")
+                        .withStyle(ChatFormatting.GRAY)
+                        .append(": ");
+                    
+                    if (detailed) {
+                        healingText.append(Component.literal(formatNumber(baseHeal)).withStyle(ChatFormatting.WHITE));
+                        if (bonusHeal != 0) {
+                            String sign = bonusHeal > 0 ? "+" : "";
+                            healingText.append(Component.literal(" (" + sign + formatNumber(bonusHeal) + ")")
+                                .withStyle(ChatFormatting.LIGHT_PURPLE));
+                        }
                     } else {
-                        totalHealComponent.withStyle(ChatFormatting.WHITE);
+                        double totalHeal = baseHeal + bonusHeal;
+                        MutableComponent totalHealComponent = Component.literal(formatNumber(totalHeal));
+                        if (bonusHeal > 0) {
+                            totalHealComponent.withStyle(ChatFormatting.GREEN);
+                        } else if (bonusHeal < 0) {
+                            totalHealComponent.withStyle(ChatFormatting.RED);
+                        } else {
+                            totalHealComponent.withStyle(ChatFormatting.WHITE);
+                        }
+                        healingText.append(totalHealComponent);
                     }
-                    healingText.append(totalHealComponent);
+                    
+                    tooltip.add(healingText);
                 }
                 
-                tooltip.add(healingText);
-            }
-            
-            if (spell.cooldown > 0) {
-                double baseCooldown = spell.cooldown / 20.0;
-                double cooldownReduction = 0;
-                
-                AttributeInstance cdrAttr = player.getAttribute(ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
-                if (cdrAttr != null) {
-                    cooldownReduction = cdrAttr.getValue();
-                }
-                double reducedCooldown = baseCooldown * (1 - cooldownReduction / 100.0);
-                
-                MutableComponent cooldownText = Component.translatable("tooltip.eternalartifacts.spell.cooldown")
-                    .withStyle(ChatFormatting.GRAY)
-                    .append(": ");
-                
-                if (detailed) {
-                    cooldownText.append(Component.literal(formatNumber(baseCooldown) + "s").withStyle(ChatFormatting.WHITE));
-                    if (cooldownReduction > 0) {
-                        double reductionAmount = baseCooldown - reducedCooldown;
-                        cooldownText.append(Component.literal(" (-" + formatNumber(reductionAmount) + "s)")
-                            .withStyle(ChatFormatting.AQUA));
+                if (spell.cooldown > 0) {
+                    double baseCooldown = spell.cooldown / 20.0;
+                    double cooldownReduction = 0;
+                    
+                    AttributeInstance cdrAttr = player.getAttribute(ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
+                    if (cdrAttr != null) {
+                        cooldownReduction = cdrAttr.getValue();
                     }
-                } else {
-                    MutableComponent cooldownValue = Component.literal(formatNumber(reducedCooldown) + "s");
-                    if (cooldownReduction > 0) {
-                        cooldownValue.withStyle(ChatFormatting.AQUA);
+                    double reducedCooldown = baseCooldown * (1 - cooldownReduction / 100.0);
+                    
+                    MutableComponent cooldownText = Component.translatable("tooltip.eternalartifacts.spell.cooldown")
+                        .withStyle(ChatFormatting.GRAY)
+                        .append(": ");
+                    
+                    if (detailed) {
+                        cooldownText.append(Component.literal(formatNumber(baseCooldown) + "s").withStyle(ChatFormatting.WHITE));
+                        if (cooldownReduction > 0) {
+                            double reductionAmount = baseCooldown - reducedCooldown;
+                            cooldownText.append(Component.literal(" (-" + formatNumber(reductionAmount) + "s)")
+                                .withStyle(ChatFormatting.AQUA));
+                        }
                     } else {
-                        cooldownValue.withStyle(ChatFormatting.WHITE);
+                        MutableComponent cooldownValue = Component.literal(formatNumber(reducedCooldown) + "s");
+                        if (cooldownReduction > 0) {
+                            cooldownValue.withStyle(ChatFormatting.AQUA);
+                        } else {
+                            cooldownValue.withStyle(ChatFormatting.WHITE);
+                        }
+                        cooldownText.append(cooldownValue);
                     }
-                    cooldownText.append(cooldownValue);
+                    
+                    tooltip.add(cooldownText);
                 }
                 
-                tooltip.add(cooldownText);
-            }
-            
-            if (spell.baseDamage > 0) {
-                MutableComponent damageTypeText = Component.translatable("tooltip.eternalartifacts.spell.damage_type")
-                    .withStyle(ChatFormatting.GRAY)
-                    .append(": ")
-                    .append(category.getDisplayName());
-                tooltip.add(damageTypeText);
-            }
-            
-            tooltip.add(Component.empty());
-            
-            if (detailed) {
-                AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
-                if (spellPower != null) {
-                    int spellPowerTotal = (int) spellPower.getValue();
-                    int spellPowerBonus = spellPowerTotal - 100;
-                    MutableComponent spellPowerText = Component.translatable("tooltip.eternalartifacts.spell.spell_power")
+                if (spell.baseDamage > 0) {
+                    MutableComponent damageTypeText = Component.translatable("tooltip.eternalartifacts.spell.damage_type")
                         .withStyle(ChatFormatting.GRAY)
                         .append(": ")
-                        .append(Component.literal(String.valueOf(spellPowerTotal)).withStyle(ChatFormatting.LIGHT_PURPLE))
-                        .append(Component.literal(" (" + (spellPowerBonus >= 0 ? "+" : "") + spellPowerBonus + "% ")
-                            .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
-                        .append(Component.translatable("tooltip.eternalartifacts.spell.bonus_power")
-                            .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
-                        .append(Component.literal(")").withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED));
-                    tooltip.add(spellPowerText);
+                        .append(category.getDisplayName());
+                    tooltip.add(damageTypeText);
                 }
                 
-                AttributeInstance cdrAttr = player.getAttribute(ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
-                if (cdrAttr != null) {
-                    int cdrValue = (int) cdrAttr.getValue();
-                    MutableComponent cdrText = Component.translatable("tooltip.eternalartifacts.spell.cooldown_reduction")
-                        .withStyle(ChatFormatting.GRAY)
-                        .append(": ")
-                        .append(Component.literal(cdrValue + "%").withStyle(ChatFormatting.AQUA));
-                    tooltip.add(cdrText);
+                tooltip.add(Component.empty());
+                
+                if (detailed) {
+                    AttributeInstance spellPower = player.getAttribute(ModAttributes.SPELL_POWER.get());
+                    if (spellPower != null) {
+                        int spellPowerTotal = (int) spellPower.getValue();
+                        int spellPowerBonus = spellPowerTotal - 100;
+                        MutableComponent spellPowerText = Component.translatable("tooltip.eternalartifacts.spell.spell_power")
+                            .withStyle(ChatFormatting.GRAY)
+                            .append(": ")
+                            .append(Component.literal(String.valueOf(spellPowerTotal)).withStyle(ChatFormatting.LIGHT_PURPLE))
+                            .append(Component.literal(" (" + (spellPowerBonus >= 0 ? "+" : "") + spellPowerBonus + "% ")
+                                .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
+                            .append(Component.translatable("tooltip.eternalartifacts.spell.bonus_power")
+                                .withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED))
+                            .append(Component.literal(")").withStyle(spellPowerBonus >= 0 ? ChatFormatting.GREEN : ChatFormatting.RED));
+                        tooltip.add(spellPowerText);
+                    }
+                    
+                    AttributeInstance cdrAttr = player.getAttribute(ModAttributes.SPELL_COOLDOWN_REDUCTION.get());
+                    if (cdrAttr != null) {
+                        int cdrValue = (int) cdrAttr.getValue();
+                        MutableComponent cdrText = Component.translatable("tooltip.eternalartifacts.spell.cooldown_reduction")
+                            .withStyle(ChatFormatting.GRAY)
+                            .append(": ")
+                            .append(Component.literal(cdrValue + "%").withStyle(ChatFormatting.AQUA));
+                        tooltip.add(cdrText);
+                    }
+                } else {
+                    tooltip.add(Component.translatable("tooltip.eternalartifacts.spell.hold_shift")
+                        .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
                 }
-            } else {
-                tooltip.add(Component.translatable("tooltip.eternalartifacts.spell.hold_shift")
-                    .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
             }
+            //region Armor Set tooltips.
+			for (Map.Entry<ArmorSet, ArmorSetRegistry.ArmorSetBonus> entry : ArmorSetRegistry.ARMOR_SET_BONUSES.entrySet()) {
+				ArmorSet set = entry.getKey();
+				if (set.isPiece(stack)) {
+                    List<Item> equippedArmor = new ArrayList<>();
+                    List<ItemStack> equippedArmorStack = new ArrayList<>();
+                    Iterable<ItemStack> armorSlots = player.getArmorSlots();
+                    armorSlots.forEach(s -> equippedArmor.add(s.getItem()));
+                    armorSlots.forEach(equippedArmorStack::add);
+					ResourceLocation key = set.getKey();
+					MutableComponent setBonusText = ModConstants.SET_BONUS.translatable();
+					tooltip.add(Component.empty());
+					tooltip.add(setBonusText.withStyle(set.canActivate(equippedArmorStack) ? ChatFormatting.GREEN : ChatFormatting.GRAY));
+					if (set instanceof AttributeArmorSet attributeArmorSet) {
+						Multimap<Attribute, AttributeModifier> modifiers = attributeArmorSet.getModifiers();
+						tooltip.addAll(gatherModifierTooltips(null, modifiers));
+					}
+					if (set.hasDescription()) {
+						tooltip.add(CommonComponents.space().append(ModConstants.TOOLTIP.withSuffixTranslatable(key.toLanguageKey() + ".desc"))
+							.withStyle(ChatFormatting.DARK_GREEN));
+					}
+					int setSize = set.getArmorPieces().size();
+					boolean[] pieceEquipped = new boolean[setSize];
+					for (int j = 0; j < setSize; j++) {
+						Item armorPiece = set.getArmorPieces().get(j);
+						boolean isEquipped = equippedArmor.contains(armorPiece);
+						pieceEquipped[j] = isEquipped;
+						MutableComponent symbol = Component.literal("(").withStyle(ChatFormatting.DARK_GRAY)
+							.append(isEquipped ? Component.literal("✓").withStyle(ChatFormatting.GREEN) :
+								Component.literal("✗").withStyle(ChatFormatting.RED))
+							.append(")").withStyle(ChatFormatting.DARK_GRAY).append(" ");
+						tooltip.add(symbol.append(Component.translatable(armorPiece.getDescriptionId())
+							.withStyle(isEquipped ? ChatFormatting.GREEN : ChatFormatting.GRAY)));
+					}
+					int equippedCount = (int) Booleans.asList(pieceEquipped).stream().filter(b -> b).count();
+					MutableComponent symbol = Component.literal("☀");
+					MutableComponent piecesEquippedText =
+						ModConstants.SET_BONUS.withSuffixTranslatable("pieces_equipped", equippedCount, setSize)
+							.withStyle(equippedCount < setSize ? ChatFormatting.GRAY : ChatFormatting.GREEN);
+					tooltip.add(CommonComponents.space().append(symbol.append(" ").append(piecesEquippedText)));
+				}
+			}
+            //endregion
         }
+        
     }
     
     private static String formatNumber(double value) {
@@ -424,7 +478,9 @@ public class ClientEvents {
                         if (attr.isStackCorrect(stack)) {
                             Multimap<Attribute, AttributeModifier> modifierMap = attr.getModifiers();
                             if (!modifierMap.isEmpty() && attr.getTypes().contains(type)) {
-                                addModifierTooltip(tooltips, type, modifierMap);
+                                for (Component component : gatherModifierTooltips(ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName()), modifierMap)) {
+                                    tooltips.add(Either.left(component));
+                                }
                             }
                         }
                     }
@@ -457,7 +513,11 @@ public class ClientEvents {
                 typeAttrMap.asMap().forEach((type, modifierMaps) -> {
                     Multimap<Attribute, AttributeModifier> mergedMap = HashMultimap.create();
                     modifierMaps.forEach(mergedMap::putAll);
-                    if (!mergedMap.isEmpty()) addModifierTooltip(tooltips, type, mergedMap);
+                    if (!mergedMap.isEmpty()) {
+                        for (Component component : gatherModifierTooltips(ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName()), mergedMap)) {
+                            tooltips.add(Either.left(component));
+                        }
+                    }
                 });
 			}
             
@@ -499,11 +559,14 @@ public class ClientEvents {
         }
     }
     
-    private static void addModifierTooltip(List<Either<FormattedText, TooltipComponent>> tooltips, CharmType type, Multimap<Attribute, AttributeModifier> modifierMap) {
-        MutableComponent attributeText = ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName())
-            .withStyle(ChatFormatting.GRAY);
-        tooltips.add(Either.left(CommonComponents.EMPTY));
-        tooltips.add(Either.left(attributeText));
+    //private static void addModifierTooltip(List<Either<FormattedText, TooltipComponent>> tooltips, CharmType type, Multimap<Attribute, AttributeModifier> modifierMap) {
+    private static List<Component> gatherModifierTooltips(@Nullable Component header, Multimap<Attribute, AttributeModifier> modifierMap) {
+        List<Component> tooltips = new ArrayList<>();
+        if (header != null){
+            MutableComponent attributeText = header.copy().withStyle(ChatFormatting.GRAY);
+            tooltips.add(CommonComponents.EMPTY);
+            tooltips.add(attributeText);
+        }
         for (Map.Entry<Attribute, AttributeModifier> entry : modifierMap.entries()) {
             Attribute attribute = entry.getKey();
             AttributeModifier modifier = entry.getValue();
@@ -519,8 +582,9 @@ public class ClientEvents {
                     ItemStack.ATTRIBUTE_MODIFIER_FORMAT.format(formattedAmount),
                     Component.translatable(attribute.getDescriptionId())).withStyle(ChatFormatting.BLUE);
             }
-            if (formattedAmount != 0) tooltips.add(Either.left(modifierText));
+            if (formattedAmount != 0) tooltips.add(modifierText);
         }
+        return tooltips;
     }
 
     private static double getFormattedAmount(AttributeModifier modifier, Attribute attribute) {

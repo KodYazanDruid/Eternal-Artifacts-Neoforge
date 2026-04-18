@@ -1,10 +1,16 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
+import com.google.common.collect.HashMultimap;
+import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehaviorRegistry;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSetRegistry;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSets;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.ArmorSet;
+import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.AttributeArmorSet;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineEnchants;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -13,16 +19,14 @@ import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterFarmBehaviorEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
-import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.npc.VillagerProfession;
-import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -30,7 +34,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -38,15 +41,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.apache.commons.lang3.ArrayUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
+import java.util.UUID;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -76,6 +77,37 @@ FMLCommonSetup {
             TesseractNetwork.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
             ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
             ModLoader.get().postEvent(new RegisterFarmBehaviorEvent());
+            
+            ArmorSetRegistry.registerArmorSetBonus(new ArmorSet(ArmorSets.CACTUS_ARMOR, List.of(
+                ModItems.CACTUS_HELMET.get(),
+                ModItems.CACTUS_CHESTPLATE.get(),
+                ModItems.CACTUS_LEGGINGS.get(),
+                ModItems.CACTUS_BOOTS.get()
+            )), living -> {});
+            
+            AttributeModifier steelArmor = new AttributeModifier(UUID.fromString("e1d8cd55-4b29-47a9-afc0-507f82c846b4"),"Eternal Artifacts Steel Armor Bonus", 2.0, AttributeModifier.Operation.ADDITION);
+            AttributeModifier steelArmorToughness = new AttributeModifier(UUID.fromString("180a53c9-7d14-4b65-885b-05284d768edf"),"Eternal Artifacts Steel Armor Toughness Bonus", 2.0, AttributeModifier.Operation.ADDITION);
+            HashMultimap<Attribute, AttributeModifier> steelArmorAttributes = HashMultimap.create();
+            steelArmorAttributes.put(Attributes.ARMOR, steelArmor);
+            steelArmorAttributes.put(Attributes.ARMOR_TOUGHNESS, steelArmorToughness);
+            AttributeArmorSet steelSetBonus = new AttributeArmorSet(ArmorSets.STEEL_ARMOR, List.of(
+                ModItems.STEEL_HELMET.get(),
+                ModItems.STEEL_CHESTPLATE.get(),
+                ModItems.STEEL_LEGGINGS.get(),
+                ModItems.STEEL_BOOTS.get()
+            ), steelArmorAttributes);
+            ArmorSetRegistry.registerArmorSetBonus(steelSetBonus, living -> {});
+            
+            AttributeModifier shulkerKnockRes = new AttributeModifier(UUID.fromString("3b8ab916-7eb4-486c-9c3c-9b05f82ede12"), "Eternal Artifacts Knockback Resistance", 0.5, AttributeModifier.Operation.ADDITION);
+            HashMultimap<Attribute, AttributeModifier> shulkerArmorAttributes = HashMultimap.create();
+            shulkerArmorAttributes.put(Attributes.KNOCKBACK_RESISTANCE, shulkerKnockRes);
+            ArmorSetRegistry.registerArmorSetBonus(new AttributeArmorSet(ArmorSets.SHULKER_ARMOR, List.of(
+                ModItems.SHULKER_HELMET.get(),
+                ModItems.SHULKER_CHESTPLATE.get(),
+                ModItems.SHULKER_LEGGINGS.get(),
+                ModItems.SHULKER_BOOTS.get()
+            ), shulkerArmorAttributes), living -> {});
+            
         });
         
         MachineEnchants.bootstrap();

@@ -27,7 +27,7 @@ public class MaterialSqueezer extends GenericMachine {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         if (recipe instanceof SqueezingRecipe squeezing) {
             condition
                 .initOutputTank(tank)
@@ -35,7 +35,6 @@ public class MaterialSqueezer extends GenericMachine {
                 .queueImport(squeezing.getOutputFluid())
                 .commitQueuedImports();
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

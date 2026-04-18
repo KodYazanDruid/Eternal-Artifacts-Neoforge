@@ -1,4 +1,4 @@
-// 1.20.4	2026-03-21T22:34:09.9755705	Item Models: eternalartifacts
+// 1.20.4	2026-04-16T18:37:13.2312883	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -30,9 +30,14 @@ db8b9c9664f4691f8d51eb49b90fbd131328adb7 assets/eternalartifacts/models/item/blo
 97c8edd3885a1a66a113fd397ebfd3371d838472 assets/eternalartifacts/models/item/blue_shulker_shell.json
 6c6e6bc40f3a6d64989c101404960392f9485459 assets/eternalartifacts/models/item/book_duplicator.json
 e70beb239a80ccc545f14a4567b781cf9b22eaad assets/eternalartifacts/models/item/bottler.json
+9ea762b82940e80516fd50396c18e6c62bd34d9f assets/eternalartifacts/models/item/bouncing_honey_tome.json
 a4ff47382565473dbee87cf9b28ca93ef7a781ef assets/eternalartifacts/models/item/bronze_dust.json
 6cc211a25464771fc73581c9c8bd56538fb0d400 assets/eternalartifacts/models/item/bronze_ingot.json
 99b2120fbccd04d0be8a7d1646939253c1873aa8 assets/eternalartifacts/models/item/brown_shulker_shell.json
+33c21f8a71376020805ebb955423131773f9d8d5 assets/eternalartifacts/models/item/cactus_boots.json
+798aebc2f839fe53bb3ee97491ade9e0b636af06 assets/eternalartifacts/models/item/cactus_chestplate.json
+59d95e6c5f1bf8f12134bd64753ea07ebe598bb2 assets/eternalartifacts/models/item/cactus_helmet.json
+b5f1eb975d5f839c65d2a7912d6412ff1903974c assets/eternalartifacts/models/item/cactus_leggings.json
 8c3d7741eed512a28b94ac3b1b4983bb9d63c60f assets/eternalartifacts/models/item/capacitor.json
 ba4a3361a0134f9fab34b252ee5a769adc1be103 assets/eternalartifacts/models/item/carbon_paper.json
 6d52c2a913b67814033c91dc8ce2c6443b549d12 assets/eternalartifacts/models/item/charcoal_dust.json
@@ -125,6 +130,7 @@ aacc7bfbd55fdadd7c80564d09b771af14875eaf assets/eternalartifacts/models/item/gol
 db3a3dd7934801c74cef3b2261d40a0d14d9a5ff assets/eternalartifacts/models/item/golden_hammer.json
 1f279021854dc538c0e010e39f7583a21aecb6f6 assets/eternalartifacts/models/item/golden_sickle.json
 f205ffc0053ae6f777a86c20272de724bdb8d54b assets/eternalartifacts/models/item/gold_drum.json
+1839508142ecef3c703b97c54cd5cbe24ae0b220 assets/eternalartifacts/models/item/gold_key.json
 df2644d1984cf0b62f3bdc77fde033a2e0818907 assets/eternalartifacts/models/item/gold_oreberry.json
 20d21c39c19c51e80328abe3103e4c9229641fee assets/eternalartifacts/models/item/gold_ring.json
 bbc068e61f4ca3d7bb315614a2d2cca1a6d00bdb assets/eternalartifacts/models/item/grafter.json
@@ -282,6 +288,7 @@ e5e8de1d419d37a6c993e3a407c46792def7ba9d assets/eternalartifacts/models/item/tin
 b086a9849021bb1a8347f638eeae801bf3220b47 assets/eternalartifacts/models/item/tornado_tome.json
 7174e60861b4a6d89959e35e065edbc27e4d8279 assets/eternalartifacts/models/item/trash_can.json
 2bd3e2173deb7fa7df8d5c4df0924d25fdd56cb0 assets/eternalartifacts/models/item/unpacker.json
+fd232d790ab05f3ae2e57d25ffe1d64184691e47 assets/eternalartifacts/models/item/voidlock_tome.json
 6a6b415b1c67194bab37480a24f34547b50f568b assets/eternalartifacts/models/item/white_shulker_shell.json
 cc8abe6c0bc099bb8b46cbb52306bc83c959fd5c assets/eternalartifacts/models/item/withering_sword.json
 3382de9f97e8d789fbb67c48255c8beac3995347 assets/eternalartifacts/models/item/wooden_cutlass.json

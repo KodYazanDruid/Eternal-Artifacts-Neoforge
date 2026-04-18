@@ -35,16 +35,8 @@ public class DivineProtectionSpell extends Spell {
             if (entity == null) return false;
             if (entity == caster) return true;
             if (entity instanceof Player) return true;
-            if (entity instanceof OwnableEntity ownable && ownable.getOwner() == caster) return true;
-            
-            if (entity.getType() == EntityType.WOLF || entity.getType() == EntityType.CAT ||
-                entity.getType() == EntityType.PARROT || entity.getType() == EntityType.HORSE ||
-                entity.getType() == EntityType.DONKEY || entity.getType() == EntityType.MULE ||
-                entity.getType() == EntityType.LLAMA) {
-                return entity instanceof OwnableEntity ownable && ownable.getOwner() == caster;
-            }
-            return false;
-        });
+			return entity instanceof OwnableEntity ownable && ownable.getOwner() == caster;
+		});
 
         for (LivingEntity entity : nearbyEntities) {
             entity.heal(healingAmount);
@@ -52,7 +44,6 @@ public class DivineProtectionSpell extends Spell {
             entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 1));
         }
 
-        // Visual/sound effects could be added here
         // level.playSound(null, caster.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 1.0f, 1.0f);
 
         return true;

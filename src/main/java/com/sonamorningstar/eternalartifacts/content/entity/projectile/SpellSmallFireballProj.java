@@ -9,15 +9,15 @@ import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 
-public class SpellSmallFireball extends SmallFireball {
+public class SpellSmallFireballProj extends SmallFireball {
     private float damage;
 
-    public SpellSmallFireball(Level level, LivingEntity shooter, double dx, double dy, double dz, float damage) {
+    public SpellSmallFireballProj(Level level, LivingEntity shooter, double dx, double dy, double dz, float damage) {
         super(level, shooter, dx, dy, dz);
         this.damage = damage;
     }
 
-    public SpellSmallFireball(EntityType<? extends SpellSmallFireball> type, Level level) {
+    public SpellSmallFireballProj(EntityType<? extends SpellSmallFireballProj> type, Level level) {
         super(type, level);
     }
 

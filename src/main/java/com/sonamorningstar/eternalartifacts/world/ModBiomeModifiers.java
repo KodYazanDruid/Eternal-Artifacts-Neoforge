@@ -7,6 +7,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.Structures;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
@@ -16,9 +17,12 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.BiomeModifier;
 import net.neoforged.neoforge.common.world.BiomeModifiers;
+import net.neoforged.neoforge.common.world.StructureModifiers;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
@@ -59,6 +63,7 @@ public class ModBiomeModifiers {
     
     public static final ResourceKey<BiomeModifier> SPAWN_DUCK = registerKey("spawn", "spawn_duck");
     public static final ResourceKey<BiomeModifier> SPAWN_DEMON_EYE = registerKey("spawn", "spawn_demon_eye");
+    public static final ResourceKey<BiomeModifier> SPAWN_SOUL_BLAZE = registerKey("spawn", "spawn_soul_blaze");
     
     public static final Map<String, ResourceKey<BiomeModifier>> ORE_BERRY_MODIFIERS = Util.make(new HashMap<>(), map -> {
         for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
@@ -74,74 +79,78 @@ public class ModBiomeModifiers {
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         HolderGetter<PlacedFeature> placedFeatures = context.lookup(Registries.PLACED_FEATURE);
         HolderGetter<ConfiguredWorldCarver<?>> configuredCarver = context.lookup(Registries.CONFIGURED_CARVER);
-        HolderGetter<Biome> biome = context.lookup(Registries.BIOME);
+        HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
         
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_MANGANESE_ORE, ModPlacedFeatures.PLACED_GRAVEL_MANGANESE_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_COAL_ORE, ModPlacedFeatures.PLACED_GRAVEL_COAL_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_COPPER_ORE, ModPlacedFeatures.PLACED_GRAVEL_COPPER_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_IRON_ORE, ModPlacedFeatures.PLACED_GRAVEL_IRON_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_GOLD_ORE, ModPlacedFeatures.PLACED_GRAVEL_GOLD_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_DIAMOND_ORE, ModPlacedFeatures.PLACED_GRAVEL_DIAMOND_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_EMERALD_ORE, ModPlacedFeatures.PLACED_GRAVEL_EMERALD_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_REDSTONE_ORE, ModPlacedFeatures.PLACED_GRAVEL_REDSTONE_ORE);
-        registerGravelOre(context, placedFeatures, biome, ADD_GRAVEL_LAPIS_ORE, ModPlacedFeatures.PLACED_GRAVEL_LAPIS_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_COAL_ORE, ModPlacedFeatures.PLACED_MOSS_COAL_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_COPPER_ORE, ModPlacedFeatures.PLACED_MOSS_COPPER_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_IRON_ORE, ModPlacedFeatures.PLACED_MOSS_IRON_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_GOLD_ORE, ModPlacedFeatures.PLACED_MOSS_GOLD_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_DIAMOND_ORE, ModPlacedFeatures.PLACED_MOSS_DIAMOND_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_EMERALD_ORE, ModPlacedFeatures.PLACED_MOSS_EMERALD_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_REDSTONE_ORE, ModPlacedFeatures.PLACED_MOSS_REDSTONE_ORE);
-        registerMossOre(context, placedFeatures, biome, ADD_MOSS_LAPIS_ORE, ModPlacedFeatures.PLACED_MOSS_LAPIS_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_MANGANESE_ORE, ModPlacedFeatures.PLACED_GRAVEL_MANGANESE_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_COAL_ORE, ModPlacedFeatures.PLACED_GRAVEL_COAL_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_COPPER_ORE, ModPlacedFeatures.PLACED_GRAVEL_COPPER_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_IRON_ORE, ModPlacedFeatures.PLACED_GRAVEL_IRON_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_GOLD_ORE, ModPlacedFeatures.PLACED_GRAVEL_GOLD_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_DIAMOND_ORE, ModPlacedFeatures.PLACED_GRAVEL_DIAMOND_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_EMERALD_ORE, ModPlacedFeatures.PLACED_GRAVEL_EMERALD_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_REDSTONE_ORE, ModPlacedFeatures.PLACED_GRAVEL_REDSTONE_ORE);
+        registerGravelOre(context, placedFeatures, biomes, ADD_GRAVEL_LAPIS_ORE, ModPlacedFeatures.PLACED_GRAVEL_LAPIS_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_COAL_ORE, ModPlacedFeatures.PLACED_MOSS_COAL_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_COPPER_ORE, ModPlacedFeatures.PLACED_MOSS_COPPER_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_IRON_ORE, ModPlacedFeatures.PLACED_MOSS_IRON_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_GOLD_ORE, ModPlacedFeatures.PLACED_MOSS_GOLD_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_DIAMOND_ORE, ModPlacedFeatures.PLACED_MOSS_DIAMOND_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_EMERALD_ORE, ModPlacedFeatures.PLACED_MOSS_EMERALD_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_REDSTONE_ORE, ModPlacedFeatures.PLACED_MOSS_REDSTONE_ORE);
+        registerMossOre(context, placedFeatures, biomes, ADD_MOSS_LAPIS_ORE, ModPlacedFeatures.PLACED_MOSS_LAPIS_ORE);
         context.register(ADD_MANGANESE_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MANGANESE_ORE_MIDDLE)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         context.register(ADD_MANGANESE_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MANGANESE_ORE_SMALL)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         context.register(ADD_TIN_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_TIN_ORE_MIDDLE)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         context.register(ADD_TIN_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_TIN_ORE_SMALL)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         context.register(ADD_ALUMINUM_ORE_MEDIUM, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_ALUMINUM_ORE_MIDDLE)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         context.register(ADD_ALUMINUM_ORE_SMALL, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_ALUMINUM_ORE_SMALL)),
                 GenerationStep.Decoration.UNDERGROUND_ORES));
         context.register(ADD_MARIN_ORE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_NETHER),
+                biomes.getOrThrow(BiomeTags.IS_NETHER),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_MARIN_ORE)),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION));
         
         context.register(ADD_TIGRIS_FLOWERS, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(Tags.Biomes.IS_SWAMP),
+                biomes.getOrThrow(Tags.Biomes.IS_SWAMP),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.PLACED_TIGRIS_FLOWER)),
                 GenerationStep.Decoration.VEGETAL_DECORATION));
         context.register(CRUDE_OIL_LAKE_DEEPSLATE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.CRUDE_OIL_LAKE_DEEPSLATE)),
                 GenerationStep.Decoration.LAKES));
         context.register(CRUDE_OIL_LAKE_SURFACE, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.CRUDE_OIL_SURFACE)),
                 GenerationStep.Decoration.LAKES));
 
         context.register(SPAWN_DUCK, new BiomeModifiers.AddSpawnsBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_FOREST),
+                biomes.getOrThrow(BiomeTags.IS_FOREST),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.DUCK.get(), 10, 4, 4))
         ));
         context.register(SPAWN_DEMON_EYE, new BiomeModifiers.AddSpawnsBiomeModifier(
-                HolderSet.direct(biome.getOrThrow(Biomes.CRIMSON_FOREST)),
+                HolderSet.direct(biomes.getOrThrow(Biomes.CRIMSON_FOREST)),
                 List.of(new MobSpawnSettings.SpawnerData(ModEntities.DEMON_EYE.get(), 10, 2, 6))
+        ));
+        context.register(SPAWN_SOUL_BLAZE, new BiomeModifiers.AddSpawnsBiomeModifier(
+                HolderSet.direct(biomes.getOrThrow(Biomes.SOUL_SAND_VALLEY)),
+                List.of(new MobSpawnSettings.SpawnerData(ModEntities.SOUL_BLAZE.get(), 10, 2, 4))
         ));
         
         for (DeferredBlock<?> oreBerry : ModBlocks.ORE_BERRIES) {
@@ -149,7 +158,7 @@ public class ModBiomeModifiers {
             ResourceKey<BiomeModifier> modifierKey = ORE_BERRY_MODIFIERS.get(name);
             ResourceKey<PlacedFeature> placedKey = ModPlacedFeatures.ORE_BERRY_PLACED.get(name);
             context.register(modifierKey, new BiomeModifiers.AddFeaturesBiomeModifier(
-                biome.getOrThrow(BiomeTags.IS_OVERWORLD),
+                biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(placedKey)),
                 GenerationStep.Decoration.UNDERGROUND_DECORATION));
         }

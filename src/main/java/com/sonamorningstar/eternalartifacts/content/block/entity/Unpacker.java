@@ -23,7 +23,7 @@ public class Unpacker extends GenericMachine {
 	
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		ItemStack input = inventory.getStackInSlot(0);
 		if (!input.isEmpty() && UnpackerRecipeCache.hasRecipe(input.getItem())) {
 			ItemStack output = UnpackerRecipeCache
@@ -31,7 +31,6 @@ public class Unpacker extends GenericMachine {
 				.toStack();
 			condition.queueImport(output).commitQueuedImports();
 		}
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override

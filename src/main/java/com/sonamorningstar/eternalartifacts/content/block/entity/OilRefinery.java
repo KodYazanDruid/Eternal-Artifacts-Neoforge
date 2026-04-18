@@ -45,7 +45,7 @@ public class OilRefinery extends GenericMachine {
     }
     
     @Override
-    public void setProcessCondition(ProcessCondition processCondition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition processCondition, @Nullable Recipe<?> recipe) {
         FluidStack diesel = ModFluids.DIESEL.getFluidStack(20);
         FluidStack gasoline = ModFluids.GASOLINE.getFluidStack(25);
         FluidStack naphtha = ModFluids.NAPHTHA.getFluidStack(15);
@@ -58,7 +58,6 @@ public class OilRefinery extends GenericMachine {
             .commitQueuedImports()
             .initInputTank(tank.get(0))
             .tryExtractFluidForced(consume);
-        super.setProcessCondition(processCondition, recipe);
     }
     
     @Override

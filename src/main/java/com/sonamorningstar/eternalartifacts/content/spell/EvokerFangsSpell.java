@@ -22,7 +22,6 @@ public class EvokerFangsSpell extends Spell {
 
     @Override
     public boolean cast(ItemStack tome, LivingEntity caster, InteractionHand hand, Level level, RandomSource random, float amplifiedDamage) {
-        //ItemStack tomeStack = caster.getItemInHand(hand);
         if (!(caster instanceof Player) || (caster instanceof Player player && !player.getCooldowns().isOnCooldown(tome.getItem()))){
             Vec3 looking = caster.getLookAngle();
             Vec3[] all = new Vec3[]{looking, looking.yRot(0.22f), looking.yRot(-0.22f)};
@@ -33,7 +32,6 @@ public class EvokerFangsSpell extends Spell {
                     this.spawnFangs(caster, caster.getX() + (double) Mth.cos(f) * d2, caster.getZ() + (double) Mth.sin(f) * d2, caster.getY() - 1, caster.getY() + 1, f, i * 5, amplifiedDamage);
                 }
             }
-            //if (caster instanceof Player player && cooldown > 0) player.getCooldowns().addCooldown(tome.getItem(), cooldown);
             return true;
         }
         return false;

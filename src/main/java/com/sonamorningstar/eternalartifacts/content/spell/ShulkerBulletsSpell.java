@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.spell;
 
-import com.sonamorningstar.eternalartifacts.content.entity.projectile.SpellShulkerBullet;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.SpellShulkerBulletProj;
 import com.sonamorningstar.eternalartifacts.content.spell.base.AbstractProjectileSpell;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -17,10 +17,10 @@ public class ShulkerBulletsSpell extends AbstractProjectileSpell {
     @Override
     protected Projectile createProjectile(Level level, LivingEntity caster, float amplifiedDamage, HitResult result, Vec3 shootVector) {
         if (caster.isShiftKeyDown()) {
-            return new SpellShulkerBullet(level, caster, caster.getLookAngle(), amplifiedDamage);
+            return new SpellShulkerBulletProj(level, caster, caster.getLookAngle(), amplifiedDamage);
         }
         if (result instanceof EntityHitResult entityResult && entityResult.getEntity() instanceof LivingEntity target) {
-            return new SpellShulkerBullet(level, caster, target, caster.getDirection().getAxis(), amplifiedDamage);
+            return new SpellShulkerBulletProj(level, caster, target, caster.getDirection().getAxis(), amplifiedDamage);
         }
         return null;
     }

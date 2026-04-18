@@ -1,8 +1,9 @@
-// 1.20.4	2025-10-28T20:28:54.7095389	Tags for minecraft:entity_type mod id eternalartifacts
+// 1.20.4	2026-03-30T18:42:07.6900001	Tags for minecraft:entity_type mod id eternalartifacts
 a37c8a7cf9e25ba9178196b0552e6c5e79567ffa data/eternalartifacts/tags/entity_types/catalogue_blacklisted.json
 a37c8a7cf9e25ba9178196b0552e6c5e79567ffa data/eternalartifacts/tags/entity_types/cutlass_spawn_egg_blacklisted.json
 a37c8a7cf9e25ba9178196b0552e6c5e79567ffa data/eternalartifacts/tags/entity_types/execute_blacklisted.json
 ccadccb20f5e855cd71855c18b02afb9c0527e53 data/eternalartifacts/tags/entity_types/morph_blacklisted.json
 a6c6f10815b8e27c3fceb47a6b5290fb86dc7bb6 data/minecraft/tags/entity_types/arrows.json
-690761e566be83c876dcbac892c881cca923db5d data/minecraft/tags/entity_types/fall_damage_immune.json
+48f60d82a23345c9a7cc17b6a79977250f3b1f4c data/minecraft/tags/entity_types/fall_damage_immune.json
+6d25fcb71bd337667fb1025215e5098e71557fd2 data/minecraft/tags/entity_types/freeze_hurts_extra_types.json
 4a0e48ca7cf1ccd24735d9b5409beb4246811bb0 data/minecraft/tags/entity_types/frog_food.json

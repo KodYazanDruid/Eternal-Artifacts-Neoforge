@@ -15,9 +15,8 @@ void main() {
 
     float radius = 0.15;
 
-    // Event Horizon (tam siyah merkez)
     if (dist < radius) {
-        fragColor = vec4(0.0, 0.0, 0.0, 1.0);
+        fragColor = vec4(0.5, 0.5, 0.5, 1.0);
         //return;
     }
 

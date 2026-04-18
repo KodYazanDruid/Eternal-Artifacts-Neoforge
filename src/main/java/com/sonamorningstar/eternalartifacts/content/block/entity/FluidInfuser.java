@@ -27,7 +27,7 @@ public class FluidInfuser extends GenericMachine {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         if (recipe instanceof FluidInfuserRecipe fluidInfuser) {
             condition
                 .initInputTank(tank)
@@ -35,7 +35,6 @@ public class FluidInfuser extends GenericMachine {
                 .queueImport(fluidInfuser.getOutput())
                 .commitQueuedImports();
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

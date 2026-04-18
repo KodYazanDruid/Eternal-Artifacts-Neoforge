@@ -27,7 +27,7 @@ public class Solidifier extends GenericMachine {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         if (recipe instanceof SolidifierRecipe solidifier) {
             condition.initInputTank(tank)
                 .initOutputTank(tank)
@@ -35,7 +35,6 @@ public class Solidifier extends GenericMachine {
                 .commitQueuedImports();
                 
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

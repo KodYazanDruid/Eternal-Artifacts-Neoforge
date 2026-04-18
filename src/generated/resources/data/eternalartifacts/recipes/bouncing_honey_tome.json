@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:honey_ball"
+    },
+    "I": {
+      "tag": "forge:ingots/gold"
+    },
+    "P": {
+      "item": "eternalartifacts:glow_ink_dust"
+    },
+    "T": {
+      "item": "eternalartifacts:tome"
+    }
+  },
+  "pattern": [
+    "CIC",
+    "PTP",
+    "CIC"
+  ],
+  "result": {
+    "item": "eternalartifacts:bouncing_honey_tome"
+  }
+}

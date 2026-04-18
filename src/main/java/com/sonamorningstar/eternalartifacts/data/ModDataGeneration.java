@@ -54,5 +54,6 @@ public class ModDataGeneration {
         dataGenerator.addProvider(event.includeServer(), new DamageTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new BlockEntityTagsProvider(packOutput, lookupProvider, existingFileHelper));
         dataGenerator.addProvider(event.includeServer(), new PoiTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
+        dataGenerator.addProvider(event.includeServer(), new AdvancementProvider(packOutput, lookupProvider, existingFileHelper));
     }
 }

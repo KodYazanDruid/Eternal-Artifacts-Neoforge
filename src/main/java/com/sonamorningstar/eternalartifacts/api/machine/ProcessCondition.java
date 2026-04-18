@@ -54,22 +54,22 @@ public class ProcessCondition {
         if (!queuedFluidStackImports.isEmpty()) commitQueuedFluidStackImports();
         return this;
     }
+    
     public ProcessCondition commitQueuedItemStackImports() {
         if(shouldAbort == null || !shouldAbort.getAsBoolean()) {
             SimpleContainer container = new SimpleContainer(outputSlots.size());
-            for (int i = 0; i < outputSlots.size(); i++) container.setItem(i, inventory.getStackInSlot(outputSlots.get(i)).copy());
-            for (int i = 0; i < queuedItemStackImports.size(); i++) {
-                if (i >= container.getContainerSize()) {
-                    shouldAbort = abort();
-                    return this;
-                }
-                ItemStack remainder = container.addItem(queuedItemStackImports.get(i));
+            for (int i = 0; i < outputSlots.size(); i++) {
+                container.setItem(i, inventory.getStackInSlot(outputSlots.get(i)).copy());
+            }
+            
+            for (ItemStack queuedStack : queuedItemStackImports) {
+                ItemStack remainder = container.addItem(queuedStack.copy());
                 if (!remainder.isEmpty()) {
                     shouldAbort = abort();
                     return this;
                 }
-                shouldAbort = () -> !remainder.isEmpty();
             }
+            shouldAbort = noCondition();
         }
         return this;
     }
@@ -80,25 +80,22 @@ public class ProcessCondition {
                 shouldAbort = abort();
                 return this;
             }
+            
             SimpleFluidContainer container = new SimpleFluidContainer(outputTank.getTanks());
             container.setFixedSize(true);
             for(int i = 0; i < outputTank.getTanks(); i++) {
                 container.setFluidStack(i, outputTank.getFluid(i).copy());
                 container.setCapacity(outputTank.getFluid(i).getFluid(), outputTank.getTankCapacity(i));
             }
-            for(int i = 0; i < queuedFluidStackImports.size(); i++) {
-                if (i >= container.getContainerSize()) {
-                    shouldAbort = abort();
-                    return this;
-                }
-                FluidStack queuedStack = queuedFluidStackImports.get(i);
-                FluidStack remainder = container.addFluid(queuedStack);
+            
+            for (FluidStack queuedStack : queuedFluidStackImports) {
+                FluidStack remainder = container.addFluid(queuedStack.copy());
                 if (!remainder.isEmpty()) {
                     shouldAbort = abort();
                     return this;
                 }
-                shouldAbort = () -> !remainder.isEmpty();
             }
+            shouldAbort = noCondition();
         }
         return this;
     }

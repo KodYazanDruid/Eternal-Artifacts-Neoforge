@@ -161,7 +161,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged() {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 sendUpdate();
                 for (Runnable runnable : listeners) runnable.run();
@@ -175,7 +175,7 @@ public class ModBlockEntity extends BlockEntity {
             protected void onContentsChanged() {
                 findRecipe();
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 sendUpdate();
             }
@@ -187,7 +187,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged() {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 sendUpdate();
                 for (Runnable runnable : listeners) runnable.run();
@@ -209,7 +209,7 @@ public class ModBlockEntity extends BlockEntity {
             protected void onContentsChanged() {
                 findRecipe();
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 sendUpdate();
             }
@@ -229,7 +229,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged() {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 sendUpdate();
                 for (Runnable runnable : run) runnable.run();
@@ -251,7 +251,7 @@ public class ModBlockEntity extends BlockEntity {
             protected void onContentsChanged() {
                 findRecipe();
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 sendUpdate();
             }
@@ -290,7 +290,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
                 ModBlockEntity.this.sendUpdate();
@@ -308,7 +308,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 for (IntConsumer consumer : consumers) consumer.accept(slot);
                 ModBlockEntity.this.sendUpdate();
@@ -328,7 +328,7 @@ public class ModBlockEntity extends BlockEntity {
                     findRecipe();
                 }
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 super.onContentsChanged(slot);
                 ModBlockEntity.this.sendUpdate();
@@ -346,7 +346,7 @@ public class ModBlockEntity extends BlockEntity {
             @Override
             protected void onContentsChanged(int slot) {
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 super.onContentsChanged(slot);
                 ModBlockEntity.this.sendUpdate();
@@ -369,7 +369,7 @@ public class ModBlockEntity extends BlockEntity {
             protected void onContentsChanged(int slot) {
                 findRecipe();
                 if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.setProcessCondition(new ProcessCondition(machine), RecipeCache.getCachedRecipe(machine));
+                    machine.updateProcessCondition();
                 }
                 super.onContentsChanged(slot);
                 ModBlockEntity.this.sendUpdate();

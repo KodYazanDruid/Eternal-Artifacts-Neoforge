@@ -19,8 +19,8 @@ public class LootTableReferenceMixin {
 	@Shadow
 	public ResourceLocation name;
 	
-	@WrapOperation(method = "createItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItemsRaw(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V"))
+	/*@WrapOperation(method = "createItemStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/storage/loot/LootTable;getRandomItemsRaw(Lnet/minecraft/world/level/storage/loot/LootContext;Ljava/util/function/Consumer;)V"))
 	public void createItemStack(LootTable instance, LootContext consumer, Consumer<ItemStack> itemStackConsumer, Operation<Void> original) {
 		instance.getRandomItems(consumer, itemStackConsumer);
-	}
+	}*/
 }

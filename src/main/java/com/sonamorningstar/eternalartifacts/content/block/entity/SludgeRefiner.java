@@ -95,7 +95,7 @@ public class SludgeRefiner extends GenericMachine {
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		if (cachedTableId != null && getLevel() instanceof ServerLevel sLevel) {
 			Map<Item, Pair<Float, Float>> itemsWithCounts = LootTableHelper.getItemsWithCounts(sLevel, cachedTableId);
 			itemsWithCounts.forEach((item, countPair) -> {
@@ -103,7 +103,6 @@ public class SludgeRefiner extends GenericMachine {
 			});
 			condition.commitQueuedImports();
 		}
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override

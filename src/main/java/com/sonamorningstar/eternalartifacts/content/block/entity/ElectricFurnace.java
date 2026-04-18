@@ -22,13 +22,12 @@ public class ElectricFurnace extends MultiFurnace<ElectricFurnaceMenu> {
     }
     
     @Override
-    public void setProcessCondition(ProcessCondition condition, Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, Recipe<?> recipe) {
         if (recipe != null && level != null) {
             ItemStack result = ((Recipe<Container>) recipe).assemble(recipeContainer.get(), level.registryAccess()).copy();
             result.onCraftedBySystem(level);
             condition.queueImport(result).commitQueuedItemStackImports();
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

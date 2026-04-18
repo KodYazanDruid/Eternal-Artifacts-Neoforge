@@ -41,12 +41,11 @@ public class FluidMixer extends GenericMachine {
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		if (recipe instanceof FluidMixingRecipe mixing) {
 			condition.initOutputTank(tank.get(2))
 				.queueImport(mixing.output()).commitQueuedFluidStackImports();
 		}
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override

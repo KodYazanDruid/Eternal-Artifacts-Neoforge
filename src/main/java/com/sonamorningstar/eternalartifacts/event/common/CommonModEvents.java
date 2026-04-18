@@ -207,7 +207,8 @@ public class CommonModEvents {
         event.put(ModEntities.PINKY.get(), PinkyEntity.createAttributes().build());
         event.put(ModEntities.MAGICAL_BOOK.get(), MagicalBookEntity.createAttributes().build());
         event.put(ModEntities.HONEY_SLIME.get(), Monster.createMonsterAttributes().build());
-        event.put(ModEntities.SOUL_BLAZE.get(), Blaze.createAttributes().build());
+        event.put(ModEntities.SOUL_BLAZE.get(), SoulBlaze.createAttributes().build());
+        event.put(ModEntities.MIMIC.get(), MimicEntity.createAttributes().build());
 
         event.put(ModEntities.DUCK.get(), DuckEntity.createAttributes().build());
         event.put(ModEntities.CHARGED_SHEEP.get(), ChargedSheepEntity.createAttributes().build());
@@ -300,6 +301,8 @@ public class CommonModEvents {
     public static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
         event.register(ModEntities.DUCK.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
         event.register(ModEntities.DEMON_EYE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        event.register(ModEntities.SOUL_BLAZE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkAnyLightMonsterSpawnRules, SpawnPlacementRegisterEvent.Operation.OR);
+        
     }
 
     @SubscribeEvent

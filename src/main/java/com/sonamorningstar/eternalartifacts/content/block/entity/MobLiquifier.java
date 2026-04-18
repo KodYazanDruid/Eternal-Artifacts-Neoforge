@@ -110,13 +110,12 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         if (recipe instanceof MobLiquifierRecipe liq) {
             condition.initOutputTank(tank);
             for (FluidStack stack : liq.getResultFluidList()) condition.queueImport(stack);
             condition.commitQueuedFluidStackImports();
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override
@@ -140,7 +139,7 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
             findRecipe();
             recipe = (MobLiquifierRecipe) RecipeCache.getCachedRecipe(this);
             if(recipe == null) continue;
-            setProcessCondition(new ProcessCondition(this), recipe);
+            updateProcessCondition();
             if(recipe.getEntity().test(living.getType())) {
                 entityToHurt = living;
                 break;

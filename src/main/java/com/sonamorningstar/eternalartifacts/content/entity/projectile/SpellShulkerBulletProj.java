@@ -15,12 +15,12 @@ import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class SpellShulkerBullet extends ShulkerBullet {
+public class SpellShulkerBulletProj extends ShulkerBullet {
     private float damage;
     private boolean straightShot = false;
     private Vec3 shootDirection;
 
-    public SpellShulkerBullet(Level level, LivingEntity shooter, @Nullable Entity target, Direction.Axis axis, float damage) {
+    public SpellShulkerBulletProj(Level level, LivingEntity shooter, @Nullable Entity target, Direction.Axis axis, float damage) {
         super(level, shooter, target, axis);
         this.damage = damage;
     }
@@ -28,14 +28,14 @@ public class SpellShulkerBullet extends ShulkerBullet {
     /**
      * Creates a straight-flying shulker bullet with no homing target.
      */
-    public SpellShulkerBullet(Level level, LivingEntity shooter, Vec3 direction, float damage) {
+    public SpellShulkerBulletProj(Level level, LivingEntity shooter, Vec3 direction, float damage) {
         super(level, shooter, null, Direction.Axis.X);
         this.damage = damage;
         this.straightShot = true;
         this.shootDirection = direction.normalize();
     }
 
-    public SpellShulkerBullet(EntityType<? extends SpellShulkerBullet> type, Level level) {
+    public SpellShulkerBulletProj(EntityType<? extends SpellShulkerBulletProj> type, Level level) {
         super(type, level);
     }
 

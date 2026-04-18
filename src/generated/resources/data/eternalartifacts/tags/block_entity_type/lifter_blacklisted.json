@@ -1,6 +1,6 @@
 {
   "values": [
-    "eternalartifacts:pumpjack",
-    "eternalartifacts:generator"
+    "eternalartifacts:generator",
+    "eternalartifacts:pumpjack"
   ]
 }

@@ -76,8 +76,7 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                             pattern.findRecipe(level);
                         }
                     } else pattern = null;
-                } else setProcessCondition(new ProcessCondition(AdvancedCrafter.this),
-                    RecipeCache.getCachedRecipe(AdvancedCrafter.this));
+                } else updateProcessCondition();
                 AdvancedCrafter.this.sendUpdate();
             }
             @Override
@@ -222,7 +221,7 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @org.jetbrains.annotations.Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @org.jetbrains.annotations.Nullable Recipe<?> recipe) {
         if (recipe instanceof CraftingRecipe craftingRecipe) {
             if (pattern != null) {
                 pattern.findRecipe(level);
@@ -236,7 +235,6 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
             condition.queueImport(craftingRecipe.getResultItem(level.registryAccess()))
                 .commitQueuedImports();
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

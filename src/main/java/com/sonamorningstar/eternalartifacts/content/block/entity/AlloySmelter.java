@@ -26,13 +26,12 @@ public class AlloySmelter extends GenericMachine {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition processCondition, Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition processCondition, Recipe<?> recipe) {
         if (recipe instanceof AlloyingRecipe alloying) {
             processCondition
                 .queueImport(alloying.getResultItem(level.registryAccess()))
                 .commitQueuedImports();
         }
-        super.setProcessCondition(processCondition, recipe);
     }
     
     @Override

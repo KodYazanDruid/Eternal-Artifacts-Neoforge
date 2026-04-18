@@ -15,9 +15,6 @@ import com.sonamorningstar.eternalartifacts.client.renderer.entity.BlackHoleRend
 import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
-import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
@@ -32,7 +29,6 @@ import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
@@ -44,7 +40,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GrassColor;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -233,6 +228,7 @@ public class ClientModEvents {
         
         event.registerEntityRenderer(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
         event.registerEntityRenderer(ModEntities.PINKY.get(), PinkyRenderer::new);
+        event.registerEntityRenderer(ModEntities.MIMIC.get(), MimicRenderer::new);
         event.registerEntityRenderer(ModEntities.CHARGED_SHEEP.get(), ChargedSheepRenderer::new);
         event.registerEntityRenderer(ModEntities.DUCK.get(), DuckRenderer::new);
         event.registerEntityRenderer(ModEntities.MAGICAL_BOOK.get(), MagicalBookRenderer::new);
@@ -254,7 +250,10 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.THROWN_LIGHTNING_IN_A_BOTTLE.get(), ThrownItemRenderer::new);
         event.registerEntityRenderer(ModEntities.SPELL_WITHER_SKULL.get(), WitherSkullRenderer::new);
         event.registerEntityRenderer(ModEntities.SOUL_BLAZE.get(), SoulBlazeRenderer::new);
+        event.registerEntityRenderer(ModEntities.SOUL_SMALL_FIREBALL.get(), ctx -> new ThrownItemSoulFireRenderer<>(ctx, 0.75F, true));
         event.registerEntityRenderer(ModEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPELL_VOIDLOCK.get(), ctx -> new ThrownItemRenderer<>(ctx, 0.75F, true));
+        event.registerEntityRenderer(ModEntities.SPELL_BOUNCING_HONEY.get(), BouncingHoneyRenderer::new);
     }
 
     @SubscribeEvent

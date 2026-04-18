@@ -1,0 +1,9 @@
+{
+  "values": [
+    "eternalartifacts:bouncing_honey",
+    "#forge:air",
+    "#forge:earth",
+    "#forge:fire",
+    "#forge:lightning"
+  ]
+}

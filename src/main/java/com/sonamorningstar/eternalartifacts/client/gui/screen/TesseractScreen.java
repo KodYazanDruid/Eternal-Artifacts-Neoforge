@@ -241,7 +241,17 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		}
 		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 2000);
 	}
-	private void cycleTransfer(AbstractButton button) {
+	private void cycleTransfer(CleanButton button) {
+		menu.tesseract.cycleTransfer();
+		Tesseract.TransferMode mode = menu.tesseract.getTransferMode();
+		String modeSymbol = switch (mode) {
+			case BOTH -> "⇄";
+			case EXTRACT_ONLY -> "↑";
+			case INSERT_ONLY -> "↓";
+			case NONE -> "⊘";
+		};
+		button.setMessage(Component.literal(modeSymbol+" ")
+			.append(ModConstants.GUI.withSuffixTranslatable("cycle_transfer")));
 		minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 3000);
 	}
 	private void selectNetwork(int index) {

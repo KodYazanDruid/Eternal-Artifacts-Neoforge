@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -32,7 +33,7 @@ public class MagicalBookRenderer extends EntityRenderer<MagicalBookEntity> {
         setupRotations(book, poseStack, partialTick, yaw);
         poseStack.translate(0, 0.5f, 0);
         model.setupAnim(book.tickCount + partialTick, 0.9F, 0.1F, book.getBookOpenAmount(partialTick));
-        model.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+        model.render(poseStack, consumer, light, LivingEntityRenderer.getOverlayCoords(book, 0.0f), 1, 1, 1, 1);
         poseStack.popPose();
         super.render(book, yaw, partialTick, poseStack, buff, light);
     }

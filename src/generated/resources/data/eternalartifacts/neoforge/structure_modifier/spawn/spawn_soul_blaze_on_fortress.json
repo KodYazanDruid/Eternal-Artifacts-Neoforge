@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "spawners": {
+    "type": "eternalartifacts:soul_blaze",
+    "maxCount": 4,
+    "minCount": 2,
+    "weight": 5
+  },
+  "structures": "minecraft:fortress"
+}

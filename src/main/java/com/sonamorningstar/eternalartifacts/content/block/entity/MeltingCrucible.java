@@ -25,14 +25,13 @@ public class MeltingCrucible extends GenericMachine {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         if (recipe instanceof MeltingRecipe melting) {
             condition
                 .initOutputTank(tank)
                 .queueImport(melting.getOutput())
                 .commitQueuedImports();
         }
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

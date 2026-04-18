@@ -59,7 +59,7 @@ public class MultiFurnace<M extends AbstractMachineMenu> extends SidedTransferMa
 	public void setRecipeTypeId(short id) {
 		recipeTypeId = id;
 		findRecipe();
-		setProcessCondition(new ProcessCondition(this), RecipeCache.getCachedRecipe(this));
+		updateProcessCondition();
 		sendUpdate();
 	}
 	

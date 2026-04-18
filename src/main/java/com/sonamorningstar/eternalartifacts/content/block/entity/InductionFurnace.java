@@ -87,7 +87,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         Recipe<Container> recipe0 = (Recipe<Container>) RecipeCache.getCachedRecipe(this, 0);
         Recipe<Container> recipe1 = (Recipe<Container>) RecipeCache.getCachedRecipe(this, 1);
         ItemStack result0;
@@ -114,7 +114,6 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
             }
             return true;
         });
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

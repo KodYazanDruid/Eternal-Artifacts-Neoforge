@@ -1,7 +1,5 @@
 package com.sonamorningstar.eternalartifacts.network.proxy;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.datafixers.util.Either;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
@@ -25,10 +23,8 @@ import com.sonamorningstar.eternalartifacts.network.UpdateEntityEnergyToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.CycleWildcardToClient;
 import com.sonamorningstar.eternalartifacts.network.charm.UpdateCharmsToClient;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -42,7 +38,6 @@ import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 

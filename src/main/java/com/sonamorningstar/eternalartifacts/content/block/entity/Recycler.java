@@ -102,7 +102,7 @@ public class Recycler extends GenericMachine {
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		if (recipe != null) {
 			var recs = getRecycleOutputs(recipe);
 			for (ItemStack stack : recs) {
@@ -110,7 +110,6 @@ public class Recycler extends GenericMachine {
 			}
 			condition.commitQueuedImports();
 		}
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@SuppressWarnings("ConstantConditions")

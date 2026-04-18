@@ -149,6 +149,7 @@ public class ModTags {
         public static final TagKey<Spell> VOID = forgeTag("void");
         public static final TagKey<Spell> ENDER = forgeTag("ender");
         public static final TagKey<Spell> CURSE = forgeTag("curse");
+        public static final TagKey<Spell> NATURE = forgeTag("nature");
 
 
         private static TagKey<Spell> forgeTag(String name) { return TagKey.create(ModRegistries.Keys.SPELL, new ResourceLocation("forge", name)); }

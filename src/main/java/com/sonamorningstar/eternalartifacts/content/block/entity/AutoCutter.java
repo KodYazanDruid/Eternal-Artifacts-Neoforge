@@ -88,12 +88,11 @@ public class AutoCutter extends SidedTransferMachine<AutoCutterMenu> {
 	}
 	
 	@Override
-	protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+	protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
 		if (selectedRecipeIndex >= 0 && !recipes.isEmpty() && selectedRecipeIndex < recipes.size()) {
 			StonecutterRecipe cuttingRecipe = (StonecutterRecipe) recipes.get(selectedRecipeIndex).value();
 			condition.queueImport(cuttingRecipe.getResultItem(level.registryAccess())).commitQueuedImports();
 		}
-		super.setProcessCondition(condition, recipe);
 	}
 	
 	@Override
@@ -105,7 +104,7 @@ public class AutoCutter extends SidedTransferMachine<AutoCutterMenu> {
 	public void setSelectedRecipeIndex(int index) {
 		if (index < recipes.size()) {
 			selectedRecipeIndex = index;
-			setProcessCondition(new ProcessCondition(this), RecipeCache.getCachedRecipe(this));
+			updateProcessCondition();
 			sendUpdate();
 		}
 	}

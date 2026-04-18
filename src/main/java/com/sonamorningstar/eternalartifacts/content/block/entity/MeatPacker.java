@@ -25,13 +25,12 @@ public class MeatPacker extends GenericMachine {
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
         condition
             .queueImport(ModItems.RAW_MEAT_INGOT.toStack())
             .initInputTank(tank)
             .tryExtractFluidForced(250)
             .commitQueuedImports();
-        super.setProcessCondition(condition, recipe);
     }
     
     @Override

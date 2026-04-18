@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.moddev' version '2.0.140'
+    id 'net.neoforged.moddev' version '2.0.141'
     id 'io.freefair.lombok' version '8.6'
 }
 
@@ -131,8 +131,8 @@ dependencies {
     implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
     implementation "curse.maven:pneumaticcraft-repressurized-281849:5523027"
-    /*runtimeOnly "curse.maven:cloth-config-348521:5729139"
-    runtimeOnly "curse.maven:powah-rearchitected-633483:5083059"*/
+    runtimeOnly "curse.maven:cloth-config-348521:5729139"
+    runtimeOnly "curse.maven:powah-rearchitected-633483:5083059"
     runtimeOnly "curse.maven:spark-361579:5243943"
     runtimeOnly "curse.maven:energized-power-782147:5401190"
 

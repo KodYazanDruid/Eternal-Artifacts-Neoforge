@@ -10,8 +10,8 @@ public class DefaultConcurrentHashMap<K, V> extends ConcurrentHashMap<K, V> {
 	}
 	
 	@Override
-public V get(Object key) {
-	V value = super.get(key);
-	return value != null ? value : defaultValue;
-}
+	public V get(Object key) {
+		V value = super.get(key);
+		return value != null ? value : defaultValue;
+	}
 }

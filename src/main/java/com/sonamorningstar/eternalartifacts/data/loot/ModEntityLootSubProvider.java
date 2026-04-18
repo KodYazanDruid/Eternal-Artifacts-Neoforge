@@ -162,6 +162,7 @@ public class ModEntityLootSubProvider extends net.minecraft.data.loot.EntityLoot
     @Override
     protected Stream<EntityType<?>> getKnownEntityTypes() {
         return ModEntities.ENTITY_TYPES.getEntries()
-                .stream().map(DeferredHolder::value);
+            .stream().map(DeferredHolder::value)
+            .filter(type -> type != ModEntities.MIMIC.get()).map(t -> (EntityType<?>) t);
     }
 }

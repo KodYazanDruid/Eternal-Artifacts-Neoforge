@@ -5,11 +5,11 @@ import net.minecraft.world.item.ItemStack;
 
 public abstract class ItemlessContainer implements Container {
     @Override
-    public ItemStack getItem(int pSlot) {return null;}
+    public ItemStack getItem(int pSlot) {return ItemStack.EMPTY;}
     @Override
-    public ItemStack removeItem(int pSlot, int pAmount) {return null;}
+    public ItemStack removeItem(int pSlot, int pAmount) {return ItemStack.EMPTY;}
     @Override
-    public ItemStack removeItemNoUpdate(int pSlot) {return null;}
+    public ItemStack removeItemNoUpdate(int pSlot) {return ItemStack.EMPTY;}
     @Override
     public void setItem(int pSlot, ItemStack pStack) {}
 }

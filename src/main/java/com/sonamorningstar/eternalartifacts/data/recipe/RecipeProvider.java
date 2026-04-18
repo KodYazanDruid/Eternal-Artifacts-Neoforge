@@ -769,6 +769,44 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.REINFORCED_GLASS_BOTTLE, 3)
             .pattern("G G").pattern(" G ").define('G', ModTags.Items.GLASS_HARDENED)
             .unlockedBy("has_item", has(ModTags.Items.GLASS_HARDENED)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.TOME)
+            .pattern(" C ").pattern("LBL").pattern(" C ")
+            .define('C', Tags.Items.INGOTS_COPPER).define('L', Tags.Items.LEATHER)
+            .define('B', Items.BOOK).unlockedBy("has_item", has(Items.BOOK)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.VOIDLOCK_TOME)
+            .pattern("CIC").pattern("PTP").pattern("CIC")
+            .define('C', Tags.Items.ENDER_PEARLS).define('I', Tags.Items.INGOTS_GOLD)
+            .define('T', ModItems.TOME).define('P', ModItems.GLOW_INK_DUST)
+            .unlockedBy("has_item", has(ModItems.LIGHTNING_IN_A_BOTTLE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_HELMET)
+            .pattern("III").pattern("I I")
+            .define('I', Items.CACTUS)
+            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_CHESTPLATE)
+            .pattern("I I").pattern("III").pattern("III")
+            .define('I', Items.CACTUS)
+            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_LEGGINGS)
+            .pattern("III").pattern("I I").pattern("I I")
+            .define('I', Items.CACTUS)
+            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_BOOTS)
+            .pattern("I I").pattern("I I")
+            .define('I', Items.CACTUS)
+            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, Items.GOLDEN_APPLE)
+            .pattern("GGG").pattern("GAG").pattern("GGG")
+            .define('G', Tags.Items.INGOTS_GOLD).define('A', ModTags.Items.FRUITS_APPLE)
+            .unlockedBy("has_item", has(ModTags.Items.FRUITS_APPLE)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.GOLD_KEY)
+            .pattern("NIR").define('N', Tags.Items.NUGGETS_GOLD)
+            .define('I', Tags.Items.INGOTS_GOLD).define('R', ModItems.GOLD_RING)
+            .unlockedBy("has_item", has(Tags.Items.INGOTS_GOLD)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.BOUNCING_HONEY_TOME)
+            .pattern("CIC").pattern("PTP").pattern("CIC")
+            .define('C', ModItems.HONEY_BALL).define('I', Tags.Items.INGOTS_GOLD)
+            .define('T', ModItems.TOME).define('P', ModItems.GLOW_INK_DUST)
+            .unlockedBy("has_item", has(ModItems.HONEY_BALL)).save(recipeOutput);
         //endregion
         //region Shapeless recipes.
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

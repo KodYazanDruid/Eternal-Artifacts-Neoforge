@@ -2,7 +2,9 @@
   "blend": {
     "func": "add",
     "srcrgb": "srcalpha",
-    "dstrgb": "1-srcalpha"
+    "dstrgb": "1-srcalpha",
+    "srcalpha": "one",
+    "dstalpha": "1-srcalpha"
   },
   "vertex": "eternalartifacts:black_hole",
   "fragment": "eternalartifacts:black_hole",

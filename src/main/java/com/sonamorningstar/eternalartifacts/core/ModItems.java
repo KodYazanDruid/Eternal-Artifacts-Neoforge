@@ -70,7 +70,8 @@ public class ModItems {
                             new ResourceLocation("item/empty_slot_shovel"),
                             new ResourceLocation("item/empty_slot_hoe")),
                     List.of(new ResourceLocation("item/empty_slot_ingot"))
-            ));
+            )
+    );
     public static final DeferredItem<Item> DUCK_FEATHER = register("duck_feather");
     public static final DeferredItem<Item> COPPER_TABLET = register("copper_tablet");
     public static final DeferredItem<Item> COPPER_NUGGET = register("copper_nugget");
@@ -143,6 +144,7 @@ public class ModItems {
     public static final DeferredItem<Item> SOUL_BLAZE_ROD = register("soul_blaze_rod");
     public static final DeferredItem<Item> SOUL_BLAZE_POWDER = register("soul_blaze_powder");
     public static final DeferredItem<Item> AMETHYST_DUST = register("amethyst_dust");
+    public static final DeferredItem<Item> GOLD_KEY = register("gold_key");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -173,6 +175,8 @@ public class ModItems {
     public static final DeferredItem<SpellTomeItem<LightningStrikeSpell>> LIGHTNING_STRIKE_TOME = registerTome("lightning_strike_tome", ModSpells.LIGHTNING_STRIKE);
     public static final DeferredItem<SpellTomeItem<DivineProtectionSpell>> DIVINE_PROTECTION_TOME = registerTome("divine_protection_tome", ModSpells.DIVINE_PROTECTION);
     public static final DeferredItem<SpellTomeItem<BlackHoleSpell>> BLACK_HOLE_TOME = registerTome("black_hole_tome", ModSpells.BLACK_HOLE);
+    public static final DeferredItem<SpellTomeItem<VoidlockSpell>> VOIDLOCK_TOME = registerTome("voidlock_tome", ModSpells.VOIDLOCK);
+    public static final DeferredItem<SpellTomeItem<BouncingHoneySpell>> BOUNCING_HONEY_TOME = registerTome("bouncing_honey_tome", ModSpells.BOUNCING_HONEY);
     public static final DeferredItem<Item> POWER_GAUNTLET = registerStacksToOne("power_gauntlet");
     public static final DeferredItem<Item> HEART_NECKLACE = registerStacksToOne("heart_necklace");
     public static final DeferredItem<Item> SAGES_TALISMAN = registerStacksToOne("sages_talisman");
@@ -272,6 +276,10 @@ public class ModItems {
     public static final DeferredItem<Item> INTERFACE_REMOTE = registerStacksToOne("interface_remote", InterfaceRemote::new);
     public static final DeferredItem<Item> PRISMARINE_ARROW = register("prismarine_arrow", PrismarineArrowItem::new);
     public static final DeferredItem<Item> LIFTER = register("lifter", p -> new LifterItem(p.durability(64)));
+    public static final DeferredItem<Item> CACTUS_HELMET = registerStacksToOne("cactus_helmet", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> CACTUS_CHESTPLATE = registerStacksToOne("cactus_chestplate", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> CACTUS_LEGGINGS = registerStacksToOne("cactus_leggings", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> CACTUS_BOOTS = registerStacksToOne("cactus_boots", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.BOOTS, p));
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

@@ -25,7 +25,10 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
             ModEntities.PINKY.get(),
             ModEntities.HONEY_SLIME.get()
         );
-        tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(ModEntities.DUCK.get());
+        tag(EntityTypeTags.FALL_DAMAGE_IMMUNE).add(
+            ModEntities.DUCK.get(),
+            ModEntities.SOUL_BLAZE.get()
+        );
         tag(ModTags.Entities.CUTLASS_SPAWN_EGG_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
         
         tag(ModTags.Entities.MORPH_BLACKLISTED).addTag(Tags.EntityTypes.BOSSES);
@@ -39,6 +42,9 @@ public class EntityTypeTagsProvider extends net.minecraft.data.tags.EntityTypeTa
         tag(EntityTypeTags.ARROWS).add(
             ModEntities.AMETHYST_ARROW.get(),
             ModEntities.PRISMARINE_ARROW.get()
+        );
+        tag(EntityTypeTags.FREEZE_HURTS_EXTRA_TYPES).add(
+            ModEntities.SOUL_BLAZE.get()
         );
     }
 }

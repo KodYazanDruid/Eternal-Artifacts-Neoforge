@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/gold"
+    },
+    "N": {
+      "tag": "forge:nuggets/gold"
+    },
+    "R": {
+      "item": "eternalartifacts:gold_ring"
+    }
+  },
+  "pattern": [
+    "NIR"
+  ],
+  "result": {
+    "item": "eternalartifacts:gold_key"
+  }
+}

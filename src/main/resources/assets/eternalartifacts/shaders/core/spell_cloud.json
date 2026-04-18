@@ -2,9 +2,7 @@
   "blend": {
     "func": "add",
     "srcrgb": "srcalpha",
-    "dstrgb": "one",
-    "srcalpha": "one",
-    "dstalpha": "zero"
+    "dstrgb": "1-srcalpha"
   },
   "vertex": "eternalartifacts:spell_cloud",
   "fragment": "eternalartifacts:spell_cloud",

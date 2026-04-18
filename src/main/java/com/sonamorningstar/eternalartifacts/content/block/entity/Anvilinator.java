@@ -101,12 +101,12 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     @Override
     protected void findRecipe() {
         fireEvent();
+        progress = 0;
     }
     
     @Override
-    protected void setProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
-        progress = 0;
-        super.setProcessCondition(condition, recipe);
+    protected void configureProcessCondition(ProcessCondition condition, @Nullable Recipe<?> recipe) {
+        // Progress is reset in findRecipe()
     }
     
     private void fireEvent() {

@@ -229,6 +229,13 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.SOUL_BLAZE_ROD.get());
         basicItem(ModItems.SOUL_BLAZE_POWDER.get());
         basicItem(ModItems.AMETHYST_DUST.get());
+        basicItem(ModItems.VOIDLOCK_TOME.get());
+        basicItem(ModItems.CACTUS_HELMET.get());
+        basicItem(ModItems.CACTUS_CHESTPLATE.get());
+        basicItem(ModItems.CACTUS_LEGGINGS.get());
+        basicItem(ModItems.CACTUS_BOOTS.get());
+        basicItem(ModItems.GOLD_KEY.get());
+        basicItem(ModItems.BOUNCING_HONEY_TOME.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));
