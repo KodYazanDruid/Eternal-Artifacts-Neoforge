@@ -4,16 +4,21 @@ import com.sonamorningstar.eternalartifacts.core.ModEntities;
 import com.sonamorningstar.eternalartifacts.util.SpellDamageHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.event.EventHooks;
 
-//FIXME: Do sub stepping to prevent tunneling at high speeds.
 public class BouncingHoneySpellProj extends AbstractHurtingProjectile {
 	public float damage;
 	private int age;
@@ -36,19 +41,50 @@ public class BouncingHoneySpellProj extends AbstractHurtingProjectile {
 	
 	@Override
 	public void tick() {
-		super.tick();
+		this.baseTick();
 		age++;
 		if (age > MAX_LIFE) {
 			discard();
 			return;
 		}
 		
+		Vec3 velocity = getDeltaMovement();
 		if (!isNoGravity()) {
-			setDeltaMovement(getDeltaMovement().add(0, -GRAVITY, 0));
+			velocity = velocity.add(0, -GRAVITY, 0);
 		}
-		
+		velocity = velocity.scale(AIR_DRAG);
+		setDeltaMovement(velocity);
+		moveWithSubSteps(velocity);
 		if (this.onGround() && getDeltaMovement().length() < 0.05) {
 			setDeltaMovement(Vec3.ZERO);
+		}
+	}
+	
+	private void moveWithSubSteps(Vec3 velocity) {
+		double maxStep = 0.25;
+		
+		double length = velocity.length();
+		int steps = Math.max(1, (int) Math.ceil(length / maxStep));
+		
+		Vec3 step = velocity.scale(1.0 / steps);
+		
+		for (int i = 0; i < steps; i++) {
+			Vec3 start = this.position();
+			Vec3 end = start.add(step);
+			
+			HitResult hitResult = ProjectileUtil.getHitResultOnMoveVector(
+				this,
+				this::canHitEntity,
+				ClipContext.Block.COLLIDER
+			);
+			
+			if (hitResult.getType() != HitResult.Type.MISS) {
+				if (!EventHooks.onProjectileImpact(this, hitResult)) {
+					this.onHit(hitResult);
+				}
+				return;
+			}
+			setPos(end);
 		}
 	}
 	
@@ -58,7 +94,6 @@ public class BouncingHoneySpellProj extends AbstractHurtingProjectile {
 		Vec3 normal = Vec3.atLowerCornerOf(result.getDirection().getNormal());
 		Vec3 hitLoc = result.getLocation();
 		
-		//Reflection: v - 2(v·n)n
 		double dot = velocity.dot(normal);
 		Vec3 reflected = velocity.subtract(normal.scale(2 * dot));
 		
@@ -75,7 +110,6 @@ public class BouncingHoneySpellProj extends AbstractHurtingProjectile {
 		setDeltaMovement(reflected);
 		
 		double push = 0.1;
-		
 		setPos(
 			hitLoc.x + normal.x * push,
 			hitLoc.y + normal.y * push,
@@ -89,19 +123,20 @@ public class BouncingHoneySpellProj extends AbstractHurtingProjectile {
 	protected void onHitEntity(EntityHitResult result) {
 		Entity target = result.getEntity();
 		
-		if (target instanceof LivingEntity living) {
-			living.hurt(damageSources().thrown(this, this.getOwner()), 4.0f);
-			SpellDamageHelper.hurtWithSpellDamage(this, living, damage);
+		boolean isHurt = SpellDamageHelper.hurtWithSpellDamage(this, target, damage);
+		if (isHurt && target instanceof LivingEntity living) {
+			living.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 1));
 		}
 		
-		Vec3 velocity = getDeltaMovement();
-		Vec3 normal = position().subtract(target.position()).normalize();
-		double dot = velocity.dot(normal);
-		Vec3 reflected = velocity.subtract(normal.scale(2 * dot));
-		reflected = reflected.scale(BOUNCE_DAMPING);
-		setDeltaMovement(reflected);
-		
-		playSound(SoundEvents.HONEY_BLOCK_HIT, 0.5f, 0.8f);
+		if (!target.noPhysics) {
+			Vec3 velocity = getDeltaMovement();
+			Vec3 normal = position().subtract(target.position()).normalize();
+			double dot = velocity.dot(normal);
+			Vec3 reflected = velocity.subtract(normal.scale(2 * dot));
+			reflected = reflected.scale(BOUNCE_DAMPING);
+			setDeltaMovement(reflected);
+			playSound(SoundEvents.HONEY_BLOCK_HIT, 0.5f, 0.8f);
+		}
 	}
 	
 	@Override

@@ -25,7 +25,7 @@ public class SolidCombustionDynamo extends AbstractDynamo<ItemDynamoMenu> {
 	}
 	
 	@Override
-	protected void findRecipe() {
+	public void findRecipe() {
 		if (cache != null) return;
 		super.findRecipe();
 		if (RecipeCache.getCachedRecipe(this) == null) {

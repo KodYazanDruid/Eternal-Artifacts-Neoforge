@@ -172,8 +172,13 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeltingRecipe(recipeOutput, Items.ICE.getDefaultInstance(), new FluidStack(Fluids.WATER, 1000));
         createMeltingRecipe(recipeOutput, ModItems.PINK_SLIME.toStack(), new FluidStack(ModFluids.PINK_SLIME.getFluid(), 250));
         createMeltingRecipe(recipeOutput, ModItems.PLASTIC_SHEET.toStack(), new FluidStack(ModFluids.LIQUID_PLASTIC.getFluid(), 250));
-
-        //region Macerating recipes.
+        createMeltingRecipe(recipeOutput, Items.HONEY_BLOCK.getDefaultInstance(), new FluidStack(ModFluids.HONEY.getFluid(), 1000));
+        createMeltingRecipe(recipeOutput, ModItems.HONEY_BALL.toStack(), new FluidStack(ModFluids.HONEY.getFluid(), 250));
+        createMeltingRecipe(recipeOutput, Items.SLIME_BALL.getDefaultInstance(), new FluidStack(ModFluids.SLIME.getFluid(), 250));
+        createMeltingRecipe(recipeOutput, Items.SLIME_BLOCK.getDefaultInstance(), new FluidStack(ModFluids.SLIME.getFluid(), 2250));
+        createMeltingRecipe(recipeOutput, ModBlocks.PINK_SLIME_BLOCK.toStack(), new FluidStack(ModFluids.PINK_SLIME.getFluid(), 2250));
+        
+        //region Macerating recipes
         createMaceratingRecipe(recipeOutput, Items.CLAY.getDefaultInstance(), new ItemStack(ModItems.CLAY_DUST.get(), 4));
         createMaceratingRecipe(recipeOutput, Items.CLAY_BALL.getDefaultInstance(), ModItems.CLAY_DUST.toStack());
         createMaceratingRecipe(recipeOutput, Items.COAL.getDefaultInstance(), ModItems.COAL_DUST.toStack());
@@ -237,54 +242,59 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(), Items.LEATHER.getDefaultInstance(), ModFluids.BLOOD.getFluidStack(100));
 
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(ModItems.PINK_SLIME_STEEL_INGOT),
-                SizedIngredient.of(Tags.Items.DUSTS_GLOWSTONE, 1),
-                SizedIngredient.of(ModItems.PLANT_MATTER)),
-                ModItems.CHLOROPHYTE_INGOT.toStack(), "");
+            SizedIngredient.of(ModItems.PINK_SLIME_STEEL_INGOT),
+            SizedIngredient.of(Tags.Items.DUSTS_GLOWSTONE, 1),
+            SizedIngredient.of(ModItems.PLANT_MATTER)),
+            ModItems.CHLOROPHYTE_INGOT.toStack(), "");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.SAND, 1),
-                SizedIngredient.of(Tags.Items.OBSIDIAN, 1),
-                SizedIngredient.of(ModTags.Items.DUSTS_CLAY, 1)),
-                ModBlocks.TEMPERED_GLASS.toStack(2), "");
+            SizedIngredient.of(Tags.Items.SAND, 1),
+            SizedIngredient.of(Tags.Items.OBSIDIAN, 1),
+            SizedIngredient.of(ModTags.Items.DUSTS_CLAY, 1)),
+            ModBlocks.TEMPERED_GLASS.toStack(2), "");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
-                SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
-                SizedIngredient.of(ModTags.Items.DUSTS_COAL, 2)),
-                ModItems.STEEL_INGOT.toStack(2), "from_coal_dust");
+            SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
+            SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
+            SizedIngredient.of(ModTags.Items.DUSTS_COAL, 2)),
+            ModItems.STEEL_INGOT.toStack(2), "from_coal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
-                SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
-                SizedIngredient.of(ModTags.Items.DUSTS_CHARCOAL, 3)),
-                ModItems.STEEL_INGOT.toStack(2), "from_charcoal_dust");
+            SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
+            SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
+            SizedIngredient.of(ModTags.Items.DUSTS_CHARCOAL, 3)),
+            ModItems.STEEL_INGOT.toStack(2), "from_charcoal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
-                SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
-                SizedIngredient.of(ModTags.Items.DUSTS_SUGAR_CHARCOAL, 4)),
-                ModItems.STEEL_INGOT.toStack(2), "from_sugar_charcoal_dust");
+            SizedIngredient.of(Tags.Items.INGOTS_IRON, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_IRON, 1)),
+            SizedIngredient.of(ModTags.Items.INGOTS_MANGANESE, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_MANGANESE, 1)),
+            SizedIngredient.of(ModTags.Items.DUSTS_SUGAR_CHARCOAL, 4)),
+            ModItems.STEEL_INGOT.toStack(2), "from_sugar_charcoal_dust");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(Tags.Items.INGOTS_COPPER, 3)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_COPPER, 3)),
-                SizedIngredient.of(ModTags.Items.INGOTS_TIN, 1)
-                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_TIN, 1))),
+            SizedIngredient.of(Tags.Items.INGOTS_COPPER, 3)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_COPPER, 3)),
+            SizedIngredient.of(ModTags.Items.INGOTS_TIN, 1)
+                .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_TIN, 1))),
             ModItems.BRONZE_INGOT.toStack(4), "");
         createAlloyingRecipe(recipeOutput, List.of(
-                SizedIngredient.of(ItemTags.WOOL, 1),
-                SizedIngredient.of(Tags.Items.SLIMEBALLS, 1),
-                SizedIngredient.of(Tags.Items.DYES_GREEN, 1)
-            ), ModBlocks.INDUSTRIAL_SPONGE.toStack(), "");
+            SizedIngredient.of(ItemTags.WOOL, 1),
+            SizedIngredient.of(Tags.Items.SLIMEBALLS, 1),
+            SizedIngredient.of(Tags.Items.DYES_GREEN, 1)
+        ), ModBlocks.INDUSTRIAL_SPONGE.toStack(), "");
         createAlloyingRecipe(recipeOutput, List.of(
             SizedIngredient.of(Tags.Items.NETHER_STARS, 1),
             SizedIngredient.of(Tags.Items.INGOTS_NETHERITE, 1),
             SizedIngredient.of(ModItems.CHLOROPHYTE_INGOT.get())
         ), ModItems.OBLIVIUM_INGOT.toStack(), "");
-
-        //region Mob Liquifying recipes.
+        createAlloyingRecipe(recipeOutput, List.of(
+            SizedIngredient.of(Tags.Items.INGOTS_GOLD, 4)
+                 .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_GOLD, 4)),
+            SizedIngredient.of(ModTags.Items.INGOTS_ALUMINUM, 1)
+                    .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_ALUMINUM, 1))
+        ), ModItems.PURPLE_GOLD_INGOT.toStack(5), "");
+        //region Mob Liquifying recipes
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.BLOOD.getFluid(), 40),
@@ -354,7 +364,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME,250, ModItems.PINK_SLIME.toStack());
+        createSolidifyingRecipe(recipeOutput, ModTags.Fluids.HONEY, 1000, Items.HONEY_BLOCK.getDefaultInstance());
+        createSolidifyingRecipe(recipeOutput, ModTags.Fluids.SLIME, 250, Items.SLIME_BALL.getDefaultInstance());
 
+        createCompressingRecipe(recipeOutput, ModTags.Items.FRUITS, 2, ModItems.PLANT_MATTER.toStack());
+        createCompressingRecipe(recipeOutput, Tags.Items.CROPS, 4, ModItems.PLANT_MATTER.toStack());
         createCompressingRecipe(recipeOutput, ItemTags.FLOWERS, 8, ModItems.PLANT_MATTER.toStack());
         createCompressingRecipe(recipeOutput, Tags.Items.SEEDS, 16, ModItems.PLANT_MATTER.toStack());
         createCompressingRecipe(recipeOutput, new ItemStack(Items.ICE, 4), Items.PACKED_ICE.getDefaultInstance());
@@ -797,7 +811,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, Items.GOLDEN_APPLE)
             .pattern("GGG").pattern("GAG").pattern("GGG")
             .define('G', Tags.Items.INGOTS_GOLD).define('A', ModTags.Items.FRUITS_APPLE)
-            .unlockedBy("has_item", has(ModTags.Items.FRUITS_APPLE)).save(recipeOutput);
+            .unlockedBy("has_item", has(ModTags.Items.FRUITS_APPLE)).save(recipeOutput, makeID("golden_apple_from_apple_tag"));
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.GOLD_KEY)
             .pattern("NIR").define('N', Tags.Items.NUGGETS_GOLD)
             .define('I', Tags.Items.INGOTS_GOLD).define('R', ModItems.GOLD_RING)
@@ -807,8 +821,43 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('C', ModItems.HONEY_BALL).define('I', Tags.Items.INGOTS_GOLD)
             .define('T', ModItems.TOME).define('P', ModItems.GLOW_INK_DUST)
             .unlockedBy("has_item", has(ModItems.HONEY_BALL)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.EVOKERS_TOME)
+            .pattern("CIC").pattern("PTP").pattern("CIC")
+            .define('C', Tags.Items.GEMS_AMETHYST).define('I', Tags.Items.INGOTS_IRON)
+            .define('T', ModItems.TOME).define('P', ModItems.FAIRY_DUST)
+            .unlockedBy("has_item", has(Tags.Items.GEMS_AMETHYST)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.TORNADO_TOME)
+            .pattern("CNC").pattern("PBP").pattern("CNC")
+            .define('C', Tags.Items.SAND).define('N', Tags.Items.INGOTS_COPPER)
+            .define('P', ModTags.Items.DUSTS_AMETHYST).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(Tags.Items.SAND)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.METEORITE_TOME)
+            .pattern("CNC").pattern("PBP").pattern("CNC")
+            .define('C', Items.MAGMA_BLOCK).define('N', Tags.Items.INGOTS_NETHER_BRICK)
+            .define('P', Items.BLAZE_POWDER).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(Items.BLAZE_POWDER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.DIVINE_PROTECTION_TOME)
+            .pattern("CNC").pattern("PBP").pattern("CNC")
+            .define('C', Tags.Items.STORAGE_BLOCKS_AMETHYST).define('N', Tags.Items.INGOTS_GOLD)
+            .define('P', Items.GLOWSTONE_DUST).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(Items.BLAZE_POWDER)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SHADOW_RAY_TOME)
+            .pattern("CNC").pattern("PBP").pattern("CNC")
+            .define('C', Tags.Items.GEMS_DIAMOND).define('N', Tags.Items.INGOTS_IRON)
+            .define('P', ModItems.FAIRY_DUST).define('B', ModItems.TOME)
+            .unlockedBy("has_item", has(ModItems.FAIRY_DUST)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, Items.ARROW, 4)
+            .pattern("S").pattern("G").pattern("F")
+            .define('S', Items.FLINT).define('G', Tags.Items.RODS_WOODEN)
+            .define('F', Tags.Items.FEATHERS).unlockedBy("has_item", has(Tags.Items.FEATHERS))
+            .save(recipeOutput, makeID("arrow_from_feathers_tag"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Items.BRUSH)
+            .pattern("F").pattern("C").pattern("S")
+            .define('F', Tags.Items.FEATHERS).define('C', Tags.Items.INGOTS_COPPER)
+            .define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_item", has(Tags.Items.FEATHERS))
+            .save(recipeOutput, makeID("brush_from_feathers_tag"));
         //endregion
-        //region Shapeless recipes.
+        //region Shapeless recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
                 .requires(ModBlocks.SUGAR_CHARCOAL_BLOCK)
                 .unlockedBy("has_item", has(ModBlocks.SUGAR_CHARCOAL_BLOCK)).save(recipeOutput);
@@ -919,6 +968,9 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .requires(ModItems.HONEY_BALL).unlockedBy("has_item", has(ModItems.HONEY_BALL)).save(recipeOutput, makeID("sugar_from_honey_ball"));
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SOUL_BLAZE_POWDER, 2)
             .requires(ModItems.SOUL_BLAZE_ROD).unlockedBy("has_item", has(ModItems.SOUL_BLAZE_ROD)).save(recipeOutput);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.WRITABLE_BOOK)
+            .requires(Items.BOOK).requires(Items.INK_SAC).requires(Tags.Items.FEATHERS)
+            .unlockedBy("has_item", has(Tags.Items.FEATHERS)).save(recipeOutput, makeID("writable_book_from_feathers_tag"));
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }

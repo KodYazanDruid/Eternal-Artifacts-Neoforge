@@ -17,6 +17,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlock
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterMultiblockPatternsEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.ModRegistries;
@@ -27,11 +28,14 @@ import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
+import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -40,6 +44,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
 import net.neoforged.neoforge.common.NeoForgeMod;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.world.chunk.RegisterTicketControllersEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
@@ -82,7 +87,7 @@ public class CommonModEvents {
             event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new BottleFluidWrapper(stack),
                 Items.GLASS_BOTTLE, ModItems.GLASS_SPLASH_BOTTLE, ModItems.GLASS_LINGERING_BOTTLE,
                 Items.POTION, Items.SPLASH_POTION, Items.LINGERING_POTION,
-                Items.EXPERIENCE_BOTTLE);
+                Items.EXPERIENCE_BOTTLE, Items.HONEY_BOTTLE);
         //}
         
         event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidHandlerItemStack(stack, 1000), ModItems.JAR.get());
@@ -288,6 +293,50 @@ public class CommonModEvents {
             .addModifier(Attributes.ARMOR_TOUGHNESS, getMod("Moonglass Pendant Armor Toughness", 1))
             .addType(CharmType.NECKLACE).build()
         );
+    }
+    
+    @SubscribeEvent
+    public static void registerMultiblockPatterns(RegisterMultiblockPatternsEvent event) {
+        event.register(ModMultiblocks.PUMPJACK.getMultiblock(), BlockPatternBuilder.start()
+            .aisle("A#A", "A#A", "A#A", "SPS")
+            .aisle("AAA", "A#A", "AAA", "SSS")
+            .aisle("AAA", "F#F", "FAF", "FSF")
+            .aisle("AAA", "A#A", "AAA", "SSS")
+            .aisle("AAA", "A#A", "AAA", "SRS")
+            .where('#', BlockInWorld.hasState(st -> st.is(ModTags.Blocks.STORAGE_BLOCKS_STEEL)))
+            .where('F', BlockInWorld.hasState(st -> st.is(Tags.Blocks.FENCES_NETHER_BRICK)))
+            .where('S', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_SLAB)))
+            .where('P', BlockInWorld.hasState(st -> st.is(ModBlocks.STEEL_FLUID_PIPE)))
+            .where('R', BlockInWorld.hasState(st -> st.is(Blocks.REDSTONE_BLOCK)))
+            .where('A', BlockInWorld.hasState(BlockBehaviour.BlockStateBase::isAir))
+            .build());
+        
+        event.register(ModMultiblocks.GENERATOR.getMultiblock(), BlockPatternBuilder.start()
+            .aisle("CCC", "CFC", "SSS")
+            .aisle("CPC", "P#P", "SPS")
+            .aisle("CCC", "CRC", "SSS")
+            .where('C', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_IRON)))
+            .where('S', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_COPPER)))
+            .where('P', BlockInWorld.hasState(st -> st.is(ModTags.Blocks.HARDENED_GLASS)))
+            .where('F', BlockInWorld.hasState(st -> st.is(Blocks.BLAST_FURNACE)))
+            .where('R', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_REDSTONE)))
+            .where('#', BlockInWorld.hasState(st -> st.is(ModBlocks.MACHINE_BLOCK)))
+            .build());
+        
+        event.register(ModMultiblocks.CHUNK_EATER.getMultiblock(), BlockPatternBuilder.start()
+            .aisle("WAAAW", "WSMSW")
+            .aisle("AAAAA", "SSSSS")
+            .aisle("AADAA", "FSDSS")
+            .aisle("AAAAA", "SSSSS")
+            .aisle("WAAAW", "WSRSW")
+            .where('S', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_SLAB)))
+            .where('W', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_WALL)))
+            .where('M', BlockInWorld.hasState(st -> st.is(ModBlocks.MACHINE_BLOCK)))
+            .where('R', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_REDSTONE)))
+            .where('D', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_DIAMOND)))
+            .where('F', BlockInWorld.hasState(st -> st.is(Blocks.ORANGE_CONCRETE)))
+            .where('A', BlockInWorld.hasState(BlockBehaviour.BlockStateBase::isAir))
+            .build());
     }
 
     private static AttributeModifier getMod(String name, double amount) {

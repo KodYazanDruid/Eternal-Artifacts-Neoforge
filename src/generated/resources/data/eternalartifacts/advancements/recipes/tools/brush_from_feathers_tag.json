@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "forge:fruits/apple"
+            "tag": "forge:feathers"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:golden_apple"
+        "recipe": "eternalartifacts:brush_from_feathers_tag"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:golden_apple"
+      "eternalartifacts:brush_from_feathers_tag"
     ]
   }
 }

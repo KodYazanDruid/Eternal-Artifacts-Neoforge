@@ -46,9 +46,9 @@ public class OilRefinery extends GenericMachine {
     
     @Override
     protected void configureProcessCondition(ProcessCondition processCondition, @Nullable Recipe<?> recipe) {
-        FluidStack diesel = ModFluids.DIESEL.getFluidStack(20);
+        FluidStack diesel = ModFluids.DIESEL.getFluidStack(25);
         FluidStack gasoline = ModFluids.GASOLINE.getFluidStack(25);
-        FluidStack naphtha = ModFluids.NAPHTHA.getFluidStack(15);
+        FluidStack naphtha = ModFluids.NAPHTHA.getFluidStack(30);
         ItemStack tar = ModItems.TAR_BALL.toStack();
         ItemStack bitumen = ModItems.BITUMEN.toStack();
         processCondition

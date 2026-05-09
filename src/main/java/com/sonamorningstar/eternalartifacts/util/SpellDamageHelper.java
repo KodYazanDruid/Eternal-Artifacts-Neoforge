@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import com.sonamorningstar.eternalartifacts.core.ModDamageSources;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 
 /**
@@ -22,6 +23,9 @@ public final class SpellDamageHelper {
      */
     public static boolean hurtWithSpellDamage(Projectile projectile, Entity target, float damage) {
         Entity owner = projectile.getOwner();
+        if (owner instanceof Player player1 && target instanceof Player player2 && !player1.canHarmPlayer(player2)) {
+            return false;
+        }
         if (owner != null) {
             return target.hurt(projectile.damageSources().indirectMagic(projectile, owner), damage);
         }
@@ -39,6 +43,9 @@ public final class SpellDamageHelper {
      * @return {@code true} if the damage was successfully applied.
      */
     public static boolean hurtWithSpellDamage(Entity source, Entity owner, Entity target, float damage) {
+        if (owner instanceof Player player1 && target instanceof Player player2 && !player1.canHarmPlayer(player2)) {
+            return false;
+        }
         if (owner != null) {
             return target.hurt(source.damageSources().indirectMagic(source, owner), damage);
         }

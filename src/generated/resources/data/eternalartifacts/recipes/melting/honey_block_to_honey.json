@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:melting",
+  "input": {
+    "item": "minecraft:honey_block"
+  },
+  "output": {
+    "Amount": 1000,
+    "FluidName": "eternalartifacts:honey"
+  }
+}

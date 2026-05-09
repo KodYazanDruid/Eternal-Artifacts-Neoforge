@@ -64,7 +64,7 @@ public class MultiFurnace<M extends AbstractMachineMenu> extends SidedTransferMa
 	}
 	
 	@Override
-	protected void findRecipe() {
+	public void findRecipe() {
 		recipeType = getSelectedRecipeType();
 		super.findRecipe();
 	}

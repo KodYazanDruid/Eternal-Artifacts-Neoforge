@@ -54,7 +54,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.TIN_INGOT.get(),
             ModItems.ALUMINUM_INGOT.get(),
             ModItems.BRONZE_INGOT.get(),
-            ModItems.OBLIVIUM_INGOT.get()
+            ModItems.OBLIVIUM_INGOT.get(),
+            ModItems.PURPLE_GOLD_INGOT.get()
         );
         tag(Tags.Items.RODS).add(
             ModItems.SOUL_BLAZE_ROD.get()
@@ -66,6 +67,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.INGOTS_TIN).add(ModItems.TIN_INGOT.get());
         tag(ModTags.Items.INGOTS_ALUMINUM).add(ModItems.ALUMINUM_INGOT.get());
         tag(ModTags.Items.INGOTS_BRONZE).add(ModItems.BRONZE_INGOT.get());
+        tag(ModTags.Items.INGOTS_PURPLE_GOLD).add(ModItems.PURPLE_GOLD_INGOT.get());
         copy(ModTags.Blocks.ORES_MANGANESE, ModTags.Items.ORES_MANGANESE);
         copy(ModTags.Blocks.ORES_TIN, ModTags.Items.ORES_TIN);
         copy(ModTags.Blocks.ORES_ALUMINUM, ModTags.Items.ORES_ALUMINUM);
@@ -267,7 +269,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.SPAWNER_EXTRACTOR.get(),
             ModItems.CHISEL.get(),
             ModItems.CONFIGURATION_DRIVE.get(),
-            ModItems.LIFTER.get()
+            ModItems.LIFTER.get(),
+            ModItems.GOLD_KEY.get()
         );
         tag(ModTags.Items.TABLETS).add(
             ModItems.STONE_TABLET.get(),

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "forge:feathers"
+    },
+    "G": {
+      "tag": "forge:rods/wooden"
+    },
+    "S": {
+      "item": "minecraft:flint"
+    }
+  },
+  "pattern": [
+    "S",
+    "G",
+    "F"
+  ],
+  "result": {
+    "count": 4,
+    "item": "minecraft:arrow"
+  }
+}

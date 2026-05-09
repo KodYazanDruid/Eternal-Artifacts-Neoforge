@@ -1,4 +1,4 @@
-// 1.20.4	2026-03-19T00:04:42.9075564	Loot Tables
+// 1.20.4	2026-04-21T17:36:45.1710409	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -42,6 +42,7 @@ da6df7d1d9c5cd9b40a08b6d0ccca9f948aaeadf data/eternalartifacts/loot_tables/block
 b7a340c633b3eaa32558fc444dd101d959bf8a76 data/eternalartifacts/loot_tables/blocks/dimensional_anchor.json
 604a0b2dcba69dfcd7e2256617f03c7dab6b7369 data/eternalartifacts/loot_tables/blocks/disenchanter.json
 f1793c1eb3520400a07a118ddd4cb4731414580e data/eternalartifacts/loot_tables/blocks/drowned_head.json
+573a7aced9263e84c8e2f62a1ab8d0672a9dd946 data/eternalartifacts/loot_tables/blocks/electric_beehive.json
 087cd2fb5fa5f93db5010b89644afd74520b45c4 data/eternalartifacts/loot_tables/blocks/electric_furnace.json
 8d5b5a376e3309fa678d2e856b634b9027fe0c1e data/eternalartifacts/loot_tables/blocks/enchanter.json
 757a7a198616056a11f3aa6c3bf05854f3c1623a data/eternalartifacts/loot_tables/blocks/energy_distributor.json

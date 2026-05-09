@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEn
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import net.minecraft.Util;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,6 +27,8 @@ public class MachineEnchants {
 		ModEnchantments.VOLUME.get(),
 		ModEnchantments.WORLDBIND.get()
 	);
+	private static final Set<Enchantment> commonVersatileMachineEnchants =
+		Util.make(new HashSet<>(commonMachineEnchants), set -> set.add(ModEnchantments.VERSATILITY.get()));
 	
 	private static final Set<Enchantment> dynamoEnchants = Set.of(
 		Enchantments.BLOCK_EFFICIENCY,
@@ -88,6 +91,9 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.ENTITY_INTERACTOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ENCHANTER.getBlockEntity(), commonMachineEnchants);
 		
+		enchantMap.put(ModMachines.BOOK_DUPLICATOR.getBlockEntity(), commonVersatileMachineEnchants);
+		enchantMap.put(ModMachines.ELECTRIC_BEEHIVE.getBlockEntity(), commonVersatileMachineEnchants);
+		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), nonProgressMachineEnchants);
@@ -109,9 +115,7 @@ public class MachineEnchants {
 		marineEnchs.add(Enchantments.BLOCK_FORTUNE);
 		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), marineEnchs);
 		
-		var bookDuplicatorEnchants = new HashSet<>(commonMachineEnchants);
-		bookDuplicatorEnchants.add(ModEnchantments.VERSATILITY.get());
-		enchantMap.put(ModMachines.BOOK_DUPLICATOR.getBlockEntity(), bookDuplicatorEnchants);
+		
 		
 		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
 		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());

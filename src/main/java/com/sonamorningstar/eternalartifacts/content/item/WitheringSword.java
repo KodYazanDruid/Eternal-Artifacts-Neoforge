@@ -24,7 +24,7 @@ public class WitheringSword extends SwordItem {
         Spell spell = ModSpells.WITHER_SKULL.get();
         if (!Spell.checkCooldown(player, this)) {
             float amplifiedDamage = spell.getAmplifiedDamage(player);
-            SpellCastEvent event = NeoForge.EVENT_BUS.post(new SpellCastEvent(player, level, stack, amplifiedDamage, spell));
+            SpellCastEvent event = NeoForge.EVENT_BUS.post(new SpellCastEvent(player, level, stack, hand, amplifiedDamage, spell));
             if (!event.isCanceled()) {
                 if (event.getSpell().cast(event.getTome(), player, hand, level, player.getRandom(), event.getAmplifiedDamage())) {
                     player.getCooldowns().addCooldown(this, spell.getDecreasedCooldown(player));

@@ -66,6 +66,7 @@
     "eternalartifacts:entity_interactor",
     "eternalartifacts:item_collector",
     "eternalartifacts:entity_watcher",
+    "eternalartifacts:electric_beehive",
     "eternalartifacts:battery_box",
     "eternalartifacts:electric_furnace",
     "eternalartifacts:autocutter",
@@ -80,6 +81,7 @@
     "eternalartifacts:block_placer",
     "eternalartifacts:block_breaker",
     "eternalartifacts:pumpjack",
-    "eternalartifacts:generator"
+    "eternalartifacts:generator",
+    "eternalartifacts:chunk_eater"
   ]
 }

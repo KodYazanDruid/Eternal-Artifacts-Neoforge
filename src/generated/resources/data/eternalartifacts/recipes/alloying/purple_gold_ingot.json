@@ -1,0 +1,29 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    [
+      {
+        "amount": 4,
+        "tag": "forge:ingots/gold"
+      },
+      {
+        "amount": 4,
+        "tag": "forge:dusts/gold"
+      }
+    ],
+    [
+      {
+        "amount": 1,
+        "tag": "forge:ingots/aluminum"
+      },
+      {
+        "amount": 1,
+        "tag": "forge:dusts/aluminum"
+      }
+    ]
+  ],
+  "output": {
+    "Count": 5,
+    "id": "eternalartifacts:purple_gold_ingot"
+  }
+}

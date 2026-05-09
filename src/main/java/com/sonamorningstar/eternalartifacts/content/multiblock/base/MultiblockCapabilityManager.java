@@ -59,7 +59,7 @@ public class MultiblockCapabilityManager {
 		AtomicBoolean ret = new AtomicBoolean(false);
 		blockCapabilities.forEach((relativePos, dirMap) -> {
 			BlockPos translatedPos = BlockPattern.translateAndRotate(frontLeftTopPos, forwards, upwards,
-				relativePos.x, relativePos.y, relativePos.z);
+				relativePos.x(), relativePos.y(), relativePos.z());
 			if (translatedPos.equals(targetPos)) {
 				//DirectionRotationCache.transform(forwards, upwards, dir)
 				

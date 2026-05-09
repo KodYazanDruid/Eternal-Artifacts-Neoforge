@@ -85,7 +85,7 @@ public class SludgeRefiner extends GenericMachine {
 	}
 	
 	@Override
-	protected void findRecipe() {
+	public void findRecipe() {
 		if (getLevel() instanceof ServerLevel sLevel && shouldUpdateCache) {
 			FluidStack fluid = tank.getFluidInTank(0);
 			if (fluid.getAmount() >= 500 && fluid.is(ModFluids.SLUDGE.getFluid())) {

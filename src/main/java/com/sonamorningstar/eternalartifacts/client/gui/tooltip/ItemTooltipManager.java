@@ -61,7 +61,7 @@ public class ItemTooltipManager {
 			Component.empty()
 				.append(CommonComponents.SPACE)
 				.append(Component.translatable(ModConstants.TOOLTIP.withSuffix(BuiltInRegistries.ITEM.getKey(item).getPath()), args))
-				.withColor(0x89CFF0)
+				.withColor(0x99ccff)
 		);
 	}
 	

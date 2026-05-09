@@ -9,6 +9,7 @@
     "eternalartifacts:spawner_extractor",
     "eternalartifacts:chisel",
     "eternalartifacts:configuration_drive",
-    "eternalartifacts:lifter"
+    "eternalartifacts:lifter",
+    "eternalartifacts:gold_key"
   ]
 }

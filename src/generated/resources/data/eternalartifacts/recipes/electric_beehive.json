@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "B": {
+      "tag": "forge:ingots/brick"
+    },
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "I": {
+      "tag": "forge:ingots/tin"
+    },
+    "M": {
+      "item": "eternalartifacts:machine_block"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "tag": "forge:shears"
+    }
+  },
+  "pattern": [
+    "BSB",
+    "IMI",
+    "RCR"
+  ],
+  "result": {
+    "item": "eternalartifacts:electric_beehive"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "eternalartifacts:melting",
+  "input": {
+    "item": "eternalartifacts:pink_slime_block"
+  },
+  "output": {
+    "Amount": 2250,
+    "FluidName": "eternalartifacts:pink_slime"
+  }
+}

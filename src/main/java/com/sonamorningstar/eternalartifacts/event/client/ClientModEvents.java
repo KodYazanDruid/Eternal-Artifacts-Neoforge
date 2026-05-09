@@ -7,7 +7,8 @@ import com.sonamorningstar.eternalartifacts.client.RetexturedColor;
 import com.sonamorningstar.eternalartifacts.client.gui.overlay.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
-import com.sonamorningstar.eternalartifacts.client.render.blockentity.base.MultiBlockRenderer;
+import com.sonamorningstar.eternalartifacts.client.render.blockentity.multiblock.DeformsMultiblockRenderer;
+import com.sonamorningstar.eternalartifacts.client.render.blockentity.multiblock.PumpjackRenderer;
 import com.sonamorningstar.eternalartifacts.client.render.entity.*;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableBatteryLayer;
 import com.sonamorningstar.eternalartifacts.client.render.item.PortableFurnaceLayer;
@@ -223,8 +224,9 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), ctx -> new DSUItemRenderer());
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), ctx -> new DSUFluidRenderer());
 
-        event.registerBlockEntityRenderer(ModMultiblocks.PUMPJACK.getBlockEntity(), MultiBlockRenderer::new);
-        event.registerBlockEntityRenderer(ModMultiblocks.GENERATOR.getBlockEntity(), MultiBlockRenderer::new);
+        event.registerBlockEntityRenderer(ModMultiblocks.PUMPJACK.getBlockEntity(), PumpjackRenderer::new);
+        event.registerBlockEntityRenderer(ModMultiblocks.GENERATOR.getBlockEntity(), DeformsMultiblockRenderer::new);
+        event.registerBlockEntityRenderer(ModMultiblocks.CHUNK_EATER.getBlockEntity(), DeformsMultiblockRenderer::new);
         
         event.registerEntityRenderer(ModEntities.DEMON_EYE.get(), DemonEyeRenderer::new);
         event.registerEntityRenderer(ModEntities.PINKY.get(), PinkyRenderer::new);

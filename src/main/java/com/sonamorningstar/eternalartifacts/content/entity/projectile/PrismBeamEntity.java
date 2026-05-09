@@ -115,7 +115,14 @@ public class PrismBeamEntity extends AbstractSpellEntity {
         }
         return null;
     }
-
+    
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        level().playSound(getOwner() instanceof Player p ? p : null, this.getX(), this.getY(), this.getZ(),
+            SoundEvents.BEACON_DEACTIVATE, SoundSource.PLAYERS, 0.5F, 1.5F);
+    }
+    
     @Override
     protected int getMaxLifetime() {
         return 72000;
@@ -166,7 +173,7 @@ public class PrismBeamEntity extends AbstractSpellEntity {
             dealDamage();
         }
         
-        if (getAge() % 20 == 0) {
+        if (getAge() % 80 == 0) {
             this.level().playSound(owner instanceof Player p ? p : null, this.getX(), this.getY(), this.getZ(),
                 SoundEvents.BEACON_AMBIENT, SoundSource.PLAYERS, 0.5F, 1.5F);
         }

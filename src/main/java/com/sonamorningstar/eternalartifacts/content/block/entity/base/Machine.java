@@ -11,6 +11,8 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.MachineWorkingStateToClient;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import lombok.AccessLevel;
@@ -47,6 +49,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
+import org.antlr.v4.runtime.misc.IntegerList;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -83,6 +86,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected int defaultEnergyPerTick = 40;
     @Getter
     protected boolean isWorking;
+    protected boolean isWorkingDirty;
     @Getter
     protected int energyPerTick;
     public final List<Integer> outputSlots = new ArrayList<>();
@@ -98,7 +102,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected boolean isFakePlayerSetUp = false;
     @Setter
     private Component name;
-    private boolean isInitializing = false;
 
     public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
@@ -255,6 +258,18 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         return false;
     }
     
+    // Return true to sync isWorking to clients. Mainly used for rendering purposes.
+    public boolean shouldSyncWorkingState() {
+        return false;
+    }
+    
+    public void setWorking(boolean working) {
+        if (this.isWorking != working) {
+            this.isWorking = working;
+            this.isWorkingDirty = true;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
@@ -269,14 +284,19 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         Recipe<Container> recipe = (Recipe<Container>) RecipeCache.getCachedRecipe(this);
         if (recipeType != null && recipe == null) {
             progress = 0;
-            isWorking = false;
+            //setWorking(false);
             return;
         }
         if (previousRecipe != null && previousRecipe != recipe) {
             progress = 0;
-            isWorking = false;
+            //setWorking(false);
         }
         previousRecipe = recipe;
+        
+        if (shouldSyncWorkingState() && isWorkingDirty) {
+            Channel.sendToChunk(new MachineWorkingStateToClient(pos, isWorking), lvl.getChunkAt(pos));
+            isWorkingDirty = false;
+        }
     }
     
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
@@ -303,7 +323,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     /**
      * Automatically updates the ProcessCondition. Called whenever inventory, tank, or recipe changes.
      */
-    protected final void updateProcessCondition() {
+    public final void updateProcessCondition() {
         Recipe<?> recipe = getCachedRecipe();
         ProcessCondition newCondition = new ProcessCondition(this);
         configureProcessCondition(newCondition, recipe);
@@ -340,6 +360,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if(tank != null) tag.put("Fluid", tank.serializeNBT());
         tag.putInt("EnergyPerTick", energyPerTick);
         if (hasCustomName()) tag.putString("CustomName", Component.Serializer.toJson(name));
+        tag.putBoolean("IsWorking", isWorking);
     }
     
     @Override
@@ -352,6 +373,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if(tank != null && shouldSerializeTank()) tank.deserializeNBT(tag.getCompound("Fluid"));
         energyPerTick = tag.getInt("EnergyPerTick");
         if (tag.contains("CustomName", 8)) name = Component.Serializer.fromJson(tag.getString("CustomName"));
+        isWorking = tag.getBoolean("IsWorking");
     }
     
     /**
@@ -432,7 +454,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     
     @Override
-    protected void findRecipe() {
+	public void findRecipe() {
         findRecipeFor(recipeType, recipeContainer);
     }
     
@@ -504,10 +526,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if (level != null && canWork(energy) && redstoneChecks(level)) {
             if (haltCondition.getAsBoolean()) {
                 progress = 0;
-                isWorking = false;
+                setWorking(false);
                 return;
             }
-            isWorking = true;
+            setWorking(true);
             running.run();
             progress = Math.min(maxProgress, progress + progressStep);
             if (progress >= maxProgress) {
@@ -516,7 +538,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             }
             spendEnergy(energy);
         } else {
-            isWorking = false;
+            setWorking(false);
         }
     }
     

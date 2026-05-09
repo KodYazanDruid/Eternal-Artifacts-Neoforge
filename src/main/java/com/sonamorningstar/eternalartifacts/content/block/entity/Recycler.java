@@ -33,7 +33,7 @@ public class Recycler extends GenericMachine {
 	}
 	
 	@Override
-	protected void findRecipe() {
+	public void findRecipe() {
 		ItemStack input = inventory.getStackInSlot(0);
 		var crafting = RecyclerRecipeCache.getRecipe(input.getItem());
 		if (crafting != null) RecipeCache.cacheRecipe(this, crafting);

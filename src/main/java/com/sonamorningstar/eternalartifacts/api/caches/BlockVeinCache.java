@@ -1,9 +1,7 @@
 package com.sonamorningstar.eternalartifacts.api.caches;
 
-import it.unimi.dsi.fastutil.booleans.Boolean2ObjectFunction;
 import it.unimi.dsi.fastutil.longs.LongArrayFIFOQueue;
 import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
-import it.unimi.dsi.fastutil.objects.Object2BooleanFunction;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -17,8 +15,6 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**

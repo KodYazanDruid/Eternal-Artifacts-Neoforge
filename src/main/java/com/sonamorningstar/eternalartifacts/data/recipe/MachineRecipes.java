@@ -532,6 +532,17 @@ public final class MachineRecipes {
 				'C', Ingredient.of(ModItems.CAPACITOR)
 			)
 		);
+		registerMachineRecipe(output, ModMachines.ELECTRIC_BEEHIVE,
+			"BSB"+"IMI"+"RCR",
+			Map.of(
+				'B', Ingredient.of(Tags.Items.INGOTS_BRICK),
+				'S', Ingredient.of(Tags.Items.SHEARS),
+				'I', Ingredient.of(ModTags.Items.INGOTS_TIN),
+				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'C', Ingredient.of(ModItems.CAPACITOR)
+			)
+		);
 	}
 	
 	static void registerMachineRecipe(RecipeOutput output, ItemLike machine, String pattern, Map<Character, Ingredient> symbols) {

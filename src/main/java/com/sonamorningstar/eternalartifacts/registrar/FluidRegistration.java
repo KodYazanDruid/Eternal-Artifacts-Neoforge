@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
 import lombok.Getter;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -10,6 +11,8 @@ import org.joml.Vector3f;
 
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
+
+import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 /**
  * Represents a fluid registration configuration.
@@ -61,6 +64,8 @@ public class FluidRegistration<B extends LiquidBlock> {
     private final Vector3f fogColor;
     private final MapColor mapColor;
     private final boolean useGenericTexture;
+    private final ResourceLocation stillTexture;
+    private final ResourceLocation flowingTexture;
     private final int tintColor;
     private final boolean isPotion;
     private final boolean hasBucket;
@@ -76,6 +81,8 @@ public class FluidRegistration<B extends LiquidBlock> {
         this.fogColor = new Vector3f(builder.fogR / 255f, builder.fogG / 255f, builder.fogB / 255f);
         this.mapColor = builder.mapColor;
         this.useGenericTexture = builder.useGenericTexture;
+        this.stillTexture = builder.stillTexture;
+        this.flowingTexture = builder.flowingTexture;
         this.tintColor = builder.tintColor;
         this.isPotion = builder.isPotion;
         this.hasBucket = builder.hasBucket;
@@ -105,6 +112,8 @@ public class FluidRegistration<B extends LiquidBlock> {
         private int fogR = 255, fogG = 255, fogB = 255;
         private MapColor mapColor = MapColor.WATER;
         private boolean useGenericTexture = false;
+        private ResourceLocation stillTexture;
+        private ResourceLocation flowingTexture;
         private int tintColor = 0xFFFFFFFF;
         private boolean isPotion = false;
         private boolean hasBucket = true;
@@ -114,6 +123,8 @@ public class FluidRegistration<B extends LiquidBlock> {
         public Builder(String name) {
             this.name = name;
             this.blockFactory = (fluid, props) -> (B) new LiquidBlock(fluid, props);
+            this.stillTexture = getStillTexture(MODID, name);
+            this.flowingTexture = getFlowTexture(MODID, name);
         }
 
         public Builder<B> light(int level) {
@@ -156,6 +167,17 @@ public class FluidRegistration<B extends LiquidBlock> {
             this.useGenericTexture = true;
             return this;
         }
+        public Builder<B> stillTexture(ResourceLocation stillTexture) {
+            this.stillTexture = stillTexture;
+            return this;
+        }
+        public Builder<B> flowingTexture(ResourceLocation flowingTexture) {
+            this.flowingTexture = flowingTexture;
+            return this;
+        }
+        public Builder<B> texture(ResourceLocation texture) {
+            return stillTexture(texture).flowingTexture(texture);
+        }
 
         public Builder<B> tint(int tintColor) {
             this.tintColor = tintColor;
@@ -189,6 +211,14 @@ public class FluidRegistration<B extends LiquidBlock> {
                 throw new IllegalStateException("Fluid name is required");
             }
             return new FluidRegistration<>(this);
+        }
+        
+        private ResourceLocation getStillTexture(String modId, String name) {
+            return new ResourceLocation(modId, "block/" + name + "_still");
+        }
+        
+        private ResourceLocation getFlowTexture(String modId, String name) {
+            return new ResourceLocation(modId, "block/" + name + "_flow");
         }
     }
 }

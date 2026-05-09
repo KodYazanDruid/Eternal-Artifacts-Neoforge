@@ -89,7 +89,9 @@ public class SpellTagsProvider extends IntrinsicHolderTagsProvider<Spell> {
         tag(ModTags.Spells.NATURE).add(
             ModSpells.BOUNCING_HONEY.get()
         );
-        
+        tag(ModTags.Spells.SHADOW).add(
+            ModSpells.SHADOW_RAY.get()
+        );
         tag(ModTags.Spells.NATURE).addTags(
             ModTags.Spells.AIR,
             ModTags.Spells.EARTH,

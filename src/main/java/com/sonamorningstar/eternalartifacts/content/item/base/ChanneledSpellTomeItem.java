@@ -15,7 +15,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 
 /**
  * A spell tome that fires repeatedly while the player holds right click.
- * Each tick interval, it casts the spell once. Cooldown is applied on release.
+ * Spell casts on each interval. Cooldown is applied on release.
  */
 public class ChanneledSpellTomeItem<S extends Spell> extends SpellTomeItem<S> {
     private final int fireInterval;
@@ -58,10 +58,10 @@ public class ChanneledSpellTomeItem<S extends Spell> extends SpellTomeItem<S> {
                 S spell = getSpell();
                 float amplifiedDamage = spell.getAmplifiedDamage(player);
                 InteractionHand hand = player.getUsedItemHand();
-                SpellCastEvent event = new SpellCastEvent(player, level, stack, amplifiedDamage, spell);
+                SpellCastEvent event = new SpellCastEvent(player, level, stack, hand, amplifiedDamage, spell);
                 if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                     amplifiedDamage = event.getAmplifiedDamage();
-                    castSpell(event.getSpell(), event.getTome(), level, player, hand, player.getRandom(), amplifiedDamage);
+                    castSpell(event.getSpell(), event.getTome(), level, player, event.getHand(), player.getRandom(), amplifiedDamage);
                 }
             }
         }

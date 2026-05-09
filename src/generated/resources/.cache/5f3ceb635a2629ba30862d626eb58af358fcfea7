@@ -1,4 +1,4 @@
-// 1.20.4	2026-03-28T00:15:18.3860882	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2026-05-08T16:41:19.233992	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -39,11 +39,12 @@ ad1acbd7ef15e0a59ed1eed453197271e0a83b99 data/forge/tags/items/fruits/banana.jso
 ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/forge/tags/items/glass/hardened.json
 d67c9fd5e8c499cbc962967777629ed0f0a36204 data/forge/tags/items/hardened_glass.json
 b205a5c572bcadc3eb3cb74cdff02d68cff247cb data/forge/tags/items/heads.json
-4312942610caba12e3657f9404120c330cc26b51 data/forge/tags/items/ingots.json
+1589d0760879856ba8cefbe44d8992b292b3748c data/forge/tags/items/ingots.json
 ea2d8731e74b80ccd52a531d82523ff15ce55e3e data/forge/tags/items/ingots/aluminum.json
 14fd303c44c858bd6ca164c7f375cf7431147720 data/forge/tags/items/ingots/bronze.json
 0cef74bc1b863aaeeb0e539a112a731f1dceed42 data/forge/tags/items/ingots/manganese.json
 d5c8916de212728a3799453c1fd385f5435f182d data/forge/tags/items/ingots/meat.json
+a71b569ccd09c5b92ea6d61bb4a262a83fea2140 data/forge/tags/items/ingots/purple_gold.json
 49561d1964884e94195f462abd9a9e82efa0365d data/forge/tags/items/ingots/raw_meat.json
 239297daaaa2a69b32fbf9f48620dda0a50472ba data/forge/tags/items/ingots/steel.json
 09158ebba3dd655510a1717df1eb5b5d7f4ba3d7 data/forge/tags/items/ingots/tin.json
@@ -74,7 +75,7 @@ f8845fe4302e453748266bca7231a3e2f3041869 data/forge/tags/items/seeds.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
 8398a7e23256a627957c4a079d3e9e4cbb5c3c95 data/forge/tags/items/storage_blocks/steel.json
-7ab5ab9272a75e6eb9bdd14d9b442bc556fe52b0 data/forge/tags/items/tools.json
+2f0cc4b965f70b52ba06034e165ea97c1b814794 data/forge/tags/items/tools.json
 4a03ee9f0ac4da327a4e122af62bd7174ab3216d data/forge/tags/items/tools/crossbows.json
 f0dd0a8660131a466006888e2b325db7dde680f6 data/forge/tags/items/tools/hammers.json
 3217aed0df60b40f9565f9db3a164c13a1221830 data/forge/tags/items/tools/sickles.json

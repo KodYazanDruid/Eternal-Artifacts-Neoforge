@@ -76,7 +76,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
     public double getHeatPercentage() {return heat.getHeat() * 100D / heat.getMaxHeat();}
 
     @Override
-    protected void findRecipe() {
+	public void findRecipe() {
         recipeType = getSelectedRecipeType();
         findRecipeFor(recipeType, recipeContainer, 0, true);
         findRecipeFor(recipeType, recipeContainer2, 1, true);
@@ -159,7 +159,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
         boolean isEnergyEnough = energy.getEnergyStored() >= heatKeepCost;
         int currentHeat = heat.getHeat();
 
-        if (isWorking && isEnergyEnough) {
+        if (isWorking() && isEnergyEnough) {
             heat.heat(1, false);
             energy.extractEnergyForced(heatKeepCost, false);
         } else {

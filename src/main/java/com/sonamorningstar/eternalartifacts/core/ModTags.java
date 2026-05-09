@@ -114,6 +114,7 @@ public class ModTags {
         public static final TagKey<Item> GLASS_HARDENED = forgeTag("glass/hardened");
         public static final TagKey<Item> HARDENED_GLASS = forgeTag("hardened_glass");
         public static final TagKey<Item> DUSTS_AMETHYST = forgeTag("dusts/amethyst");
+        public static final TagKey<Item> INGOTS_PURPLE_GOLD = forgeTag("ingots/purple_gold");
 		
 		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }
@@ -130,6 +131,8 @@ public class ModTags {
         public static final TagKey<Fluid> DIESEL = forgeTag("diesel");
         public static final TagKey<Fluid> NAPHTHA = forgeTag("naphtha");
         public static final TagKey<Fluid> POTION = forgeTag("potion");
+        public static final TagKey<Fluid> HONEY = forgeTag("honey");
+        public static final TagKey<Fluid> SLIME = forgeTag("slime");
 		
 		private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }

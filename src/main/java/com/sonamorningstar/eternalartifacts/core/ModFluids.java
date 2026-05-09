@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.fluid.SludgeLiquidBlock;
 import com.sonamorningstar.eternalartifacts.registrar.FluidHolder;
 import com.sonamorningstar.eternalartifacts.registrar.FluidRegistration;
 import com.sonamorningstar.eternalartifacts.registrar.FluidRegistry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.MapColor;
@@ -149,6 +150,25 @@ public class ModFluids {
                     .genericTexture()
                     .tint(0xFF2C0B0B)
                     .build()
+    );
+    
+    public static final FluidHolder<LiquidBlock> HONEY = FLUIDS.register(
+        FluidRegistration.create("honey")
+            .noBlock()
+            .stillTexture(new ResourceLocation("block/honey_block_top"))
+            .flowingTexture(new ResourceLocation("block/honey_block_side"))
+            .rarity(Rarity.UNCOMMON)
+            .mapColor(MapColor.TERRACOTTA_YELLOW)
+            .build()
+    );
+    
+    public static final FluidHolder<LiquidBlock> SLIME = FLUIDS.register(
+        FluidRegistration.create("slime")
+            .noBlock()
+            .texture(new ResourceLocation("block/slime_block"))
+            .rarity(Rarity.UNCOMMON)
+            .mapColor(MapColor.TERRACOTTA_GREEN)
+            .build()
     );
 
     public static final FluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion("potion", 0, 1000, 1000);

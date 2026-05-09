@@ -45,7 +45,7 @@ public class SpellTomeItem<S extends Spell> extends Item {
         if (!player.getCooldowns().isOnCooldown(tome.getItem())){
             S spell = getSpell();
             float amplifiedDamage = spell.getAmplifiedDamage(player);
-            SpellCastEvent event = new SpellCastEvent(player, level, tome, amplifiedDamage, spell);
+            SpellCastEvent event = new SpellCastEvent(player, level, tome, hand, amplifiedDamage, spell);
             if (!NeoForge.EVENT_BUS.post(event).isCanceled()) {
                 if (castSpell(event.getSpell(), event.getTome(), level, player, hand, player.getRandom(), event.getAmplifiedDamage())) {
                     player.getCooldowns().addCooldown(event.getTome().getItem(), spell.getDecreasedCooldown(player));

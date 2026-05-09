@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
 import com.google.common.collect.HashMultimap;
-import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronDrainInteraction;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
@@ -13,10 +12,12 @@ import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.ArmorSet
 import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.AttributeArmorSet;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineEnchants;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
+import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddRandomCharmModifier;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterFarmBehaviorEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.RegisterMultiblockPatternsEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.core.cauldron.CauldronInteraction;
@@ -37,6 +38,8 @@ import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
@@ -44,7 +47,6 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 import java.util.UUID;
@@ -77,6 +79,7 @@ FMLCommonSetup {
             TesseractNetwork.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
             ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
             ModLoader.get().postEvent(new RegisterFarmBehaviorEvent());
+            ModLoader.get().postEvent(new RegisterMultiblockPatternsEvent(Multiblock.PATTERNS));
             
             ArmorSetRegistry.registerArmorSetBonus(new ArmorSet(ArmorSets.CACTUS_ARMOR, List.of(
                 ModItems.CACTUS_HELMET.get(),
@@ -138,6 +141,24 @@ FMLCommonSetup {
             ModBlocks.RESONATOR.asItem(),
             ModItems.LIGHTSABER.get()
         );
+        
+        VoxelShape pumpjackShape = Shapes.box(0, 0, 0, 3, 0.5, 5);
+        VoxelShape leftPole = Shapes.box(0.25, 0.5, 2.25, 0.75, 3, 2.75);
+        VoxelShape rightPole = Shapes.box(2.25, 0.5, 2.25, 2.75, 3, 2.75);
+        VoxelShape fullShape = Shapes.or(pumpjackShape, leftPole, rightPole);
+        ModMultiblocks.PUMPJACK.getMultiblock().setFullShape(fullShape);
+        VoxelShape minerShape = Shapes.box(0, 0, 0, 5, 0.5, 5);
+        VoxelShape pole1 = Shapes.box(0.25, 0.5, 0.25, 0.75, 2, 0.75);
+        VoxelShape pole2 = Shapes.box(0.25, 0.5, 4.25, 0.75, 2, 4.75);
+        VoxelShape pole3 = Shapes.box(4.25, 0.5, 4.25, 4.75, 2, 4.75);
+        VoxelShape pole4 = Shapes.box(4.25, 0.5, 0.25, 4.75, 2, 0.75);
+        VoxelShape master = Shapes.box(2, 0, 0, 3, 1, 1);
+        VoxelShape energy = Shapes.box(2, 0, 4, 3, 1, 5);
+        VoxelShape storage = Shapes.box(4, 0, 2, 5, 1, 3);
+        VoxelShape center = Shapes.box(2, 0.5, 2, 3, 2, 3);
+        VoxelShape fullMinerShape = Shapes.or(minerShape, pole1, pole2, pole3, pole4, master, energy, storage, center);
+        ModMultiblocks.CHUNK_EATER.getMultiblock().setFullShape(fullMinerShape);
+        
     }
 
     private static void registerCauldronContextsForItemFluidHandlers(Item item) {

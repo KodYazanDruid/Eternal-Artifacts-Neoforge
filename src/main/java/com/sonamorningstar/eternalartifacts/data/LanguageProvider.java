@@ -253,6 +253,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CACTUS_BOOTS.get(), "Cactus Boots");
                 add(ModItems.GOLD_KEY.get(), "Gold Key");
                 add(ModItems.BOUNCING_HONEY_TOME.get(), "Bouncing Honey Tome");
+                add(ModItems.FAIRY_DUST.get(), "Fairy Dust");
+                add(ModItems.SHADOW_RAY_TOME.get(), "Shadow Ray Tome");
+                add(ModItems.PURPLE_GOLD_INGOT.get(), "Purple Gold Ingot");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -751,6 +754,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.divine_protection", "Divine Protection");
                 add(ModSpells.VOIDLOCK.get().getDescriptionId().get(), "Voidlock");
                 add(ModSpells.BOUNCING_HONEY.get().getDescriptionId().get(), "Bouncing Honey");
+                add(ModSpells.SHADOW_RAY.get().getDescriptionId().get(), "Shadow Ray");
                 // Spell Descriptions
                 add("spell.eternalartifacts.fireball.desc", "Launches a small fireball that ignites enemies on impact.");
                 add("spell.eternalartifacts.evoker_fangs.desc", "Summons a line of fangs from the ground that bite enemies in their path.");
@@ -764,13 +768,18 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.divine_protection.desc", "Heals and blesses nearby allies and pets with divine protection and regeneration effects.");
                 add(ModSpells.VOIDLOCK.get().getDescriptionId().get() + ".desc", "Throws a homing projectile that deals area of damage. Secondary targets take half of the damage");
                 add(ModSpells.BOUNCING_HONEY.get().getDescriptionId().get() + ".desc", "Launches a glob of honey that bounces around, damaging enemies it comes into contact with.");
+                add(ModSpells.SHADOW_RAY.get().getDescriptionId().get() + ".desc", "Casts a ray of shadow beam that reflects off surfaces and pierces through enemies.");
                 //Set bonuses
                 add(ModConstants.TOOLTIP.withSuffix(ArmorSets.CACTUS_ARMOR.toLanguageKey()+".desc"), "Reflects 50% of the incoming damage back to attacker.");
                 
                 //endregion
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
-                    if (holder.getBucketItem() != null) add(holder.getBucketItem(), prettyName(holder.getBlockHolder().getId().getPath()));
+                    if (holder.getBucketItem() != null) {
+                        /*DeferredHolder<Block, ?> blockHolder = holder.getBlockHolder();
+                        String name = blockHolder != null ? prettyName(blockHolder.getId().getPath()) : prettyName(holder.asItem());*/
+                        add(holder.getBucketItem(), prettyName(BuiltInRegistries.ITEM.getKey(holder.getBucketItem()).getPath()));
+                    }
                     if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                     add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
                 });
@@ -1022,6 +1031,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.CACTUS_BOOTS.get(), "Kaktüs Botları");
                 add(ModItems.GOLD_KEY.get(), "Altın Anahtar");
                 add(ModItems.BOUNCING_HONEY_TOME.get(), "Zıplayan Bal Kitabı");
+                add(ModItems.FAIRY_DUST.get(), "Peri Tozu");
+                add(ModItems.SHADOW_RAY_TOME.get(), "Gölge Işını Kitabı");
+                add(ModFluids.HONEY.getBucketItem(), "Bal Kovası");
+                add(ModFluids.SLIME.getBucketItem(), "Balçık Kovası");
+                add(ModItems.PURPLE_GOLD_INGOT.get(), "Mor Altın Külçesi");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1238,6 +1252,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.ITEM_COLLECTOR.getBlockTranslationKey(), "Eşya Toplayıcı");
                 add(ModMachines.ENTITY_WATCHER.getBlockTranslationKey(), "Varlık Gözcüsü");
                 add(ModBlocks.SOUL_BLAZE_HEAD.get(), "Ruh Alazı Kafası");
+                add(ModFluids.HONEY.getTranslationKey(), "Bal");
+                add(ModFluids.SLIME.getTranslationKey(), "Balçık");
+                add(ModMachines.ELECTRIC_BEEHIVE.getBlockTranslationKey(), "Elektrikli Arı Kovanı");
+                add(ModMultiblocks.CHUNK_EATER.getTranslationKey(), "Yığın Yiyici");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1616,6 +1634,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.divine_protection", "Kutsal Koruma");
                 add(ModSpells.VOIDLOCK.get().getDescriptionId().get(), "Hiçkilit");
                 add(ModSpells.BOUNCING_HONEY.get().getDescriptionId().get(), "Zıplayan Bal");
+                add(ModSpells.SHADOW_RAY.get().getDescriptionId().get(), "Gölge Işını");
                 // Büyü Açıklamaları
                 add("spell.eternalartifacts.fireball.desc", "Çarpma anında düşmanları tutuşturan küçük bir ateş topu fırlatır.");
                 add("spell.eternalartifacts.evoker_fangs.desc", "Yolundaki düşmanları ısıran bir sıra diş yerden çağırır.");
@@ -1629,6 +1648,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add("spell.eternalartifacts.divine_protection.desc", "Yakındaki müttefikleri ve petleri iyileştirip kutsal koruma ve yenilenme efektleri verir.");
                 add(ModSpells.VOIDLOCK.get().getDescriptionId().get()+".desc", "Rakiplere alan hasarı veren otomatik güdümlenen bir büyü fırlatır. İkincil hedefler hasarın yarısını alır.");
                 add(ModSpells.BOUNCING_HONEY.get().getDescriptionId().get()+".desc", "Etrafta zıplayan düşmanlara hasar veren bir bal parçası fırlatır.");
+                add(ModSpells.SHADOW_RAY.get().getDescriptionId().get()+".desc", "Yüzeylerden yansıyan ve varlıkları delen bir ışın oluşturur.");
                 //Zırh Bonusları
                 add(ModConstants.TOOLTIP.withSuffix(ArmorSets.CACTUS_ARMOR.toLanguageKey()+".desc"), "Alınan hasarın %50'sini saldırgana geri yansıtır.");
                 //endregion

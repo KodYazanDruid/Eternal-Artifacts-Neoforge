@@ -96,7 +96,7 @@ public class AutoCutter extends SidedTransferMachine<AutoCutterMenu> {
 	}
 	
 	@Override
-	protected void findRecipe() {
+	public void findRecipe() {
 		recipes = level.getRecipeManager()
 			.getRecipesFor((RecipeType<Recipe<Container>>) recipeType, recipeContainer.get(), level);
 	}

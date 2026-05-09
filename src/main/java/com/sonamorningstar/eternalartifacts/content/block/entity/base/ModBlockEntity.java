@@ -1,14 +1,13 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
-import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.event.custom.GetMachineEnchantmentLevelEvent;
+import com.sonamorningstar.eternalartifacts.util.StorageBuilder;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
@@ -56,7 +55,7 @@ public class ModBlockEntity extends BlockEntity {
         return false;
     }
 
-    protected void findRecipe() {}
+    public void findRecipe() {}
 
     @Nullable
     @Override
@@ -154,231 +153,112 @@ public class ModBlockEntity extends BlockEntity {
         return getEnchantmentLevel(ModEnchantments.VERSATILITY.get()) > 0;
     }
 
-    protected ModFluidStorage createDefaultTank() { return createBasicTank(16000); }
-    protected ModFluidStorage createBasicTank(int size, Runnable... listeners) {
-        int volume = getVolumeLevel();
-        return new ModFluidStorage(size * (volume + 1)) {
-            @Override
-            protected void onContentsChanged() {
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                sendUpdate();
-                for (Runnable runnable : listeners) runnable.run();
-            }
-        };
-    }
-    protected ModFluidStorage createRecipeFinderTank(int size) {
-        int volume = getVolumeLevel();
-        return new ModFluidStorage(size * (volume + 1)) {
-            @Override
-            protected void onContentsChanged() {
-                findRecipe();
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                sendUpdate();
-            }
-        };
-    }
-    protected ModFluidStorage createBasicTank(int size, boolean canDrain, boolean canFill, Runnable... listeners) {
-        int volume = getVolumeLevel();
-        return new ModFluidStorage(size * (volume + 1)) {
-            @Override
-            protected void onContentsChanged() {
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                sendUpdate();
-                for (Runnable runnable : listeners) runnable.run();
-            }
-            @Override
-            public FluidStack drain(int maxDrain, FluidAction action) {
-                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
-            }
-            @Override
-            public int fill(FluidStack resource, FluidAction action) {
-                return canFill ? super.fill(resource, action) : 0;
-            }
-        };
-    }
-    protected ModFluidStorage createRecipeFinderTank(int size, boolean canDrain, boolean canFill) {
-        int volume = getVolumeLevel();
-        return new ModFluidStorage(size * (volume + 1)) {
-            @Override
-            protected void onContentsChanged() {
-                findRecipe();
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                sendUpdate();
-            }
-            @Override
-            public FluidStack drain(int maxDrain, FluidAction action) {
-                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
-            }
-            @Override
-            public int fill(FluidStack resource, FluidAction action) {
-                return canFill ? super.fill(resource, action) : 0;
-            }
-        };
-    }
-    protected ModFluidStorage createBasicTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill, Runnable... run) {
-        int volume = getVolumeLevel();
-        return new ModFluidStorage(size * (volume + 1), validator) {
-            @Override
-            protected void onContentsChanged() {
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                sendUpdate();
-                for (Runnable runnable : run) runnable.run();
-            }
-            @Override
-            public FluidStack drain(int maxDrain, FluidAction action) {
-                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
-            }
-            @Override
-            public int fill(FluidStack resource, FluidAction action) {
-                return canFill ? super.fill(resource, action) : 0;
-            }
-        };
-    }
-    protected ModFluidStorage createRecipeFinderTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill) {
-        int volume = getVolumeLevel();
-        return new ModFluidStorage(size * (volume + 1), validator) {
-            @Override
-            protected void onContentsChanged() {
-                findRecipe();
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                sendUpdate();
-            }
-            @Override
-            public FluidStack drain(int maxDrain, FluidAction action) {
-                return canDrain ? super.drain(maxDrain, action) : FluidStack.EMPTY;
-            }
-            @Override
-            public int fill(FluidStack resource, FluidAction action) {
-                return canFill ? super.fill(resource, action) : 0;
-            }
-        };
+    protected ModFluidStorage createDefaultTank() {
+        return StorageBuilder.fluidStorage(this, 16000).build();
     }
 
-    protected ModEnergyStorage createDefaultEnergy() {return createBasicEnergy(50000, 2500, true, false);}
+    protected ModFluidStorage createBasicTank(int size, Runnable... listeners) {
+        return StorageBuilder.fluidStorage(this, size)
+                .listeners(listeners)
+                .build();
+    }
+
+    protected ModFluidStorage createRecipeFinderTank(int size) {
+        return StorageBuilder.fluidStorage(this, size)
+                .recipeFinder(true)
+                .build();
+    }
+
+    protected ModFluidStorage createBasicTank(int size, boolean canDrain, boolean canFill, Runnable... listeners) {
+        return StorageBuilder.fluidStorage(this, size)
+                .canDrain(canDrain)
+                .canFill(canFill)
+                .listeners(listeners)
+                .build();
+    }
+
+    protected ModFluidStorage createRecipeFinderTank(int size, boolean canDrain, boolean canFill) {
+        return StorageBuilder.fluidStorage(this, size)
+                .recipeFinder(true)
+                .canDrain(canDrain)
+                .canFill(canFill)
+                .build();
+    }
+
+    protected ModFluidStorage createBasicTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill, Runnable... run) {
+        return StorageBuilder.fluidStorage(this, size)
+                .validator(validator)
+                .canDrain(canDrain)
+                .canFill(canFill)
+                .listeners(run)
+                .build();
+    }
+
+    protected ModFluidStorage createRecipeFinderTank(int size, Predicate<FluidStack> validator, boolean canDrain, boolean canFill) {
+        return StorageBuilder.fluidStorage(this, size)
+                .recipeFinder(true)
+                .validator(validator)
+                .canDrain(canDrain)
+                .canFill(canFill)
+                .build();
+    }
+
+    protected ModEnergyStorage createDefaultEnergy() {
+        return StorageBuilder.energyStorage(this, 50000, 2500)
+                .canReceive(true)
+                .canExtract(false)
+                .build();
+    }
+
     protected ModEnergyStorage createBasicEnergy(int size, int transfer, boolean canReceive, boolean canExtract) {
         return createBasicEnergy(size, transfer, transfer, canReceive, canExtract);
     }
+
     protected ModEnergyStorage createBasicEnergy(int size, int maxReceive, int maxExtract, boolean canReceive, boolean canExtract) {
-        int volume = getVolumeLevel();
-        return new ModEnergyStorage(size * (volume + 1), maxReceive, maxExtract) {
-            @Override
-            public void onEnergyChanged() {
-                sendUpdate();
-            }
-            @Override
-            public boolean canReceive() {return canReceive;}
-            @Override
-            public boolean canExtract() {return canExtract;}
-        };
+        return StorageBuilder.energyStorage(this, size)
+                .maxTransfer(maxReceive, maxExtract)
+                .canReceive(canReceive)
+                .canExtract(canExtract)
+                .build();
     }
 
-    @SafeVarargs
-    protected final ModItemStorage createBasicInventory(int size, boolean canInsert, Consumer<Integer>... consumers) {
-        return new ModItemStorage(size) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                for (Consumer<Integer> consumer : consumers) consumer.accept(slot);
-                ModBlockEntity.this.sendUpdate();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {
-                return canInsert;
-            }
-        };
+    protected final ModItemStorage createBasicInventory(int size, boolean canInsert, IntConsumer... consumers) {
+        return StorageBuilder.itemStorage(this, size)
+                .canInsert(canInsert)
+                .consumers(consumers)
+                .build();
     }
     
-    protected final ModItemStorage createBasicInventory(int size, List<Integer> outputSlots, BiFunction<Integer, ItemStack, Boolean> isValid, IntConsumer... consumers) {
-        return new ModItemStorage(size) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                for (IntConsumer consumer : consumers) consumer.accept(slot);
-                ModBlockEntity.this.sendUpdate();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {
-                return !outputSlots.contains(slot) && isValid.apply(slot, stack);
-            }
-        };
+    protected final ModItemStorage createBasicInventory(int size, List<Integer> outputSlots, BiPredicate<Integer, ItemStack> validator, IntConsumer... consumers) {
+        return StorageBuilder.itemStorage(this, size)
+                .outputSlots(outputSlots)
+                .validator(validator)
+                .consumers(consumers)
+                .build();
     }
+
     protected final ModItemStorage createRecipeFinderInventory(int size, List<Integer> outputSlots) {
-        return new ModItemStorage(size) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                if (!outputSlots.contains(slot)) {
-                    findRecipe();
-                }
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                super.onContentsChanged(slot);
-                ModBlockEntity.this.sendUpdate();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {return !outputSlots.contains(slot);}
-        };
+        return StorageBuilder.itemStorage(this, size)
+                .recipeFinder(true)
+                .outputSlots(outputSlots)
+                .build();
     }
+
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
         return createBasicInventory(size, isValid, limit -> 64);
     }
+
     protected ModItemStorage createBasicInventory(int size, BiPredicate<Integer, ItemStack> isValid, Int2IntFunction slotLimit) {
-        return new ModItemStorage(size) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                super.onContentsChanged(slot);
-                ModBlockEntity.this.sendUpdate();
-            }
-
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {
-                return isValid.test(slot, stack);
-            }
-            
-            @Override
-            public int getSlotLimit(int slot) {
-                return slotLimit.get(slot);
-            }
-        };
+        return StorageBuilder.itemStorage(this, size)
+                .validator(isValid)
+                .slotLimit(slotLimit)
+                .build();
     }
-    protected ModItemStorage createRecipeFinderInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
-        return new ModItemStorage(size) {
-            @Override
-            protected void onContentsChanged(int slot) {
-                findRecipe();
-                if (ModBlockEntity.this instanceof Machine<?> machine) {
-                    machine.updateProcessCondition();
-                }
-                super.onContentsChanged(slot);
-                ModBlockEntity.this.sendUpdate();
-            }
 
-            @Override
-            public boolean isItemValid(int slot, ItemStack stack) {
-                return isValid.test(slot, stack);
-            }
-        };
+    protected ModItemStorage createRecipeFinderInventory(int size, BiPredicate<Integer, ItemStack> isValid) {
+        return StorageBuilder.itemStorage(this, size)
+                .recipeFinder(true)
+                .validator(isValid)
+                .build();
     }
 }

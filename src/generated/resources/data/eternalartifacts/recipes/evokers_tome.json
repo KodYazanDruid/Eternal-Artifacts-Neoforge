@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "tag": "forge:gems/amethyst"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "P": {
+      "item": "eternalartifacts:fairy_dust"
+    },
+    "T": {
+      "item": "eternalartifacts:tome"
+    }
+  },
+  "pattern": [
+    "CIC",
+    "PTP",
+    "CIC"
+  ],
+  "result": {
+    "item": "eternalartifacts:evokers_tome"
+  }
+}

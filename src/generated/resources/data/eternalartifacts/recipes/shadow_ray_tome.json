@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:tome"
+    },
+    "C": {
+      "tag": "forge:gems/diamond"
+    },
+    "N": {
+      "tag": "forge:ingots/iron"
+    },
+    "P": {
+      "item": "eternalartifacts:fairy_dust"
+    }
+  },
+  "pattern": [
+    "CNC",
+    "PBP",
+    "CNC"
+  ],
+  "result": {
+    "item": "eternalartifacts:shadow_ray_tome"
+  }
+}

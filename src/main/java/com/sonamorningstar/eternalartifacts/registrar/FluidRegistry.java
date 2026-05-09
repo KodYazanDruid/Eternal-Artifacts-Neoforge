@@ -80,14 +80,6 @@ public class FluidRegistry {
         itemRegister.register(bus);
     }
     
-    private ResourceLocation getStillTexture(String name) {
-        return new ResourceLocation(modId, "block/" + name + "_still");
-    }
-    
-    private ResourceLocation getFlowTexture(String name) {
-        return new ResourceLocation(modId, "block/" + name + "_flow");
-    }
-    
     /**
      * Registers a fluid using the provided registration configuration.
      */
@@ -95,8 +87,10 @@ public class FluidRegistry {
         String name = registration.getName();
         ResourceLocation baseKey = new ResourceLocation(modId, name);
         
-        ResourceLocation stillTex = registration.isUseGenericTexture() ? WATER_STILL : getStillTexture(name);
-        ResourceLocation flowTex = registration.isUseGenericTexture() ? WATER_FLOW : getFlowTexture(name);
+        ResourceLocation stillTex = registration.isUseGenericTexture() || registration.getStillTexture() == null ? WATER_STILL :
+            registration.getStillTexture();
+        ResourceLocation flowTex = registration.isUseGenericTexture() || registration.getFlowingTexture() == null ? WATER_FLOW :
+            registration.getFlowingTexture();
         
         // FluidType registration
         DeferredHolder<FluidType, ? extends FluidType> fluidTypeHolder;

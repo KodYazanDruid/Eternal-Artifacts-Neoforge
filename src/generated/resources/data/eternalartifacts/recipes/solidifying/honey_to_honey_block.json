@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:solidifying",
+  "inputFluid": {
+    "amount": 1000,
+    "tag": "forge:honey"
+  },
+  "output": {
+    "Count": 1,
+    "id": "minecraft:honey_block"
+  }
+}

@@ -80,7 +80,7 @@ public class MarineFisher extends GenericMachine {
 		FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
 		fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
 		fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-		ItemStack tool = inventory.getStackInSlot(0);
+		ItemStack tool = inventory.getStackInSlot(0).copy();
 		fakePlayer.getInventory().selected = 0;
 		fakePlayer.setItemSlot(EquipmentSlot.MAINHAND, tool);
 		for (int i = 1; i < inventory.getSlots(); i++) {
@@ -105,6 +105,7 @@ public class MarineFisher extends GenericMachine {
 				ItemHelper.insertItemStackedForced(inventory, loot, false, outputSlots);
 			}
 			tool.hurtAndBreak(1, fakePlayer, p -> {});
+			inventory.setStackInSlot(0, tool);
 		});
 	}
 	

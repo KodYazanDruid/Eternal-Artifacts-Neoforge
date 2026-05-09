@@ -145,6 +145,8 @@ public class ModItems {
     public static final DeferredItem<Item> SOUL_BLAZE_POWDER = register("soul_blaze_powder");
     public static final DeferredItem<Item> AMETHYST_DUST = register("amethyst_dust");
     public static final DeferredItem<Item> GOLD_KEY = register("gold_key");
+    public static final DeferredItem<Item> FAIRY_DUST = register("fairy_dust");
+    public static final DeferredItem<Item> PURPLE_GOLD_INGOT = register("purple_gold_ingot");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);
@@ -154,7 +156,7 @@ public class ModItems {
     public static final DeferredItem<DeferredSpawnEggItem> HONEY_SLIME_SPAWN_EGG = registerSpawnEgg("honey_slime_spawn_egg", ModEntities.HONEY_SLIME, 0xe9981f, 0xe0e90c);
     public static final DeferredItem<DeferredSpawnEggItem> SOUL_BLAZE_SPAWN_EGG = registerSpawnEgg("soul_blaze_spawn_egg", ModEntities.SOUL_BLAZE, 0x149194, 0x5be3e8);
     //endregion
-    //region Actual artifacts.
+    //region Actual artifacts
     public static final DeferredItem<Item> HOLY_DAGGER = registerStacksToOne("holy_dagger");
     public static final DeferredItem<Item> MEDKIT = registerStacksToOne("medkit", MedkitItem::new);
     public static final DeferredItem<Item> FROG_LEGS = registerStacksToOne("frog_legs");
@@ -177,6 +179,7 @@ public class ModItems {
     public static final DeferredItem<SpellTomeItem<BlackHoleSpell>> BLACK_HOLE_TOME = registerTome("black_hole_tome", ModSpells.BLACK_HOLE);
     public static final DeferredItem<SpellTomeItem<VoidlockSpell>> VOIDLOCK_TOME = registerTome("voidlock_tome", ModSpells.VOIDLOCK);
     public static final DeferredItem<SpellTomeItem<BouncingHoneySpell>> BOUNCING_HONEY_TOME = registerTome("bouncing_honey_tome", ModSpells.BOUNCING_HONEY);
+    public static final DeferredItem<SpellTomeItem<ShadowRaySpell>> SHADOW_RAY_TOME = registerTome("shadow_ray_tome", ModSpells.SHADOW_RAY);
     public static final DeferredItem<Item> POWER_GAUNTLET = registerStacksToOne("power_gauntlet");
     public static final DeferredItem<Item> HEART_NECKLACE = registerStacksToOne("heart_necklace");
     public static final DeferredItem<Item> SAGES_TALISMAN = registerStacksToOne("sages_talisman");
@@ -193,7 +196,7 @@ public class ModItems {
     public static final DeferredItem<Item> DEATH_CAP = registerStacksToOne("death_cap");
     public static final DeferredItem<Item> MOONGLASS_PENDANT = registerStacksToOne("moonglass_pendant");
     //endregion
-    //region Tools.
+    //region Tools
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
     public static final DeferredItem<Item> COPPER_PICKAXE = registerStacksToOne("copper_pickaxe", p -> new PickaxeItem(ModTiers.COPPER, 1, -2.8f, p));
     public static final DeferredItem<Item> COPPER_AXE = registerStacksToOne("copper_axe", p -> new AxeItem(ModTiers.COPPER, 7, -3.2f, p));

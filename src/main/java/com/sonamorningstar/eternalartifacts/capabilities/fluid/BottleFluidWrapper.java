@@ -24,6 +24,7 @@ public class BottleFluidWrapper implements IFluidHandlerItem {
 	public FluidStack getFluid() {
 		if (bottle.is(Items.GLASS_BOTTLE)) return FluidStack.EMPTY;
 		if (bottle.is(Items.EXPERIENCE_BOTTLE)) return new FluidStack(ModFluids.NOUS.getFluid(), 250);
+		if (bottle.is(Items.HONEY_BOTTLE)) return new FluidStack(ModFluids.HONEY.getFluid(), 250);
 		if (bottle.getItem() instanceof PotionItem) {
 			Potion potion = PotionUtils.getPotion(bottle);
 			if (potion == Potions.WATER) return new FluidStack(Fluids.WATER, 250);
@@ -56,6 +57,10 @@ public class BottleFluidWrapper implements IFluidHandlerItem {
 		}
 		if (fluid.is(ModTags.Fluids.EXPERIENCE)) {
 			bottle = new ItemStack(Items.EXPERIENCE_BOTTLE);
+			return;
+		}
+		if (fluid.is(ModTags.Fluids.HONEY)) {
+			bottle = new ItemStack(Items.HONEY_BOTTLE);
 			return;
 		}
 		if (fluid.is(ModTags.Fluids.POTION)) {
@@ -95,7 +100,8 @@ public class BottleFluidWrapper implements IFluidHandlerItem {
 	
 	@Override
 	public boolean isFluidValid(int tank, FluidStack stack) {
-		return stack.is(ModTags.Fluids.POTION) || stack.is(Fluids.WATER) || stack.is(ModTags.Fluids.EXPERIENCE);
+		return stack.is(ModTags.Fluids.POTION) || stack.is(Fluids.WATER) ||
+			stack.is(ModTags.Fluids.EXPERIENCE) || stack.is(ModTags.Fluids.HONEY);
 	}
 	
 	@Override

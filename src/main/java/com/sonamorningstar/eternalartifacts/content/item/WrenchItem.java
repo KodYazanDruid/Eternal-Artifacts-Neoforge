@@ -1,27 +1,13 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityFilterEntry;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
-import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
-import com.sonamorningstar.eternalartifacts.api.machine.MachineConfiguration;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
-import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetworks;
-import com.sonamorningstar.eternalartifacts.client.render.util.DirectionRotationCache;
-import com.sonamorningstar.eternalartifacts.content.block.base.AbstractPipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPipeBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ChunkLoader;
-import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
-import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,15 +16,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -55,28 +38,6 @@ public class WrenchItem extends DiggerItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        /*int idx = 1;
-        for (Direction forward : Direction.values()) {
-            for (Direction up : Direction.values()) {
-                var facing = PlayerHelper.getFacingDirection(player);
-                var local = DirectionRotationCache.transform(forward, up, facing);
-                if (local != null){
-                    System.out.println("[" + idx++ + "] Player Facing: " + facing);
-                    System.out.println("Forward: " + forward + ", Up: " + up + " -> Local: " + local);
-                }
-            }
-        }*/
-        /*if (level instanceof ServerLevel serverLevel) {
-            Map<Item, Pair<Float, Float>> itemsWithCounts = LootTableHelper.getItemsWithCounts(serverLevel, BuiltInLootTables.BASTION_TREASURE);
-            itemsWithCounts.forEach((item, counts) -> {
-                System.out.println("Item: " + item + ", Min Count: " + counts.getFirst() + ", Max Count: " + counts.getSecond());
-            });
-        }*/
-        /*if (level.isClientSide()) {
-            TesseractNetworks.get(level).getTesseractNetworks().forEach(network -> {
-                System.out.println("Tesseract Network: " + network.getName() + " (" + network.getUuid() + ")");
-            });
-        }*/
         
         return super.use(level, player, hand);
     }
@@ -86,60 +47,18 @@ public class WrenchItem extends DiggerItem {
         Level level = ctx.getLevel();
         Player player = ctx.getPlayer();
         BlockPos pos = ctx.getClickedPos();
-        BlockState state = level.getBlockState(pos);
-        BlockEntity be = level.getBlockEntity(pos);
-        
-        /*if (be instanceof ModBlockEntity mbe) {
-            MachineConfiguration configs = mbe.getConfiguration();
-            configs.getConfigs().forEach((rl, config) -> {
-                System.out.println(rl.toString() +", "+ config.toString());
-            });
-        }*/
-        /*if (be instanceof ChunkLoader cl) {
-            System.out.println((cl.getLevel().isClientSide() ?"Client":"Server") + " ChunkLoader Info at " + pos + ":");
-            for (ForceLoadManager.ForcedChunkPos forcedChunk : cl.getForcedChunks()) {
-                System.out.println(" - Forced Chunk: " + forcedChunk);
-            }
-        }*/
-        /*if (be instanceof AbstractPipeBlockEntity<?> pipe && player != null && !level.isClientSide()) {
-            
-            player.sendSystemMessage(Component.literal("Pipe Info:"));
-            player.sendSystemMessage(Component.literal(" - Network Size: " + pipe.networkPipes.size()));
-            player.sendSystemMessage(Component.literal(" - All Sources: " + pipe.allSources.size()));
-            pipe.allSources.forEach((blockPos, cap) -> {
-                player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
-            });
-            player.sendSystemMessage(Component.literal(" - All Targets: " + pipe.allTargets.size()));
-            pipe.allTargets.forEach((blockPos, cap) -> {
-                player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
-            });
-            player.sendSystemMessage(Component.literal(" - Sources: " + pipe.sources.size()));
-            pipe.sources.forEach((blockPos, cap) -> {
-                player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
-            });
-            player.sendSystemMessage(Component.literal(" - Targets: " + pipe.targets.size()));
-            pipe.targets.forEach((blockPos, cap) -> {
-                player.sendSystemMessage(Component.literal("   - " + blockPos + " : " + cap.context().getName()));
-            });
-            pipe.sourceToTargetDistances.forEach((sourcePos, map) -> {
-                map.forEach((targetPos, dist) -> {
-                    player.sendSystemMessage(Component.literal(" - Distance from " + sourcePos + " to " + targetPos + " = " + dist));
-                });
-            });
-        }*/
-        /*System.out.println(level.isClientSide ? "Client" : "Server");
-        if (be instanceof ModBlockEntity mbe) {
-            Object2IntMap<Enchantment> enchantments = mbe.enchantments;
-            for (Object2IntMap.Entry<Enchantment> entry : enchantments.object2IntEntrySet()) {
-                System.out.println(" -Enchantment: " + entry.getKey().getDescriptionId() + ", Level: " + entry.getIntValue());
-            }
-        }*/
         
         AtomicBoolean builtMultiblock = new AtomicBoolean(false);
         Multiblock.PATTERNS.forEach((multiblock, pattern) -> {
-            var match = MultiblockPatternHelper.findMultiblockPattern(level, pos, pattern);
+            var match = MultiblockPatternHelper.findMultiblockPattern(level, pos, pattern,
+                    multiblock.getClickablePalmOffset(),
+                    multiblock.getClickableThumbOffset(),
+                    multiblock.getClickableFingerOffset()
+            );
+            
             if (match != null) {
-                if (multiblock.isLockedRotation() && match.getForwards().getAxis() != Direction.Axis.Y) return;
+                if (multiblock.isLockedHorizontally() && match.getForwards().getAxis() != Direction.Axis.Y) return;
+          
                 match.cache.asMap().forEach((blockPos, blockInWorld) -> {
                     level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
                     if (!blockInWorld.getState().isAir()) {
@@ -148,9 +67,14 @@ public class WrenchItem extends DiggerItem {
                         level.setBlockAndUpdate(blockPos, mbState);
                         
                         BlockEntity mbBE = level.getBlockEntity(blockPos);
-                        BlockPos masterPos = match.getBlock(multiblock.getMasterPalmOffset(), multiblock.getMasterThumbOffset(), multiblock.getMasterFingerOffset()).getPos();
+                        BlockPos masterPos = match.getBlock(
+                            multiblock.getMasterPalmOffset(),
+                            multiblock.getMasterThumbOffset(),
+                            multiblock.getMasterFingerOffset()
+                        ).getPos();
+                        
                         if (mbBE instanceof AbstractMultiblockBlockEntity ambe) {
-                            if (!ambe.isMaster()){
+                            if (!ambe.isMaster()) {
                                 ambe.setMasterOffsets(
                                     masterPos.getX() - blockPos.getX(),
                                     masterPos.getY() - blockPos.getY(),
@@ -167,6 +91,9 @@ public class WrenchItem extends DiggerItem {
                 if (masterBe instanceof AbstractMultiblockBlockEntity ambe) {
                     ambe.setMaster(true);
                     ambe.setOrientation(match.getForwards(), match.getUp());
+                    ambe.setMbWidth(pattern.getWidth());
+                    ambe.setMbHeight(pattern.getHeight());
+                    ambe.setMbDepth(pattern.getDepth());
                 }
                 
                 Set<BlockPos> slaves = new HashSet<>();
@@ -178,11 +105,13 @@ public class WrenchItem extends DiggerItem {
                 
                 if (masterBe instanceof AbstractMultiblockBlockEntity ambe) {
                     ambe.setSlaves(slaves);
+                    ambe.onFormed(level, ambe.getBlockPos());
                 }
                 
                 builtMultiblock.set(true);
             }
         });
+        
         if (builtMultiblock.get()) {
             ItemStack stack = ctx.getItemInHand();
             if (player != null) stack.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(ctx.getHand()));

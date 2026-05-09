@@ -99,7 +99,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     }
     
     @Override
-    protected void findRecipe() {
+	public void findRecipe() {
         fireEvent();
         progress = 0;
     }

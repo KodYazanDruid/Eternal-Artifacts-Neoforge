@@ -60,24 +60,6 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 LootTableIdCondition.builder(BuiltInLootTables.JUNGLE_TEMPLE).build()
             }, List.of(ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE.toStack())
         ));
-        add("evokers_tome_from_evoker", new AddItemListModifier(
-            new LootItemCondition[]{
-                LootTableIdCondition.builder(EntityType.EVOKER.getDefaultLootTable()).build(),
-                LootItemRandomChanceWithLootingCondition.randomChanceAndLootingBoost(0.05f, 0.02F).build()
-            }, List.of(ModItems.EVOKERS_TOME.get().getDefaultInstance())
-        ));
-        add("tornado_tome_from_desert_temples", new AddItemListModifier(
-            new LootItemCondition[]{
-                LootTableIdCondition.builder(BuiltInLootTables.DESERT_PYRAMID).build(),
-                LootItemRandomChanceCondition.randomChance(0.1f).build()
-            }, List.of(ModItems.TORNADO_TOME.get().getDefaultInstance())
-        ));
-        add("meteorite_tome_from_bastion_treasure", new AddItemListModifier(
-            new LootItemCondition[]{
-                LootTableIdCondition.builder(BuiltInLootTables.BASTION_TREASURE).build(),
-                LootItemRandomChanceCondition.randomChance(0.2f).build()
-            }, List.of(ModItems.METEORITE_TOME.get().getDefaultInstance())
-        ));
         final Map<ResourceLocation, Float> tome_tables = Map.of(
             BuiltInLootTables.STRONGHOLD_CORRIDOR, 0.25f,
             BuiltInLootTables.STRONGHOLD_LIBRARY, 1.0f,
@@ -110,9 +92,9 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
                 }
         ));
         add("ender_dragon_angelic_heart", new AddItemListModifier(
-                new LootItemCondition[]{
+                new LootItemCondition[] {
                     LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS).build(),
-                    LootTableIdCondition.builder(EntityType.ENDER_DRAGON.getDefaultLootTable()).build(),
+                    LootTableIdCondition.builder(EntityType.ENDER_DRAGON.getDefaultLootTable()).build()
                 }, List.of(ModItems.ANGELIC_HEART.get().getDefaultInstance()))
         );
         add("cutlass", new CutlassModifier(new LootItemCondition[] {
@@ -129,6 +111,12 @@ public class ModGlobalLootModifierProvider extends net.neoforged.neoforge.common
             new LootItemCondition[]{
                 LootTableIdCondition.builder(EntityType.SHULKER.getDefaultLootTable()).build()
             }
+        ));
+        add("fairy_dust_to_vex", new AddItemListModifier(
+            new LootItemCondition[]{
+                LootItemEntityPropertyCondition.entityPresent(LootContext.EntityTarget.THIS).build(),
+                LootTableIdCondition.builder(EntityType.VEX.getDefaultLootTable()).build()
+            }, List.of(ModItems.FAIRY_DUST.get().getDefaultInstance())
         ));
         
         final Map<ResourceLocation, Float> charm_tables = Util.make(new HashMap<>(), map -> {

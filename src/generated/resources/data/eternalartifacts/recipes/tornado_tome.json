@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "B": {
+      "item": "eternalartifacts:tome"
+    },
+    "C": {
+      "tag": "forge:sand"
+    },
+    "N": {
+      "tag": "forge:ingots/copper"
+    },
+    "P": {
+      "tag": "forge:dusts/amethyst"
+    }
+  },
+  "pattern": [
+    "CNC",
+    "PBP",
+    "CNC"
+  ],
+  "result": {
+    "item": "eternalartifacts:tornado_tome"
+  }
+}

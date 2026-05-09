@@ -205,7 +205,7 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
     
     private CraftingRecipe previousRecipe = null;
     @Override
-    protected void findRecipe() {
+	public void findRecipe() {
         ItemStack blueprint = inventory.getStackInSlot(10);
         if (!blueprint.isEmpty()) {
             SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);

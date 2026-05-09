@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
 
 public class MagicMissileEntity extends AbstractHurtingProjectile {
     private float damage;
@@ -47,6 +48,11 @@ public class MagicMissileEntity extends AbstractHurtingProjectile {
         if (this.tickCount > 60) {
             this.discard();
         }
+        
+        if (level().isClientSide()) {
+            Vec3 movement = getDeltaMovement();
+            level().addParticle(ParticleTypes.ENCHANT, getX(), getY(), getZ(), -movement.x, -movement.y, -movement.z);
+        }
     }
 
     @Override
@@ -56,7 +62,7 @@ public class MagicMissileEntity extends AbstractHurtingProjectile {
 
     @Override
     protected ParticleOptions getTrailParticle() {
-        return ParticleTypes.ENCHANT;
+        return null;
     }
 
     @Override

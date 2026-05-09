@@ -36,7 +36,7 @@ public class MultiblockDeferredRegister {
 	
 	private final List<MultiblockDeferredHolder<?, ?, ?>> multiblocks = new ArrayList<>();
 	
-	private static final BlockBehaviour.Properties defaultProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.COLOR_GRAY).noLootTable();
+	private static final BlockBehaviour.Properties defaultProperties = BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).mapColor(MapColor.COLOR_GRAY).noLootTable().dynamicShape().noOcclusion();
 	
 	public MultiblockDeferredRegister(String modid) {
 		this.multiblockRegister = DeferredRegister.create(ModRegistries.Keys.MULTIBLOCK, modid);
@@ -64,16 +64,17 @@ public class MultiblockDeferredRegister {
 		return this.multiblocks.stream().map(MultiblockDeferredHolder::getBlockHolder)
 			.collect(Collectors.toUnmodifiableList());
 	}
-	
+
 	public <MB extends Multiblock, MBB extends AbstractMultiblockBlockEntity> MultiblockDeferredHolder<MB, MultiblockBlock, MBB> register(
 			String name, BlockEntityType.BlockEntitySupplier<MBB> blockEntity,
-			MultiblockSupplier<MB> multiblockSupplier,
-			BlockPattern pattern, int masterPalmOffset, int masterThumbOffset, int masterFingerOffset, MultiblockCapabilityManager capabilityManager
+			MultiblockSupplierWithClickable<MB> multiblockSupplier, int masterPalmOffset, int masterThumbOffset, int masterFingerOffset,
+			int clickablePalmOffset, int clickableThumbOffset, int clickableFingerOffset,
+			MultiblockCapabilityManager capabilityManager
 		) {
-		var multiblockHolder = this.multiblockRegister.register(name, () -> multiblockSupplier.create(
-			pattern, masterPalmOffset, masterThumbOffset, masterFingerOffset, capabilityManager
+		var multiblockHolder = this.multiblockRegister.register(name, () -> multiblockSupplier.create(masterPalmOffset, masterThumbOffset, masterFingerOffset,
+			clickablePalmOffset, clickableThumbOffset, clickableFingerOffset, capabilityManager
 		));
-		var blockHolder = this.blockRegister.register(name, () -> new MultiblockBlock(defaultProperties, blockEntity));
+		var blockHolder = this.blockRegister.register(name, () -> new MultiblockBlock(defaultProperties, blockEntity, multiblockHolder));
 		var beHolder = this.blockEntityRegister.register(name, () -> BlockEntityType.Builder.of(blockEntity, blockHolder.get()).build(null));
 		
 		var holder = new MultiblockDeferredHolder<>(multiblockHolder, beHolder, blockHolder);
@@ -84,5 +85,11 @@ public class MultiblockDeferredRegister {
 	
 	public interface MultiblockSupplier<MB extends Multiblock> {
 		MB create(BlockPattern pattern, int masterPalmOffset, int masterThumbOffset, int masterFingerOffset, MultiblockCapabilityManager capabilityManager);
+	}
+
+	public interface MultiblockSupplierWithClickable<MB extends Multiblock> {
+		MB create(int masterPalmOffset, int masterThumbOffset, int masterFingerOffset,
+				  int clickablePalmOffset, int clickableThumbOffset, int clickableFingerOffset,
+				  MultiblockCapabilityManager capabilityManager);
 	}
 }

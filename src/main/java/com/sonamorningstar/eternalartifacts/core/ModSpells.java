@@ -36,13 +36,15 @@ public class ModSpells {
     public static final DeferredHolder<Spell, LightningStrikeSpell> LIGHTNING_STRIKE = register("lightning_strike",
         () -> new LightningStrikeSpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(50).baseDamage(4.0F)));
     public static final DeferredHolder<Spell, DivineProtectionSpell> DIVINE_PROTECTION = register("divine_protection",
-        () -> new DivineProtectionSpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(600).baseHealing(8.0f).healingRadius(5.0f)));
+        () -> new DivineProtectionSpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(600).baseHealing(4.0f).healingRadius(5.0f)));
     public static final DeferredHolder<Spell, WitherSkullSpell> WITHER_SKULL = register("wither_skull",
         () -> new WitherSkullSpell(new Spell.Properties().rarity(Rarity.UNCOMMON).cooldown(20).baseDamage(4.0F)));
     public static final DeferredHolder<Spell, VoidlockSpell> VOIDLOCK = register("voidlock",
         () -> new VoidlockSpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(30).baseDamage(4.0F)));
     public static final DeferredHolder<Spell, BouncingHoneySpell> BOUNCING_HONEY = register("bouncing_honey",
         () -> new BouncingHoneySpell(new Spell.Properties().rarity(Rarity.RARE).cooldown(30).baseDamage(3.0F)));
+    public static final DeferredHolder<Spell, ShadowRaySpell> SHADOW_RAY = register("shadow_ray",
+        () -> new ShadowRaySpell(new Spell.Properties().rarity(Rarity.EPIC).cooldown(20).baseDamage(5.0F)));
 
     public static final DeferredHolder<Spell, BlackHoleSpell> BLACK_HOLE = register("black_hole",
         () -> new BlackHoleSpell(new Spell.Properties().rarity(Rarity.EPIC).cooldown(300).baseDamage(4.0F)));

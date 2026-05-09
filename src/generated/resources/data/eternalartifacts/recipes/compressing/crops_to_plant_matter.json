@@ -1,0 +1,11 @@
+{
+  "type": "eternalartifacts:compressing",
+  "input": {
+    "amount": 4,
+    "tag": "forge:crops"
+  },
+  "output": {
+    "Count": 1,
+    "id": "eternalartifacts:plant_matter"
+  }
+}

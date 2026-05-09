@@ -12,6 +12,13 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import javax.annotation.Nullable;
 
 public class MultiblockPatternHelper {
+
+    private static final Direction[] THUMB_SEARCH_ORDER = new Direction[] {
+        Direction.UP, Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST
+    };
+    private static final Direction[] FINGER_SEARCH_ORDER = new Direction[] {
+        Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN
+    };
 	
 	/*@Nullable
 	public static BlockPattern.BlockPatternMatch findMultiblockPattern(LevelReader levelReader, BlockPos pos, BlockPattern pattern) {
@@ -46,8 +53,8 @@ public class MultiblockPatternHelper {
 				for (int dz = -range; dz <= range; dz++) {
 					BlockPos checkPos = pos.offset(dx, dy, dz);
 					
-					for (Direction finger : Direction.values()) {
-						for (Direction thumb : Direction.values()) {
+					for (Direction finger : FINGER_SEARCH_ORDER) {
+                        for (Direction thumb : THUMB_SEARCH_ORDER) {
 							
 							if (finger == thumb || finger == thumb.getOpposite()) continue;
 							
@@ -57,6 +64,36 @@ public class MultiblockPatternHelper {
 							if (match != null) return match;
 						}
 					}
+				}
+			}
+		}
+		return null;
+	}
+
+	@Nullable
+	public static BlockPattern.BlockPatternMatch findMultiblockPattern(LevelReader levelReader, BlockPos clickedPos, BlockPattern pattern,
+                                                                       int clickablePalmOffset, int clickableThumbOffset, int clickableFingerOffset) {
+        for (Direction finger : FINGER_SEARCH_ORDER) {
+            for (Direction thumb : THUMB_SEARCH_ORDER) {
+				if (finger == thumb || finger == thumb.getOpposite()) continue;
+				
+				// clickedPos = translateAndRotate(root, finger, thumb, clickableOffsets)
+				// root = clickedPos - rotatedOffset
+				BlockPos clickableWorldPos = BlockPattern.translateAndRotate(
+					BlockPos.ZERO, finger, thumb,
+					clickablePalmOffset, clickableThumbOffset, clickableFingerOffset
+				);
+				BlockPos candidateRoot = clickedPos.subtract(clickableWorldPos);
+				
+				BlockPattern.BlockPatternMatch match = pattern.matches(levelReader, candidateRoot, finger, thumb);
+				if (match == null) continue;
+				
+				BlockPos matchedClickable = match.getBlock(
+					clickablePalmOffset, clickableThumbOffset, clickableFingerOffset
+				).getPos();
+				
+				if (matchedClickable.equals(clickedPos)) {
+					return match;
 				}
 			}
 		}

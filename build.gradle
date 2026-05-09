@@ -6,6 +6,10 @@ plugins {
     id 'io.freefair.lombok' version '8.6'
 }
 
+tasks.named('wrapper', Wrapper).configure {
+    distributionType = Wrapper.DistributionType.BIN
+}
+
 version = mod_version
 group = mod_group_id
 
@@ -57,8 +61,16 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+
+    exclude("**/*.bbmodel") // BlockBench project files
+    exclude("src/generated/**/.cache") // datagen cache files
+}
+
 neoForge {
     version = project.neo_version
+    validateAccessTransformers = true
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -100,8 +112,6 @@ neoForge {
         }
     }
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 test {
     useJUnitPlatform()
@@ -160,6 +170,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
     from "src/main/templates"
     into "build/generated/sources/modMetadata"
 }
+
 sourceSets.main.resources.srcDir generateModMetadata
 neoForge.ideSyncTask generateModMetadata
 

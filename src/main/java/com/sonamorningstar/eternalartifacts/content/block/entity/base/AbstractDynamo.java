@@ -69,7 +69,7 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 	}
 
 	@Override
-	protected void findRecipe() {
+	public void findRecipe() {
 		if (cache != null) return;
 		super.findRecipe();
 		if (RecipeCache.getCachedRecipe(this) instanceof DynamoRecipe recipe) {

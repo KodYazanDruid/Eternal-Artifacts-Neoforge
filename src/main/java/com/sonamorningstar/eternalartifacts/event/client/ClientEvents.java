@@ -96,6 +96,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -206,6 +207,29 @@ public class ClientEvents {
             AreaRenderHelper.endBatch(buffer);
             
             pose.popPose();
+        }
+    }
+    
+    @SubscribeEvent
+    public static void playerRenderEventPre(RenderPlayerEvent.Pre event) {
+        Player player = event.getEntity();
+        PoseStack poseStack = event.getPoseStack();
+        MultiBufferSource buffer = event.getMultiBufferSource();
+        float partialTick = Minecraft.getInstance().getPartialTick();
+        if (player.isUsingItem() && player.getUseItem().is(ModItems.MAGIC_MISSILE_TOME)) {
+            poseStack.pushPose();
+            poseStack.translate(0, player.getEyeHeight(), 0);
+            float yRot = Mth.rotLerp(partialTick, player.yHeadRotO, player.yHeadRot);
+            poseStack.mulPose(Axis.YN.rotationDegrees(yRot));
+            float xRot = Mth.rotLerp(partialTick, player.xRotO, player.getXRot());
+            poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
+            poseStack.translate(0, 0, 1);
+            Minecraft.getInstance().getItemRenderer().render(
+                ModItems.HONEY_BALL.toStack(), ItemDisplayContext.FIXED,
+                false, poseStack, buffer, event.getPackedLight(), OverlayTexture.NO_OVERLAY,
+                Minecraft.getInstance().getItemRenderer().getModel(ModItems.HONEY_BALL.toStack(), player.level(), null, 0)
+            );
+            poseStack.popPose();
         }
     }
     
