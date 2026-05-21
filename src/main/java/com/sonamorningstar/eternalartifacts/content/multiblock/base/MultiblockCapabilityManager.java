@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.util.RelativeBlockPos;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
+import org.antlr.v4.runtime.misc.IntegerList;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;

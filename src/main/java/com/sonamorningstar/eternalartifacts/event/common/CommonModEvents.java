@@ -176,7 +176,8 @@ public class CommonModEvents {
         event.registerBlock(Capabilities.EnergyStorage.BLOCK, TrashCanHandler::registerCapability, ModBlocks.TRASH_CAN.get());
         
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.MACHINE_WORKBENCH.get(), (be, ctx) -> be.inventory);
-    
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_HOPPER.get(), (be, ctx) -> be.tank);
+        
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.TESSERACT.get(), (be, dir) -> {
             var network = be.getCachedTesseractNetwork();
             if (network == null) return null;
@@ -304,10 +305,10 @@ public class CommonModEvents {
             .aisle("AAA", "A#A", "AAA", "SSS")
             .aisle("AAA", "A#A", "AAA", "SRS")
             .where('#', BlockInWorld.hasState(st -> st.is(ModTags.Blocks.STORAGE_BLOCKS_STEEL)))
-            .where('F', BlockInWorld.hasState(st -> st.is(Tags.Blocks.FENCES_NETHER_BRICK)))
+            .where('F', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_WALL)))
             .where('S', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_SLAB)))
-            .where('P', BlockInWorld.hasState(st -> st.is(ModBlocks.STEEL_FLUID_PIPE)))
-            .where('R', BlockInWorld.hasState(st -> st.is(Blocks.REDSTONE_BLOCK)))
+            .where('P', BlockInWorld.hasState(st -> st.is(ModBlocks.FLUID_PORT)))
+            .where('R', BlockInWorld.hasState(st -> st.is(ModBlocks.ENERGY_PORT)))
             .where('A', BlockInWorld.hasState(BlockBehaviour.BlockStateBase::isAir))
             .build());
         
@@ -319,22 +320,23 @@ public class CommonModEvents {
             .where('S', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_COPPER)))
             .where('P', BlockInWorld.hasState(st -> st.is(ModTags.Blocks.HARDENED_GLASS)))
             .where('F', BlockInWorld.hasState(st -> st.is(Blocks.BLAST_FURNACE)))
-            .where('R', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_REDSTONE)))
+            .where('R', BlockInWorld.hasState(st -> st.is(ModBlocks.ENERGY_PORT)))
             .where('#', BlockInWorld.hasState(st -> st.is(ModBlocks.MACHINE_BLOCK)))
             .build());
         
         event.register(ModMultiblocks.CHUNK_EATER.getMultiblock(), BlockPatternBuilder.start()
             .aisle("WAAAW", "WSMSW")
             .aisle("AAAAA", "SSSSS")
-            .aisle("AADAA", "FSDSS")
+            .aisle("AADAA", "OSDSB")
             .aisle("AAAAA", "SSSSS")
             .aisle("WAAAW", "WSRSW")
             .where('S', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_SLAB)))
             .where('W', BlockInWorld.hasState(st -> st.is(Blocks.POLISHED_DEEPSLATE_WALL)))
             .where('M', BlockInWorld.hasState(st -> st.is(ModBlocks.MACHINE_BLOCK)))
-            .where('R', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_REDSTONE)))
+            .where('R', BlockInWorld.hasState(st -> st.is(ModBlocks.ENERGY_PORT)))
             .where('D', BlockInWorld.hasState(st -> st.is(Tags.Blocks.STORAGE_BLOCKS_DIAMOND)))
-            .where('F', BlockInWorld.hasState(st -> st.is(Blocks.ORANGE_CONCRETE)))
+            .where('O', BlockInWorld.hasState(st -> st.is(ModBlocks.ITEM_PORT)))
+            .where('B', BlockInWorld.hasState(st -> st.is(ModBlocks.FLUID_PORT)))
             .where('A', BlockInWorld.hasState(BlockBehaviour.BlockStateBase::isAir))
             .build());
     }

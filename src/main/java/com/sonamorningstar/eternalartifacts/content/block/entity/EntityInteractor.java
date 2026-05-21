@@ -55,7 +55,7 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 		setInventory(() -> createBasicInventory(13, outputSlots, (slot, stack) -> slot == 0));
 		this.isChargeProgress = true;
 		screenInfo.setSlotPosition(45, 37, 0);
-		screenInfo.setArrowPos(67, 34);
+		screenInfo.setArrowPos(67, 38);
 		for (int i = 0; i < 12; i++) {
 			int x = i % 4;
 			int y = i / 4;

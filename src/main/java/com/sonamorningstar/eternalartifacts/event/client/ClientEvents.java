@@ -2,7 +2,6 @@ package com.sonamorningstar.eternalartifacts.event.client;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Streams;
 import com.google.common.primitives.Booleans;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -25,6 +24,7 @@ import com.sonamorningstar.eternalartifacts.client.gui.screen.AbstractPipeFilter
 import com.sonamorningstar.eternalartifacts.client.gui.screen.KnapsackScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
+import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMultiblockScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.GenericSidedMachineScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.util.GuiDrawer;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
@@ -51,6 +51,7 @@ import com.sonamorningstar.eternalartifacts.event.custom.RenderEtarSlotEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.network.Channel;
+import com.sonamorningstar.eternalartifacts.network.ChunkEaterResetPositionToServer;
 import com.sonamorningstar.eternalartifacts.network.EntityFilterEntryToServer;
 import com.sonamorningstar.eternalartifacts.network.EntityPredicateFilterToServer;
 import com.sonamorningstar.eternalartifacts.network.movement.ConsumeDashTokenToServer;
@@ -119,7 +120,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -693,6 +693,15 @@ public class ClientEvents {
             TabHandler instance = TabHandler.INSTANCE;
             if (instance != null) instance.renderTabs(event.getGuiGraphics(), left, top);
         }
+        if (screen instanceof AbstractMultiblockScreen<?> ams) {
+            BlockEntity blockEntity = ams.getMenu().getBlockEntity();
+            if (blockEntity instanceof ChunkEaterBlockEntity chunkEater && chunkEater.isMaster() && chunkEater.isDone) {
+                gui.drawString(screen.getMinecraft().font,
+                    ModConstants.GUI.withSuffixTranslatable("chunk_eater.finished_cycle").withStyle(ChatFormatting.DARK_GREEN),
+                    ams.getGuiLeft() + 8, ams.getGuiTop() + 20, 0xfff0f0f0, false
+                );
+            }
+        }
         if (screen instanceof GenericSidedMachineScreen gsms) {
             var owner = gsms.getMachine();
             final int x = gsms.getGuiLeft();
@@ -904,6 +913,18 @@ public class ClientEvents {
     @SubscribeEvent
     public static void screenInitPost(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
+        if (screen instanceof AbstractMultiblockScreen<?> mbScreen) {
+            BlockEntity be = mbScreen.getMenu().getBlockEntity();
+            if (be instanceof ChunkEaterBlockEntity chunkEater && chunkEater.isMaster()) {
+                    var resetBtnBld = SpriteButton.builder(Component.empty(), (b, i) -> {
+                            Channel.sendToServer(new ChunkEaterResetPositionToServer(chunkEater.getBlockPos()));
+                        }, new ResourceLocation("textures/item/iron_shovel.png"))
+                        .addTooltipHover(ModConstants.GUI.withSuffixTranslatable("chunk_eater.reset_mining_position").withStyle(ChatFormatting.YELLOW))
+                        .bounds(mbScreen.getGuiLeft() + mbScreen.getXSize() - 54, mbScreen.getGuiTop() + 4, 16, 16);
+                    event.addListener(resetBtnBld.build());
+                //}
+            }
+        }
         if (screen instanceof GenericSidedMachineScreen gsms) {
             int x = gsms.getGuiLeft();
             int y = gsms.getGuiTop();

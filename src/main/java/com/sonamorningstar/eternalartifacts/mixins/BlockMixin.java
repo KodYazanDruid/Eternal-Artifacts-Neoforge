@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.api.item.ChiselBlockPlaceContext;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
+import com.sonamorningstar.eternalartifacts.content.block.entity.ChunkEaterBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.item.ChiselItem;
 import com.sonamorningstar.eternalartifacts.event.common.CommonEvents;
@@ -57,6 +58,16 @@ public abstract class BlockMixin {
                         break;
                     }
                 }
+                return false;
+            } else if (machine instanceof ChunkEaterBlockEntity chunkEater) {
+                for (ItemStack drop : Block.getDrops(state, (ServerLevel) level, pos, blockEntity, entity, chunkEater.getInventory(null).getStackInSlot(0))) {
+                    ItemStack remaining = ItemHelper.insertItemStackedForced(chunkEater.getInventory(null), drop, false, chunkEater.outputSlots).getFirst();
+                    if (!remaining.isEmpty()) {
+                        Block.popResource(level, pos, remaining);
+                        break;
+                    }
+                }
+                // Handle XP drops directly here by intercepting dropExp? No, Block doesn't drop XP in dropResources.
                 return false;
             }
         }

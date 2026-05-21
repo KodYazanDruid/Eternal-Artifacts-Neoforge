@@ -265,6 +265,10 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				constructSelected(tesseractNetwork);
 				menu.tesseract.setNetworkId(tesseractNetwork.getUuid());
 				minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 5000 + index);
+			} else {
+				this.setFocused(null);
+				children.forEach(c -> c.setFocused(false));
+				tesseractNetworkWidget.setFocused(true);
 			}
 		}
 	}
@@ -276,7 +280,10 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 		if (selectedWlPanel != null) removeWidget(selectedWlPanel);
 		
 		selectedNetwork = new TesseractNetworkWidget(leftPos + 10, topPos + 9, imageWidth - 20, 26, tesseractNetwork,
-			panel, (mx, my, b, c) -> this.setFocused(selectedNetwork), -1, font, Component.empty(),
+			panel, (mx, my, b, c) -> {
+				panel.getChildren().stream().filter(cn -> cn instanceof TesseractNetworkWidget).forEach(cn -> cn.setFocused(false));
+				this.setFocused(selectedNetwork);
+			}, -1, font, Component.empty(),
 			0xFF004A42, 0xFF00635A, 0xFF007A6D);
 		if (tesseractNetwork.getAccess() == TesseractNetwork.Access.PROTECTED) {
 			selectedNetwork.setWidth(imageWidth - 40);
@@ -367,10 +374,11 @@ public class TesseractScreen extends AbstractModContainerScreen<TesseractMenu> {
 				if (tn.isFocused() && index != -1) {
 					minecraft.gameMode.handleInventoryButtonClick(menu.containerId, 1000 + index);
 					return true;
-				} else if (tn.isFocused() && index == -1) {
-					clearSelected(null);
-					return true;
 				}
+			}
+			if (selectedNetwork != null && selectedNetwork.isFocused()) {
+				clearSelected(null);
+				return true;
 			}
 		}
 		// Escape key closes the screen.

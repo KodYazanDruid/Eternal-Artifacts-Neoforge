@@ -49,7 +49,6 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.antlr.v4.runtime.misc.IntegerList;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -62,17 +61,17 @@ import static com.sonamorningstar.eternalartifacts.api.machine.config.RedstoneCo
 @Setter
 public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, TickableServer, ChunkLoader, Nameable {
     @Nullable
-    private final QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
+    private QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
 
     @Setter(value = AccessLevel.NONE)
     public ModItemStorage inventory = null;
-    private Supplier<? extends ModItemStorage> inventorySetter = null;
+    protected Supplier<? extends ModItemStorage> inventorySetter = null;
     @Setter(value = AccessLevel.NONE)
     public AbstractFluidTank tank = null;
-    private Supplier<? extends AbstractFluidTank> tankSetter = null;
+    protected Supplier<? extends AbstractFluidTank> tankSetter = null;
     @Setter(value = AccessLevel.NONE)
     public ModEnergyStorage energy = null;
-    private Supplier<? extends ModEnergyStorage> energySetter = null;
+    protected Supplier<? extends ModEnergyStorage> energySetter = null;
     public int itemTransferRate = 1;
     public int fluidTransferRate = 1000;
     public int energyTransferRate = 1000;
@@ -87,6 +86,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     @Getter
     protected boolean isWorking;
     protected boolean isWorkingDirty;
+    @Getter
+    protected long workingTicks;
     @Getter
     protected int energyPerTick;
     public final List<Integer> outputSlots = new ArrayList<>();
@@ -103,7 +104,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     @Setter
     private Component name;
 
-    public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
+    public Machine(BlockEntityType<?> type, BlockPos pos, BlockState blockState, @Nullable QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> quadF) {
         super(type, pos, blockState);
         this.menuConstructor = quadF;
         this.maxProgress = defaultMaxProgress;
@@ -150,18 +151,14 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public <ITEM extends ModItemStorage> void setInventory(Supplier<ITEM> inventorySetter) {
         this.inventorySetter = inventorySetter;
         this.inventory = inventorySetter.get();
-        if (getConfiguration().getConfigs().values().stream().map(Config::getClass)
-                .toList()
-                .contains(SideConfig.class))
+        if (getConfiguration().getConfigs().values().stream().map(Config::getClass).toList().contains(SideConfig.class))
             registerCapabilityConfigs(Capabilities.ItemHandler.BLOCK);
     }
     
     public <TANK extends AbstractFluidTank> void setTank(Supplier<TANK> tankSetter) {
         this.tankSetter = tankSetter;
         this.tank = tankSetter.get();
-        if (getConfiguration().getConfigs().values().stream().map(Config::getClass)
-                .toList()
-                .contains(SideConfig.class))
+        if (getConfiguration().getConfigs().values().stream().map(Config::getClass).toList().contains(SideConfig.class))
             registerCapabilityConfigs(Capabilities.FluidHandler.BLOCK);
     }
     
@@ -270,33 +267,44 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         }
     }
     
-    @SuppressWarnings("unchecked")
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
-        chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
-        ServerLevel sLevel = (ServerLevel) lvl;
-        MinecraftServer server = sLevel.getServer();
-        if (!server.isStopped() && canLoadChunks() && needsForceLoaderUpdate()) {
-            chunkUpdateCooldown = 100;
-            updateForcedChunks();
-        } else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);
-        
+        sendUpdateIfNeeded();
+        tickChunkLoader((ServerLevel) lvl);
+        setPreviousRecipe();
+        advanceWorkingTicks(lvl, pos);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void setPreviousRecipe() {
         Recipe<Container> recipe = (Recipe<Container>) RecipeCache.getCachedRecipe(this);
         if (recipeType != null && recipe == null) {
             progress = 0;
-            //setWorking(false);
             return;
         }
         if (previousRecipe != null && previousRecipe != recipe) {
             progress = 0;
-            //setWorking(false);
         }
         previousRecipe = recipe;
-        
+    }
+    
+    private void tickChunkLoader(ServerLevel lvl) {
+        chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
+		MinecraftServer server = lvl.getServer();
+        if (!server.isStopped() && canLoadChunks() && needsForceLoaderUpdate()) {
+            chunkUpdateCooldown = 100;
+            updateForcedChunks();
+        } else chunkUpdateCooldown = Math.max(0, chunkUpdateCooldown - 1);
+    }
+    
+    private void advanceWorkingTicks(Level lvl, BlockPos pos) {
         if (shouldSyncWorkingState() && isWorkingDirty) {
             Channel.sendToChunk(new MachineWorkingStateToClient(pos, isWorking), lvl.getChunkAt(pos));
             isWorkingDirty = false;
         }
+        
+        if (isWorking) workingTicks++;
+        else workingTicks = 0;
     }
     
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
@@ -345,7 +353,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         super.onLoad();
         findRecipe();
         updateProcessCondition();
-        if (!level.isClientSide() && canLoadChunks()) {
+        if (level != null && !level.isClientSide() && canLoadChunks()) {
             addToManager();
             updateForcedChunks();
         }
@@ -361,6 +369,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         tag.putInt("EnergyPerTick", energyPerTick);
         if (hasCustomName()) tag.putString("CustomName", Component.Serializer.toJson(name));
         tag.putBoolean("IsWorking", isWorking);
+        tag.putLong("WorkingTicks", workingTicks);
     }
     
     @Override
@@ -374,6 +383,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         energyPerTick = tag.getInt("EnergyPerTick");
         if (tag.contains("CustomName", 8)) name = Component.Serializer.fromJson(tag.getString("CustomName"));
         isWorking = tag.getBoolean("IsWorking");
+        workingTicks = tag.getLong("WorkingTicks");
     }
     
     /**

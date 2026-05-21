@@ -1,14 +1,12 @@
 package com.sonamorningstar.eternalartifacts.compat.emi;
 
-import com.sonamorningstar.eternalartifacts.api.filter.BlockStateEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.FilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.FluidStackEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemStackEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractModContainerScreen;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.FilterSlotWidget;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SimpleDraggablePanel;
 import com.sonamorningstar.eternalartifacts.client.gui.widget.SlotWidget;
 import com.sonamorningstar.eternalartifacts.container.BlockInteractorMenu;
+import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractModContainerMenu;
 import com.sonamorningstar.eternalartifacts.container.base.FilterSyncable;
 import com.sonamorningstar.eternalartifacts.container.slot.FakeSlot;
@@ -32,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
 
 import java.util.List;
 
@@ -41,86 +40,76 @@ public class EADragDropHandler implements EmiDragDropHandler<Screen> {
         if (screen instanceof AbstractModContainerScreen<?> amcs) {
             AbstractModContainerMenu menu = amcs.getMenu();
             List<FakeSlot> allFakeSlots = amcs.getAllFakeSlots();
-                for (FakeSlot fakeSlot : allFakeSlots) {
-                    int xPos = amcs.getGuiLeft() + fakeSlot.x;
-                    int yPos = amcs.getGuiTop() + fakeSlot.y;
-                    int width = 16;
-                    int height = 16;
-                    boolean isWidgetAndHovered = true;
-                    if (amcs.isWidgetManagedSlot(fakeSlot)) {
-                        SlotWidget widgetForSlot = amcs.getWidgetForSlot(fakeSlot);
-                        if (widgetForSlot != null) {
-                            xPos = widgetForSlot.getX();
-                            yPos = widgetForSlot.getY();
-                            width = widgetForSlot.getWidth();
-                            height = widgetForSlot.getHeight();
-                            isWidgetAndHovered = widgetForSlot.isMouseOver(mX, mY);
+            for (FakeSlot fakeSlot : allFakeSlots) {
+                if (amcs.isWidgetManagedSlot(fakeSlot)) {
+                    SlotWidget widgetForSlot = amcs.getWidgetForSlot(fakeSlot);
+                    if (widgetForSlot != null) {
+                        int xPos = widgetForSlot.getX();
+                        int yPos = widgetForSlot.getY();
+                        int width = widgetForSlot.getWidth();
+                        int height = widgetForSlot.getHeight();
+                        boolean isWidgetAndHovered = widgetForSlot.isMouseOver(mX, mY);
+                        Rect2i slotArea = new Rect2i(xPos, yPos, width, height);
+                        if (slotArea.contains(mX, mY) && isWidgetAndHovered) {
+                            if (fakeSlot instanceof FilterFakeSlot filterFakeSlot && widgetForSlot instanceof FilterSlotWidget filterSlotWidget)
+                                return addFilter(emiIngredient, filterFakeSlot, filterSlotWidget, menu);
+                            else return setFakeSlot(emiIngredient, fakeSlot, menu);
                         }
                     }
-                    Rect2i slotArea = new Rect2i(xPos, yPos, width, height);
-                    if (slotArea.contains(mX, mY) && isWidgetAndHovered) {
-                        if (fakeSlot instanceof FilterFakeSlot filterFakeSlot) return addFilter(emiIngredient, filterFakeSlot, menu);
-                        else return setFakeSlot(emiIngredient, fakeSlot, menu);
-                    }
+                }
             }
         }
         return false;
     }
     
-    private static boolean addFilter(EmiIngredient emiIngredient, FilterFakeSlot fakeSlot, AbstractModContainerMenu menu) {
+    private static boolean addFilter(EmiIngredient emiIngredient, FilterFakeSlot fakeSlot, FilterSlotWidget widget, AbstractModContainerMenu menu) {
         EmiStack emiStack = emiIngredient.getEmiStacks().get(0);
         ItemStack stack = emiStack.getItemStack();
         Object key = emiStack.getKey();
-        boolean ignoreNBT = true;
         int slotIndex = fakeSlot.getSlotIndex();
         
-        if (menu instanceof FilterSyncable filterSyncable) {
-            NonNullList<FilterEntry> filterEntries = filterSyncable.getFilterEntries();
-            FilterEntry existingEntry = filterEntries.get(slotIndex);
-            ignoreNBT = existingEntry.isIgnoreNBT();
-        }
-        
-        if (menu instanceof BlockInteractorMenu blockIntMenu && blockIntMenu.getBlockEntity() instanceof BlockBreaker) {
-            if (key instanceof Fluid fluid) {
+        if (menu instanceof AbstractMachineMenu machineMenu) {
+            FilterEntry existing = fakeSlot.getFilter();
+            if (existing instanceof FluidFilterEntry && key instanceof Fluid fluid) {
                 FluidStack fluidStack = new FluidStack(fluid, 1000);
-                FluidStackEntry entry = new FluidStackEntry(fluidStack, ignoreNBT);
+                FluidStackEntry entry = new FluidStackEntry(fluidStack, machineMenu.isFluidIgnoresNbt());
                 fakeSlot.setFilter(entry);
                 fakeSlot.set(ItemStack.EMPTY);
-                blockIntMenu.getFilterEntries().set(slotIndex, entry);
+                machineMenu.getFluidFilterEntries().set(slotIndex, entry);
+                widget.setFilterEntry(entry);
                 Channel.sendToServer(new FluidStackFilterToServer(menu.containerId, slotIndex, fluidStack));
                 return true;
-            } else if (stack.getItem() instanceof BlockItem bi) {
+            } else if (existing instanceof FluidFilterEntry && key instanceof Item item) {
+                FluidStack fluidInItem = FluidUtil.getFluidContained(stack.copy()).orElse(FluidStack.EMPTY);
+                if (!fluidInItem.isEmpty()) {
+                    FluidStackEntry entry = new FluidStackEntry(fluidInItem, machineMenu.isFluidIgnoresNbt());
+                    fakeSlot.setFilter(entry);
+                    fakeSlot.set(ItemStack.EMPTY);
+                    machineMenu.getFluidFilterEntries().set(slotIndex, entry);
+                    widget.setFilterEntry(entry);
+                    Channel.sendToServer(new FluidStackFilterToServer(menu.containerId, slotIndex, fluidInItem));
+                    return true;
+                }
+            }else if (existing instanceof BlockFilterEntry && key instanceof BlockItem bi) {
                 BlockState state = bi.getBlock().defaultBlockState();
                 BlockStateEntry entry = BlockStateEntry.matchBlockOnly(state);
                 fakeSlot.setFilter(entry);
                 fakeSlot.set(ItemStack.EMPTY);
-                blockIntMenu.getFilterEntries().set(slotIndex, entry);
+                machineMenu.getBlockFilterEntries().set(slotIndex, entry);
+                widget.setFilterEntry(entry);
                 Channel.sendToServer(new BlockStateFilterToServer(menu.containerId, slotIndex, state));
                 return true;
+            } else if (existing instanceof ItemFilterEntry && key instanceof Item) {
+                ItemStack filterStack = stack.copyWithCount(1);
+                ItemStackEntry entry = new ItemStackEntry(filterStack, machineMenu.isItemIgnoresNbt());
+                fakeSlot.setFilter(entry);
+                fakeSlot.set(filterStack);
+                machineMenu.getItemFilterEntries().set(slotIndex, entry);
+                widget.setFilterEntry(entry);
+                Channel.sendToServer(new UpdateFakeSlotToServer(menu.containerId, slotIndex, filterStack));
+                return true;
             }
-            return false;
         }
-        
-        if (key instanceof Fluid fluid) {
-            FluidStack fluidStack = new FluidStack(fluid, 1000);
-            FluidStackEntry entry = new FluidStackEntry(fluidStack, ignoreNBT);
-            fakeSlot.setFilter(entry);
-            fakeSlot.set(ItemStack.EMPTY);
-            if (menu instanceof FilterSyncable filterSyncable)
-                filterSyncable.getFilterEntries().set(slotIndex, entry);
-            Channel.sendToServer(new FluidStackFilterToServer(menu.containerId, slotIndex, fluidStack));
-            return true;
-        } else if (key instanceof Item) {
-            ItemStack filterStack = stack.copyWithCount(1);
-            ItemStackEntry entry = new ItemStackEntry(filterStack, ignoreNBT);
-            fakeSlot.setFilter(entry);
-            fakeSlot.set(filterStack);
-            if (menu instanceof FilterSyncable filterSyncable)
-                filterSyncable.getFilterEntries().set(slotIndex, entry);
-            Channel.sendToServer(new UpdateFakeSlotToServer(menu.containerId, slotIndex, filterStack));
-            return true;
-        }
-        
         return false;
     }
     

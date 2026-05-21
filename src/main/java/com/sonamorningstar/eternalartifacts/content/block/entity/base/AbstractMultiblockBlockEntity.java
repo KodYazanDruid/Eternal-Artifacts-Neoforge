@@ -7,6 +7,8 @@ import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.MultiblockCapabilityManager;
 import com.sonamorningstar.eternalartifacts.util.RelativeBlockPos;
+import it.unimi.dsi.fastutil.longs.LongArraySet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.core.BlockPos;
@@ -26,35 +28,142 @@ import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.neoforged.neoforge.capabilities.Capabilities;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Arrays;
+import java.util.Map;
 
+@Setter
 @Getter
 public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMachineMenu> {
-	@Setter
 	private boolean isMaster = false;
-	@Setter
+	private LongSet disciples = new LongArraySet();
+	private int partIndex = 0;
 	private BlockState deformState = Blocks.AIR.defaultBlockState();
-	@Setter
 	private int mbWidth;
-	@Setter
 	private int mbHeight;
-	@Setter
 	private int mbDepth;
 	private int masterXOff = 0;
 	private int masterYOff = 0;
 	private int masterZOff = 0;
-	private final Multiblock multiblock;
-	@Setter
-	private Set<BlockPos> slaves = new HashSet<>();
 	private boolean isDeforming = false;
-	
 	private Direction forwards = Direction.NORTH;
 	private Direction upwards = Direction.UP;
+
+	private final Multiblock multiblock;
 	
+	/**
+	 *  The capabilities on the disciples are not used and not being saved. Get capabilities from the master instead.
+	 */
 	public AbstractMultiblockBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state, Multiblock multiblock) {
 		super(type, pos, state, null);
 		this.multiblock = multiblock;
+	}
+
+	/**
+	 * Defines the specific slot indices that this hatch should exclusively load.
+	 * If null is returned, all slots may be displayed.
+	 */
+	@Nullable
+	public int[] getHatchSlots() {
+		return null;
+	}
+
+	/**
+	 * Returns an array of strings representing a visual slot layout for the hatch UI.
+	 */
+	@Nullable
+	public String[] getHatchSlotPattern() {
+		return null;
+	}
+
+	/**
+	 * Maps characters in the hatch slot pattern to the actual IItemHandler slot indices.
+	 */
+	@Nullable
+	public Map<Character, Integer> getHatchSlotConfig() {
+		return null;
+	}
+
+	/**
+	 * Starting X pixel position on the UI screen for the slot pattern.
+	 */
+	public int getHatchSlotStartX() {
+		return 8;
+	}
+
+	/**
+	 * Starting Y pixel position on the UI screen for the slot pattern.
+	 */
+	public int getHatchSlotStartY() {
+		return 18;
+	}
+
+	/**
+	 * Returns the specific fluid tank indices this fluid hatch is allowed to show/interact.
+	 * If null, all available tanks are shown.
+	 */
+	@Nullable
+	public int[] getHatchFluidTanks() {
+		return null;
+	}
+
+	/**
+	 * Starting X pixel position on the UI screen for fluid bars.
+	 */
+	public int getHatchFluidStartX() {
+		return 8;
+	}
+
+	/**
+	 * Starting Y pixel position on the UI screen for fluid bars.
+	 */
+	public int getHatchFluidStartY() {
+		return 18;
+	}
+
+	/**
+	 * Spacing between generated fluid tanks.
+	 */
+	public int getHatchFluidSpacing() {
+		return 24;
+	}
+
+	/**
+	 * Whether this hatch displays energy.
+	 */
+	public boolean hasHatchEnergy() {
+		return true;
+	}
+
+	/**
+	 * X pixel position for energy bar on the UI.
+	 */
+	public int getHatchEnergyX() {
+		return 8;
+	}
+
+	/**
+	 * Y pixel position for energy bar on the UI.
+	 */
+	public int getHatchEnergyY() {
+		return 20;
+	}
+	
+	public int[] getAvaiableInventorySlots() {
+		return null;
+	}
+	
+	public boolean canAccessSlot(int slot) {
+		int[] availableSlots = getAvaiableInventorySlots();
+		return availableSlots == null || Arrays.stream(availableSlots).anyMatch(s -> s == slot);
+	}
+	
+	public int[] getAvaiableFluidTanks() {
+		return null;
+	}
+	
+	public boolean canAccessTank(int tank) {
+		int[] availableTanks = getAvaiableFluidTanks();
+		return availableTanks == null || Arrays.stream(availableTanks).anyMatch(t -> t == tank);
 	}
 	
 	public void setMasterOffsets(int masterXOff, int masterYOff, int masterZOff) {
@@ -75,15 +184,18 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 		tag.putInt("MasterXOffset", masterXOff);
 		tag.putInt("MasterYOffset", masterYOff);
 		tag.putInt("MasterZOffset", masterZOff);
+		tag.putInt("PartIndex", partIndex);
 		if (isMaster) {
 			super.saveAdditional(tag);
 			tag.putString("Forwards", forwards.getName());
 			tag.putString("Upwards", upwards.getName());
 			ListTag slavesTag = new ListTag();
-			for (BlockPos slave : slaves) {
-				slavesTag.add(NbtUtils.writeBlockPos(slave));
+			for (long disciple : disciples) {
+				CompoundTag slaveTag = new CompoundTag();
+				slaveTag.putLong("Pos", disciple);
+				slavesTag.add(slaveTag);
 			}
-			tag.put("Slaves", slavesTag);
+			tag.put("Disciples", slavesTag);
 			tag.putInt("MBWidth", mbWidth);
 			tag.putInt("MBHeight", mbHeight);
 			tag.putInt("MBDepth", mbDepth);
@@ -100,14 +212,15 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 		masterXOff = tag.getInt("MasterXOffset");
 		masterYOff = tag.getInt("MasterYOffset");
 		masterZOff = tag.getInt("MasterZOffset");
+		partIndex = tag.getInt("PartIndex");
 		if (isMaster) {
 			super.load(tag);
 			forwards = Direction.byName(tag.getString("Forwards"));
 			upwards = Direction.byName(tag.getString("Upwards"));
-			ListTag slavesTag = tag.getList("Slaves", 10);
-			slaves = new HashSet<>();
+			ListTag slavesTag = tag.getList("Disciples", 10);
+			disciples = new LongArraySet();
 			for (int i = 0; i < slavesTag.size(); i++) {
-				slaves.add(NbtUtils.readBlockPos(slavesTag.getCompound(i)));
+				disciples.add(slavesTag.getCompound(i).getLong("Pos"));
 			}
 			mbWidth = tag.getInt("MBWidth");
 			mbHeight = tag.getInt("MBHeight");
@@ -116,18 +229,19 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 		deformState = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), tag.getCompound("DeformState"));
 	}
 	
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		invalidateCapabilities();
+	}
+	
 	public void deformMultiblock() {
 		deformMultiblock(getBlockPos());
 	}
 	
-	public boolean deformMultiblock(BlockPos brokenPos) {
+	protected boolean deformMultiblock(BlockPos brokenPos) {
 		AbstractMultiblockBlockEntity master = getMasterBlockEntity();
 		if (master != null) {
-			/*boolean deformed = master.deformOnMaster(brokenPos);
-			if (deformed) {
-				getLevel().setBlockAndUpdate(getBlockPos(), getDeformState());
-				return true;
-			}*/
 			return master.deformOnMaster(brokenPos);
 		}
 		return false;
@@ -140,17 +254,18 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 				new RelativeBlockPos(brokenPos.getX() - getBlockPos().getX(), brokenPos.getY() - getBlockPos().getY(), brokenPos.getZ() - getBlockPos().getZ())
 			);
 			if (canDeform) {
-				for (BlockPos slave : slaves) {
-					BlockEntity be = getLevel().getBlockEntity(slave);
-					if (be instanceof AbstractMultiblockBlockEntity ambe) {
-						getLevel().setBlockAndUpdate(slave, ambe.getDeformState());
-					}
-				}
 				var itemHandler = getLevel().getCapability(Capabilities.ItemHandler.BLOCK, brokenPos, null);
 				if (itemHandler != null) {
 					for (int i = 0; i < itemHandler.getSlots(); i++) {
 						ItemStack stack = itemHandler.getStackInSlot(i);
 						Block.popResource(getLevel(), brokenPos, stack);
+					}
+				}
+				for (long slave : disciples) {
+					BlockPos slavePos = BlockPos.of(slave);
+					BlockEntity be = getLevel().getBlockEntity(slavePos);
+					if (be instanceof AbstractMultiblockBlockEntity ambe) {
+						getLevel().setBlockAndUpdate(slavePos, ambe.getDeformState());
 					}
 				}
 				getLevel().setBlockAndUpdate(getBlockPos(), getDeformState());
@@ -294,15 +409,29 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 		return true;
 	}
 	
+	/**
+	 * Main logic handled in the master but disciples can also tick if they needed.
+	 */
 	@Override
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		if (isMaster) {
 			super.tickServer(lvl, pos, st);
 			tickMaster(lvl, pos, st);
+		} else {
+			if (isDirty && !isRemoved() && lvl.hasChunkAt(pos)) {
+				setChanged();
+				lvl.sendBlockUpdated(pos, st, st, 3);
+				isDirty = false;
+			}
+			tickDisciple(lvl, pos, st);
 		}
 	}
 	
 	public void tickMaster(Level lvl, BlockPos pos, BlockState st) {
+	
+	}
+	
+	public void tickDisciple(Level lvl, BlockPos pos, BlockState st) {
 	
 	}
 }

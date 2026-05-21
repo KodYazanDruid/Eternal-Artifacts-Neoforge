@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
@@ -20,8 +21,11 @@ import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
+import com.sonamorningstar.eternalartifacts.content.block.entity.ChunkEaterBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.DimensionalAnchor;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.content.entity.MimicEntity;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.VoidlockSpellProj;
@@ -652,6 +656,13 @@ public class CommonEvents {
             ItemStack talisman = CharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
             if (!talisman.isEmpty()) {
                 event.setExpToDrop(Mth.ceil(expDrop * 1.2));
+            }
+        }
+        //setting xp to 0 for fake players mining with chunk eater to prevent xp duping
+        if (player instanceof ModFakePlayer fakePlayer) {
+            Machine<?> machine = fakePlayer.getMachine();
+            if (machine instanceof ChunkEaterBlockEntity || machine instanceof BlockBreaker) {
+                event.setExpToDrop(0);
             }
         }
     }

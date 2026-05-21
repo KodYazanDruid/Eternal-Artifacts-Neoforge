@@ -7,11 +7,11 @@ package com.sonamorningstar.eternalartifacts.network.base;
  * Bu paket, network paketleri oluşturmayı kolaylaştıran base interface'ler ve helper sınıflar içerir.
  * <p>
  * ## Ana Bileşenler:
- *
+ * <p>
  * ### 1. ServerPayload
  * Server'a gönderilen paketler için interface.
  * Otomatik olarak player extraction ve async handling sağlar.
- *
+ * <p>
  * Örnek kullanım:
  * ```java
  * public record MyPacket(...) implements ServerPayload {
@@ -21,11 +21,11 @@ package com.sonamorningstar.eternalartifacts.network.base;
  *     }
  * }
  * ```
- *
+ * <p>
  * ### 2. ClientPayload
  * Client'a gönderilen paketler için interface.
  * Otomatik olarak client-side execution sağlar.
- *
+ * <p>
  * Örnek kullanım:
  * ```java
  * public record MyPacket(...) implements ClientPayload {
@@ -36,49 +36,49 @@ package com.sonamorningstar.eternalartifacts.network.base;
  *     }
  * }
  * ```
- *
+ * <p>
  * ### 3. PacketHelper
  * Ortak paket okuma/yazma işlemleri için utility sınıfı.
- *
+ * <p>
  * Metodlar:
  * - writeContainerId/readContainerId: Menu container ID
  * - writePos/readPos: BlockPos
  * - writeEntityId/readEntityId: Entity ID
  * - writeIndex/readIndex: Genel index değerleri
- *
+ * <p>
  * ### 4. MenuHelper
  * Menu validation ve handling için helper.
- *
+ * <p>
  * Örnek kullanım:
  * ```java
  * handleMenu(player, containerId, MyMenu.class,
  *     menu -> menu.doSomething());
  * ```
- *
+ * <p>
  * ### 5. BlockEntityHelper
  * BlockEntity validation ve handling için helper.
- *
+ * <p>
  * Örnek kullanım:
  * ```java
  * handleBlockEntity(player, pos, MyBlockEntity.class,
  *     blockEntity -> blockEntity.doSomething());
  * ```
- *
+ * <p>
  * ## Avantajlar:
- *
+ * <p>
  * 1. **Daha Az Kod Tekrarı**: Ortak işlemler helper'larda merkezi hale getirildi
  * 2. **Tip Güvenliği**: Generic tipler ile compile-time kontrol
  * 3. **Okunabilirlik**: Paket sınıfları artık çok daha kısa ve anlaşılır
  * 4. **Bakım Kolaylığı**: Değişiklikler tek yerden yapılabilir
  * 5. **Tutarlılık**: Tüm paketler aynı pattern'i kullanır
- *
+ * <p>
  * ## Yeni Paket Oluşturma:
- *
+ * <p>
  * ### Server Paketi (Menu):
  * ```java
  * public record MyMenuPacket(int containerId, ...) implements ServerPayload {
  *     public static final ResourceLocation ID = new ResourceLocation(MODID, "my_packet");
- *
+ * <p>
  *     public static MyMenuPacket create(FriendlyByteBuf buf) {
  *         return new MyMenuPacket(readContainerId(buf), ...);
  *     }

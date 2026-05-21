@@ -1,4 +1,4 @@
-// 1.20.4	2026-04-23T20:40:29.1642623	Item Models: eternalartifacts
+// 1.20.4	2026-05-11T14:26:18.7274944	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -287,6 +287,7 @@ d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/swo
 0efb1f43fcba4d0e131502073eb0abef54a5d8f0 assets/eternalartifacts/models/item/sword_of_the_twilight.json
 c0f27d555175892c0bc4b0fda57cd6ec842b5c9d assets/eternalartifacts/models/item/tank_knapsack.json
 2b895ccad63794c5e49b10dfd58c6e99a05f6b3e assets/eternalartifacts/models/item/tar_ball.json
+0730e11bba6f220b26baa438629910f1568f56b9 assets/eternalartifacts/models/item/terrasteel_ingot.json
 562a02ef8990e3147473c1874c1720349cbc197d assets/eternalartifacts/models/item/tigris_flower.json
 e5e8de1d419d37a6c993e3a407c46792def7ba9d assets/eternalartifacts/models/item/tin_dust.json
 2c12bc7f670dd786bbb0fdad79de56b1694f00df assets/eternalartifacts/models/item/tin_ingot.json

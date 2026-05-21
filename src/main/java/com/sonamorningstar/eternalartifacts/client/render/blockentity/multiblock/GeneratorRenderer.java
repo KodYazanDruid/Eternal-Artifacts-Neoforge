@@ -15,7 +15,7 @@ public class GeneratorRenderer extends MultiBlockRenderer<GeneratorBlockEntity> 
 	
 	@Override
 	protected void renderMultiblock(GeneratorBlockEntity master, PoseStack pose, MultiBufferSource buffer,
-									int width, int height, int depth, int packedLight, int packedOverlay) {
+									float partialTick, int width, int height, int depth, int packedLight, int packedOverlay) {
 		LevelRenderer.renderLineBox(
 			pose, buffer.getBuffer(RenderType.lines()),
 			0.0, 0.0, 0.0,

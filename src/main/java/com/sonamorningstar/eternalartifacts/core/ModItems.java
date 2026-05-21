@@ -147,6 +147,7 @@ public class ModItems {
     public static final DeferredItem<Item> GOLD_KEY = register("gold_key");
     public static final DeferredItem<Item> FAIRY_DUST = register("fairy_dust");
     public static final DeferredItem<Item> PURPLE_GOLD_INGOT = register("purple_gold_ingot");
+    public static final DeferredItem<Item> TERRASTEEL_INGOT = register("terrasteel_ingot");
     //region Spawn Eggs
     public static final DeferredItem<DeferredSpawnEggItem> DEMON_EYE_SPAWN_EGG = registerSpawnEgg("demon_eye_spawn_egg", ModEntities.DEMON_EYE, 0xDDA4A4, 0x721212);
     public static final DeferredItem<DeferredSpawnEggItem> PINKY_SPAWN_EGG = registerSpawnEgg("pinky_spawn_egg", ModEntities.PINKY, 0xE8B3E2, 0xC062B3);

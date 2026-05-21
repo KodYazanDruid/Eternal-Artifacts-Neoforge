@@ -7,7 +7,9 @@ import com.sonamorningstar.eternalartifacts.api.machine.config.ToggleConfig;
 import com.sonamorningstar.eternalartifacts.container.BlockInteractorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
+import com.sonamorningstar.eternalartifacts.core.ModFluids;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
@@ -18,6 +20,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BucketPickup;
@@ -82,6 +85,16 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 	}
 	
 	@Override
+	public boolean hasBlockFilters() {
+		return true;
+	}
+	
+	@Override
+	public boolean hasFluidFilters() {
+		return true;
+	}
+	
+	@Override
 	public void setFluidFilterWhitelistSilent(boolean whitelist) {
 		this.fluidFilterWhitelist = whitelist;
 	}
@@ -123,13 +136,34 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 			gameMode.delayedDestroyPos = targetPos;
 			gameMode.hasDelayedDestroy = true;
 			gameMode.tick();
+			
+			if (lvl.getBlockState(targetPos).isAir()) {
+				destroyTickStart = -1;
+				lvl.destroyBlockProgress(fakePlayer.getId(), targetPos, -1);
+				
+				int xp = minedState.getExpDrop(lvl, lvl.getRandom(), targetPos, 0, 0);
+				if (xp > 0) {
+					int remainingXp = xp;
+					ItemStack toolCopy = inventory.getStackInSlot(0).copy();
+					remainingXp = ExperienceHelper.mendItem(toolCopy, remainingXp);
+					inventory.setStackInSlot(0, toolCopy);
+					if (tank != null) {
+						int filled = tank.fillForced(ModFluids.NOUS.getFluidStack(remainingXp * 20), IFluidHandler.FluidAction.EXECUTE);
+						remainingXp -= filled / 20;
+					}
+					if (remainingXp > 0 && lvl instanceof ServerLevel slvl) {
+						minedState.getBlock().popExperience(slvl, targetPos, remainingXp);
+					}
+				}
+			}
 		}
 		FluidState fluidState = lvl.getFluidState(targetPos);
 		FluidStack fluidStack = new FluidStack(fluidState.getType(), 1000);
 		
 		if (!configs.get(ReverseToggleConfig.class, "fluid_mode").isDisabled() && !fluidState.isEmpty() && canWork(energy)
 			&& minedState.getBlock() instanceof BucketPickup bp && fluidState.isSource() &&
-				(tank.getFluid(0).isEmpty() || tank.getFluid(0).is(fluidState.getType())) && matchesFluidFilter(fluidStack)) {
+			(tank.getFluid(0).isEmpty() || (tank.getFluid(0).is(fluidState.getType()) && tank.getEmptySpace(0) >= 1000))
+			&& matchesFluidFilter(fluidStack)) {
 			
 			ItemStack bucketStack = bp.pickupBlock(fakePlayer, lvl, targetPos, minedState);
 			if (!bucketStack.isEmpty()) {

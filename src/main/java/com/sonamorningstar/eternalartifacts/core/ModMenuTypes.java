@@ -33,6 +33,12 @@ public class ModMenuTypes {
         ()-> IMenuTypeExtension.create(DeepItemStorageMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<DeepFluidStorageMenu>> DEEP_FLUID_STORAGE_UNIT = MENUS.register("deep_fluid_storage_unit",
         ()-> IMenuTypeExtension.create(DeepFluidStorageMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<MultiblockItemHatchMenu>> MULTIBLOCK_ITEM_HATCH = MENUS.register("multiblock_item_hatch",
+        ()-> IMenuTypeExtension.create(MultiblockItemHatchMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<MultiblockFluidHatchMenu>> MULTIBLOCK_FLUID_HATCH = MENUS.register("multiblock_fluid_hatch",
+        ()-> IMenuTypeExtension.create(MultiblockFluidHatchMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<MultiblockEnergyHatchMenu>> MULTIBLOCK_ENERGY_HATCH = MENUS.register("multiblock_energy_hatch",
+        ()-> IMenuTypeExtension.create(MultiblockEnergyHatchMenu::new));
 
     public static final DeferredHolder<MenuType<?>, MenuType<ScreenWrapperMenu>> SCREEN_WRAPPER = MENUS.register("screen_wrapper",
             ()-> IMenuTypeExtension.create(ScreenWrapperMenu::new));

@@ -40,6 +40,8 @@ public class ModMultiblocks {
 		new MultiblockCapabilityManager()
 			.addCapabilityAllDirections(2, 1, 4, MultiblockCapabilityManager.CapabilityType.ENERGY)
 			.addCapabilityAllDirections(0, 1, 2, MultiblockCapabilityManager.CapabilityType.ITEM)
+			.addCapabilityAllDirections(2, 1, 0, MultiblockCapabilityManager.CapabilityType.ITEM)
+			.addCapabilityAllDirections(4, 1, 2, MultiblockCapabilityManager.CapabilityType.FLUID)
 	);
 	
 }

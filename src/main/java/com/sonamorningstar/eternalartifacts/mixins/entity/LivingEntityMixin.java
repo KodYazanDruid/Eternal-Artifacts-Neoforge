@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.mixins.entity;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.MobHarvester;
@@ -10,6 +11,7 @@ import com.sonamorningstar.eternalartifacts.mixin_helper.MixinHelper;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingJumper;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
+import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -117,22 +119,16 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
     private void dropExp(ServerLevel serverLevel, Vec3 pos, int reward, Operation<Void> original) {
         Player player = this.lastHurtByPlayer;
         int xpToInsert = reward;
-        if (player instanceof FakePlayer fakePlayer && "EternalArtifactsMobHarvester".equals(fakePlayer.getGameProfile().getName())) {
-            BlockEntity be = fakePlayer.level().getBlockEntity(fakePlayer.blockPosition());
-            if (be instanceof MobHarvester harvester) {
-                ItemStack tool = harvester.inventory.getStackInSlot(0);
-                if (!tool.isEmpty() && tool.getEnchantmentLevel(Enchantments.MENDING) > 0) {
-                    int repairAmount = Math.min((int) (reward * tool.getXpRepairRatio()), tool.getDamageValue());
-                    tool.setDamageValue(tool.getDamageValue() - repairAmount);
-                    xpToInsert = xpToInsert - repairAmount / 2;
-                }
-                while (xpToInsert > 0) {
-                    int filled = harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.SIMULATE);
-                    if (filled == 20) {
-                        harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.EXECUTE);
-                        xpToInsert--;
-                    } else break;
-                }
+        if (player instanceof ModFakePlayer fakePlayer && fakePlayer.getMachine() instanceof MobHarvester harvester) {
+            ItemStack toolCopy = harvester.inventory.getStackInSlot(0).copy();
+            xpToInsert = ExperienceHelper.mendItem(toolCopy, xpToInsert);
+            harvester.inventory.setStackInSlot(0, toolCopy);
+            while (xpToInsert > 0) {
+                int filled = harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.SIMULATE);
+                if (filled == 20) {
+                    harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.EXECUTE);
+                    xpToInsert--;
+                } else break;
             }
         }
         original.call(serverLevel, pos, xpToInsert);

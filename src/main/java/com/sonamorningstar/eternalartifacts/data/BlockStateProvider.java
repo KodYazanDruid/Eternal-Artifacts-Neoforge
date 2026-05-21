@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.data;
 import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.PortBlock;
 import com.sonamorningstar.eternalartifacts.core.ModBlockFamilies;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
+import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -169,6 +171,14 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         });
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel)
                 .forEach(family -> simpleBlockItem(family.getBaseBlock(), cubeAll(family.getBaseBlock())));
+        PortBlock.PORT_BLOCKS.forEach(this::simpleBlockWithItem);
+        /*models().getBuilder("block/chunk_eater")
+            .customLoader(ObjModelBuilder::begin)
+            .modelLocation(modLoc("models/block/chunk_eater.obj"))
+            .flipV(true)
+            .shadeQuads(true)
+            .end();*/
+            
 
     }
 

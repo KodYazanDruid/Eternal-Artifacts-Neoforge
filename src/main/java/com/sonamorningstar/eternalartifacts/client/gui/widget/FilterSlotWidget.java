@@ -20,7 +20,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,20 +33,19 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class FilterSlotWidget extends SlotWidget {
 	@Getter
 	private final FilterFakeSlot filterSlot;
-	private final Supplier<FilterEntry> filterEntrySupplier;
+	@Setter
+	@Getter
+	private FilterEntry filterEntry;
 	@Nullable
 	private Consumer<FilterEntry> onFilterChanged;
 	@Nullable
 	private BiConsumer<FilterSlotWidget, Either<ItemStack, FluidStack>> onRightClick;
 	@Setter
 	private boolean highlighted = false;
-	@Setter
-	private boolean isBlockFilter = false;
 	
 	@Setter
 	private boolean isDraggingOnRV = false;
@@ -55,10 +56,10 @@ public class FilterSlotWidget extends SlotWidget {
 	private static final int BLOCK_STATE_HIGHLIGHT = 0x80FFA354; // Turuncu
 	private static final int BLOCK_TAG_HIGHLIGHT = 0xC0CC8040;   // Koyu turuncu
 	
-	public FilterSlotWidget(FilterFakeSlot slot, Supplier<FilterEntry> filterEntrySupplier) {
+	public FilterSlotWidget(FilterFakeSlot slot, FilterEntry filterEntry) {
 		super(slot);
 		this.filterSlot = slot;
-		this.filterEntrySupplier = filterEntrySupplier;
+		this.filterEntry = filterEntry;
 	}
 	
 	public FilterSlotWidget setOnFilterChanged(Consumer<FilterEntry> onFilterChanged) {
@@ -83,160 +84,80 @@ public class FilterSlotWidget extends SlotWidget {
 		int slotIndex = filterSlot.getSlotIndex();
 		int containerId = menu.containerId;
 		
-		Optional<FluidStack> fluidContained = FluidUtil.getFluidContained(carried);
-		boolean hasPlaceableFluid = fluidContained.isPresent() &&
-			!fluidContained.get().isEmpty() &&
-			!fluidContained.get().getFluid().defaultFluidState().createLegacyBlock().isEmpty();
-		boolean isBlockItem = carried.getItem() instanceof BlockItem;
-		
-		if (!carried.isEmpty()) {
-			if (!isBlockItem && !hasPlaceableFluid) return;
-		}
-		
 		if (button == 1) {
 			handleRightClick(carried);
 			return;
 		}
 		
 		if (!carried.isEmpty()) {
-			FluidStack fluidInItem = fluidContained.orElse(FluidStack.EMPTY);
-			
-			if (isBlockFilter) {
-				if (isBlockItem) {
-					BlockItem blockItem = (BlockItem) carried.getItem();
-					BlockState blockState = blockItem.getBlock().defaultBlockState();
-					
-					if (!fluidInItem.isEmpty()) {
-						FilterEntry currentEntry = filterEntrySupplier.get();
-						if (currentEntry instanceof BlockStateEntry bse && !bse.isEmpty() && bse.getFilterState() != null) {
-							if (bse.getFilterState().getBlock() == blockState.getBlock()) {
-								FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
-								filterSlot.setFilter(newEntry);
-								filterSlot.set(ItemStack.EMPTY);
-								Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
-								notifyFilterChanged(newEntry);
-								return;
-							}
-						}
-					}
-					
-					BlockStateEntry newEntry = BlockStateEntry.matchBlockOnly(blockState);
-					filterSlot.setFilter(newEntry);
-					filterSlot.set(ItemStack.EMPTY);
-					Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, blockState));
-					notifyFilterChanged(newEntry);
-				} else if (!fluidInItem.isEmpty()) {
+			if (filterEntry instanceof ItemFilterEntry) {
+				ItemStack filterStack = carried.copyWithCount(1);
+				ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
+				filterSlot.setFilter(newEntry);
+				filterSlot.set(filterStack);
+				Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
+				notifyFilterChanged(newEntry);
+			} else if (filterEntry instanceof BlockFilterEntry && carried.getItem() instanceof BlockItem blockItem) {
+				BlockState blockState = blockItem.getBlock().defaultBlockState();
+				BlockStateEntry newEntry = BlockStateEntry.matchBlockOnly(blockState);
+				filterSlot.setFilter(newEntry);
+				filterSlot.set(carried.copyWithCount(1));
+				Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, blockState));
+				notifyFilterChanged(newEntry);
+			} else if (filterEntry instanceof FluidFilterEntry) {
+				FluidStack fluidInItem = FluidUtil.getFluidContained(carried).orElse(FluidStack.EMPTY);
+				if (!fluidInItem.isEmpty()) {
 					FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
 					filterSlot.setFilter(newEntry);
 					filterSlot.set(ItemStack.EMPTY);
 					Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
-					notifyFilterChanged(newEntry);
-				}
-			} else {
-				if (isBlockItem && !fluidInItem.isEmpty()) {
-					FilterEntry currentEntry = filterEntrySupplier.get();
-					if (currentEntry instanceof ItemStackEntry ise && !ise.isEmpty()) {
-						FluidStack existingFluid = FluidUtil.getFluidContained(ise.getFilterStack()).orElse(FluidStack.EMPTY);
-						if (!existingFluid.isEmpty() && existingFluid.getFluid().isSame(fluidInItem.getFluid())) {
-							FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
-							filterSlot.setFilter(newEntry);
-							filterSlot.set(ItemStack.EMPTY);
-							Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
-							notifyFilterChanged(newEntry);
-							return;
-						}
-					}
-					ItemStack filterStack = carried.copyWithCount(1);
-					ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
-					filterSlot.setFilter(newEntry);
-					filterSlot.set(filterStack);
-					Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
-					notifyFilterChanged(newEntry);
-				} else if (!fluidInItem.isEmpty()) {
-					FluidStackEntry newEntry = new FluidStackEntry(fluidInItem.copy(), true);
-					filterSlot.setFilter(newEntry);
-					filterSlot.set(ItemStack.EMPTY);
-					Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, fluidInItem.copy()));
-					notifyFilterChanged(newEntry);
-				} else {
-					ItemStack filterStack = carried.copyWithCount(1);
-					ItemStackEntry newEntry = new ItemStackEntry(filterStack, true);
-					filterSlot.setFilter(newEntry);
-					filterSlot.set(filterStack);
-					Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, filterStack));
 					notifyFilterChanged(newEntry);
 				}
 			}
 		} else {
-			if (isBlockFilter) {
-				filterSlot.setFilter(BlockFilterEntry.Empty.create(true));
-				Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, null));
-				notifyFilterChanged(BlockFilterEntry.Empty.create(true));
-			} else {
-				filterSlot.setFilter(ItemFilterEntry.Empty.create(true));
+			if (filterEntry instanceof ItemFilterEntry) {
+				filterSlot.setFilter(ItemStackEntry.EMPTY);
 				Channel.sendToServer(new UpdateFakeSlotToServer(containerId, slotIndex, ItemStack.EMPTY));
-				notifyFilterChanged(ItemFilterEntry.Empty.create(true));
+				notifyFilterChanged(ItemStackEntry.EMPTY);
+			} else if (filterEntry instanceof BlockFilterEntry) {
+				filterSlot.setFilter(BlockStateEntry.EMPTY);
+				Channel.sendToServer(new BlockStateFilterToServer(containerId, slotIndex, null));
+				notifyFilterChanged(BlockStateEntry.EMPTY);
+			} else if (filterEntry instanceof FluidFilterEntry) {
+				filterSlot.setFilter(FluidStackEntry.EMPTY);
+				Channel.sendToServer(new FluidStackFilterToServer(containerId, slotIndex, FluidStack.EMPTY));
+				notifyFilterChanged(FluidStackEntry.EMPTY);
+			}
+			filterSlot.set(ItemStack.EMPTY);
+		}
+	}
+
+	private void handleRightClick(ItemStack carried) {
+		if (onRightClick == null) return;
+		if (!carried.isEmpty()) {
+			if (filterEntry instanceof ItemFilterEntry) {
+				onRightClick.accept(this, Either.left(carried.copy()));
+			} else if (filterEntry instanceof BlockFilterEntry && carried.getItem() instanceof BlockItem blockItem) {
+				onRightClick.accept(this, Either.left(new ItemStack(blockItem)));
+			} else if (filterEntry instanceof FluidFilterEntry) {
+				onRightClick.accept(this, Either.right(FluidUtil.getFluidContained(carried).orElse(FluidStack.EMPTY).copy()));
+			}
+		} else {
+			if (filterEntry instanceof ItemStackEntry itemEntry && !itemEntry.isEmpty()) {
+				onRightClick.accept(this, Either.left(itemEntry.getFilterStack().copy()));
+			} else if (filterEntry instanceof BlockStateEntry blockEntry && !blockEntry.isEmpty() && blockEntry.getFilterState() != null) {
+				Item item = blockEntry.getFilterState().getBlock().asItem();
+				if (item != Items.AIR) onRightClick.accept(this, Either.left(new ItemStack(item)));
+			} else if (filterEntry instanceof FluidStackEntry fluidEntry && !fluidEntry.isEmpty()) {
+				onRightClick.accept(this, Either.right(fluidEntry.getFilterStack().copy()));
 			}
 			filterSlot.set(ItemStack.EMPTY);
 		}
 	}
 	
-	private void handleRightClick(ItemStack carried) {
-		FilterEntry entry = filterEntrySupplier.get();
-		if (!carried.isEmpty()) {
-			if (carried.getItem() instanceof BlockItem blockItem && onRightClick != null) {
-				if (entry instanceof ItemStackEntry ise && !ise.isEmpty()) {
-					FluidStack fluidInFilter = FluidUtil.getFluidContained(ise.getFilterStack()).orElse(FluidStack.EMPTY);
-					if (!fluidInFilter.isEmpty()) {
-						onRightClick.accept(this, Either.right(fluidInFilter.copy()));
-						return;
-					}
-				} else if (entry instanceof BlockStateEntry bse && !bse.isEmpty()) {
-					BlockState state = bse.getFilterState();
-					if (state != null && !state.isAir()) {
-						ItemStack carriedBlockStack = new ItemStack(bse.getFilterState().getBlock().asItem());
-						FluidStack fluidInFilter = FluidUtil.getFluidContained(carriedBlockStack).orElse(FluidStack.EMPTY);
-						FluidStack fluidInCarried = FluidUtil.getFluidContained(carried).orElse(FluidStack.EMPTY);
-						if (!fluidInFilter.isEmpty() && !fluidInCarried.isEmpty() && fluidInFilter.isFluidEqual(fluidInCarried)) {
-							onRightClick.accept(this, Either.right(fluidInFilter.copy()));
-							return;
-						}
-					}
-				} else {
-					ItemStack blockStack = new ItemStack(blockItem);
-					if (!blockStack.isEmpty()) {
-						onRightClick.accept(this, Either.left(blockStack));
-						return;
-					}
-				}
-			}
-			FluidStack fluidInItem = FluidUtil.getFluidContained(carried).orElse(FluidStack.EMPTY);
-			if (onRightClick != null) {
-				if (!fluidInItem.isEmpty()) {
-					onRightClick.accept(this, Either.right(fluidInItem.copy()));
-				} else {
-					onRightClick.accept(this, Either.left(carried.copy()));
-				}
-			}
-		} else {
-			if (entry instanceof ItemStackEntry ise && !ise.isEmpty() && onRightClick != null) {
-				onRightClick.accept(this, Either.left(ise.getFilterStack().copy()));
-			} else if (entry instanceof BlockStateEntry bse && !bse.isEmpty() && onRightClick != null) {
-				BlockState state = bse.getFilterState();
-				if (state != null && !state.isAir()) {
-					ItemStack blockStack = new ItemStack(state.getBlock().asItem());
-					if (!blockStack.isEmpty()) {
-						onRightClick.accept(this, Either.left(blockStack));
-					}
-				}
-			}else if (entry instanceof FluidStackEntry fse && !fse.isEmpty() && onRightClick != null) {
-				onRightClick.accept(this, Either.right(fse.getFilterStack().copy()));
-			}
-		}
-	}
-	
 	private void notifyFilterChanged(FilterEntry entry) {
 		if (onFilterChanged != null) {
+			filterEntry = entry;
 			onFilterChanged.accept(entry);
 		}
 	}
@@ -252,7 +173,6 @@ public class FilterSlotWidget extends SlotWidget {
 	}
 	
 	protected void renderFilterSlot(GuiGraphics gui, int mouseX, int mouseY) {
-		FilterEntry entry = filterEntrySupplier.get();
 		int x = getX();
 		int y = getY();
 		
@@ -260,26 +180,26 @@ public class FilterSlotWidget extends SlotWidget {
 			gui.fill(x, y, x + 16, y + 16, 0x80FF0000);
 		}
 		
-		if (entry instanceof ItemStackEntry itemStackEntry) {
+		if (filterEntry instanceof ItemStackEntry itemStackEntry) {
 			ItemStack stack = itemStackEntry.getFilterStack();
 			if (!stack.isEmpty()) {
 				gui.fill(x, y, x + 16, y + 16, ITEM_STACK_HIGHLIGHT);
 				renderSlotContents(gui, stack, filterSlot, x, y, null);
 			}
-		} else if (entry instanceof ItemTagEntry itemTagEntry) {
+		} else if (filterEntry instanceof ItemTagEntry itemTagEntry) {
 			ItemStack[] items = Ingredient.of(itemTagEntry.getTag()).getItems();
 			if (!ItemRendererHelper.renderItemCarousel(gui, items, x, y, ITEM_TAG_HIGHLIGHT, 1.0F)) {
 				renderSlotContents(gui, filterSlot.getItem(), filterSlot, x, y, null);
 			}
-		} else if (entry instanceof FluidStackEntry fluidStackEntry) {
+		} else if (filterEntry instanceof FluidStackEntry fluidStackEntry) {
 			FluidStack fluidStack = fluidStackEntry.getFilterStack();
 			if (!fluidStack.isEmpty()) {
 				FluidRendererHelper.renderFluidStack(gui, fluidStack, x, y, 16, 16);
 			}
-		} else if (entry instanceof FluidTagEntry fluidTagEntry) {
+		} else if (filterEntry instanceof FluidTagEntry fluidTagEntry) {
 			FluidStack[] fluidStacks = FluidIngredient.of(fluidTagEntry.getTag(), 1000).getFluidStacks();
 			FluidRendererHelper.renderFluidStackCarousel(gui, fluidStacks, x, y, 16, 16);
-		} else if (entry instanceof BlockStateEntry blockStateEntry) {
+		} else if (filterEntry instanceof BlockStateEntry blockStateEntry) {
 			BlockState state = blockStateEntry.getFilterState();
 			if (state != null && !state.isAir()) {
 				gui.fill(x, y, x + 16, y + 16, BLOCK_STATE_HIGHLIGHT);
@@ -291,7 +211,7 @@ public class FilterSlotWidget extends SlotWidget {
 						x, y, 0, 0, 16, 16, 16, 16);
 				}
 			}
-		} else if (entry instanceof BlockTagEntry blockTagEntry) {
+		} else if (filterEntry instanceof BlockTagEntry blockTagEntry) {
 			Block[] blocks = BuiltInRegistries.BLOCK.stream()
 				.filter(block -> block.defaultBlockState().is(blockTagEntry.getTag()))
 				.toArray(Block[]::new);
@@ -322,32 +242,31 @@ public class FilterSlotWidget extends SlotWidget {
 	public void renderTooltip(GuiGraphics gui, int mouseX, int mouseY, int tooltipZ) {
 		if (!filterSlot.isActive() || !isMouseOver(mouseX, mouseY)) return;
 		
-		FilterEntry entry = filterEntrySupplier.get();
 		Minecraft mc = Minecraft.getInstance();
 		long tick = Minecraft.getInstance().clientTickCount;
 		
 		gui.pose().pushPose();
 		gui.pose().translate(0, 0, tooltipZ);
 		
-		if (entry instanceof ItemStackEntry itemStackEntry) {
+		if (filterEntry instanceof ItemStackEntry itemStackEntry) {
 			ItemStack stack = itemStackEntry.getFilterStack();
 			if (!stack.isEmpty()) {
 				gui.renderTooltip(mc.font, stack, mouseX, mouseY);
 			}
-		} else if (entry instanceof ItemTagEntry itemTagEntry) {
+		} else if (filterEntry instanceof ItemTagEntry itemTagEntry) {
 			ItemStack[] items = Ingredient.of(itemTagEntry.getTag()).getItems();
 			if (items.length > 0) {
 				ItemStack stack = items[(int) ((tick / 20) % items.length)];
 				stack.setHoverName(Component.literal(itemTagEntry.getTag().location().toString()));
 				gui.renderTooltip(mc.font, stack, mouseX, mouseY);
 			}
-		} else if (entry instanceof FluidStackEntry fluidStackEntry) {
+		} else if (filterEntry instanceof FluidStackEntry fluidStackEntry) {
 			FluidStack stack = fluidStackEntry.getFilterStack();
 			if (!stack.isEmpty()) {
 				gui.renderTooltip(mc.font, StringUtils.getTooltipFromContainerFluid(stack, mc.level, mc.options.advancedItemTooltips),
 					Optional.empty(), mouseX, mouseY);
 			}
-		} else if (entry instanceof FluidTagEntry fluidTagEntry) {
+		} else if (filterEntry instanceof FluidTagEntry fluidTagEntry) {
 			FluidStack[] stacks = FluidIngredient.of(fluidTagEntry.getTag(), 1000).getFluidStacks();
 			if (stacks.length > 0) {
 				FluidStack stack = stacks[(int) ((tick / 20) % stacks.length)];
@@ -356,7 +275,7 @@ public class FilterSlotWidget extends SlotWidget {
 				gui.renderTooltip(mc.font, StringUtils.getTooltipFromContainerFluid(stack, mc.level, mc.options.advancedItemTooltips),
 					Optional.empty(),mouseX, mouseY);
 			}
-		} else if (entry instanceof BlockStateEntry blockStateEntry) {
+		} else if (filterEntry instanceof BlockStateEntry blockStateEntry) {
 			BlockState state = blockStateEntry.getFilterState();
 			if (state != null && !state.isAir()) {
 				ItemStack blockStack = new ItemStack(state.getBlock().asItem());
@@ -367,7 +286,7 @@ public class FilterSlotWidget extends SlotWidget {
 						Optional.empty(), mouseX, mouseY);
 				}
 			}
-		} else if (entry instanceof BlockTagEntry blockTagEntry) {
+		} else if (filterEntry instanceof BlockTagEntry blockTagEntry) {
 			Block[] blocks = BuiltInRegistries.BLOCK.stream()
 				.filter(block -> block.defaultBlockState().is(blockTagEntry.getTag()))
 				.toArray(Block[]::new);

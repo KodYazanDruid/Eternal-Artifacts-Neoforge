@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.content.block.AncientCropBlock;
 import com.sonamorningstar.eternalartifacts.content.block.EnergyDockBlock;
 import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
+import com.sonamorningstar.eternalartifacts.content.block.base.PortBlock;
 import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.loot.function.KeepContentsFunction;
@@ -150,7 +151,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropOther(ModBlocks.NAPHTHA_CAULDRON.get(), Blocks.CAULDRON);
         dropOther(ModBlocks.CRUDE_OIL_CAULDRON.get(), Blocks.CAULDRON);
         dropSelf(ModBlocks.SOUL_BLAZE_HEAD.get());
-
+        
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.GOLD_ORE_BERRY, ModLootTables.GOLD_OREBERRY_HARVEST);
@@ -206,8 +207,8 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.BIOFURNACE, KeepContentsFunction.builder());
         dropSelfWithFunction(ModBlocks.DEEP_ITEM_STORAGE_UNIT, KeepItemsFunction.builder());
         dropSelfWithFunction(ModBlocks.DEEP_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
-        
         add(ModBlocks.SOLAR_PANEL.get(), this::createSlabItemTable);
+        add(ModBlocks.FLUID_HOPPER.get(), this::createNameableBlockEntityTable);
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())
@@ -242,6 +243,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
             dropSelf(family.getBaseBlock());
             family.getVariants().values().forEach(this::dropSelf);
         });
+        PortBlock.PORT_BLOCKS.forEach(this::dropSelf);
     }
 
     private void generateOreBerryTables(DeferredBlock<OreBerryBlock> holder, ResourceLocation berryLoc) {

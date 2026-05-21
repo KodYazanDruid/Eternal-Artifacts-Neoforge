@@ -189,7 +189,7 @@ public class ModPlacedFeatures {
     private static void registerMossOre(BootstapContext<PlacedFeature> context, HolderGetter<ConfiguredFeature<?, ?>> holderGetter,
                                         ResourceKey<PlacedFeature> key, ResourceKey<ConfiguredFeature<?, ?>> configuredFeature, int size) {
         context.register(key, new PlacedFeature(holderGetter.getOrThrow(configuredFeature),
-            commonOrePlacement(size, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.top()))));
+            commonOrePlacement(size, HeightRangePlacement.uniform(VerticalAnchor.bottom(), VerticalAnchor.absolute(64)))));
     }
 }
 

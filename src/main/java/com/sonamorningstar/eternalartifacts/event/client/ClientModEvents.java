@@ -68,6 +68,10 @@ public class ClientModEvents {
         event.register(ModMenuTypes.PICTURE_SCREEN.get(), PictureScreenScreen::new);
         event.register(ModMenuTypes.DEEP_ITEM_STORAGE_UNIT.get(), DeepItemStorageScreen::new);
         event.register(ModMenuTypes.DEEP_FLUID_STORAGE_UNIT.get(), DeepFluidStorageUnitScreen::new);
+
+        event.register(ModMenuTypes.MULTIBLOCK_ITEM_HATCH.get(), MultiblockItemHatchScreen::new);
+        event.register(ModMenuTypes.MULTIBLOCK_FLUID_HATCH.get(), MultiblockFluidHatchScreen::new);
+        event.register(ModMenuTypes.MULTIBLOCK_ENERGY_HATCH.get(), MultiblockEnergyHatchScreen::new);
     }
 
     @SubscribeEvent

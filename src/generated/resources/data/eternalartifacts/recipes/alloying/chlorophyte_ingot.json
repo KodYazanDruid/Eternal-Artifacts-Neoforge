@@ -4,22 +4,20 @@
     {
       "item_stack": {
         "Count": 1,
-        "id": "eternalartifacts:pink_slime_steel_ingot"
+        "id": "eternalartifacts:terrasteel_ingot"
       }
+    },
+    {
+      "amount": 2,
+      "tag": "minecraft:tall_flowers"
     },
     {
       "amount": 1,
-      "tag": "forge:dusts/glowstone"
-    },
-    {
-      "item_stack": {
-        "Count": 1,
-        "id": "eternalartifacts:plant_matter"
-      }
+      "tag": "forge:ingots/purple_gold"
     }
   ],
   "output": {
-    "Count": 1,
+    "Count": 2,
     "id": "eternalartifacts:chlorophyte_ingot"
   }
 }

@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
@@ -42,12 +41,12 @@ public class Repairer extends GenericMachine {
 			energy.extractEnergy(getEnergyPerTick(), false);
 			modifiedRepairAmount = modifiedRepairAmount + (modifiedRepairAmount * getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY) / 5);
 			input.setDamageValue(input.getDamageValue() - modifiedRepairAmount);
-			setChanged();
+			markDirty();
 		}
 		if (!input.isEmpty() && output.isEmpty() && !input.isDamaged()) {
 			inventory.setStackInSlot(1, input.copy());
 			inventory.setStackInSlot(0, ItemStack.EMPTY);
-			setChanged();
+			markDirty();
 		}
 	}
 	

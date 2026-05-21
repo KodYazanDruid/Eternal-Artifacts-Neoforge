@@ -28,7 +28,9 @@ public class ModModelTemplates {
     public static final ModelTemplate MOD_CAULDON_2_OF_4 = create("mod_cauldon_2_of_4", "_2_of_4", TextureSlot.CONTENT, TextureSlot.INSIDE, TextureSlot.PARTICLE, TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
     public static final ModelTemplate MOD_CAULDON_3_OF_4 = create("mod_cauldon_3_of_4", "_3_of_4", TextureSlot.CONTENT, TextureSlot.INSIDE, TextureSlot.PARTICLE, TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
     public static final ModelTemplate MOD_CAULDON_4_OF_4 = create("mod_cauldon_4_of_4", "_4_of_4", TextureSlot.CONTENT, TextureSlot.INSIDE, TextureSlot.PARTICLE, TextureSlot.TOP, TextureSlot.BOTTOM, TextureSlot.SIDE);
-
+    public static final ModelTemplate HOPPER = new ModelTemplate(Optional.of(new ResourceLocation("block/hopper")), Optional.empty(), TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.INSIDE, TextureSlot.PARTICLE);
+    public static final ModelTemplate HOPPER_SIDE = new ModelTemplate(Optional.of(new ResourceLocation("block/hopper_side")), Optional.of("_side"), TextureSlot.TOP, TextureSlot.SIDE, TextureSlot.INSIDE, TextureSlot.PARTICLE);
+    
     public static final ModelTemplate ENTITY_RENDER_TRANSFORMS = createItem("entity_renderer_transform");
     public static final ModelTemplate CUBE_BOTTOM_TOP_BEWLR = createItem("cube_bottom_top_bewlr");
     public static final ModelTemplate SPELL_TOME = createItem("spell_tome", TextureSlot.TEXTURE);

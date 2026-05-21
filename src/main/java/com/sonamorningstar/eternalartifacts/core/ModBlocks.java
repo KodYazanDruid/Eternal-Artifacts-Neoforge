@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.client.render.BEWLRProps;
 import com.sonamorningstar.eternalartifacts.content.block.*;
 import com.sonamorningstar.eternalartifacts.content.block.MachineWorkbench;
+import com.sonamorningstar.eternalartifacts.content.block.base.PortBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.item.block.BasicFluidTankItem;
@@ -154,6 +155,14 @@ public class ModBlocks {
             ()-> new IceBrickStairs(()-> ICE_BRICKS.get().defaultBlockState(), ModProperties.Blocks.ICE_BRICKS));
     public static final DeferredBlock<Block> ICE_BRICK_WALL = registerWithItem("ice_brick_wall",
             ()-> new IceBrickWall(ModProperties.Blocks.ICE_BRICKS));
+    public static final DeferredBlock<Block> REDSTONE_PORT = registerWithItem("redstone_port",
+            () -> new PortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
+    public static final DeferredBlock<Block> ENERGY_PORT = registerWithItem("energy_port",
+            () -> new PortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
+    public static final DeferredBlock<Block> ITEM_PORT = registerWithItem("item_port",
+            () -> new PortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
+    public static final DeferredBlock<Block> FLUID_PORT = registerWithItem("fluid_port",
+            () -> new PortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
 
     public static final DeferredBlock<Block> ASPHALT_BLOCK = registerWithItem("asphalt_block",
             ()-> new AsphaltBlock(Blocks.DEEPSLATE.properties()));
@@ -222,6 +231,7 @@ public class ModBlocks {
     public static final DeferredBlock<Block> MACHINE_WORKBENCH = registerMachineWithItem("machine_workbench", MachineWorkbench::new);
     public static final DeferredBlock<Block> SOLAR_PANEL = registerMachineWithItem("solar_panel", SolarPanelBlock::new);
     public static final DeferredBlock<Block> PICTURE_SCREEN = registerWithBewlr("picture_screen", () -> new PictureScreenBlock(ModProperties.Blocks.MACHINE));
+    public static final DeferredBlock<Block> FLUID_HOPPER = registerWithBewlr("fluid_hopper", () -> new FluidHopperBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER).mapColor(MapColor.COLOR_ORANGE)));
     
     public static final DeferredBlock<DrumBlock> COPPER_DRUM = registerDrum("copper_drum", Blocks.COPPER_BLOCK.properties(), 32000);
     public static final DeferredBlock<DrumBlock> IRON_DRUM = registerDrum("iron_drum", Blocks.IRON_BLOCK.properties(), 64000);

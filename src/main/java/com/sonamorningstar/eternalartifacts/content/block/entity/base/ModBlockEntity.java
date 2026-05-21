@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.function.*;
 
 public class ModBlockEntity extends BlockEntity {
+    protected boolean isDirty = false;
+    
     public final Object2IntMap<Enchantment> enchantments = new Object2IntOpenHashMap<>();
     public static final String CONFIG_TAG_KEY = "Config";
     @Getter
@@ -116,6 +118,7 @@ public class ModBlockEntity extends BlockEntity {
         configuration.save(configTag);
         tag.put(CONFIG_TAG_KEY, configTag);
         if (this instanceof Filterable filterable) {
+            if (this instanceof AbstractMultiblockBlockEntity part && !part.isMaster()) return;
             filterable.saveFilters(tag);
         }
     }
@@ -123,20 +126,25 @@ public class ModBlockEntity extends BlockEntity {
     public void loadConfiguration(ItemStack drive) {
         if (drive.hasTag()){
             getConfiguration().load(drive.getTag().getCompound(CONFIG_TAG_KEY));
-            sendUpdate();
+            markDirty();
         }
     }
     
-    public void sendUpdate() {
-        setChanged();
-        if(level != null && !isRemoved() && level.hasChunkAt(worldPosition))
+    public void markDirty() {
+        isDirty = true;
+    }
+    
+    public void sendUpdateIfNeeded() {
+        if(isDirty && level != null && !isRemoved() && level.hasChunkAt(worldPosition)) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+            isDirty = false;
+        }
     }
     
     public void enchant(Enchantment enchantment, int level) {
         enchantments.put(enchantment, level);
         onEnchanted(enchantment, level);
-        sendUpdate();
+        markDirty();
     }
     
     public int getEnchantmentLevel(Enchantment enchantment) {
