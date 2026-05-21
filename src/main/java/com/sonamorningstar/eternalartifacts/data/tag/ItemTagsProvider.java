@@ -55,7 +55,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.ALUMINUM_INGOT.get(),
             ModItems.BRONZE_INGOT.get(),
             ModItems.OBLIVIUM_INGOT.get(),
-            ModItems.PURPLE_GOLD_INGOT.get()
+            ModItems.PURPLE_GOLD_INGOT.get(),
+            ModItems.TERRASTEEL_INGOT.get()
         );
         tag(Tags.Items.RODS).add(
             ModItems.SOUL_BLAZE_ROD.get()

@@ -19,7 +19,7 @@ public class JarBlockEntity extends ModBlockEntity {
 			@Override
 			protected void onContentsChanged() {
 				JarBlockEntity.this.requestModelDataUpdate();
-				JarBlockEntity.this.sendUpdate();
+				JarBlockEntity.this.markDirty();
 			}
 		};
     }

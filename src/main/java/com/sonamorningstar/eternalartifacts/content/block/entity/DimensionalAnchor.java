@@ -14,7 +14,8 @@ public class DimensionalAnchor extends GenericMachine {
 			int volume = getVolumeLevel();
 			return new ModEnergyStorage(50000 * (volume + 1), 2500, 2500) {
 				@Override
-				public void onEnergyChanged() {sendUpdate();}
+				public void onEnergyChanged() {
+					markDirty();}
 				@Override
 				public boolean canReceive() {return true;}
 				@Override

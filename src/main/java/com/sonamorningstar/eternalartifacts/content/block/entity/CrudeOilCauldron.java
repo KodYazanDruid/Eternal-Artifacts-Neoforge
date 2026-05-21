@@ -42,7 +42,7 @@ public class CrudeOilCauldron extends ModBlockEntity implements TickableServer {
 	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
 		if (!hasHeatSource(lvl, pos)) {
 			resetCooldown();
-			sendUpdate();
+			markDirty();
 			return;
 		}
 		if (cooldown > 0) {

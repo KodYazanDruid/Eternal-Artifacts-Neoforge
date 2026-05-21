@@ -54,7 +54,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     public void setName(String toolRename) {
         if(!toolRename.equals(this.toolRename)) {
             this.toolRename = toolRename;
-            sendUpdate();
+            markDirty();
         }
     }
 
@@ -64,7 +64,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     public void setEnableNaming(boolean enableNaming) {
         if(enableNaming != this.enableNaming) {
             this.enableNaming = enableNaming;
-            sendUpdate();
+            markDirty();
         }
     }
 

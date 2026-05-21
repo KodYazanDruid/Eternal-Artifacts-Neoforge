@@ -88,7 +88,7 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 			filterEntries.put(direction, filters);
 			whitelists.put(direction, filterData.getBoolean("whitelist"));
 			nbtIgnores.put(direction, filterData.getBoolean("ignore_nbt"));
-			sendUpdate();
+			markDirty();
 		}
 	}
 	
@@ -103,8 +103,10 @@ public class ItemPipe extends FilterablePipeBlockEntity<IItemHandler> {
 		if (lvl.isAreaLoaded(getBlockPos(), 1) && state.getBlock() instanceof ItemPipeBlock) {
 			PipeConnection current = state.getValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 			if (current == PipeConnection.NONE || current == PipeConnection.FREE) {
-				lvl.setBlockAndUpdate(getBlockPos(), state.setValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
-					canConnect ? PipeConnection.FREE : PipeConnection.NONE));
+				/*lvl.setBlockAndUpdate(getBlockPos(), state.setValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
+					canConnect ? PipeConnection.FREE : PipeConnection.NONE));*/
+				lvl.setBlock(getBlockPos(), state.setValue(ItemPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
+					canConnect ? PipeConnection.FREE : PipeConnection.NONE), 2);
 			}
 		}
 	}

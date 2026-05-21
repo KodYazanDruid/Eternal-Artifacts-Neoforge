@@ -26,7 +26,7 @@ public class Bottler extends SidedTransferMachine<BottlerMenu> {
 			return new ModFluidStorage(16000 * (volume + 1)) {
 				@Override
 				protected void onContentsChanged() {
-					sendUpdate();
+					markDirty();
 				}
 			};
 		});

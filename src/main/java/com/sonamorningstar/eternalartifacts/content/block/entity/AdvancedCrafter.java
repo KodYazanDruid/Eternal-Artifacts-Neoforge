@@ -77,7 +77,7 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                         }
                     } else pattern = null;
                 } else updateProcessCondition();
-                AdvancedCrafter.this.sendUpdate();
+                AdvancedCrafter.this.markDirty();
             }
             @Override
             public boolean isItemValid(int slot, ItemStack stack) {

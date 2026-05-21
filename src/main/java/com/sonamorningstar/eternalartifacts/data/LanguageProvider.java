@@ -256,6 +256,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.FAIRY_DUST.get(), "Fairy Dust");
                 add(ModItems.SHADOW_RAY_TOME.get(), "Shadow Ray Tome");
                 add(ModItems.PURPLE_GOLD_INGOT.get(), "Purple Gold Ingot");
+                add(ModItems.TERRASTEEL_INGOT.get(), "Terrasteel Ingot");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -405,6 +406,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.NAPHTHA_CAULDRON.get(), "Naphtha Cauldron");
                 add(ModBlocks.CRUDE_OIL_CAULDRON.get(), "Crude Oil Cauldron");
                 add(ModBlocks.SOUL_BLAZE_HEAD.get(), "Soul Blaze Head");
+                add(ModBlocks.REDSTONE_PORT.get(), "Redstone Port");
+                add(ModBlocks.ENERGY_PORT.get(), "Energy Port");
+                add(ModBlocks.ITEM_PORT.get(), "Item Port");
+                add(ModBlocks.FLUID_PORT.get(), "Fluid Port");
+                add(ModBlocks.FLUID_HOPPER.get(), "Fluid Hopper");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -728,6 +734,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("entity_watcher.watched_entities_count"), "Entities being watched:");
                 add(ModConstants.SET_BONUS.toString(), "Set Bonus:");
                 add(ModConstants.SET_BONUS.withSuffix("pieces_equipped"), "Equipped %1$d/%2$d pieces.");
+                add(ModConstants.GUI.withSuffix("item_filter"), "Item Filter");
+                add(ModConstants.GUI.withSuffix("fluid_filter"), "Fluid Filter");
+                add(ModConstants.GUI.withSuffix("block_filter"), "Block Filter");
+                add(ModConstants.GUI.withSuffix("chunk_eater.reset_mining_position"), "Reset mining position.");
+                add(ModConstants.GUI.withSuffix("chunk_eater.finished_cycle"), "Finished mining cycle.");
                 
                 //region Spell Tooltips
                 add("tooltip.eternalartifacts.spell.damage", "Damage");
@@ -1036,6 +1047,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.HONEY.getBucketItem(), "Bal Kovası");
                 add(ModFluids.SLIME.getBucketItem(), "Balçık Kovası");
                 add(ModItems.PURPLE_GOLD_INGOT.get(), "Mor Altın Külçesi");
+                add(ModItems.TERRASTEEL_INGOT.get(), "Terrasteel Külçesi");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1256,6 +1268,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.SLIME.getTranslationKey(), "Balçık");
                 add(ModMachines.ELECTRIC_BEEHIVE.getBlockTranslationKey(), "Elektrikli Arı Kovanı");
                 add(ModMultiblocks.CHUNK_EATER.getTranslationKey(), "Yığın Yiyici");
+                add(ModBlocks.REDSTONE_PORT.get(), "Kızıltaş Portu");
+                add(ModBlocks.ENERGY_PORT.get(), "Enerji Portu");
+                add(ModBlocks.ITEM_PORT.get(), "Eşya Portu");
+                add(ModBlocks.FLUID_PORT.get(), "Sıvı Portu");
+                add(ModBlocks.FLUID_HOPPER.get(), "Sıvı Hunisi");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1608,6 +1625,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("entity_watcher.watched_entities_count"), "Gözlenen varlıklar:");
                 add(ModConstants.SET_BONUS.toString(), "Set bonusu:");
                 add(ModConstants.SET_BONUS.withSuffix("pieces_equipped"), "%1$d/%2$d parça giyili.");
+                add(ModConstants.GUI.withSuffix("item_filter"), "Eşya Filtresi");
+                add(ModConstants.GUI.withSuffix("fluid_filter"), "Sıvı Filtresi");
+                add(ModConstants.GUI.withSuffix("block_filter"), "Blok Filtresi");
+                add(ModConstants.GUI.withSuffix("chunk_eater.reset_mining_position"), "Kazma pozisyonunu sıfırla.");
+                add(ModConstants.GUI.withSuffix("chunk_eater.finished_cycle"), "Kazma döngüsü tamamlandı.");
                 //endregion
                 //region Türkçe Büyü Araç İpuçları
                 add("tooltip.eternalartifacts.spell.damage", "Hasar");

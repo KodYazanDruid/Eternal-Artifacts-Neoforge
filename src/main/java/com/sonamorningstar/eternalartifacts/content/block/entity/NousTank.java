@@ -16,7 +16,7 @@ public class NousTank extends SidedTransferMachine<NousTankMenu> {
             @Override
             protected void onContentsChanged() {
                 NousTank.this.requestModelDataUpdate();
-                NousTank.this.sendUpdate();
+                NousTank.this.markDirty();
             }
         });
     }

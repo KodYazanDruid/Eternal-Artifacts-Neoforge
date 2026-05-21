@@ -28,7 +28,6 @@ import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -91,7 +90,7 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 			filterEntries.put(direction, filters);
 			whitelists.put(direction, filterData.getBoolean("whitelist"));
 			nbtIgnores.put(direction, filterData.getBoolean("ignore_nbt"));
-			sendUpdate();
+			markDirty();
 		}
 	}
 	
@@ -114,8 +113,10 @@ public class FluidPipe extends FilterablePipeBlockEntity<IFluidHandler> {
 		if (lvl.isAreaLoaded(getBlockPos(), 1) && state.getBlock() instanceof FluidPipeBlock) {
 			PipeConnection current = state.getValue(FluidPipeBlock.CONNECTION_BY_DIRECTION.get(dir));
 			if (current == PipeConnection.NONE || current == PipeConnection.FREE) {
-				lvl.setBlockAndUpdate(getBlockPos(), state.setValue(FluidPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
-					canConnect ? PipeConnection.FREE : PipeConnection.NONE));
+				/*lvl.setBlockAndUpdate(getBlockPos(), state.setValue(FluidPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
+					canConnect ? PipeConnection.FREE : PipeConnection.NONE));*/
+				lvl.setBlock(getBlockPos(), state.setValue(FluidPipeBlock.CONNECTION_BY_DIRECTION.get(dir),
+					canConnect ? PipeConnection.FREE : PipeConnection.NONE), 2);
 			}
 		}
 	}

@@ -40,7 +40,7 @@ public class DefaultRetexturedBlockEntity extends ModBlockEntity implements IRet
         Block oldTexture = texture;
         texture = RetexturedHelper.getBlock(name);
         if(oldTexture != texture) {
-            sendUpdate();
+            markDirty();
             RetexturedHelper.onTextureUpdated(this);
         }
     }

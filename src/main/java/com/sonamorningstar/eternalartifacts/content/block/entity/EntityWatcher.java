@@ -124,7 +124,7 @@ public class EntityWatcher extends GenericMachine implements WorkingAreaProvider
 			spendEnergy(energy);
 		} else entityCount = 0;
 		
-		sendUpdate();
+		markDirty();
 		
 	}
 }

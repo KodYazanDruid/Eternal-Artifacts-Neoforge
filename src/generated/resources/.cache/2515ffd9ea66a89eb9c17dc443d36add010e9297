@@ -1,4 +1,4 @@
-// 1.20.4	2026-05-08T22:08:45.6977875	Tags for minecraft:block mod id eternalartifacts
+// 1.20.4	2026-05-17T17:04:31.1825804	Tags for minecraft:block mod id eternalartifacts
 376ad572717c696c0f7d51787f3738b43c5ffe64 data/eternalartifacts/tags/blocks/cable.json
 ac1bf6404c14e187fcaa7abdd95e02398a3f3e9d data/eternalartifacts/tags/blocks/drum.json
 bd02464e1c960573d4213bff84b83f239b8f0947 data/eternalartifacts/tags/blocks/mineable/glasscutter.json
@@ -39,13 +39,13 @@ ad4e3b3463310e8399cdb097cd9ab91c8398a9df data/minecraft/tags/blocks/impermeable.
 da265234fc1f3221e8568661450736c444c9be57 data/minecraft/tags/blocks/iron_ores.json
 90d942ebfac6bd2fc21eb36fb5e48ca1ff2ab7e3 data/minecraft/tags/blocks/lapis_ores.json
 75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/logs_that_burn.json
-75b6d4a28bfd5a5d2e80d4ef5330b66d2163a633 data/minecraft/tags/blocks/mineable/axe.json
+ce41c18c63b42d9fce0a805ad6da1650ed156290 data/minecraft/tags/blocks/mineable/axe.json
 0226707492dc8be04258cd1c3a165a9d7fc3f266 data/minecraft/tags/blocks/mineable/hoe.json
-74ca00d9bd368cfaeedf4ea0b5518b5c27c34290 data/minecraft/tags/blocks/mineable/pickaxe.json
+9fc814616f8131edcc3fb0b12c75bdf4dfb950d8 data/minecraft/tags/blocks/mineable/pickaxe.json
 c07c5b4ab96ae01b0ec7deb16968fc1ef9ddc0d6 data/minecraft/tags/blocks/mineable/shovel.json
-029d1b9441d4f2966d9ae2cb3b617007d364aecf data/minecraft/tags/blocks/needs_diamond_tool.json
-817be6ddb5e2a174a68e631deb1501166647f03f data/minecraft/tags/blocks/needs_iron_tool.json
-0b24e7445af80f558f09c0268f36cbe8d267e4da data/minecraft/tags/blocks/needs_stone_tool.json
+ed91f44277bd10d5f0dc49ea67e79c9475a75295 data/minecraft/tags/blocks/needs_diamond_tool.json
+f702fe58008bd4c32129a73cdfa413c0974787bb data/minecraft/tags/blocks/needs_iron_tool.json
+9d422ffcbe9c3b6d95e86266197046804d8f551e data/minecraft/tags/blocks/needs_stone_tool.json
 44719149ff3ae459f16bc7c83c801b70bedeace6 data/minecraft/tags/blocks/planks.json
 017e0b5031c9f6cb9087016c3fae4380007e0a37 data/minecraft/tags/blocks/redstone_ores.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/blocks/small_flowers.json

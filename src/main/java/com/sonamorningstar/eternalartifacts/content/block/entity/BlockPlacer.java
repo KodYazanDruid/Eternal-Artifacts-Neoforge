@@ -60,6 +60,11 @@ public class BlockPlacer extends SidedTransferMachine<BlockInteractorMenu> imple
 		setEnergyPerTick(250);
 	}
 	
+	@Override
+	public boolean hasItemFilters() {
+		return true;
+	}
+	
 	// Silent setters for loading from NBT
 	@Override
 	public void setItemFilterWhitelistSilent(boolean whitelist) {

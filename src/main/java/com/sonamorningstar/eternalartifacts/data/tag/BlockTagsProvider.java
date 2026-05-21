@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.data.tag;
 
+import com.sonamorningstar.eternalartifacts.content.block.base.PortBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -118,7 +119,8 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         //tierAndTool(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "iron", "pickaxe");
         //tierAndTool(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "iron", "pickaxe");
-
+        tierAndTool(ModBlocks.FLUID_HOPPER.get(), "iron", "pickaxe");
+        
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
             ModBlocks.RESONATOR.get(),
@@ -374,6 +376,11 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         ModMultiblocks.MULTIBLOCKS.getBlockHolders().forEach(holder -> {
             tierAndTool(holder.get(), "stone", "pickaxe");
             tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(holder.get());
+        });
+        PortBlock.PORT_BLOCKS.forEach(p -> {
+            tag(BlockTags.NEEDS_STONE_TOOL).add(p);
+            tag(BlockTags.MINEABLE_WITH_PICKAXE).add(p);
+            tag(BlockTags.MINEABLE_WITH_AXE).add(p);
         });
 
     }

@@ -27,6 +27,19 @@ public class ModTextureMappings extends TextureMapping{
                 .put(TextureSlot.WALL, getBlockTexture(wall));
     }
     
+    public static TextureMapping hopper(Block hopper) {
+        return new TextureMapping()
+            .put(TextureSlot.TOP, getBlockTexture(hopper, "_top"))
+            .put(TextureSlot.SIDE, getBlockTexture(hopper, "_outside"))
+            .put(TextureSlot.INSIDE, getBlockTexture(hopper, "_inside"))
+            .put(TextureSlot.PARTICLE, getBlockTexture(hopper, "_outside"));
+    }
+    
+    public static ResourceLocation getBlockTexture(Block block, String textureSuffix) {
+        ResourceLocation resourcelocation = BuiltInRegistries.BLOCK.getKey(block);
+        return resourcelocation.withPath(p_248521_ -> "block/" + p_248521_ + textureSuffix);
+    }
+    
     private static ResourceLocation getTopTexture(Block block) {
         String namespace = BuiltInRegistries.BLOCK.getKey(block).getNamespace();
         String path = BuiltInRegistries.BLOCK.getKey(block).getPath();

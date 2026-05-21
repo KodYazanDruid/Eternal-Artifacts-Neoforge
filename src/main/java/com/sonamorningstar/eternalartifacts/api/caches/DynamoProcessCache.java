@@ -28,10 +28,10 @@ public class DynamoProcessCache {
             duration--;
             energy.receiveEnergyForced(generation, false);
             dynamo.isWorking = true;
-            dynamo.sendUpdate();
+            dynamo.markDirty();
         } else {
             dynamo.isWorking = false;
-            dynamo.sendUpdate();
+            dynamo.markDirty();
         }
 
     }

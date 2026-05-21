@@ -242,10 +242,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createSqueezingRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(), Items.LEATHER.getDefaultInstance(), ModFluids.BLOOD.getFluidStack(100));
 
         createAlloyingRecipe(recipeOutput, List.of(
-            SizedIngredient.of(ModItems.PINK_SLIME_STEEL_INGOT),
-            SizedIngredient.of(Tags.Items.DUSTS_GLOWSTONE, 1),
-            SizedIngredient.of(ModItems.PLANT_MATTER)),
-            ModItems.CHLOROPHYTE_INGOT.toStack(), "");
+            SizedIngredient.of(ModItems.TERRASTEEL_INGOT),
+            SizedIngredient.of(ItemTags.TALL_FLOWERS, 2),
+            SizedIngredient.of(ModTags.Items.INGOTS_PURPLE_GOLD, 1)),
+            ModItems.CHLOROPHYTE_INGOT.toStack(2), "");
         createAlloyingRecipe(recipeOutput, List.of(
             SizedIngredient.of(Tags.Items.SAND, 1),
             SizedIngredient.of(Tags.Items.OBSIDIAN, 1),
@@ -294,6 +294,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             SizedIngredient.of(ModTags.Items.INGOTS_ALUMINUM, 1)
                     .addSizedIngredient(SizedIngredient.of(ModTags.Items.DUSTS_ALUMINUM, 1))
         ), ModItems.PURPLE_GOLD_INGOT.toStack(5), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+            SizedIngredient.of(ModTags.Items.INGOTS_STEEL, 1),
+            SizedIngredient.of(ModItems.PLANT_MATTER),
+            SizedIngredient.of(ModTags.Items.SLIMEBALLS_PINK, 1)
+        ), ModItems.TERRASTEEL_INGOT.toStack(2), "");
         //region Mob Liquifying recipes
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
@@ -358,6 +363,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 FluidStack.EMPTY,
                 new FluidStack(ModFluids.PINK_SLIME.getFluid(), 25),
                 new FluidStack(ModFluids.NOUS.getFluid(), 50)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, EntityType.SLIME, NonNullList.of(
+            FluidStack.EMPTY,
+            new FluidStack(ModFluids.SLIME.getFluid(), 25),
+            new FluidStack(ModFluids.NOUS.getFluid(), 15)
+        ));
+        createMobLiquifyingRecipe(recipeOutput, ModEntities.HONEY_SLIME.get(), NonNullList.of(
+            FluidStack.EMPTY,
+            new FluidStack(ModFluids.HONEY.getFluid(), 25),
+            new FluidStack(ModFluids.NOUS.getFluid(), 15)
         ));
         //endregion
 
@@ -856,6 +871,26 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('F', Tags.Items.FEATHERS).define('C', Tags.Items.INGOTS_COPPER)
             .define('S', Tags.Items.RODS_WOODEN).unlockedBy("has_item", has(Tags.Items.FEATHERS))
             .save(recipeOutput, makeID("brush_from_feathers_tag"));
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.FLUID_HOPPER)
+            .pattern("C C").pattern("CJC").pattern(" C ")
+            .define('C', Tags.Items.INGOTS_COPPER).define('J', ModItems.JAR)
+            .unlockedBy("has_item", has(ModItems.JAR)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ENERGY_PORT)
+            .pattern("SPS").pattern("PBP").pattern("SPS")
+            .define('S', ModTags.Items.INGOTS_STEEL).define('P', ItemTags.PLANKS)
+            .define('B', ModItems.BATTERY).unlockedBy("has_item", has(ModItems.BATTERY)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ITEM_PORT, 2)
+            .pattern("SPS").pattern("PBP").pattern("SPS")
+            .define('S', ModTags.Items.INGOTS_STEEL).define('P', ItemTags.PLANKS)
+            .define('B', Tags.Items.CHESTS).unlockedBy("has_item", has(Tags.Items.CHESTS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.FLUID_PORT, 2)
+            .pattern("SPS").pattern("PBP").pattern("SPS")
+            .define('S', ModTags.Items.INGOTS_STEEL).define('P', ItemTags.PLANKS)
+            .define('B', ModItems.JAR).unlockedBy("has_item", has(ModItems.JAR)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.REDSTONE_PORT, 2)
+            .pattern("SPS").pattern("PBP").pattern("SPS")
+            .define('S', ModTags.Items.INGOTS_STEEL).define('P', ItemTags.PLANKS)
+            .define('B', Tags.Items.DUSTS_REDSTONE).unlockedBy("has_item", has(Tags.Items.DUSTS_REDSTONE)).save(recipeOutput);
         //endregion
         //region Shapeless recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

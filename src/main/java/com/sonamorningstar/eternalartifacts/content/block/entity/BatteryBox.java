@@ -24,14 +24,14 @@ public class BatteryBox extends GenericMachine {
             @Override
             protected void onContentsChanged(int slot) {
                 ((ModularEnergyStorage) energy).reloadEnergyHandlers(new RecipeWrapper(this));
-                BatteryBox.this.sendUpdate();
+                BatteryBox.this.markDirty();
                 BatteryBox.this.invalidateCapabilities();
             }
         });
         setEnergy(() -> new ModularEnergyStorage(new RecipeWrapper(inventory)) {
             @Override
             public void onEnergyChanged() {
-                BatteryBox.this.sendUpdate();
+                BatteryBox.this.markDirty();
             }
         });
         setEnergyTransferRate(Integer.MAX_VALUE);
@@ -65,7 +65,7 @@ public class BatteryBox extends GenericMachine {
     public void onLoad() {
         super.onLoad();
         ((ModularEnergyStorage) energy).reloadEnergyHandlers(new RecipeWrapper(inventory));
-        sendUpdate();
+        markDirty();
     }
     
     @Override

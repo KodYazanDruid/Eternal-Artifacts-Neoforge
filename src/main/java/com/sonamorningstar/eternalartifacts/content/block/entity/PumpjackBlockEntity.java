@@ -7,10 +7,14 @@ import com.sonamorningstar.eternalartifacts.core.ModMultiblocks;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.RelativeBlockPos;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
@@ -40,7 +44,8 @@ public class PumpjackBlockEntity extends AbstractMultiblockBlockEntity {
 	
 	@Override
 	public void tickMaster(Level lvl, BlockPos pos, BlockState st) {
-		if (canWork(energy)) {
+		Holder<Biome> biome = lvl.getBiome(pos);
+		if (canWork(energy) && (biome.is(BiomeTags.IS_DEEP_OCEAN) || biome.is(Tags.Biomes.IS_DESERT))) {
 			FluidStack oil = ModFluids.CRUDE_OIL.getFluidStack(20);
 			int inserted = tank.fillForced(oil, IFluidHandler.FluidAction.SIMULATE);
 			if (inserted == oil.getAmount()) {

@@ -127,7 +127,7 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 				cache.process();
 			} else if (!cache.isDone() && !redstoneChecks(lvl)) {
 				isWorking = false;
-				sendUpdate();
+				markDirty();
 			} else if (cache.isDone()) {
 				cache = null;
 				progress = 0;
@@ -135,7 +135,7 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 				findRecipe();
 				if (recipe == null && !canProcessRecipeless()) {
 					isWorking = false;
-					sendUpdate();
+					markDirty();
 				}
 			}
 		} else {

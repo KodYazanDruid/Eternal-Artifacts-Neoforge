@@ -46,7 +46,7 @@ public record MachineConfigurationToServer(BlockPos pos, ResourceLocation locati
 			Config config = configs.get(location);
 			if (config == null) return;
 			config.readFromClient(data);
-			blockEntity.sendUpdate();
+			blockEntity.markDirty();
 			blockEntity.getLevel().invalidateCapabilities(pos);
 		});
 	}

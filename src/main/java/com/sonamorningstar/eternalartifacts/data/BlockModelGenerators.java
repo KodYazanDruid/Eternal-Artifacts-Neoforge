@@ -8,15 +8,19 @@ import com.sonamorningstar.eternalartifacts.content.block.PunjiBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.AttachmentablePipeBlock;
 import com.sonamorningstar.eternalartifacts.content.block.properties.PipeConnectionProperty;
 import com.sonamorningstar.eternalartifacts.core.*;
+import net.minecraft.core.Direction;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.models.blockstates.*;
 import net.minecraft.data.models.model.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.function.BiConsumer;
@@ -97,6 +101,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createNormalTorch(ModBlocks.GLOWTORCH.get(), ModBlocks.WALL_GLOWTORCH.get());
         
         createSolarPanel();
+        createHopper();
+        
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
     }
     //region Functions for block models...
@@ -358,6 +364,41 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
                 Variant.variant()
                     .with(VariantProperties.MODEL, sideFilter)
                     .with(VariantProperties.X_ROT, VariantProperties.Rotation.R90)
+            );
+    }
+    
+    private void createHopper() {
+        ModModelTemplates.HOPPER.create(ModelLocationUtils.getModelLocation(ModBlocks.FLUID_HOPPER.get()), ModTextureMappings.hopper(ModBlocks.FLUID_HOPPER.get()), modelOutput);
+        ModModelTemplates.HOPPER_SIDE.create(ModelLocationUtils.getModelLocation(ModBlocks.FLUID_HOPPER.get(), "_side"), ModTextureMappings.hopper(ModBlocks.FLUID_HOPPER.get()), modelOutput);
+        ResourceLocation normal = ModelLocationUtils.getModelLocation(ModBlocks.FLUID_HOPPER.get());
+        ResourceLocation side = ModelLocationUtils.getModelLocation(ModBlocks.FLUID_HOPPER.get(), "_side");
+        createSimpleFlatItemModel(ModBlocks.FLUID_HOPPER.asItem());
+        stateOutput
+            .accept(
+                MultiVariantGenerator.multiVariant(ModBlocks.FLUID_HOPPER.get())
+                    .with(
+                        PropertyDispatch.property(BlockStateProperties.FACING_HOPPER)
+                            .select(Direction.DOWN, Variant.variant().with(VariantProperties.MODEL, normal))
+                            .select(Direction.NORTH, Variant.variant().with(VariantProperties.MODEL, side))
+                            .select(
+                                Direction.EAST,
+                                Variant.variant()
+                                    .with(VariantProperties.MODEL, side)
+                                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90)
+                            )
+                            .select(
+                                Direction.SOUTH,
+                                Variant.variant()
+                                    .with(VariantProperties.MODEL, side)
+                                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180)
+                            )
+                            .select(
+                                Direction.WEST,
+                                Variant.variant()
+                                    .with(VariantProperties.MODEL, side)
+                                    .with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270)
+                            )
+                    )
             );
     }
     

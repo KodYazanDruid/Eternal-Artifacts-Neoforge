@@ -1,0 +1,16 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity_ingredient": {
+    "id": "minecraft:slime"
+  },
+  "result_fluid_list": [
+    {
+      "Amount": 25,
+      "FluidName": "eternalartifacts:slime"
+    },
+    {
+      "Amount": 15,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

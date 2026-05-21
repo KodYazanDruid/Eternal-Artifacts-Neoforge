@@ -124,6 +124,7 @@ public class LifterItem extends Item {
 			CompoundTag beTag = tag.getCompound(TAG_BLOCK_ENTITY);
 			be.load(beTag);
 			be.setChanged();
+			level.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
 		}
 		
 		state.updateNeighbourShapes(level, pos, Block.UPDATE_ALL);

@@ -56,7 +56,7 @@ public record EntityFilterEntryToServer(BlockPos pos, List<EntityFilterEntry> en
 			}
 			filterable.setEntityTypeEntries(typeEntries);
 			filterable.setEntityTagEntries(tagEntries);
-			if (filterable instanceof ModBlockEntity mbe) mbe.sendUpdate();
+			if (filterable instanceof ModBlockEntity mbe) mbe.markDirty();
 		}
 	}
 }

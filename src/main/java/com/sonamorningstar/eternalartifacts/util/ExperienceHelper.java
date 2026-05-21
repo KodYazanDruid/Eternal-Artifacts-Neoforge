@@ -2,9 +2,27 @@ package com.sonamorningstar.eternalartifacts.util;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent;
 
 public class ExperienceHelper {
+    
+    /**
+     *
+     * @param stack
+     * @param xp
+     * @return Remaining xp after mending is applied. If the stack cannot be repaired or has no mending, returns the input xp.
+     */
+    public static int mendItem(ItemStack stack, int xp) {
+        int remainingXp = xp;
+        if (!stack.isEmpty() && stack.getEnchantmentLevel(Enchantments.MENDING) > 0) {
+            int repairAmount = Math.min(remainingXp * 2, stack.getDamageValue());
+            stack.setDamageValue(stack.getDamageValue() - repairAmount);
+            remainingXp -= repairAmount / 2;
+        }
+        return remainingXp;
+    }
 
     public static int getTotalPlayerXp(Player player) {
         return (int) ((float) totalXpForLevel(player.experienceLevel) + player.experienceProgress * (float) player.getXpNeededForNextLevel());

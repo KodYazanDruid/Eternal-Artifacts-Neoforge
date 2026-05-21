@@ -19,7 +19,7 @@ public abstract class MultiBlockRenderer<MB extends AbstractMultiblockBlockEntit
 	}
 	
 	@Override
-	public void render(MB master, float pPartialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+	public void render(MB master, float partialTick, PoseStack pose, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
 		if (!master.isMaster()) return;
 		
 		BlockPos frontLeftPos = master.getFrontLeftTopPos();
@@ -46,7 +46,7 @@ public abstract class MultiBlockRenderer<MB extends AbstractMultiblockBlockEntit
 		
 		pose.translate(1 - width, 1 - height, 0);
 		
-		renderMultiblock(master, pose, pBuffer, width, height, depth, pPackedLight, pPackedOverlay);
+		renderMultiblock(master, pose, pBuffer, partialTick, width, height, depth, pPackedLight, pPackedOverlay);
 		
 		pose.popPose();
 	}
@@ -55,7 +55,7 @@ public abstract class MultiBlockRenderer<MB extends AbstractMultiblockBlockEntit
 	 *  Override this to render the actual multiblock. Origin point is at the front bottom left of the pattern.
 	 */
 	protected void renderMultiblock(MB master, PoseStack pose, MultiBufferSource buffer,
-									int width, int height, int depth,
+									float partialTick, int width, int height, int depth,
 									int packedLight, int packedOverlay) {
 	
 	}

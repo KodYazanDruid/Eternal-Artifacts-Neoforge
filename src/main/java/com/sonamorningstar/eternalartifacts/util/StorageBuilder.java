@@ -79,7 +79,7 @@ public class StorageBuilder {
                     if (blockEntity instanceof Machine<?> machine) {
                         machine.updateProcessCondition();
                     }
-                    blockEntity.sendUpdate();
+                    blockEntity.markDirty();
                     for (Runnable runnable : listeners) runnable.run();
                 }
 
@@ -155,7 +155,7 @@ public class StorageBuilder {
             return new ModEnergyStorage(capacity, receive, extract) {
                 @Override
                 public void onEnergyChanged() {
-                    blockEntity.sendUpdate();
+                    blockEntity.markDirty();
                 }
 
                 @Override
@@ -236,7 +236,7 @@ public class StorageBuilder {
                         machine.updateProcessCondition();
                     }
                     for (IntConsumer consumer : consumers) consumer.accept(slot);
-                    blockEntity.sendUpdate();
+                    blockEntity.markDirty();
                 }
 
                 @Override

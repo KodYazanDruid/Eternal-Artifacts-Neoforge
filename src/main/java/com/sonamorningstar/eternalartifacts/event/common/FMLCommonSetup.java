@@ -145,7 +145,9 @@ FMLCommonSetup {
         VoxelShape pumpjackShape = Shapes.box(0, 0, 0, 3, 0.5, 5);
         VoxelShape leftPole = Shapes.box(0.25, 0.5, 2.25, 0.75, 3, 2.75);
         VoxelShape rightPole = Shapes.box(2.25, 0.5, 2.25, 2.75, 3, 2.75);
-        VoxelShape fullShape = Shapes.or(pumpjackShape, leftPole, rightPole);
+        VoxelShape fluidPort = Shapes.box(1, 0, 0, 2, 1, 1);
+        VoxelShape energyPort = Shapes.box(1, 0, 4, 2, 1, 5);
+        VoxelShape fullShape = Shapes.or(pumpjackShape, leftPole, rightPole, fluidPort, energyPort);
         ModMultiblocks.PUMPJACK.getMultiblock().setFullShape(fullShape);
         VoxelShape minerShape = Shapes.box(0, 0, 0, 5, 0.5, 5);
         VoxelShape pole1 = Shapes.box(0.25, 0.5, 0.25, 0.75, 2, 0.75);
@@ -155,8 +157,9 @@ FMLCommonSetup {
         VoxelShape master = Shapes.box(2, 0, 0, 3, 1, 1);
         VoxelShape energy = Shapes.box(2, 0, 4, 3, 1, 5);
         VoxelShape storage = Shapes.box(4, 0, 2, 5, 1, 3);
+        VoxelShape tank = Shapes.box(0, 0, 2, 1, 1, 3);
         VoxelShape center = Shapes.box(2, 0.5, 2, 3, 2, 3);
-        VoxelShape fullMinerShape = Shapes.or(minerShape, pole1, pole2, pole3, pole4, master, energy, storage, center);
+        VoxelShape fullMinerShape = Shapes.or(minerShape, pole1, pole2, pole3, pole4, master, energy, storage, tank, center);
         ModMultiblocks.CHUNK_EATER.getMultiblock().setFullShape(fullMinerShape);
         
     }

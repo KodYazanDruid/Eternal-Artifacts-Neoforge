@@ -1,7 +1,7 @@
 {
   "values": [
-    "eternalartifacts:generator",
+    "eternalartifacts:chunk_eater",
     "eternalartifacts:pumpjack",
-    "eternalartifacts:chunk_eater"
+    "eternalartifacts:generator"
   ]
 }

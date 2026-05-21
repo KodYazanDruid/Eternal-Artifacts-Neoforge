@@ -4,7 +4,9 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModItemEnergySto
 import com.sonamorningstar.eternalartifacts.capabilities.energy.WrappedEnergyStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.WrappedFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemItemStorage;
+import com.sonamorningstar.eternalartifacts.capabilities.item.MultiblockPartItemHandler;
 import com.sonamorningstar.eternalartifacts.capabilities.item.WrappedItemStorage;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import net.minecraft.core.Direction;
@@ -27,14 +29,27 @@ public class CapabilityHelper {
     public static @Nullable IItemHandlerModifiable regSidedItemCaps(SidedTransferMachine<?> be, IItemHandlerModifiable inventory, Direction ctx, @Nullable List<Integer> outputSlots) {
         if (ctx != null) {
             if(SidedTransferMachine.canPerformTransfer(be, ctx, TransferType.NONE) || !be.areItemsAllowed()) return null;
-            return new WrappedItemStorage(inventory,
-                    i -> (outputSlots != null && outputSlots.contains(i)) &&
-                            SidedTransferMachine.canPerformTransfers(be, ctx, TransferType.PUSH, TransferType.DEFAULT) &&
-                            be.areItemsAllowed(),
-                    (i, s) -> (outputSlots == null || !outputSlots.contains(i)) &&
-                            SidedTransferMachine.canPerformTransfers(be ,ctx, TransferType.PULL, TransferType.DEFAULT) &&
-                            be.areItemsAllowed());
+            return wrapItemCap(inventory,
+                    SidedTransferMachine.canPerformTransfers(be, ctx, TransferType.PUSH, TransferType.DEFAULT) && be.areItemsAllowed(),
+                    SidedTransferMachine.canPerformTransfers(be ,ctx, TransferType.PULL, TransferType.DEFAULT) && be.areItemsAllowed(),
+                    outputSlots);
         } else return inventory;
+    }
+    
+    public static IItemHandlerModifiable wrapItemCap(IItemHandlerModifiable inventory, boolean canExtract, boolean canInsert, @Nullable List<Integer> outputSlots) {
+        return new WrappedItemStorage(inventory,
+                i -> outputSlots != null && outputSlots.contains(i) && canExtract,
+                (i, s) -> (outputSlots == null || !outputSlots.contains(i)) && canInsert);
+    }
+    
+    public static  IItemHandlerModifiable wrapMultiblockPartItemCap(AbstractMultiblockBlockEntity part, Direction ctx, IItemHandlerModifiable inventory, @Nullable List<Integer> outputSlots) {
+        if (ctx != null) {
+            return new WrappedItemStorage(inventory,
+                i -> outputSlots != null && outputSlots.contains(i) && part.canAccessSlot(i),
+                (i, s) -> (outputSlots == null || !outputSlots.contains(i)) && part.canAccessSlot(i));
+        } else {
+            return new WrappedItemStorage(inventory, part::canAccessSlot, (i, s) -> part.canAccessSlot(i));
+        }
     }
 
     @Contract("_, _, null -> param2")

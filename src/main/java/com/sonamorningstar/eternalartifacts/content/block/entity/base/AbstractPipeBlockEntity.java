@@ -150,7 +150,8 @@ public abstract class AbstractPipeBlockEntity<CAP> extends ModBlockEntity implem
 	
 	protected void updatePipeConnections(Level lvl, BlockState state, Direction dir, boolean canConnect) {
 		if (lvl.isAreaLoaded(getBlockPos(), 1) && state.getBlock() instanceof CableBlock) {
-			lvl.setBlockAndUpdate(getBlockPos(), state.setValue(CableBlock.PROPERTY_BY_DIRECTION.get(dir), canConnect));
+			//lvl.setBlockAndUpdate(getBlockPos(), state.setValue(CableBlock.PROPERTY_BY_DIRECTION.get(dir), canConnect));
+			lvl.setBlock(getBlockPos(), state.setValue(CableBlock.PROPERTY_BY_DIRECTION.get(dir), canConnect), 2);
 		}
 	}
 	

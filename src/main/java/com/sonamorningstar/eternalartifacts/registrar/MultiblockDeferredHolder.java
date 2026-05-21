@@ -1,8 +1,10 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
+import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.base.MultiblockBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
+import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,6 +30,9 @@ public class MultiblockDeferredHolder<MB extends Multiblock, B extends Multibloc
 	public void registerCapabilities(RegisterCapabilitiesEvent event) {
 		event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, getBlockEntity(), AbstractMultiblockBlockEntity::getEnergy);
 		event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, getBlockEntity(), AbstractMultiblockBlockEntity::getTank);
-		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), AbstractMultiblockBlockEntity::getInventory);
+		event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, getBlockEntity(), (be, ctx) -> {
+			ModItemStorage inventory = be.getInventory(ctx);
+			return inventory == null ? null : CapabilityHelper.wrapMultiblockPartItemCap(be, ctx, inventory, be.outputSlots);
+		});
 	}
 }

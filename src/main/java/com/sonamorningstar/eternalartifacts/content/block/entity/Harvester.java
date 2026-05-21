@@ -171,7 +171,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 				workingIndex = 0;
 			}
 		}
-		sendUpdate();
+		markDirty();
 	}
 	
 	public static boolean isCorrectTool(ItemStack stack) {

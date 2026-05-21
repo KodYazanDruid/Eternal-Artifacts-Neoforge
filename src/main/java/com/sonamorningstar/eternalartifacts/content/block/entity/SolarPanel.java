@@ -89,6 +89,6 @@ public class SolarPanel extends Machine<SolarPanelMenu> {
 		@Override
 		public boolean canReceive() {return false;}
 		@Override
-		public void onEnergyChanged() {panel.sendUpdate();}
+		public void onEnergyChanged() {panel.markDirty();}
 	}
 }

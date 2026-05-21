@@ -60,12 +60,12 @@ public class BluePlasticCauldronBlock extends ModLayeredCauldronBlack implements
                 if(layerLevel == 1) {
                     popResource(level, pos, Blocks.CAULDRON.defaultBlockState());
                     cauldronBlockEntity.resetCooldown();
-                    cauldronBlockEntity.sendUpdate();
+                    cauldronBlockEntity.markDirty();
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }else if (layerLevel <= 3) {
                     popResource(level, pos, ModBlocks.BLUE_PLASTIC_CAULDRON.get().defaultBlockState().setValue(LEVEL, layerLevel-1));
                     cauldronBlockEntity.resetCooldown();
-                    cauldronBlockEntity.sendUpdate();
+                    cauldronBlockEntity.markDirty();
                     return InteractionResult.sidedSuccess(level.isClientSide);
                 }
             }

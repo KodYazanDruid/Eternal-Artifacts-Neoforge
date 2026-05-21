@@ -26,6 +26,10 @@ public interface Filterable {
 		return NonNullList.create();
 	}
 	
+	default boolean hasItemFilters() { return false; }
+	default boolean hasFluidFilters() { return false; }
+	default boolean hasBlockFilters() { return false; }
+	
 	default boolean isItemFilterWhitelist() { return true; }
 	default void setItemFilterWhitelistAndUpdate(boolean whitelist) {
 		setItemFilterWhitelistSilent(whitelist);
@@ -70,7 +74,7 @@ public interface Filterable {
 	default void setBlockFilterIgnorePropertiesSilent(boolean ignoreProperties) {}
 	
 	default void broadcastChanges() {
-		if (this instanceof ModBlockEntity mbe) mbe.sendUpdate();
+		if (this instanceof ModBlockEntity mbe) mbe.markDirty();
 	}
 	
 	default boolean matchesBlockFilter(BlockState state) {

@@ -94,7 +94,7 @@ public abstract class FilterablePipeBlockEntity<CAP> extends AbstractPipeBlockEn
 		for (FilterEntry entry : entries) {
 			dirList.add(entry.serializeNBT());
 			filterEntries.remove(dir);
-			sendUpdate();
+			markDirty();
 		}
 		/*for (int i = 0; i < entries.size(); i++) {
 			FilterEntry entry = entries.get(i);

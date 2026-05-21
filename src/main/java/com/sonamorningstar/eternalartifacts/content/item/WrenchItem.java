@@ -6,6 +6,8 @@ import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPat
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
+import it.unimi.dsi.fastutil.longs.LongArraySet;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -21,8 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WrenchItem extends DiggerItem {
@@ -59,32 +59,40 @@ public class WrenchItem extends DiggerItem {
             if (match != null) {
                 if (multiblock.isLockedHorizontally() && match.getForwards().getAxis() != Direction.Axis.Y) return;
           
-                match.cache.asMap().forEach((blockPos, blockInWorld) -> {
-                    level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
-                    if (!blockInWorld.getState().isAir()) {
-                        var cachedState = blockInWorld.getState();
-                        var mbState = multiblock.getMultiblockBlock().get().defaultBlockState();
-                        level.setBlockAndUpdate(blockPos, mbState);
-                        
-                        BlockEntity mbBE = level.getBlockEntity(blockPos);
-                        BlockPos masterPos = match.getBlock(
-                            multiblock.getMasterPalmOffset(),
-                            multiblock.getMasterThumbOffset(),
-                            multiblock.getMasterFingerOffset()
-                        ).getPos();
-                        
-                        if (mbBE instanceof AbstractMultiblockBlockEntity ambe) {
-                            if (!ambe.isMaster()) {
-                                ambe.setMasterOffsets(
-                                    masterPos.getX() - blockPos.getX(),
-                                    masterPos.getY() - blockPos.getY(),
-                                    masterPos.getZ() - blockPos.getZ()
-                                );
+                for (int d = 0; d < pattern.getDepth(); d++) {
+                    for (int h = 0; h < pattern.getHeight(); h++) {
+                        for (int w = 0; w < pattern.getWidth(); w++) {
+                            var blockInWorld = match.getBlock(w, h, d);
+                            BlockPos blockPos = blockInWorld.getPos();
+                            
+                            level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());
+                            if (!blockInWorld.getState().isAir()) {
+                                var cachedState = blockInWorld.getState();
+                                var mbState = multiblock.getMultiblockBlock().get().defaultBlockState();
+                                level.setBlockAndUpdate(blockPos, mbState);
+                                
+                                BlockEntity mbBE = level.getBlockEntity(blockPos);
+                                BlockPos masterPos = match.getBlock(
+                                    multiblock.getMasterPalmOffset(),
+                                    multiblock.getMasterThumbOffset(),
+                                    multiblock.getMasterFingerOffset()
+                                ).getPos();
+                                
+                                if (mbBE instanceof AbstractMultiblockBlockEntity ambe) {
+                                    if (!ambe.isMaster()) {
+                                        ambe.setMasterOffsets(
+                                            masterPos.getX() - blockPos.getX(),
+                                            masterPos.getY() - blockPos.getY(),
+                                            masterPos.getZ() - blockPos.getZ()
+                                        );
+                                    }
+                                    ambe.setDeformState(cachedState);
+                                    ambe.setPartIndex(w + h * pattern.getWidth() + d * pattern.getWidth() * pattern.getHeight());
+                                }
                             }
-                            ambe.setDeformState(cachedState);
                         }
                     }
-                });
+                }
                 
                 var biw = match.getBlock(multiblock.getMasterPalmOffset(), multiblock.getMasterThumbOffset(), multiblock.getMasterFingerOffset());
                 BlockEntity masterBe = level.getBlockEntity(biw.getPos());
@@ -96,17 +104,21 @@ public class WrenchItem extends DiggerItem {
                     ambe.setMbDepth(pattern.getDepth());
                 }
                 
-                Set<BlockPos> slaves = new HashSet<>();
+                LongSet disciples = new LongArraySet();
                 match.cache.asMap().forEach((blockPos, blockInWorld) -> {
                     if (!blockInWorld.getState().isAir() && !blockPos.equals(biw.getPos())) {
-                        slaves.add(blockPos);
+                        disciples.add(blockPos.asLong());
                     }
                 });
                 
                 if (masterBe instanceof AbstractMultiblockBlockEntity ambe) {
-                    ambe.setSlaves(slaves);
+                    ambe.setDisciples(disciples);
                     ambe.onFormed(level, ambe.getBlockPos());
                 }
+                
+                match.cache.asMap().forEach((blockPos, blockInWorld) -> {
+                    level.invalidateCapabilities(blockPos);
+                });
                 
                 builtMultiblock.set(true);
             }

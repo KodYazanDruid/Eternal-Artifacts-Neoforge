@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.content.item.base.EnergyConsumerItem;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.network.Channel;
@@ -16,6 +15,7 @@ import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -36,7 +36,7 @@ import java.util.Optional;
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID)
-public class PortableFurnaceItem extends EnergyConsumerItem {
+public class PortableFurnaceItem extends Item {
 	public PortableFurnaceItem(Properties props) {
 		super(props);
 	}

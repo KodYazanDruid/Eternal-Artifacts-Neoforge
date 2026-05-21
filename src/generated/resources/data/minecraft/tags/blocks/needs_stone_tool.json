@@ -82,6 +82,10 @@
     "eternalartifacts:block_breaker",
     "eternalartifacts:pumpjack",
     "eternalartifacts:generator",
-    "eternalartifacts:chunk_eater"
+    "eternalartifacts:chunk_eater",
+    "eternalartifacts:redstone_port",
+    "eternalartifacts:energy_port",
+    "eternalartifacts:item_port",
+    "eternalartifacts:fluid_port"
   ]
 }

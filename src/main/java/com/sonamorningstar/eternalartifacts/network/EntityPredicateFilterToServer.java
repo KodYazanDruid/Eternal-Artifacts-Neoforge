@@ -3,18 +3,15 @@ package com.sonamorningstar.eternalartifacts.network;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityFilterEntry;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
 import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
-import com.sonamorningstar.eternalartifacts.content.block.entity.EntityInteractor;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import com.sonamorningstar.eternalartifacts.network.base.ServerPayload;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -46,7 +43,7 @@ public record EntityPredicateFilterToServer(BlockPos pos, EntityPredicateEntry e
 		BlockEntity blockEntity = level.getBlockEntity(pos);
 		if (blockEntity instanceof EntityFilterable filterable) {
 			filterable.setEntityFilter(entry);
-			if (filterable instanceof ModBlockEntity mbe) mbe.sendUpdate();
+			if (filterable instanceof ModBlockEntity mbe) mbe.markDirty();
 		}
 	}
 	

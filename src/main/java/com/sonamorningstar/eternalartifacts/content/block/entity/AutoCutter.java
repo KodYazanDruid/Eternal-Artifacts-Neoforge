@@ -1,6 +1,5 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.container.AutoCutterMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
@@ -105,7 +104,7 @@ public class AutoCutter extends SidedTransferMachine<AutoCutterMenu> {
 		if (index < recipes.size()) {
 			selectedRecipeIndex = index;
 			updateProcessCondition();
-			sendUpdate();
+			markDirty();
 		}
 	}
 	

@@ -47,7 +47,7 @@ public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements Ti
                      level.playSound(null, pos, SoundEvents.ANCIENT_DEBRIS_STEP, SoundSource.BLOCKS, 1.0F, 1.0F);
                      level.gameEvent(null, GameEvent.BLOCK_CHANGE, pos);
                      thisBe.resetCooldown();
-                     thisBe.sendUpdate();
+                     thisBe.markDirty();
                      level.invalidateCapabilities(pos);
                  }
                  return ModItems.PLASTIC_SHEET.toStack();
@@ -82,7 +82,7 @@ public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements Ti
             int layer = state.getValue(BluePlasticCauldronBlock.LEVEL);
             if (layer >= 1 && cooldown > 0) {
                 cooldown--;
-                sendUpdate();
+                markDirty();
             }
         }
     }

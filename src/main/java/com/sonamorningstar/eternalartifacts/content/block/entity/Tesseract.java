@@ -95,7 +95,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	public void cycleTransfer() {
 		transferMode = TransferMode.values()[(transferMode.ordinal() + 1) % TransferMode.values().length];
 		invalidateCapabilities();
-		sendUpdate();
+		markDirty();
 	}
 	
 	public void setNetworkId(@Nullable UUID newId) {
@@ -116,7 +116,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 			}
 			this.networkId = newId;
 			invalidateCapabilities();
-			sendUpdate();
+			markDirty();
 		}
 	}
 	

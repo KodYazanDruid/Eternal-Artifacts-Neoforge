@@ -21,7 +21,7 @@ public class Resonator extends ModBlockEntity {
     public final ModEnergyStorage energy = new ModEnergyStorage(2560, 256) {
         @Override
         public void onEnergyChanged() {
-            sendUpdate();
+            markDirty();
         }
 
         @Override

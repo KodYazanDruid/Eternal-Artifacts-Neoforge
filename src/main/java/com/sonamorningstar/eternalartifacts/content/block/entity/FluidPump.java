@@ -84,7 +84,7 @@ public class FluidPump extends GenericMachine {
 						Block targetBlock = targetState.getBlock();
 						boolean picked = pickFluid(targetBlock, targetState, p, lvl);
 						veinSize = veinCache.getCache().size();
-						if (picked) sendUpdate();
+						if (picked) markDirty();
 						return picked;
 					}
 					return false;
@@ -94,7 +94,7 @@ public class FluidPump extends GenericMachine {
 		
 		if (veinCache == null || veinCache.getCache().isEmpty()) {
 			veinSize = 0;
-			sendUpdate();
+			markDirty();
 		}
 	}
 	
@@ -128,14 +128,14 @@ public class FluidPump extends GenericMachine {
 			BlockState belowState = lvl.getBlockState(pos.below());
 			if (belowState.getFluidState().isEmpty()) {
 				veinSize = 0;
-				sendUpdate();
+				markDirty();
 				return;
 			}
 			veinCache = new FluidVeinCache(lvl, pos.below(), 25, true);
 			veinCache.takeableFluids.add(belowState.getFluidState().getType());
 			veinCache.scanForBlocks();
 			veinSize = veinCache.getCache().size();
-			sendUpdate();
+			markDirty();
 		}
 	}
 	

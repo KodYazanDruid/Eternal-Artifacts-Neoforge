@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/hopper_side",
+  "textures": {
+    "inside": "eternalartifacts:block/fluid_hopper_inside",
+    "particle": "eternalartifacts:block/fluid_hopper_outside",
+    "side": "eternalartifacts:block/fluid_hopper_outside",
+    "top": "eternalartifacts:block/fluid_hopper_top"
+  }
+}

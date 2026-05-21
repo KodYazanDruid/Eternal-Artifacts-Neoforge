@@ -1,9 +1,6 @@
 package com.sonamorningstar.eternalartifacts.container.slot;
 
-import com.sonamorningstar.eternalartifacts.api.filter.FilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.FluidStackEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.FluidTagEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.ItemTagEntry;
+import com.sonamorningstar.eternalartifacts.api.filter.*;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import lombok.Getter;
 import lombok.Setter;

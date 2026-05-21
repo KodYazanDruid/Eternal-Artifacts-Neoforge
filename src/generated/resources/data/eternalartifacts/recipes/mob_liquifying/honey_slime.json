@@ -1,0 +1,16 @@
+{
+  "type": "eternalartifacts:mob_liquifying",
+  "entity_ingredient": {
+    "id": "eternalartifacts:honey_slime"
+  },
+  "result_fluid_list": [
+    {
+      "Amount": 25,
+      "FluidName": "eternalartifacts:honey"
+    },
+    {
+      "Amount": 15,
+      "FluidName": "eternalartifacts:nous"
+    }
+  ]
+}

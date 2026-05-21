@@ -37,7 +37,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
     public HeatStorage heat = new HeatStorage(20000) {
         @Override
         public void onChange() {
-            sendUpdate();
+            markDirty();
         }
     };
     
@@ -118,6 +118,7 @@ public class InductionFurnace extends MultiFurnace<InductionFurnaceMenu> {
     
     @Override
     public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+        super.tickServer(lvl, pos, st);
         performAutoInputItems(lvl, pos);
         performAutoOutputItems(lvl, pos);
 

@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "eternalartifacts:block/fluid_hopper"
+    },
+    "facing=east": {
+      "model": "eternalartifacts:block/fluid_hopper_side",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "eternalartifacts:block/fluid_hopper_side"
+    },
+    "facing=south": {
+      "model": "eternalartifacts:block/fluid_hopper_side",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "eternalartifacts:block/fluid_hopper_side",
+      "y": 270
+    }
+  }
+}
