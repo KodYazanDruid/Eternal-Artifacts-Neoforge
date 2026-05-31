@@ -19,11 +19,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -119,7 +119,7 @@ public class MobLiquifier extends GenericMachine implements WorkingAreaProvider,
     }
     
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         if (!redstoneChecks(lvl)) return;
         

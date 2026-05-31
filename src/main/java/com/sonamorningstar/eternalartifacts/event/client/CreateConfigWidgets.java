@@ -358,6 +358,15 @@ public class CreateConfigWidgets {
 	private static EditBox getThresholdInputBox(RedstoneOutputThreshold config, ConfigUIRegistry.ConfigUIContext ctx, ModBlockEntity mbe) {
 		EditBox thresholdInput = new EditBox(ctx.screen.getMinecraft().font, 0, 0, 20, 10, Component.empty());
 		thresholdInput.setValue(String.valueOf(config.getThreshold()));
+		thresholdInput.setFilter(s -> {
+			if (s.isEmpty()) return true;
+			try {
+				Integer.parseInt(s);
+				return true;
+			} catch (NumberFormatException e) {
+				return false;
+			}
+		});
 		thresholdInput.setResponder(newValue -> {
 			try {
 				int val = Integer.parseInt(newValue);

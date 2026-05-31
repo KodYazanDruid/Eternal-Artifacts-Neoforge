@@ -30,7 +30,7 @@ public class BlueprintItem extends Item implements IActiveStack {
     }
 
     public static BlueprintPattern getPattern(ItemStack blueprint) {
-        SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
+        SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped();
         if (blueprint.hasTag()) {
             ListTag listTag = blueprint.getTag().getList("Pattern", 10);
             if (!listTag.isEmpty()) {
@@ -73,6 +73,17 @@ public class BlueprintItem extends Item implements IActiveStack {
     
     public static boolean isUsingTags(ItemStack stack) {
         return stack.hasTag() && stack.getTag().getBoolean(USE_TAGS);
+    }
+    
+    public static Ingredient getIngredientFromSlot(ItemStack stack, int slot) {
+        BlueprintPattern pattern = getPattern(stack);
+        if (pattern.getRecipe() != null) {
+            NonNullList<Ingredient> ingredients = pattern.getIngredients();
+            if (slot >= 0 && slot < ingredients.size()) {
+                return ingredients.get(slot);
+            }
+        }
+        return Ingredient.EMPTY;
     }
     
     public static void toggleUseTags(ItemStack stack) {

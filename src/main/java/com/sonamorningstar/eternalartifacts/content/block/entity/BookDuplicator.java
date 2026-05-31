@@ -6,12 +6,12 @@ import com.sonamorningstar.eternalartifacts.core.ModTags;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.WrittenBookItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.attachment.AttachmentUtils;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -39,7 +39,7 @@ public class BookDuplicator extends GenericMachine {
         screenInfo.setSlotPosition(134, 48, 2);
     }
 
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoInputFluids(lvl, pos);
         

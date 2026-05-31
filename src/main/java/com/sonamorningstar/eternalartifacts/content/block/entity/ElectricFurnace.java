@@ -5,11 +5,11 @@ import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.container.ElectricFurnaceMenu;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ElectricFurnace extends MultiFurnace<ElectricFurnaceMenu> {
@@ -31,7 +31,7 @@ public class ElectricFurnace extends MultiFurnace<ElectricFurnaceMenu> {
     }
     
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoInputItems(lvl, pos);
         performAutoOutputItems(lvl, pos);

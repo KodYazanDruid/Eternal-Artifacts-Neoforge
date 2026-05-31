@@ -15,7 +15,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -106,7 +105,7 @@ public class SludgeRefiner extends GenericMachine {
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputFluids(lvl, pos);
 		

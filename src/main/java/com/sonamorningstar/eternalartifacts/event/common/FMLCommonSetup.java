@@ -20,10 +20,12 @@ import com.sonamorningstar.eternalartifacts.event.custom.RegisterFarmBehaviorEve
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterMultiblockPatternsEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -110,6 +112,21 @@ FMLCommonSetup {
                 ModItems.SHULKER_LEGGINGS.get(),
                 ModItems.SHULKER_BOOTS.get()
             ), shulkerArmorAttributes), living -> {});
+            
+            ArmorSet terrasteelSet = new ArmorSet(ArmorSets.TERRASTEEL_ARMOR, List.of(
+                ModItems.TERRASTEEL_HELMET.get(),
+                ModItems.TERRASTEEL_CHESTPLATE.get(),
+                ModItems.TERRASTEEL_LEGGINGS.get(),
+                ModItems.TERRASTEEL_BOOTS.get()
+            ));
+            terrasteelSet.descriptionSupplier = () -> CommonComponents.space()
+                .append(ModConstants.TOOLTIP.withSuffixTranslatable(terrasteelSet.getKey().toLanguageKey() + ".desc", 1, 2))
+                .withStyle(ChatFormatting.DARK_GREEN);
+            ArmorSetRegistry.registerArmorSetBonus(terrasteelSet, living -> {
+                if (living.tickCount % 40 == 0) {
+                    living.heal(1.0F);
+                }
+            });
             
         });
         

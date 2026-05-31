@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class DimensionalAnchor extends GenericMachine {
@@ -26,7 +26,7 @@ public class DimensionalAnchor extends GenericMachine {
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		if (!forcedChunks.isEmpty()) {
 			setEnergyPerTick(forcedChunks.size() * 10);

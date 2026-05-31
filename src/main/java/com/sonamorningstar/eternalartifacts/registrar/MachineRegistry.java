@@ -5,8 +5,10 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.MachineItemFluidS
 import com.sonamorningstar.eternalartifacts.capabilities.item.MachineItemItemStorage;
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
@@ -73,6 +75,7 @@ public class MachineRegistry {
     private final DeferredRegister.Items itemRegister;
 
     private final List<MachineHolder<?, ?, ?, ?>> allMachines = new ArrayList<>();
+    public final List<MachineHolder<?, ? extends AbstractDynamo<?>, ?, ?>> dynamos = new ArrayList<>();
     private final List<MachineHolder<GenericMachineMenu, ? extends GenericMachine, ?, ?>> genericMachines = new ArrayList<>();
 
     private final BlockBehaviour.Properties defaultBlockProps = BlockBehaviour.Properties.of()
@@ -136,6 +139,7 @@ public class MachineRegistry {
 
         // Create holder
         MachineHolder<M, BE, B, I> holder = new MachineHolder<>(
+                registration,
                 menuHolder, blockEntityHolder, blockHolder, itemHolder,
                 registration.isHasUniqueTexture(),
                 registration.isGeneric(),
@@ -145,6 +149,8 @@ public class MachineRegistry {
         );
 
         allMachines.add(holder);
+        
+        registration.getPostRegistrationActions().forEach(consumer -> consumer.accept(holder));
         
         if (registration.isGeneric()) {
             @SuppressWarnings("unchecked")
@@ -261,6 +267,10 @@ public class MachineRegistry {
 
     public List<MachineHolder<?, ?, ?, ?>> getMachines() {
         return Collections.unmodifiableList(allMachines);
+    }
+    
+    public List<MachineHolder<?, ? extends AbstractDynamo<?>, ?, ?>> getDynamos() {
+        return Collections.unmodifiableList(dynamos);
     }
 
     public List<MachineHolder<GenericMachineMenu, ? extends GenericMachine, ?, ?>> getGenericMachines() {

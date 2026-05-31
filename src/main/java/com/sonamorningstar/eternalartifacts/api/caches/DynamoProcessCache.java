@@ -5,7 +5,11 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDy
 import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
+
 @Getter
 public class DynamoProcessCache {
     private int duration;
@@ -13,6 +17,7 @@ public class DynamoProcessCache {
     private final ModEnergyStorage energy;
     private final int generation;
     private final AbstractDynamo<?> dynamo;
+    private final List<Consumer<DynamoProcessCache>> onProcessListeners = new ArrayList<>();
     
     public DynamoProcessCache(int duration, int maxDuration, ModEnergyStorage energy, int generation, AbstractDynamo<?> dynamo) {
         this.duration = duration;
@@ -27,11 +32,10 @@ public class DynamoProcessCache {
         if(inserted == generation) {
             duration--;
             energy.receiveEnergyForced(generation, false);
-            dynamo.isWorking = true;
-            dynamo.markDirty();
+            dynamo.setWorking(true);
+            onProcessListeners.forEach(con -> con.accept(this));
         } else {
-            dynamo.isWorking = false;
-            dynamo.markDirty();
+            dynamo.setWorking(false);
         }
 
     }
@@ -39,9 +43,14 @@ public class DynamoProcessCache {
     public boolean isDone() {
         return duration <= 0;
     }
-
+    
+    public void addOnProcessListener(Consumer<DynamoProcessCache> listener) {
+        onProcessListeners.add(listener);
+    }
+    
     public void writeToNbt(CompoundTag tag) {
         CompoundTag dynamoCache = new CompoundTag();
+        dynamoCache.putString("Type", "Normal");
         dynamoCache.putInt("Duration", duration);
         dynamoCache.putInt("MaxDuration", maxDuration);
         dynamoCache.putInt("Generation", generation);
@@ -51,10 +60,15 @@ public class DynamoProcessCache {
     public static Optional<DynamoProcessCache> readFromNbt(CompoundTag tag, ModEnergyStorage energy, AbstractDynamo<?> dynamo) {
         CompoundTag dynamoCache = tag.getCompound("DynamoProcessCache");
         if(!dynamoCache.isEmpty()) {
-            int duration = dynamoCache.getInt("Duration");
-            int maxDuration = dynamoCache.getInt("MaxDuration");
+            String type = dynamoCache.getString("Type");
             int generation = dynamoCache.getInt("Generation");
-            return Optional.of(new DynamoProcessCache(duration, maxDuration, energy, generation, dynamo));
+            if ("Normal".equals(type)){
+                int duration = dynamoCache.getInt("Duration");
+                int maxDuration = dynamoCache.getInt("MaxDuration");
+                return Optional.of(new DynamoProcessCache(duration, maxDuration, energy, generation, dynamo));
+            } else if ("Infinite".equals(type)) {
+                return Optional.of(new InfiniteDynamoProcessCache(energy, generation, dynamo));
+            }
         }
         return Optional.empty();
     }

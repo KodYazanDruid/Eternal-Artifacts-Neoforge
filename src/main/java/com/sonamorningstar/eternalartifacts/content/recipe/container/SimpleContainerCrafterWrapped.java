@@ -7,11 +7,23 @@ import net.minecraft.world.item.ItemStack;
 
 public class SimpleContainerCrafterWrapped extends SimpleContainer implements CraftingContainer {
 
-    public SimpleContainerCrafterWrapped(int size) {
-        super(size);
+    public SimpleContainerCrafterWrapped() {
+        super(9);
     }
     public SimpleContainerCrafterWrapped(ItemStack... items) {
-        super(items);
+        super(boxItems(items));
+    }
+    
+    private static ItemStack[] boxItems(ItemStack... items) {
+        ItemStack[] box = new ItemStack[9];
+        for (int i = 0; i < 9; i++) {
+            if (i < items.length) {
+                box[i] = items[i];
+            } else {
+                box[i] = ItemStack.EMPTY;
+            }
+        }
+        return box;
     }
 
     @Override

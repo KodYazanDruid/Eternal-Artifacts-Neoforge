@@ -41,7 +41,8 @@ public class MimicRenderer extends EntityRenderer<MimicEntity> {
     public void render(MimicEntity entity, float entityYaw, float partialTick, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         super.render(entity, entityYaw, partialTick, poseStack, buffer, packedLight);
         poseStack.pushPose();
-        float rotationYaw = Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
+        //float rotationYaw = Mth.rotLerp(partialTick, entity.yBodyRotO, entity.yBodyRot);
+        float rotationYaw = Mth.rotLerp(partialTick, entity.yRotO, entity.getYRot());
         poseStack.mulPose(Axis.YN.rotationDegrees(rotationYaw));
         poseStack.translate(-0.5, 0, -0.5);
         VertexConsumer consumer = getMaterial().buffer(buffer, RenderType::entityCutout);

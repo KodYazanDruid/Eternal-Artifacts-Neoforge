@@ -12,7 +12,7 @@ import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.BlockCapability;
@@ -47,7 +47,7 @@ public class EnergyDistributor extends SidedTransferMachine<EnergyDistributorMen
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputEnergy(lvl, pos);
 		

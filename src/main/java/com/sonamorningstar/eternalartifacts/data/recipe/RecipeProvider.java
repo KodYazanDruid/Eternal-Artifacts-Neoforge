@@ -152,15 +152,17 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMeatShredderRecipe(recipeOutput, ModItems.DUCK_MEAT.toStack(), 200);
         createMeatShredderRecipe(recipeOutput, Items.MUTTON.getDefaultInstance(), 200);
         createMeatShredderRecipe(recipeOutput, Items.RABBIT.getDefaultInstance(), 200);
-        createMeatShredderRecipe(recipeOutput, Items.COD.getDefaultInstance(), 125);
-        createMeatShredderRecipe(recipeOutput, Items.SALMON.getDefaultInstance(), 125);
+        createMeatShredderRecipe(recipeOutput, Items.SALMON.getDefaultInstance(), 200);
+        createMeatShredderRecipe(recipeOutput, Items.COD.getDefaultInstance(), 150);
         createMeatShredderRecipe(recipeOutput, Items.TROPICAL_FISH.getDefaultInstance(), 100);
-        createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),20);
-
-        createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 100);
-        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.CRUDE_OIL, 50, 80);
-        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.GASOLINE, 270, 300);
-        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);
+        createMeatShredderRecipe(recipeOutput, Items.PUFFERFISH.getDefaultInstance(), 100);
+        createMeatShredderRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(),50);
+        
+        createFluidCombustionRecipe(recipeOutput, Fluids.LAVA, 40, 100);//4_000
+        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.CRUDE_OIL, 50, 80);//4_000
+        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.GASOLINE, 270, 300);//81_000
+        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.DIESEL, 250, 360);//90_000
+        createFluidCombustionRecipe(recipeOutput, ModTags.Fluids.BIOFUEL, 200, 400);//80_000
         
         createFluidInfusingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME, 2000, Either.right(Tags.Items.INGOTS_IRON), ModItems.PINK_SLIME_STEEL_INGOT.toStack());
         createFluidInfusingRecipe(recipeOutput, Fluids.WATER, 125, Either.right(ModTags.Items.DUSTS_FLOUR), ModItems.DOUGH.toStack());
@@ -236,7 +238,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, ModItems.SOUL_BLAZE_ROD.toStack(), new ItemStack(ModItems.SOUL_BLAZE_POWDER.get(), 5));
         createMaceratingRecipe(recipeOutput, Items.AMETHYST_SHARD.getDefaultInstance(), ModItems.AMETHYST_DUST.toStack());
         //endregion
-
+        
         createSqueezingRecipe(recipeOutput, Items.WET_SPONGE.getDefaultInstance(), Items.SPONGE.getDefaultInstance(), new FluidStack(Fluids.WATER, 125));
         createSqueezingRecipe(recipeOutput, Items.CACTUS.getDefaultInstance(), new ItemStack(Items.GREEN_DYE, 3), new FluidStack(Fluids.WATER, 100));
         createSqueezingRecipe(recipeOutput, Items.ROTTEN_FLESH.getDefaultInstance(), Items.LEATHER.getDefaultInstance(), ModFluids.BLOOD.getFluidStack(100));
@@ -299,6 +301,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             SizedIngredient.of(ModItems.PLANT_MATTER),
             SizedIngredient.of(ModTags.Items.SLIMEBALLS_PINK, 1)
         ), ModItems.TERRASTEEL_INGOT.toStack(2), "");
+        
         //region Mob Liquifying recipes
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
                 FluidStack.EMPTY,
@@ -375,17 +378,19 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             new FluidStack(ModFluids.NOUS.getFluid(), 15)
         ));
         //endregion
-
+        
         createSolidifyingRecipe(recipeOutput, Fluids.WATER,1000, Items.ICE.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, Fluids.LAVA,1000, Items.OBSIDIAN.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, ModTags.Fluids.PINK_SLIME,250, ModItems.PINK_SLIME.toStack());
         createSolidifyingRecipe(recipeOutput, ModTags.Fluids.HONEY, 1000, Items.HONEY_BLOCK.getDefaultInstance());
         createSolidifyingRecipe(recipeOutput, ModTags.Fluids.SLIME, 250, Items.SLIME_BALL.getDefaultInstance());
 
+        createCompressingRecipe(recipeOutput, Items.MELON.getDefaultInstance(), ModItems.PLANT_MATTER.toStack(4));
+        createCompressingRecipe(recipeOutput, Items.PUMPKIN.getDefaultInstance(), ModItems.PLANT_MATTER.toStack(4));
         createCompressingRecipe(recipeOutput, ModTags.Items.FRUITS, 2, ModItems.PLANT_MATTER.toStack());
-        createCompressingRecipe(recipeOutput, Tags.Items.CROPS, 4, ModItems.PLANT_MATTER.toStack());
-        createCompressingRecipe(recipeOutput, ItemTags.FLOWERS, 8, ModItems.PLANT_MATTER.toStack());
-        createCompressingRecipe(recipeOutput, Tags.Items.SEEDS, 16, ModItems.PLANT_MATTER.toStack());
+        createCompressingRecipe(recipeOutput, Tags.Items.CROPS, 2, ModItems.PLANT_MATTER.toStack());
+        createCompressingRecipe(recipeOutput, ItemTags.FLOWERS, 4, ModItems.PLANT_MATTER.toStack());
+        createCompressingRecipe(recipeOutput, Tags.Items.SEEDS, 8, ModItems.PLANT_MATTER.toStack());
         createCompressingRecipe(recipeOutput, new ItemStack(Items.ICE, 4), Items.PACKED_ICE.getDefaultInstance());
         createCompressingRecipe(recipeOutput, new ItemStack(Items.PACKED_ICE, 4), Items.BLUE_ICE.getDefaultInstance());
         
@@ -393,6 +398,8 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             SizedIngredient.of(ModTags.Items.DUSTS_COAL, 1), ModFluids.LIQUID_PLASTIC.getFluidStack(250), "from_coal_dust");
         createFluidMixingRecipe(recipeOutput, FluidIngredient.of(ModTags.Fluids.NAPHTHA, 100), FluidIngredient.EMPTY,
             SizedIngredient.of(ItemTags.SAND, 1), ModFluids.LIQUID_PLASTIC.getFluidStack(100), "from_sand");
+        createFluidMixingRecipe(recipeOutput, FluidIngredient.of(ModTags.Fluids.HONEY, 250), FluidIngredient.of(Tags.Fluids.MILK, 250),
+            SizedIngredient.of(ModItems.PLANT_MATTER, 2), ModFluids.BIOFUEL.getFluidStack(500));
     }
 
     private static void craftingRecipes(RecipeOutput recipeOutput) {
@@ -510,22 +517,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('I', ModTags.Items.INGOTS_STEEL)
             .define('S', Tags.Items.RODS_WOODEN)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_HELMET)
-            .pattern("III").pattern("I I")
-            .define('I', ModTags.Items.INGOTS_STEEL)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_CHESTPLATE)
-            .pattern("I I").pattern("III").pattern("III")
-            .define('I', ModTags.Items.INGOTS_STEEL)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_LEGGINGS)
-            .pattern("III").pattern("I I").pattern("I I")
-            .define('I', ModTags.Items.INGOTS_STEEL)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_BOOTS)
-            .pattern("I I").pattern("I I")
-            .define('I', ModTags.Items.INGOTS_STEEL)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        helmetRecipe(recipeOutput, ModItems.STEEL_HELMET, ModTags.Items.INGOTS_STEEL);
+        chestplateRecipe(recipeOutput, ModItems.STEEL_CHESTPLATE, ModTags.Items.INGOTS_STEEL);
+        leggingsRecipe(recipeOutput, ModItems.STEEL_LEGGINGS, ModTags.Items.INGOTS_STEEL);
+        bootsRecipe(recipeOutput, ModItems.STEEL_BOOTS, ModTags.Items.INGOTS_STEEL);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
         createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Tags.Items.COBBLESTONE, Tags.Items.STONE);
         createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
@@ -807,22 +802,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('C', Tags.Items.ENDER_PEARLS).define('I', Tags.Items.INGOTS_GOLD)
             .define('T', ModItems.TOME).define('P', ModItems.GLOW_INK_DUST)
             .unlockedBy("has_item", has(ModItems.LIGHTNING_IN_A_BOTTLE)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_HELMET)
-            .pattern("III").pattern("I I")
-            .define('I', Items.CACTUS)
-            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_CHESTPLATE)
-            .pattern("I I").pattern("III").pattern("III")
-            .define('I', Items.CACTUS)
-            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_LEGGINGS)
-            .pattern("III").pattern("I I").pattern("I I")
-            .define('I', Items.CACTUS)
-            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.CACTUS_BOOTS)
-            .pattern("I I").pattern("I I")
-            .define('I', Items.CACTUS)
-            .unlockedBy("has_item", has(Items.CACTUS)).save(recipeOutput);
+        helmetRecipe(recipeOutput, ModItems.CACTUS_HELMET, Items.CACTUS);
+        chestplateRecipe(recipeOutput, ModItems.CACTUS_CHESTPLATE, Items.CACTUS);
+        leggingsRecipe(recipeOutput, ModItems.CACTUS_LEGGINGS, Items.CACTUS);
+        bootsRecipe(recipeOutput, ModItems.CACTUS_BOOTS, Items.CACTUS);
         ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, Items.GOLDEN_APPLE)
             .pattern("GGG").pattern("GAG").pattern("GGG")
             .define('G', Tags.Items.INGOTS_GOLD).define('A', ModTags.Items.FRUITS_APPLE)
@@ -891,6 +874,10 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .pattern("SPS").pattern("PBP").pattern("SPS")
             .define('S', ModTags.Items.INGOTS_STEEL).define('P', ItemTags.PLANKS)
             .define('B', Tags.Items.DUSTS_REDSTONE).unlockedBy("has_item", has(Tags.Items.DUSTS_REDSTONE)).save(recipeOutput);
+        helmetRecipe(recipeOutput, ModItems.TERRASTEEL_HELMET, ModItems.TERRASTEEL_INGOT);
+        chestplateRecipe(recipeOutput, ModItems.TERRASTEEL_CHESTPLATE, ModItems.TERRASTEEL_INGOT);
+        leggingsRecipe(recipeOutput, ModItems.TERRASTEEL_LEGGINGS, ModItems.TERRASTEEL_INGOT);
+        bootsRecipe(recipeOutput, ModItems.TERRASTEEL_BOOTS, ModItems.TERRASTEEL_INGOT);
         //endregion
         //region Shapeless recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -1028,6 +1015,46 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, new ItemStack(result, 8))
                 .pattern("IPI").define('I', input).define('P', ItemTags.PLANKS)
                 .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void helmetRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("III").pattern("I I").define('I', input)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void helmetRecipe(RecipeOutput recipeOutput, ItemLike result, ItemLike input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+            .pattern("III").pattern("I I").define('I', input)
+            .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void chestplateRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("I I").pattern("III").pattern("III").define('I', input)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void chestplateRecipe(RecipeOutput recipeOutput, ItemLike result, ItemLike input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+            .pattern("I I").pattern("III").pattern("III").define('I', input)
+            .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void leggingsRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("III").pattern("I I").pattern("I I").define('I', input)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void leggingsRecipe(RecipeOutput recipeOutput, ItemLike result, ItemLike input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+            .pattern("III").pattern("I I").pattern("I I").define('I', input)
+            .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void bootsRecipe(RecipeOutput recipeOutput, ItemLike result, TagKey<Item> input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("I I").pattern("I I").define('I', input)
+                .unlockedBy("has_item", has(input)).save(recipeOutput);
+    }
+    private static void bootsRecipe(RecipeOutput recipeOutput, ItemLike result, ItemLike input) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+            .pattern("I I").pattern("I I").define('I', input)
+            .unlockedBy("has_item", has(input)).save(recipeOutput);
     }
 
     private static void smeltingRecipe(RecipeOutput output, ItemLike input, ItemLike result, float xp) {

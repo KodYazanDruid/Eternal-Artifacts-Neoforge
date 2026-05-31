@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleFluidContainer;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import net.minecraft.core.BlockPos;
@@ -17,7 +18,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidCombustionDynamo extends AbstractDynamo<DynamoMenu> {
     public FluidCombustionDynamo(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), pos, blockState, DynamoMenu::new);
+        super(ModMachines.FLUID_COMBUSTION_DYNAMO, pos, blockState);
         setTank(() -> createRecipeFinderTank(16000, false, true));
         setRecipeTypeAndContainer(ModRecipes.FLUID_COMBUSTING.getType(), () -> new SimpleFluidContainer(tank.getFluid(0)));
     }

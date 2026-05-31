@@ -1,4 +1,4 @@
-// 1.20.4	2026-05-11T14:26:18.7274944	Item Models: eternalartifacts
+// 1.20.4	2026-05-22T11:27:58.9909179	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -20,6 +20,7 @@ d5be76ea0181c0292069ca7f6545c3bdd36b55b9 assets/eternalartifacts/models/item/ban
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 0cc868a9f308e87b07a6b548fe521193c957b6a7 assets/eternalartifacts/models/item/battery_box.json
 4db39dad240c4e589eecfffeb032ea9003733aba assets/eternalartifacts/models/item/beer_bucket.json
+280d7ec7408b084442fa674bedd6599635d23b8a assets/eternalartifacts/models/item/biofuel_bucket.json
 c43326db2f6ef314a41073641fbed9216f9ed163 assets/eternalartifacts/models/item/bitumen.json
 128166141b9b694a20e32f8cd869b8e216a14ac6 assets/eternalartifacts/models/item/black_shulker_shell.json
 b517118f3cbc24fadc077bad146e79f836c4307a assets/eternalartifacts/models/item/block_breaker.json
@@ -287,7 +288,11 @@ d45e95deb0ec9b2f04d946800620bc5af345b50f assets/eternalartifacts/models/item/swo
 0efb1f43fcba4d0e131502073eb0abef54a5d8f0 assets/eternalartifacts/models/item/sword_of_the_twilight.json
 c0f27d555175892c0bc4b0fda57cd6ec842b5c9d assets/eternalartifacts/models/item/tank_knapsack.json
 2b895ccad63794c5e49b10dfd58c6e99a05f6b3e assets/eternalartifacts/models/item/tar_ball.json
+64716343402c5c8fb4942a9a0f000e14afd69bf4 assets/eternalartifacts/models/item/terrasteel_boots.json
+c80c62bd239945b48cc42ca91c854757f1def183 assets/eternalartifacts/models/item/terrasteel_chestplate.json
+301da32e6e14b07715821490043226dd06dd2013 assets/eternalartifacts/models/item/terrasteel_helmet.json
 0730e11bba6f220b26baa438629910f1568f56b9 assets/eternalartifacts/models/item/terrasteel_ingot.json
+2a63afcb604c088599eadf98cf40a82b7ba8286a assets/eternalartifacts/models/item/terrasteel_leggings.json
 562a02ef8990e3147473c1874c1720349cbc197d assets/eternalartifacts/models/item/tigris_flower.json
 e5e8de1d419d37a6c993e3a407c46792def7ba9d assets/eternalartifacts/models/item/tin_dust.json
 2c12bc7f670dd786bbb0fdad79de56b1694f00df assets/eternalartifacts/models/item/tin_ingot.json

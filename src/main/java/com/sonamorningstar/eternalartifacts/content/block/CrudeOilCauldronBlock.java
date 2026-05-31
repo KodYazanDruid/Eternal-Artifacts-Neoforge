@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.content.block.entity.CrudeOilCauldron;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -78,8 +79,8 @@ public class CrudeOilCauldronBlock extends AbstractCauldronBlock implements Enti
 			return null;
 		}
 		return (lvl, pos, st, be) -> {
-			if (be instanceof CrudeOilCauldron crudeOilCauldron) {
-				crudeOilCauldron.tickServer(lvl, pos, st);
+			if (be instanceof CrudeOilCauldron crudeOilCauldron && lvl instanceof ServerLevel serverLevel) {
+				crudeOilCauldron.tickServer(serverLevel, pos, st);
 			}
 		};
 	}

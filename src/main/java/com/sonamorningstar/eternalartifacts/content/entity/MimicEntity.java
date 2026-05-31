@@ -94,8 +94,8 @@ public class MimicEntity extends Monster {
     @SuppressWarnings("deprecation")
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason,
                                         @Nullable SpawnGroupData spawnData, @Nullable CompoundTag dataTag) {
-        List<ResourceLocation> tables = BuiltInLootTables.all().stream().toList();
-        lootTable = tables.get(random.nextInt(tables.size()));
+        /*List<ResourceLocation> tables = BuiltInLootTables.all().stream().toList();
+        lootTable = tables.get(random.nextInt(tables.size()));*/
         return super.finalizeSpawn(level, difficulty, reason, spawnData, dataTag);
     }
     

@@ -17,7 +17,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -89,13 +88,12 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider,
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);
 		if (!redstoneChecks(lvl)) return;
 		
 		getFakePlayer();
-		setupFakePlayer(st, ((ServerLevel) lvl));
 		fakePlayer.detectEquipmentUpdates();
 		if (fakePlayer instanceof LivingEntityExposer exp) exp.incrementAttackStrengthTicker(1);
 		if (canWork(energy) && fakePlayer.getAttackStrengthScale(0) >= 1.0F) {

@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class SwordOfTheTwilightItem extends SwordItem {
+	public static final Set<MobEffect> HARMFULL_EFFECTS = BuiltInRegistries.MOB_EFFECT.stream().filter(e -> e.getCategory() == MobEffectCategory.HARMFUL && !e.isInstantenous()).collect(Collectors.toSet());
+	
 	public SwordOfTheTwilightItem(Properties pProperties) {
 		super(ModTiers.STEEL, 2, -2.4F, pProperties);
 	}
@@ -24,14 +26,14 @@ public class SwordOfTheTwilightItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker instanceof Player player && player.getAttackStrengthScale(0.0F) != 1.0F)
 			return super.hurtEnemy(stack, target, attacker);
-		Set<MobEffect> harmfulls = BuiltInRegistries.MOB_EFFECT.stream()
-			.filter(e -> e.getCategory() == MobEffectCategory.HARMFUL && !e.isInstantenous()).collect(Collectors.toSet());
+		
 		RandomSource random = attacker.getRandom();
-		target.addEffect(Objects.requireNonNull(harmfulls.stream()
-			.skip(random.nextInt(harmfulls.size()))
+		target.addEffect(Objects.requireNonNull(HARMFULL_EFFECTS.stream()
+			.skip(random.nextInt(HARMFULL_EFFECTS.size()))
 			.findFirst()
 			.map(mobEffect -> new MobEffectInstance(mobEffect, 100, 0))
 			.orElse(null)));
+		
 		return super.hurtEnemy(stack, target, attacker);
 	}
 }

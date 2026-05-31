@@ -21,6 +21,7 @@ import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
+import com.sonamorningstar.eternalartifacts.registrar.MachineRegistry;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SkullModel;
@@ -58,13 +59,11 @@ public class ClientModEvents {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         event.register(ModMenuTypes.BIOFURNACE.get(), BioFurnaceScreen::new);
-        event.register(ModMenuTypes.DYNAMO_MENU.get(), FluidDynamoScreen::new);
         event.register(ModMenuTypes.KNAPSACK.get(), KnapsackScreen::new);
         event.register(ModMenuTypes.NOUS_TANK.get(), NousTankScreen::new);
         event.register(ModMenuTypes.TANK_KNAPSACK.get(), TankKnapsackScreen::new);
         event.register(ModMenuTypes.TANK_KNAPSACK_ITEM.get(), TankKnapsackScreen::new);
         event.register(ModMenuTypes.TESSERACT.get(), TesseractScreen::new);
-        event.register(ModMenuTypes.ITEM_DYNAMO.get(), ItemDynamoScreen::new);
         event.register(ModMenuTypes.PICTURE_SCREEN.get(), PictureScreenScreen::new);
         event.register(ModMenuTypes.DEEP_ITEM_STORAGE_UNIT.get(), DeepItemStorageScreen::new);
         event.register(ModMenuTypes.DEEP_FLUID_STORAGE_UNIT.get(), DeepFluidStorageUnitScreen::new);
@@ -115,8 +114,8 @@ public class ClientModEvents {
         event.register(new RetexturedColor(), ModItems.GARDENING_POT.get());
         event.register(new RetexturedColor(), ModItems.FANCY_CHEST.get());
         ModFluids.FLUIDS.getFluids().forEach(holder -> {
-            if (holder.isGenericTexture() && holder.getBucketItem() != null)
-                event.register((stack, ti) -> ti == 1 ? holder.getTintColor() : 0xFFFFFFFF, holder.getBucketItem());
+            if (holder.genericTexture() && holder.getBucketItem() != null)
+                event.register((stack, ti) -> ti == 1 ? holder.tintColor() : 0xFFFFFFFF, holder.getBucketItem());
         });
         event.register(ColorUtils::getColorFromNBT, ModItems.LIGHTSABER);
     }
@@ -209,10 +208,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.MACHINE_WORKBENCH.get(), MachineWorkbenchRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PICTURE_SCREEN.get(), PictureScreenRenderer::new);
         
-        event.registerBlockEntityRenderer(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), DynamoRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), DynamoRenderer::new);
-        event.registerBlockEntityRenderer(ModBlockEntities.CULINARY_DYNAMO.get(), DynamoRenderer::new);
+        ModMachines.MACHINES.getDynamos().forEach(holder -> event.registerBlockEntityRenderer(holder.getBlockEntity(), DynamoRenderer::new));
 
         /*event.registerBlockEntityRenderer(ModMachines.MOB_LIQUIFIER.getBlockEntity(), ctx -> new AreaRenderer<>());
         event.registerBlockEntityRenderer(ModMachines.MOB_HARVESTER.getBlockEntity(), ctx -> new AreaRenderer<>());

@@ -4,8 +4,10 @@
     "tag": "forge:dusts/flour"
   },
   "inputFluid": {
-    "amount": 125,
-    "id": "minecraft:water"
+    "FluidStack": {
+      "Amount": 125,
+      "FluidName": "minecraft:water"
+    }
   },
   "output": {
     "Count": 1,

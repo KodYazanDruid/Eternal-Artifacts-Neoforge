@@ -111,7 +111,7 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputItems(lvl, pos);
 		performAutoOutputItems(lvl, pos);
@@ -124,7 +124,6 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		
 		ItemStack toolStack = inventory.getStackInSlot(0);
 		getFakePlayer();
-		setupFakePlayer(st, ((ServerLevel) lvl));
 		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		for (int i = 0; i < progressStep; i++) {
 			BlockPos targetPos = workingPoses.get(workingIndex);

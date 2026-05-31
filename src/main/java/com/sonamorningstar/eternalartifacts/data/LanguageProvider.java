@@ -257,6 +257,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.SHADOW_RAY_TOME.get(), "Shadow Ray Tome");
                 add(ModItems.PURPLE_GOLD_INGOT.get(), "Purple Gold Ingot");
                 add(ModItems.TERRASTEEL_INGOT.get(), "Terrasteel Ingot");
+                add(ModItems.TERRASTEEL_HELMET.get(), "Terrasteel Helmet");
+                add(ModItems.TERRASTEEL_CHESTPLATE.get(), "Terrasteel Chestplate");
+                add(ModItems.TERRASTEEL_LEGGINGS.get(), "Terrasteel Leggings");
+                add(ModItems.TERRASTEEL_BOOTS.get(), "Terrasteel Boots");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -320,7 +324,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MANGANESE_ORE_BERRY.get(), "Manganese Oreberry");
                 add(ModBlocks.JAR.get(), "Jar");
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Jar");
-                add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Fluid Combustion Dynamo");
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganese Ore");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Deepslate Manganese Ore");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Raw Manganese Block");
@@ -372,7 +375,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GOLD_FLUID_PIPE.get(), "Gold Fluid Pipe");
                 add(ModBlocks.COPPER_ITEM_PIPE.get(), "Copper Item Pipe");
                 add(ModBlocks.GOLD_ITEM_PIPE.get(), "Gold Item Pipe");
-                add(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "Solid Combustion Dynamo");
                 add(ModBlocks.SOLAR_PANEL.get(), "Solar Panel");
                 add(ModBlocks.MOSS_MANGANESE_ORE.get(), "Moss Manganese Ore");
                 add(ModBlocks.MOSS_COPPER_ORE.get(), "Moss Copper Ore");
@@ -399,8 +401,6 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "Wet Industrial Sponge");
                 add(ModBlocks.GLOWSTONE_TORCH.get(), "Glowstone Torch");
                 add(ModBlocks.GLOWTORCH.get(), "Glowtorch");
-                add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Alchemical Dynamo");
-                add(ModBlocks.CULINARY_DYNAMO.get(), "Culinary Dynamo");
                 add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Deep Item Storage Unit");
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Deep Fluid Storage Unit");
                 add(ModBlocks.NAPHTHA_CAULDRON.get(), "Naphtha Cauldron");
@@ -782,7 +782,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModSpells.SHADOW_RAY.get().getDescriptionId().get() + ".desc", "Casts a ray of shadow beam that reflects off surfaces and pierces through enemies.");
                 //Set bonuses
                 add(ModConstants.TOOLTIP.withSuffix(ArmorSets.CACTUS_ARMOR.toLanguageKey()+".desc"), "Reflects 50% of the incoming damage back to attacker.");
-                
+                add(ModConstants.TOOLTIP.withSuffix(ArmorSets.TERRASTEEL_ARMOR.toLanguageKey()+".desc"), "Heals the wearer for %1$d every %2$d seconds.");
                 //endregion
                 
                 ModFluids.FLUIDS.getFluids().forEach(holder -> {
@@ -791,8 +791,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                         String name = blockHolder != null ? prettyName(blockHolder.getId().getPath()) : prettyName(holder.asItem());*/
                         add(holder.getBucketItem(), prettyName(BuiltInRegistries.ITEM.getKey(holder.getBucketItem()).getPath()));
                     }
-                    if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
-                    add(holder.getFluidType().getDescriptionId(), prettyName(holder.getFluidTypeHolder().getId().getPath()));
+                    if (holder.getFluidBlock() != null) add(holder.getFluidBlock(), prettyName(holder.fluidTypeHolder().getId().getPath()));
+                    add(holder.getFluidType().getDescriptionId(), prettyName(holder.fluidTypeHolder().getId().getPath()));
                 });
                 ModMachines.MACHINES.getMachines().forEach(holder -> add(holder.getBlockTranslationKey(), prettyName(holder.getBlockId().getPath())));
                 for (CharmType value : CharmType.values()) {
@@ -1048,6 +1048,11 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.SLIME.getBucketItem(), "Balçık Kovası");
                 add(ModItems.PURPLE_GOLD_INGOT.get(), "Mor Altın Külçesi");
                 add(ModItems.TERRASTEEL_INGOT.get(), "Terrasteel Külçesi");
+                add(ModFluids.BIOFUEL.getBucketItem(), "Biyoyakıt Kovası");
+                add(ModItems.TERRASTEEL_HELMET.get(), "Terrasteel Kask");
+                add(ModItems.TERRASTEEL_CHESTPLATE.get(), "Terrasteel Göğüslük");
+                add(ModItems.TERRASTEEL_LEGGINGS.get(), "Terrasteel Pantolon");
+                add(ModItems.TERRASTEEL_BOOTS.get(), "Terrasteel Bot");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1127,7 +1132,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.JAR.get().getDescriptionId()+".filled", "%s Kavanozu");
                 add(ModFluids.LIQUID_PLASTIC.getTranslationKey(), "Sıvı Plastik");
                 add(ModFluids.LIQUID_PLASTIC.getFluidBlock(), "Sıvı Plastik");
-                add(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "Sıvı Yakıtlı Dinamo");
+                add(ModMachines.FLUID_COMBUSTION_DYNAMO.getBlockTranslationKey(), "Sıvı Yakıtlı Dinamo");
                 add(ModBlocks.MANGANESE_ORE.get(), "Manganez Cevheri");
                 add(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "Kayrak Taşında Manganez Cevheri");
                 add(ModBlocks.RAW_MANGANESE_BLOCK.get(), "Ham Manganez Bloğu");
@@ -1205,7 +1210,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.GOLD_FLUID_PIPE.get(), "Altın Sıvı Borusu");
                 add(ModBlocks.COPPER_ITEM_PIPE.get(), "Bakır Eşya Borusu");
                 add(ModBlocks.GOLD_ITEM_PIPE.get(), "Altın Eşya Borusu");
-                add(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "Katı Yakıtlı Dinamo");
+                add(ModMachines.SOLID_COMBUSTION_DYNAMO.getBlockTranslationKey(), "Katı Yakıtlı Dinamo");
                 add(ModBlocks.SOLAR_PANEL.get(), "Güneş Paneli");
                 add(ModBlocks.MOSS_MANGANESE_ORE.get(), "Yosunlu Manganez Cevheri");
                 add(ModBlocks.MOSS_COPPER_ORE.get(), "Yosunlu Bakır Cevheri");
@@ -1247,8 +1252,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.POTION.getTranslationKey(), "İksir");
                 add(ModMachines.ALCHEMICAL_BREWER.getBlockTranslationKey(), "Simyasal Demleyici");
                 add(ModMachines.BOTTLER.getBlockTranslationKey(), "Şişeleyici");
-                add(ModBlocks.ALCHEMICAL_DYNAMO.get(), "Simyasal Dinamo");
-                add(ModBlocks.CULINARY_DYNAMO.get(), "Mutfak Dinamosu");
+                add(ModMachines.ALCHEMICAL_DYNAMO.getBlockTranslationKey(), "Simyasal Dinamo");
+                add(ModMachines.CULINARY_DYNAMO.getBlockTranslationKey(), "Mutfak Dinamosu");
                 add(ModMachines.HARVESTER.getBlockTranslationKey(), "Hasat Makinesi");
                 add(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "Derin Eşya Depolama Ünitesi");
                 add(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "Derin Sıvı Depolama Ünitesi");
@@ -1273,6 +1278,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ITEM_PORT.get(), "Eşya Portu");
                 add(ModBlocks.FLUID_PORT.get(), "Sıvı Portu");
                 add(ModBlocks.FLUID_HOPPER.get(), "Sıvı Hunisi");
+                add(ModFluids.BIOFUEL.getTranslationKey(), "Biyoyakıt");
+                add(ModMachines.DISENCHANTER_DYNAMO.getBlockTranslationKey(), "Büyü Çıkarıcı Dinamo");
+                add(ModMachines.THERMO_DYNAMO.getBlockTranslationKey(), "Termo Dinamo");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1673,6 +1681,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModSpells.SHADOW_RAY.get().getDescriptionId().get()+".desc", "Yüzeylerden yansıyan ve varlıkları delen bir ışın oluşturur.");
                 //Zırh Bonusları
                 add(ModConstants.TOOLTIP.withSuffix(ArmorSets.CACTUS_ARMOR.toLanguageKey()+".desc"), "Alınan hasarın %50'sini saldırgana geri yansıtır.");
+                add(ModConstants.TOOLTIP.withSuffix(ArmorSets.TERRASTEEL_ARMOR.toLanguageKey()+".desc"), "Giyildiğinde her %2$d saniyede %1$d can yeniler.");
                 //endregion
 
                 ModHooks.LanguageProvider.langMap.forEach((loc, lang) -> {

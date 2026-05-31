@@ -1,7 +1,7 @@
 {
   "type": "eternalartifacts:compressing",
   "input": {
-    "amount": 16,
+    "amount": 8,
     "tag": "forge:seeds"
   },
   "output": {

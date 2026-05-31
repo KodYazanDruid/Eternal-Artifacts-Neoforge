@@ -1,13 +1,18 @@
 package com.sonamorningstar.eternalartifacts.registrar;
 
 import com.sonamorningstar.eternalartifacts.container.base.AbstractMachineMenu;
+import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.BaseMachineBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
+import com.sonamorningstar.eternalartifacts.content.item.block.base.BewlrMachineItem;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlockItem;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.function.MenuConstructor;
 import lombok.Getter;
 import net.minecraft.core.Direction;
@@ -28,6 +33,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 /**
  * Represents a complete machine registration with all its components.
@@ -46,6 +52,7 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
     private final boolean isGeneric;
     private final Map<CapabilityType, Object> customCapabilities;
     private final List<ExtraCapabilityRegistrar<BE, I>> extraCapabilityRegistrars;
+    private final List<Consumer<MachineHolder<M, BE, B, I>>> postRegistrationActions;
 
     private MachineRegistration(Builder<M, BE, B, I> builder) {
         this.name = builder.name;
@@ -59,6 +66,7 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
         this.isGeneric = builder.isGeneric;
         this.customCapabilities = new EnumMap<>(builder.customCapabilities);
         this.extraCapabilityRegistrars = new ArrayList<>(builder.extraCapabilityRegistrars);
+        this.postRegistrationActions = new ArrayList<>(builder.postRegistrationActions);
     }
     
     /**
@@ -159,6 +167,19 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
                 .block(MachineSixWayBlock::new)
                 .item(MachineBlockItem::new);
     }
+    
+    public static <M extends DynamoMenu, BE extends AbstractDynamo<M>> Builder<M, BE, DynamoBlock<BE>, BewlrMachineItem> dynamo(
+            String name,
+            MenuConstructor<MenuType<?>, Integer, Inventory, BlockEntity, ContainerData, M> menuFactory,
+            BlockEntityType.BlockEntitySupplier<BE> blockEntityFactory) {
+        return new Builder<M, BE, DynamoBlock<BE>, BewlrMachineItem>(name)
+                .menu(menuFactory)
+                .blockEntity(blockEntityFactory)
+                .block((props, factory) -> new DynamoBlock<>(props, blockEntityFactory))
+                .item(BewlrMachineItem::new)
+                .customRender()
+                .postRegister(ModMachines.MACHINES.dynamos::add);
+    }
 
     public static class Builder<M extends AbstractMachineMenu, BE extends Machine<M>, B extends BaseMachineBlock<BE>, I extends BlockItem> {
         private final String name;
@@ -172,6 +193,7 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
         private boolean isGeneric = false;
         private final Map<CapabilityType, Object> customCapabilities = new EnumMap<>(CapabilityType.class);
         private final List<ExtraCapabilityRegistrar<BE, I>> extraCapabilityRegistrars = new ArrayList<>();
+        private final List<Consumer<MachineHolder<M, BE, B, I>>> postRegistrationActions = new ArrayList<>();
 
         public Builder(String name) {
             this.name = name;
@@ -218,6 +240,11 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
 
         private Builder<M, BE, B, I> generic(boolean isGeneric) {
             this.isGeneric = isGeneric;
+            return this;
+        }
+        
+        private Builder<M, BE, B, I> postRegister(Consumer<MachineHolder<M, BE, B, I>> action) {
+            this.postRegistrationActions.add(action);
             return this;
         }
         

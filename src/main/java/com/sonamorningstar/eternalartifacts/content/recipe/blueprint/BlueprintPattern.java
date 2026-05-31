@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.recipe.blueprint;
 
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleContainerCrafterWrapped;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import lombok.Getter;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.MinecraftServer;
@@ -34,11 +35,10 @@ public class BlueprintPattern {
         this.fakeItems = fakeItems;
     }
 
+    //Mainly used for right-click crafting.
     public void findRecipe(ServerPlayer player) {
         Level level = player.level();
-        MinecraftServer server = level.getServer();
-        if (server == null) return;
-        Optional<RecipeHolder<CraftingRecipe>> optional = server.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, fakeItems, level);
+        Optional<RecipeHolder<CraftingRecipe>> optional = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, fakeItems, level);
         if (optional.isPresent()) {
             RecipeHolder<CraftingRecipe> recipeholder = optional.get();
             CraftingRecipe craftingrecipe = recipeholder.value();
@@ -50,9 +50,7 @@ public class BlueprintPattern {
     }
     
     public void findRecipe(Level level) {
-        MinecraftServer server = level.getServer();
-        if (server == null) return;
-        Optional<RecipeHolder<CraftingRecipe>> optional = server.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, fakeItems, level);
+        Optional<RecipeHolder<CraftingRecipe>> optional = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, fakeItems, level);
         if (optional.isPresent()) {
             RecipeHolder<CraftingRecipe> recipeholder = optional.get();
             CraftingRecipe craftingrecipe = recipeholder.value();
@@ -85,56 +83,6 @@ public class BlueprintPattern {
     }
     
     /**
-     * Tests if the given stack matches the ingredient at the given index.
-     * Uses ingredient matching (tag-based).
-     */
-    public boolean testForIngredient(ItemStack stack, int index) {
-        if (index < 0 || index >= 9) return false;
-        
-        // Get the ingredient for this slot position
-        ItemStack fakeItem = fakeItems.getItem(index);
-        if (fakeItem.isEmpty()) {
-            // Slot should be empty
-            return stack.isEmpty();
-        }
-        
-        // If recipe is null, fall back to pattern matching
-        if (recipe == null) {
-            return testForPattern(stack, index);
-        }
-        
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
-        
-        // Find matching ingredient for this slot
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.test(fakeItem)) {
-                return ingredient.test(stack);
-            }
-        }
-        
-        // No matching ingredient found, fall back to pattern matching
-        return testForPattern(stack, index);
-    }
-    
-    /**
-     * Gets the ingredient for a specific slot index based on the fake items pattern.
-     */
-    @Nullable
-    public Ingredient getIngredientForSlot(int index) {
-        if (recipe == null || index < 0 || index >= 9) return null;
-        ItemStack fakeItem = fakeItems.getItem(index);
-        if (fakeItem.isEmpty()) return Ingredient.EMPTY;
-        
-        NonNullList<Ingredient> ingredients = recipe.getIngredients();
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.test(fakeItem)) {
-                return ingredient;
-            }
-        }
-        return null;
-    }
-    
-    /**
      * Blueprint pattern'deki sıvı kovası slotlarını ve gereken sıvıları döndürür.
      * @return Map&lt;slotIndex, FluidStack needed&gt;
      */
@@ -145,7 +93,7 @@ public class BlueprintPattern {
             ItemStack fakeItem = fakeItems.getItem(i);
             if (fakeItem.isEmpty()) continue;
             
-            FluidStack fluidFromBucket = getFluidFromItem(fakeItem);
+            FluidStack fluidFromBucket = FluidUtil.getFluidContained(fakeItem).orElse(FluidStack.EMPTY);
             if (!fluidFromBucket.isEmpty()) {
                 bucketSlots.put(i, fluidFromBucket);
             }
@@ -153,51 +101,44 @@ public class BlueprintPattern {
         return bucketSlots;
     }
     
-    /**
-     * Belirli bir slot'un sıvı kovası slotu olup olmadığını kontrol eder.
-     */
-    public boolean isBucketSlot(int index) {
-        if (index < 0 || index >= 9) return false;
-        ItemStack fakeItem = fakeItems.getItem(index);
-        if (fakeItem.isEmpty()) return false;
-        return !getFluidFromItem(fakeItem).isEmpty();
-    }
-    
-    /**
-     * Belirli bir slot için gereken sıvıyı döndürür.
-     */
-    public FluidStack getRequiredFluidForSlot(int index) {
-        if (index < 0 || index >= 9) return FluidStack.EMPTY;
-        ItemStack fakeItem = fakeItems.getItem(index);
-        if (fakeItem.isEmpty()) return FluidStack.EMPTY;
-        return getFluidFromItem(fakeItem);
-    }
-    
-    /**
-     * Bir item'dan (kova vb.) sıvı çıkarır.
-     */
-    private FluidStack getFluidFromItem(ItemStack stack) {
-        if (stack.isEmpty()) return FluidStack.EMPTY;
-        IFluidHandlerItem fluidHandler = FluidUtil.getFluidHandler(stack.copy()).orElse(null);
-        if (fluidHandler != null) {
-            FluidStack contained = fluidHandler.getFluidInTank(0);
-            if (!contained.isEmpty() && contained.getAmount() >= FluidType.BUCKET_VOLUME) {
-                return new FluidStack(contained.getFluid(), FluidType.BUCKET_VOLUME);
+    /*public Map<Ingredient, FluidIngredient> getFluidIngredients() {
+        Map<Ingredient, FluidIngredient> fluidIngredients = new HashMap<>();
+        if (recipe == null) return fluidIngredients;
+        
+        *//*for (int i = 0; i < recipe.getIngredients().size(); i++) {
+            Ingredient ingredient = recipe.getIngredients().get(i);
+            ItemStack fakeItem = fakeItems.getItem(i);
+            if (ingredient instanceof FluidIngredient && !fakeItem.isEmpty()) {
+                FluidStack fluidFromBucket = FluidUtil.getFluidContained(fakeItem).orElse(FluidStack.EMPTY);
+                if (!fluidFromBucket.isEmpty()) {
+                    fluidIngredients.put(ingredient, new FluidIngredient(fluidFromBucket));
+                }
             }
-        }
-        return FluidStack.EMPTY;
-    }
+        }*//*
+        return fluidIngredients;
+    }*/
     
-    /**
-     * Pattern'deki kova item'ını döndürür (remainder için kullanılır).
-     */
-    public ItemStack getBucketItemForSlot(int index) {
-        if (index < 0 || index >= 9) return ItemStack.EMPTY;
-        ItemStack fakeItem = fakeItems.getItem(index);
-        if (fakeItem.isEmpty()) return ItemStack.EMPTY;
-        if (!getFluidFromItem(fakeItem).isEmpty()) {
-            return fakeItem.copy();
+    public Map<Integer, FluidIngredient> getFluidIngredients() {
+        Map<Integer, FluidIngredient> map = new HashMap<>();
+        
+        for (int i = 0; i < 9; i++) {
+            ItemStack stack = fakeItems.getItem(i);
+            
+            if (stack.isEmpty()) {
+                continue;
+            }
+            
+            FluidStack fluid =
+                FluidUtil.getFluidContained(stack)
+                    .orElse(FluidStack.EMPTY);
+            
+            if (fluid.isEmpty()) {
+                continue;
+            }
+            
+            map.put(i, FluidIngredient.of(fluid.copy()));
         }
-        return ItemStack.EMPTY;
+        
+        return map;
     }
 }

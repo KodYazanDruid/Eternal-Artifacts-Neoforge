@@ -4,7 +4,9 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMu
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableClient;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -95,8 +97,8 @@ public class MultiblockBlock extends Block implements EntityBlock {
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
 		return (lvl, pos, st, be) -> {
 			if (be instanceof AbstractMultiblockBlockEntity mbBe) {
-				if (lvl.isClientSide() && mbBe instanceof TickableClient tickableClient) tickableClient.tickClient(lvl, pos, st);
-				else if (!level.isClientSide()) mbBe.tickServer(lvl, pos, st);
+				if (lvl instanceof ClientLevel clientLevel && mbBe instanceof TickableClient tickableClient) tickableClient.tickClient(clientLevel, pos, st);
+				else if (lvl instanceof ServerLevel serverLevel) mbBe.tickServer(serverLevel, pos, st);
 			}
 		};
 	}

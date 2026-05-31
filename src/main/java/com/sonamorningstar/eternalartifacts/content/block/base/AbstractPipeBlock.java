@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractPi
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -167,9 +168,9 @@ public abstract class AbstractPipeBlock<CAP> extends Block implements EntityBloc
 	
 	@Nullable
 	@Override
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-		return pLevel.isClientSide() ? null : (lvl, pos, state, be) -> {
-			if (be instanceof AbstractPipeBlockEntity<?> pipe) pipe.tickServer(lvl, pos, state);
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState pState, BlockEntityType<T> pBlockEntityType) {
+		return level.isClientSide() ? null : (lvl, pos, state, be) -> {
+			if (be instanceof AbstractPipeBlockEntity<?> pipe && lvl instanceof ServerLevel serverLevel) pipe.tickServer(serverLevel, pos, state);
 		};
 	}
 }

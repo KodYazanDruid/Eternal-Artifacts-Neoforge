@@ -79,8 +79,8 @@ public class StorageBuilder {
                     if (blockEntity instanceof Machine<?> machine) {
                         machine.updateProcessCondition();
                     }
-                    blockEntity.markDirty();
                     for (Runnable runnable : listeners) runnable.run();
+                    blockEntity.markDirty();
                 }
 
                 @Override

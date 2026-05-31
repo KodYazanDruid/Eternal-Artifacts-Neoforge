@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.FluidHopper;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -108,7 +110,11 @@ public class FluidHopperBlock extends BaseEntityBlock {
 	@Nullable
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
-		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.FLUID_HOPPER.get(), (a, b, c, d) -> d.tickServer(a, b, c));
+		return level.isClientSide ? null : createTickerHelper(blockEntityType, ModBlockEntities.FLUID_HOPPER.get(),
+			(a, b, c, d) -> {
+				if (a instanceof ServerLevel sl) d.tickServer(sl, b, c);
+			}
+		);
 	}
 	
 	@Override
@@ -133,7 +139,8 @@ public class FluidHopperBlock extends BaseEntityBlock {
 		if (level.isClientSide()){
 			return InteractionResult.SUCCESS;
 		} else {
-		
+			IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
+			if (fluidHandler != null) FluidUtil.interactWithFluidHandler(player, hand, fluidHandler);
 		}
 		return InteractionResult.CONSUME;
 	}

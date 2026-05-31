@@ -35,6 +35,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -231,16 +232,21 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if (fakePlayer == null) {
             this.fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
         }
+        setupFakePlayer();
 		return fakePlayer;
     }
-    protected void setupFakePlayer(BlockState st, ServerLevel lvl) {
+    protected void setupFakePlayer() {
         if (fakePlayer == null || isFakePlayerSetUp) return;
-        fakePlayer.setServerLevel(lvl);
+        Level level = getLevel();
+        if (level instanceof ServerLevel serverLevel) {
+            fakePlayer.setServerLevel(serverLevel);
+        }
         fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-        if (st.hasProperty(BlockStateProperties.FACING)) {
-            fakePlayer.setYRot(st.getValue(BlockStateProperties.FACING).toYRot());
-        } else if (st.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-            fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
+        BlockState state = getBlockState();
+        if (state.hasProperty(BlockStateProperties.FACING)) {
+            fakePlayer.setYRot(state.getValue(BlockStateProperties.FACING).toYRot());
+        } else if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+            fakePlayer.setYRot(state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
         }
         isFakePlayerSetUp = true;
     }
@@ -268,7 +274,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     }
     
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         sendUpdateIfNeeded();
         tickChunkLoader((ServerLevel) lvl);
         setPreviousRecipe();
@@ -327,7 +333,11 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public int getRedstoneOutput() {
         return 0;
     }
-
+    
+    public BlockState updateBlockState(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        return state;
+    }
+    
     /**
      * Automatically updates the ProcessCondition. Called whenever inventory, tank, or recipe changes.
      */
@@ -737,5 +747,5 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     public boolean needsForceLoaderUpdate() {
         return chunkUpdateCooldown <= 0;
     }
-	//endregion
+    //endregion
 }

@@ -43,7 +43,7 @@ public class PumpjackBlockEntity extends AbstractMultiblockBlockEntity {
 	}
 	
 	@Override
-	public void tickMaster(Level lvl, BlockPos pos, BlockState st) {
+	public void tickMaster(ServerLevel lvl, BlockPos pos, BlockState st) {
 		Holder<Biome> biome = lvl.getBiome(pos);
 		if (canWork(energy) && (biome.is(BiomeTags.IS_DEEP_OCEAN) || biome.is(Tags.Biomes.IS_DESERT))) {
 			FluidStack oil = ModFluids.CRUDE_OIL.getFluidStack(20);

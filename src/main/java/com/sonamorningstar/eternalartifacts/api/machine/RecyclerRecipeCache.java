@@ -18,7 +18,6 @@ public final class RecyclerRecipeCache {
 	
 	private RecyclerRecipeCache() {}
 	
-	
 	public static void rebuild(RecipeManager manager, RegistryAccess access) {
 		RECIPE_MAP.clear();
 		BREAKDOWN_MAP.clear();

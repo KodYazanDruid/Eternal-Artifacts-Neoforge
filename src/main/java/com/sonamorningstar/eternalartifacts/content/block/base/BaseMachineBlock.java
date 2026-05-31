@@ -10,9 +10,11 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableSe
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.item.WrenchItem;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,10 +25,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
@@ -110,7 +109,7 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     @Nullable
     @Override
     public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level level, BlockState pState, BlockEntityType<B> pBlockEntityType) {
-        return new SimpleTicker<>(level.isClientSide());
+        return level.isClientSide ? new ClientTicker<>() : new ServerTicker<>();
     }
 
     @Override
@@ -127,17 +126,32 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
         return super.getSignal(state, level, pos, direction);
     }
     
+    @Override
+    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof Machine<?> machine) {
+            return machine.updateBlockState(state, direction, neighborState, level, pos, neighborPos);
+        }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    }
+    
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return supplier.create(pPos, pState);
     }
-
-    public record SimpleTicker<B extends BlockEntity>(boolean isRemote) implements BlockEntityTicker<B> {
+    
+    public record ServerTicker<B extends BlockEntity>() implements BlockEntityTicker<B> {
         @Override
         public void tick(Level lvl, BlockPos pos, BlockState st, B be) {
-            if (isRemote && be instanceof TickableClient en) en.tickClient(lvl, pos, st);
-            else if (!isRemote && be instanceof TickableServer en) en.tickServer(lvl, pos, st);
+            if (be instanceof TickableServer en && lvl instanceof ServerLevel serverLevel) en.tickServer(serverLevel, pos, st);
+        }
+    }
+    
+    public record ClientTicker<B extends BlockEntity>() implements BlockEntityTicker<B> {
+        @Override
+        public void tick(Level lvl, BlockPos pos, BlockState st, B be) {
+            if (be instanceof TickableClient en && lvl instanceof ClientLevel clientLevel) en.tickClient(clientLevel, pos, st);
         }
     }
 

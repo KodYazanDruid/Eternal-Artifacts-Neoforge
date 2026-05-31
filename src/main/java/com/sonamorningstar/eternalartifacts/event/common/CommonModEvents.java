@@ -30,7 +30,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -58,12 +60,15 @@ import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -129,29 +134,36 @@ public class CommonModEvents {
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ENERGY_DOCK.get(), EnergyDockBlockEntity::getEnergy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SHOCK_ABSORBER.get(), (be, ctx) -> be.energy);
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SOLAR_PANEL.get(), SolarPanel::createEnergyCap);
-        registerMachineItem(event, ModBlocks.SHOCK_ABSORBER);
-        registerMachineItem(event, ModBlocks.FLUID_COMBUSTION_DYNAMO);
-        registerMachineItem(event, ModBlocks.BIOFURNACE);
-        registerMachineItem(event, ModBlocks.SOLID_COMBUSTION_DYNAMO);
-        registerMachineItem(event, ModBlocks.SOLAR_PANEL);
-        registerMachineItem(event, ModBlocks.ALCHEMICAL_DYNAMO);
-        registerMachineItem(event, ModBlocks.CULINARY_DYNAMO);
+        
+        registerMachineItem(event, ModBlocks.SHOCK_ABSORBER::asItem);
+        registerMachineItem(event, ModBlocks.BIOFURNACE::asItem);
+        registerMachineItem(event, ModBlocks.SOLAR_PANEL::asItem);
+        
+        ModMachines.MACHINES.getDynamos().forEach(holder -> {
+            registerMachineItem(event, holder::asItem);
+        });
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.energy);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BIOFURNACE.get(), (be, context) -> be.inventory);
         
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModMachines.FLUID_COMBUSTION_DYNAMO.getBlockEntity(), (be, ctx) ->
             ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.tank);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), (be, ctx) ->
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModMachines.FLUID_COMBUSTION_DYNAMO.getBlockEntity(), (be, ctx) -> be.tank);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModMachines.SOLID_COMBUSTION_DYNAMO.getBlockEntity(), (be, ctx) ->
             ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), (be, ctx) -> be.inventory);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.ALCHEMICAL_DYNAMO.get(), (be, ctx) ->
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModMachines.SOLID_COMBUSTION_DYNAMO.getBlockEntity(), (be, ctx) -> be.inventory);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModMachines.ALCHEMICAL_DYNAMO.getBlockEntity(), (be, ctx) ->
             ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.ALCHEMICAL_DYNAMO.get(), (be, ctx) -> be.tank);
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntities.CULINARY_DYNAMO.get(), (be, ctx) ->
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModMachines.ALCHEMICAL_DYNAMO.getBlockEntity(), (be, ctx) -> be.tank);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModMachines.CULINARY_DYNAMO.getBlockEntity(), (be, ctx) ->
             ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
-        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.CULINARY_DYNAMO.get(), (be, ctx) -> be.inventory);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModMachines.CULINARY_DYNAMO.getBlockEntity(), (be, ctx) -> be.inventory);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModMachines.DISENCHANTER_DYNAMO.getBlockEntity(), (be, ctx) ->
+            ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModMachines.DISENCHANTER_DYNAMO.getBlockEntity(), (be, ctx) -> be.inventory);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModMachines.THERMO_DYNAMO.getBlockEntity(), (be, ctx) ->
+            ctx == null ? be.energy : be.getBlockState().getValue(BlockStateProperties.FACING) == ctx ? be.energy : null);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModMachines.THERMO_DYNAMO.getBlockEntity(), (be, ctx) -> be.tank);
         
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, ModBlockEntities.NOUS_TANK.get(), (be, ctx) -> CapabilityHelper.regSidedFluidCaps(be, be.tank, ctx));
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.BLUE_PLASTIC_CAULDRON.get(), (be, ctx) -> be.inventory);
@@ -201,10 +213,10 @@ public class CommonModEvents {
             return new FluidHandlerItemStack(stack, holder.get().getCapacity() * (1 + volume));
         }, holder.asItem());
     }
-    private static void registerMachineItem(RegisterCapabilitiesEvent event, DeferredBlock<?> holder) {
-        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new MachineItemEnergyStorage(stack), holder.asItem());
-        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new MachineItemItemStorage(stack), holder.asItem());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new MachineItemFluidStorage(stack), holder.asItem());
+    private static void registerMachineItem(RegisterCapabilitiesEvent event, Supplier<Item> holder) {
+        event.registerItem(Capabilities.EnergyStorage.ITEM, (stack, ctx) -> new MachineItemEnergyStorage(stack), holder.get());
+        event.registerItem(Capabilities.ItemHandler.ITEM, (stack, ctx) -> new MachineItemItemStorage(stack), holder.get());
+        event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new MachineItemFluidStorage(stack), holder.get());
     }
 
     @SubscribeEvent

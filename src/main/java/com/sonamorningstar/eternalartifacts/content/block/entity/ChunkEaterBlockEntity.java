@@ -176,9 +176,8 @@ public class ChunkEaterBlockEntity extends AbstractMultiblockBlockEntity impleme
     }
     
     @Override
-    public void tickMaster(Level lvl, BlockPos pos, BlockState st) {
+    public void tickMaster(ServerLevel lvl, BlockPos pos, BlockState st) {
         getFakePlayer();
-        setupFakePlayer(st, ((ServerLevel) lvl));
         if (fakePlayer == null) return;
         
         BlockPos current = BlockPos.of(miningPos);
@@ -241,8 +240,8 @@ public class ChunkEaterBlockEntity extends AbstractMultiblockBlockEntity impleme
                         int filled = tank.fillForced(ModFluids.NOUS.getFluidStack(remainingXp * 20), IFluidHandler.FluidAction.EXECUTE);
                         remainingXp -= filled / 20;
                     }
-                    if (remainingXp > 0 && lvl instanceof ServerLevel slvl) {
-                        targetState.getBlock().popExperience(slvl, current, remainingXp);
+                    if (remainingXp > 0) {
+                        targetState.getBlock().popExperience(lvl, current, remainingXp);
                     }
                 }
             }

@@ -7,6 +7,7 @@ import com.sonamorningstar.eternalartifacts.content.block.properties.DockPart;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -190,8 +191,8 @@ public class EnergyDockBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         if (!level.isClientSide && state.getBlock() instanceof EnergyDockBlock && state.getValue(DOCK_PART) == DockPart.CENTER) {
             return (lvl, pos, st, be) -> {
-                if (be instanceof TickableServer entity) {
-                    entity.tickServer(lvl, pos, st);
+                if (be instanceof TickableServer entity && lvl instanceof ServerLevel serverLevel) {
+                    entity.tickServer(serverLevel, pos, st);
                 }
             };
         } else return null;

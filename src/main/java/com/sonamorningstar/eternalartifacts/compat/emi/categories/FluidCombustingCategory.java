@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.compat.emi.categories.base.EAEmiReci
 import com.sonamorningstar.eternalartifacts.content.recipe.FluidCombustionRecipe;
 import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -15,7 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 public class FluidCombustingCategory extends EAEmiRecipe {
-	public static final EmiRecipeCategory FLUID_COMBUSTING_CATEGORY = new EmiRecipeCategory(ModRecipes.FLUID_COMBUSTING.getKey(), EmiStack.of(ModBlocks.FLUID_COMBUSTION_DYNAMO.asItem()));
+	public static final EmiRecipeCategory FLUID_COMBUSTING_CATEGORY = new EmiRecipeCategory(ModRecipes.FLUID_COMBUSTING.getKey(), EmiStack.of(ModMachines.FLUID_COMBUSTION_DYNAMO));
 	private final int generationRate;
 	private final int duration;
 	public FluidCombustingCategory(FluidCombustionRecipe recipe, ResourceLocation id) {

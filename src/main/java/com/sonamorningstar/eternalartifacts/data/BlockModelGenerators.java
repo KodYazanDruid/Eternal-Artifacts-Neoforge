@@ -61,10 +61,9 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         createForParticle(ModBlocks.NOUS_TANK, Blocks.GLASS);
         createForParticle(ModMachines.OIL_REFINERY.blockHolder(), Blocks.GLASS);
         createForParticle(ModBlocks.ENERGY_DOCK, new ResourceLocation(MODID, "block/machine_side"));
-        createForParticle(ModBlocks.FLUID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
-        createForParticle(ModBlocks.SOLID_COMBUSTION_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
-        createForParticle(ModBlocks.ALCHEMICAL_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
-        createForParticle(ModBlocks.CULINARY_DYNAMO, new ResourceLocation(MODID, "block/machine_side"));
+        
+        ModMachines.MACHINES.getDynamos().forEach(holder -> createForParticle(holder.blockHolder(), new ResourceLocation(MODID, "block/machine_side")));
+        
         createForParticle(ModBlocks.DROWNED_HEAD, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.DROWNED_WALL_HEAD, Blocks.SOUL_SAND);
         createForParticle(ModBlocks.HUSK_HEAD, Blocks.SOUL_SAND);

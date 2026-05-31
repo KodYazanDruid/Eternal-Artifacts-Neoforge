@@ -26,14 +26,20 @@ public class InfiniteWaterTank implements IFluidHandler, IFluidHandlerItem {
 
     @Override
     public int getTanks() {return 1;}
+    
+    //Always return a copy of the infinite water stack to prevent external modification.
     @Override
-    public FluidStack getFluidInTank(int tank) {return INFINITE_WATER;}
+    public FluidStack getFluidInTank(int tank) { return INFINITE_WATER.copy(); }
     @Override
     public int getTankCapacity(int tank) {return Integer.MAX_VALUE;}
     @Override
-    public boolean isFluidValid(int tank, FluidStack stack) {return false;}
+    public boolean isFluidValid(int tank, FluidStack stack) { return stack.is(Fluids.WATER); }
+    
+    //Void the fluid if it's water, otherwise do nothing.
     @Override
-    public int fill(FluidStack resource, FluidAction action) {return 0;}
+    public int fill(FluidStack resource, FluidAction action) {
+        return resource.is(Fluids.WATER) ? resource.getAmount() : 0;
+    }
 
     @Override
     public FluidStack drain(FluidStack resource, FluidAction action) {

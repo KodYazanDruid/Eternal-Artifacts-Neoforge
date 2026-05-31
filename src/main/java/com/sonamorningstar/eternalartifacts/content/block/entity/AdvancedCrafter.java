@@ -7,30 +7,26 @@ import com.sonamorningstar.eternalartifacts.container.AdvancedCrafterMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.content.item.BlueprintItem;
 import com.sonamorningstar.eternalartifacts.content.recipe.blueprint.BlueprintPattern;
-import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleContainerCrafterWrapped;
 import com.sonamorningstar.eternalartifacts.content.recipe.container.SimpleCraftingContainer;
+import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
-import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
     @Nullable
@@ -46,33 +42,12 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
         outputSlots.add(9);
         setInventory(() -> new ModItemStorage(11) {
             @Override
-            public ItemStack insertItem(int slot, ItemStack stack, boolean simulate) {
-                if (slot == 10 && !(stack.getItem() instanceof BlueprintItem)) return stack;
-                if (stack.getItem() instanceof BlueprintItem) {
-                    ItemStack remainder = super.insertItem(10, stack, true);
-                    if (!remainder.isEmpty()) return super.insertItem(slot, remainder, simulate);
-                    else return ItemStack.EMPTY;
-                }
-                return super.insertItem(slot, stack, simulate);
-            }
-            @Override
-            public ItemStack insertItemForced(int slot, ItemStack stack, boolean simulate) {
-                if (slot == 10 && !(stack.getItem() instanceof BlueprintItem)) return stack;
-                if (stack.getItem() instanceof BlueprintItem) {
-                    ItemStack remainder = super.insertItemForced(10, stack, simulate);
-                    if (!remainder.isEmpty()) return super.insertItemForced(slot, remainder, simulate);
-                    else return ItemStack.EMPTY;
-                }
-                return super.insertItemForced(slot, stack, simulate);
-            }
-            @Override
             protected void onContentsChanged(int slot) {
                 if (!outputSlots.contains(slot) || slot != 10) findRecipe();
                 if (slot == 10) {
                     if (getStackInSlot(10).getItem() instanceof BlueprintItem) {
                         pattern = BlueprintItem.getPattern(getStackInSlot(10));
-                        // Find recipe for the new pattern
-                        if (level != null && pattern != null) {
+                        if (level != null) {
                             pattern.findRecipe(level);
                         }
                     } else pattern = null;
@@ -84,21 +59,15 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                 if (slot == 10) return stack.getItem() instanceof BlueprintItem;
                 ItemStack blueprint = getStackInSlot(10);
                 if (slot < 9 && !blueprint.isEmpty() && pattern != null) {
-                    // Check if blueprint uses ingredient mode (USE_TAGS)
                     boolean useIngredients = BlueprintItem.isUsingTags(blueprint);
                     if (useIngredients) {
-                        // Ensure pattern has recipe for ingredient matching
-                        if (pattern.getRecipe() == null && level != null) {
-                            pattern.findRecipe(level);
-                        }
-                        // Use ingredient-based filtering
-                        return pattern.testForIngredient(stack, slot);
+                        Ingredient ingredientFromSlot = BlueprintItem.getIngredientFromSlot(blueprint, slot);
+                        return ingredientFromSlot != null && ingredientFromSlot.test(stack);
                     } else {
-                        // Use exact item matching
                         return pattern.testForPattern(stack, slot);
                     }
                 }
-                return !outputSlots.contains(slot);
+                return !(stack.getItem() instanceof BlueprintItem) && !outputSlots.contains(slot);
             }
         });
         setRecipeTypeAndContainer(RecipeType.CRAFTING, () -> new SimpleCraftingContainer(inventory, outputSlots));
@@ -109,21 +78,30 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
      * Slotta zaten kova varsa tanktan sıvı kullanılmaz.
      * @return Map&lt;slotIndex, FluidStack needed&gt;
      */
-    private Map<Integer, FluidStack> getRequiredBucketFluids() {
-        Map<Integer, FluidStack> requiredFluids = new HashMap<>();
-        if (pattern == null) return requiredFluids;
+    private Map<Integer, FluidStack> getRequiredFluids() {
+        Map<Integer, FluidStack> result = new HashMap<>();
         
-        Map<Integer, FluidStack> bucketSlots = pattern.getBucketFluidSlots();
-        for (Map.Entry<Integer, FluidStack> entry : bucketSlots.entrySet()) {
-            int slot = entry.getKey();
-            // Check if we have a bucket in this slot already
-            ItemStack slotStack = inventory.getStackInSlot(slot);
-            if (slotStack.isEmpty()) {
-                // No bucket in slot, need to use tank fluid
-                requiredFluids.put(slot, entry.getValue());
-            }
+        if (pattern == null) {
+            return result;
         }
-        return requiredFluids;
+        
+        Map<Integer, FluidIngredient> fluids =
+            pattern.getFluidIngredients();
+        
+        for (Map.Entry<Integer, FluidIngredient> entry : fluids.entrySet()) {
+            int slot = entry.getKey();
+            
+            if (!inventory.getStackInSlot(slot).isEmpty()) {
+                continue;
+            }
+            
+            /*result.put(
+                slot,
+                entry.getValue().getFluid()
+            );*/
+        }
+        
+        return result;
     }
     
     /**
@@ -161,33 +139,23 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
     }
     
     /**
-     * Slotta kova yerine tanktan sıvı kullanılıp kullanılamayacağını kontrol eder
-     */
-    private boolean canUseTankFluidForSlot(int slot) {
-        if (pattern == null || tank == null) return false;
-        
-        FluidStack requiredFluid = pattern.getRequiredFluidForSlot(slot);
-        if (requiredFluid.isEmpty()) return false;
-        
-        FluidStack tankFluid = tank.getFluid(0);
-        return !tankFluid.isEmpty()
-            && tankFluid.getFluid().isSame(requiredFluid.getFluid())
-            && tankFluid.getAmount() >= requiredFluid.getAmount();
-    }
-    
-    /**
      * Tarif için CraftingContainer oluşturur, tanktan sıvı kullanımını destekler.
      * Blueprint pattern'deki kova item'ını sanal olarak slota koyar.
      */
-    private CraftingContainer createCraftingContainer() {
+    /*private CraftingContainer createCraftingContainer() {
         return new SimpleCraftingContainer(inventory, outputSlots) {
             @Override
             public ItemStack getItem(int slot) {
                 ItemStack original = super.getItem(slot);
-                // If slot is empty and pattern needs a bucket, check tank
-                if (original.isEmpty() && canUseTankFluidForSlot(slot)) {
-                    // Return the virtual bucket from pattern for crafting
-                    return pattern.getBucketItemForSlot(slot);
+                FluidStack contained = FluidUtil.getFluidContained(original).orElse(FluidStack.EMPTY);
+                if (!contained.isEmpty()) {
+                    ItemStack bucketStack = Items.BUCKET.getDefaultInstance();
+                    IFluidHandlerItem handler = FluidUtil.getFluidHandler(bucketStack).orElse(null);
+                    if (handler != null) {
+                        handler.fill(contained, IFluidHandler.FluidAction.EXECUTE);
+                        bucketStack = handler.getContainer();
+                        return bucketStack;
+                    }
                 }
                 return original;
             }
@@ -201,44 +169,100 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                 return items;
             }
         };
+    }*/
+    
+    private CraftingContainer createCraftingContainer() {
+        Map<Integer, FluidIngredient> fluidIngredients =
+            pattern != null
+                ? pattern.getFluidIngredients()
+                : Collections.emptyMap();
+        
+        return new SimpleCraftingContainer(inventory, outputSlots) {
+            
+            @Override
+            public ItemStack getItem(int slot) {
+                ItemStack stack = super.getItem(slot);
+                
+                if (!stack.isEmpty()) {
+                    return stack;
+                }
+                
+                FluidIngredient ingredient =
+                    fluidIngredients.get(slot);
+                
+                if (ingredient == null) {
+                    return ItemStack.EMPTY;
+                }
+                
+                FluidStack tankFluid =
+                    tank.getFluid(0);
+                
+                if (tankFluid.isEmpty()) {
+                    return ItemStack.EMPTY;
+                }
+                
+                if (!ingredient.test(tankFluid)) {
+                    return ItemStack.EMPTY;
+                }
+                
+                return FluidUtil.getFilledBucket(tankFluid);
+            }
+            
+            @Override
+            public List<ItemStack> getItems() {
+                List<ItemStack> list = new ArrayList<>();
+                
+                for (int i = 0; i < getContainerSize(); i++) {
+                    list.add(getItem(i));
+                }
+                
+                return list;
+            }
+        };
     }
     
     private CraftingRecipe previousRecipe = null;
-    @Override
+    /*@Override
 	public void findRecipe() {
         ItemStack blueprint = inventory.getStackInSlot(10);
         if (!blueprint.isEmpty()) {
-            SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped(9);
+            *//*SimpleContainerCrafterWrapped container = new SimpleContainerCrafterWrapped();
             for (int i = 0; i < 9; i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
                 container.setItem(i, stack);
             }
-            findRecipeFor(recipeType, () -> container);
+            findRecipeFor(recipeType, () -> container);*//*
             pattern = BlueprintItem.getPattern(blueprint);
+            //CraftingContainer craftingContainer = createCraftingContainer();
+            findRecipeFor(recipeType, recipeContainer);
         } else {
             super.findRecipe();
         }
-    }
+    }*/
     
     @Override
     protected void configureProcessCondition(ProcessCondition condition, @org.jetbrains.annotations.Nullable Recipe<?> recipe) {
         if (recipe instanceof CraftingRecipe craftingRecipe) {
             if (pattern != null) {
-                pattern.findRecipe(level);
+                //pattern.findRecipe(level);
                 condition.createCustomCondition(() -> pattern.getRecipe() == null || pattern.getRecipe() != recipe);
                 
                 // Check if tank has sufficient fluid for bucket requirements (pattern-based)
-                Map<Integer, FluidStack> requiredFluids = getRequiredBucketFluids();
+                /*Map<Integer, FluidStack> requiredFluids = getRequiredBucketFluids();
                 condition.createCustomCondition(() -> !hasSufficientFluidInTank(requiredFluids));
+                requiredFluids.forEach((slot, fluidStack) -> {
+                    System.out.println("Slot " + slot + " requires " + fluidStack.getAmount() + "mb of " + fluidStack.getFluid().builtInRegistryHolder().key().location());
+                });*/
             }
             
-            condition.queueImport(craftingRecipe.getResultItem(level.registryAccess()))
-                .commitQueuedImports();
+            ItemStack resultItem = craftingRecipe.assemble((CraftingContainer) recipeContainer.get(), level.registryAccess());
+            resultItem.onCraftedBy(level, getFakePlayer(), resultItem.getCount());
+            condition.queueImport(resultItem).commitQueuedImports();
         }
     }
     
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         performAutoInputItems(lvl, pos);
         performAutoInputFluids(lvl, pos);
@@ -255,38 +279,34 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
         previousRecipe = recipe;
         
         // Get required fluids for bucket substitution (pattern-based)
-        Map<Integer, FluidStack> requiredFluids = getRequiredBucketFluids();
+        //Map<Integer, FluidStack> requiredFluids = getRequiredBucketFluids();
         
         progress(() -> {
-            FakePlayer fakePlayer = FakePlayerHelper.getFakePlayer(this, lvl);
-            fakePlayer.setYRot(st.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
-            fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
-            
             // Create crafting container that substitutes buckets with tank fluid
-            CraftingContainer craftingContainer = requiredFluids.isEmpty()
+            /*CraftingContainer craftingContainer = requiredFluids.isEmpty()
                 ? (CraftingContainer) recipeContainer.get()
-                : createCraftingContainer();
+                : createCraftingContainer();*/
             
-            ItemStack result = recipe.assemble(craftingContainer, lvl.registryAccess());
-            result.onCraftedBy(lvl, fakePlayer, result.getCount());
-            NonNullList<ItemStack> remainders = lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, craftingContainer, lvl);
+            ItemStack result = recipe.assemble((CraftingContainer) recipeContainer.get(), lvl.registryAccess());
+            result.onCraftedBy(lvl, getFakePlayer(), result.getCount());
+            NonNullList<ItemStack> remainders = lvl.getRecipeManager().getRemainingItemsFor(RecipeType.CRAFTING, (CraftingContainer) recipeContainer.get(), lvl);
             inventory.insertItemForced(9, result, false);
             
             // Extract items from slots (skip slots that use tank fluid)
-            for (int i = 0; i < 9; i++) {
+            /*for (int i = 0; i < 9; i++) {
                 if (!requiredFluids.containsKey(i)) {
                     inventory.extractItem(i, 1, false);
                 }
-            }
+            }*/
             
             // Drain fluid from tank for bucket substitutions
-            drainFluidFromTank(requiredFluids);
+            //drainFluidFromTank(requiredFluids);
             
             // Handle remainders (buckets from tank fluid become empty buckets)
             for (int i = 0; i < remainders.size(); i++) {
                 ItemStack remainder = remainders.get(i);
                 if (!remainder.isEmpty()) {
-                    if (requiredFluids.containsKey(i)) {
+                    /*if (requiredFluids.containsKey(i)) {
                         // Remainder from tank fluid substitution - insert to output or drop
                         ItemStack leftover = inventory.insertItemForced(9, remainder, false);
                         if (!leftover.isEmpty()) {
@@ -298,9 +318,9 @@ public class AdvancedCrafter extends SidedTransferMachine<AdvancedCrafterMenu> {
                                 }
                             }
                         }
-                    } else {
+                    } else {*/
                         inventory.setStackInSlot(i, remainder);
-                    }
+                    //}
                 }
             }
         });

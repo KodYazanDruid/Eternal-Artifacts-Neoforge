@@ -4,8 +4,8 @@ import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
-import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import net.minecraft.core.BlockPos;
@@ -20,15 +20,14 @@ import java.util.List;
 
 public class AlchemicalDynamo extends AbstractDynamo<DynamoMenu> {
 	public AlchemicalDynamo(BlockPos pos, BlockState blockState) {
-		super(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), pos, blockState, DynamoMenu::new);
+		super(ModMachines.ALCHEMICAL_DYNAMO, pos, blockState);
 		setTank(() -> createBasicTank(4000, (fs) -> fs.is(ModTags.Fluids.POTION), false, true));
 		setDefaultEnergyPerTick(80);
 	}
 	
 	@Override
 	protected boolean canProcessRecipeless() {
-		FluidStack fluid = tank.getFluid(0);
-		return !fluid.isEmpty() && fluid.is(ModTags.Fluids.POTION);
+		return true;
 	}
 	
 	@Override

@@ -5,7 +5,7 @@ import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.registrar.MachineHolder;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public abstract class GenericMachine extends SidedTransferMachine<GenericMachine
     protected GenericScreenInfo screenInfo = new GenericScreenInfo(this);
 
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         super.tickServer(lvl, pos, st);
         if (inventory != null && performAutoTransferItems) {
             if (inventory.getSlots() - outputSlots.size() > 0) performAutoInputItems(lvl, pos);

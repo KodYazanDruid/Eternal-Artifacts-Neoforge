@@ -2,8 +2,10 @@
   "type": "eternalartifacts:fluid_combusting",
   "duration": 100,
   "fuel": {
-    "amount": 100,
-    "id": "minecraft:lava"
+    "FluidStack": {
+      "Amount": 100,
+      "FluidName": "minecraft:lava"
+    }
   },
   "generation": 40
 }

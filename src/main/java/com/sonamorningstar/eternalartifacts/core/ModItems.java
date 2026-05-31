@@ -284,6 +284,10 @@ public class ModItems {
     public static final DeferredItem<Item> CACTUS_CHESTPLATE = registerStacksToOne("cactus_chestplate", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.CHESTPLATE, p));
     public static final DeferredItem<Item> CACTUS_LEGGINGS = registerStacksToOne("cactus_leggings", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> CACTUS_BOOTS = registerStacksToOne("cactus_boots", p -> new ArmorItem(ModArmorMaterials.CACTUS, ArmorItem.Type.BOOTS, p));
+    public static final DeferredItem<Item> TERRASTEEL_HELMET = registerStacksToOne("terrasteel_helmet", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> TERRASTEEL_CHESTPLATE = registerStacksToOne("terrasteel_chestplate", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> TERRASTEEL_LEGGINGS = registerStacksToOne("terrasteel_leggings", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> TERRASTEEL_BOOTS = registerStacksToOne("terrasteel_boots", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.BOOTS, p));
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

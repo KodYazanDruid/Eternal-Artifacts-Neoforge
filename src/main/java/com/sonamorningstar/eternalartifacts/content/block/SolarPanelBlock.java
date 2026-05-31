@@ -73,7 +73,7 @@ public class SolarPanelBlock extends SlabBlock implements EntityBlock {
 	@Nullable
 	@Override
 	public <B extends BlockEntity> BlockEntityTicker<B> getTicker(Level level, BlockState pState, BlockEntityType<B> pBlockEntityType) {
-		return new BaseMachineBlock.SimpleTicker<>(level.isClientSide());
+		return level.isClientSide() ? new BaseMachineBlock.ClientTicker<>() : new BaseMachineBlock.ServerTicker<>();
 	}
 	
 	@Override

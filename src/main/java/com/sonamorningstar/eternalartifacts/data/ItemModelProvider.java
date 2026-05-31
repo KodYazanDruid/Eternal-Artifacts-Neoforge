@@ -240,6 +240,10 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.SHADOW_RAY_TOME.get());
         basicItem(ModItems.PURPLE_GOLD_INGOT.get());
         basicItem(ModItems.TERRASTEEL_INGOT.get());
+        basicItem(ModItems.TERRASTEEL_HELMET.get());
+        basicItem(ModItems.TERRASTEEL_CHESTPLATE.get());
+        basicItem(ModItems.TERRASTEEL_LEGGINGS.get());
+        basicItem(ModItems.TERRASTEEL_BOOTS.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));
@@ -287,8 +291,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     }
 
     private void bucketItem(FluidHolder<?> holder) {
-        if (holder.getBucketHolder() == null) return;
-        withExistingParent(holder.getBucketHolder().getId().getPath(),
+        if (!holder.hasBucket()) return;
+        withExistingParent(holder.bucketHolder().getId().getPath(),
             new ResourceLocation("neoforge", "item/bucket_drip"))
                 .customLoader(DynamicFluidContainerModelBuilder::begin)
                 .fluid(holder.getFluid())

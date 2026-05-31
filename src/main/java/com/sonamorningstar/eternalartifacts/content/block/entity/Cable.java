@@ -67,7 +67,7 @@ public class Cable extends AbstractPipeBlockEntity<IEnergyStorage> implements Ti
     }
     
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         if (isDirty) {
             updateConnections(lvl);
             isDirty = false;

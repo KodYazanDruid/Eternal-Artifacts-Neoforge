@@ -70,15 +70,6 @@ public class ModBlockEntities {
         BlockEntityType.Builder.of(DeepFluidStorageUnit::new,
             ModBlocks.DEEP_FLUID_STORAGE_UNIT.get()
         ).build(null));
-    
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidCombustionDynamo>> FLUID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("fluid_combustion_dynamo", ()->
-        BlockEntityType.Builder.of(FluidCombustionDynamo::new, ModBlocks.FLUID_COMBUSTION_DYNAMO.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<SolidCombustionDynamo>> SOLID_COMBUSTION_DYNAMO = BLOCK_ENTITIES.register("solid_combustion_dynamo", ()->
-        BlockEntityType.Builder.of(SolidCombustionDynamo::new, ModBlocks.SOLID_COMBUSTION_DYNAMO.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AlchemicalDynamo>> ALCHEMICAL_DYNAMO = BLOCK_ENTITIES.register("alchemical_dynamo", ()->
-        BlockEntityType.Builder.of(AlchemicalDynamo::new, ModBlocks.ALCHEMICAL_DYNAMO.get()).build(null));
-    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CulinaryDynamo>> CULINARY_DYNAMO = BLOCK_ENTITIES.register("culinary_dynamo", ()->
-        BlockEntityType.Builder.of(CulinaryDynamo::new, ModBlocks.CULINARY_DYNAMO.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GardeningPotEntity>> GARDENING_POT = BLOCK_ENTITIES.register("gardening_pot", () ->
             BlockEntityType.Builder.of(GardeningPotEntity::new, ModBlocks.GARDENING_POT.get()).build(null));

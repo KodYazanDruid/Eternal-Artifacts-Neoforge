@@ -50,7 +50,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.STRIPPED_CITRUS_LOG.get(), "", "axe");
         tierAndTool(ModBlocks.CITRUS_WOOD.get(), "", "axe");
         tierAndTool(ModBlocks.STRIPPED_CITRUS_WOOD.get(), "", "axe");
-        tierAndTool(ModBlocks.FLUID_COMBUSTION_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.DEEPSLATE_MANGANESE_ORE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.RAW_MANGANESE_BLOCK.get(), "stone", "pickaxe");
@@ -88,7 +87,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.GOLD_FLUID_PIPE.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.COPPER_ITEM_PIPE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.GOLD_ITEM_PIPE.get(), "iron", "pickaxe");
-        tierAndTool(ModBlocks.SOLID_COMBUSTION_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.SOLAR_PANEL.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.MOSS_MANGANESE_ORE.get(), "stone", "hoe");
         tierAndTool(ModBlocks.MOSS_COPPER_ORE.get(), "stone", "hoe");
@@ -113,8 +111,6 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.COVERED_TIN_CABLE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.INDUSTRIAL_SPONGE.get(), "", "hoe");
         tierAndTool(ModBlocks.WET_INDUSTRIAL_SPONGE.get(), "", "hoe");
-        tierAndTool(ModBlocks.ALCHEMICAL_DYNAMO.get(), "stone", "pickaxe");
-        tierAndTool(ModBlocks.CULINARY_DYNAMO.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.DEEP_ITEM_STORAGE_UNIT.get(), "iron", "pickaxe");
         //tierAndTool(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.DEEP_FLUID_STORAGE_UNIT.get(), "iron", "pickaxe");
@@ -124,13 +120,9 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
             ModBlocks.RESONATOR.get(),
-            ModBlocks.FLUID_COMBUSTION_DYNAMO.get(),
             ModBlocks.NOUS_TANK.get(),
             ModBlocks.SHOCK_ABSORBER.get(),
-            ModBlocks.MACHINE_WORKBENCH.get(),
-            ModBlocks.SOLID_COMBUSTION_DYNAMO.get(),
-            ModBlocks.ALCHEMICAL_DYNAMO.get(),
-            ModBlocks.CULINARY_DYNAMO.get()
+            ModBlocks.MACHINE_WORKBENCH.get()
         );
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).addTag(Tags.Blocks.STORAGE_BLOCKS);
         tag(ModTags.Blocks.MINEABLE_WITH_HAMMAXE).addTags(BlockTags.MINEABLE_WITH_AXE, BlockTags.MINEABLE_WITH_PICKAXE);

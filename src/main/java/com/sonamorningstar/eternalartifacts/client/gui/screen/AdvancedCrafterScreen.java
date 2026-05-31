@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.items.SlotItemHandler;
 import org.jetbrains.annotations.Nullable;
@@ -35,19 +36,13 @@ public class AdvancedCrafterScreen extends AbstractSidedMachineScreen<AdvancedCr
 					var index = sih.getSlotIndex();
 					if (index >= 0 && index < 9 && !blueprint.isEmpty() && blueprint.getItem() instanceof BlueprintItem) {
 						var pattern = BlueprintItem.getPattern(blueprint);
-						var holderOptional = minecraft.level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, pattern.getFakeItems(), minecraft.level);
-						if (holderOptional.isPresent() && BlueprintItem.isUsingTags(blueprint)) {
-							var craftingRecipe = holderOptional.get().value();
-							var ingredients = craftingRecipe.getIngredients();
-							var fakeItemStack = pattern.getFakeItems().getItem(index);
-							if (!fakeItemStack.isEmpty()) {
-								// Fake item'a uyan ingredient'ı bul
-								for (var ingredient : ingredients) {
-									if (ingredient.test(fakeItemStack)) {
-										// Ingredient'ın tüm matching item'larını cycling şeklinde göster
-										ItemRendererHelper.renderItemCarousel(guiGraphics, ingredient.getItems(), x, y, 0.375F);
-										return;
-									}
+						if (BlueprintItem.isUsingTags(blueprint)) {
+							CraftingRecipe recipe = pattern.getRecipe();
+							if (recipe != null) {
+								var ingredient = recipe.getIngredients().get(index);
+								if (!ingredient.isEmpty()) {
+									ItemRendererHelper.renderItemCarousel(guiGraphics, ingredient.getItems(), x, y, 0.375F);
+									return;
 								}
 							}
 							return;

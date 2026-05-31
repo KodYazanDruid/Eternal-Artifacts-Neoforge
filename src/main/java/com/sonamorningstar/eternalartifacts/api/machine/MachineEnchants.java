@@ -105,10 +105,7 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.HARVESTER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.FLUID_PUMP.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		
-		enchantMap.put(ModBlockEntities.FLUID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
-		enchantMap.put(ModBlockEntities.SOLID_COMBUSTION_DYNAMO.get(), dynamoEnchants);
-		enchantMap.put(ModBlockEntities.ALCHEMICAL_DYNAMO.get(), dynamoEnchants);
-		enchantMap.put(ModBlockEntities.CULINARY_DYNAMO.get(), dynamoEnchants);
+		ModMachines.MACHINES.getDynamos().forEach(dynamo -> enchantMap.put(dynamo.getBlockEntity(), dynamoEnchants));
 		
 		var marineEnchs = new HashSet<>(commonMachineEnchants);
 		marineEnchs.add(Enchantments.MOB_LOOTING);

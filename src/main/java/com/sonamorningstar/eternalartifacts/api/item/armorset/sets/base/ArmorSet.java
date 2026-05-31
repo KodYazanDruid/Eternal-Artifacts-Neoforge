@@ -1,6 +1,10 @@
 package com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base;
 
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import lombok.Getter;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -9,12 +13,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 @Getter
 public class ArmorSet {
 	private final ResourceLocation key;
 	private final List<Item> armorPieces;
 	private final Predicate<ItemStack>[] armorPieceTesters;
+	public Supplier<Component> descriptionSupplier = () -> CommonComponents.space().append(ModConstants.TOOLTIP.withSuffixTranslatable(getKey().toLanguageKey() + ".desc"))
+		.withStyle(ChatFormatting.DARK_GREEN);
 	public boolean hasDescription = true;
 	
 	@SafeVarargs

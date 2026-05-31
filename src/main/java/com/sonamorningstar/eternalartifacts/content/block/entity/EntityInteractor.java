@@ -111,13 +111,12 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);
 		
 		ItemStack interactStack = inventory.getStackInSlot(0);
 		getFakePlayer();
-		setupFakePlayer(st, ((ServerLevel) lvl));
 		
 		transferFluidToTank(interactStack);
 		

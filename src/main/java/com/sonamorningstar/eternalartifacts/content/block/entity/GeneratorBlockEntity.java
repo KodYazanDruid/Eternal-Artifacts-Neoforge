@@ -4,7 +4,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModMultiblocks;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class GeneratorBlockEntity extends AbstractMultiblockBlockEntity {
@@ -22,7 +22,7 @@ public class GeneratorBlockEntity extends AbstractMultiblockBlockEntity {
 	}
 	
 	@Override
-	public void tickMaster(Level lvl, BlockPos pos, BlockState st) {
+	public void tickMaster(ServerLevel lvl, BlockPos pos, BlockState st) {
 	
 	}
 }

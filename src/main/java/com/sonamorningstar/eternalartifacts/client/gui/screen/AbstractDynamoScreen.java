@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
 import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.caches.InfiniteDynamoProcessCache;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamo;
@@ -20,13 +21,13 @@ public abstract class AbstractDynamoScreen<M extends DynamoMenu> extends Abstrac
 		super.render(gui, mx, my, partialTick);
 		if (menu.getBlockEntity() instanceof AbstractDynamo<?> dynamo){
 			DynamoProcessCache cache = dynamo.getCache();
-			if (cache != null){
+			if (cache != null && dynamo.isWorking()){
 				gui.drawString(font,
 					ModConstants.GUI.withSuffixTranslatable("dynamo_produce_rate")
 						.append(": " + cache.getGeneration()+"RF/T"),
 					leftPos + 44, topPos + 46, labelColor, false);
 			}
-			renderBurn(gui, leftPos + 81, topPos + 55, mx, my);
+			if (!(cache instanceof InfiniteDynamoProcessCache)) renderBurn(gui, leftPos + 81, topPos + 55, mx, my);
 		}
 	}
 }

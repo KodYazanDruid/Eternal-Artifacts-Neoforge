@@ -84,7 +84,7 @@ public class EmiPlugin implements dev.emi.emi.api.EmiPlugin {
         registry.addWorkstation(SolidifierCategory.SOLIDIFIER_CATEGORY, EmiStack.of(ModMachines.SOLIDIFIER.getItem()));
         registry.addWorkstation(HammeringCategory.HAMMERING_CATEGORY, EmiIngredient.of(ModTags.Items.TOOLS_HAMMER));
         registry.addWorkstation(FluidMixingCategory.FLUID_MIXING_CATEGORY, EmiStack.of(ModMachines.FLUID_MIXER.getItem()));
-        registry.addWorkstation(FluidCombustingCategory.FLUID_COMBUSTING_CATEGORY, EmiStack.of(ModBlocks.FLUID_COMBUSTION_DYNAMO.asItem()));
+        registry.addWorkstation(FluidCombustingCategory.FLUID_COMBUSTING_CATEGORY, EmiStack.of(ModMachines.FLUID_COMBUSTION_DYNAMO));
 
         // Machine recipes
         registry.addRecipe(new MeatPackerCategory());

@@ -6,6 +6,7 @@ import com.sonamorningstar.eternalartifacts.container.ItemDynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import net.minecraft.core.BlockPos;
@@ -21,15 +22,14 @@ import java.util.List;
 
 public class CulinaryDynamo extends AbstractDynamo<ItemDynamoMenu> {
 	public CulinaryDynamo(BlockPos pos, BlockState blockState) {
-		super(ModBlockEntities.CULINARY_DYNAMO.get(), pos, blockState, ItemDynamoMenu::new);
+		super(ModMachines.CULINARY_DYNAMO, pos, blockState);
 		setInventory(() -> createBasicInventory(1, List.of(), (slot, stack) -> stack.isEdible()));
 		setDefaultEnergyPerTick(80);
 	}
 	
 	@Override
 	protected boolean canProcessRecipeless() {
-		ItemStack stack = inventory.getStackInSlot(0);
-		return !stack.isEmpty() && stack.isEdible();
+		return true;
 	}
 	
 	@Override

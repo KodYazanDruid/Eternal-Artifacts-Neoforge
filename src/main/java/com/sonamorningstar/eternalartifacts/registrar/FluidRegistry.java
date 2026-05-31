@@ -197,7 +197,7 @@ public class FluidRegistry {
     }
     
     public boolean isGenericTexture(FluidHolder<?> holder) {
-        return holder.isGenericTexture();
+        return holder.genericTexture();
     }
     
     public Collection<DeferredHolder<FluidType, ? extends FluidType>> getFluidTypeEntries() {

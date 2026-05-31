@@ -19,14 +19,16 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Getter
 public enum ModArmorMaterials implements ArmorMaterial {
-    COMFY("comfy", 6, createDefenceMap(2, 5, 6, 2), 15,
+    COMFY("comfy", 6, createDefenceMap(2, 6, 5, 2), 15,
             SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER)),
-    SHULKER("shulker", 9, createDefenceMap(4, 6, 8, 4), 25,
+    SHULKER("shulker", 9, createDefenceMap(4, 8, 6, 4), 25,
             SoundEvents.SHULKER_BOX_OPEN, 1.5F, 0.0F, () -> Ingredient.of(ModTags.Items.SHULKER_SHELL)),
     STEEL("steel", 22, createDefenceMap(3, 7, 6, 2), 16,
             SoundEvents.ARMOR_EQUIP_IRON, 1.0F, 0.05F, () -> Ingredient.of(ModTags.Items.INGOTS_STEEL)),
     CACTUS("cactus", 3, createDefenceMap(1, 3, 2, 1), 8,
-            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.CACTUS));
+            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.CACTUS)),
+    TERRASTEEL("terrasteel", 3, createDefenceMap(4, 8, 6, 4), 28,
+            SoundEvents.ARMOR_EQUIP_DIAMOND, 0.0F, 0.0F, () -> Ingredient.of(ModItems.TERRASTEEL_INGOT));
 
     private final String name;
     @Getter(AccessLevel.NONE)

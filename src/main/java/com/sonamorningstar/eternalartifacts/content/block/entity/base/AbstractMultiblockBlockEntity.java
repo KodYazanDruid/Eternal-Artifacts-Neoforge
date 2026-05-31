@@ -17,6 +17,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -413,7 +414,7 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 	 * Main logic handled in the master but disciples can also tick if they needed.
 	 */
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		if (isMaster) {
 			super.tickServer(lvl, pos, st);
 			tickMaster(lvl, pos, st);
@@ -427,11 +428,11 @@ public abstract class AbstractMultiblockBlockEntity extends Machine<AbstractMach
 		}
 	}
 	
-	public void tickMaster(Level lvl, BlockPos pos, BlockState st) {
+	public void tickMaster(ServerLevel lvl, BlockPos pos, BlockState st) {
 	
 	}
 	
-	public void tickDisciple(Level lvl, BlockPos pos, BlockState st) {
+	public void tickDisciple(ServerLevel lvl, BlockPos pos, BlockState st) {
 	
 	}
 }

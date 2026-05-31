@@ -133,6 +133,7 @@ public class ModTags {
         public static final TagKey<Fluid> POTION = forgeTag("potion");
         public static final TagKey<Fluid> HONEY = forgeTag("honey");
         public static final TagKey<Fluid> SLIME = forgeTag("slime");
+        public static final TagKey<Fluid> BIOFUEL = forgeTag("biofuel");
 		
 		private static TagKey<Fluid> forgeTag(String name) { return FluidTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Fluid> modTag(String name) { return FluidTags.create(new ResourceLocation(MODID, name)); }

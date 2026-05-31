@@ -1,7 +1,7 @@
 {
   "type": "eternalartifacts:compressing",
   "input": {
-    "amount": 4,
+    "amount": 2,
     "tag": "forge:crops"
   },
   "output": {

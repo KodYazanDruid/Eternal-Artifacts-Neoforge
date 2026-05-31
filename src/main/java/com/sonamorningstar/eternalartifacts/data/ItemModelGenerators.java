@@ -30,10 +30,6 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
     public void run() {
         createBEWLRTransforms(ModBlocks.JAR);
         createBEWLRTransforms(ModBlocks.NOUS_TANK);
-        createBEWLRTransforms(ModBlocks.FLUID_COMBUSTION_DYNAMO);
-        createBEWLRTransforms(ModBlocks.SOLID_COMBUSTION_DYNAMO);
-        createBEWLRTransforms(ModBlocks.ALCHEMICAL_DYNAMO);
-        createBEWLRTransforms(ModBlocks.CULINARY_DYNAMO);
         createBEWLRTransforms(ModMachines.OIL_REFINERY);
         createBEWLRTransforms(ModBlocks.ENERGY_DOCK);
         useParent(ModBlocks.DROWNED_HEAD, ModelTemplates.SKULL_INVENTORY);
@@ -43,6 +39,7 @@ public class ItemModelGenerators extends net.minecraft.data.models.ItemModelGene
         useParent(ModBlocks.SOUL_BLAZE_HEAD, ModelTemplates.SKULL_INVENTORY);
         createBEWLRTransforms(ModBlocks.DEEP_ITEM_STORAGE_UNIT);
         createBEWLRTransforms(ModBlocks.DEEP_FLUID_STORAGE_UNIT);
+        ModMachines.MACHINES.getDynamos().forEach(this::createBEWLRTransforms);
         /*dsuItemModel(ModBlocks.DEEP_ITEM_STORAGE_UNIT);
         dsuItemModel(ModBlocks.DEEP_FLUID_STORAGE_UNIT);*/
     }

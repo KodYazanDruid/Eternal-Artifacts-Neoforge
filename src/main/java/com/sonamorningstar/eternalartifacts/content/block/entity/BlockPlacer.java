@@ -94,15 +94,13 @@ public class BlockPlacer extends SidedTransferMachine<BlockInteractorMenu> imple
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputItems(lvl, pos);
 		performAutoOutputItems(lvl, pos);
 		performAutoInputFluids(lvl, pos);
 		if (!redstoneChecks(lvl)) return;
-		
 		getFakePlayer();
-		setupFakePlayer(st, ((ServerLevel) lvl));
 		Direction facing = st.getValue(BlockStateProperties.FACING);
 		BlockPos targetPos = getBlockPos().relative(facing);
 		BlockState targetState = lvl.getBlockState(targetPos);

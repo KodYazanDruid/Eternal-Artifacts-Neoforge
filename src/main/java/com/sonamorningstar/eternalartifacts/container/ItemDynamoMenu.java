@@ -11,17 +11,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class ItemDynamoMenu extends DynamoMenu {
-	public ItemDynamoMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
-		this(pContainerId, inv, inv.player.level().getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
-	}
-	
-	public ItemDynamoMenu(int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
-		super(pContainerId, inv, entity, data);
+
+	public ItemDynamoMenu(MenuType<?> type, int pContainerId, Inventory inv, BlockEntity entity, ContainerData data) {
+		super(type, pContainerId, inv, entity, data);
 		if (beInventory != null) addSlot(new SlotItemHandler(beInventory, 0, 81, 27));
 	}
 	
-	@Override
-	public MenuType<?> getType() {
-		return ModMenuTypes.ITEM_DYNAMO.get();
-	}
 }

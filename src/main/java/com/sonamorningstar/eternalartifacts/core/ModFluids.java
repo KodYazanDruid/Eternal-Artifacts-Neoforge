@@ -170,6 +170,15 @@ public class ModFluids {
             .mapColor(MapColor.TERRACOTTA_GREEN)
             .build()
     );
+    
+    public static final FluidHolder<LiquidBlock> BIOFUEL = FLUIDS.register(
+        FluidRegistration.create("biofuel")
+            .noBlock()
+            .texture(new ResourceLocation(MODID,"block/biofuel"))
+            .rarity(Rarity.RARE)
+            .mapColor(MapColor.COLOR_PURPLE)
+            .build()
+    );
 
     public static final FluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion("potion", 0, 1000, 1000);
 }

@@ -12,7 +12,7 @@ import com.sonamorningstar.eternalartifacts.util.EnergyUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.Level;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -76,7 +76,7 @@ public class EnergyDockBlockEntity extends ModBlockEntity implements TickableSer
     }
 
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         List<ChargedSheepEntity> entities = lvl.getEntitiesOfClass(ChargedSheepEntity.class, getWorkingArea(pos));
         for (ChargedSheepEntity sheep : entities) {
             ModEnergyStorage energy = getEnergy();

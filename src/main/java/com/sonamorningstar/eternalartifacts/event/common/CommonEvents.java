@@ -252,6 +252,7 @@ public class CommonEvents {
                 }
             }
         }
+        
         ArmorSetRegistry.ArmorSetBonus activeBonus = ArmorSetRegistry.getActiveBonus(hurtEntity);
         if (attacker != null && !source.is(DamageTypes.THORNS) && activeBonus != null && activeBonus.armorSet().is(ArmorSets.CACTUS_ARMOR)) {
             attacker.hurt(hurtEntity.damageSources().thorns(hurtEntity), damage * 0.25F);
@@ -265,18 +266,16 @@ public class CommonEvents {
         LivingEntity target = event.getEntity();
         float remainingHealth = target.getHealth() - event.getAmount();
         
-        if (attacker instanceof LivingEntity leAttacker &&
-            !target.isDeadOrDying() &&
-            !target.getType().is(ModTags.Entities.EXECUTE_BLACKLISTED) &&
-            !source.is(ModDamageTypes.EXECUTE.get())) {
-            
+        if (attacker instanceof LivingEntity leAttacker && !target.getType().is(ModTags.Entities.EXECUTE_BLACKLISTED) && !source.is(ModDamageTypes.EXECUTE.get())) {
             ItemStack finalCut = CharmManager.findCharm(leAttacker, ModItems.FINAL_CUT.get());
             if (!finalCut.isEmpty()) {
                 float threshold = Config.FINAL_CUT_EXECUTE_THRESHOLD.get().floatValue();
                 if (remainingHealth / target.getMaxHealth() <= threshold) {
-                    event.setCanceled(true);
+                    //event.setCanceled(true);
+                    //target.hurt(ModDamageSources.INSTANCES.get(level).execute(leAttacker), Float.MAX_VALUE);
                     Level level = target.level();
-                    target.hurt(ModDamageSources.INSTANCES.get(level).execute(leAttacker), Float.MAX_VALUE);
+                    target.setHealth(0.0F);
+                    target.die(ModDamageSources.INSTANCES.get(level).execute(leAttacker));
                     double pPosY = target.getY() + target.getBbHeight() / 2.0F;
                     level.playSound(null, target.getX(), pPosY, target.getZ(),
                         ModSounds.FINAL_CUT_EFFECT.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
@@ -794,17 +793,26 @@ public class CommonEvents {
         if (usePhase == UseItemOnBlockEvent.UsePhase.BLOCK) {
            if (blockState.is(Blocks.CHEST)) {
                IItemHandler itemHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, blockPos, null);
-               if (!level.isClientSide() && itemHandler != null) {
+               if (itemHandler != null) {
                    for (int i = 0; i < itemHandler.getSlots(); i++) {
                        ItemStack stack = itemHandler.getStackInSlot(i);
                        if (stack.is(ModItems.GOLD_KEY)) {
                            MimicEntity mimic = ModEntities.MIMIC.get().create(level);
                            if (mimic == null) return;
                            float yRot = blockState.getValue(ChestBlock.FACING).toYRot();
+                           if (level instanceof ServerLevel serverLevel) {
+                               EventHooks.onFinalizeSpawn(mimic, serverLevel, serverLevel.getCurrentDifficultyAt(blockPos),
+                                   MobSpawnType.TRIGGERED, null, null);
+                           }
                            mimic.moveTo(blockPos, yRot, 0);
-                           ServerLevel serverLevel = (ServerLevel) level;
-                           EventHooks.onFinalizeSpawn(mimic, serverLevel, serverLevel.getCurrentDifficultyAt(blockPos), MobSpawnType.TRIGGERED, null, null);
-                           serverLevel.addFreshEntityWithPassengers(mimic);
+                           mimic.setYRot(yRot);
+                           mimic.setYHeadRot(yRot);
+                           mimic.setYBodyRot(yRot);
+                           mimic.yRotO = yRot;
+                           mimic.yHeadRotO = yRot;
+                           mimic.yBodyRotO = yRot;
+                           level.addFreshEntity(mimic);
+                           mimic.hurtMarked = true;
                            if (mimic.isAddedToWorld()) {
                                LifterItem.itemAndXpDeleteMonitoring = true;
                                level.setBlockAndUpdate(blockPos, Blocks.AIR.defaultBlockState());

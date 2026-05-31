@@ -166,6 +166,10 @@ public class SizedIngredient implements Predicate<ItemStack> {
     public static SizedIngredient of(Stream<ItemStack> stacks) {
         return fromValues(stacks.filter(value -> !value.isEmpty()).map(ItemValue::new));
     }
+    
+    public static SizedIngredient of(ItemLike item, int amount) {
+        return of(new ItemStack(item, amount));
+    }
 
     public static SizedIngredient of(TagKey<Item> tag, int amount) {
         return fromValues(Stream.of(new TagValue(tag, amount)));

@@ -129,7 +129,6 @@ public class ClientEvents {
     @SubscribeEvent
     public static void renderLevelStage(final RenderLevelStageEvent event) {
         Minecraft mc = Minecraft.getInstance();PoseStack pose = event.getPoseStack();
-        BakedModel model = mc.getItemRenderer().getModel(ModItems.HOLY_DAGGER.toStack(), null, null, 0);
         MultiBufferSource.BufferSource buffer = mc.renderBuffers().bufferSource();
         LivingEntity living = Minecraft.getInstance().player;
 
@@ -139,6 +138,8 @@ public class ClientEvents {
          * This is for first person rendering.
          */
         if(event.getStage().equals(RenderLevelStageEvent.Stage.AFTER_PARTICLES) && living != null && living.hasEffect(ModEffects.DIVINE_PROTECTION.get())) {
+            ItemStack stack = ModItems.HOLY_DAGGER.toStack();
+            BakedModel model = mc.getItemRenderer().getModel(stack, null, null, 0);
             float age = living.tickCount + event.getPartialTick();
             float rotateAngleY = age / -50.0F;
             float rotateAngleX = Mth.sin(age / 5.0F) / 4.0F;
@@ -154,12 +155,9 @@ public class ClientEvents {
                 pose.translate(0F, 0F, -1.5F);
                 for (Direction dir : DIRS) {
                     mc.getItemRenderer().renderQuadList(
-                            pose,
-                            buffer.getBuffer(Sheets.translucentCullBlockSheet()),
+                            pose, buffer.getBuffer(Sheets.translucentCullBlockSheet()),
                             model.getQuads(null, dir, living.getRandom(), ModelData.EMPTY, Sheets.translucentCullBlockSheet()),
-                            ItemStack.EMPTY,
-                            0xF000F0,
-                            OverlayTexture.NO_OVERLAY
+                            stack, 0xF000F0, OverlayTexture.NO_OVERLAY
                     );
                 }
                 pose.popPose();
@@ -416,8 +414,7 @@ public class ClientEvents {
 						tooltip.addAll(gatherModifierTooltips(null, modifiers));
 					}
 					if (set.hasDescription()) {
-						tooltip.add(CommonComponents.space().append(ModConstants.TOOLTIP.withSuffixTranslatable(key.toLanguageKey() + ".desc"))
-							.withStyle(ChatFormatting.DARK_GREEN));
+                        tooltip.add(set.getDescriptionSupplier().get());
 					}
 					int setSize = set.getArmorPieces().size();
 					boolean[] pieceEquipped = new boolean[setSize];

@@ -31,5 +31,6 @@ public class FluidTagsProvider extends net.minecraft.data.tags.FluidTagsProvider
         tag(ModTags.Fluids.POTION).add(ModFluids.POTION.getFluid());
         tag(ModTags.Fluids.HONEY).add(ModFluids.HONEY.getFluid());
         tag(ModTags.Fluids.SLIME).add(ModFluids.SLIME.getFluid());
+        tag(ModTags.Fluids.BIOFUEL).add(ModFluids.BIOFUEL.getFluid());
     }
 }

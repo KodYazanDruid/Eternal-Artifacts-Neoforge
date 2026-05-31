@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.core.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
@@ -75,7 +76,7 @@ public class BluePlasticCauldronBlockEntity extends ModBlockEntity implements Ti
     protected boolean shouldSyncOnUpdate() { return true; }
 
     @Override
-    public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+    public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
         if(cooldown == 0) return;
         BlockState state = lvl.getBlockState(pos);
         if(state.getBlock() instanceof BluePlasticCauldronBlock) {

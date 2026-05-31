@@ -78,7 +78,8 @@ public class ChloroveinPickaxeItem extends PickaxeItem {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
         MutableComponent ench = Enchantments.BLOCK_FORTUNE.getFullname(1).copy();
         int silkTouchLevel = pStack.getEnchantmentLevel(Enchantments.SILK_TOUCH);
-        if (silkTouchLevel <= 0)
+        int fortuneLevel = EnchantmentHelper.getTagEnchantmentLevel(Enchantments.BLOCK_FORTUNE, pStack);
+        if (silkTouchLevel <= 0 && fortuneLevel <= 0)
             pTooltipComponents.add(Component.translatable(ModConstants.TRANSLATE_KEY_PREFIX.withSuffix("item_ench_text"), ench));
     }
 }

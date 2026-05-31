@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.core;
 
 import com.sonamorningstar.eternalartifacts.container.*;
+import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
+import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
 import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
@@ -174,5 +176,31 @@ public class ModMachines {
     public static final MachineHolder<BlockInteractorMenu, BlockBreaker, MachineSixWayBlock<BlockBreaker>, MachineBlockItem>
             BLOCK_BREAKER = MACHINES.register(MachineRegistration
                     .sixWay("block_breaker", BlockInteractorMenu::new, BlockBreaker::new)
+                    .build());
+    
+    // ==================== Dynamos ====================
+    public static final MachineHolder<ItemDynamoMenu, SolidCombustionDynamo, DynamoBlock<SolidCombustionDynamo>, BewlrMachineItem>
+            SOLID_COMBUSTION_DYNAMO = MACHINES.register(MachineRegistration
+                    .dynamo("solid_combustion_dynamo", ItemDynamoMenu::new, SolidCombustionDynamo::new)
+                    .build());
+    public static final MachineHolder<DynamoMenu, FluidCombustionDynamo, DynamoBlock<FluidCombustionDynamo>, BewlrMachineItem>
+            FLUID_COMBUSTION_DYNAMO = MACHINES.register(MachineRegistration
+                    .dynamo("fluid_combustion_dynamo", DynamoMenu::new, FluidCombustionDynamo::new)
+                    .build());
+    public static final MachineHolder<ItemDynamoMenu, CulinaryDynamo, DynamoBlock<CulinaryDynamo>, BewlrMachineItem>
+            CULINARY_DYNAMO = MACHINES.register(MachineRegistration
+                    .dynamo("culinary_dynamo", ItemDynamoMenu::new, CulinaryDynamo::new)
+                    .build());
+    public static final MachineHolder<DynamoMenu, AlchemicalDynamo, DynamoBlock<AlchemicalDynamo>, BewlrMachineItem>
+            ALCHEMICAL_DYNAMO = MACHINES.register(MachineRegistration
+                    .dynamo("alchemical_dynamo", DynamoMenu::new, AlchemicalDynamo::new)
+                    .build());
+    public static final MachineHolder<ItemDynamoMenu, DisenchanterDynamo, DynamoBlock<DisenchanterDynamo>, BewlrMachineItem>
+            DISENCHANTER_DYNAMO = MACHINES.register(MachineRegistration
+                    .dynamo("disenchanter_dynamo", ItemDynamoMenu::new, DisenchanterDynamo::new)
+                    .build());
+    public static final MachineHolder<DynamoMenu, ThermoDynamo, DynamoBlock<ThermoDynamo>, BewlrMachineItem>
+            THERMO_DYNAMO = MACHINES.register(MachineRegistration
+                    .dynamo("thermo_dynamo", DynamoMenu::new, ThermoDynamo::new)
                     .build());
 }

@@ -8,9 +8,9 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMac
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -114,7 +114,7 @@ public class Recycler extends GenericMachine {
 	
 	@SuppressWarnings("ConstantConditions")
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		progress(() -> {
 			var recs = getRecycleOutputs(getCachedRecipe());

@@ -20,8 +20,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayerGameMode;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
@@ -109,15 +107,13 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 	
 	public int destroyTickStart = -1;
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		performAutoInputItems(lvl, pos);
 		performAutoOutputItems(lvl, pos);
 		performAutoOutputFluids(lvl, pos);
 		if (!redstoneChecks(lvl)) return;
-		
 		getFakePlayer();
-		setupFakePlayer(st, ((ServerLevel) lvl));
 		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);
@@ -151,8 +147,8 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 						int filled = tank.fillForced(ModFluids.NOUS.getFluidStack(remainingXp * 20), IFluidHandler.FluidAction.EXECUTE);
 						remainingXp -= filled / 20;
 					}
-					if (remainingXp > 0 && lvl instanceof ServerLevel slvl) {
-						minedState.getBlock().popExperience(slvl, targetPos, remainingXp);
+					if (remainingXp > 0) {
+						minedState.getBlock().popExperience(lvl, targetPos, remainingXp);
 					}
 				}
 			}

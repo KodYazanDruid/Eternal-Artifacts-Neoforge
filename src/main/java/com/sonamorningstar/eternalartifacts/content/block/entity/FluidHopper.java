@@ -11,9 +11,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Nameable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BucketPickup;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -71,7 +71,7 @@ public class FluidHopper extends ModBlockEntity implements Nameable, TickableSer
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		cooldown = Math.min(MAX_COOLDOWN, cooldown + 1);
 		if (cooldown == MAX_COOLDOWN) {
 			IFluidHandler upHandler = lvl.getCapability(Capabilities.FluidHandler.BLOCK, pos.above(), Direction.DOWN);

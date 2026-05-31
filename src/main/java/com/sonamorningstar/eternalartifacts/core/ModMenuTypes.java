@@ -15,16 +15,12 @@ public class ModMenuTypes {
     
     public static final DeferredHolder<MenuType<?>, MenuType<BioFurnaceMenu>> BIOFURNACE = MENUS.register("biofurnace",
             ()-> IMenuTypeExtension.create(BioFurnaceMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<DynamoMenu>> DYNAMO_MENU = MENUS.register("dynamo_menu",
-            ()-> IMenuTypeExtension.create(DynamoMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<NousTankMenu>> NOUS_TANK = MENUS.register("nous_tank",
             ()-> IMenuTypeExtension.create(NousTankMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<TesseractMenu>> TESSERACT = MENUS.register("tesseract",
         ()-> IMenuTypeExtension.create(TesseractMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<MachineWorkbenchMenu>> MACHINE_WORKBENCH = MENUS.register("machine_workbench",
         ()-> IMenuTypeExtension.create(MachineWorkbenchMenu::new));
-    public static final DeferredHolder<MenuType<?>, MenuType<ItemDynamoMenu>> ITEM_DYNAMO = MENUS.register("item_dynamo_menu",
-        ()-> IMenuTypeExtension.create(ItemDynamoMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<SolarPanelMenu>> SOLAR_PANEL = MENUS.register("solar_panel",
         ()-> IMenuTypeExtension.create(SolarPanelMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<PictureScreenMenu>> PICTURE_SCREEN = MENUS.register("picture_screen",

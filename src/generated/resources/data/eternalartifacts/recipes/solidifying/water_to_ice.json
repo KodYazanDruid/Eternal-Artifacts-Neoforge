@@ -1,8 +1,10 @@
 {
   "type": "eternalartifacts:solidifying",
   "inputFluid": {
-    "amount": 1000,
-    "id": "minecraft:water"
+    "FluidStack": {
+      "Amount": 1000,
+      "FluidName": "minecraft:water"
+    }
   },
   "output": {
     "Count": 1,

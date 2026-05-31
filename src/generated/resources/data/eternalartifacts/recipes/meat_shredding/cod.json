@@ -4,7 +4,7 @@
     "item": "minecraft:cod"
   },
   "output": {
-    "Amount": 125,
+    "Amount": 150,
     "FluidName": "eternalartifacts:liquid_meat"
   }
 }

@@ -384,7 +384,7 @@ public final class MachineRecipes {
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK)
 			)
 		);
-		registerMachineRecipe(output, ModBlocks.FLUID_COMBUSTION_DYNAMO,
+		registerMachineRecipe(output, ModMachines.FLUID_COMBUSTION_DYNAMO,
 			" C "+"BMB"+"RFR",
 			Map.of(
 				'C', Ingredient.of(ModItems.CAPACITOR),
@@ -394,7 +394,7 @@ public final class MachineRecipes {
 				'F', Ingredient.of(Items.FURNACE)
 			)
 		);
-		registerMachineRecipe(output, ModBlocks.SOLID_COMBUSTION_DYNAMO,
+		registerMachineRecipe(output, ModMachines.SOLID_COMBUSTION_DYNAMO,
 			" C "+"IMI"+"RFR",
 			Map.of(
 				'C', Ingredient.of(ModItems.CAPACITOR),
@@ -404,7 +404,7 @@ public final class MachineRecipes {
 				'F', Ingredient.of(Items.FURNACE)
 			)
 		);
-		registerMachineRecipe(output, ModBlocks.ALCHEMICAL_DYNAMO,
+		registerMachineRecipe(output, ModMachines.ALCHEMICAL_DYNAMO,
 			" C "+"BMB"+"RJR",
 			Map.of(
 				'C', Ingredient.of(ModItems.CAPACITOR),
@@ -414,7 +414,7 @@ public final class MachineRecipes {
 				'J', Ingredient.of(ModItems.JAR)
 			)
 		);
-		registerMachineRecipe(output, ModBlocks.CULINARY_DYNAMO,
+		registerMachineRecipe(output, ModMachines.CULINARY_DYNAMO,
 			" C "+"IMI"+"RFR",
 			Map.of(
 				'C', Ingredient.of(ModItems.CAPACITOR),
@@ -422,6 +422,26 @@ public final class MachineRecipes {
 				'M', Ingredient.of(Items.CAMPFIRE),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
 				'F', Ingredient.of(ModTags.Items.INGOTS_BRONZE)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.DISENCHANTER_DYNAMO,
+			" C "+"IMI"+"RFR",
+			Map.of(
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(Tags.Items.INGOTS_IRON),
+				'M', Ingredient.of(Items.GRINDSTONE),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'F', Ingredient.of(ModTags.Items.INGOTS_PURPLE_GOLD)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.THERMO_DYNAMO,
+			" C "+"IMI"+"RFR",
+			Map.of(
+				'C', Ingredient.of(ModItems.CAPACITOR),
+				'I', Ingredient.of(ModTags.Items.INGOTS_BRONZE),
+				'M', Ingredient.of(Items.NETHER_BRICKS),
+				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
+				'F', Ingredient.of(ModTags.Items.INGOTS_STEEL)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.ANVILINATOR,

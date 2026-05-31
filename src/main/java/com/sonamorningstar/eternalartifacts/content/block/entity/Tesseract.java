@@ -19,7 +19,6 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -82,7 +81,7 @@ public class Tesseract extends ModBlockEntity implements MenuProvider, ChunkLoad
 	}
 	
 	@Override
-	public void tickServer(Level lvl, BlockPos pos, BlockState st) {
+	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		chunkUnloadCooldown = Math.max(0, chunkUnloadCooldown - 1);
 		ServerLevel sLevel = (ServerLevel) lvl;
 		MinecraftServer server = sLevel.getServer();

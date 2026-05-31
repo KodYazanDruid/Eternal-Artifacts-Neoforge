@@ -9,6 +9,7 @@ import lombok.Getter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
@@ -69,6 +70,21 @@ public class FluidIngredient implements Predicate<FluidStack> {
             return false;
         }
     }
+    
+    public boolean testIgnoreAmount(@Nullable FluidStack other) {
+        if (other == null) {
+            return false;
+        } else if (this.isEmpty()) {
+            return other.isEmpty();
+        } else {
+            for(FluidStack stack : this.getFluidStacks()) {
+                if (stack.equals(other)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
 
     public boolean testFluid(@Nullable Fluid other) {
         if (other == null) return false;
@@ -96,8 +112,8 @@ public class FluidIngredient implements Predicate<FluidStack> {
         }
     }
 
-    protected boolean areStacksEqual(FluidStack left, FluidStack right) {
-        return left.is(right.getFluid());
+    protected static boolean areStacksEqual(FluidStack left, FluidStack right) {
+        return left.getAmount() == right.getAmount() && left.isFluidEqual(right);
     }
 
     public void toNetwork(FriendlyByteBuf buff) {
@@ -181,13 +197,12 @@ public class FluidIngredient implements Predicate<FluidStack> {
 
     public record FluidValue(FluidStack fluidStack, BiFunction<FluidStack, FluidStack, Boolean> comparator) implements FluidIngredient.Value{
         public FluidValue(FluidStack fluidStack) {
-            this(fluidStack, FluidValue::areStacksEqual);
+            this(fluidStack, FluidIngredient::areStacksEqual);
         }
 
         static final Codec<FluidValue> CODEC = RecordCodecBuilder.create( inst -> inst.group(
-                BuiltInRegistries.FLUID.byNameCodec().fieldOf("id").forGetter(fluidValue -> fluidValue.fluidStack.getFluid()),
-                Codec.INT.fieldOf("amount").forGetter(fluidValue -> fluidValue.fluidStack.getAmount())
-        ).apply(inst, (fluid, amount) -> new FluidValue(new FluidStack(fluid, amount))));
+            FluidStack.CODEC.fieldOf("FluidStack").forGetter(fluidValue -> fluidValue.fluidStack)
+        ).apply(inst, FluidValue::new));
 
         @Override
         public boolean equals(Object other) {
@@ -197,11 +212,6 @@ public class FluidIngredient implements Predicate<FluidStack> {
 
         @Override
         public Collection<FluidStack> getFluids() { return Collections.singleton(this.fluidStack); }
-
-        private static boolean areStacksEqual(FluidStack a, FluidStack b) {
-            return a.getFluid().equals(b.getFluid()) &&
-                    a.getAmount() == b.getAmount();
-        }
     }
 
     public record TagValue(TagKey<Fluid> tag, int amount) implements FluidIngredient.Value {

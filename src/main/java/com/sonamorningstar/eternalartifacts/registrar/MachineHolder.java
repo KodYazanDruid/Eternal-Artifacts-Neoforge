@@ -22,6 +22,7 @@ import java.util.Map;
  * Provides type-safe access to menu, block entity, block, and item.
  */
 public record MachineHolder<M extends AbstractMachineMenu, BE extends Machine<M>, B extends BaseMachineBlock<BE>, I extends BlockItem>(
+    MachineRegistration<M, BE, B, I> registration,
     DeferredHolder<MenuType<?>, MenuType<M>> menuHolder,
     DeferredHolder<BlockEntityType<?>, BlockEntityType<BE>> blockEntityHolder,
     DeferredHolder<Block, B> blockHolder,

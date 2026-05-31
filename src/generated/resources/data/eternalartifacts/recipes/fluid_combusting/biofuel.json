@@ -1,0 +1,9 @@
+{
+  "type": "eternalartifacts:fluid_combusting",
+  "duration": 400,
+  "fuel": {
+    "amount": 100,
+    "tag": "forge:biofuel"
+  },
+  "generation": 200
+}

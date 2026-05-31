@@ -15,7 +15,7 @@ public class ModScreens {
     @SubscribeEvent
     public static void registerMenuScreens(RegisterMenuScreensEvent event) {
         ModMachines.MACHINES.getGenericMachines().forEach(machine -> event.register(machine.getMenu(), GenericSidedMachineScreen::new));
-
+        
         event.register(ModMachines.OIL_REFINERY.getMenu(), GenericSidedMachineScreen::new);
         event.register(ModMachines.ELECTRIC_FURNACE.getMenu(), ElectricFurnaceScreen::new);
         event.register(ModMachines.INDUCTION_FURNACE.getMenu(), InductionFurnaceScreen::new);
@@ -28,7 +28,14 @@ public class ModScreens {
         event.register(ModMachines.HARVESTER.getMenu(), HarvesterScreen::new);
         event.register(ModMachines.ANVILINATOR.getMenu(), AnvilinatorScreen::new);
         event.register(ModMachines.ENERGY_DISTRIBUTOR.getMenu(), EnergyDistributorScreen::new);
-
+        
+        event.register(ModMachines.SOLID_COMBUSTION_DYNAMO.getMenu(), ItemDynamoScreen::new);
+        event.register(ModMachines.FLUID_COMBUSTION_DYNAMO.getMenu(), FluidDynamoScreen::new);
+        event.register(ModMachines.CULINARY_DYNAMO.getMenu(), ItemDynamoScreen::new);
+        event.register(ModMachines.ALCHEMICAL_DYNAMO.getMenu(), FluidDynamoScreen::new);
+        event.register(ModMachines.DISENCHANTER_DYNAMO.getMenu(), ItemDynamoScreen::new);
+        event.register(ModMachines.THERMO_DYNAMO.getMenu(), FluidDynamoScreen::new);
+        
         event.register(ModMenuTypes.CHARMS.get(), CharmsScreen::new);
         event.register(ModMenuTypes.FISH.get(), FishScreen::new);
         event.register(ModMenuTypes.BLUEPRINT.get(), BlueprintScreen::new);
@@ -39,5 +46,6 @@ public class ModScreens {
         event.register(ModMenuTypes.PIPE_FILTER_ITEM.get(), PipeFilterItemScreen::new);
         event.register(ModMenuTypes.SOLAR_PANEL.get(), SolarPanelScreen::new);
         event.register(ModMenuTypes.INTERFACE_REMOTE.get(), InterfaceRemoteScreen::new);
+        
     }
 }

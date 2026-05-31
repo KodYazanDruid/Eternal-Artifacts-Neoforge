@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:capacitor"
+    },
+    "F": {
+      "tag": "forge:ingots/purple_gold"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "M": {
+      "item": "minecraft:grindstone"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    }
+  },
+  "pattern": [
+    " C ",
+    "IMI",
+    "RFR"
+  ],
+  "result": {
+    "item": "eternalartifacts:disenchanter_dynamo"
+  }
+}

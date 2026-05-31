@@ -1,0 +1,21 @@
+{
+  "type": "eternalartifacts:fluid_mixing",
+  "fluidInput1": {
+    "amount": 250,
+    "tag": "forge:honey"
+  },
+  "fluidInput2": {
+    "amount": 250,
+    "tag": "forge:milk"
+  },
+  "itemInput": {
+    "item_stack": {
+      "Count": 2,
+      "id": "eternalartifacts:plant_matter"
+    }
+  },
+  "output": {
+    "Amount": 500,
+    "FluidName": "eternalartifacts:biofuel"
+  }
+}
