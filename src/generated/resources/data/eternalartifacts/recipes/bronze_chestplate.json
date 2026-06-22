@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "pattern": [
+    "I I",
+    "III",
+    "III"
+  ],
+  "result": {
+    "item": "eternalartifacts:bronze_chestplate"
+  }
+}

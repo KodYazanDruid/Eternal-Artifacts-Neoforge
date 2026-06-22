@@ -5,12 +5,12 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
+import com.sonamorningstar.eternalartifacts.api.block_search.TreeCapitatorHandler;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSetRegistry;
 import com.sonamorningstar.eternalartifacts.api.item.armorset.ArmorSets;
-import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.ArmorSet;
 import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.AttributeArmorSet;
 import com.sonamorningstar.eternalartifacts.api.machine.PackerRecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.RecyclerRecipeCache;
@@ -37,7 +37,7 @@ import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEncha
 import com.sonamorningstar.eternalartifacts.content.entity.ChargedSheepEntity;
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.core.*;
-import com.sonamorningstar.eternalartifacts.event.custom.DrumInteractEvent;
+import com.sonamorningstar.eternalartifacts.event.custom.DrumExplosionEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.JarDrinkEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.CharmTickEvent;
 import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.ILivingDasher;
@@ -68,6 +68,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
@@ -175,7 +176,7 @@ public class CommonEvents {
     }
 
     @SubscribeEvent
-    public static void drumInteractEvent(DrumInteractEvent event) {
+    public static void drumInteractEvent(DrumExplosionEvent event) {
         FluidStack stack = event.getContent();
         int gasolineExplosionThreshold = Config.GASOLINE_EXPLOSION_THRESHOLD.get();
         if (stack.is(ModTags.Fluids.GASOLINE) && stack.getAmount() >= gasolineExplosionThreshold) {
@@ -629,7 +630,8 @@ public class CommonEvents {
         LivingEntity entity = event.getEntity();
         if(entity.hasEffect(ModEffects.MALADY.get())) event.setCanceled(true);
     }
-
+    
+    private static final Set<Player> MINERS = new HashSet<>();
     public static volatile BlockHitResult eternal_Artifacts_Neoforge$cachedRay;
     @SubscribeEvent
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {

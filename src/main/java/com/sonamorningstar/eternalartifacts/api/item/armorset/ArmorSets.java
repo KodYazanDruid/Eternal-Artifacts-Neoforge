@@ -9,4 +9,6 @@ public class ArmorSets {
 	public static final ResourceLocation STEEL_ARMOR = new ResourceLocation(MODID, "steel_armor");
 	public static final ResourceLocation SHULKER_ARMOR = new ResourceLocation(MODID, "shulker_armor");
 	public static final ResourceLocation TERRASTEEL_ARMOR = new ResourceLocation(MODID, "terrasteel_armor");
+	public static final ResourceLocation BRONZE_ARMOR = new ResourceLocation(MODID, "bronze_armor");
+	public static final ResourceLocation COPPER_ARMOR = new ResourceLocation(MODID, "copper_armor");
 }

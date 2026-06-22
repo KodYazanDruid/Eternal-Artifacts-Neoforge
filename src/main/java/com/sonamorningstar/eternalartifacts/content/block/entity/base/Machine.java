@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.api.machine.config.*;
@@ -275,8 +275,8 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     
     @Override
     public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
-        sendUpdateIfNeeded();
-        tickChunkLoader((ServerLevel) lvl);
+        sendUpdatesIfNeeded();
+        tickChunkLoader(lvl);
         setPreviousRecipe();
         advanceWorkingTicks(lvl, pos);
     }

@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.capabilities.fluid.MultiFluidTank;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
@@ -67,17 +67,17 @@ public class FluidMixer extends GenericMachine {
 			FluidIngredient secondIngredient = recipe.fluidInput2();
 			
 			if (!tank.getFluid(0).isEmpty()) {
-				if (firstIngredient.test(tank.getFluid(0)) && !firstIngredient.isEmpty()) {
+				if (firstIngredient.testIgnoreAmount(tank.getFluid(0)) && !firstIngredient.isEmpty()) {
 					tank.get(0).drainForced(firstIngredient.getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
-				} else if (secondIngredient.test(tank.getFluid(0)) && !secondIngredient.isEmpty()) {
+				} else if (secondIngredient.testIgnoreAmount(tank.getFluid(0)) && !secondIngredient.isEmpty()) {
 					tank.get(0).drainForced(secondIngredient.getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
 				}
 			}
 			
 			if (!tank.getFluid(1).isEmpty()) {
-				if (firstIngredient.test(tank.getFluid(1)) && !firstIngredient.isEmpty()) {
+				if (firstIngredient.testIgnoreAmount(tank.getFluid(1)) && !firstIngredient.isEmpty()) {
 					tank.get(1).drainForced(firstIngredient.getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
-				} else if (secondIngredient.test(tank.getFluid(1)) && !secondIngredient.isEmpty()) {
+				} else if (secondIngredient.testIgnoreAmount(tank.getFluid(1)) && !secondIngredient.isEmpty()) {
 					tank.get(1).drainForced(secondIngredient.getFluidStacks()[0].getAmount(), IFluidHandler.FluidAction.EXECUTE);
 				}
 			}

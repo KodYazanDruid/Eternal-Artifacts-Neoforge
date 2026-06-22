@@ -288,6 +288,15 @@ public class ModItems {
     public static final DeferredItem<Item> TERRASTEEL_CHESTPLATE = registerStacksToOne("terrasteel_chestplate", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.CHESTPLATE, p));
     public static final DeferredItem<Item> TERRASTEEL_LEGGINGS = registerStacksToOne("terrasteel_leggings", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> TERRASTEEL_BOOTS = registerStacksToOne("terrasteel_boots", p -> new ArmorItem(ModArmorMaterials.TERRASTEEL, ArmorItem.Type.BOOTS, p));
+    public static final DeferredItem<Item> BRONZE_HELMET = registerStacksToOne("bronze_helmet", p -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> BRONZE_CHESTPLATE = registerStacksToOne("bronze_chestplate", p -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> BRONZE_LEGGINGS = registerStacksToOne("bronze_leggings", p -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> BRONZE_BOOTS = registerStacksToOne("bronze_boots", p -> new ArmorItem(ModArmorMaterials.BRONZE, ArmorItem.Type.BOOTS, p));
+    public static final DeferredItem<Item> COPPER_HELMET = registerStacksToOne("copper_helmet", p -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.HELMET, p));
+    public static final DeferredItem<Item> COPPER_CHESTPLATE = registerStacksToOne("copper_chestplate", p -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.CHESTPLATE, p));
+    public static final DeferredItem<Item> COPPER_LEGGINGS = registerStacksToOne("copper_leggings", p -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, p));
+    public static final DeferredItem<Item> COPPER_BOOTS = registerStacksToOne("copper_boots", p -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, p));
+    public static final DeferredItem<Item> TROWEL = registerStacksToOne("trowel", p -> new TrowelItem(ModTiers.STEEL, p));
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));

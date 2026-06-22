@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "eternalartifacts:block/soul_magma_block"
+  }
+}

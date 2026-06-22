@@ -9,10 +9,6 @@
     "minecraft:cod",
     "minecraft:totem_of_undying",
     "eternalartifacts:magnet",
-    "eternalartifacts:magic_bane",
-    {
-      "id": "pneumaticcraft:memory_stick",
-      "required": false
-    }
+    "eternalartifacts:magic_bane"
   ]
 }

@@ -10,6 +10,7 @@
     "eternalartifacts:chisel",
     "eternalartifacts:configuration_drive",
     "eternalartifacts:lifter",
-    "eternalartifacts:gold_key"
+    "eternalartifacts:gold_key",
+    "eternalartifacts:trowel"
   ]
 }

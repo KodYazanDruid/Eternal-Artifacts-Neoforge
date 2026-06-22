@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.mojang.datafixers.util.Either;
-import com.sonamorningstar.eternalartifacts.api.caches.FluidVeinCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.FluidVeinCache;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;

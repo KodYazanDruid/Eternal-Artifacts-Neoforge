@@ -1,4 +1,4 @@
-// 1.20.4	2026-05-29T23:01:32.0399118	Loot Tables
+// 1.20.4	2026-06-13T18:51:26.4940118	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -158,6 +158,7 @@ abc1f471c33ddec13e43ea6da49cdb168ac4f665 data/eternalartifacts/loot_tables/block
 ab88dd01e2514689c5c92ad9c9e95e94ade0dbb2 data/eternalartifacts/loot_tables/blocks/solidifier.json
 04ca136cc8a827261991428a8f2f9f5a3302c96f data/eternalartifacts/loot_tables/blocks/solid_combustion_dynamo.json
 cc45ca43451635ecbbfae4c4e70cb3bbafd6a3d8 data/eternalartifacts/loot_tables/blocks/soul_blaze_head.json
+e313cfbbea8ed14ee9ddf1011e13e69326568907 data/eternalartifacts/loot_tables/blocks/soul_magma_block.json
 8b1b87328ecdc6c398069e7bd2be1caf1fd62db0 data/eternalartifacts/loot_tables/blocks/steel_block.json
 c0830d63bf33c77aa89d746676d71de2adb3b3be data/eternalartifacts/loot_tables/blocks/steel_drum.json
 f37a7cd19324a3437da375984a7be8d9407582e4 data/eternalartifacts/loot_tables/blocks/steel_fluid_pipe.json
@@ -176,6 +177,7 @@ a7b634593f2560ea5375f29a1d26927a386925e7 data/eternalartifacts/loot_tables/block
 7ce0cebf1112cf73bcd55ef15f11335d570b6cb9 data/eternalartifacts/loot_tables/blocks/unpacker.json
 2b0c80370322d176412e5576155075e7e626bdd6 data/eternalartifacts/loot_tables/blocks/very_sandy_dark_prismarine.json
 4dc8e7bc72dfbc99f2e1e1703cfd2ef673108379 data/eternalartifacts/loot_tables/blocks/very_sandy_prismarine.json
+6c2ffbf2d3bd16d7f703acc90806eb7cd0b34a5d data/eternalartifacts/loot_tables/blocks/water_tnt.json
 0c2b0cec486fc36ccd2132f4fc852d84f160ba4d data/eternalartifacts/loot_tables/blocks/wet_industrial_sponge.json
 002196bc27b28ffb6eecedf4e4cfe7e2af787b02 data/eternalartifacts/loot_tables/chests/plains_house_desk.json
 52339dfd354046da238ef2175a066c103aa06248 data/eternalartifacts/loot_tables/chests/plains_house_entrance.json

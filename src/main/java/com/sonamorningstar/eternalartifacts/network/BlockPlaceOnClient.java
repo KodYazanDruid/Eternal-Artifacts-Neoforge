@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.network;
 
-import com.sonamorningstar.eternalartifacts.api.item.ChiselBlockPlaceContext;
+import com.sonamorningstar.eternalartifacts.api.item.ToolBlockPlaceContext;
 import com.sonamorningstar.eternalartifacts.network.base.RegisterPacket;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -45,7 +45,7 @@ public record BlockPlaceOnClient(ItemStack stack, BlockPos pos, InteractionHand 
                 if (ctx.player().isPresent()) {
                     if (stack.getItem() instanceof BlockItem blockItem) {
                         var player = ctx.player().get();
-                        ChiselBlockPlaceContext placeContext = new ChiselBlockPlaceContext(player, hand, stack, pos, hitResult);
+                        ToolBlockPlaceContext placeContext = new ToolBlockPlaceContext(player, hand, stack, pos, hitResult);
                         blockItem.updatePlacementContext(placeContext);
                         blockItem.place(placeContext);
                     }

@@ -128,6 +128,31 @@ FMLCommonSetup {
                 }
             });
             
+            AttributeModifier bronzeAttackMult = new AttributeModifier(UUID.fromString("21f3fbae-be45-40c5-b98c-ec724d5f4140"), "Eternal Artifacts Attack Bonus", 0.1, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            AttributeModifier bronzeToughness = new AttributeModifier(UUID.fromString("dd2b189b-32df-4128-8923-86fd1bf183ba"), "Eternal Artifacts Toughness", 2, AttributeModifier.Operation.ADDITION);
+            HashMultimap<Attribute, AttributeModifier> bronzeArmorAttributes = HashMultimap.create();
+            bronzeArmorAttributes.put(Attributes.ATTACK_DAMAGE, bronzeAttackMult);
+            bronzeArmorAttributes.put(Attributes.ARMOR_TOUGHNESS, bronzeToughness);
+            ArmorSet bronzeSet = new AttributeArmorSet(ArmorSets.BRONZE_ARMOR, List.of(
+                ModItems.BRONZE_HELMET.get(),
+                ModItems.BRONZE_CHESTPLATE.get(),
+                ModItems.BRONZE_LEGGINGS.get(),
+                ModItems.BRONZE_BOOTS.get()
+            ), bronzeArmorAttributes);
+            ArmorSetRegistry.registerArmorSetBonus(bronzeSet, living -> {});
+            
+            AttributeModifier copperAttackSpeed = new AttributeModifier(UUID.fromString("ab79ee15-ea7b-4ce6-9244-11e87629ea6e"), "Eternal Artifacts Attack Speed", 0.2, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            //AttributeModifier copperMiningSpeed = new AttributeModifier(UUID.fromString("1c20bfd2-9829-4237-9b75-62a811241a43"), "Eternal Artifacts Mining Speed", 0.1, AttributeModifier.Operation.MULTIPLY_TOTAL);
+            HashMultimap<Attribute, AttributeModifier> copperArmorAttributes = HashMultimap.create();
+            copperArmorAttributes.put(Attributes.ATTACK_SPEED, copperAttackSpeed);
+            //copperArmorAttributes.put(Attributes., copperMiningSpeed);
+            ArmorSet copperSet = new AttributeArmorSet(ArmorSets.COPPER_ARMOR, List.of(
+                ModItems.COPPER_HELMET.get(),
+                ModItems.COPPER_CHESTPLATE.get(),
+                ModItems.COPPER_LEGGINGS.get(),
+                ModItems.COPPER_BOOTS.get()
+            ), copperArmorAttributes);
+            ArmorSetRegistry.registerArmorSetBonus(copperSet, living -> {});
         });
         
         MachineEnchants.bootstrap();

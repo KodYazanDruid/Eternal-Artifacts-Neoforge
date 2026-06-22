@@ -116,6 +116,15 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         //deepStorageUnit(ModBlocks.DEEP_INFINITE_ITEM_STORAGE_UNIT);
         deepStorageUnit(ModBlocks.DEEP_FLUID_STORAGE_UNIT);
         //deepStorageUnit(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT);
+        simpleBlockWithItem(ModBlocks.SOUL_MAGMA_BLOCK.get());
+        
+        simpleBlock(ModBlocks.WATER_TNT.get(), ConfiguredModel.builder().modelFile(
+            models().cubeBottomTop(ModBlocks.WATER_TNT.getId().getPath(),
+                modLoc("block/water_tnt_side"),
+                modLoc("block/water_tnt_bottom"),
+                modLoc("block/water_tnt_top")))
+            .build()
+        );
         
         simpleBlock(ModBlocks.PINK_SLIME_BLOCK.get(),
             ConfiguredModel.builder().modelFile(
@@ -124,17 +133,13 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
                     .texture("particle", modLoc("block/pink_slime_block"))
                     .renderType(mcLoc("translucent"))).build());
 
-        simpleBlock(ModBlocks.MACHINE_BLOCK.get(),
-            ConfiguredModel.builder().modelFile(
-                models().cube(ModBlocks.MACHINE_BLOCK.getId().getPath(),
-                        modLoc("block/machine_bottom"),
-                        modLoc("block/machine_top"),
-                        modLoc("block/machine_side"),
-                        modLoc("block/machine_side"),
-                        modLoc("block/machine_side"),
-                        modLoc("block/machine_side")
-                ).texture("particle", modLoc("block/machine_side"))
-            ).build());
+        simpleBlock(ModBlocks.MACHINE_BLOCK.get(), ConfiguredModel.builder().modelFile(
+            models().cubeBottomTop(ModBlocks.MACHINE_BLOCK.getId().getPath(),
+                modLoc("block/machine_side"),
+                modLoc("block/machine_bottom"),
+                modLoc("block/machine_top")
+            )).build()
+        );
 
         createStateForModelWithProperty(ModBlocks.RESONATOR, BlockStateProperties.FACING);
         createStateForModelWithProperty(ModBlocks.FANCY_CHEST, BlockStateProperties.HORIZONTAL_FACING);

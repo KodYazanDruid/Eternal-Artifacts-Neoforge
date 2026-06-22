@@ -244,6 +244,15 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.TERRASTEEL_CHESTPLATE.get());
         basicItem(ModItems.TERRASTEEL_LEGGINGS.get());
         basicItem(ModItems.TERRASTEEL_BOOTS.get());
+        basicItem(ModItems.BRONZE_HELMET.get());
+        basicItem(ModItems.BRONZE_CHESTPLATE.get());
+        basicItem(ModItems.BRONZE_LEGGINGS.get());
+        basicItem(ModItems.BRONZE_BOOTS.get());
+        basicItem(ModItems.COPPER_HELMET.get());
+        basicItem(ModItems.COPPER_CHESTPLATE.get());
+        basicItem(ModItems.COPPER_LEGGINGS.get());
+        basicItem(ModItems.COPPER_BOOTS.get());
+        basicItem(ModItems.TROWEL.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));
@@ -278,6 +287,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withExistingParent(ModBlocks.ICE_BRICK_WALL.getId().getPath(), modLoc("block/ice_brick_wall_inventory"));
         withParentBlock(ModBlocks.TRASH_CAN);
         withParentBlock(ModBlocks.MACHINE_WORKBENCH);
+        withParentBlock(ModBlocks.WATER_TNT);
 
         ModFluids.FLUIDS.getFluids().stream().filter(FluidHolder::hasBucket).forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {

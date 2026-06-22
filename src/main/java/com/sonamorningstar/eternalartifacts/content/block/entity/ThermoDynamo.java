@@ -1,47 +1,37 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.mojang.datafixers.util.Pair;
-import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
-import com.sonamorningstar.eternalartifacts.api.caches.InfiniteDynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.InfiniteDynamoProcessCache;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
-import com.sonamorningstar.eternalartifacts.container.ItemDynamoMenu;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
-import com.sonamorningstar.eternalartifacts.content.recipe.ingredient.FluidIngredient;
+import com.sonamorningstar.eternalartifacts.content.datamaps.Coolant;
+import com.sonamorningstar.eternalartifacts.content.datamaps.HeatSource;
+import com.sonamorningstar.eternalartifacts.core.ModDataMaps;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-
-import java.util.List;
-import java.util.function.Predicate;
 
 public class ThermoDynamo extends AbstractDynamo<DynamoMenu> {
 	private BlockState heatSourceState = null;
 	private FluidStack coolant = FluidStack.EMPTY;
 	private int heatValue = 0;
 	private int coolantValue = 0;
+	private int coolantConsumption = 0;
 	private boolean updateSourceState = false;
-	public static final List<Pair<Predicate<BlockState>, Integer>> HEAT_SOURCES = List.of(
-		Pair.of(bs -> bs.is(Blocks.LAVA), 1000),
-		Pair.of(bs -> bs.is(Blocks.MAGMA_BLOCK), 850)
-	);
-	//The amount is useless. I used FluidIngredient to include fluid tags and possibly fluids with NBT.
-	public static final List<Pair<FluidIngredient, Integer>> COOLANTS = List.of(
-		Pair.of(FluidIngredient.of(FluidTags.WATER, 1000), 1000)
-	);
+	
 	public ThermoDynamo(BlockPos pos, BlockState blockState) {
 		super(ModMachines.THERMO_DYNAMO, pos, blockState);
-		setTank(() -> createBasicTank(16000, this::isValidCoolant, false, true,
+		setTank(() -> createBasicTank(16000, fs -> fs.getFluidHolder().getData(ModDataMaps.COOLANTS) != null, false, true,
 			() -> {
 				FluidStack fluidStack = tank.getFluidInTank(0);
 				if (!fluidStack.isFluidEqual(coolant)) setCoolant(fluidStack);
@@ -67,28 +57,16 @@ public class ThermoDynamo extends AbstractDynamo<DynamoMenu> {
 		return super.updateBlockState(state, direction, neighborState, level, pos, neighborPos);
 	}
 	
-	protected void spendCoolant() {
-		int drained = tank.drainForced(2, IFluidHandler.FluidAction.SIMULATE).getAmount();
-		if (drained == 2) {
-			tank.drainForced(2, IFluidHandler.FluidAction.EXECUTE);
-		}
-	}
-	
-	protected boolean isValidHeatSource(BlockState heatSource, BlockPos pos, ServerLevel lvl) {
-		return HEAT_SOURCES.stream().anyMatch(p -> p.getFirst().test(heatSource));
-	}
-	
-	protected boolean isValidCoolant(FluidStack coolant) {
-		return COOLANTS.stream().anyMatch(p -> p.getFirst().testIgnoreAmount(coolant));
-	}
-	
 	protected void setCoolant(FluidStack coolant) {
-		if (isValidCoolant(coolant)) {
+		Coolant data = coolant.getFluidHolder().getData(ModDataMaps.COOLANTS);
+		if (data != null) {
 			this.coolant = coolant;
-			coolantValue = COOLANTS.stream().filter(p -> p.getFirst().testIgnoreAmount(coolant)).map(Pair::getSecond).findFirst().orElse(0);
+			coolantValue = data.coolantValue();
+			coolantConsumption = data.consumedPerTick();
 		} else {
 			this.coolant = FluidStack.EMPTY;
 			coolantValue = 0;
+			coolantConsumption = 0;
 		}
 		invalidateDynamoCache();
 	}
@@ -97,23 +75,42 @@ public class ThermoDynamo extends AbstractDynamo<DynamoMenu> {
 	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		if (updateSourceState) {
 			Direction facing = st.getValue(BlockStateProperties.FACING);
-			heatSourceState = lvl.getBlockState(pos.relative(facing.getOpposite()));
-			heatValue = HEAT_SOURCES.stream().filter(p -> p.getFirst().test(heatSourceState)).map(Pair::getSecond).findFirst().orElse(0);
+			BlockPos back = pos.relative(facing.getOpposite());
+			BlockState blockState = lvl.getBlockState(back);
+			FluidState fluidState = lvl.getFluidState(back);
+			BlockState fluidBlockState = fluidState.createLegacyBlock();
+			HeatSource fluidHeatData = null;
+			if (!fluidState.isEmpty() && !fluidBlockState.isAir()) {
+				fluidHeatData = fluidBlockState.getBlockHolder().getData(ModDataMaps.HEAT_BLOCKS);
+			}
+			HeatSource blockHeatData = blockState.getBlockHolder().getData(ModDataMaps.HEAT_BLOCKS);
+			
+			BlockState state = fluidHeatData != null ? fluidBlockState : blockState;
+			HeatSource heatSource = fluidHeatData != null ? fluidHeatData : blockHeatData;
+			if (heatSource != null) {
+				heatSourceState = state;
+				heatValue = heatSource.heatValue();
+			} else {
+				heatSourceState = null;
+				heatValue = 0;
+			}
 			updateSourceState = false;
 			invalidateDynamoCache();
 		}
-		if (heatSourceState == null || !isValidHeatSource(heatSourceState, pos, lvl)) invalidateDynamoCache();
 		super.tickServer(lvl, pos, st);
 	}
 	
 	@Override
 	protected void executeRecipeless(QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {
 		if (heatSourceState != null && !heatSourceState.isAir() && !coolant.isEmpty()) {
-			int delta = Math.abs(heatValue - coolantValue);
-			int generation = defaultEnergyPerTick + (int) (Math.sqrt(delta) * 12.0F);
-			setEnergyPerTick(generation * ((getEnchantmentLevel(ModEnchantments.CELERITY.get()) / 3) + 1));
+			setEnergyPerTick(getEnergyGeneration() * ((getEnchantmentLevel(ModEnchantments.CELERITY.get()) / 3) + 1));
 			cacheGetter.apply(-1, energy, energyPerTick, this);
 		}
+	}
+	
+	private int getEnergyGeneration() {
+		int delta = Math.abs(heatValue - coolantValue);
+		return defaultEnergyPerTick + (int) (Math.sqrt(delta) * 12.0F);
 	}
 	
 	@Override
@@ -122,10 +119,10 @@ public class ThermoDynamo extends AbstractDynamo<DynamoMenu> {
 			@Override
 			public boolean canContinueUse() {
 				FluidStack fluidStack = tank.getFluidInTank(0);
-				return !fluidStack.isEmpty() && fluidStack.getAmount() >= 2;
+				return !fluidStack.isEmpty() && fluidStack.getAmount() >= coolantConsumption;
 			}
 		};
-		cache.addOnProcessListener(ca -> spendCoolant());
+		cache.addOnProcessListener(ca -> tank.drainForced(coolantConsumption, IFluidHandler.FluidAction.EXECUTE));
 		return cache;
 	}
 }

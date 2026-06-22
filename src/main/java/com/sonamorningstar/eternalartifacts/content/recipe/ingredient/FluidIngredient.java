@@ -9,7 +9,6 @@ import lombok.Getter;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.ExtraCodecs;
@@ -85,26 +84,15 @@ public class FluidIngredient implements Predicate<FluidStack> {
             return false;
         }
     }
-
-    public boolean testFluid(@Nullable Fluid other) {
-        if (other == null) return false;
-        else if (this.isEmpty()) return other.isSame(Fluids.EMPTY);
-        else {
-            for(FluidStack stack : this.getFluidStacks()) {
-                return stack.is(other);
-            }
-            return false;
-        }
-    }
     
-    public boolean canSustain(FluidStack other) {
+    public boolean canBeSustained(FluidStack other) {
         if (other == null) {
             return false;
         } else if (this.isEmpty()) {
             return other.isEmpty();
         } else {
             for(FluidStack stack : this.getFluidStacks()) {
-                if (stack.getAmount() <= other.getAmount() && areStacksEqual(stack, other)) {
+                if (stack.getAmount() <= other.getAmount() && stack.isFluidEqual(other)) {
                     return true;
                 }
             }

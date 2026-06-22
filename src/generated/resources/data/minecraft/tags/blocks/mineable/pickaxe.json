@@ -35,14 +35,14 @@
     "eternalartifacts:tempered_glass",
     "eternalartifacts:demon_block",
     "eternalartifacts:obsidian_bricks",
-    "eternalartifacts:obsidian_brick_wall",
     "eternalartifacts:obsidian_brick_slab",
+    "eternalartifacts:obsidian_brick_wall",
     "eternalartifacts:obsidian_brick_stairs",
-    "eternalartifacts:snow_brick_wall",
     "eternalartifacts:snow_brick_slab",
+    "eternalartifacts:snow_brick_wall",
     "eternalartifacts:snow_brick_stairs",
-    "eternalartifacts:ice_brick_wall",
     "eternalartifacts:ice_brick_slab",
+    "eternalartifacts:ice_brick_wall",
     "eternalartifacts:ice_brick_stairs",
     "eternalartifacts:copper_cable",
     "eternalartifacts:covered_copper_cable",
@@ -69,6 +69,7 @@
     "eternalartifacts:deep_item_storage_unit",
     "eternalartifacts:deep_fluid_storage_unit",
     "eternalartifacts:fluid_hopper",
+    "eternalartifacts:soul_magma_block",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -119,9 +120,9 @@
     "eternalartifacts:pumpjack",
     "eternalartifacts:generator",
     "eternalartifacts:chunk_eater",
-    "eternalartifacts:energy_port",
+    "eternalartifacts:item_port",
     "eternalartifacts:fluid_port",
-    "eternalartifacts:redstone_port",
-    "eternalartifacts:item_port"
+    "eternalartifacts:energy_port",
+    "eternalartifacts:redstone_port"
   ]
 }

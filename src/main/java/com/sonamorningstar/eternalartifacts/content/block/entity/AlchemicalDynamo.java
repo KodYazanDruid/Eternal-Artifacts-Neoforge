@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.DynamoProcessCache;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;

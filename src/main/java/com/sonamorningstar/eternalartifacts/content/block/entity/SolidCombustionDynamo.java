@@ -1,10 +1,9 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.DynamoProcessCache;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.container.ItemDynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
-import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;

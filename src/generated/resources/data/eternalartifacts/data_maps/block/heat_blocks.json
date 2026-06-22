@@ -1,0 +1,13 @@
+{
+  "values": {
+    "eternalartifacts:soul_magma_block": {
+      "burn_time": 1250
+    },
+    "minecraft:lava": {
+      "burn_time": 1000
+    },
+    "minecraft:magma_block": {
+      "burn_time": 850
+    }
+  }
+}

@@ -2,7 +2,7 @@ package com.sonamorningstar.eternalartifacts.mixins;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
-import com.sonamorningstar.eternalartifacts.api.item.ChiselBlockPlaceContext;
+import com.sonamorningstar.eternalartifacts.api.item.ToolBlockPlaceContext;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
 import com.sonamorningstar.eternalartifacts.content.block.entity.ChunkEaterBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
@@ -85,17 +85,17 @@ public abstract class BlockMixin {
             ListIterator<ItemStack> blocks = PlayerHelper.itemWithClassIterable(player, BlockItem.class);
             ItemStack offHand = player.getOffhandItem();
             if(!offHand.isEmpty() && offHand.getItem() instanceof BlockItem) blocks.putFirst(offHand);
-            eternal_Artifacts_Neoforge$insertItems(player, level, state, pos, blockEntity, tool);
+            eternal_Artifacts_Neoforge$insertItems(player, level, state, pos, tool);
             eternal_Artifacts_Neoforge$tryPlace(blocks, player, state, pos, hitResult);
             eternal_Artifacts_Neoforge$isSuccessful = true;
         }
     }
 
     @Unique
-    private void eternal_Artifacts_Neoforge$insertItems(Player player, Level level, BlockState state, BlockPos pos, BlockEntity blockEntity, ItemStack tool) {
+    private void eternal_Artifacts_Neoforge$insertItems(Player player, Level level, BlockState state, BlockPos pos, ItemStack tool) {
         List<ItemStack> drops = new ArrayList<>();
         if (player instanceof ServerPlayer serverPlayer && level instanceof ServerLevel serverLevel) {
-            drops = BlockHelper.getBlockDrops(serverLevel, state, pos, tool, blockEntity, serverPlayer);
+            drops = BlockHelper.getBlockDrops(serverLevel, state, pos, tool, serverPlayer);
         }
         drops.forEach(drop -> PlayerHelper.giveItemOrPop(player, drop, pos.getX(), pos.getY(), pos.getZ()));
     }
@@ -112,7 +112,7 @@ public abstract class BlockMixin {
                     return;
                 }
                 ItemStack clientStack = blockItemStack.copy();
-                ChiselBlockPlaceContext ctx = new ChiselBlockPlaceContext(player, InteractionHand.MAIN_HAND, blockItemStack, pos, hitResult);
+                ToolBlockPlaceContext ctx = new ToolBlockPlaceContext(player, InteractionHand.MAIN_HAND, blockItemStack, pos, hitResult);
                 blockItem.updatePlacementContext(ctx);
                 ctx.replaceClicked = true;
                 InteractionResult result = blockItem.place(ctx);

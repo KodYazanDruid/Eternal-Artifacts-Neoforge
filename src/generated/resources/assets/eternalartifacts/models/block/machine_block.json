@@ -1,12 +1,8 @@
 {
-  "parent": "minecraft:block/cube",
+  "parent": "minecraft:block/cube_bottom_top",
   "textures": {
-    "down": "eternalartifacts:block/machine_bottom",
-    "east": "eternalartifacts:block/machine_side",
-    "north": "eternalartifacts:block/machine_side",
-    "particle": "eternalartifacts:block/machine_side",
-    "south": "eternalartifacts:block/machine_side",
-    "up": "eternalartifacts:block/machine_top",
-    "west": "eternalartifacts:block/machine_side"
+    "bottom": "eternalartifacts:block/machine_bottom",
+    "side": "eternalartifacts:block/machine_side",
+    "top": "eternalartifacts:block/machine_top"
   }
 }

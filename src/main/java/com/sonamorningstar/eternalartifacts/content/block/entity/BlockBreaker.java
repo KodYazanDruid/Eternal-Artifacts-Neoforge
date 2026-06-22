@@ -51,11 +51,12 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		setEnergy(this::createDefaultEnergy);
 		setTank(() -> createBasicTank(16000, fs -> !fs.getFluid().defaultFluidState().createLegacyBlock().isEmpty(), true, true));
 		outputSlots.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8));
-		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0 && canStackDig(stack)));
+		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0));
 		setEnergyPerTick(250);
 	}
 	
-	private boolean canStackDig(ItemStack stack) {
+	//Allow every item. They may have special interactions when breaking a block.
+	/*private boolean canStackDig(ItemStack stack) {
 		Item item = stack.getItem();
 		return item.canPerformAction(stack, ToolActions.SHOVEL_DIG) ||
 			item.canPerformAction(stack, ToolActions.AXE_DIG) ||
@@ -63,7 +64,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 			item.canPerformAction(stack, ToolActions.HOE_DIG) ||
 			item.canPerformAction(stack, ToolActions.SHEARS_DIG) ||
 			item.canPerformAction(stack, ToolActions.SWORD_DIG);
-	}
+	}*/
 	
 	@Override
 	public void registerConfigs() {

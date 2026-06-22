@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "pattern": [
+    "I I",
+    "III",
+    "III"
+  ],
+  "result": {
+    "item": "eternalartifacts:copper_chestplate"
+  }
+}

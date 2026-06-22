@@ -50,6 +50,7 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
     private final boolean hasUniqueTexture;
     private final boolean hasCustomRender;
     private final boolean isGeneric;
+    private final boolean isInfiniteCache;
     private final Map<CapabilityType, Object> customCapabilities;
     private final List<ExtraCapabilityRegistrar<BE, I>> extraCapabilityRegistrars;
     private final List<Consumer<MachineHolder<M, BE, B, I>>> postRegistrationActions;
@@ -64,6 +65,7 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
         this.hasUniqueTexture = builder.hasUniqueTexture;
         this.hasCustomRender = builder.hasCustomRender;
         this.isGeneric = builder.isGeneric;
+        this.isInfiniteCache = builder.isInfiniteCache;
         this.customCapabilities = new EnumMap<>(builder.customCapabilities);
         this.extraCapabilityRegistrars = new ArrayList<>(builder.extraCapabilityRegistrars);
         this.postRegistrationActions = new ArrayList<>(builder.postRegistrationActions);
@@ -191,6 +193,7 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
         private boolean hasUniqueTexture = false;
         private boolean hasCustomRender = false;
         private boolean isGeneric = false;
+        private boolean isInfiniteCache = false;
         private final Map<CapabilityType, Object> customCapabilities = new EnumMap<>(CapabilityType.class);
         private final List<ExtraCapabilityRegistrar<BE, I>> extraCapabilityRegistrars = new ArrayList<>();
         private final List<Consumer<MachineHolder<M, BE, B, I>>> postRegistrationActions = new ArrayList<>();
@@ -237,7 +240,12 @@ public class MachineRegistration<M extends AbstractMachineMenu, BE extends Machi
             this.hasCustomRender = true;
             return this;
         }
-
+        
+        public Builder<M, BE, B, I> isInfinite(boolean isInfinite) {
+            this.isInfiniteCache = isInfinite;
+            return this;
+        }
+        
         private Builder<M, BE, B, I> generic(boolean isGeneric) {
             this.isGeneric = isGeneric;
             return this;

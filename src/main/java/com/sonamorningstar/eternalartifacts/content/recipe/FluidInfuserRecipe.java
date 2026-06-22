@@ -31,7 +31,7 @@ public class FluidInfuserRecipe implements Recipe<ItemFluidContainer> {
     public boolean matches(ItemFluidContainer con, Level level) {
         boolean fluidcheck = false;
         for(FluidStack stack : con.getFluidStacks()) {
-            if (inputFluid.canSustain(stack)) {
+            if (inputFluid.canBeSustained(stack)) {
                 fluidcheck = true;
                 break;
             }

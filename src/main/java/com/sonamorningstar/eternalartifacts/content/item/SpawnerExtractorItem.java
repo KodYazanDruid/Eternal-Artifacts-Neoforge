@@ -8,6 +8,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.Vanishable;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BaseSpawner;
 import net.minecraft.world.level.Level;
@@ -22,7 +23,7 @@ import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class SpawnerExtractorItem extends Item {
+public class SpawnerExtractorItem extends Item implements Vanishable {
 	public SpawnerExtractorItem(Properties pProperties) {
 		super(pProperties);
 	}

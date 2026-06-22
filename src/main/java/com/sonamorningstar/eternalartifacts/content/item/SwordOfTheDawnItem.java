@@ -10,12 +10,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class SwordOfTheDawnItem extends SwordItem {
-	public static final Set<MobEffect> BENEFICAL_EFFECTS = BuiltInRegistries.MOB_EFFECT.stream().filter(e -> e.isBeneficial() && !e.isInstantenous()).collect(Collectors.toSet());
+	public static final List<MobEffect> BENEFICAL_EFFECTS = BuiltInRegistries.MOB_EFFECT.stream().filter(e -> e.isBeneficial() && !e.isInstantenous()).toList();
 	
 	public SwordOfTheDawnItem(Properties pProperties) {
 		super(ModTiers.STEEL, 2, -2.4F, pProperties);
@@ -25,12 +23,17 @@ public class SwordOfTheDawnItem extends SwordItem {
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
 		if (attacker instanceof Player player && player.getAttackStrengthScale(0.0F) != 1.0F)
 			return super.hurtEnemy(stack, target, attacker);
+		
 		RandomSource random = attacker.getRandom();
-		attacker.addEffect(Objects.requireNonNull(BENEFICAL_EFFECTS.stream()
-			.skip(random.nextInt(BENEFICAL_EFFECTS.size()))
-			.findFirst()
-			.map(mobEffect -> new MobEffectInstance(mobEffect, 100, 0))
-			.orElse(null)));
+		for (int i = 0; i < BENEFICAL_EFFECTS.size(); i++) {
+			MobEffect effect = BENEFICAL_EFFECTS.get(random.nextInt(BENEFICAL_EFFECTS.size()));
+			MobEffectInstance instance = new MobEffectInstance(effect, 100);
+			if (attacker.canBeAffected(instance)) {
+				attacker.addEffect(instance);
+				break;
+			}
+		}
+		
 		return super.hurtEnemy(stack, target, attacker);
 	}
 }

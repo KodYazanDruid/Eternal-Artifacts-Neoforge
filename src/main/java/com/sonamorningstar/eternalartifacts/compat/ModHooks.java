@@ -6,7 +6,6 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.compat.appleskin.AppleSkinCompat;
 import com.sonamorningstar.eternalartifacts.compat.emi.EmiCompat;
 import com.sonamorningstar.eternalartifacts.compat.mekanism.MekanismCompat;
-import com.sonamorningstar.eternalartifacts.compat.pneumaticcraft.PneumaticCraftCompat;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -58,10 +57,6 @@ public final class ModHooks {
         if (mekanismGeneratorsLoaded) {
             NeoForge.EVENT_BUS.addListener(MekanismCompat::drinkEventMekanismGenerators);
             MekanismCompat.runMekGens(modEventBus);
-        }
-        if (pneumaticcraftLoaded) {
-            modEventBus.addListener(PneumaticCraftCompat::registerHeat);
-            PneumaticCraftCompat.run(modEventBus);
         }
         if (appleskinLoaded) {
             NeoForge.EVENT_BUS.addListener(AppleSkinCompat::registerFoodValues);

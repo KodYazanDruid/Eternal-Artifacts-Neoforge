@@ -140,7 +140,7 @@ dependencies {
     implementation "mekanism:Mekanism:${mekanism_version}:generators"// Mekanism: Generators
     implementation "mekanism:Mekanism:${mekanism_version}:tools"// Mekanism: Tools
 
-    implementation "curse.maven:pneumaticcraft-repressurized-281849:5523027"
+    //implementation "curse.maven:pneumaticcraft-repressurized-281849:8164958"
     runtimeOnly "curse.maven:cloth-config-348521:5729139"
     runtimeOnly "curse.maven:powah-rearchitected-633483:5083059"
     runtimeOnly "curse.maven:spark-361579:5243943"

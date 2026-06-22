@@ -35,6 +35,7 @@
     "eternalartifacts:moss_aluminum_ore",
     "eternalartifacts:tin_cable",
     "eternalartifacts:covered_tin_cable",
+    "eternalartifacts:soul_magma_block",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -85,9 +86,9 @@
     "eternalartifacts:pumpjack",
     "eternalartifacts:generator",
     "eternalartifacts:chunk_eater",
-    "eternalartifacts:energy_port",
+    "eternalartifacts:item_port",
     "eternalartifacts:fluid_port",
-    "eternalartifacts:redstone_port",
-    "eternalartifacts:item_port"
+    "eternalartifacts:energy_port",
+    "eternalartifacts:redstone_port"
   ]
 }

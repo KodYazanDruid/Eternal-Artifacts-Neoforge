@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.api.ItemWithCount;
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
 import com.sonamorningstar.eternalartifacts.api.machine.RecyclerRecipeCache;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;

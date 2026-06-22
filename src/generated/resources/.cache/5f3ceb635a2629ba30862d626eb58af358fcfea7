@@ -1,9 +1,9 @@
-// 1.20.4	2026-05-11T14:26:18.711853	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2026-06-20T18:28:27.7684099	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
 dffc6a5234a3ae84e9b6b290e81b904ef8afd22a data/eternalartifacts/tags/items/charms/bracelet.json
-64303666fe7a63297624b054302d8f64cede2662 data/eternalartifacts/tags/items/charms/charm.json
+a9eab9bbed72fbf6af5bb0f67ee328f70809c143 data/eternalartifacts/tags/items/charms/charm.json
 301411bafa638e02d0c5ef21fe418709a20682b9 data/eternalartifacts/tags/items/charms/feet.json
 372006b6beb73ed428b1bf0e8f2c0a43263cd0fa data/eternalartifacts/tags/items/charms/hand.json
 421f4daa8044fafa031e4b16059d2b19ddb5ac17 data/eternalartifacts/tags/items/charms/head.json
@@ -15,6 +15,10 @@ cced0014687aacaea5f2db8c340b0516acfdab72 data/eternalartifacts/tags/items/recycl
 4d5a856cfddb256d28a3f63c15763ee25a51820b data/eternalartifacts/tags/items/shulker_shell.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
 0e39dbf7b4ae88e14b7d2b48a312ade6fe39c998 data/eternalartifacts/tags/items/tools/cutlasses.json
+3d97182fa3e9484abf56446294ef948a9e5ba018 data/forge/tags/items/armors/boots.json
+1971ade391620c4954ac867d0f75f7a9a6450e37 data/forge/tags/items/armors/chestplates.json
+fa96ae1ccfff524570df9a2119ea6e4aa2a7ff34 data/forge/tags/items/armors/helmets.json
+df2bc348b5d2161ca406f38726e5b331cf23fbb3 data/forge/tags/items/armors/leggings.json
 a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 8b5cea59f396e1e2df266fab2db65e27e0d091e5 data/forge/tags/items/dough/wheat.json
 6665353b7056ffb27e0680e199319c4e9325a21a data/forge/tags/items/dusts.json
@@ -75,7 +79,7 @@ f8845fe4302e453748266bca7231a3e2f3041869 data/forge/tags/items/seeds.json
 9f7b968495ca4fff9421694fb6b009a4b99d9872 data/forge/tags/items/slimeballs/pink.json
 23eb34bacdf90f4145d0361694ac30e96d1c259a data/forge/tags/items/storage_blocks/coal.json
 8398a7e23256a627957c4a079d3e9e4cbb5c3c95 data/forge/tags/items/storage_blocks/steel.json
-2f0cc4b965f70b52ba06034e165ea97c1b814794 data/forge/tags/items/tools.json
+ea28a53365b1f31ff341451de0dd495544a9b552 data/forge/tags/items/tools.json
 4a03ee9f0ac4da327a4e122af62bd7174ab3216d data/forge/tags/items/tools/crossbows.json
 f0dd0a8660131a466006888e2b325db7dde680f6 data/forge/tags/items/tools/hammers.json
 3217aed0df60b40f9565f9db3a164c13a1221830 data/forge/tags/items/tools/sickles.json

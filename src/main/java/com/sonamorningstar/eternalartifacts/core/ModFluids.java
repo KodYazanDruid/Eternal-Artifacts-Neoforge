@@ -179,6 +179,15 @@ public class ModFluids {
             .mapColor(MapColor.COLOR_PURPLE)
             .build()
     );
+    
+    public static final FluidHolder<LiquidBlock> COOLANT_GEL = FLUIDS.register(
+        FluidRegistration.create("coolant_gel")
+            .noBlock()
+            .texture(new ResourceLocation(MODID,"block/coolant_gel"))
+            .rarity(Rarity.RARE)
+            .mapColor(MapColor.COLOR_PINK)
+            .build()
+    );
 
     public static final FluidHolder<LiquidBlock> POTION = FLUIDS.registerPotion("potion", 0, 1000, 1000);
 }

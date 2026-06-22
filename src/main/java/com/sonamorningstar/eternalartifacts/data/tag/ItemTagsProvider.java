@@ -12,6 +12,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -271,7 +272,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.CHISEL.get(),
             ModItems.CONFIGURATION_DRIVE.get(),
             ModItems.LIFTER.get(),
-            ModItems.GOLD_KEY.get()
+            ModItems.GOLD_KEY.get(),
+            ModItems.TROWEL.get()
         );
         tag(ModTags.Items.TABLETS).add(
             ModItems.STONE_TABLET.get(),
@@ -368,6 +370,39 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
           Tags.Items.TOOLS,
           Tags.Items.ARMORS,
           ModTags.Items.CHARMS
+        );
+        tag(Tags.Items.ARMORS_HELMETS).add(
+            ModItems.SOLAR_PANEL_HELMET.get(),
+            ModItems.STEEL_HELMET.get(),
+            ModItems.SHULKER_HELMET.get(),
+            ModItems.CACTUS_HELMET.get(),
+            ModItems.TERRASTEEL_HELMET.get(),
+            ModItems.BRONZE_HELMET.get(),
+            ModItems.COPPER_HELMET.get()
+        );
+        tag(Tags.Items.ARMORS_CHESTPLATES).add(
+            ModItems.STEEL_CHESTPLATE.get(),
+            ModItems.SHULKER_CHESTPLATE.get(),
+            ModItems.CACTUS_CHESTPLATE.get(),
+            ModItems.TERRASTEEL_CHESTPLATE.get(),
+            ModItems.BRONZE_CHESTPLATE.get(),
+            ModItems.COPPER_CHESTPLATE.get()
+        );
+        tag(Tags.Items.ARMORS_LEGGINGS).add(
+            ModItems.STEEL_LEGGINGS.get(),
+            ModItems.SHULKER_LEGGINGS.get(),
+            ModItems.CACTUS_LEGGINGS.get(),
+            ModItems.TERRASTEEL_LEGGINGS.get(),
+            ModItems.BRONZE_LEGGINGS.get(),
+            ModItems.COPPER_LEGGINGS.get()
+        );
+        tag(Tags.Items.ARMORS_BOOTS).add(
+            ModItems.STEEL_BOOTS.get(),
+            ModItems.SHULKER_BOOTS.get(),
+            ModItems.CACTUS_BOOTS.get(),
+            ModItems.TERRASTEEL_BOOTS.get(),
+            ModItems.BRONZE_BOOTS.get(),
+            ModItems.COPPER_BOOTS.get()
         );
         tag(ItemTags.ARROWS).add(
             ModItems.AMETHYST_ARROW.get(),

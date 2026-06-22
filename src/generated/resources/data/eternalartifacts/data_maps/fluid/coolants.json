@@ -1,0 +1,12 @@
+{
+  "values": {
+    "#minecraft:water": {
+      "consumed_per_tick": 2,
+      "coolant_value": 1000
+    },
+    "eternalartifacts:coolant_gel": {
+      "consumed_per_tick": 1,
+      "coolant_value": 2000
+    }
+  }
+}

@@ -34,12 +34,13 @@ public class KnapsackItem extends Item implements CharmInventoryTickable {
     
     @Override
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-        if(action == ClickAction.SECONDARY && slot.allowModification(player) && other.isEmpty()){
-            if(!player.level().isClientSide()) openMenu(player, stack);
-            return true;
-        } else {
-            return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+        if (action != ClickAction.SECONDARY || !slot.allowModification(player) || !other.isEmpty()) {
+            return false;
         }
+        
+        if(!player.level().isClientSide()) openMenu(player, stack);
+        
+        return true;
     }
 
     @Override

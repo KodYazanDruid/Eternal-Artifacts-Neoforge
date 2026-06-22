@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.util;
 
-import com.sonamorningstar.eternalartifacts.api.caches.OreCache;
-import com.sonamorningstar.eternalartifacts.api.caches.TreeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.OreCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.TreeCache;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
@@ -33,7 +33,7 @@ public class AutomationHelper {
         }
         NonNullList<ItemStack> totalDrops = NonNullList.create();
         while (pos.getY() >= baseY) {
-            totalDrops.addAll(BlockHelper.getBlockDrops(level, pos, null, null, null));
+            totalDrops.addAll(BlockHelper.getBlockDrops(level, pos, null, null));
             level.destroyBlock(pos, false);
             pos = pos.below();
         }
@@ -41,9 +41,9 @@ public class AutomationHelper {
     }
 
     public static List<ItemStack> doTreeHarvest(Level level, BlockPos pos,
-                                            @Nullable ItemStack axe, @Nullable BlockEntity blockEntity,
+                                            @Nullable ItemStack axe,
                                             @Nullable ServerPlayer player) {
-        TreeCache cache = new TreeCache(level, pos, axe, blockEntity);
+        TreeCache cache = new TreeCache(level, pos, axe);
         cache.scanForTreeBlockSection();
 
         NonNullList<ItemStack> totalDrops = NonNullList.create();
@@ -57,8 +57,8 @@ public class AutomationHelper {
     }
 
     public static List<ItemStack> doOreVeinMine(Level level, BlockPos pos,
-                                            @Nullable ItemStack pickaxe, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
-        OreCache cache = new OreCache(level, pos, pickaxe, blockEntity);
+                                            @Nullable ItemStack pickaxe, @Nullable ServerPlayer player) {
+        OreCache cache = new OreCache(level, pos, pickaxe);
         cache.scanForOreVein();
 
         NonNullList<ItemStack> totalDrops = NonNullList.create();

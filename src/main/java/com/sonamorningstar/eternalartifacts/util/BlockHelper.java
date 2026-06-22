@@ -3,12 +3,18 @@ package com.sonamorningstar.eternalartifacts.util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.GameMasterBlock;
 import net.minecraft.world.level.block.MangrovePropaguleBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -18,11 +24,14 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.IntConsumer;
 
 public class BlockHelper {
 
@@ -57,20 +66,22 @@ public class BlockHelper {
                 || level.getBlockState(pos).getBlock().equals(Blocks.MOSS_CARPET)
                 || (level.getBlockState(pos).getBlock().equals(Blocks.MANGROVE_PROPAGULE) && level.getBlockState(pos).getValue(MangrovePropaguleBlock.HANGING));
     }
-    public static List<ItemStack> getBlockDrops(ServerLevel level, BlockPos pos, @Nullable ItemStack tool, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
+    public static List<ItemStack> getBlockDrops(ServerLevel level, BlockPos pos, @Nullable ItemStack tool, @Nullable ServerPlayer player) {
         BlockState state = level.getBlockState(pos);
         LootParams.Builder lootparams$builder = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
                 .withParameter(LootContextParams.TOOL, tool == null ? ItemStack.EMPTY : tool)
-                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity)
+                .withParameter(LootContextParams.BLOCK_STATE, state)
+                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(pos))
                 .withOptionalParameter(LootContextParams.THIS_ENTITY, player);
         return state.getDrops(lootparams$builder);
     }
-    public static List<ItemStack> getBlockDrops(ServerLevel level, BlockState state, BlockPos pos, @Nullable ItemStack tool, @Nullable BlockEntity blockEntity, @Nullable ServerPlayer player) {
+    public static List<ItemStack> getBlockDrops(ServerLevel level, BlockState state, BlockPos pos, @Nullable ItemStack tool, @Nullable ServerPlayer player) {
         LootParams.Builder lootparams$builder = new LootParams.Builder(level)
                 .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos))
                 .withParameter(LootContextParams.TOOL, tool == null ? ItemStack.EMPTY : tool)
-                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity)
+                .withParameter(LootContextParams.BLOCK_STATE, state)
+                .withOptionalParameter(LootContextParams.BLOCK_ENTITY, level.getBlockEntity(pos))
                 .withOptionalParameter(LootContextParams.THIS_ENTITY, player);
         return state.getDrops(lootparams$builder);
     }
@@ -78,5 +89,55 @@ public class BlockHelper {
     public static int getFluidTintColor(FluidStack stack) {
         IClientFluidTypeExtensions fluidTypeExtensions = IClientFluidTypeExtensions.of(stack.getFluid());
         return fluidTypeExtensions.getTintColor(stack);
+    }
+    
+    public static boolean destroyBlock(ServerLevel level, ServerPlayer player, BlockPos pos,
+                                       Consumer<List<ItemStack>> dropsConsumer, IntConsumer expConsumer) {
+        BlockState blockState = level.getBlockState(pos);
+        GameType gameModeForPlayer = player.gameMode.getGameModeForPlayer();
+        int exp = CommonHooks.onBlockBreakEvent(level, gameModeForPlayer, player, pos);
+        if (exp == -1) {
+            return false;
+        } else {
+            Block block = blockState.getBlock();
+            if (block instanceof GameMasterBlock && !player.canUseGameMasterBlocks()) {
+                level.sendBlockUpdated(pos, blockState, blockState, 3);
+                return false;
+            } else if (player.getMainHandItem().onBlockStartBreak(pos, player)) {
+                return false;
+            } else if (player.blockActionRestricted(level, pos, gameModeForPlayer)) {
+                return false;
+            } else {
+				if (player.isCreative()) {
+                    removeBlock(level, player, pos, false);
+				} else {
+                    ItemStack tool = player.getMainHandItem();
+                    ItemStack toolCopy = tool.copy();
+                    boolean canHarvest = blockState.canHarvestBlock(level, pos, player);
+                    tool.mineBlock(level, blockState, pos, player);
+                    if (tool.isEmpty() && !toolCopy.isEmpty())
+                        net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player, toolCopy, InteractionHand.MAIN_HAND);
+                    boolean isRemoved = removeBlock(level, player, pos, canHarvest);
+                    
+                    if (canHarvest && isRemoved) {
+                        player.awardStat(Stats.BLOCK_MINED.get(block));
+                        List<ItemStack> drops = Block.getDrops(blockState, level, pos, level.getBlockEntity(pos), player, toolCopy);
+                        dropsConsumer.accept(drops);
+                    }
+                    
+                    if (isRemoved && exp > 0)
+                        expConsumer.accept(exp);
+                    
+                }
+				return true;
+			}
+        }
+    }
+    
+    private static boolean removeBlock(Level level, Player player, BlockPos pos, boolean canHarvest) {
+        BlockState state = level.getBlockState(pos);
+        boolean removed = state.onDestroyedByPlayer(level, pos, player, canHarvest, level.getFluidState(pos));
+        if (removed) state.getBlock().destroy(level, pos, state);
+        return removed;
     }
 }

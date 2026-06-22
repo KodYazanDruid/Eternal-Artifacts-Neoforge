@@ -7,19 +7,19 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.joml.Vector3d;
 
 import javax.annotation.Nullable;
 
 public class PrimedBlockEntity extends PrimedTnt {
-    private BlockState state = Blocks.TNT.defaultBlockState();
     @Setter
     private float radius = 4.0F;
+    
     public PrimedBlockEntity(EntityType<? extends PrimedBlockEntity> entityType, Level pLevel) {
         super(entityType, pLevel);
     }
+    
     public PrimedBlockEntity(Level level, Vector3d pos, @Nullable LivingEntity owner, int fuseTime, float radius, BlockState state) {
         this(ModEntities.PRIMED_BLOCK.get(), level);
         this.setPos(pos.x, pos.y, pos.z);
@@ -29,7 +29,6 @@ public class PrimedBlockEntity extends PrimedTnt {
         this.yo = pos.y;
         this.zo = pos.z;
         setFuse(fuseTime);
-        this.state = state;
         setBlockState(state);
         setRadius(radius);
         this.owner = owner;
@@ -42,6 +41,6 @@ public class PrimedBlockEntity extends PrimedTnt {
 
     @Override
     protected Component getTypeName() {
-        return Component.translatable(this.getType().getDescriptionId()+".primed", Component.translatable(this.state.getBlock().getDescriptionId()));
+        return Component.translatable(this.getType().getDescriptionId()+".primed", Component.translatable(getBlockState().getBlock().getDescriptionId()));
     }
 }

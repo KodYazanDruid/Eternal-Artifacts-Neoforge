@@ -1,7 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
-import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.capabilities.energy.ModEnergyStorage;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.content.recipe.base.DynamoRecipe;
@@ -116,6 +116,7 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 		setWorking(false);
 		onCacheExpire();
 		findRecipe();
+		markDirty();
 	}
 	
 	@Override

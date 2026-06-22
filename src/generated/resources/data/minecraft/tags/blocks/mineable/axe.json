@@ -4,9 +4,9 @@
     "eternalartifacts:stripped_citrus_log",
     "eternalartifacts:citrus_wood",
     "eternalartifacts:stripped_citrus_wood",
-    "eternalartifacts:energy_port",
+    "eternalartifacts:item_port",
     "eternalartifacts:fluid_port",
-    "eternalartifacts:redstone_port",
-    "eternalartifacts:item_port"
+    "eternalartifacts:energy_port",
+    "eternalartifacts:redstone_port"
   ]
 }

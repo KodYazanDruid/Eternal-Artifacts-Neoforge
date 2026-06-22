@@ -173,6 +173,8 @@ public class ModBlocks {
             ()-> new StairBlock(()-> OBSIDIAN_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> OBSIDIAN_BRICK_WALL = registerWithItem("obsidian_brick_wall",
             ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
+    public static final DeferredBlock<Block> SOUL_MAGMA_BLOCK = registerWithItem("soul_magma_block",
+            ()-> new SoulMagmaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGMA_BLOCK).mapColor(MapColor.COLOR_CYAN)));
     
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
@@ -302,6 +304,10 @@ public class ModBlocks {
     public static final DeferredBlock<Block> WET_INDUSTRIAL_SPONGE = registerWithItem("wet_industrial_sponge", () ->
         new WetIndustrialSponge(BlockBehaviour.Properties.ofFullCopy(Blocks.WET_SPONGE).mapColor(MapColor.COLOR_LIGHT_GREEN))
     );
+    public static final DeferredBlock<Block> WATER_TNT = registerWithItem("water_tnt", () ->
+        new WaterTntBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TNT).mapColor(MapColor.COLOR_CYAN))
+    );
+    
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot", GardeningPotBlock::new);
     public static final DeferredBlock<JarBlock> JAR = registerNoItem("jar",

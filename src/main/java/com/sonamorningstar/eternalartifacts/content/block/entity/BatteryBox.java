@@ -25,7 +25,7 @@ public class BatteryBox extends GenericMachine {
             protected void onContentsChanged(int slot) {
                 ((ModularEnergyStorage) energy).reloadEnergyHandlers(new RecipeWrapper(this));
                 BatteryBox.this.markDirty();
-                BatteryBox.this.invalidateCapabilities();
+                BatteryBox.this.markCapabilitiesDirty();
             }
         });
         setEnergy(() -> new ModularEnergyStorage(new RecipeWrapper(inventory)) {
@@ -66,6 +66,11 @@ public class BatteryBox extends GenericMachine {
         super.onLoad();
         ((ModularEnergyStorage) energy).reloadEnergyHandlers(new RecipeWrapper(inventory));
         markDirty();
+    }
+    
+    @Override
+    public int getRedstoneOutput() {
+        return super.getRedstoneOutput();
     }
     
     @Override

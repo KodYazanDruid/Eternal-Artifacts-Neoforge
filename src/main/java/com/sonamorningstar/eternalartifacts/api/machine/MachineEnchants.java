@@ -105,14 +105,17 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.HARVESTER.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		enchantMap.put(ModMachines.FLUID_PUMP.getBlockEntity(), nonProgressSpeedableMachineEnchants);
 		
-		ModMachines.MACHINES.getDynamos().forEach(dynamo -> enchantMap.put(dynamo.getBlockEntity(), dynamoEnchants));
+		var infiniteDynamoEnchants = new HashSet<>(dynamoEnchants);
+		infiniteDynamoEnchants.remove(Enchantments.BLOCK_EFFICIENCY);
+		ModMachines.MACHINES.getDynamos().forEach(dynamo -> {
+			if (dynamo.registration().isInfiniteCache()) enchantMap.put(dynamo.getBlockEntity(), infiniteDynamoEnchants);
+			else enchantMap.put(dynamo.getBlockEntity(), dynamoEnchants);
+		});
 		
 		var marineEnchs = new HashSet<>(commonMachineEnchants);
 		marineEnchs.add(Enchantments.MOB_LOOTING);
 		marineEnchs.add(Enchantments.BLOCK_FORTUNE);
 		enchantMap.put(ModMachines.MARINE_FISHER.getBlockEntity(), marineEnchs);
-		
-		
 		
 		var dimensionalAnchorEnchants = new HashSet<>(nonProgressMachineEnchants);
 		dimensionalAnchorEnchants.remove(ModEnchantments.WORLDBIND.get());

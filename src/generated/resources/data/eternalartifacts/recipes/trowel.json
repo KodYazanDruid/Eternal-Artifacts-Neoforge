@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/steel"
+    },
+    "N": {
+      "tag": "forge:nuggets/steel"
+    },
+    "S": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "SI ",
+    " IN"
+  ],
+  "result": {
+    "item": "eternalartifacts:trowel"
+  }
+}

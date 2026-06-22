@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.event;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.machine.PackerRecipeCache;
 import com.sonamorningstar.eternalartifacts.api.machine.RecyclerRecipeCache;

@@ -63,6 +63,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
+import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -406,5 +407,11 @@ public class CommonModEvents {
     @SubscribeEvent
     public static void registerTicketControllers(RegisterTicketControllersEvent event) {
         event.register(ForceLoadManager.TICKET_CONTROLLER);
+    }
+    
+    @SubscribeEvent
+    public static void registerDataMaps(RegisterDataMapTypesEvent event) {
+        event.register(ModDataMaps.COOLANTS);
+        event.register(ModDataMaps.HEAT_BLOCKS);
     }
 }

@@ -36,6 +36,7 @@ import java.util.function.*;
 
 public class ModBlockEntity extends BlockEntity {
     protected boolean isDirty = false;
+    protected boolean isCapabilitiesDirty = false;
     
     public final Object2IntMap<Enchantment> enchantments = new Object2IntOpenHashMap<>();
     public static final String CONFIG_TAG_KEY = "Config";
@@ -134,10 +135,20 @@ public class ModBlockEntity extends BlockEntity {
         isDirty = true;
     }
     
-    public void sendUpdateIfNeeded() {
-        if(isDirty && level != null && !isRemoved() && level.hasChunkAt(worldPosition)) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-            isDirty = false;
+    public void markCapabilitiesDirty() {
+        isCapabilitiesDirty = true;
+    }
+    
+    public void sendUpdatesIfNeeded() {
+        if(level != null && !isRemoved() && level.hasChunkAt(worldPosition)) {
+            if (isDirty){
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+                isDirty = false;
+            }
+            if (isCapabilitiesDirty) {
+                invalidateCapabilities();
+                isCapabilitiesDirty = false;
+            }
         }
     }
     

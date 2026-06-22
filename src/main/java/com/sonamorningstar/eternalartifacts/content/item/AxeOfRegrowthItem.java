@@ -1,9 +1,8 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.api.caches.BlockVeinCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.TreeCapitatorHandler;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModTiers;
-import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
@@ -24,15 +23,12 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LevelEvent;
 import net.minecraft.world.level.block.MossBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class AxeOfRegrowthItem extends AxeItem {
     public AxeOfRegrowthItem(Properties properties) {
@@ -64,35 +60,19 @@ public class AxeOfRegrowthItem extends AxeItem {
         return super.useOn(ctx);
     }
 
-    private static final List<ItemStack> currentMiners = new ArrayList<>();
-
-    @Override
+    /*@Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
-        if (BlockHelper.isLog(level, pos) &&
-                living instanceof Player player &&
-                !living.isShiftKeyDown() &&
-                !currentMiners.contains(stack)) {
-            Block block = state.getBlock();
-            BlockVeinCache cache = new BlockVeinCache(block, level, pos, 4, 10, 1, false);
-            cache.addMineableTag(BlockTags.LOGS);
-            cache.addMineableTag(BlockTags.LEAVES);
-            cache.scanForBlocks();
-            Queue<BlockPos> queuedPos = cache.getCache();
-            if (player instanceof ServerPlayer serverPlayer) {
-                while (!queuedPos.isEmpty() && !stack.isEmpty() && checkForCorrectTool(level, queuedPos.peek(), serverPlayer)) {
-                    if (!currentMiners.contains(stack)) currentMiners.add(stack);
-                    cache.mine(queuedPos, serverPlayer);
-                }
-            }
-            currentMiners.remove(stack);
-            return false;
+        if (living instanceof Player player &&
+                !MINERS.contains(player) &&
+                !level.isClientSide() &&
+                !player.isShiftKeyDown() &&
+                state.is(BlockTags.LOGS)) {
+            MINERS.add(player);
+            boolean ret = TreeCapitatorHandler.onBlockBreak(level, player, pos, stack);
+            MINERS.remove(player);
+            return ret;
         } else return super.mineBlock(stack, level, state, pos, living);
-    }
-    
-    private boolean checkForCorrectTool(Level level, BlockPos pos, ServerPlayer sPlayer) {
-        BlockState state = level.getBlockState(pos);
-        return state.getBlock().canHarvestBlock(state, level, pos, sPlayer);
-    }
+    }*/
 
     @Override
     public int getEnchantmentLevel(ItemStack stack, Enchantment enchantment) {

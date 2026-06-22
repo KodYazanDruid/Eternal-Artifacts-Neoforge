@@ -1,10 +1,9 @@
 package com.sonamorningstar.eternalartifacts.client.gui.screen;
 
-import com.sonamorningstar.eternalartifacts.api.caches.DynamoProcessCache;
-import com.sonamorningstar.eternalartifacts.api.caches.InfiniteDynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.DynamoProcessCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.InfiniteDynamoProcessCache;
 import com.sonamorningstar.eternalartifacts.client.gui.screen.base.AbstractMachineScreen;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.FluidCombustionDynamo;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractDynamo;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
 import net.minecraft.client.gui.GuiGraphics;

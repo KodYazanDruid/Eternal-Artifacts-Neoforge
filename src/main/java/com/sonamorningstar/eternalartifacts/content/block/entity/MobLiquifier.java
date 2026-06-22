@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
-import com.sonamorningstar.eternalartifacts.api.caches.RecipeCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityTagEntry;
 import com.sonamorningstar.eternalartifacts.api.filter.EntityTypeEntry;

@@ -261,6 +261,15 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.TERRASTEEL_CHESTPLATE.get(), "Terrasteel Chestplate");
                 add(ModItems.TERRASTEEL_LEGGINGS.get(), "Terrasteel Leggings");
                 add(ModItems.TERRASTEEL_BOOTS.get(), "Terrasteel Boots");
+                add(ModItems.BRONZE_HELMET.get(), "Bronze Helmet");
+                add(ModItems.BRONZE_CHESTPLATE.get(), "Bronze Chestplate");
+                add(ModItems.BRONZE_LEGGINGS.get(), "Bronze Leggings");
+                add(ModItems.BRONZE_BOOTS.get(), "Bronze Boots");
+                add(ModItems.COPPER_HELMET.get(), "Copper Helmet");
+                add(ModItems.COPPER_CHESTPLATE.get(), "Copper Chestplate");
+                add(ModItems.COPPER_LEGGINGS.get(), "Copper Leggings");
+                add(ModItems.COPPER_BOOTS.get(), "Copper Boots");
+                add(ModItems.TROWEL.get(), "Trowel");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -411,6 +420,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.ITEM_PORT.get(), "Item Port");
                 add(ModBlocks.FLUID_PORT.get(), "Fluid Port");
                 add(ModBlocks.FLUID_HOPPER.get(), "Fluid Hopper");
+                add(ModBlocks.SOUL_MAGMA_BLOCK.get(), "Soul Magma Block");
+                add(ModBlocks.WATER_TNT.get(), "Water TNT");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -1053,6 +1064,16 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.TERRASTEEL_CHESTPLATE.get(), "Terrasteel Göğüslük");
                 add(ModItems.TERRASTEEL_LEGGINGS.get(), "Terrasteel Pantolon");
                 add(ModItems.TERRASTEEL_BOOTS.get(), "Terrasteel Bot");
+                add(ModFluids.COOLANT_GEL.getBucketItem(), "Soğutucu Jel Kovası");
+                add(ModItems.BRONZE_HELMET.get(), "Bronz Kask");
+                add(ModItems.BRONZE_CHESTPLATE.get(), "Bronz Göğüslük");
+                add(ModItems.BRONZE_LEGGINGS.get(), "Bronz Pantolon");
+                add(ModItems.BRONZE_BOOTS.get(), "Bronz Bot");
+                add(ModItems.COPPER_HELMET.get(), "Bakır Kask");
+                add(ModItems.COPPER_CHESTPLATE.get(), "Bakır Göğüslük");
+                add(ModItems.COPPER_LEGGINGS.get(), "Bakır Pantolon");
+                add(ModItems.COPPER_BOOTS.get(), "Bakır Bot");
+                add(ModItems.TROWEL.get(), "Mala");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1281,6 +1302,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.BIOFUEL.getTranslationKey(), "Biyoyakıt");
                 add(ModMachines.DISENCHANTER_DYNAMO.getBlockTranslationKey(), "Büyü Çıkarıcı Dinamo");
                 add(ModMachines.THERMO_DYNAMO.getBlockTranslationKey(), "Termo Dinamo");
+                add(ModFluids.COOLANT_GEL.getTranslationKey(), "Soğutucu Jel");
+                add(ModBlocks.SOUL_MAGMA_BLOCK.get(), "Ruh Magma Bloğu");
+                add(ModBlocks.WATER_TNT.get(), "Su TNT'si");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");

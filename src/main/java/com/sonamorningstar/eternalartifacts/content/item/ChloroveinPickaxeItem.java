@@ -1,6 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.api.caches.BlockVeinCache;
+import com.sonamorningstar.eternalartifacts.api.block_search.BlockVeinCache;
 import com.sonamorningstar.eternalartifacts.core.ModEffects;
 import com.sonamorningstar.eternalartifacts.core.ModTiers;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;

@@ -11,12 +11,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 public class SwordOfTheTwilightItem extends SwordItem {
-	public static final Set<MobEffect> HARMFULL_EFFECTS = BuiltInRegistries.MOB_EFFECT.stream().filter(e -> e.getCategory() == MobEffectCategory.HARMFUL && !e.isInstantenous()).collect(Collectors.toSet());
+	public static final List<MobEffect> HARMFUL_EFFECTS = BuiltInRegistries.MOB_EFFECT.stream().filter(e -> e.getCategory() == MobEffectCategory.HARMFUL && !e.isInstantenous()).toList();
 	
 	public SwordOfTheTwilightItem(Properties pProperties) {
 		super(ModTiers.STEEL, 2, -2.4F, pProperties);
@@ -27,12 +25,15 @@ public class SwordOfTheTwilightItem extends SwordItem {
 		if (attacker instanceof Player player && player.getAttackStrengthScale(0.0F) != 1.0F)
 			return super.hurtEnemy(stack, target, attacker);
 		
-		RandomSource random = attacker.getRandom();
-		target.addEffect(Objects.requireNonNull(HARMFULL_EFFECTS.stream()
-			.skip(random.nextInt(HARMFULL_EFFECTS.size()))
-			.findFirst()
-			.map(mobEffect -> new MobEffectInstance(mobEffect, 100, 0))
-			.orElse(null)));
+		RandomSource random = target.getRandom();
+		for (int i = 0; i < HARMFUL_EFFECTS.size(); i++) {
+			MobEffect effect = HARMFUL_EFFECTS.get(random.nextInt(HARMFUL_EFFECTS.size()));
+			MobEffectInstance instance = new MobEffectInstance(effect, 100);
+			if (target.canBeAffected(instance)) {
+				target.addEffect(instance);
+				break;
+			}
+		}
 		
 		return super.hurtEnemy(stack, target, attacker);
 	}

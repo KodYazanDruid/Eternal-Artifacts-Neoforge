@@ -878,6 +878,18 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         chestplateRecipe(recipeOutput, ModItems.TERRASTEEL_CHESTPLATE, ModItems.TERRASTEEL_INGOT);
         leggingsRecipe(recipeOutput, ModItems.TERRASTEEL_LEGGINGS, ModItems.TERRASTEEL_INGOT);
         bootsRecipe(recipeOutput, ModItems.TERRASTEEL_BOOTS, ModItems.TERRASTEEL_INGOT);
+        helmetRecipe(recipeOutput, ModItems.BRONZE_HELMET, ModTags.Items.INGOTS_BRONZE);
+        chestplateRecipe(recipeOutput, ModItems.BRONZE_CHESTPLATE, ModTags.Items.INGOTS_BRONZE);
+        leggingsRecipe(recipeOutput, ModItems.BRONZE_LEGGINGS, ModTags.Items.INGOTS_BRONZE);
+        bootsRecipe(recipeOutput, ModItems.BRONZE_BOOTS, ModTags.Items.INGOTS_BRONZE);
+        helmetRecipe(recipeOutput, ModItems.COPPER_HELMET, Tags.Items.INGOTS_COPPER);
+        chestplateRecipe(recipeOutput, ModItems.COPPER_CHESTPLATE, Tags.Items.INGOTS_COPPER);
+        leggingsRecipe(recipeOutput, ModItems.COPPER_LEGGINGS, Tags.Items.INGOTS_COPPER);
+        bootsRecipe(recipeOutput, ModItems.COPPER_BOOTS, Tags.Items.INGOTS_COPPER);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.TROWEL)
+            .pattern("SI ").pattern(" IN")
+            .define('S', Tags.Items.RODS_WOODEN).define('I', ModTags.Items.INGOTS_STEEL).define('N', ModTags.Items.NUGGETS_STEEL)
+            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
         //endregion
         //region Shapeless recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)

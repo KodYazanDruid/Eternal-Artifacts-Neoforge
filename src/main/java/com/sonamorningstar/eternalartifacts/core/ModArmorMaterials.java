@@ -20,15 +20,19 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 @Getter
 public enum ModArmorMaterials implements ArmorMaterial {
     COMFY("comfy", 6, createDefenceMap(2, 6, 5, 2), 15,
-            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.LEATHER)),
-    SHULKER("shulker", 9, createDefenceMap(4, 8, 6, 4), 25,
+            SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Tags.Items.LEATHER)),
+    SHULKER("shulker", 13, createDefenceMap(4, 8, 6, 4), 25,
             SoundEvents.SHULKER_BOX_OPEN, 1.5F, 0.0F, () -> Ingredient.of(ModTags.Items.SHULKER_SHELL)),
     STEEL("steel", 22, createDefenceMap(3, 7, 6, 2), 16,
             SoundEvents.ARMOR_EQUIP_IRON, 1.0F, 0.05F, () -> Ingredient.of(ModTags.Items.INGOTS_STEEL)),
-    CACTUS("cactus", 3, createDefenceMap(1, 3, 2, 1), 8,
+    CACTUS("cactus", 4, createDefenceMap(1, 3, 2, 1), 8,
             SoundEvents.ARMOR_EQUIP_LEATHER, 0.0F, 0.0F, () -> Ingredient.of(Items.CACTUS)),
-    TERRASTEEL("terrasteel", 3, createDefenceMap(4, 8, 6, 4), 28,
-            SoundEvents.ARMOR_EQUIP_DIAMOND, 0.0F, 0.0F, () -> Ingredient.of(ModItems.TERRASTEEL_INGOT));
+    TERRASTEEL("terrasteel", 37, createDefenceMap(4, 8, 6, 4), 28,
+            SoundEvents.ARMOR_EQUIP_DIAMOND, 0.0F, 0.0F, () -> Ingredient.of(ModItems.TERRASTEEL_INGOT)),
+    BRONZE("bronze", 15, createDefenceMap(2, 6, 5, 2), 16,
+            SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.of(ModTags.Items.INGOTS_BRONZE)),
+    COPPER("copper", 12, createDefenceMap(2, 5, 4, 1), 12,
+            SoundEvents.ARMOR_EQUIP_IRON, 0.0F, 0.0F, () -> Ingredient.of(Tags.Items.INGOTS_COPPER));
 
     private final String name;
     @Getter(AccessLevel.NONE)
