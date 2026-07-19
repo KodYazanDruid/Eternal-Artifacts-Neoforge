@@ -26,37 +26,6 @@ public class NousTankMenu extends AbstractMachineMenu {
         nousTank = (NousTank) entity;
     }
     
-    /*public boolean depositLevels(Player player, int levels) {
-        int wantedXp = levels == Integer.MAX_VALUE ? Integer.MAX_VALUE : ExperienceHelper.totalXpForLevel(levels);
-        int totalPlayerXp = ExperienceHelper.getTotalPlayerXp(player);
-        int toDeposit = Math.min(wantedXp, totalPlayerXp) * 20;
-        AbstractFluidTank tank = nousTank.tank;
-        int emptySpace = tank.getEmptySpace(0);
-        int toFill = Math.min(toDeposit, emptySpace);
-        if (toFill > 0) {
-            FluidStack fluidStack = tank.getFluidInTank(0);
-            Fluid fluid = fluidStack.isEmpty() ? ModFluids.NOUS.getFluid() : fluidStack.getFluid();
-            FluidStack toInsert = new FluidStack(fluid, toFill);
-            int xpToTake = toFill / 20;
-            tank.fillForced(toInsert, IFluidHandler.FluidAction.EXECUTE);
-            ExperienceHelper.givePlayerXpSilent(player, -xpToTake);
-            return true;
-        }
-        return false;
-    }*/
-    /*public boolean takeLevels(Player player, int levels) {
-        int wantedXp = levels == Integer.MAX_VALUE ? Integer.MAX_VALUE : ExperienceHelper.totalXpForLevel(levels);
-        AbstractFluidTank tank = nousTank.tank;
-        int availableXp = tank.getFluidInTank(0).getAmount() / 20;
-        int toTake = Math.min(wantedXp, availableXp);
-        if (toTake > 0) {
-            tank.drainForced(toTake * 20, IFluidHandler.FluidAction.EXECUTE);
-            ExperienceHelper.givePlayerXpSilent(player, toTake);
-            return true;
-        }
-        return false;
-    }*/
-    
     /**
      * Deposits XP from player to tank based on player's current level.
      * E.g., if player is at level 40 and deposits 10 levels,
@@ -66,7 +35,7 @@ public class NousTankMenu extends AbstractMachineMenu {
         int currentTotalXp = ExperienceHelper.getTotalPlayerXp(player);
         if (currentTotalXp <= 0) return false;
         
-        int xpToDeposit;
+        long xpToDeposit;
         if (levels == Integer.MAX_VALUE) {
             xpToDeposit = currentTotalXp;
         } else {
@@ -74,7 +43,7 @@ public class NousTankMenu extends AbstractMachineMenu {
             if (currentLevel <= 0) return false;
             
             int targetLevel = Math.max(0, currentLevel - levels);
-            int targetTotalXp = ExperienceHelper.totalXpForLevel(targetLevel);
+            long targetTotalXp = ExperienceHelper.totalXpForLevel(targetLevel);
             xpToDeposit = currentTotalXp - targetTotalXp;
             
             if (xpToDeposit <= 0) return false;
@@ -83,14 +52,14 @@ public class NousTankMenu extends AbstractMachineMenu {
         AbstractFluidTank tank = nousTank.tank;
         int emptySpace = tank.getEmptySpace(0);
         int maxXpBySpace = emptySpace / 20;
-        int actualXpToDeposit = Math.min(xpToDeposit, maxXpBySpace);
+        long actualXpToDeposit = Math.min(xpToDeposit, maxXpBySpace);
         
         if (actualXpToDeposit > 0) {
             FluidStack fluidStack = tank.getFluidInTank(0);
             Fluid fluid = fluidStack.isEmpty() ? ModFluids.NOUS.getFluid() : fluidStack.getFluid();
-            FluidStack toInsert = new FluidStack(fluid, actualXpToDeposit * 20);
+            FluidStack toInsert = new FluidStack(fluid, (int) (actualXpToDeposit * 20));
             tank.fillForced(toInsert, IFluidHandler.FluidAction.EXECUTE);
-            ExperienceHelper.givePlayerXpSilent(player, -actualXpToDeposit);
+            ExperienceHelper.givePlayerXpSilent(player, (int) -actualXpToDeposit);
             return true;
         }
         return false;
@@ -106,7 +75,7 @@ public class NousTankMenu extends AbstractMachineMenu {
         int availableXp = tank.getFluidInTank(0).getAmount() / 20;
         if (availableXp <= 0) return false;
         
-        int actualXpToTake;
+        long actualXpToTake;
         if (levels == Integer.MAX_VALUE) {
             actualXpToTake = availableXp;
         } else {
@@ -114,16 +83,16 @@ public class NousTankMenu extends AbstractMachineMenu {
             int targetLevel = currentLevel + levels;
             
             int currentTotalXp = ExperienceHelper.getTotalPlayerXp(player);
-            int targetTotalXp = ExperienceHelper.totalXpForLevel(targetLevel);
-            int xpNeeded = targetTotalXp - currentTotalXp;
+            long targetTotalXp = ExperienceHelper.totalXpForLevel(targetLevel);
+            long xpNeeded = targetTotalXp - currentTotalXp;
             
             if (xpNeeded <= 0) return false;
             
             actualXpToTake = Math.min(xpNeeded, availableXp);
         }
 		
-		tank.drainForced(actualXpToTake * 20, IFluidHandler.FluidAction.EXECUTE);
-		ExperienceHelper.givePlayerXpSilent(player, actualXpToTake);
+		tank.drainForced((int) (actualXpToTake * 20), IFluidHandler.FluidAction.EXECUTE);
+		ExperienceHelper.givePlayerXpSilent(player, (int) actualXpToTake);
 		return true;
 	}
     

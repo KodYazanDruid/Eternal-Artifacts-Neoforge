@@ -8,7 +8,9 @@ import com.sonamorningstar.eternalartifacts.container.BlockInteractorMenu;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Filterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.SidedTransferMachine;
 import com.sonamorningstar.eternalartifacts.core.ModFluids;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
+import com.sonamorningstar.eternalartifacts.core.ModTags;
 import com.sonamorningstar.eternalartifacts.util.ExperienceHelper;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
@@ -18,7 +20,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BucketPickup;
@@ -27,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.ToolActions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
@@ -51,7 +51,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		setEnergy(this::createDefaultEnergy);
 		setTank(() -> createBasicTank(16000, fs -> !fs.getFluid().defaultFluidState().createLegacyBlock().isEmpty(), true, true));
 		outputSlots.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8));
-		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0));
+		setInventory(() -> createBasicInventory(9, outputSlots, (slot, stack) -> slot == 0 /*&& !stack.is(ModItems.CHISEL)*/));
 		setEnergyPerTick(250);
 	}
 	
@@ -71,6 +71,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		super.registerConfigs();
 		getConfiguration().add(new ReverseToggleConfig("block_mode"));
 		getConfiguration().add(new ReverseToggleConfig("fluid_mode"));
+		getConfiguration().add(new ReverseToggleConfig("repair_tools"));
 		getConfiguration().add(new ToggleConfig("always_mine"));
 	}
 	
@@ -79,7 +80,7 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		super.onLoad();
 		destroyTickStart = -1;
 		if (level != null && !level.isClientSide()) {
-			level.destroyBlockProgress(FakePlayerHelper.getFakePlayer(this, level).getId(), getBlockPos().relative(getBlockState().getValue(BlockStateProperties.FACING)), -1);
+			level.destroyBlockProgress(getFakePlayer().getId(), getBlockPos().relative(getBlockState().getValue(BlockStateProperties.FACING)), -1);
 		}
 	}
 	
@@ -112,18 +113,33 @@ public class BlockBreaker extends SidedTransferMachine<BlockInteractorMenu> impl
 		super.tickServer(lvl, pos, st);
 		performAutoInputItems(lvl, pos);
 		performAutoOutputItems(lvl, pos);
+		performAutoInputFluids(lvl, pos);
 		performAutoOutputFluids(lvl, pos);
+		
+		MachineConfiguration configs = getConfiguration();
+		
+		ItemStack repairCopy = inventory.getStackInSlot(0).copy();
+		FluidStack fluid = tank.getFluidInTank(0);
+		boolean disabledRepairing = configs.get(ReverseToggleConfig.class, "repair_tools").isDisabled();
+		if (!disabledRepairing && canWork(energy) && repairCopy.isDamaged() && !fluid.isEmpty() && fluid.is(ModTags.Fluids.EXPERIENCE)) {
+			tank.drainForced(1, IFluidHandler.FluidAction.EXECUTE);
+			spendEnergy(energy);
+			int repairAmount = Math.min(1, repairCopy.getDamageValue());
+			repairCopy.setDamageValue(repairCopy.getDamageValue() - repairAmount);
+			if (repairCopy.getDamageValue() < 0) repairCopy.setDamageValue(0);
+			if (repairCopy.getDamageValue() == 0) repairCopy.removeTagKey("Damage");
+			inventory.setStackInSlot(0, repairCopy);
+		}
+		
 		if (!redstoneChecks(lvl)) return;
 		getFakePlayer();
-		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		BlockPos targetPos = getBlockPos().relative(st.getValue(BlockStateProperties.FACING));
 		BlockState minedState = lvl.getBlockState(targetPos);
 		ServerPlayerGameMode gameMode = fakePlayer.gameMode;
-		MachineConfiguration configs = getConfiguration();
 		
 		if (!configs.get(ReverseToggleConfig.class, "block_mode").isDisabled() && !lvl.getBlockState(targetPos).isAir() && canWork(energy)
 			&& minedState.getBlock().canHarvestBlock(minedState, lvl, targetPos, fakePlayer) && matchesBlockFilter(minedState)
-			&& shouldMineBlock((ServerLevel) lvl, targetPos)) {
+			&& shouldMineBlock(lvl, targetPos)) {
 			
 			spendEnergy(energy);
 			if (destroyTickStart == -1) {

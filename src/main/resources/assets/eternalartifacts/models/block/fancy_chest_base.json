@@ -1,0 +1,35 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"3": "block/bamboo_planks",
+		"particle": "block/bamboo_planks"
+	},
+	"elements": [
+		{
+			"name": "base",
+			"from": [1, 0, 1],
+			"to": [15, 9, 15],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 5, 8]},
+			"faces": {
+				"north": {"uv": [1, 7, 15, 16], "texture": "#3", "tintindex": 0},
+				"east": {"uv": [1, 7, 15, 16], "texture": "#3", "tintindex": 0},
+				"south": {"uv": [1, 7, 15, 16], "texture": "#3", "tintindex": 0},
+				"west": {"uv": [1, 7, 15, 16], "texture": "#3", "tintindex": 0},
+				"up": {"uv": [1, 1, 15, 15], "texture": "#3", "tintindex": 0},
+				"down": {"uv": [1, 1, 15, 15], "texture": "#3", "cullface": "down", "tintindex": 0}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "base",
+			"origin": [8, 0, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0]
+		}
+	],
+	"loader": "eternalartifacts:retextured",
+	"retextured": ["particle", "3"]
+}

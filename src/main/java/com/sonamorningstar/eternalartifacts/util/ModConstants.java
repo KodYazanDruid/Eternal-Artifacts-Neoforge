@@ -45,7 +45,8 @@ public enum ModConstants {
     KEY("key."+MODID),
     KEY_ETAR_CATEGORY("key.categories", MODID),
     ADVANCEMENT("advancement."+MODID),
-    SET_BONUS("tooltip."+MODID, "set_bonus");
+    SET_BONUS("tooltip."+MODID, "set_bonus"),
+    MESSAGE("message."+MODID);
     
     final String string;
     @Nullable

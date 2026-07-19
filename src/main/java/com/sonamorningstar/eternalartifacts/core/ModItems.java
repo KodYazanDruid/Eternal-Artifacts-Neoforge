@@ -196,6 +196,7 @@ public class ModItems {
     public static final DeferredItem<Item> MAGIC_BANE = registerStacksToOne("magic_bane");
     public static final DeferredItem<Item> DEATH_CAP = registerStacksToOne("death_cap");
     public static final DeferredItem<Item> MOONGLASS_PENDANT = registerStacksToOne("moonglass_pendant");
+    public static final DeferredItem<Item> EYE_OF_DESTRUCTION = registerStacksToOne("eye_of_destruction");
     //endregion
     //region Tools
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));

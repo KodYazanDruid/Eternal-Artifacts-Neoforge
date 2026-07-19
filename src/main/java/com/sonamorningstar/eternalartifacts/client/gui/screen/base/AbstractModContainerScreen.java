@@ -113,6 +113,9 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
     }
     
     protected void setupConfigWidgets() {
+        MachineConfiguration configs = getMenu().machineConfigs;
+        if (configs == null || configs.getConfigs().isEmpty()) return;
+        
         configPanel = new SimpleDraggablePanel(
             Component.empty(), leftPos + (imageWidth / 2) - 50, topPos + 10, 100, 75,
             SimpleDraggablePanel.Bounds.full(this)
@@ -121,9 +124,6 @@ public abstract class AbstractModContainerScreen<T extends AbstractModContainerM
         configPanel.visible = false;
         configPanel.active = false;
         configPanel.addClosingButton();
-        
-        MachineConfiguration configs = getMenu().machineConfigs;
-        if (configs == null) return;
         
         for (Config config : configs.getConfigs().values()) {
             createUIFor(config, new ConfigUIRegistry.ConfigUIContext(configPanel, this));

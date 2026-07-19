@@ -1,4 +1,4 @@
-// 1.20.4	2026-06-20T18:28:27.7684099	Tags for minecraft:item mod id eternalartifacts
+// 1.20.4	2026-07-19T16:23:10.467228	Tags for minecraft:item mod id eternalartifacts
 d8ef8e4b11af3d1f5f8e75e6a524fd0a516832a3 data/eternalartifacts/tags/items/charms.json
 31134bd95c0ff159760473405d037c064af5bda1 data/eternalartifacts/tags/items/charms/back.json
 c5aa0a4ea42d6027fbb87900f33b405f1981d040 data/eternalartifacts/tags/items/charms/belt.json
@@ -8,17 +8,17 @@ a9eab9bbed72fbf6af5bb0f67ee328f70809c143 data/eternalartifacts/tags/items/charms
 372006b6beb73ed428b1bf0e8f2c0a43263cd0fa data/eternalartifacts/tags/items/charms/hand.json
 421f4daa8044fafa031e4b16059d2b19ddb5ac17 data/eternalartifacts/tags/items/charms/head.json
 09c65a2279484fbb8e1a218a5816b11dd8209ee5 data/eternalartifacts/tags/items/charms/necklace.json
-d429de6cd6ef9b3a62721ef02325f191827b29e3 data/eternalartifacts/tags/items/charms/ring.json
+31e10e74c0e2fcbe7fa5c4a5da839cb7440da0bd data/eternalartifacts/tags/items/charms/ring.json
 9dffb9d7eb766747226b453827c4a194d7c5911c data/eternalartifacts/tags/items/charms/wildcard_blacklisted.json
-4ec657e0a06d66a4c3414479ab6f1cb19c5f49f0 data/eternalartifacts/tags/items/gardening_pot_suitable.json
+22feaef448719a978a9257526d109c72dd601a0a data/eternalartifacts/tags/items/gardening_pot_suitable.json
 cced0014687aacaea5f2db8c340b0516acfdab72 data/eternalartifacts/tags/items/recyclable.json
 4d5a856cfddb256d28a3f63c15763ee25a51820b data/eternalartifacts/tags/items/shulker_shell.json
 de0eed2bbbd96f900ab2edcc73da45b2d2d05292 data/eternalartifacts/tags/items/tablets.json
 0e39dbf7b4ae88e14b7d2b48a312ade6fe39c998 data/eternalartifacts/tags/items/tools/cutlasses.json
-3d97182fa3e9484abf56446294ef948a9e5ba018 data/forge/tags/items/armors/boots.json
-1971ade391620c4954ac867d0f75f7a9a6450e37 data/forge/tags/items/armors/chestplates.json
-fa96ae1ccfff524570df9a2119ea6e4aa2a7ff34 data/forge/tags/items/armors/helmets.json
-df2bc348b5d2161ca406f38726e5b331cf23fbb3 data/forge/tags/items/armors/leggings.json
+3e23990c0a75b24ba6f550befc4b8941fdedfcc1 data/forge/tags/items/armors/boots.json
+9ed92b3fcedf0705ff669c40fc3d9a3fe9269ab4 data/forge/tags/items/armors/chestplates.json
+b673986fcca08866e260d7c0e5bf9b4845fbe10a data/forge/tags/items/armors/helmets.json
+588d96040c31ab000ea7c37c57e54a90b6699893 data/forge/tags/items/armors/leggings.json
 a5c07b9afc5010c37f318065312fb2c2c91194c6 data/forge/tags/items/dough.json
 8b5cea59f396e1e2df266fab2db65e27e0d091e5 data/forge/tags/items/dough/wheat.json
 6665353b7056ffb27e0680e199319c4e9325a21a data/forge/tags/items/dusts.json
@@ -86,6 +86,7 @@ f0dd0a8660131a466006888e2b325db7dde680f6 data/forge/tags/items/tools/hammers.jso
 4c36db30a00d54d37767d1315c2d9e4edeec3c8a data/forge/tags/items/tools/wrench.json
 a6c6f10815b8e27c3fceb47a6b5290fb86dc7bb6 data/minecraft/tags/items/arrows.json
 94462f1a711dba6e5c9b5204d11a797dc6b86114 data/minecraft/tags/items/axes.json
+e734b028a65b94259b6f72e098aedc4a595117ee data/minecraft/tags/items/beacon_payment_items.json
 4c584d17bbf335bba37a8c6be7792ea38bc76b1b data/minecraft/tags/items/coals.json
 5c7b92600369e2475735a4a2ae38c4de780bc804 data/minecraft/tags/items/flowers.json
 342a3c24fa154b995ec03188e9832f104b8e7651 data/minecraft/tags/items/hoes.json

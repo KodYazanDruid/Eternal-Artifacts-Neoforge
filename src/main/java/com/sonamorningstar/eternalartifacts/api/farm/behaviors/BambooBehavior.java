@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.api.farm.behaviors;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -17,20 +18,20 @@ public class BambooBehavior extends ReedBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		FluidState fluidstate = level.getFluidState(pos);
 		if (!fluidstate.isEmpty()) {
-			return Blocks.AIR.defaultBlockState();
+			return EMPTY_PLANT;
 		} else {
 			BlockState soilState = level.getBlockState(pos.below());
 			if (soilState.is(BlockTags.BAMBOO_PLANTABLE_ON)) {
 				if (soilState.is(Blocks.BAMBOO_SAPLING)) {
-					return Blocks.BAMBOO.defaultBlockState().setValue(AGE, 0);
+					return new PlantResult(Blocks.BAMBOO.defaultBlockState().setValue(AGE, 0), Direction.UP);
 				} else if (soilState.is(Blocks.BAMBOO)) {
-					return Blocks.BAMBOO.defaultBlockState().setValue(AGE, soilState.getValue(AGE) > 0 ? 1 : 0);
-				} else return Blocks.BAMBOO_SAPLING.defaultBlockState();
+					return new PlantResult(Blocks.BAMBOO.defaultBlockState().setValue(AGE, soilState.getValue(AGE) > 0 ? 1 : 0), Direction.UP);
+				} else return new PlantResult(Blocks.BAMBOO_SAPLING.defaultBlockState(), Direction.UP);
 			} else {
-				return Blocks.AIR.defaultBlockState();
+				return EMPTY_PLANT;
 			}
 		}
 	}
@@ -41,10 +42,10 @@ public class BambooBehavior extends ReedBehavior {
 	}
 	
 	@Override
-	public BlockState getReplantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getReplantingState(Level level, BlockPos pos, ItemStack seed) {
 		BlockState belowState = level.getBlockState(pos.below());
 		if (belowState.is(BlockTags.BAMBOO_PLANTABLE_ON)) {
-			return Blocks.BAMBOO.defaultBlockState().setValue(AGE, 0);
+			return new PlantResult(Blocks.BAMBOO.defaultBlockState().setValue(AGE, 0), Direction.UP);
 		}
 		return super.getReplantingState(level, pos, seed);
 	}

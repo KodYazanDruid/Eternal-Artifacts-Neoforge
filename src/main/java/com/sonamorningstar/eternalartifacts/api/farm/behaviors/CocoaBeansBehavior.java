@@ -34,7 +34,7 @@ public class CocoaBeansBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
 		if (block instanceof CocoaBlock cocoa) {
 			BlockState blockstate = cocoa.defaultBlockState();
@@ -42,11 +42,11 @@ public class CocoaBeansBehavior implements FarmBehavior {
 				if (direction.getAxis().isHorizontal()) {
 					blockstate = blockstate.setValue(CocoaBlock.FACING, direction);
 					if (blockstate.canSurvive(level, pos)) {
-						return blockstate;
+						return new PlantResult(blockstate, direction);
 					}
 				}
 			}
 		}
-		return Blocks.AIR.defaultBlockState();
+		return EMPTY_PLANT;
 	}
 }

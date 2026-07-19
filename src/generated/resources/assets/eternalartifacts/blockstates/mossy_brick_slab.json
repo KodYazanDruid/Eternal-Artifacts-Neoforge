@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "eternalartifacts:block/mossy_brick_slab"
+    },
+    "type=double": {
+      "model": "eternalartifacts:block/mossy_bricks"
+    },
+    "type=top": {
+      "model": "eternalartifacts:block/mossy_brick_slab_top"
+    }
+  }
+}

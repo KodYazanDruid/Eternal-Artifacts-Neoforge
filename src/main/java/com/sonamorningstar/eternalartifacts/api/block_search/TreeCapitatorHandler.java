@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.content.item.AxeOfRegrowthItem;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.BlockTags;
@@ -16,8 +17,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
 import java.util.ArrayList;
@@ -212,13 +213,13 @@ public class TreeCapitatorHandler {
 	private static boolean tryPlace(ServerLevel level, ServerPlayer player,
 									BlockPos pos, BlockState saplingState) {
 		BlockSnapshot snapshot      = BlockSnapshot.create(level.dimension(), level, pos);
-		BlockState    placedAgainst = level.getBlockState(pos.below());
-		
-		BlockEvent.EntityPlaceEvent placeEvent =
-			new BlockEvent.EntityPlaceEvent(snapshot, placedAgainst, player);
-		
-		if (NeoForge.EVENT_BUS.post(placeEvent).isCanceled()) return false;
-		
+		boolean cancelled = EventHooks.onBlockPlace(player, snapshot, Direction.UP);
+		if (cancelled) {
+			level.captureBlockSnapshots = true;
+			snapshot.restore(true, false);
+			level.captureBlockSnapshots = false;
+			return false;
+		}
 		level.setBlock(pos, saplingState, Block.UPDATE_ALL);
 		level.gameEvent(GameEvent.BLOCK_PLACE, pos, GameEvent.Context.of(player, saplingState));
 		return true;

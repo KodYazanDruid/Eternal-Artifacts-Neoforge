@@ -3,7 +3,7 @@
 	"textures": {
 		"particle": "block/terracotta",
 		"base": "block/terracotta",
-		"dirt": "minecraft:block/farmland_moist"
+		"dirt": "eternalartifacts:block/fertilized_soil_farmland_moist"
 	},
 	"elements": [
 		{

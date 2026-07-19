@@ -5,8 +5,6 @@ import com.google.common.collect.Multimap;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
-import com.sonamorningstar.eternalartifacts.content.enchantment.VersatilityEnchantment;
-import com.sonamorningstar.eternalartifacts.content.item.KnapsackItem;
 import com.sonamorningstar.eternalartifacts.content.item.MagnetItem;
 import com.sonamorningstar.eternalartifacts.content.item.PortableBatteryItem;
 import com.sonamorningstar.eternalartifacts.content.item.SolarPanelHelmet;

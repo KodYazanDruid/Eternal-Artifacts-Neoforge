@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-public class GenericSidedMachineScreen extends AbstractSidedMachineScreen<GenericMachineMenu> {
+public class GenericSidedMachineScreen extends AbstractMachineScreen<GenericMachineMenu> {
     @Getter
     private final GenericMachine machine;
     private final GenericScreenInfo screenInfo;

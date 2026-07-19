@@ -12,7 +12,7 @@
       "tag": "forge:plastic_sheets"
     },
     "T": {
-      "tag": "forge:hardened_glass"
+      "tag": "forge:glass/hardened"
     }
   },
   "pattern": [

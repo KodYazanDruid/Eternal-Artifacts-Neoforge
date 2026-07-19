@@ -1,8 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
-import com.sonamorningstar.eternalartifacts.api.filter.EntityFilterEntry;
-import com.sonamorningstar.eternalartifacts.api.filter.EntityPredicateEntry;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
+import com.sonamorningstar.eternalartifacts.api.machine.multiblock.OilDepositData;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
@@ -10,6 +9,8 @@ import it.unimi.dsi.fastutil.longs.LongArraySet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -38,7 +39,12 @@ public class WrenchItem extends DiggerItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        
+        if (!level.isClientSide()) {
+            OilDepositData oilData = OilDepositData.get(((ServerLevel) level));
+            long oilAmount = oilData.getOilAmount(player.chunkPosition(), ((ServerLevel) level));
+            player.displayClientMessage(Component.literal("Oil deposit in this chunk: " + oilAmount + " mB"), true);
+            return InteractionResultHolder.success(stack);
+        }
         return super.use(level, player, hand);
     }
     
@@ -47,6 +53,11 @@ public class WrenchItem extends DiggerItem {
         Level level = ctx.getLevel();
         Player player = ctx.getPlayer();
         BlockPos pos = ctx.getClickedPos();
+        
+        if (!level.isClientSide() && level.getBlockState(pos).is(Blocks.MAGMA_BLOCK)) {
+            OilDepositData data = OilDepositData.get(((ServerLevel) level));
+            data.deposits.clear();
+        }
         
         AtomicBoolean builtMultiblock = new AtomicBoolean(false);
         Multiblock.PATTERNS.forEach((multiblock, pattern) -> {
@@ -132,13 +143,5 @@ public class WrenchItem extends DiggerItem {
         }
         
         return super.useOn(ctx);
-    }
-
-    @Override
-    public InteractionResult interactLivingEntity(ItemStack stack, Player player, LivingEntity target, InteractionHand hand) {
-        EntityFilterEntry entry = new EntityPredicateEntry(EntityPredicateEntry.EntityPredicate.BABY);
-        boolean matches = entry.matches(target);
-        System.out.println("Entity " + target.getName().getString() + " is " + (matches ? "" : "not ") + "a baby.");
-        return InteractionResult.sidedSuccess(player.level().isClientSide());
     }
 }

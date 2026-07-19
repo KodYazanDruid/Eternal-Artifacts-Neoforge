@@ -42,10 +42,9 @@ public class AlchemicalDynamo extends AbstractDynamo<DynamoMenu> {
 					totalDuration += effect.getDuration();
 					generation += (effect.getAmplifier() + 1) * defaultEnergyPerTick;
 				}
-				int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
-				int efficiency = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-				setMaxProgress(totalDuration * ((efficiency / 5) + 1));
-				setEnergyPerTick(generation * ((celerity / 3) + 1));
+				defaultEnergyPerTick = generation;
+				defaultMaxProgress = totalDuration;
+				prepareDynamoEnergyAndDuration();
 				tank.drainForced(250, IFluidHandler.FluidAction.EXECUTE);
 				cacheGetter.apply(maxProgress, energy, energyPerTick, this);
 			}

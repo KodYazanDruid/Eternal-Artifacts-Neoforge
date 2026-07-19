@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
 import java.util.Comparator;
@@ -35,13 +34,13 @@ public class FarmBehaviorRegistry {
 		return null;
 	}
 	
-	public static BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public static FarmBehavior.PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		for (var behavior : BEHAVIORS) {
 			if (behavior.isCorrectSeed(seed)) {
 				return behavior.getPlantingState(level, pos, seed);
 			}
 		}
-		return Blocks.AIR.defaultBlockState();
+		return FarmBehavior.EMPTY_PLANT;
 	}
 	
 	public static boolean isValidSeed(ItemStack seed) {

@@ -87,9 +87,9 @@ public class AnvilinatorScreen extends AbstractSidedMachineScreen<AnvilinatorMen
         }
          gui.drawString(font, Component.literal("↻ ").append(Component.translatable(key)), leftPos + 76, topPos + 38, color, false);
 
-        int xpCost = anvilinatorBlockEntity.getCurrentXpCost();
+        long xpCost = anvilinatorBlockEntity.getCurrentXpCost();
         if (xpCost > 0) {
-            int fluidCost = xpCost * 20;
+            long fluidCost = xpCost * 20;
             int levelCost = ExperienceHelper.totalLevelsFromXp(xpCost);
             int tankAmount = anvilinatorBlockEntity.tank.getFluidAmount(0);
             boolean hasEnough = tankAmount >= fluidCost;

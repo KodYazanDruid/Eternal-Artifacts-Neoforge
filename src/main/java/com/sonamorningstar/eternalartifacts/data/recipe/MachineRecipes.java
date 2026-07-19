@@ -482,7 +482,7 @@ public final class MachineRecipes {
 				'C', Ingredient.of(ModItems.COPPER_TABLET),
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'P', Ingredient.of(ModTags.Items.PLASTIC),
-				'T', Ingredient.of(ModTags.Items.HARDENED_GLASS)
+				'T', Ingredient.of(ModTags.Items.GLASS_HARDENED)
 			)
 		);
 		registerMachineRecipe(output, ModMachines.MOB_HARVESTER,
@@ -561,6 +561,13 @@ public final class MachineRecipes {
 				'M', Ingredient.of(ModBlocks.MACHINE_BLOCK),
 				'R', Ingredient.of(Tags.Items.DUSTS_REDSTONE),
 				'C', Ingredient.of(ModItems.CAPACITOR)
+			)
+		);
+		registerMachineRecipe(output, ModMachines.FLUID_FURNACE,
+			"CCC"+"CFC"+"CCC",
+			Map.of(
+				'C', Ingredient.of(Tags.Items.INGOTS_COPPER),
+				'F', Ingredient.of(Items.FURNACE)
 			)
 		);
 	}

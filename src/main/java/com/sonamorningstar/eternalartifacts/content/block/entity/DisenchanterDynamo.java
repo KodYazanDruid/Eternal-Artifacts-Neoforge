@@ -100,10 +100,9 @@ public class DisenchanterDynamo extends AbstractDynamo<ItemDynamoMenu> {
 				totalDuration += entry.getKey().getMinCost(entry.getValue());
 				generation += entry.getValue() * (defaultEnergyPerTick);
 			}
-			int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
-			int efficiency = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-			setMaxProgress(totalDuration * ((efficiency / 5) + 1));
-			setEnergyPerTick(generation * ((celerity / 3) + 1));
+			defaultMaxProgress = totalDuration;
+			defaultEnergyPerTick = generation;
+			prepareDynamoEnergyAndDuration();
 			inventory.setStackInSlot(0, removeEnchantments(stack));
 			cacheGetter.apply(maxProgress, energy, energyPerTick, this);
 		}

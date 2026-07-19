@@ -1,11 +1,14 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehaviorRegistry;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.DefaultRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -13,6 +16,9 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
@@ -26,18 +32,33 @@ public class GardeningPotEntity extends DefaultRetexturedBlockEntity {
     }
 
     public void tick(Level level, BlockPos pos, BlockState state) {
+        if (level.isClientSide()) {
+            return;
+        }
         IItemHandler inventoryBelow = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
         BlockPos targetPos = pos.above();
         
         FarmBehavior behavior = FarmBehaviorRegistry.get(level, targetPos);
         if (behavior != null && behavior.canHarvest(level, targetPos)) {
+            BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(level, targetPos, level.getBlockState(targetPos), FakePlayerHelper.getFakePlayer(level));
+            if (event.isCanceled()) return;
+            
             List<ItemStack> drops = behavior.harvest(level, targetPos, null, null);
             
             boolean planted = false;
             for (ItemStack drop : drops) {
                 if (!drop.isEmpty()) {
                     if (!planted && behavior.isCorrectSeed(drop) && behavior.supportsReplanting()) {
-                        BlockState plantState = behavior.getReplantingState(level, targetPos, drop);
+                        FarmBehavior.PlantResult plantResult = behavior.getReplantingState(level, targetPos, drop);
+                        BlockState plantState = plantResult.state();
+                        BlockSnapshot snapshot = BlockSnapshot.create(level.dimension(), level, targetPos);
+                        boolean cancelled = EventHooks.onBlockPlace(FakePlayerHelper.getFakePlayer(level), snapshot, plantResult.facing());
+                        if (cancelled) {
+                            level.restoringBlockSnapshots = true;
+                            snapshot.restore(true, false);
+                            level.restoringBlockSnapshots = false;
+                            continue;
+                        }
                         if (!plantState.isAir()) {
                             level.playSound(null, targetPos, behavior.getReplantSound(plantState), SoundSource.BLOCKS);
                             level.setBlockAndUpdate(targetPos, plantState);

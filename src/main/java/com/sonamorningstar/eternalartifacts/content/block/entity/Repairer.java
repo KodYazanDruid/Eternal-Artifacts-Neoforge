@@ -38,7 +38,7 @@ public class Repairer extends GenericMachine {
 		if (!input.isEmpty() && input.isDamaged() && canWork(energy) &&
 				tank.getFluidAmount(0) >= XP_COST * modifiedRepairAmount) {
 			tank.get(0).drainForced(XP_COST * modifiedRepairAmount, IFluidHandler.FluidAction.EXECUTE);
-			energy.extractEnergy(getEnergyPerTick(), false);
+			spendEnergy(energy);
 			modifiedRepairAmount = modifiedRepairAmount + (modifiedRepairAmount * getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY) / 5);
 			input.setDamageValue(input.getDamageValue() - modifiedRepairAmount);
 			markDirty();

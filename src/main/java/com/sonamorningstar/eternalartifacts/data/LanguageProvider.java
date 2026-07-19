@@ -270,6 +270,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COPPER_LEGGINGS.get(), "Copper Leggings");
                 add(ModItems.COPPER_BOOTS.get(), "Copper Boots");
                 add(ModItems.TROWEL.get(), "Trowel");
+                add(ModItems.EYE_OF_DESTRUCTION.get(), "Eye of Destruction");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -289,6 +290,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.RAINCOAT.get(), "Negates the next bad effect.");
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Decreases the next taken damage by %s%%.");
                 tooltipForItem(ModItems.MOONGLASS_PENDANT.get(), "Heals the user for %s%% of the magic damage they dealt.");
+                tooltipForItem(ModItems.EYE_OF_DESTRUCTION.get(), "Increases critical damage by %s%%.");
                 //endregion
                 //region Blocks
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
@@ -422,6 +424,18 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.FLUID_HOPPER.get(), "Fluid Hopper");
                 add(ModBlocks.SOUL_MAGMA_BLOCK.get(), "Soul Magma Block");
                 add(ModBlocks.WATER_TNT.get(), "Water TNT");
+                add(ModBlocks.FERTILIZED_SOIL.get(), "Fertilized Soil");
+                add(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), "Fertilized Soil Farmland");
+                add(ModBlocks.BEACON_AGITATOR.get(), "Beacon Agitator");
+                add(ModBlocks.CURSED_STONE_BRICKS.get(), "Cursed Stone Bricks");
+                add(ModBlocks.MOSSY_BRICKS.get(), "Mossy Bricks");
+                add(ModBlocks.MOSSY_BRICK_STAIRS.get(), "Mossy Brick Stairs");
+                add(ModBlocks.MOSSY_BRICK_SLAB.get(), "Mossy Brick Slab");
+                add(ModBlocks.MOSSY_BRICK_WALL.get(), "Mossy Brick Wall");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICKS.get(), "Mossy Deepslate Bricks");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICK_STAIRS.get(), "Mossy Deepslate Brick Stairs");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICK_SLAB.get(), "Mossy Deepslate Brick Slab");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICK_WALL.get(), "Mossy Deepslate Brick Wall");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -700,8 +714,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("search_warps"), "Search Warps...");
                 add(ModConstants.GUI.withSuffix("auto_input"), "Auto-Input");
                 add(ModConstants.GUI.withSuffix("auto_output"), "Auto-Output");
-                add(ModConstants.GUI.withSuffix("item_transportation_enabled"), "Item transportation enabled.");
-                add(ModConstants.GUI.withSuffix("item_transportation_disabled"), "Item transportation disabled.");
+                add(ModConstants.GUI.withSuffix("item_transportation"), "Item Transportation");
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Fluid Transportation");
                 add(ModConstants.GUI.withSuffix("block_mode_enabled"), "Can work with blocks.");
                 add(ModConstants.GUI.withSuffix("block_mode_disabled"), "Can't work with blocks.");
@@ -750,6 +763,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("block_filter"), "Block Filter");
                 add(ModConstants.GUI.withSuffix("chunk_eater.reset_mining_position"), "Reset mining position.");
                 add(ModConstants.GUI.withSuffix("chunk_eater.finished_cycle"), "Finished mining cycle.");
+                add(ModConstants.GUI.withSuffix("repair_tools_enabled"), "Can automatically repair tools with using XP fluid.");
+                add(ModConstants.GUI.withSuffix("repair_tools_disabled"), "Automatic repairing is disabled.");
+                add(ModConstants.GUI.withSuffix("always_mine_enabled"), "Can mine even if inventory is full.");
+                add(ModConstants.GUI.withSuffix("always_mine_disabled"), "Prevent mining if inventory is full.");
+                add(ModConstants.GUI.withSuffix("redstone_output_threshold"), "Output redstone when");
+                add(ModConstants.GUI.withSuffix("ignore"), "Ignore");
+                add(ModConstants.GUI.withSuffix("below"), "Below");
+                add(ModConstants.GUI.withSuffix("below_equal"), "Below Equal");
+                add(ModConstants.GUI.withSuffix("above"), "Above");
+                add(ModConstants.GUI.withSuffix("above_equal"), "Above Equal");
+                add(ModConstants.GUI.withSuffix("exact"), "Exact");
                 
                 //region Spell Tooltips
                 add("tooltip.eternalartifacts.spell.damage", "Damage");
@@ -1074,6 +1098,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COPPER_LEGGINGS.get(), "Bakır Pantolon");
                 add(ModItems.COPPER_BOOTS.get(), "Bakır Bot");
                 add(ModItems.TROWEL.get(), "Mala");
+                add(ModItems.EYE_OF_DESTRUCTION.get(), "Yıkım Gözü");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1093,6 +1118,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.RAINCOAT.get(), "Sonraki kötü efekti engeller.");
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Sonraki alınan hasarı %%%s azaltır.");
                 tooltipForItem(ModItems.MOONGLASS_PENDANT.get(), "Kullanıcıyı verilen büyü hasarının %%%s kadar iyileştirir.");
+                tooltipForItem(ModItems.EYE_OF_DESTRUCTION.get(), "Kritik hasarını %%%s arttırır.");
                 //endregion
                 //region Türkçe Block
                 add(ModMachines.ANVILINATOR.getBlockTranslationKey(), "Örsinatör");
@@ -1305,6 +1331,19 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModFluids.COOLANT_GEL.getTranslationKey(), "Soğutucu Jel");
                 add(ModBlocks.SOUL_MAGMA_BLOCK.get(), "Ruh Magma Bloğu");
                 add(ModBlocks.WATER_TNT.get(), "Su TNT'si");
+                add(ModBlocks.FERTILIZED_SOIL.get(), "Gübreli Toprak");
+                add(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), "Gübreli Tarla Toprağı");
+                add(ModBlocks.BEACON_AGITATOR.get(), "Fener Karıştırıcısı");
+                add(ModMachines.FLUID_FURNACE.getBlockTranslationKey(), "Sıvı Fırın");
+                add(ModBlocks.CURSED_STONE_BRICKS.get(), "Lanetli Taş Tuğlası");
+                add(ModBlocks.MOSSY_BRICKS.get(), "Yosunlu Tuğlalar");
+                add(ModBlocks.MOSSY_BRICK_STAIRS.get(), "Yosunlu Tuğla Merdiven");
+                add(ModBlocks.MOSSY_BRICK_SLAB.get(), "Yosunlu Tuğla Basamak");
+                add(ModBlocks.MOSSY_BRICK_WALL.get(), "Yosunlu Tuğla Duvar");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICKS.get(), "Yosunlu Kayrak Taş Tuğlası");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICK_STAIRS.get(), "Yosunlu Kayrak Taş Tuğla Merdiven");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICK_SLAB.get(), "Yosunlu Kayrak Taş Tuğla Basamak");
+                add(ModBlocks.MOSSY_DEEPSLATE_BRICK_WALL.get(), "Yosunlu Kayrak Taş Tuğla Duvar");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1612,8 +1651,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("search_warps"), "Işınlayıcıları ara...");
                 add(ModConstants.GUI.withSuffix("auto_input"), "Oto-Giriş");
                 add(ModConstants.GUI.withSuffix("auto_output"), "Oto-Çıkış");
-                add(ModConstants.GUI.withSuffix("item_transportation_enabled"), "Eşya transferi etkin.");
-                add(ModConstants.GUI.withSuffix("item_transportation_disabled"), "Eşya transferi devre dışı.");
+                add(ModConstants.GUI.withSuffix("item_transportation"), "Eşya Transferi");
                 add(ModConstants.GUI.withSuffix("fluid_transportation"), "Sıvı Transferi");
                 add(ModConstants.GUI.withSuffix("block_mode_enabled"), "Bloklarla işlem yapabilir.");
                 add(ModConstants.GUI.withSuffix("block_mode_disabled"), "Bloklarla işlem yapamaz.");
@@ -1662,6 +1700,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("block_filter"), "Blok Filtresi");
                 add(ModConstants.GUI.withSuffix("chunk_eater.reset_mining_position"), "Kazma pozisyonunu sıfırla.");
                 add(ModConstants.GUI.withSuffix("chunk_eater.finished_cycle"), "Kazma döngüsü tamamlandı.");
+                add(ModConstants.GUI.withSuffix("repair_tools_enabled"), "Eşyaları tankdaki XP ile otomatik olarak onarır.");
+                add(ModConstants.GUI.withSuffix("repair_tools_disabled"), "Otomatik eşya onarımı devre dışı.");
+                add(ModConstants.GUI.withSuffix("always_mine_enabled"), "Envanter dolu olsa bile kazmaya devam eder.");
+                add(ModConstants.GUI.withSuffix("always_mine_disabled"), "Envanter dolu ise kazmayı bırak.");
+                add(ModConstants.GUI.withSuffix("redstone_output_threshold"), "Redstone Çıkış Eşiği");
+                add(ModConstants.GUI.withSuffix("ignore"), "Görmezden gel");
+                add(ModConstants.GUI.withSuffix("below"), "Altında");
+                add(ModConstants.GUI.withSuffix("below_equal"), "Altında ve Eşit");
+                add(ModConstants.GUI.withSuffix("above"), "Üstünde");
+                add(ModConstants.GUI.withSuffix("above_equal"), "Üstünde ve Eşit");
+                add(ModConstants.GUI.withSuffix("exact"), "Tam");
                 //endregion
                 //region Türkçe Büyü Araç İpuçları
                 add("tooltip.eternalartifacts.spell.damage", "Hasar");

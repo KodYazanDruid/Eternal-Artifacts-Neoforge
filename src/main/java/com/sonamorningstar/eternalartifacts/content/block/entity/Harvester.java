@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity;
 
+import com.google.common.collect.Lists;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehaviorRegistry;
 import com.sonamorningstar.eternalartifacts.api.machine.config.ReverseToggleConfig;
@@ -32,8 +33,12 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.ToolActions;
+import net.neoforged.neoforge.common.util.BlockSnapshot;
 import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 import java.util.HashMap;
@@ -124,7 +129,6 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		
 		ItemStack toolStack = inventory.getStackInSlot(0);
 		getFakePlayer();
-		if (fakePlayer != null) fakePlayer.getInventory().selected = 0;
 		for (int i = 0; i < progressStep; i++) {
 			BlockPos targetPos = workingPoses.get(workingIndex);
 			BlockState targetState = lvl.getBlockState(targetPos);
@@ -132,6 +136,9 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 			boolean worked = false;
 			FarmBehavior behavior = FarmBehaviorRegistry.get(lvl, targetPos);
 			if (behavior != null && behavior.canHarvest(lvl, targetPos)) {
+				BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(lvl, targetPos, targetState, getFakePlayer());
+				if (event.isCanceled()) return;
+				
 				int sludgeAmount = behavior.getSludgeAmount(lvl, targetPos, toolStack);
 				if (!(canInsertPossibleItems(lvl, targetState, behavior) && tank.getEmptySpace(0) >= sludgeAmount)) return;
 				List<ItemStack> drops = behavior.harvest(lvl, targetPos, toolStack, getFakePlayer());
@@ -141,10 +148,19 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 				for (ItemStack drop : drops) {
 					if (!drop.isEmpty()) {
 						if (!planted && behavior.isCorrectSeed(drop) && behavior.supportsReplanting()) {
-							BlockState plantState = behavior.getReplantingState(lvl, targetPos, drop);
+							FarmBehavior.PlantResult plantResult = behavior.getReplantingState(lvl, targetPos, drop);
+							BlockSnapshot snapshot = BlockSnapshot.create(lvl.dimension(), lvl, targetPos);
+							boolean cancelled = EventHooks.onBlockPlace(getFakePlayer(), snapshot, plantResult.facing());
+							if (cancelled) {
+								lvl.restoringBlockSnapshots = true;
+								snapshot.restore(true, false);
+								lvl.restoringBlockSnapshots = false;
+								continue;
+							}
+							BlockState plantState = plantResult.state();
 							if (!plantState.isAir()) {
-								lvl.playSound(null, targetPos, behavior.getReplantSound(plantState), SoundSource.BLOCKS);
 								lvl.setBlockAndUpdate(targetPos, plantState);
+								lvl.playSound(null, targetPos, behavior.getReplantSound(plantState), SoundSource.BLOCKS);
 								lvl.gameEvent(null, GameEvent.BLOCK_CHANGE, targetPos);
 								drop.shrink(1);
 								planted = true;
@@ -217,8 +233,8 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 				lvl.clip(new ClipContext(center.add(0, 1, 0), center, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, fakePlayer)));
 			BlockState hoedState = soilState.getToolModifiedState(ctx, ToolActions.HOE_TILL, false);
 			if (hoedState != null) {
-				lvl.playSound(null, soilPos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 				lvl.setBlockAndUpdate(soilPos, hoedState);
+				lvl.playSound(null, soilPos, SoundEvents.HOE_TILL, SoundSource.BLOCKS, 1.0F, 1.0F);
 				lvl.gameEvent(null, GameEvent.BLOCK_CHANGE, soilPos);
 				toolStack.hurtAndBreak(1, fakePlayer, p -> {});
 				spendEnergy(energy);
@@ -233,10 +249,19 @@ public class Harvester extends SidedTransferMachine<HarvesterMenu> implements Wo
 		if (!lvl.getBlockState(targetPos).isAir()) return;
 		for (int i = 0; i < 4; i++) {
 			ItemStack stack = inventory.getStackInSlot(i);
-			BlockState plantState = FarmBehaviorRegistry.getPlantingState(lvl, targetPos, stack);
+			FarmBehavior.PlantResult plantResult = FarmBehaviorRegistry.getPlantingState(lvl, targetPos, stack);
+			BlockState plantState = plantResult.state();
+			BlockSnapshot snapshot = BlockSnapshot.create(lvl.dimension(), lvl, targetPos);
+			boolean cancelled = EventHooks.onBlockPlace(getFakePlayer(), snapshot, plantResult.facing());
+			if (cancelled) {
+				lvl.restoringBlockSnapshots = true;
+				snapshot.restore(true, false);
+				lvl.restoringBlockSnapshots = false;
+				return;
+			}
 			if (!plantState.isAir() && plantState.canSurvive(lvl, targetPos)) {
-				lvl.playSound(null, targetPos, plantState.getSoundType().getPlaceSound(), SoundSource.BLOCKS);
 				lvl.setBlockAndUpdate(targetPos, plantState);
+				lvl.playSound(null, targetPos, plantState.getSoundType().getPlaceSound(), SoundSource.BLOCKS);
 				lvl.gameEvent(null, GameEvent.BLOCK_PLACE, targetPos);
 				FluidState fluidState = lvl.getFluidState(targetPos);
 				lvl.scheduleTick(targetPos, fluidState.getType(), fluidState.getType().getTickDelay(lvl));

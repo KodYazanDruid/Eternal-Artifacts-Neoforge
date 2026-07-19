@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "eternalartifacts:chlorophyte_tablet"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "P": {
+      "tag": "forge:ender_pearls"
+    },
+    "T": {
+      "tag": "forge:glass/hardened"
+    }
+  },
+  "pattern": [
+    "TDT",
+    "PCP",
+    "TTT"
+  ],
+  "result": {
+    "item": "eternalartifacts:beacon_agitator"
+  }
+}

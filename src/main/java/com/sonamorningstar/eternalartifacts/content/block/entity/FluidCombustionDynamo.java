@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class FluidCombustionDynamo extends AbstractDynamo<DynamoMenu> {
@@ -29,6 +30,9 @@ public class FluidCombustionDynamo extends AbstractDynamo<DynamoMenu> {
             FluidStack drained = tank.drainForced(amount, IFluidHandler.FluidAction.SIMULATE);
             if (drained.getAmount() == amount) {
                 tank.drainForced(amount, IFluidHandler.FluidAction.EXECUTE);
+                defaultMaxProgress = combustion.getDuration();
+                defaultEnergyPerTick = combustion.getGeneration();
+                prepareDynamoEnergyAndDuration();
                 cacheGetter.apply(maxProgress, energy, energyPerTick, this);
             }
         }

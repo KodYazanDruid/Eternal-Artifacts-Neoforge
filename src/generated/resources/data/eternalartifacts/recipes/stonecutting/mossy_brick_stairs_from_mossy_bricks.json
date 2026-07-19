@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "eternalartifacts:mossy_bricks"
+  },
+  "result": "eternalartifacts:mossy_brick_stairs"
+}

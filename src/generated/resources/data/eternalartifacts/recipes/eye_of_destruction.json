@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "L": {
+      "item": "eternalartifacts:lens"
+    },
+    "R": {
+      "item": "eternalartifacts:gold_ring"
+    }
+  },
+  "pattern": [
+    " L ",
+    "LEL",
+    " LR"
+  ],
+  "result": {
+    "item": "eternalartifacts:eye_of_destruction"
+  }
+}

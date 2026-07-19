@@ -28,6 +28,7 @@ public class ModScreens {
         event.register(ModMachines.HARVESTER.getMenu(), HarvesterScreen::new);
         event.register(ModMachines.ANVILINATOR.getMenu(), AnvilinatorScreen::new);
         event.register(ModMachines.ENERGY_DISTRIBUTOR.getMenu(), EnergyDistributorScreen::new);
+        event.register(ModMachines.FLUID_FURNACE.getMenu(), FluidFurnaceScreen::new);
         
         event.register(ModMachines.SOLID_COMBUSTION_DYNAMO.getMenu(), ItemDynamoScreen::new);
         event.register(ModMachines.FLUID_COMBUSTION_DYNAMO.getMenu(), FluidDynamoScreen::new);

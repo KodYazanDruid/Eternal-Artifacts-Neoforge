@@ -92,7 +92,6 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider,
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);
 		if (!redstoneChecks(lvl)) return;
-		
 		getFakePlayer();
 		fakePlayer.detectEquipmentUpdates();
 		if (fakePlayer instanceof LivingEntityExposer exp) exp.incrementAttackStrengthTicker(1);
@@ -104,7 +103,8 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider,
 				).toList();
 			if (!targets.isEmpty()) {
 				spendEnergy(energy);
-				fakePlayer.attack(targets.get(lvl.random.nextInt(targets.size())));
+				LivingEntity target = targets.get(lvl.random.nextInt(targets.size()));
+				fakePlayer.attack(target);
 				fakePlayer.resetAttackStrengthTicker();
 			}
 		}

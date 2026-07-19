@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.container.*;
 import com.sonamorningstar.eternalartifacts.container.base.DynamoMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
 import com.sonamorningstar.eternalartifacts.content.block.DynamoBlock;
+import com.sonamorningstar.eternalartifacts.content.block.FluidFurnaceBlock;
 import com.sonamorningstar.eternalartifacts.content.block.OilRefineryBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineFourWayBlock;
 import com.sonamorningstar.eternalartifacts.content.block.base.MachineSixWayBlock;
@@ -14,6 +15,9 @@ import com.sonamorningstar.eternalartifacts.registrar.MachineHolder;
 import com.sonamorningstar.eternalartifacts.registrar.MachineRegistration;
 import com.sonamorningstar.eternalartifacts.registrar.MachineRegistry;
 import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
@@ -165,6 +169,14 @@ public class ModMachines {
     public static final MachineHolder<EnergyDistributorMenu, EnergyDistributor, MachineFourWayBlock<EnergyDistributor>, MachineBlockItem>
             ENERGY_DISTRIBUTOR = MACHINES.register(MachineRegistration.standard("energy_distributor", EnergyDistributorMenu::new, EnergyDistributor::new)
                     .uniqueTexture()
+                    .build());
+    
+    public static final MachineHolder<FluidFurnaceMenu, FluidFurnace, FluidFurnaceBlock, MachineBlockItem>
+            FLUID_FURNACE = MACHINES.register(MachineRegistration.standard("fluid_furnace", FluidFurnaceMenu::new, FluidFurnace::new)
+                    .block((p, fun) -> new FluidFurnaceBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE), fun))
+                    .dataSize(4)
+                    .uniqueTexture()
+                    .customRender()
                     .build());
 
     // ==================== Six-Way Machines ====================

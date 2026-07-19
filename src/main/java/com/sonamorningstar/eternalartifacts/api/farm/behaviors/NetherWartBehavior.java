@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.api.farm.behaviors;
 
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,12 +34,12 @@ public class NetherWartBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
 		if (block instanceof NetherWartBlock wartBlock) {
 			BlockState state = wartBlock.getPlant(level, pos);
-			if (state.canSurvive(level, pos)) return state;
+			if (state.canSurvive(level, pos)) return new PlantResult(state, Direction.UP);
 		}
-		return Blocks.AIR.defaultBlockState();
+		return EMPTY_PLANT;
 	}
 }

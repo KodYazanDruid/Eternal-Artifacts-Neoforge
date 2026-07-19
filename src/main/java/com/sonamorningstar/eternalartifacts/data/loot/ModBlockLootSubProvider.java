@@ -153,6 +153,10 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.SOUL_BLAZE_HEAD.get());
         dropSelf(ModBlocks.SOUL_MAGMA_BLOCK.get());
         dropSelf(ModBlocks.WATER_TNT.get());
+        dropSelf(ModBlocks.FERTILIZED_SOIL.get());
+        dropOther(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), ModBlocks.FERTILIZED_SOIL.get());
+        dropSelf(ModBlocks.BEACON_AGITATOR.get());
+        dropSelf(ModBlocks.CURSED_STONE_BRICKS.get());
         
         generateOreBerryTables(ModBlocks.COPPER_ORE_BERRY, ModLootTables.COPPER_OREBERRY_HARVEST);
         generateOreBerryTables(ModBlocks.IRON_ORE_BERRY, ModLootTables.IRON_OREBERRY_HARVEST);

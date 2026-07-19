@@ -37,6 +37,7 @@ public class SolidCombustionDynamo extends AbstractDynamo<ItemDynamoMenu> {
 	protected void executeRecipe(Recipe<?> recipe, QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {
 		if (!inventory.getStackInSlot(0).isEmpty()) {
 			inventory.extractItem(0, 1, false);
+			prepareDynamoEnergyAndDuration();
 			cacheGetter.apply(maxProgress, energy, energyPerTick, this);
 		}
 	}
@@ -46,10 +47,8 @@ public class SolidCombustionDynamo extends AbstractDynamo<ItemDynamoMenu> {
 		ItemStack stack = inventory.getStackInSlot(0);
 		int burnTime = stack.getBurnTime(ModRecipes.SOLID_COMBUSTING.getType());
 		if (burnTime > 0) {
-			int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
-			setEnergyPerTick(defaultEnergyPerTick * ((celerity / 3) + 1));
-			int eff = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
-			setMaxProgress(burnTime * ((eff / 5) + 1));
+			defaultMaxProgress = burnTime;
+			prepareDynamoEnergyAndDuration();
 			inventory.extractItem(0, 1, false);
 			if (stack.hasCraftingRemainingItem()) {
 				ItemStack remainder = stack.getCraftingRemainingItem();

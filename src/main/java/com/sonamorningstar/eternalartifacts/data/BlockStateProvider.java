@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
@@ -117,6 +118,8 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         deepStorageUnit(ModBlocks.DEEP_FLUID_STORAGE_UNIT);
         //deepStorageUnit(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT);
         simpleBlockWithItem(ModBlocks.SOUL_MAGMA_BLOCK.get());
+        simpleBlockWithItem(ModBlocks.FERTILIZED_SOIL.get());
+        simpleBlockWithItem(ModBlocks.CURSED_STONE_BRICKS.get());
         
         simpleBlock(ModBlocks.WATER_TNT.get(), ConfiguredModel.builder().modelFile(
             models().cubeBottomTop(ModBlocks.WATER_TNT.getId().getPath(),
@@ -142,7 +145,7 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         );
 
         createStateForModelWithProperty(ModBlocks.RESONATOR, BlockStateProperties.FACING);
-        createStateForModelWithProperty(ModBlocks.FANCY_CHEST, BlockStateProperties.HORIZONTAL_FACING);
+        createStateForModelWithProperty(ModBlocks.FANCY_CHEST, "fancy_chest_base", BlockStateProperties.HORIZONTAL_FACING);
         createStateForModel(ModBlocks.GARDENING_POT);
         createStateForModel(ModBlocks.TESSERACT);
         createDrums(ModBlocks.COPPER_DRUM, Blocks.COPPER_BLOCK);
@@ -165,6 +168,14 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         createOreBerries(ModBlocks.GOLD_ORE_BERRY);
         createOreBerries(ModBlocks.EXPERIENCE_ORE_BERRY);
         createOreBerries(ModBlocks.MANGANESE_ORE_BERRY);
+        
+        ResourceLocation beaconAgitatorLoc = BuiltInRegistries.BLOCK.getKey(ModBlocks.BEACON_AGITATOR.get());
+        ResourceLocation temperedGlassTexture = blockTexture(ModBlocks.TEMPERED_GLASS.get());
+        BlockModelBuilder beaconAgitatorBld = models()
+            .slab(beaconAgitatorLoc.getPath(), temperedGlassTexture, temperedGlassTexture, temperedGlassTexture)
+            .renderType("cutout");
+        simpleBlock(ModBlocks.BEACON_AGITATOR.get(), beaconAgitatorBld);
+        simpleBlockItem(ModBlocks.BEACON_AGITATOR.get(), beaconAgitatorBld);
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             if(!holder.hasCustomRender()) {
@@ -354,6 +365,16 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
             }
         });
     }
+    private void createSpecialSlab(SlabBlock slab, Block base, String renderType) {
+        ResourceLocation baseKey = BuiltInRegistries.BLOCK.getKey(base);
+        ResourceLocation slabKey = BuiltInRegistries.BLOCK.getKey(slab);
+        ResourceLocation texture = blockTexture(base);
+        getVariantBuilder(slab)
+            .partialState().with(SlabBlock.TYPE, SlabType.BOTTOM).addModels(new ConfiguredModel(models().slab(slabKey.getPath(), texture, texture, texture).renderType(renderType)))
+            .partialState().with(SlabBlock.TYPE, SlabType.TOP).addModels(new ConfiguredModel(models().slabTop(slabKey.getPath() + "_top", texture, texture, texture).renderType(renderType)))
+            .partialState().with(SlabBlock.TYPE, SlabType.DOUBLE).addModels(new ConfiguredModel(models().getExistingFile(baseKey)));
+        
+    }
     private void createSpecialWall(BlockFamily family, String renderType) {
         family.getVariants().values().forEach(block -> {
             if (block instanceof WallBlock wall) {
@@ -387,6 +408,10 @@ public class BlockStateProvider extends net.neoforged.neoforge.client.model.gene
         String path = holder.getId().getPath();
         directionBlock(holder.get(), (state, builder) ->
                 builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/"+path), models().existingFileHelper)), property);
+    }
+    private void createStateForModelWithProperty(DeferredBlock<?> holder, String modPath, Property<Direction> property) {
+        directionBlock(holder.get(), (state, builder) ->
+            builder.modelFile(new ModelFile.ExistingModelFile(modLoc("block/"+modPath), models().existingFileHelper)), property);
     }
 
     private void simpleBlockWithItem(Block block) {

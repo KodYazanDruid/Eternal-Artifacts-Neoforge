@@ -8,6 +8,8 @@ import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAre
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.EnergyDistributorTargetsToClient;
+import it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap;
+import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.LongArrayList;
 import it.unimi.dsi.fastutil.longs.LongList;
 import net.minecraft.core.BlockPos;
@@ -16,12 +18,16 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.capabilities.BlockCapability;
+import net.neoforged.neoforge.capabilities.BlockCapabilityCache;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class EnergyDistributor extends SidedTransferMachine<EnergyDistributorMenu> implements WorkingAreaProvider {
 	public LongList targets;
 	public long[] workingPositions;
+	public boolean needsTargetUpdate = true;
+	public final Long2ObjectMap<BlockCapabilityCache<IEnergyStorage, Direction>> CACHED_CAPS = new Long2ObjectArrayMap<>();
+	
 	public EnergyDistributor(BlockPos pos, BlockState blockState) {
 		super(ModMachines.ENERGY_DISTRIBUTOR.getBlockEntity(), pos, blockState, (a, b, c, d) -> new EnergyDistributorMenu(ModMachines.ENERGY_DISTRIBUTOR.getMenu(), a, b, c, d));
 		setEnergy(this::createDefaultEnergy);
@@ -51,48 +57,46 @@ public class EnergyDistributor extends SidedTransferMachine<EnergyDistributorMen
 		super.tickServer(lvl, pos, st);
 		performAutoInputEnergy(lvl, pos);
 		
-		boolean updateTargets = targets != null && !targets.isEmpty();
-		targets = new LongArrayList();
-		for (long workingPosition : workingPositions) {
-			BlockPos targetPos = BlockPos.of(workingPosition);
-			if (targetPos.equals(pos)) continue;
-			boolean foundTarget = false;
-			for (Direction value : Direction.values()) {
-				IEnergyStorage targetEnergy = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, targetPos, value);
+		if (needsTargetUpdate || targets == null || lvl.getGameTime() % 100L == 0) {
+			targets = new LongArrayList();
+			for (long workingPosition : workingPositions) {
+				BlockPos targetPos = BlockPos.of(workingPosition);
+				if (targetPos.equals(pos)) continue;
 				long targetLong = targetPos.asLong();
-				if (!foundTarget && !targets.contains(targetLong) && targetEnergy != null && targetEnergy.canReceive()) {
-					targets.add(targetLong);
-					updateTargets = true;
-					foundTarget = true;
+				for (Direction value : Direction.values()) {
+					BlockCapabilityCache<IEnergyStorage, Direction> cache = BlockCapabilityCache.create(
+						Capabilities.EnergyStorage.BLOCK, lvl, targetPos, value,
+						() -> !this.isRemoved(), () -> needsTargetUpdate = true);
+					IEnergyStorage energyStorage = cache.getCapability();
+					if (energyStorage != null) {
+						CACHED_CAPS.put(targetLong, cache);
+						if (energyStorage.canReceive())	{
+							targets.add(targetLong);
+						}
+						break;
+					}
 				}
+				Channel.sendToChunk(new EnergyDistributorTargetsToClient(pos, targets), lvl.getChunkAt(pos));
 			}
-		}
-		
-		if (updateTargets) {
-			Channel.sendToChunk(new EnergyDistributorTargetsToClient(pos, targets), lvl.getChunkAt(pos));
+			needsTargetUpdate = false;
 		}
 		
 		ReverseToggleConfig energyTransferConfig = getConfiguration().get(ConfigLocations.getWithSuffix(ReverseToggleConfig.class, "energy_transfer"));
 		if (energyTransferConfig != null && energyTransferConfig.isDisabled()) return;
 		
-		for (long target : targets) {
-			BlockPos targetPos = BlockPos.of(target);
-			int toTransfer = energyTransferRate;
-			for (Direction value : Direction.values()) {
-				IEnergyStorage targetEnergy = lvl.getCapability(Capabilities.EnergyStorage.BLOCK, targetPos, value);
-				if (targetEnergy != null && toTransfer > 0) {
-					int received = targetEnergy.receiveEnergy(toTransfer, true);
-					if (received > 0) {
-						int extracted = energy.extractEnergyForced(received, true);
-						if (extracted > 0) {
-							int actuallyReceived = targetEnergy.receiveEnergy(extracted, false);
-							energy.extractEnergyForced(actuallyReceived, false);
-							toTransfer -= actuallyReceived;
-						}
+		CACHED_CAPS.values().forEach(cache -> {
+			IEnergyStorage target = cache.getCapability();
+			if (target != null) {
+				int received = target.receiveEnergy(energyTransferRate, true);
+				if (received > 0) {
+					int extracted = energy.extractEnergyForced(received, true);
+					if (extracted > 0) {
+						int actuallyReceived = target.receiveEnergy(extracted, false);
+						energy.extractEnergyForced(actuallyReceived, false);
 					}
 				}
 			}
-		}
+		});
 	}
 	
 }

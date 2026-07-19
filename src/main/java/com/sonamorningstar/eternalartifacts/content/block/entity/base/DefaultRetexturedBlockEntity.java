@@ -1,7 +1,6 @@
 package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -16,8 +15,6 @@ import javax.annotation.Nonnull;
 import static com.sonamorningstar.eternalartifacts.util.RetexturedHelper.TEXTURE_TAG_KEY;
 
 public class DefaultRetexturedBlockEntity extends ModBlockEntity implements IRetexturedBlockEntity {
-    @Nonnull
-    @Getter
     private Block texture = Blocks.TERRACOTTA;
 
     public DefaultRetexturedBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState) {

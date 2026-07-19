@@ -28,6 +28,8 @@ public class ModBlockEntities {
         BlockEntityType.Builder.of(PictureScreen::new, ModBlocks.PICTURE_SCREEN.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FluidHopper>> FLUID_HOPPER = BLOCK_ENTITIES.register("fluid_hopper", ()->
         BlockEntityType.Builder.of(FluidHopper::new, ModBlocks.FLUID_HOPPER.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BeaconAgitator>> BEACON_AGITATOR = BLOCK_ENTITIES.register("beacon_agitator", ()->
+        BlockEntityType.Builder.of(BeaconAgitator::new, ModBlocks.BEACON_AGITATOR.get()).build(null));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<Resonator>> RESONATOR = BLOCK_ENTITIES.register("resonator", ()->
         BlockEntityType.Builder.of(Resonator::new, ModBlocks.RESONATOR.get()).build(null));

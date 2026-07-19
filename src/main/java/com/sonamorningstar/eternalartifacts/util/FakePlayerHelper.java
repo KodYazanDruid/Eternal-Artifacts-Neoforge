@@ -21,11 +21,11 @@ import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
 
 @Mod.EventBusSubscriber(modid = MODID)
 public class FakePlayerHelper {
-    private static final GameProfile MOD_PROFILE = new GameProfile(UUID.fromString("6832a398-12c4-42bb-924c-dd8a14eb15f6"), "EternalArtifacts");
-    private static final Map<LevelAccessor, FakePlayer> LEVEL_FAKE_PLAYERS = new HashMap<>();
-    private static final Map<Machine<?>, FakePlayer> MACHINE_FAKE_PLAYERS = new HashMap<>();
+    private static final GameProfile MOD_PROFILE = new GameProfile(UUID.fromString("6832a398-12c4-42bb-924c-dd8a14eb15f6"), "[EternalArtifacts]");
+    private static final Map<LevelAccessor, ModFakePlayer> LEVEL_FAKE_PLAYERS = new HashMap<>();
+    private static final Map<Machine<?>, ModFakePlayer> MACHINE_FAKE_PLAYERS = new HashMap<>();
 
-    public static FakePlayer getFakePlayer(Level level) {
+    public static ModFakePlayer getFakePlayer(Level level) {
         return FakePlayerHelper.LEVEL_FAKE_PLAYERS.computeIfAbsent(level, l -> {
             if(l instanceof ServerLevel sl) {
 				try {
@@ -38,7 +38,7 @@ public class FakePlayerHelper {
                 return null;
         });
     }
-    public static FakePlayer getFakePlayer(Machine<?> machine, Level level) {
+    public static ModFakePlayer getFakePlayer(Machine<?> machine, Level level) {
         return FakePlayerHelper.MACHINE_FAKE_PLAYERS.computeIfAbsent(machine, m -> {
             if(level instanceof ServerLevel sl) {
 				try {
@@ -54,7 +54,7 @@ public class FakePlayerHelper {
     
     private static GameProfile getProfileForMachine(Machine<?> machine) {
         String path = BuiltInRegistries.BLOCK_ENTITY_TYPE.getKey(machine.getType()).getPath();
-        String name = "EternalArtifacts"+ StringUtils.prettyNameNoBlanks(path);
+        String name = "[EternalArtifacts"+ StringUtils.prettyNameNoBlanks(path) + "]";
         return new GameProfile(UUID.nameUUIDFromBytes(name.getBytes(StandardCharsets.UTF_8)), name);
     }
     

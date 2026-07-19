@@ -4,18 +4,18 @@ import com.mojang.serialization.MapCodec;
 import com.sonamorningstar.eternalartifacts.content.block.base.InheritorRetexturedBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.GardeningPotEntity;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
@@ -42,35 +42,29 @@ import net.neoforged.neoforge.common.IPlantable;
 import net.neoforged.neoforge.common.PlantType;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import net.neoforged.neoforge.items.IItemHandler;
-import net.neoforged.neoforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.ToIntFunction;
-
-import static net.minecraft.references.Blocks.ATTACHED_MELON_STEM;
-import static net.minecraft.references.Blocks.ATTACHED_PUMPKIN_STEM;
 
 @SuppressWarnings("deprecation")
 public class GardeningPotBlock extends InheritorRetexturedBlock implements SimpleWaterloggedBlock{
     private static final VoxelShape TOP = BlockHelper.generateByArea(16, 2, 16, 0, 14, 0);
     private static final VoxelShape BOTTOM = BlockHelper.generateByArea(14, 14, 14, 1, 0, 1);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    public static final IntegerProperty LIGHT_LEVEL = BlockStateProperties.LEVEL;
-    public static final ToIntFunction<BlockState> LIGHT_EMISSION = state -> state.getValue(LIGHT_LEVEL);
+    //public static final IntegerProperty LIGHT_LEVEL = BlockStateProperties.LEVEL;
+    //public static final ToIntFunction<BlockState> LIGHT_EMISSION = state -> state.getValue(LIGHT_LEVEL);
 
     public GardeningPotBlock() {
         super(Properties.of()
                 .destroyTime(1.5F)
                 .mapColor(MapColor.TERRACOTTA_ORANGE)
-                .noOcclusion().randomTicks()
-                .lightLevel(LIGHT_EMISSION));
+                .noOcclusion().randomTicks());
+                //.lightLevel(LIGHT_EMISSION));
         registerDefaultState(defaultBlockState()
-                .setValue(WATERLOGGED, false)
-                .setValue(LIGHT_LEVEL, 0));
+                .setValue(WATERLOGGED, false));
+                //.setValue(LIGHT_LEVEL, 0));
     }
 
     @Override
@@ -104,11 +98,10 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        BlockState upper = level.getBlockState(pos.above());
-        if(upper.getBlock() instanceof IPlantable) {
-            for(int i = 0; i < 7; i ++) {
-                upper.randomTick(level, pos.above(), random);
-            }
+        BlockPos above = pos.above();
+        var bonemealed = BoneMealItem.applyBonemeal(Items.BONE_MEAL.getDefaultInstance(), level, above, FakePlayerHelper.getFakePlayer(level));
+        if (bonemealed) {
+            level.levelEvent(1505, above, 0);
         }
     }
 
@@ -125,83 +118,6 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
             };
         }
     }
-
-    /*@Override
-    public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor levelAccessor, BlockPos pos, BlockPos neighborPos) {
-        if(pos.above().equals(neighborPos) && levelAccessor instanceof ServerLevel level) {
-            level.invalidateCapabilities(pos);
-            GardeningPotEntity potEntity = (GardeningPotEntity) level.getBlockEntity(pos);
-            IItemHandler inventoryBelow = level.getCapability(Capabilities.ItemHandler.BLOCK, pos.below(), Direction.UP);
-            if(potEntity != null){
-                Block neighborBlock = neighborState.getBlock();
-                //Getting drops
-                List<ItemStack> drops = BlockHelper.getBlockDrops(level, neighborState, neighborPos, ItemStack.EMPTY, level.getBlockEntity(neighborPos), null);
-
-                if (neighborBlock instanceof CropBlock crop) {
-                    if (crop.getAge(neighborState) == crop.getMaxAge()) {
-                        level.destroyBlock(neighborPos, false);
-                        //Replanting and stuff.
-                        if (!drops.isEmpty()) {
-                            //Setting seed
-                            ItemStack seed = ItemStack.EMPTY;
-                            boolean seedSet = false;
-                            for (int i = 0; i < drops.size(); i++) {
-                                ItemStack stack = drops.get(i);
-                                if (stack.is(crop.getCloneItemStack(level, neighborPos, neighborState).getItem()) && !seedSet) {
-                                    seed = stack.copyWithCount(1);
-                                    seedSet = true;
-                                    drops.set(i, stack.copyWithCount(stack.getCount() - 1));
-                                }
-                            }
-                            //Replanting
-                            if (seed.getItem() instanceof BlockItem seedBlock) {
-                                level.setBlockAndUpdate(neighborPos, seedBlock.getBlock().defaultBlockState());
-                            }
-                            //Harvesting
-                            pushOrPop(drops, level, neighborPos, inventoryBelow);
-                            level.sendBlockUpdated(pos, state, state, 2);
-                        }
-
-                    }
-                }//Not all BushBlocks are producing fruits and things, so I am doing it manually.
-                else if(neighborBlock instanceof SweetBerryBushBlock bushBlock) {
-                    if(neighborState.getValue(SweetBerryBushBlock.AGE) == SweetBerryBushBlock.MAX_AGE) {
-                        level.setBlockAndUpdate(neighborPos, bushBlock.defaultBlockState().setValue(BlockStateProperties.AGE_3, 1));
-                        pushOrPop(drops, level, neighborPos, inventoryBelow);
-                        level.sendBlockUpdated(pos, state, state, 2);
-                        level.playSound(null, neighborPos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0F, 0.8F + level.random.nextFloat() * 0.4F);
-                    }
-                }else if(neighborState.is(ATTACHED_PUMPKIN_STEM) || neighborState.is(ATTACHED_MELON_STEM)) {
-                    Direction facing = neighborState.getValue(HorizontalDirectionalBlock.FACING);
-                    BlockPos melPos = neighborPos.relative(facing);
-                    BlockState harvest = level.getBlockState(melPos);
-                    //drops = harvest.getDrops(lootParams);
-                    drops = BlockHelper.getBlockDrops(level, harvest, melPos, ItemStack.EMPTY, potEntity, null);
-                    pushOrPop(drops, level, melPos, inventoryBelow);
-                    level.destroyBlock(melPos, false);
-                    level.sendBlockUpdated(pos, state, state, 2);
-                }
-            }
-        }
-        if (state.getValue(WATERLOGGED)) {
-            levelAccessor.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(levelAccessor));
-        }
-
-        return super.updateShape(state, direction, neighborState, levelAccessor, pos, neighborPos);
-    }*/
-
-    /*private void pushOrPop(List<ItemStack> resources, Level level, BlockPos pos, IItemHandler inventory) {
-        for(ItemStack stack : resources) {
-            ItemStack remainder = stack;
-
-            if (!remainder.isEmpty()) {
-                remainder = ItemHandlerHelper.insertItemStacked(inventory, remainder, false);
-            }
-            if(!remainder.isEmpty() && !level.isClientSide()) {
-                Block.popResource(level, pos.above(), remainder);
-            }
-        }
-    }*/
 
     @Override
     public boolean canSustainPlant(BlockState state, BlockGetter level, BlockPos pos, Direction direction, IPlantable plantable) {
@@ -227,13 +143,13 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
         //Block texture = getTexture(level, pos);
         if(texture != Blocks.AIR) light = texture.getLightEmission(texture.defaultBlockState(), ctx.getLevel(), ctx.getClickedPos());
         return defaultBlockState()
-                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER)
-                .setValue(LIGHT_LEVEL, light);
+                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
+                //.setValue(LIGHT_LEVEL, light);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(WATERLOGGED, LIGHT_LEVEL);
+        pBuilder.add(WATERLOGGED/*, LIGHT_LEVEL*/);
     }
 
     @Override

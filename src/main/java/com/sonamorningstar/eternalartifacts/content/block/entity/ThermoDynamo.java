@@ -103,7 +103,7 @@ public class ThermoDynamo extends AbstractDynamo<DynamoMenu> {
 	@Override
 	protected void executeRecipeless(QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {
 		if (heatSourceState != null && !heatSourceState.isAir() && !coolant.isEmpty()) {
-			setEnergyPerTick(getEnergyGeneration() * ((getEnchantmentLevel(ModEnchantments.CELERITY.get()) / 3) + 1));
+			prepareDynamoEnergyAndDuration();
 			cacheGetter.apply(-1, energy, energyPerTick, this);
 		}
 	}

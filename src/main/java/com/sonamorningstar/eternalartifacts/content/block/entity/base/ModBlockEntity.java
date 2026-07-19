@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -84,7 +85,11 @@ public class ModBlockEntity extends BlockEntity {
     @Override
     public void onLoad() {
         super.onLoad();
+        findRecipe();
         enchantments.forEach(this::onEnchanted);
+        AuxiliaryLightManager lightManager = level.getAuxLightManager(getBlockPos());
+        if (lightManager != null && this instanceof IRetexturedBlockEntity retext)
+            lightManager.setLightAt(getBlockPos(), retext.getTexture().defaultBlockState().getLightEmission(level, getBlockPos()));
     }
     
     @Override
@@ -143,6 +148,7 @@ public class ModBlockEntity extends BlockEntity {
         if(level != null && !isRemoved() && level.hasChunkAt(worldPosition)) {
             if (isDirty){
                 level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+                level.updateNeighbourForOutputSignal(worldPosition, getBlockState().getBlock());
                 isDirty = false;
             }
             if (isCapabilitiesDirty) {

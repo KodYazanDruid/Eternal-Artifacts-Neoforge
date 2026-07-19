@@ -29,6 +29,18 @@ public class ModBlockFamilies {
             .stairs(ModBlocks.SNOW_BRICK_STAIRS.get())
             .slab(ModBlocks.SNOW_BRICK_SLAB.get())
             .getFamily();
+    
+    public static final BlockFamily MOSSY_BRICKS = familyBuilder(ModBlocks.MOSSY_BRICKS.get())
+        .wall(ModBlocks.MOSSY_BRICK_WALL.get())
+        .stairs(ModBlocks.MOSSY_BRICK_STAIRS.get())
+        .slab(ModBlocks.MOSSY_BRICK_SLAB.get())
+        .getFamily();
+    
+    public static final BlockFamily MOSSY_DEEPSLATE_BRICKS = familyBuilder(ModBlocks.MOSSY_DEEPSLATE_BRICKS.get())
+        .wall(ModBlocks.MOSSY_DEEPSLATE_BRICK_WALL.get())
+        .stairs(ModBlocks.MOSSY_DEEPSLATE_BRICK_STAIRS.get())
+        .slab(ModBlocks.MOSSY_DEEPSLATE_BRICK_SLAB.get())
+        .getFamily();
 
     private static BlockFamily.Builder familyBuilder(Block base) {
         BlockFamily.Builder builder = new BlockFamily.Builder(base);

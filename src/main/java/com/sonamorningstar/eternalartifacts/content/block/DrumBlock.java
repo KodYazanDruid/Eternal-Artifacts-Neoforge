@@ -7,6 +7,8 @@ import com.sonamorningstar.eternalartifacts.content.entity.PrimedBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.event.custom.DrumExplosionEvent;
 import com.sonamorningstar.eternalartifacts.util.BlockHelper;
+import com.sonamorningstar.eternalartifacts.util.ModConstants;
+import com.sonamorningstar.eternalartifacts.util.StringUtils;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -30,6 +32,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
@@ -111,10 +114,11 @@ public class DrumBlock extends FluidTankEntityBlock {
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         IFluidHandler fluidHandler = level.getCapability(Capabilities.FluidHandler.BLOCK, pos, null);
         if(fluidHandler != null && FluidUtil.interactWithFluidHandler(player, hand, fluidHandler)) return InteractionResult.sidedSuccess(level.isClientSide());
-        else if (fluidHandler != null){
+        else if (fluidHandler != null) {
             ItemStack stack = player.getItemInHand(hand);
+            FluidStack stored = fluidHandler.getFluidInTank(0).copy();
             if (stack.is(Items.FLINT_AND_STEEL) || stack.is(Items.FIRE_CHARGE)) {
-                DrumExplosionEvent event = new DrumExplosionEvent(fluidHandler.getFluidInTank(0), player, state);
+                DrumExplosionEvent event = new DrumExplosionEvent(stored, player, state);
                 if (!NeoForge.EVENT_BUS.post(event).isCanceled() && event.getFuseTime() > 0 && !state.is(ModBlocks.NETHERITE_DRUM)) {
                     Vector3d position = new Vector3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);
                     PrimedBlockEntity primedBlock = new PrimedBlockEntity(level, position, event.getPlayer(), event.getFuseTime(), event.getRadius(), event.getState());
@@ -126,6 +130,9 @@ public class DrumBlock extends FluidTankEntityBlock {
                     return InteractionResult.sidedSuccess(level.isClientSide());
                 }
             }
+            player.displayClientMessage(StringUtils.getFluidDisplayName(stored).copy().append(": ")
+                .append(stored.getAmount() + "mB").append(" / ")
+                .append(fluidHandler.getTankCapacity(0) + "mB"), true);
         }
         return super.use(state, level, pos, player, hand, hit);
     }

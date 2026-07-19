@@ -37,11 +37,11 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
     public boolean enableNaming = false;
     private AnvilUpdateEvent anvilUpdateEvent;
     private ItemStack pendingResult = ItemStack.EMPTY;
-    private int pendingFluidCost = 0;
+    private long pendingFluidCost = 0;
     private int pendingMaterialCount = 1;
     @Setter
     @Getter
-    private int currentXpCost = 0;
+    private long currentXpCost = 0;
 
     public Anvilinator(BlockPos pPos, BlockState pBlockState) {
         super(ModMachines.ANVILINATOR.getBlockEntity(), pPos, pBlockState, (a, b, c, d) -> new AnvilinatorMenu(ModMachines.ANVILINATOR.getMenu(), a, b, c, d));
@@ -132,8 +132,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
                 if (output.getCount() + eventResult.getCount() <= 64) {
                     int cost = anvilUpdateEvent.getCost();
                     currentXpCost = cost;
-                    Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
-                    int fluidCost = ExperienceHelper.totalXpForLevel(cost) * 20;
+                    Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, (int) currentXpCost), lvl.getChunkAt(pos));
+                    long fluidCost = ExperienceHelper.totalXpForLevel(cost) * 20;
                     if (tank.getFluidAmount(0) >= fluidCost) {
                         ItemStack result = eventResult.copy();
                         if (enableNaming && !Util.isBlank(toolRename)) result.setHoverName(Component.literal(toolRename));
@@ -149,8 +149,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             ItemStack result = combineEnchants(input, secondary);
             int levelCost = calculateEnchantCost(input, secondary);
             currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
-            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
-            int fluidCost = currentXpCost * 20;
+            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, (int) currentXpCost), lvl.getChunkAt(pos));
+            long fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
                 setPendingOperation(applyNaming(result), fluidCost);
                 progress(() -> pendingResult.isEmpty() || !canOutputResult(pendingResult), this::craftAnvilResult, energy);
@@ -165,8 +165,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             result.setDamageValue(newDamage);
             int levelCost = calculateRepairCost(input, secondary);
             currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
-            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
-            int fluidCost = currentXpCost * 20;
+            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, (int) currentXpCost), lvl.getChunkAt(pos));
+            long fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
                 setPendingOperation(applyNaming(result), fluidCost, materialsUsed);
                 progress(() -> pendingResult.isEmpty() || !canOutputResult(pendingResult), this::craftAnvilResult, energy);
@@ -184,8 +184,8 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             ItemStack result = !combineEnchants(input, secondary).isEmpty() ? combineEnchants(copy, secondary) : copy;
             int levelCost = calculateCombineCost(input, secondary);
             currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
-            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
-            int fluidCost = currentXpCost * 20;
+            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, (int) currentXpCost), lvl.getChunkAt(pos));
+            long fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
                 setPendingOperation(applyNaming(result), fluidCost);
                 progress(() -> pendingResult.isEmpty() || !canOutputResult(pendingResult), this::craftAnvilResult, energy);
@@ -195,26 +195,26 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
             ItemStack result = input.copyWithCount(1);
             int levelCost = calculateRenameCost();
             currentXpCost = ExperienceHelper.totalXpForLevel(levelCost);
-            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
-            int fluidCost = currentXpCost * 20;
+            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, (int) currentXpCost), lvl.getChunkAt(pos));
+            long fluidCost = currentXpCost * 20;
             if (canOutputResult(result) && tank.getFluidAmount(0) >= fluidCost) {
                 setPendingOperation(applyNaming(result), fluidCost);
                 progress(() -> pendingResult.isEmpty() || !canOutputResult(pendingResult), this::craftAnvilResult, energy);
             } else progress = 0;
         } else {
             currentXpCost = 0;
-            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, currentXpCost), lvl.getChunkAt(pos));
+            Channel.sendToChunk(new AnvilinatorXpCostToClient(pos, (int) currentXpCost), lvl.getChunkAt(pos));
             progress = 0;
         }
     }
     
-    private void setPendingOperation(ItemStack result, int fluidCost, int materialCount) {
+    private void setPendingOperation(ItemStack result, long fluidCost, int materialCount) {
         this.pendingResult = result;
         this.pendingFluidCost = fluidCost;
         this.pendingMaterialCount = materialCount;
     }
     
-    private void setPendingOperation(ItemStack result, int fluidCost) {
+    private void setPendingOperation(ItemStack result, long fluidCost) {
         setPendingOperation(result, fluidCost, 1);
     }
     
@@ -238,7 +238,7 @@ public class Anvilinator extends SidedTransferMachine<AnvilinatorMenu> {
         
         inventory.extractItem(0, 1, false);
         inventory.extractItem(1, pendingMaterialCount, false);
-        tank.drainForced(pendingFluidCost, IFluidHandler.FluidAction.EXECUTE);
+        tank.drainForced((int) pendingFluidCost, IFluidHandler.FluidAction.EXECUTE);
         inventory.insertItemForced(2, pendingResult.copyWithCount(1), false);
         
         pendingResult = ItemStack.EMPTY;

@@ -312,7 +312,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ModTags.Items.CHARMS_RING).add(
             ModItems.GOLD_RING.get(),
             ModItems.BAND_OF_ARCANE.get(),
-            ModItems.EMERALD_SIGNET.get()
+            ModItems.EMERALD_SIGNET.get(),
+            ModItems.EYE_OF_DESTRUCTION.get()
         );
         tag(ModTags.Items.CHARMS_BRACELET).add(
             Items.CLOCK,
@@ -429,6 +430,16 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         );
         tag(ModTags.Items.GLASS_HARDENED).add(ModBlocks.TEMPERED_GLASS.asItem());
         tag(ModTags.Items.HARDENED_GLASS).addTag(ModTags.Items.GLASS_HARDENED);
+        tag(ItemTags.BEACON_PAYMENT_ITEMS).add(
+            ModItems.STEEL_INGOT.get(),
+            ModItems.TIN_INGOT.get(),
+            ModItems.ALUMINUM_INGOT.get(),
+            ModItems.BRONZE_INGOT.get(),
+            ModItems.OBLIVIUM_INGOT.get(),
+            ModItems.PURPLE_GOLD_INGOT.get(),
+            ModItems.TERRASTEEL_INGOT.get(),
+            ModItems.CHLOROPHYTE_INGOT.get()
+        );
         
         tag(ModTags.Items.GARDENING_POT_SUITABLE).addTags(
                 ItemTags.TERRACOTTA,
@@ -470,6 +481,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Blocks.EXPOSED_CUT_COPPER.asItem(),
                 Blocks.WEATHERED_CUT_COPPER.asItem(),
                 Blocks.OXIDIZED_CUT_COPPER.asItem(),
+                ModBlocks.MOSSY_BRICKS.asItem(),
+                ModBlocks.MOSSY_DEEPSLATE_BRICKS.asItem(),
                 //Glazed terracottas
                 Blocks.WHITE_GLAZED_TERRACOTTA.asItem(),
                 Blocks.LIGHT_GRAY_GLAZED_TERRACOTTA.asItem(),

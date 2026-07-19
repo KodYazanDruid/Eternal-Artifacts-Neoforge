@@ -162,7 +162,27 @@ public class ModBlocks {
             () -> new PortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
     public static final DeferredBlock<Block> FLUID_PORT = registerWithItem("fluid_port",
             () -> new PortBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS)));
-
+    public static final DeferredBlock<Block> FERTILIZED_SOIL = registerWithItem("fertilized_soil",
+            () -> new FertilizedSoilBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DIRT).randomTicks()));
+    public static final DeferredBlock<Block> FERTILIZED_SOIL_FARMLAND = registerWithItem("fertilized_soil_farmland",
+            () -> new FertilizedSoilFarmland(BlockBehaviour.Properties.ofFullCopy(Blocks.FARMLAND)));
+    public static final DeferredBlock<Block> MOSSY_BRICKS = registerWithItem("mossy_bricks",
+            ()-> new Block(Blocks.BRICKS.properties()));
+    public static final DeferredBlock<Block> MOSSY_BRICK_STAIRS = registerWithItem("mossy_brick_stairs",
+            ()-> new StairBlock(() -> MOSSY_BRICKS.get().defaultBlockState(), Blocks.BRICK_STAIRS.properties()));
+    public static final DeferredBlock<Block> MOSSY_BRICK_SLAB = registerWithItem("mossy_brick_slab",
+            ()-> new SlabBlock(Blocks.BRICK_SLAB.properties()));
+    public static final DeferredBlock<Block> MOSSY_BRICK_WALL = registerWithItem("mossy_brick_wall",
+            ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.BRICK_WALL)));
+    public static final DeferredBlock<Block> MOSSY_DEEPSLATE_BRICKS = registerWithItem("mossy_deepslate_bricks",
+            ()-> new Block(Blocks.DEEPSLATE_BRICKS.properties()));
+    public static final DeferredBlock<Block> MOSSY_DEEPSLATE_BRICK_STAIRS = registerWithItem("mossy_deepslate_brick_stairs",
+            ()-> new StairBlock(() -> MOSSY_DEEPSLATE_BRICKS.get().defaultBlockState(), Blocks.DEEPSLATE_BRICK_STAIRS.properties()));
+    public static final DeferredBlock<Block> MOSSY_DEEPSLATE_BRICK_SLAB = registerWithItem("mossy_deepslate_brick_slab",
+            ()-> new SlabBlock(Blocks.DEEPSLATE_BRICK_SLAB.properties()));
+    public static final DeferredBlock<Block> MOSSY_DEEPSLATE_BRICK_WALL = registerWithItem("mossy_deepslate_brick_wall",
+            ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_BRICK_WALL).forceSolidOn()));
+    
     public static final DeferredBlock<Block> ASPHALT_BLOCK = registerWithItem("asphalt_block",
             ()-> new AsphaltBlock(Blocks.DEEPSLATE.properties()));
     public static final DeferredBlock<Block> OBSIDIAN_BRICKS = registerWithItem("obsidian_bricks",
@@ -175,11 +195,15 @@ public class ModBlocks {
             ()-> new WallBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).pushReaction(PushReaction.BLOCK)));
     public static final DeferredBlock<Block> SOUL_MAGMA_BLOCK = registerWithItem("soul_magma_block",
             ()-> new SoulMagmaBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.MAGMA_BLOCK).mapColor(MapColor.COLOR_CYAN)));
+    public static final DeferredBlock<Block> CURSED_STONE_BRICKS = registerWithItem("cursed_stone_bricks",
+            ()-> new CursedStoneBricks(BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).randomTicks().mapColor(MapColor.COLOR_PURPLE)));;
     
     public static final DeferredBlock<NousTankBlock> NOUS_TANK = registerWithBewlr("nous_tank",
             () -> new NousTankBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).forceSolidOn()));
     public static final DeferredBlock<TrashCanBlock> TRASH_CAN = registerWithItem("trash_can",
         () -> new TrashCanBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS)));
+    public static final DeferredBlock<BeaconAgitatorBlock> BEACON_AGITATOR = registerWithItem("beacon_agitator",
+        () -> new BeaconAgitatorBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).strength(25.0f, 3600000.0F).mapColor(MapColor.COLOR_PURPLE)));
     
     public static final DeferredBlock<CableBlock> TIN_CABLE = registerWithItem("tin_cable",
         ()-> new UncoveredCableBlock(CableBlock.CableTier.TIN, ModProperties.Blocks.TIN_PIPE));
@@ -307,7 +331,6 @@ public class ModBlocks {
     public static final DeferredBlock<Block> WATER_TNT = registerWithItem("water_tnt", () ->
         new WaterTntBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TNT).mapColor(MapColor.COLOR_CYAN))
     );
-    
 
     public static final DeferredBlock<GardeningPotBlock> GARDENING_POT = registerNoItem("gardening_pot", GardeningPotBlock::new);
     public static final DeferredBlock<JarBlock> JAR = registerNoItem("jar",

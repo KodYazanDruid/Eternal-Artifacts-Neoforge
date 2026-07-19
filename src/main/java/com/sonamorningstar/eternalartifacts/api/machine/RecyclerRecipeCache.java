@@ -13,7 +13,7 @@ import java.util.Map;
 
 public final class RecyclerRecipeCache {
 	
-	private static final Map<Item, CraftingRecipe> RECIPE_MAP = new HashMap<>();
+	private static final Map<ItemStack, CraftingRecipe> RECIPE_MAP = new HashMap<>();
 	private static final Map<Item, ItemWithCount> BREAKDOWN_MAP = new HashMap<>();
 	
 	private RecyclerRecipeCache() {}
@@ -26,11 +26,14 @@ public final class RecyclerRecipeCache {
 		
 		for (var holder : recipes) {
 			var recipe = holder.value();
+			if (recipe.isSpecial()) continue;
+			
 			ItemStack result = recipe.getResultItem(access);
-			if (result == null || result.isEmpty()) continue;
+			result = result == null ? ItemStack.EMPTY : result.copy();
+			if (result.isEmpty()) continue;
 			
 			if (result.is(ModTags.Items.RECYCLABLE)) {
-				RECIPE_MAP.put(result.getItem(), recipe);
+				RECIPE_MAP.put(result, recipe);
 			}
 			
 			if (result.hasCraftingRemainingItem()) continue;
@@ -52,8 +55,14 @@ public final class RecyclerRecipeCache {
 		}
 	}
 	
-	public static CraftingRecipe getRecipe(Item item) {
-		return RECIPE_MAP.get(item);
+	public static CraftingRecipe getRecipe(ItemStack stack) {
+		for (Map.Entry<ItemStack, CraftingRecipe> entry : RECIPE_MAP.entrySet()) {
+			ItemStack key = entry.getKey();
+			if (ItemStack.isSameItem(key, stack) && key.getCount() <= stack.getCount()) {
+				return entry.getValue();
+			}
+		}
+		return null;
 	}
 	
 	public static ItemWithCount getBreakdown(Item item) {
@@ -61,6 +70,6 @@ public final class RecyclerRecipeCache {
 	}
 	
 	public static boolean hasRecipe(Item item) {
-		return RECIPE_MAP.containsKey(item);
+		return RECIPE_MAP.entrySet().stream().anyMatch(entry -> entry.getKey().getItem() == item);
 	}
 }

@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.client.render.blockentity.multibloc
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
+import com.sonamorningstar.eternalartifacts.event.custom.client.RenderMultiblockEvent;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -9,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.phys.AABB;
+import net.neoforged.neoforge.common.NeoForge;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -46,7 +48,10 @@ public abstract class MultiBlockRenderer<MB extends AbstractMultiblockBlockEntit
 		
 		pose.translate(1 - width, 1 - height, 0);
 		
-		renderMultiblock(master, pose, pBuffer, partialTick, width, height, depth, pPackedLight, pPackedOverlay);
+		if (!NeoForge.EVENT_BUS.post(new RenderMultiblockEvent.Pre(master, partialTick, pose, pBuffer, pPackedLight, pPackedOverlay)).isCanceled()) {
+			renderMultiblock(master, pose, pBuffer, partialTick, width, height, depth, pPackedLight, pPackedOverlay);
+			NeoForge.EVENT_BUS.post(new RenderMultiblockEvent.Post(master, partialTick, pose, pBuffer, pPackedLight, pPackedOverlay));
+		}
 		
 		pose.popPose();
 	}

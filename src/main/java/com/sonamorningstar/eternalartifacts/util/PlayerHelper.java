@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.PlayerMainInvWrapper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -91,10 +92,14 @@ public class PlayerHelper {
         return ItemStack.EMPTY;
     }
     public static ListIterator<ItemStack> itemWithClassIterable(Player player, Class<? extends Item> itemClass) {
-        return new ListIterator<>(player.getInventory().items.stream()
-                .filter(stack -> itemClass.isInstance(stack.getItem()))
-                .collect(Collectors.toList())
-        );
+        List<ItemStack> matchingStacks = new ArrayList<>();
+        for (int i = 0; i < player.getInventory().items.size(); i++) {
+            ItemStack item = player.getInventory().getItem(i);
+            if (itemClass.isInstance(item.getItem())) {
+                matchingStacks.add(item);
+            }
+        }
+        return new ListIterator<>(matchingStacks);
     }
 
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {

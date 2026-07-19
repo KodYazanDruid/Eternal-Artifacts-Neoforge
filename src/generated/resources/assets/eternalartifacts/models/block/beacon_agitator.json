@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/slab",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "eternalartifacts:block/tempered_glass",
+    "side": "eternalartifacts:block/tempered_glass",
+    "top": "eternalartifacts:block/tempered_glass"
+  }
+}

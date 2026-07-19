@@ -84,7 +84,7 @@ public class Enchanter extends GenericMachine {
 				ItemStack result = enchantItem(input.copy(), enchantLevel);
 				
 				if (!ItemStack.isSameItemSameTags(input, result)) {
-					int xpCost = ExperienceHelper.totalXpForLevel(levelSlot);
+					int xpCost = (int) ExperienceHelper.totalXpForLevel(levelSlot);
 					currentXpCost = xpCost;
 					int fluidCost = xpCost * 20;
 					

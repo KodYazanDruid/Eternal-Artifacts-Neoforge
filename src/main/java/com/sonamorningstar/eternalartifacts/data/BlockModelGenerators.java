@@ -19,7 +19,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
@@ -101,6 +103,8 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         
         createSolarPanel();
         createHopper();
+        createFarmland();
+        createFurnace(ModMachines.FLUID_FURNACE.getBlock());
         
         ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateModel).forEach(family -> family(family.getBaseBlock()).generateFor(family));
     }
@@ -215,7 +219,6 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         stateOutput.accept(createPipe(pipe, inside, side, sideExtract, sideFilter));
         delegateItemModel(pipe, inventory);
     }
-
     private BlockStateGenerator createCable(Block cable, ResourceLocation insideLoc, ResourceLocation sideLoc) {
         return MultiPartGenerator.multiPart(cable)
             .with(Variant.variant().with(VariantProperties.MODEL, insideLoc))
@@ -410,6 +413,36 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
         stateOutput.accept(createSlab(ModBlocks.SOLAR_PANEL.get(), bottom, top, doubleSlab));
         delegateItemModel(ModBlocks.SOLAR_PANEL.get(), bottom);
     }
+    
+    private void createFarmland() {
+        TextureMapping dry = new TextureMapping()
+            .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(ModBlocks.FERTILIZED_SOIL.get()))
+            .put(TextureSlot.TOP, TextureMapping.getBlockTexture(ModBlocks.FERTILIZED_SOIL_FARMLAND.get()));
+        TextureMapping moist = new TextureMapping()
+            .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(ModBlocks.FERTILIZED_SOIL.get()))
+            .put(TextureSlot.TOP, TextureMapping.getBlockTexture(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), "_moist"));
+        ResourceLocation dryModel = ModelTemplates.FARMLAND.create(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), dry, modelOutput);
+        ResourceLocation moistModel = ModelTemplates.FARMLAND
+            .create(TextureMapping.getBlockTexture(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), "_moist"), moist, modelOutput);
+        stateOutput.accept(
+                MultiVariantGenerator.multiVariant(ModBlocks.FERTILIZED_SOIL_FARMLAND.get())
+                    .with(createEmptyOrFullDispatch(BlockStateProperties.MOISTURE, 7, moistModel, dryModel))
+        );
+        delegateItemModel(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), dryModel);
+    }
+    private void createFurnace(Block block) {
+        ResourceLocation unlitModel = TexturedModel.ORIENTABLE_ONLY_TOP.create(block, modelOutput);
+        ResourceLocation litTexture = TextureMapping.getBlockTexture(block, "_front_on");
+        ResourceLocation litModel = TexturedModel.ORIENTABLE_ONLY_TOP.get(block)
+            .updateTextures(mapping -> mapping.put(TextureSlot.FRONT, litTexture))
+            .createWithSuffix(block, "_on", this.modelOutput);
+        stateOutput.accept(
+            MultiVariantGenerator.multiVariant(block)
+                .with(createBooleanModelDispatch(BlockStateProperties.LIT, litModel, unlitModel))
+                .with(createHorizontalFacingDispatch())
+        );
+        delegateItemModel(block, unlitModel);
+    }
     //endregion
     void createSimpleFlatItemModel(Item item) {
         ModelTemplates.FLAT_ITEM.create(ModelLocationUtils.getModelLocation(item), TextureMapping.layer0(item), modelOutput);
@@ -420,5 +453,30 @@ public class BlockModelGenerators extends net.minecraft.data.models.BlockModelGe
     }
     private void createForParticle(DeferredHolder<Block, ? extends Block> holder, ResourceLocation particle) {
         stateOutput.accept(createSimpleBlock(holder.get(), ModelTemplates.PARTICLE_ONLY.create(holder.get(), TextureMapping.particle(particle), modelOutput)));
+    }
+    
+    private static <T extends Comparable<T>> PropertyDispatch createEmptyOrFullDispatch(
+        Property<T> property, T minimumValueForFullVariant, ResourceLocation fullVariantModelLocation, ResourceLocation emptyVariantModelLocation
+    ) {
+        Variant variant = Variant.variant().with(VariantProperties.MODEL, fullVariantModelLocation);
+        Variant variant1 = Variant.variant().with(VariantProperties.MODEL, emptyVariantModelLocation);
+        return PropertyDispatch.property(property).generate(p_176130_ -> {
+            boolean flag = p_176130_.compareTo(minimumValueForFullVariant) >= 0;
+            return flag ? variant : variant1;
+        });
+    }
+    
+    private static PropertyDispatch createBooleanModelDispatch(BooleanProperty property, ResourceLocation trueModelLocation, ResourceLocation falseModelLocation) {
+        return PropertyDispatch.property(property)
+            .select(true, Variant.variant().with(VariantProperties.MODEL, trueModelLocation))
+            .select(false, Variant.variant().with(VariantProperties.MODEL, falseModelLocation));
+    }
+    
+    private static PropertyDispatch createHorizontalFacingDispatch() {
+        return PropertyDispatch.property(BlockStateProperties.HORIZONTAL_FACING)
+            .select(Direction.EAST, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90))
+            .select(Direction.SOUTH, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180))
+            .select(Direction.WEST, Variant.variant().with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270))
+            .select(Direction.NORTH, Variant.variant());
     }
 }

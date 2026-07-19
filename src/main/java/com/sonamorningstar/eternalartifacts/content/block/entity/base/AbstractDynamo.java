@@ -153,6 +153,13 @@ public abstract class AbstractDynamo<MENU extends DynamoMenu> extends Machine<ME
 		return new DynamoProcessCache(duration, duration, energyCap, generation, dynamo);
 	}
 	
+	protected void prepareDynamoEnergyAndDuration() {
+		int celerity = getEnchantmentLevel(ModEnchantments.CELERITY.get());
+		setEnergyPerTick((int)(defaultEnergyPerTick * ((celerity / 3F) + 1F)));
+		int eff = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+		setMaxProgress((int)(defaultMaxProgress * ((eff / 5F) + 1F)));
+	}
+	
 	protected void executeRecipe(Recipe<?> recipe, QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {}
 	protected void executeRecipeless(QuadFunction<Integer, ModEnergyStorage, Integer, AbstractDynamo<?>, DynamoProcessCache> cacheGetter) {}
 	protected void onCacheExpire() {

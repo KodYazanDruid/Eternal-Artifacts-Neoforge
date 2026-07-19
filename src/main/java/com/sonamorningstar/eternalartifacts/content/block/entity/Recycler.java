@@ -9,6 +9,7 @@ import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.util.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +36,7 @@ public class Recycler extends GenericMachine {
 	@Override
 	public void findRecipe() {
 		ItemStack input = inventory.getStackInSlot(0);
-		var crafting = RecyclerRecipeCache.getRecipe(input.getItem());
+		var crafting = RecyclerRecipeCache.getRecipe(input);
 		if (crafting != null) RecipeCache.cacheRecipe(this, crafting);
 		else RecipeCache.clearRecipes(this);
 	}
@@ -117,11 +118,12 @@ public class Recycler extends GenericMachine {
 	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
 		progress(() -> {
-			var recs = getRecycleOutputs(getCachedRecipe());
+			CraftingRecipe cachedRecipe = ((CraftingRecipe) getCachedRecipe());
+			var recs = getRecycleOutputs(cachedRecipe);
 			for (ItemStack stack : recs) {
 				ItemHelper.insertItemStackedForced(inventory, stack.copy(), false, outputSlots);
 			}
-			inventory.extractItem(0, 1, false);
+			inventory.extractItem(0, cachedRecipe.getResultItem(lvl.registryAccess()).getCount(), false);
 		});
 	}
 }

@@ -4,6 +4,7 @@ import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import com.sonamorningstar.eternalartifacts.content.block.OreBerryBlock;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +21,6 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class OreBerryBehavior implements FarmBehavior {
@@ -71,11 +71,11 @@ public class OreBerryBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
-		if (block == Blocks.AIR) return Blocks.AIR.defaultBlockState();
+		if (block == Blocks.AIR) return EMPTY_PLANT;
 		BlockState state = block.defaultBlockState();
-		return state.canSurvive(level, pos) ? state : Blocks.AIR.defaultBlockState();
+		return state.canSurvive(level, pos) ? new PlantResult(state, Direction.UP) : EMPTY_PLANT;
 	}
 	
 	@Override

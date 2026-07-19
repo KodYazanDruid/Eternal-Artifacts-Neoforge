@@ -207,6 +207,7 @@ public class ClientModEvents {
         event.registerBlockEntityRenderer(ModBlockEntities.SKULL.get(), ModSkullBlockRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.MACHINE_WORKBENCH.get(), MachineWorkbenchRenderer::new);
         event.registerBlockEntityRenderer(ModBlockEntities.PICTURE_SCREEN.get(), PictureScreenRenderer::new);
+        event.registerBlockEntityRenderer(ModBlockEntities.BEACON_AGITATOR.get(), BeaconAgitatorRenderer::new);
         
         ModMachines.MACHINES.getDynamos().forEach(holder -> event.registerBlockEntityRenderer(holder.getBlockEntity(), DynamoRenderer::new));
 
@@ -310,6 +311,11 @@ public class ClientModEvents {
                 GuiDrawer.clearFluidColorCache();
             }
         });
+    }
+    
+    @SubscribeEvent
+    public static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+        event.register(FancyChestRenderer.FANCY_CHEST_LID);
     }
 
 }

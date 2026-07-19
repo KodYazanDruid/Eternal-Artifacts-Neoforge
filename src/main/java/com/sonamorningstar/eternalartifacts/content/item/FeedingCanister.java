@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.capabilities.ItemNutritionStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.handler.INutritionHandler;
 import com.sonamorningstar.eternalartifacts.core.ModCapabilities;
 import com.sonamorningstar.eternalartifacts.util.ModConstants;
@@ -37,18 +38,20 @@ public class FeedingCanister extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
-        INutritionHandler nutrition = stack.getCapability(ModCapabilities.NutritionStorage.ITEM);
-        if (nutrition != null && entity instanceof Player player) {
+        ItemStack ret = stack.copy();
+        INutritionHandler nutrition = ret.getCapability(ModCapabilities.NutritionStorage.ITEM);
+        if (nutrition instanceof ItemNutritionStorage itemNutritionStorage && entity instanceof Player player) {
             FoodData foodData = player.getFoodData();
             int missingNut = 20 - foodData.getFoodLevel();
             float missingSat = 20F - foodData.getSaturationLevel();
-            if (missingNut <= 0 || missingSat <= 0) return stack;
+            if (missingNut <= 0 || missingSat <= 0) return itemNutritionStorage.getContainer();
             float limitedSat = Math.min(missingSat, missingNut);
             int drainedNut = nutrition.drainNutrition(missingNut, false);
             float drainedSat = nutrition.drainSaturation(limitedSat, false);
-            eat(level, player, foodData, drainedNut, drainedSat / (drainedNut * 2), stack);
+            eat(level, player, foodData, drainedNut, drainedSat / (drainedNut * 2), ret);
+            ret = itemNutritionStorage.getContainer();
         }
-        return stack;
+        return ret;
     }
 
     private void eat(Level level, Player player, FoodData data, int nutrition, float satMod, ItemStack food) {

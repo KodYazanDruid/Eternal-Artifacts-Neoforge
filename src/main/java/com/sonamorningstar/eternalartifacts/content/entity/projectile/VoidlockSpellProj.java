@@ -18,6 +18,7 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
@@ -109,11 +110,6 @@ public class VoidlockSpellProj extends AbstractHurtingProjectile implements Item
 				.forEach(e -> SpellDamageHelper.hurtWithSpellDamage(this, e, damage / 2));
 			this.discard();
 		}
-	}
-	
-	@Override
-	protected void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
 	}
 	
 	@Override

@@ -45,6 +45,7 @@
     "eternalartifacts:harvester",
     "eternalartifacts:anvilinator",
     "eternalartifacts:energy_distributor",
+    "eternalartifacts:fluid_furnace",
     "eternalartifacts:block_placer",
     "eternalartifacts:block_breaker",
     "eternalartifacts:solid_combustion_dynamo",

@@ -21,6 +21,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -107,29 +108,34 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
 
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICKS, Blocks.SNOW_BLOCK);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_STAIRS, Blocks.SNOW_BLOCK);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_STAIRS, ModBlocks.SNOW_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_WALL, Blocks.SNOW_BLOCK);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_WALL, ModBlocks.SNOW_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_SLAB, Blocks.SNOW_BLOCK, 2);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.SNOW_BRICK_SLAB, ModBlocks.SNOW_BRICKS, 2);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICKS, Blocks.ICE);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_STAIRS, Blocks.ICE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_STAIRS, ModBlocks.ICE_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_WALL, Blocks.ICE);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_WALL, ModBlocks.ICE_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_SLAB, Blocks.ICE, 2);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.ICE_BRICK_SLAB, ModBlocks.ICE_BRICKS, 2);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICKS, Blocks.OBSIDIAN);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_STAIRS, Blocks.OBSIDIAN);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_STAIRS, ModBlocks.OBSIDIAN_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_WALL, Blocks.OBSIDIAN);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_WALL, ModBlocks.OBSIDIAN_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_SLAB, Blocks.OBSIDIAN, 2);
-        stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.OBSIDIAN_BRICK_SLAB, ModBlocks.OBSIDIAN_BRICKS, 2);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAYERED_PRISMARINE, Blocks.PRISMARINE);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.LAYERED_PRISMARINE, Blocks.PRISMARINE_BRICKS);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PAVED_PRISMARINE_BRICKS, Blocks.PRISMARINE);
         stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, ModBlocks.PAVED_PRISMARINE_BRICKS, Blocks.PRISMARINE_BRICKS);
+        
+        ModBlockFamilies.getAllFamilies().filter(BlockFamily::shouldGenerateRecipe).forEach(family -> {
+            Map<BlockFamily.Variant, Block> variants = family.getVariants();
+            Block baseBlock = family.getBaseBlock();
+            if (variants.containsKey(BlockFamily.Variant.STAIRS)) {
+                stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, variants.get(BlockFamily.Variant.STAIRS), baseBlock);
+            }
+            if (variants.containsKey(BlockFamily.Variant.SLAB)) {
+                stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, variants.get(BlockFamily.Variant.SLAB), baseBlock, 2);
+            }
+            if (variants.containsKey(BlockFamily.Variant.WALL)) {
+                stoneCutterRecipe(recipeOutput, RecipeCategory.BUILDING_BLOCKS, variants.get(BlockFamily.Variant.WALL), baseBlock);
+            }
+        });
 
         copySmithingTemplate(recipeOutput, ModItems.CHLOROPHYTE_UPGRADE_SMITHING_TEMPLATE, ModItems.CHLOROPHYTE_TABLET);
         chlorophyteSmithing(recipeOutput, ModItems.COPPER_SWORD.get(), RecipeCategory.TOOLS, ModItems.SWORD_OF_THE_GREEN_EARTH.get());
@@ -215,7 +221,6 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         createMaceratingRecipe(recipeOutput, Items.NETHER_WART_BLOCK.getDefaultInstance(), new ItemStack(Items.NETHER_WART, 2));
         createMaceratingRecipe(recipeOutput, ModBlocks.CHLOROPHYTE_DEBRIS.toStack(), new ItemStack(ModItems.PLANT_MATTER.get(), 8));
         createMaceratingRecipe(recipeOutput, ModTags.Items.INGOTS_BRONZE, ModItems.BRONZE_DUST.toStack());
-        createMaceratingRecipe(recipeOutput, Items.TURTLE_HELMET.getDefaultInstance(), new ItemStack(Items.SCUTE, 3));
         createMaceratingRecipe(recipeOutput, Items.GLOW_INK_SAC.getDefaultInstance(), ModItems.GLOW_INK_DUST.toStack());
         createOreMaceratingRecipeWithTag(recipeOutput, Map.of(
             ModTags.Items.INGOTS_MANGANESE, 1,
@@ -301,6 +306,16 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             SizedIngredient.of(ModItems.PLANT_MATTER),
             SizedIngredient.of(ModTags.Items.SLIMEBALLS_PINK, 1)
         ), ModItems.TERRASTEEL_INGOT.toStack(2), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+            SizedIngredient.of(Items.DIRT),
+            SizedIngredient.of(ModItems.PLANT_MATTER),
+            SizedIngredient.of(Items.BONE_MEAL)
+        ), ModBlocks.FERTILIZED_SOIL.toStack(), "");
+        createAlloyingRecipe(recipeOutput, List.of(
+            SizedIngredient.of(ItemTags.STONE_BRICKS, 4),
+            SizedIngredient.of(ModTags.Items.INGOTS_PURPLE_GOLD, 1),
+            SizedIngredient.of(ModTags.Items.SLIMEBALLS_PINK, 1)
+        ), ModBlocks.CURSED_STONE_BRICKS.toStack(4), "");
         
         //region Mob Liquifying recipes
         createMobLiquifyingRecipe(recipeOutput, EntityType.COW, NonNullList.of(
@@ -890,6 +905,21 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .pattern("SI ").pattern(" IN")
             .define('S', Tags.Items.RODS_WOODEN).define('I', ModTags.Items.INGOTS_STEEL).define('N', ModTags.Items.NUGGETS_STEEL)
             .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        helmetRecipe(recipeOutput, ModItems.SHULKER_HELMET, ModTags.Items.SHULKER_SHELL);
+        chestplateRecipe(recipeOutput, ModItems.SHULKER_CHESTPLATE, ModTags.Items.SHULKER_SHELL);
+        leggingsRecipe(recipeOutput, ModItems.SHULKER_LEGGINGS, ModTags.Items.SHULKER_SHELL);
+        bootsRecipe(recipeOutput, ModItems.SHULKER_BOOTS, ModTags.Items.SHULKER_SHELL);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.BEACON_AGITATOR)
+            .pattern("TDT").pattern("PCP").pattern("TTT")
+            .define('T', ModTags.Items.GLASS_HARDENED)
+            .define('D', Tags.Items.GEMS_DIAMOND)
+            .define('P', Tags.Items.ENDER_PEARLS)
+            .define('C', ModItems.CHLOROPHYTE_TABLET)
+            .unlockedBy("has_item", has(ModTags.Items.GLASS_HARDENED)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.EYE_OF_DESTRUCTION)
+            .pattern(" L ").pattern("LEL").pattern(" LR")
+            .define('L', ModItems.LENS).define('E', Items.ENDER_EYE).define('R', ModItems.GOLD_RING)
+            .unlockedBy("has_item", has(ModItems.LENS)).save(recipeOutput);
         //endregion
         //region Shapeless recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -1005,6 +1035,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.WRITABLE_BOOK)
             .requires(Items.BOOK).requires(Items.INK_SAC).requires(Tags.Items.FEATHERS)
             .unlockedBy("has_item", has(Tags.Items.FEATHERS)).save(recipeOutput, makeID("writable_book_from_feathers_tag"));
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_BRICKS, Blocks.BRICKS);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_BRICK_STAIRS, Blocks.BRICK_STAIRS);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_BRICK_SLAB, Blocks.BRICK_SLAB);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_BRICK_WALL, Blocks.BRICK_WALL);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_DEEPSLATE_BRICKS, Blocks.DEEPSLATE_BRICKS);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_DEEPSLATE_BRICK_STAIRS, Blocks.DEEPSLATE_BRICK_STAIRS);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_DEEPSLATE_BRICK_SLAB, Blocks.DEEPSLATE_BRICK_SLAB);
+        mossyCraft(recipeOutput, ModBlocks.MOSSY_DEEPSLATE_BRICK_WALL, Blocks.DEEPSLATE_BRICK_WALL);
         //endregion
         MachineRecipes.registerMachineRecipes(recipeOutput);
     }
@@ -1369,6 +1407,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
     private static void selfCraft(RecipeOutput output, ItemLike item) {
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item)
             .requires(item).unlockedBy("has_item", has(item)).save(output, new ResourceLocation(MODID, "self_crafting/"+getItemName(item)));
+    }
+    private static void mossyCraft(RecipeOutput output, ItemLike result, ItemLike input) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
+            .requires(input).requires(Items.VINE)
+            .unlockedBy("has_item", has(input)).save(output, new ResourceLocation(MODID, "mossy_crafting/" + getItemName(result) + "_from_vine"));
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, result)
+            .requires(input).requires(Items.MOSS_BLOCK)
+            .unlockedBy("has_item", has(input)).save(output, new ResourceLocation(MODID, "mossy_crafting/" + getItemName(result) + "_from_moss_block"));
     }
 
 }

@@ -5,7 +5,6 @@ import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
 import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
-import com.sonamorningstar.eternalartifacts.api.block_search.TreeCapitatorHandler;
 import com.sonamorningstar.eternalartifacts.api.cauldron.ModCauldronInteraction;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmManager;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
@@ -21,10 +20,7 @@ import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
 import com.sonamorningstar.eternalartifacts.client.gui.tooltip.ItemTooltipManager;
 import com.sonamorningstar.eternalartifacts.container.BlueprintMenu;
 import com.sonamorningstar.eternalartifacts.container.base.GenericMachineMenu;
-import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ChunkEaterBlockEntity;
-import com.sonamorningstar.eternalartifacts.content.block.entity.DimensionalAnchor;
-import com.sonamorningstar.eternalartifacts.content.block.entity.ShockAbsorber;
+import com.sonamorningstar.eternalartifacts.content.block.entity.*;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.enchantment.base.AttributeEnchantment;
 import com.sonamorningstar.eternalartifacts.content.entity.MimicEntity;
@@ -47,10 +43,9 @@ import com.sonamorningstar.eternalartifacts.network.ForcedChunksToClient;
 import com.sonamorningstar.eternalartifacts.network.ItemActivationToClient;
 import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
 import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
-import com.sonamorningstar.eternalartifacts.util.LootTableHelper;
-import com.sonamorningstar.eternalartifacts.util.PlayerHelper;
-import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
+import com.sonamorningstar.eternalartifacts.util.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import mekanism.common.content.gear.IBlastingItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
@@ -74,10 +69,12 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -98,6 +95,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -130,6 +128,8 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
@@ -632,7 +632,6 @@ public class CommonEvents {
     }
     
     private static final Set<Player> MINERS = new HashSet<>();
-    public static volatile BlockHitResult eternal_Artifacts_Neoforge$cachedRay;
     @SubscribeEvent
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
@@ -650,9 +649,6 @@ public class CommonEvents {
                 itemStack.hurt(amount, level.getRandom(), player instanceof ServerPlayer serverPlayer ? serverPlayer : null);
             }
         }
-        if (itemStack.getItem() instanceof ChiselItem) {
-            eternal_Artifacts_Neoforge$cachedRay = RayTraceHelper.retrace(player, ClipContext.Fluid.NONE);
-        }
         if (expDrop > 0) {
             ItemStack talisman = CharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
             if (!talisman.isEmpty()) {
@@ -663,19 +659,12 @@ public class CommonEvents {
         if (player instanceof ModFakePlayer fakePlayer) {
             Machine<?> machine = fakePlayer.getMachine();
             if (machine instanceof ChunkEaterBlockEntity || machine instanceof BlockBreaker) {
-                event.setExpToDrop(0);
+                event.setExpToDrop(Math.min(event.getExpToDrop(), 0));
             }
         }
     }
     
-    /*@SubscribeEvent
-    public static void blockPlaceEvent(BlockEvent.EntityPlaceEvent event) {
-        Entity entity = event.getEntity();
-        LevelAccessor levelAcc = event.getLevel();
-        BlockPos pos = event.getPos();
-        BlockState placedState = event.getPlacedBlock();
-        
-    }*/
+    
 
     @SubscribeEvent
     public static void preExplosionEvent(ExplosionEvent.Start event) {
@@ -723,11 +712,29 @@ public class CommonEvents {
     @SubscribeEvent
     public static void experienceDropEvent(LivingExperienceDropEvent event) {
         Player player = event.getAttackingPlayer();
+        LivingEntity target = event.getEntity();
         if (player != null) {
             ItemStack talisman = CharmManager.findCharm(player, ModItems.SAGES_TALISMAN.get());
             if (!talisman.isEmpty()) {
                 event.setDroppedExperience(Mth.ceil(event.getDroppedExperience() * 1.2));
             }
+        }
+        if (player instanceof ModFakePlayer fakePlayer && fakePlayer.getMachine() instanceof MobHarvester harvester) {
+            ItemStack toolCopy = harvester.inventory.getStackInSlot(0).copy();
+            int xpToInsert = event.getDroppedExperience();
+            xpToInsert = ExperienceHelper.mendItem(toolCopy, xpToInsert);
+            harvester.inventory.setStackInSlot(0, toolCopy);
+            while (xpToInsert > 0) {
+                int filled = harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.SIMULATE);
+                if (filled == 20) {
+                    harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.EXECUTE);
+                    xpToInsert--;
+                } else break;
+            }
+            if (xpToInsert > 0) {
+                ExperienceOrb.award((ServerLevel) harvester.getLevel(), target.position(), xpToInsert);
+            }
+            event.setCanceled(true);
         }
     }
 
@@ -753,7 +760,7 @@ public class CommonEvents {
                 }
 
                 itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(hand));
-                if (level.isClientSide) player.swing(hand);
+                event.setCancellationResult(InteractionResult.sidedSuccess(level.isClientSide));
             }
             if (context.getClickedFace() != Direction.DOWN) {
                 BlockState shovelModifiedState = blockState.getToolModifiedState(context, ToolActions.SHOVEL_FLATTEN, false);
@@ -771,12 +778,10 @@ public class CommonEvents {
                 }
 
                 if (newState != null) {
-                    if (!level.isClientSide) {
-                        level.setBlock(blockPos, newState, 11);
-                        level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, newState));
-                        itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(context.getHand()));
-                    } else player.swing(hand);
-
+                    level.setBlock(blockPos, newState, 11);
+                    level.gameEvent(GameEvent.BLOCK_CHANGE, blockPos, GameEvent.Context.of(player, newState));
+                    itemStack.hurtAndBreak(Config.VERSATILITY_COST.get(), player, p -> p.broadcastBreakEvent(context.getHand()));
+                    event.setCancellationResult(InteractionResult.sidedSuccess(level.isClientSide));
                 }
             }
         }
@@ -827,6 +832,16 @@ public class CommonEvents {
            }
         }
         
+    }
+    
+    @SubscribeEvent
+    public static void toolUseEvent(BlockEvent.BlockToolModificationEvent event) {
+        boolean simulated = event.isSimulated();
+        BlockState state = event.getState();
+        ToolAction toolAction = event.getToolAction();
+        if (state.is(ModBlocks.FERTILIZED_SOIL) && toolAction.equals(ToolActions.HOE_TILL)) {
+            event.setFinalState(ModBlocks.FERTILIZED_SOIL_FARMLAND.get().defaultBlockState());
+        }
     }
 
     @Nullable
@@ -956,6 +971,88 @@ public class CommonEvents {
         Projectile projectile = event.getProjectile();
         HitResult hitResult = event.getRayTraceResult();
         if (projectile instanceof VoidlockSpellProj && hitResult.getType() == HitResult.Type.BLOCK) {
+            event.setCanceled(true);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void breakSpeed(PlayerEvent.BreakSpeed event) {
+        Player player = event.getEntity();
+        ItemStack tool = player.getMainHandItem();
+        if (tool.getItem() instanceof DiggerItem digger && VersatilityEnchantment.has(tool)) {
+            BlockState state = event.getState();
+            if (state.is(ModTags.Blocks.VERSATILITY_MINEABLES)) {
+                event.setNewSpeed(getDigSpeedInternal(player, state, digger));
+            }
+        }
+    }
+    
+    private static float getDigSpeedInternal(Player player, BlockState state, DiggerItem digger) {
+        float destroySpeed = digger.getTier().getSpeed();
+        if (destroySpeed > 1.0F) {
+            int i = EnchantmentHelper.getBlockEfficiency(player);
+            ItemStack itemstack = player.getMainHandItem();
+            if (i > 0 && !itemstack.isEmpty()) {
+                destroySpeed += (float)(i * i + 1);
+            }
+        }
+        
+        if (MobEffectUtil.hasDigSpeed(player)) {
+            destroySpeed *= 1.0F + (float)(MobEffectUtil.getDigSpeedAmplification(player) + 1) * 0.2F;
+        }
+        
+        if (player.hasEffect(MobEffects.DIG_SLOWDOWN)) {
+            destroySpeed *= switch(player.getEffect(MobEffects.DIG_SLOWDOWN).getAmplifier()) {
+                case 0 -> 0.3F;
+                case 1 -> 0.09F;
+                case 2 -> 0.0027F;
+                default -> 8.1E-4F;
+            };
+        }
+        
+        if (player.isEyeInFluidType(Fluids.WATER.getFluidType()) && !EnchantmentHelper.hasAquaAffinity(player)) {
+            destroySpeed /= 5.0F;
+        }
+        
+        if (!player.onGround()) {
+            destroySpeed /= 5.0F;
+        }
+        
+        return destroySpeed;
+    }
+    
+    @SubscribeEvent
+    public static void harvestCheck(PlayerEvent.HarvestCheck event) {
+        Player player = event.getEntity();
+        ItemStack tool = player.getMainHandItem();
+        if (tool.getItem() instanceof DiggerItem digger && VersatilityEnchantment.has(tool)) {
+            BlockState target = event.getTargetBlock();
+            if (target.is(ModTags.Blocks.VERSATILITY_MINEABLES) && TierSortingRegistry.isCorrectTierForDrops(digger.getTier(), target)) {
+                event.setCanHarvest(true);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void critHitModifier(CriticalHitEvent event) {
+        Player player = event.getEntity();
+        ItemStack charm = CharmManager.findCharm(player, ModItems.EYE_OF_DESTRUCTION.get());
+        if (!charm.isEmpty()) {
+            event.setDamageModifier(event.getDamageModifier() + Config.EYES_OF_DESTRUCTION_CRIT_BONUS.get() / 100F);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void livingDrops(LivingDropsEvent event) {
+        Collection<ItemEntity> drops = event.getDrops();
+        Entity killer = event.getSource().getEntity();
+        if (killer instanceof ModFakePlayer fakePlayer && fakePlayer.getMachine() instanceof MobHarvester harvester) {
+            for (ItemEntity itemEntity : drops) {
+                ItemStack remainder = ItemHelper.insertItemStackedForced(harvester.inventory, itemEntity.getItem(), false);
+                if (!remainder.isEmpty()) {
+                    killer.level().addFreshEntity(new ItemEntity(killer.level(), itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), remainder));
+                }
+            }
             event.setCanceled(true);
         }
     }

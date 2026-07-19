@@ -36,6 +36,7 @@
     "eternalartifacts:tin_cable",
     "eternalartifacts:covered_tin_cable",
     "eternalartifacts:soul_magma_block",
+    "eternalartifacts:cursed_stone_bricks",
     "eternalartifacts:mob_liquifier",
     "eternalartifacts:meat_shredder",
     "eternalartifacts:meat_packer",
@@ -75,6 +76,7 @@
     "eternalartifacts:harvester",
     "eternalartifacts:anvilinator",
     "eternalartifacts:energy_distributor",
+    "eternalartifacts:fluid_furnace",
     "eternalartifacts:block_placer",
     "eternalartifacts:block_breaker",
     "eternalartifacts:solid_combustion_dynamo",
@@ -86,9 +88,9 @@
     "eternalartifacts:pumpjack",
     "eternalartifacts:generator",
     "eternalartifacts:chunk_eater",
-    "eternalartifacts:item_port",
+    "eternalartifacts:redstone_port",
     "eternalartifacts:fluid_port",
     "eternalartifacts:energy_port",
-    "eternalartifacts:redstone_port"
+    "eternalartifacts:item_port"
   ]
 }

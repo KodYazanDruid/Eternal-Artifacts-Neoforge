@@ -29,11 +29,10 @@ public class DynamoRenderer implements BlockEntityRenderer<AbstractDynamo<?>> {
     @Override
     public void render(AbstractDynamo<?> dynamo, float tick, PoseStack poseStack, MultiBufferSource buff, int light, int overlay) {
         Direction facing = dynamo.hasLevel() ? dynamo.getBlockState().getValue(BlockStateProperties.FACING) : Direction.NORTH;
-        Quaternionf faceRot = facing.getRotation();
         poseStack.pushPose();
         VertexConsumer consumer = getMaterial(dynamo).buffer(buff, RenderType::entityCutout);
         poseStack.translate(0.5F, 0.5F, 0.5F);
-        poseStack.mulPose(faceRot);
+        poseStack.mulPose(facing.getRotation());
         poseStack.translate(-0.5F, -0.5F, -0.5F);
         model.setupAnim(dynamo, tick);
         model.renderToBuffer(poseStack, consumer, light, overlay, 1, 1, 1, 1);

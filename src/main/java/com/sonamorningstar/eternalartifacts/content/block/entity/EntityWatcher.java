@@ -36,6 +36,7 @@ public class EntityWatcher extends GenericMachine implements WorkingAreaProvider
 		super(ModMachines.ENTITY_WATCHER, pos, blockState);
 		setEnergy(this::createDefaultEnergy);
 		screenInfo.setShouldDrawArrow(false);
+		setHasAnalogOutput(true);
 	}
 	
 	@Override
@@ -95,9 +96,9 @@ public class EntityWatcher extends GenericMachine implements WorkingAreaProvider
 	}
 	
 	@Override
-	public int getRedstoneOutput() {
+	public int getAnalogOutputSignal() {
 		RedstoneOutputThreshold cfg = getConfiguration().get(RedstoneOutputThreshold.class);
-		if (cfg != null){
+		if (cfg != null) {
 			RedstoneOutputThreshold.ThresholdMode mode = cfg.getMode();
 			if (mode == RedstoneOutputThreshold.ThresholdMode.IGNORE) return entityCount;
 			int threshold = cfg.getThreshold();
@@ -116,15 +117,18 @@ public class EntityWatcher extends GenericMachine implements WorkingAreaProvider
 	@Override
 	public void tickServer(ServerLevel lvl, BlockPos pos, BlockState st) {
 		super.tickServer(lvl, pos, st);
-		if (!redstoneChecks(lvl)) return;
 		
-		if (canWork(energy)) {
-			List<Entity> entities = lvl.getEntitiesOfClass(Entity.class, getWorkingArea(pos), this::matchesAllFilters);
-			entityCount = entities.size();
+		int oldCount = entityCount;
+		int newCount = 0;
+		
+		if (redstoneChecks(lvl) && canWork(energy)) {
+			newCount = lvl.getEntitiesOfClass(Entity.class, getWorkingArea(pos), this::matchesAllFilters).size();
 			spendEnergy(energy);
-		} else entityCount = 0;
+		}
 		
-		markDirty();
-		
+		if (oldCount != newCount) {
+			entityCount = newCount;
+			markDirty();
+		}
 	}
 }

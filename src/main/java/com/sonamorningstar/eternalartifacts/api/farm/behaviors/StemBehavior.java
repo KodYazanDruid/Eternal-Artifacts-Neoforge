@@ -1,8 +1,8 @@
 package com.sonamorningstar.eternalartifacts.api.farm.behaviors;
 
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AttachedStemBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,8 +71,8 @@ public class StemBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		BlockState state = stemBlock.defaultBlockState();
-		return state.canSurvive(level, pos) ? state : Blocks.AIR.defaultBlockState();
+		return state.canSurvive(level, pos) ? new PlantResult(state, Direction.UP) : EMPTY_PLANT;
 	}
 }

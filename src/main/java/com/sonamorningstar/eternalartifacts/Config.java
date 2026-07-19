@@ -44,6 +44,9 @@ public class Config {
     public static final ModConfigSpec.DoubleValue MOONGLASS_PENDANT_HEAL_MULTIPLIER =
         COMMON.comment("Healing multiplier for the Moonglass Pendant artifact.")
                     .defineInRange("moonglass_pendant_heal_multiplier", 0.2D, 0.1D, 1.0D);
+    public static final ModConfigSpec.IntValue EYES_OF_DESTRUCTION_CRIT_BONUS =
+        COMMON.comment("Crit damage bonus for the Eyes of Destruction artifact.")
+                    .defineInRange("eyes_of_destruction_crit_bonus", 50, 5, 100);
     static {COMMON.pop();}
     
     static{SERVER.push("Machines");}

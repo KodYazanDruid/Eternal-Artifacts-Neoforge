@@ -1,4 +1,4 @@
-// 1.20.4	2026-06-14T23:23:06.1555126	Item Models: eternalartifacts
+// 1.20.4	2026-06-28T20:51:40.6803937	Item Models: eternalartifacts
 ee7dff4999408ddd2e2ddc09a22e7232dd79fe7b assets/eternalartifacts/models/item/advanced_crafter.json
 c8e4586eb4839263293ce24b8e75f7100dfbbb22 assets/eternalartifacts/models/item/alchemical_brewer.json
 559c4cf1e1c42542febdffcd0adb701af0b16b41 assets/eternalartifacts/models/item/alloy_smelter.json
@@ -19,6 +19,7 @@ ed67fafb38c72f12af67434f3f9b4c42b336271d assets/eternalartifacts/models/item/ban
 d5be76ea0181c0292069ca7f6545c3bdd36b55b9 assets/eternalartifacts/models/item/band_of_arcane.json
 eb4e70221fd4ef7b288cc8f4dc274b8b91d359e0 assets/eternalartifacts/models/item/battery.json
 0cc868a9f308e87b07a6b548fe521193c957b6a7 assets/eternalartifacts/models/item/battery_box.json
+bdec6aa8fe20730bcd768454a6e17357cf5e7a74 assets/eternalartifacts/models/item/beacon_agitator.json
 4db39dad240c4e589eecfffeb032ea9003733aba assets/eternalartifacts/models/item/beer_bucket.json
 280d7ec7408b084442fa674bedd6599635d23b8a assets/eternalartifacts/models/item/biofuel_bucket.json
 c43326db2f6ef314a41073641fbed9216f9ed163 assets/eternalartifacts/models/item/bitumen.json
@@ -118,10 +119,11 @@ df7d394f9ba49a359a04b9f95cb19ec4faa9e4a2 assets/eternalartifacts/models/item/ent
 57d8611b57827eb1c2def7cfc005b17b53dd1d79 assets/eternalartifacts/models/item/evokers_tome.json
 571bbeea77d58fddf32fe5625aa5f4594461a7e4 assets/eternalartifacts/models/item/experience_berry.json
 c2fdc74aea92bb242790af24ba4471dd51ca9817 assets/eternalartifacts/models/item/experience_oreberry.json
+2df22b76cf88118785d4e93d1b91cee811cf9c99 assets/eternalartifacts/models/item/eye_of_destruction.json
 f40de090aa923be0b315c742c1a51a2290d3534e assets/eternalartifacts/models/item/fairy_dust.json
 575e5cdb0b23ed71aec8c60a5ea6f1df7f063378 assets/eternalartifacts/models/item/fancy_chest.json
 6458f1561471ece43f5545c14baf41969817f73f assets/eternalartifacts/models/item/feeding_canister.json
-302cbbdb68a9226e1bbc29af0b76158bf4ce0ece assets/eternalartifacts/models/item/final_cut.json
+d58e1074d418e9115d28e79c3696ca642baff017 assets/eternalartifacts/models/item/final_cut.json
 275611168bf968d2d3c0c77823bfd6955310972b assets/eternalartifacts/models/item/fireball_tome.json
 9b1b466c164aa8f9c2c495d3d6195981378cd460 assets/eternalartifacts/models/item/flour.json
 98db580560adef0538044a44ccd9b7e5b4f12940 assets/eternalartifacts/models/item/fluid_infuser.json
@@ -308,7 +310,7 @@ e5e8de1d419d37a6c993e3a407c46792def7ba9d assets/eternalartifacts/models/item/tin
 63a16f022eca5af01e1d9575713d11fd4ddf5ff7 assets/eternalartifacts/models/item/tome.json
 b086a9849021bb1a8347f638eeae801bf3220b47 assets/eternalartifacts/models/item/tornado_tome.json
 7174e60861b4a6d89959e35e065edbc27e4d8279 assets/eternalartifacts/models/item/trash_can.json
-434e545373abcf4879582c008670c91cd1e2335d assets/eternalartifacts/models/item/trowel.json
+1097422ea6da9b166de0a62073174f259d0a5d9d assets/eternalartifacts/models/item/trowel.json
 2bd3e2173deb7fa7df8d5c4df0924d25fdd56cb0 assets/eternalartifacts/models/item/unpacker.json
 fd232d790ab05f3ae2e57d25ffe1d64184691e47 assets/eternalartifacts/models/item/voidlock_tome.json
 faaadfc4392ab6536fed24fb61710f91572f718d assets/eternalartifacts/models/item/water_tnt.json

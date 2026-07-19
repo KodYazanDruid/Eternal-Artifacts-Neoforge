@@ -2,10 +2,11 @@ package com.sonamorningstar.eternalartifacts.content.block.entity;
 
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import com.sonamorningstar.eternalartifacts.core.ModBlockEntities;
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import com.sonamorningstar.eternalartifacts.util.RetexturedHelper;
-import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -14,6 +15,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
@@ -22,7 +24,6 @@ import static com.sonamorningstar.eternalartifacts.util.RetexturedHelper.TEXTURE
 
 public class FancyChestBlockEntity extends ChestBlockEntity implements IRetexturedBlockEntity {
     @Nonnull
-    @Getter
     private Block texture = Blocks.BAMBOO_PLANKS;
     public FancyChestBlockEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.FANCY_CHEST.get(), pPos, pBlockState);
@@ -33,12 +34,17 @@ public class FancyChestBlockEntity extends ChestBlockEntity implements IRetextur
     public ModelData getModelData() {
         return RetexturedHelper.getModelData(texture);
     }
-
+    
+    @Override
+    protected Component getDefaultName() {
+        return ModBlocks.FANCY_CHEST.get().getName();
+    }
+    
     @Override
     public String getTextureName() {
         return RetexturedHelper.getTextureName(texture);
     }
-
+    
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -66,7 +72,14 @@ public class FancyChestBlockEntity extends ChestBlockEntity implements IRetextur
         setChanged();
         if(level != null && level.hasChunkAt(worldPosition)) level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
     }
-
+    
+    @Override
+    public void onLoad() {
+        super.onLoad();
+        AuxiliaryLightManager lightManager = level.getAuxLightManager(getBlockPos());
+        if (lightManager != null)
+            lightManager.setLightAt(getBlockPos(), getTexture().defaultBlockState().getLightEmission(level, getBlockPos()));
+    }
 
     @Override
     protected void saveAdditional(CompoundTag pTag) {

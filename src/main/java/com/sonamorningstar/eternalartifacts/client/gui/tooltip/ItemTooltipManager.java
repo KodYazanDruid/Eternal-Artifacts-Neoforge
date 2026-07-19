@@ -45,6 +45,7 @@ public class ItemTooltipManager {
 		registerCharmTooltip(ModItems.RAINCOAT.get());
 		registerCharmTooltip(ModItems.ODDLY_SHAPED_OPAL.get(), 50);
 		registerCharmTooltip(ModItems.MOONGLASS_PENDANT.get(), (int) (Config.MOONGLASS_PENDANT_HEAL_MULTIPLIER.get() * 100));
+		registerCharmTooltip(ModItems.EYE_OF_DESTRUCTION.get(), Config.EYES_OF_DESTRUCTION_CRIT_BONUS.get());
 	}
 	
 	public static void setReload() {

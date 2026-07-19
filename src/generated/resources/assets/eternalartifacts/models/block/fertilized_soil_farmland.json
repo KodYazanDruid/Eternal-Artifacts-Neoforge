@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_farmland",
+  "textures": {
+    "dirt": "eternalartifacts:block/fertilized_soil",
+    "top": "eternalartifacts:block/fertilized_soil_farmland"
+  }
+}

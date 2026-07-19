@@ -1,5 +1,6 @@
 package com.sonamorningstar.eternalartifacts.compat.emi.recipes;
 
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
 import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.SlotWidget;
@@ -17,7 +18,7 @@ public class EmiShapedRetexturedRecipe extends EmiPatternCraftingRecipe {
                 EmiStack.of(Items.BONE_MEAL),
                 EmiStack.EMPTY,
                 EmiStack.of(texture),
-                EmiStack.of(Items.DIRT),
+                EmiStack.of(ModBlocks.FERTILIZED_SOIL),
                 EmiStack.of(texture),
                 EmiStack.EMPTY,
                 EmiStack.of(texture),
@@ -31,7 +32,7 @@ public class EmiShapedRetexturedRecipe extends EmiPatternCraftingRecipe {
     public SlotWidget getInputWidget(int slot, int x, int y) {
         return switch (slot) {
             case 1 -> new SlotWidget(EmiStack.of(Items.BONE_MEAL), x, y);
-            case 4 -> new SlotWidget(EmiStack.of(Items.DIRT), x, y);
+            case 4 -> new SlotWidget(EmiStack.of(ModBlocks.FERTILIZED_SOIL), x, y);
             case 3, 5, 7 -> new SlotWidget(EmiStack.of(texture), x, y);
             default -> new SlotWidget(EmiStack.EMPTY, x, y);
         };

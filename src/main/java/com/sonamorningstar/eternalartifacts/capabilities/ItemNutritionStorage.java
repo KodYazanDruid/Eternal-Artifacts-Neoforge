@@ -2,17 +2,19 @@ package com.sonamorningstar.eternalartifacts.capabilities;
 
 import com.sonamorningstar.eternalartifacts.content.item.FeedingCanister;
 import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
+import lombok.Getter;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-public class ItemNutritionStorage extends NutritionStorage{
-    private final ItemStack stack;
-    public ItemNutritionStorage(ItemStack stack) {
-        super(256 * (stack.getEnchantmentLevel(ModEnchantments.VOLUME.get()) + 1), 256 * (stack.getEnchantmentLevel(ModEnchantments.VOLUME.get()) + 1));
-        this.stack = stack;
-        CompoundTag tag = stack.getOrCreateTag().getCompound("NutritionValues");
+@Getter
+public class ItemNutritionStorage extends NutritionStorage {
+    private final ItemStack container;
+    public ItemNutritionStorage(ItemStack container) {
+        super(256 * (container.getEnchantmentLevel(ModEnchantments.VOLUME.get()) + 1), 256 * (container.getEnchantmentLevel(ModEnchantments.VOLUME.get()) + 1));
+        this.container = container;
+        CompoundTag tag = container.getOrCreateTag().getCompound("NutritionValues");
         deserializeNBT(tag);
-        if (stack.getItem() instanceof FeedingCanister canister) {
+        if (container.getItem() instanceof FeedingCanister canister) {
             canister.getFoodPropertiesBuilder().nutrition(getNutritionAmount());
             canister.getFoodPropertiesBuilder().saturationMod(getSaturationMod());
         }
@@ -20,6 +22,6 @@ public class ItemNutritionStorage extends NutritionStorage{
 
     @Override
     protected void onChange(Type type) {
-        stack.getOrCreateTag().put("NutritionValues", serializeNBT());
+        container.getOrCreateTag().put("NutritionValues", serializeNBT());
     }
 }

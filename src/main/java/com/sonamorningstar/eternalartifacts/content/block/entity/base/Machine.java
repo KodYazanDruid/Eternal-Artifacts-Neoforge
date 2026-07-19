@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.content.block.entity.base;
 
 import com.google.common.util.concurrent.Runnables;
 import com.sonamorningstar.eternalartifacts.EternalArtifacts;
+import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.api.block_search.RecipeCache;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
 import com.sonamorningstar.eternalartifacts.api.machine.ProcessCondition;
@@ -15,6 +16,8 @@ import com.sonamorningstar.eternalartifacts.network.Channel;
 import com.sonamorningstar.eternalartifacts.network.MachineWorkingStateToClient;
 import com.sonamorningstar.eternalartifacts.util.FakePlayerHelper;
 import com.sonamorningstar.eternalartifacts.util.function.QuadFunction;
+import it.unimi.dsi.fastutil.objects.Object2BooleanArrayMap;
+import it.unimi.dsi.fastutil.objects.Object2BooleanMap;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +39,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +47,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -63,6 +66,9 @@ import static com.sonamorningstar.eternalartifacts.api.machine.config.RedstoneCo
 public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEntity implements MenuProvider, TickableServer, ChunkLoader, Nameable {
     @Nullable
     private QuadFunction<Integer, Inventory, BlockEntity, ContainerData, T> menuConstructor;
+    
+    public static final Object2BooleanMap<Block> HAS_ANALOG_OUTPUT = new Object2BooleanArrayMap<>();
+    public static final Object2BooleanMap<Block> IS_SIGNAL_SOURCE = new Object2BooleanArrayMap<>();
 
     @Setter(value = AccessLevel.NONE)
     public ModItemStorage inventory = null;
@@ -100,7 +106,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     protected final Set<ForceLoadManager.ForcedChunkPos> forcedChunks = new HashSet<>();
     private int chunkUnloadCooldown = 200;
     private int chunkUpdateCooldown = 100;
-    protected FakePlayer fakePlayer = null;
+    protected ModFakePlayer fakePlayer = null;
     protected boolean isFakePlayerSetUp = false;
     @Setter
     private Component name;
@@ -228,7 +234,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if (cap == Capabilities.FluidHandler.BLOCK) getConfiguration().add(new ReverseToggleConfig("fluid_transfer"));
     }
     
-    protected FakePlayer getFakePlayer() {
+    protected ModFakePlayer getFakePlayer() {
         if (fakePlayer == null) {
             this.fakePlayer = FakePlayerHelper.getFakePlayer(this, level);
         }
@@ -244,10 +250,15 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         fakePlayer.setPosRaw(getBlockPos().getX() + 0.5, getBlockPos().getY() + 0.5, getBlockPos().getZ() + 0.5);
         BlockState state = getBlockState();
         if (state.hasProperty(BlockStateProperties.FACING)) {
-            fakePlayer.setYRot(state.getValue(BlockStateProperties.FACING).toYRot());
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (facing.getAxis() == Direction.Axis.Y) {
+                fakePlayer.setXRot(facing == Direction.UP ? -90.0F : 90.0F);
+            }
+            fakePlayer.setYRot(facing.toYRot());
         } else if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
             fakePlayer.setYRot(state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
         }
+        fakePlayer.getInventory().selected = 0;
         isFakePlayerSetUp = true;
     }
     
@@ -330,6 +341,18 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         return InteractionResult.PASS;
     }
     
+    public void setHasAnalogOutput(boolean hasAnalogOutput) {
+        HAS_ANALOG_OUTPUT.put(getBlockState().getBlock(), hasAnalogOutput);
+    }
+    
+    public void setIsSignalSource(boolean isSignalSource) {
+        IS_SIGNAL_SOURCE.put(getBlockState().getBlock(), isSignalSource);
+    }
+    
+    public int getAnalogOutputSignal() {
+        return 0;
+    }
+    
     public int getRedstoneOutput() {
         return 0;
     }
@@ -361,7 +384,6 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
     @Override
     public void onLoad() {
         super.onLoad();
-        findRecipe();
         updateProcessCondition();
         if (level != null && !level.isClientSide() && canLoadChunks()) {
             addToManager();
@@ -473,6 +495,11 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         return RecipeCache.getCachedRecipe(this);
     }
     
+    /*protected <T extends Recipe<? extends Container>> <T> getCasted() {
+        //return ((recipeType.getClass()) RecipeCache.getCachedRecipe(this);
+        RecipeType cachedRecipe = recipeType.getClass().cast(RecipeCache.getCachedRecipe(this));
+    }*/
+    
     @Override
 	public void findRecipe() {
         findRecipeFor(recipeType, recipeContainer);
@@ -526,7 +553,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
      * @param result The action to run when progress completes
      * @param energy Energy storage to consume from
      */
-    protected void progress(BooleanSupplier haltCondition, Runnable result, ModEnergyStorage energy) {
+    protected void progress(BooleanSupplier haltCondition, Runnable result, @Nullable ModEnergyStorage energy) {
         progress(haltCondition, Runnables.doNothing(), result, energy);
     }
 
@@ -542,7 +569,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
      * @param result The action to run when progress completes
      * @param energy Energy storage to consume from
      */
-    protected void progress(BooleanSupplier haltCondition, Runnable running, Runnable result, ModEnergyStorage energy) {
+    protected void progress(BooleanSupplier haltCondition, Runnable running, Runnable result, @Nullable ModEnergyStorage energy) {
         if (level != null && canWork(energy) && redstoneChecks(level)) {
             if (haltCondition.getAsBoolean()) {
                 progress = 0;
@@ -558,6 +585,11 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             }
             spendEnergy(energy);
         } else {
+            setWorking(false);
+        }
+        
+        if (!canWork(energy) && resetProgressOnNoEnergy()) {
+            progress = 0;
             setWorking(false);
         }
     }
@@ -578,12 +610,12 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         
         if (haltCondition.getAsBoolean()) {
             progress = 0;
+            setWorking(false);
             return;
         }
         
         if (progress >= maxProgress) {
-            boolean success = action.getAsBoolean();
-            if (success) {
+            if (action.getAsBoolean()) {
                 progress = 0;
             }
             return;
@@ -592,6 +624,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
         if (canWork(energy)) {
             progress = Math.min(maxProgress, progress + progressStep);
             spendEnergy(energy);
+            setWorking(true);
+        } else if (resetProgressOnNoEnergy()) {
+            progress = 0;
+            setWorking(false);
         }
     }
     
@@ -608,17 +644,21 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             case LOW -> !level.hasNeighborSignal(getBlockPos());
         };
     }
-
-    protected boolean canWork(ModEnergyStorage energy) {
+    
+    /**
+     * If the machine has no energy capability but still uses progress functions you need to override this method.
+     */
+    protected boolean canWork(@Nullable ModEnergyStorage energy) {
+        if (energy == null) return false;
         if (energyPerTick <= 0) return true;
         return energy.extractEnergyForced(energyPerTick, true) == energyPerTick;
     }
 
-    protected boolean hasAnyEnergy(ModEnergyStorage energy) {
-        return energy.getEnergyStored() > 0;
+    protected boolean hasAnyEnergy(@Nullable ModEnergyStorage energy) {
+        return energy != null && energy.getEnergyStored() > 0;
     }
     
-    public int spendEnergy(ModEnergyStorage energy) {
+    public int spendEnergy(@Nullable ModEnergyStorage energy) {
         if (energy == null || level == null) return 0;
         int lvl = getEnchantmentLevel(Enchantments.UNBREAKING);
         if (lvl > 0) {
@@ -627,6 +667,10 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
                 return energy.extractEnergyForced(energyPerTick, false);
             } else return 0;
         } else return energy.extractEnergyForced(energyPerTick, false);
+    }
+    
+    protected boolean resetProgressOnNoEnergy() {
+        return false;
     }
 
     //region Transfer methods.

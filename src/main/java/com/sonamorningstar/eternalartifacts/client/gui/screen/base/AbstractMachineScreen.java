@@ -52,7 +52,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     private boolean shouldRenderFluidTooltip = false;
     private boolean shouldRenderProgressTooltip = false;
     protected boolean renderEPT = true;
-    private int progressTooltipX, progressTooltipY, progressTooltipXLen, progressTooltipYLen;
+    private int progressTooltipX, progressTooltipY, progressTooltipXLen, progressTooltipYLen, progressTooltipFirst, progressTooltipSecond;
     private String progressTooltipKey;
     
     @Nullable
@@ -889,14 +889,16 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
         });
     }
     
-    protected void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, String key) {
+    protected void renderProgressTooltip(GuiGraphics gui, int x, int y, int xLen, int yLen, int mx, int my, int progressTooltipFirst, int progressTooltipSecond, String key) {
         if(isCursorInBounds(x, y, xLen, yLen, mx, my)) {
-            shouldRenderProgressTooltip = true;
-            progressTooltipX = x;
-            progressTooltipY = y;
-            progressTooltipXLen = xLen;
-            progressTooltipYLen = yLen;
-            progressTooltipKey = key;
+            this.shouldRenderProgressTooltip = true;
+            this.progressTooltipX = x;
+            this.progressTooltipY = y;
+            this.progressTooltipXLen = xLen;
+            this.progressTooltipYLen = yLen;
+            this.progressTooltipKey = key;
+            this.progressTooltipFirst = progressTooltipFirst;
+            this.progressTooltipSecond = progressTooltipSecond;
         }
     }
     
@@ -907,7 +909,7 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
             com.mojang.blaze3d.systems.RenderSystem.disableDepthTest();
             gui.renderTooltip(font,
                 Component.translatable(ModConstants.GUI.withSuffix(progressTooltipKey)).append(": ")
-                    .append(String.valueOf(menu.data.get(0))).append("/").append(String.valueOf(menu.data.get(1))),
+                    .append(String.valueOf(progressTooltipFirst)).append("/").append(String.valueOf(progressTooltipSecond)),
                 mx, my);
             com.mojang.blaze3d.systems.RenderSystem.enableDepthTest();
             gui.pose().popPose();
@@ -951,14 +953,13 @@ public abstract class AbstractMachineScreen<T extends AbstractMachineMenu> exten
     protected void renderBurn(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x + 1, y + 1, 48, 10, 13, 13);
         if(menu.isWorking()) guiGraphics.blit(bars, x, y + 14 - menu.getScaledProgress(14), 48,  37 - menu.getScaledProgress(14), 14, menu.getScaledProgress(14));
-        renderProgressTooltip(guiGraphics, x, y, 13, 13, mx, my, "burn_time");
+        renderProgressTooltip(guiGraphics, x, y, 13, 13, mx, my, menu.data.get(0), menu.data.get(1), "burn_time");
     }
 
     protected void renderProgressArrowWTooltips(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
-        guiGraphics.blit(bars, x, y, 0, 56, 22, 15);
-        if(menu.isWorking()) guiGraphics.blit(bars, x, y, 22, 56, menu.getScaledProgress(22), 15);
+        renderProgressArrow(guiGraphics, x, y, mx, my);
         String key = menu.getBlockEntity() instanceof Machine<?> machine && machine.isChargeProgress() ? "charge_progress" : "progress";
-        renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, key);
+        renderProgressTooltip(guiGraphics, x, y, 22, 15, mx, my, menu.data.get(0), menu.data.get(1), key);
     }
     protected void renderProgressArrow(GuiGraphics guiGraphics, int x, int y, int mx, int my) {
         guiGraphics.blit(bars, x, y, 0, 56, 22, 15);

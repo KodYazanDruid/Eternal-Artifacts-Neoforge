@@ -90,13 +90,13 @@ public class ChorusFlowerBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
 		if (block instanceof ChorusFlowerBlock flower) {
 			BlockState state = flower.defaultBlockState();
-			if (state.canSurvive(level, pos)) return state;
+			if (state.canSurvive(level, pos)) return new PlantResult(state, Direction.UP);
 		}
-		return Blocks.AIR.defaultBlockState();
+		return EMPTY_PLANT;
 	}
 	
 	private Set<BlockPos> findAllConnectedBlocksAbove(Level level, BlockPos rootPos) {

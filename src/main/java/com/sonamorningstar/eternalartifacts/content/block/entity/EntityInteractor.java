@@ -139,8 +139,8 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 	private boolean handleEntity(ItemStack interactStack, LivingEntity entity, Level lvl) {
 		boolean isShears = interactStack.is(Tags.Items.SHEARS);
 		var result = isShears ? InteractionResult.PASS : interactStack.interactLivingEntity(fakePlayer, entity, InteractionHand.MAIN_HAND);
-		boolean success = result.consumesAction();
-		if (!success) {
+		//boolean success = result.consumesAction();
+		if (!result.consumesAction()) {
 			if (isShears && entity instanceof IShearable shearable && shearable.isShearable(interactStack, lvl, entity.blockPosition())) {
 				var items = shearable.onSheared(fakePlayer, interactStack, lvl, entity.blockPosition(), interactStack.getEnchantmentLevel(Enchantments.MOB_LOOTING));
 				interactStack.hurtAndBreak(1, fakePlayer, e -> {});
@@ -150,16 +150,17 @@ public class EntityInteractor extends GenericMachine implements WorkingAreaProvi
 						shearable.spawnShearedDrop(lvl, entity.blockPosition(), drop);
 					}
 				}
-				success = true;
+				return true;
 			}
 			if (entity instanceof Animal animal) {
 				InteractionResult animalResult = animal.mobInteract(fakePlayer, InteractionHand.MAIN_HAND);
-				if (animalResult.consumesAction()) {
-					success = true;
-				}
+				return animalResult.consumesAction();
 			}
+			return entity.interact(fakePlayer, InteractionHand.MAIN_HAND).consumesAction();
+			//result = entity.interact(fakePlayer, InteractionHand.MAIN_HAND);
 		}
-		return success;
+		return true;
+		//return entity.interact(fakePlayer, InteractionHand.MAIN_HAND).consumesAction();
 	}
 	
 	private void transferFluidToTank(ItemStack after) {

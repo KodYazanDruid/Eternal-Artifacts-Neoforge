@@ -35,24 +35,27 @@ public class ChloroveinPickaxeItem extends PickaxeItem {
         return super.hurtEnemy(pStack, target, pAttacker);
     }
 
-    private static final List<ItemStack> currentMiners = new ArrayList<>();
+    private static final List<Player> MINERS = new ArrayList<>();
 
     @Override
     public boolean mineBlock(ItemStack stack, Level level, BlockState state, BlockPos pos, LivingEntity living) {
         if (BlockHelper.isOre(level, pos) &&
                 living instanceof Player player &&
                 !living.isShiftKeyDown() &&
-                !currentMiners.contains(stack)) {
-            BlockVeinCache cache = new BlockVeinCache(level, pos, 4, false);
-            cache.scanForBlocks();
-            Queue<BlockPos> queuedPos = cache.getCache();
-            if (player instanceof ServerPlayer serverPlayer) {
-                while (!queuedPos.isEmpty() && !stack.isEmpty() && checkForCorrectTool(level, queuedPos.peek(), serverPlayer)) {
-                    if (!currentMiners.contains(stack)) currentMiners.add(stack);
-                    cache.mine(queuedPos, serverPlayer);
+                !MINERS.contains(player)) {
+            MINERS.add(player);
+            try {
+                BlockVeinCache cache = new BlockVeinCache(level, pos, 4, false);
+                cache.scanForBlocks();
+                Queue<BlockPos> queuedPos = cache.getCache();
+                if (player instanceof ServerPlayer serverPlayer) {
+                    while (!queuedPos.isEmpty() && !stack.isEmpty() && checkForCorrectTool(level, queuedPos.peek(), serverPlayer)) {
+                        cache.mine(queuedPos, serverPlayer);
+                    }
                 }
+            } finally {
+                MINERS.remove(player);
             }
-            currentMiners.remove(stack);
             return false;
         } else return super.mineBlock(stack, level, state, pos, living);
     }

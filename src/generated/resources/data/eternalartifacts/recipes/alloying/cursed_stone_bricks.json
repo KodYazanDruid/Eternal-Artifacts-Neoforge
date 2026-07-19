@@ -1,0 +1,21 @@
+{
+  "type": "eternalartifacts:alloying",
+  "inputs": [
+    {
+      "amount": 4,
+      "tag": "minecraft:stone_bricks"
+    },
+    {
+      "amount": 1,
+      "tag": "forge:ingots/purple_gold"
+    },
+    {
+      "amount": 1,
+      "tag": "forge:slimeballs/pink"
+    }
+  ],
+  "output": {
+    "Count": 4,
+    "id": "eternalartifacts:cursed_stone_bricks"
+  }
+}

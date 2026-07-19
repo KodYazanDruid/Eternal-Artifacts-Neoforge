@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
@@ -116,7 +117,7 @@ public class BlockHelper {
                     boolean canHarvest = blockState.canHarvestBlock(level, pos, player);
                     tool.mineBlock(level, blockState, pos, player);
                     if (tool.isEmpty() && !toolCopy.isEmpty())
-                        net.neoforged.neoforge.event.EventHooks.onPlayerDestroyItem(player, toolCopy, InteractionHand.MAIN_HAND);
+                        EventHooks.onPlayerDestroyItem(player, toolCopy, InteractionHand.MAIN_HAND);
                     boolean isRemoved = removeBlock(level, player, pos, canHarvest);
                     
                     if (canHarvest && isRemoved) {

@@ -1,12 +1,14 @@
 package com.sonamorningstar.eternalartifacts.api.farm;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +41,11 @@ import java.util.List;
  * </p>
  */
 public interface FarmBehavior extends Comparable<FarmBehavior> {
+	
+	record PlantResult(BlockState state, Direction facing) {}
+	
+	PlantResult EMPTY_PLANT = new PlantResult(Blocks.AIR.defaultBlockState(), Direction.UP);
+	
 	/**
 	 * Checks whether the given ItemStack is a valid seed for this behavior.
 	 * <p>
@@ -95,7 +102,7 @@ public interface FarmBehavior extends Comparable<FarmBehavior> {
 	 * @param seed  the seed stack used for planting
 	 * @return the {@link BlockState} representing the newly planted crop
 	 */
-	BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed);
+	PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed);
 	
 	/**
 	 * Harvests the plant at the given position and returns the list of drops
@@ -201,7 +208,7 @@ public interface FarmBehavior extends Comparable<FarmBehavior> {
 	 * @param seed  the seed ItemStack
 	 * @return the replanted {@link BlockState}
 	 */
-	default BlockState getReplantingState(Level level, BlockPos pos, ItemStack seed) {
+	default PlantResult getReplantingState(Level level, BlockPos pos, ItemStack seed) {
 		return getPlantingState(level, pos, seed);
 	}
 }

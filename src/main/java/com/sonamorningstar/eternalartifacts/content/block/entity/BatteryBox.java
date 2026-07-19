@@ -42,6 +42,7 @@ public class BatteryBox extends GenericMachine {
         screenInfo.setSlotPosition(98, 35, 1);
         screenInfo.setSlotPosition(80, 53, 2);
         screenInfo.setSlotPosition(98, 53, 3);
+        setHasAnalogOutput(true);
     }
     
     @Override
@@ -69,8 +70,8 @@ public class BatteryBox extends GenericMachine {
     }
     
     @Override
-    public int getRedstoneOutput() {
-        return super.getRedstoneOutput();
+    public int getAnalogOutputSignal() {
+        return (int) Math.floor(energy.getEnergyStored() * 15.0F / energy.getMaxEnergyStored());
     }
     
     @Override

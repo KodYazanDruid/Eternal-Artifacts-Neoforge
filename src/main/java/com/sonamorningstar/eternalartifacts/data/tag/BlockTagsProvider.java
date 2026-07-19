@@ -3,13 +3,16 @@ package com.sonamorningstar.eternalartifacts.data.tag;
 import com.sonamorningstar.eternalartifacts.content.block.base.PortBlock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -71,9 +74,13 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.TEMPERED_GLASS.get(), "diamond", "pickaxe");
         tierAndTool(ModBlocks.DEMON_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.OBSIDIAN_BRICKS.get(), "diamond", "pickaxe");
+        tierAndTool(ModBlocks.MOSSY_BRICKS.get(), "", "pickaxe");
+        tierAndTool(ModBlocks.MOSSY_DEEPSLATE_BRICKS.get(), "", "pickaxe");
         ModBlockFamilies.OBSIDIAN_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "diamond", "pickaxe"));
         ModBlockFamilies.SNOW_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
         ModBlockFamilies.ICE_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
+        ModBlockFamilies.MOSSY_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
+        ModBlockFamilies.MOSSY_DEEPSLATE_BRICKS.getVariants().values().forEach(block -> tierAndTool(block, "", "pickaxe"));
         tierAndTool(ModBlocks.COPPER_CABLE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.COVERED_COPPER_CABLE.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.ENERGY_DOCK.get(), "iron", "pickaxe");
@@ -117,6 +124,10 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         //tierAndTool(ModBlocks.DEEP_INFINITE_FLUID_STORAGE_UNIT.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.FLUID_HOPPER.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.SOUL_MAGMA_BLOCK.get(), "stone", "pickaxe");
+        tierAndTool(ModBlocks.FERTILIZED_SOIL.get(), "", "shovel");
+        tierAndTool(ModBlocks.FERTILIZED_SOIL_FARMLAND.get(), "", "shovel");
+        tierAndTool(ModBlocks.BEACON_AGITATOR.get(), "diamond", "pickaxe");
+        tierAndTool(ModBlocks.CURSED_STONE_BRICKS.get(), "stone", "pickaxe");
         
         tag(ModTags.Blocks.MINEABLE_WITH_WRENCH).add(
             ModBlocks.MACHINE_BLOCK.get(),
@@ -325,7 +336,10 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(Tags.Blocks.GLASS).add(ModBlocks.TEMPERED_GLASS.get());
         tag(ModTags.Blocks.GLASS_HARDENED).add(ModBlocks.TEMPERED_GLASS.get());
         tag(ModTags.Blocks.HARDENED_GLASS).add(ModBlocks.TEMPERED_GLASS.get());
-        tag(BlockTags.IMPERMEABLE).add(ModBlocks.TEMPERED_GLASS.get());
+        tag(BlockTags.IMPERMEABLE).add(
+            ModBlocks.TEMPERED_GLASS.get(),
+            ModBlocks.BEACON_AGITATOR.get()
+        );
         tag(BlockTags.FLOWER_POTS).add(ModBlocks.POTTED_TIGRIS.get());
         tag(Tags.Blocks.OBSIDIAN).add(ModBlocks.OBSIDIAN_BRICKS.get());
         tag(BlockTags.WALLS).add(
@@ -361,6 +375,25 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(BlockTags.ENCHANTMENT_POWER_TRANSMITTER).add(
             ModBlocks.RESONATOR.get()
         );
+        tag(BlockTags.DIRT).add(
+            ModBlocks.FERTILIZED_SOIL.get(),
+            ModBlocks.FERTILIZED_SOIL_FARMLAND.get()
+        );
+        tag(BlockTags.MAINTAINS_FARMLAND).add(
+            ModBlocks.ANCIENT_CROP.get()
+        );
+        tag(BlockTags.BEACON_BASE_BLOCKS).add(
+          ModBlocks.STEEL_BLOCK.get(),
+          ModBlocks.MARIN_BLOCK.get(),
+          ModBlocks.DEMON_BLOCK.get()
+        );
+        
+        ModBlockFamilies.getAllFamilies().forEach(family -> {
+            Map<BlockFamily.Variant, Block> variants = family.getVariants();
+            if (variants.containsKey(BlockFamily.Variant.STAIRS)) tag(BlockTags.STAIRS).add(family.get(BlockFamily.Variant.STAIRS));
+            if (variants.containsKey(BlockFamily.Variant.SLAB)) tag(BlockTags.SLABS).add(family.get(BlockFamily.Variant.SLAB));
+            if (variants.containsKey(BlockFamily.Variant.WALL)) tag(BlockTags.WALLS).add(family.get(BlockFamily.Variant.WALL));
+        });
 
         ModMachines.MACHINES.getMachines().forEach(holder -> {
             tierAndTool(holder.getBlock(), "stone", "pickaxe");

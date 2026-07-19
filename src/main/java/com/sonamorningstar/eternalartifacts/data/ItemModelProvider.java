@@ -200,7 +200,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.MACHINE_FLUID_FILTER.get());
         basicItem(ModItems.COPPER_DUST.get());
         basicItem(ModItems.AMETHYST_ARROW.get());
-        basicItem(ModItems.FINAL_CUT.get());
+        handheld(ModItems.FINAL_CUT);
         basicItem(ModItems.ODDLY_SHAPED_OPAL.get());
         basicItem(ModItems.RAINCOAT.get());
         basicItem(ModItems.MAGIC_BANE.get());
@@ -252,7 +252,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.COPPER_CHESTPLATE.get());
         basicItem(ModItems.COPPER_LEGGINGS.get());
         basicItem(ModItems.COPPER_BOOTS.get());
-        basicItem(ModItems.TROWEL.get());
+        handheld(ModItems.TROWEL);
+        basicItem(ModItems.EYE_OF_DESTRUCTION.get());
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));
@@ -260,7 +261,8 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
         withParentBlock(ModBlocks.RESONATOR);
         withParentBlock(ModBlocks.GARDENING_POT);
-        withParentBlock(ModBlocks.FANCY_CHEST);
+        //withParentBlock(ModBlocks.FANCY_CHEST);
+        withExistingParent(ModBlocks.FANCY_CHEST.getId().getPath(), modLoc("block/fancy_chest"));
         withParentBlock(ModBlocks.PINK_SLIME_BLOCK);
         withParentBlock(ModBlocks.ROSY_FROGLIGHT);
         withParentBlock(ModBlocks.MACHINE_BLOCK);
@@ -288,6 +290,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.TRASH_CAN);
         withParentBlock(ModBlocks.MACHINE_WORKBENCH);
         withParentBlock(ModBlocks.WATER_TNT);
+        withParentBlock(ModBlocks.BEACON_AGITATOR);
 
         ModFluids.FLUIDS.getFluids().stream().filter(FluidHolder::hasBucket).forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {

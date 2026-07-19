@@ -97,43 +97,6 @@ public abstract class LivingEntityMixin implements ILivingJumper, ILivingDasher,
         return totem.isEmpty() ? original.call(instance, hand) : totem;
     }
     
-    @WrapOperation(method = "dropAllDeathLoot", at = @At(value = "INVOKE", target = "Ljava/util/Collection;forEach(Ljava/util/function/Consumer;)V"))
-    private void dropLoot(Collection<ItemEntity> instance, Consumer<ItemEntity> consumer, Operation<Void> original, DamageSource source) {
-        Entity entity = source.getEntity();
-        if (entity instanceof FakePlayer fakePlayer && "EternalArtifactsMobHarvester".equals(fakePlayer.getGameProfile().getName())) {
-            BlockEntity be = fakePlayer.level().getBlockEntity(fakePlayer.blockPosition());
-            if (be instanceof MobHarvester harvester) {
-                for (ItemEntity itemEntity : instance) {
-                    ItemStack remainder = ItemHelper.insertItemStackedForced(harvester.inventory, itemEntity.getItem(), false);
-                    if (!remainder.isEmpty()) {
-                        consumer.accept(new ItemEntity(fakePlayer.level(), itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), remainder));
-                    }
-                }
-                return;
-            }
-        }
-        original.call(instance, consumer);
-    }
-    
-    @WrapOperation(method = "dropExperience", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/ExperienceOrb;award(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/phys/Vec3;I)V"))
-    private void dropExp(ServerLevel serverLevel, Vec3 pos, int reward, Operation<Void> original) {
-        Player player = this.lastHurtByPlayer;
-        int xpToInsert = reward;
-        if (player instanceof ModFakePlayer fakePlayer && fakePlayer.getMachine() instanceof MobHarvester harvester) {
-            ItemStack toolCopy = harvester.inventory.getStackInSlot(0).copy();
-            xpToInsert = ExperienceHelper.mendItem(toolCopy, xpToInsert);
-            harvester.inventory.setStackInSlot(0, toolCopy);
-            while (xpToInsert > 0) {
-                int filled = harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.SIMULATE);
-                if (filled == 20) {
-                    harvester.tank.fillForced(ModFluids.NOUS.getFluidStack(20), IFluidHandler.FluidAction.EXECUTE);
-                    xpToInsert--;
-                } else break;
-            }
-        }
-        original.call(serverLevel, pos, xpToInsert);
-    }
-    
     @Unique
     @Override
     public void jumpGround() {

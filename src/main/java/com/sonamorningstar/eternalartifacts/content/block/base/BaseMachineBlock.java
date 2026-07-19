@@ -120,6 +120,25 @@ public class BaseMachineBlock<T extends Machine<?>> extends BaseEntityBlock {
     }
     
     @Override
+    public boolean hasAnalogOutputSignal(BlockState state) {
+        boolean contains = Machine.HAS_ANALOG_OUTPUT.containsKey(state.getBlock());
+        return contains ? Machine.HAS_ANALOG_OUTPUT.getBoolean(state.getBlock()) : super.hasAnalogOutputSignal(state);
+    }
+    
+    @Override
+    public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof Machine<?> machine) return machine.getAnalogOutputSignal();
+        return super.getAnalogOutputSignal(state, level, pos);
+    }
+    
+    @Override
+    public boolean isSignalSource(BlockState state) {
+        boolean contains = Machine.IS_SIGNAL_SOURCE.containsKey(state.getBlock());
+        return contains ? Machine.IS_SIGNAL_SOURCE.getBoolean(state.getBlock()) :super.isSignalSource(state);
+    }
+    
+    @Override
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof Machine<?> machine) return machine.getRedstoneOutput();

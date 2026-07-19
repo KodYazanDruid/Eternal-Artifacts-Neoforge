@@ -3,6 +3,8 @@ package com.sonamorningstar.eternalartifacts.content.recipe;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
+import com.sonamorningstar.eternalartifacts.core.ModBlocks;
+import com.sonamorningstar.eternalartifacts.core.ModItems;
 import com.sonamorningstar.eternalartifacts.core.ModRecipes;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -44,7 +46,7 @@ public class ShapedRetexturedRecipe extends CustomRecipe {
             inv.getItem(6).isEmpty() && inv.getItem(8).isEmpty() &&
             inv.getItem(1).is(Items.BONE_MEAL) &&
             inv.getItem(3).is(texture) &&
-            inv.getItem(4).is(Items.DIRT) &&
+            inv.getItem(4).is(ModBlocks.FERTILIZED_SOIL.asItem()) &&
             inv.getItem(5).is(texture) &&
             inv.getItem(7).is(texture) &&
             inv.getItem(3).is(inv.getItem(5).getItem()) && inv.getItem(5).is(inv.getItem(7).getItem())

@@ -1,11 +1,11 @@
 package com.sonamorningstar.eternalartifacts.mixins;
 
+import com.sonamorningstar.eternalartifacts.api.ModFakePlayer;
 import com.sonamorningstar.eternalartifacts.content.block.entity.BlockBreaker;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.level.ServerPlayerGameMode;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.neoforged.neoforge.common.util.FakePlayer;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -20,9 +20,9 @@ public class ServerPlayerGameModeMixin {
 	
 	@Inject(method = "destroyBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;playerDestroy(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/item/ItemStack;)V"))
 	private void destroyBlock(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-		if (this.player instanceof FakePlayer fp) {
-			BlockEntity be = this.player.level().getBlockEntity(fp.blockPosition());
-			if (be instanceof BlockBreaker breaker) {
+		if (this.player instanceof ModFakePlayer modFakePlayer) {
+			Machine<?> machine = modFakePlayer.getMachine();
+			if (machine instanceof BlockBreaker breaker) {
 				breaker.destroyTickStart = -1;
 			}
 		}

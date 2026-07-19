@@ -70,6 +70,21 @@ public class FluidIngredient implements Predicate<FluidStack> {
         }
     }
     
+    public FluidStack find(@Nullable FluidStack other) {
+        if (other == null) {
+            return FluidStack.EMPTY;
+        } else if (this.isEmpty()) {
+            return FluidStack.EMPTY;
+        } else {
+            for(FluidStack stack : this.getFluidStacks()) {
+                if (areStacksEqual(stack, other)) {
+                    return stack.copy();
+                }
+            }
+            return FluidStack.EMPTY;
+        }
+    }
+    
     public boolean testIgnoreAmount(@Nullable FluidStack other) {
         if (other == null) {
             return false;
@@ -97,6 +112,21 @@ public class FluidIngredient implements Predicate<FluidStack> {
                 }
             }
             return false;
+        }
+    }
+    
+    public FluidStack findSustained(FluidStack other) {
+        if (other == null) {
+            return FluidStack.EMPTY;
+        } else if (this.isEmpty()) {
+            return FluidStack.EMPTY;
+        } else {
+            for(FluidStack stack : this.getFluidStacks()) {
+                if (stack.getAmount() <= other.getAmount() && stack.isFluidEqual(other)) {
+                    return stack.copy();
+                }
+            }
+            return FluidStack.EMPTY;
         }
     }
 

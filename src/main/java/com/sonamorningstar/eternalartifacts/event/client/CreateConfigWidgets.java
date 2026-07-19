@@ -156,10 +156,36 @@ public class CreateConfigWidgets {
 			), 1);
 		});
 		
-		addReverseToggleConfigWidget(event, "item_transfer",
-			0, 9,
-			0, 18,
-			44, 4);
+		event.register(ReverseToggleConfig.class, "item_transfer", (config, ctx) -> {
+			SimpleDraggablePanel panel = ctx.panel;
+			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
+			if (!(amm.getBlockEntity() instanceof ModBlockEntity mbe)) return;
+			
+			ButtonDrawContent disabledCtx = new ButtonDrawContent(9, 9);
+			disabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 0, 18, 9, 9);
+			ButtonDrawContent enabledCtx = new ButtonDrawContent(9, 9);
+			enabledCtx.addBlitSprite(CONFIG_SPRITES, 180, 180, 0, 9, 9, 9);
+			
+			BooleanSupplier isDisabled = config::isDisabled;
+			SpriteButton btn = SpriteButton.builder(Component.empty(), (button, key) -> {
+					boolean newValue = !config.isDisabled();
+					config.setDisabled(newValue);
+					button.setSprites(newValue ? disabledCtx : enabledCtx);
+					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+					config.writeToServer(buf);
+					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
+				}).size(9, 9)
+				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("item_transportation")
+					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.isDisabled() ? "disabled" : "enabled"))).build();
+			
+			btn.setSprites(isDisabled.getAsBoolean() ? disabledCtx : enabledCtx);
+			
+			panel.getOccupiedAreas().add(new SimpleDraggablePanel.Bounds(44, 4, 9, 9));
+			panel.addChildren((fx, fy, fw, fh) -> {
+				btn.setPosition(fx + 44, fy + 4);
+				return btn;
+			});
+		});
 		event.register(ReverseToggleConfig.class, "fluid_transfer", (config, ctx) -> {
 			SimpleDraggablePanel panel = ctx.panel;
 			if (!(ctx.screen.getMenu() instanceof AbstractMachineMenu amm)) return;
@@ -241,6 +267,9 @@ public class CreateConfigWidgets {
 			54, 9,
 			54, 18,
 			54, 34);
+		addReverseToggleConfigWidget(event, "repair_tools",
+			72, 9,
+			72, 18, 64, 34);
 
 		addToggleConfigWidget(event, "render_area",
 			0, 27,
@@ -335,12 +364,15 @@ public class CreateConfigWidgets {
 			
 			SpriteButton modeButton = SpriteButton.builder(Component.empty(), (button, key) -> {
 					config.cycleNextMode();
+					button.setSprites(getTextureForRedstoneThreshold(config.getMode()));
 					FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
 					config.writeToServer(buf);
 					Channel.sendToServer(new MachineConfigurationToServer(mbe.getBlockPos(), config.getLocation(), buf));
 				}).size(9, 9)
 				.addTooltipHover(() -> ModConstants.GUI.withSuffixTranslatable("redstone_output_threshold")
 					.append(": ").append(ModConstants.GUI.withSuffixTranslatable(config.getMode().toString().toLowerCase(Locale.ROOT)))).build();
+			
+			modeButton.setSprites(getTextureForRedstoneThreshold(config.getMode()));
 			
 			EditBox thresholdInput = getThresholdInputBox(config, ctx, mbe);
 			
@@ -492,6 +524,21 @@ public class CreateConfigWidgets {
 			case PERCENTAGE_ABOVE -> u = 117;
 			case PERCENTAGE_EXACT -> u = 135;
 			case FULL -> u = 108;
+		}
+		ctx.addBlitSprite(CONFIG_SPRITES, 180, 180, u, v, 9, 9);
+		return ctx;
+	}
+	
+	private static ButtonDrawContent getTextureForRedstoneThreshold(RedstoneOutputThreshold.ThresholdMode mode) {
+		ButtonDrawContent ctx = new ButtonDrawContent(9, 9);
+		int u = 0;
+		int v = 45;
+		switch (mode) {
+			case BELOW -> u = 9;
+			case BELOW_EQUAL -> u = 18;
+			case ABOVE -> u = 27;
+			case ABOVE_EQUAL -> u = 36;
+			case EXACT -> u = 45;
 		}
 		ctx.addBlitSprite(CONFIG_SPRITES, 180, 180, u, v, 9, 9);
 		return ctx;

@@ -102,14 +102,7 @@ public class StringUtils {
         List<Component> list = Lists.newArrayList();
         boolean isPotion = stack.getFluid().getFluidType() instanceof PotionFluidType;
         
-        if (stack.hasTag() && stack.getTag().contains("EtarFluidStackName")) {
-            String name = stack.getTag().getString("EtarFluidStackName");
-            list.add(Component.empty().append(name)
-                .withStyle(stack.getFluid().getFluidType().getRarity().getStyleModifier())
-                .withStyle(ChatFormatting.ITALIC));
-        } else {
-            list.add(Component.empty().append(stack.getDisplayName()));
-        }
+        list.add(getFluidDisplayName(stack));
         
         if (isPotion) list.addAll(getPotionTooltips(stack, level));
         
@@ -137,6 +130,17 @@ public class StringUtils {
         appendModName(list, ModListUtils.getBlockCreatorModId(state.getBlock()));
         
         return list;
+    }
+    
+    public static Component getFluidDisplayName(FluidStack stack) {
+        if (stack.hasTag() && stack.getTag().contains("EtarFluidStackName")) {
+            String name = stack.getTag().getString("EtarFluidStackName");
+            return Component.empty().append(name)
+                .withStyle(stack.getFluid().getFluidType().getRarity().getStyleModifier())
+                .withStyle(ChatFormatting.ITALIC);
+        } else {
+            return stack.getDisplayName();
+        }
     }
     
     public static void appendModName(List<Component> tooltip, Optional<String> modNameOpt) {

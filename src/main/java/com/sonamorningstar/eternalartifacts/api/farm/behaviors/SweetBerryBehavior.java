@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.api.farm.behaviors;
 
 import com.sonamorningstar.eternalartifacts.api.farm.FarmBehavior;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -51,21 +52,21 @@ public class SweetBerryBehavior implements FarmBehavior {
 	}
 	
 	@Override
-	public BlockState getPlantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getPlantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
 		if (block instanceof SweetBerryBushBlock berry) {
-			return berry.getPlant(level, pos);
+			return new PlantResult(berry.getPlant(level, pos), Direction.UP);
 		}
-		return Blocks.AIR.defaultBlockState();
+		return EMPTY_PLANT;
 	}
 	
 	@Override
-	public BlockState getReplantingState(Level level, BlockPos pos, ItemStack seed) {
+	public PlantResult getReplantingState(Level level, BlockPos pos, ItemStack seed) {
 		Block block = Block.byItem(seed.getItem());
 		if (block instanceof SweetBerryBushBlock berry) {
-			return berry.getPlant(level, pos).setValue(SweetBerryBushBlock.AGE, 1);
+			return new PlantResult(berry.getPlant(level, pos).setValue(SweetBerryBushBlock.AGE, 1), Direction.UP);
 		}
-		return Blocks.AIR.defaultBlockState();
+		return EMPTY_PLANT;
 	}
 	
 	@Override

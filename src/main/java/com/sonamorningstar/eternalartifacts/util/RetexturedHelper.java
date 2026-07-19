@@ -1,7 +1,9 @@
 package com.sonamorningstar.eternalartifacts.util;
 
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.IRetexturedBlockEntity;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
+import net.neoforged.neoforge.common.world.AuxiliaryLightManager;
 
 import java.text.Normalizer;
 import java.util.Locale;
@@ -45,10 +48,16 @@ public final class RetexturedHelper {
 
     public static void onTextureUpdated(BlockEntity blockEntity) {
         Level level = blockEntity.getLevel();
+        BlockPos pos = blockEntity.getBlockPos();
         if(level != null && level.isClientSide()) {
             blockEntity.requestModelDataUpdate();
             BlockState state = blockEntity.getBlockState();
-            level.sendBlockUpdated(blockEntity.getBlockPos(), state, state, 0);
+            level.sendBlockUpdated(pos, state, state, 0);
+        }
+        if (level != null) {
+            AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
+            if (lightManager != null && blockEntity instanceof IRetexturedBlockEntity retext)
+                lightManager.setLightAt(pos, retext.getTexture().defaultBlockState().getLightEmission());
         }
     }
 

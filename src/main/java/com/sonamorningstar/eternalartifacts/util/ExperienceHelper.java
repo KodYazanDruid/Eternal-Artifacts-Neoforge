@@ -23,9 +23,10 @@ public class ExperienceHelper {
         }
         return remainingXp;
     }
-
+    
     public static int getTotalPlayerXp(Player player) {
-        return (int) ((float) totalXpForLevel(player.experienceLevel) + player.experienceProgress * (float) player.getXpNeededForNextLevel());
+        return (int) (totalXpForLevel(player.experienceLevel)
+					+ Math.round(player.experienceProgress * (float) player.getXpNeededForNextLevel()));
     }
 
     public static int xpRequired(int currLevel) {
@@ -33,17 +34,34 @@ public class ExperienceHelper {
         else if (currLevel <= 30) return 5 * currLevel - 38;
         else return 9 * currLevel - 158;
     }
-
-    public static int totalXpForLevel(int level) {
-        if(level <= 16) return (level * level) + (6 * level);
-        else if(level <= 31) return (int) ((2.5F * level * level) - (40.5F * level) + 360);
-        else return (int) ((4.5F * level * level) - (162.5F * level) + 2220);
+    
+    public static long totalXpForLevel(int level) {
+        long L = level;
+        if (level <= 16) {
+            return L * L + 6 * L;
+        } else if (level <= 31) {
+            return (5 * L * L - 81 * L + 720) / 2;
+        } else {
+            return (9 * L * L - 325 * L + 4440) / 2;
+        }
     }
-
-    public static int totalLevelsFromXp(int total) {
-        if(total <= 352) return (int) Math.sqrt(total + 9) - 3;
-        else if ( total <= 1507) return (int) (8.1D + Math.sqrt(0.4 * (total - 195.975D)));
-        else return (int) (325/18D +  Math.sqrt(2/9D * (total - 54215/72D)));
+    
+    public static int totalLevelsFromXp(long totalXp) {
+        if (totalXp < 0) return 0;
+        long lo = 0, hi = 1;
+        while (totalXpForLevel((int) hi) <= totalXp) {
+            hi *= 2;
+            if (hi > Integer.MAX_VALUE) { hi = Integer.MAX_VALUE; break; }
+        }
+        while (lo < hi) {
+            long mid = (lo + hi + 1) / 2;
+            if (totalXpForLevel((int) mid) <= totalXp) {
+                lo = mid;
+            } else {
+                hi = mid - 1;
+            }
+        }
+        return (int) lo;
     }
 
     public static void givePlayerXpSilent(Player player, int xp) {
