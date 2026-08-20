@@ -508,8 +508,9 @@ public class ClientEvents {
                 }
             }
             if (stack.hasTag()) {
-                ListTag charmAttrNBT = stack.getTag().getList(CharmAttributes.ATTR_KEY, 10);
+                ListTag charmAttrNBT = stack.getTag().getList(CharmStorage.ATTR_KEY, 10);
 				Multimap<CharmType, Multimap<Attribute, AttributeModifier>> typeAttrMap = HashMultimap.create();
+                Multimap<Attribute, AttributeModifier> anyTypeAttrMap = HashMultimap.create();
 				for (int i = 0; i < charmAttrNBT.size(); i++) {
 					CompoundTag compoundtag = charmAttrNBT.getCompound(i);
 					Optional<Attribute> optional = BuiltInRegistries.ATTRIBUTE.getOptional(ResourceLocation.tryParse(compoundtag.getString("AttributeName")));
@@ -517,18 +518,19 @@ public class ClientEvents {
 					CharmType nbtType = null;
 					if (compoundtag.contains("Slot")) typeName = compoundtag.getString("Slot");
 					try {
-						nbtType = CharmType.valueOf(typeName.toUpperCase());
+						if (!typeName.isBlank()) nbtType = CharmType.valueOf(typeName.toUpperCase());
 					} catch (IllegalArgumentException e) {
                         EternalArtifacts.LOGGER.error("Invalid CharmType: {}", typeName, e);
 					}
-					if (optional.isPresent() && nbtType != null) {
-						AttributeModifier attributemodifier = AttributeModifier.load(compoundtag);
-						if (attributemodifier != null && attributemodifier.getId().getLeastSignificantBits() != 0L
-							&& attributemodifier.getId().getMostSignificantBits() != 0L) {
-							Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
-							multimap.put(optional.get(), attributemodifier);
-							typeAttrMap.put(nbtType, multimap);
-						}
+					if (optional.isPresent()) {
+                        AttributeModifier attributemodifier = AttributeModifier.load(compoundtag);
+                        if (attributemodifier != null && attributemodifier.getId().getLeastSignificantBits() != 0L
+                            && attributemodifier.getId().getMostSignificantBits() != 0L) {
+                            Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
+                            multimap.put(optional.get(), attributemodifier);
+                            if (nbtType == null) anyTypeAttrMap.putAll(multimap);
+                            else typeAttrMap.put(nbtType, multimap);
+                        }
 					}
 				}
                 typeAttrMap.asMap().forEach((type, modifierMaps) -> {
@@ -536,6 +538,15 @@ public class ClientEvents {
                     modifierMaps.forEach(mergedMap::putAll);
                     if (!mergedMap.isEmpty()) {
                         for (Component component : gatherModifierTooltips(ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable(type.getLowerCaseName()), mergedMap)) {
+                            tooltips.add(Either.left(component));
+                        }
+                    }
+                });
+                anyTypeAttrMap.asMap().forEach((attribute, modifiers) -> {
+                    Multimap<Attribute, AttributeModifier> mergedMap = HashMultimap.create();
+                    mergedMap.putAll(attribute, modifiers);
+                    if (!mergedMap.isEmpty()) {
+                        for (Component component : gatherModifierTooltips(ModConstants.CHARM_SLOT_MODIFIER.withSuffixTranslatable("any"), mergedMap)) {
                             tooltips.add(Either.left(component));
                         }
                     }

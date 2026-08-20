@@ -2,6 +2,8 @@
   "values": [
     "eternalartifacts:copper_pickaxe",
     "eternalartifacts:chlorovein_pickaxe",
-    "eternalartifacts:steel_pickaxe"
+    "eternalartifacts:steel_pickaxe",
+    "eternalartifacts:flint_pickaxe",
+    "eternalartifacts:bone_pickaxe"
   ]
 }

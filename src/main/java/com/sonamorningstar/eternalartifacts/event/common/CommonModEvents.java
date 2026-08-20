@@ -1,5 +1,7 @@
 package com.sonamorningstar.eternalartifacts.event.common;
 
+import com.mojang.datafixers.util.Pair;
+import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmAttributes;
 import com.sonamorningstar.eternalartifacts.api.charm.CharmType;
 import com.sonamorningstar.eternalartifacts.api.forceload.ForceLoadManager;
@@ -16,6 +18,7 @@ import com.sonamorningstar.eternalartifacts.content.block.PlasticCauldronBlock;
 import com.sonamorningstar.eternalartifacts.content.block.entity.EnergyDockBlockEntity;
 import com.sonamorningstar.eternalartifacts.content.block.entity.SolarPanel;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
+import com.sonamorningstar.eternalartifacts.content.item.SanguineAmulet;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterMultiblockPatternsEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.charms.RegisterCharmAttributesEvent;
@@ -25,12 +28,14 @@ import com.sonamorningstar.eternalartifacts.util.CapabilityHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -175,6 +180,7 @@ public class CommonModEvents {
             Container container = FancyChestBlock.getContainer((ChestBlock) state.getBlock(), state, level, pos, true);
             return container == null ? null : new InvWrapper(container);
         }, ModBlocks.FANCY_CHEST.get());
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntities.PEDESTAL.get(), (be, ctx) -> be.inventory);
 
         event.registerBlock(Capabilities.FluidHandler.BLOCK,
                 (level, pos, state, blockEntity, context) -> InfiniteWaterTank.INSTANCE,
@@ -307,6 +313,17 @@ public class CommonModEvents {
             .addModifier(Attributes.ARMOR_TOUGHNESS, getMod("Moonglass Pendant Armor Toughness", 1))
             .addType(CharmType.NECKLACE).build()
         );
+        
+        event.registerDynamicAttributeProvider(ctx -> {
+            ItemStack stack = ctx.stack();
+            if (stack.getItem() instanceof SanguineAmulet) {
+                int souls = stack.hasTag() ? stack.getTag().getInt(SanguineAmulet.SOUL_KEY) : 0;
+                float fillPercent = (float) souls / Config.SANGUINE_AMULET_MAX_SOULS.getAsInt();
+                float health = (float) (fillPercent * Config.SANGUINE_AMULET_MAX_HEALTH.getAsDouble());
+                return Pair.of(Attributes.MAX_HEALTH, getMod("Sanguine Amulet Health Bonus", health));
+            }
+            return null;
+        });
     }
     
     @SubscribeEvent

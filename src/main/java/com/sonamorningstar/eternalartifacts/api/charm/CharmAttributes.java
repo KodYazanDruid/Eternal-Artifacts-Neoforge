@@ -15,8 +15,6 @@ import java.util.*;
 
 @Getter
 public class CharmAttributes {
-    public static final String ATTR_KEY = "CharmAttributeModifiers";
-
     private final Either<Item, TagKey<Item>> holder;
     private final Multimap<Attribute, AttributeModifier> modifiers = HashMultimap.create();
     private final Set<CharmType> types = new HashSet<>();

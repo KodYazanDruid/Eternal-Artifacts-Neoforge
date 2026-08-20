@@ -4,7 +4,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.compat.appleskin.AppleSkinCompat;
-import com.sonamorningstar.eternalartifacts.compat.emi.EmiCompat;
+//import com.sonamorningstar.eternalartifacts.compat.emi.EmiCompat;
 import com.sonamorningstar.eternalartifacts.compat.mekanism.MekanismCompat;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -62,9 +62,9 @@ public final class ModHooks {
             NeoForge.EVENT_BUS.addListener(AppleSkinCompat::registerFoodValues);
             AppleSkinCompat.run(modEventBus);
         }
-        if (emiLoaded) {
+        /*if (emiLoaded) {
             if(FMLLoader.getLaunchHandler().isData()) EmiCompat.runData();
-        }
+        }*/
     }
 
     public static class ItemTagAppender

@@ -5,6 +5,7 @@ import com.sonamorningstar.eternalartifacts.capabilities.fluid.ModFluidStorage;
 import com.sonamorningstar.eternalartifacts.capabilities.item.ModItemStorage;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.Machine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.ModBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.block.entity.base.TickableServer;
 import it.unimi.dsi.fastutil.ints.Int2IntFunction;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -81,6 +82,7 @@ public class StorageBuilder {
                     }
                     for (Runnable runnable : listeners) runnable.run();
                     blockEntity.markDirty();
+                    if (!(blockEntity instanceof TickableServer)) blockEntity.sendUpdatesIfNeeded();
                 }
 
                 @Override
@@ -156,6 +158,7 @@ public class StorageBuilder {
                 @Override
                 public void onEnergyChanged() {
                     blockEntity.markDirty();
+                    if (!(blockEntity instanceof TickableServer)) blockEntity.sendUpdatesIfNeeded();
                 }
 
                 @Override
@@ -237,6 +240,7 @@ public class StorageBuilder {
                     }
                     for (IntConsumer consumer : consumers) consumer.accept(slot);
                     blockEntity.markDirty();
+                    if (!(blockEntity instanceof TickableServer)) blockEntity.sendUpdatesIfNeeded();
                 }
 
                 @Override

@@ -47,6 +47,21 @@ public class Config {
     public static final ModConfigSpec.IntValue EYES_OF_DESTRUCTION_CRIT_BONUS =
         COMMON.comment("Crit damage bonus for the Eyes of Destruction artifact.")
                     .defineInRange("eyes_of_destruction_crit_bonus", 50, 5, 100);
+    public static final ModConfigSpec.DoubleValue SANGUINE_AMULET_MAX_HEALTH =
+        COMMON.comment("Max health bonus that sangunine amulet can give.")
+                    .defineInRange("sanguine_amulet_max_health", 20.0D, 0.0D, 100.0D);
+    public static final ModConfigSpec.IntValue SANGUINE_AMULET_MAX_SOULS =
+        COMMON.comment("Soul amount required to fully max sanguine amulets health bonus. It is evenly distributed for each health point.")
+                    .defineInRange("sanguine_amulet_max_souls", 2000, 0, 1_000_000);
+    public static final ModConfigSpec.DoubleValue FLINT_TOOLS_FIRE_CHANCE =
+        COMMON.comment("Chance for flint tools to set fire to mobs when hitting them.")
+                    .defineInRange("flint_tools_fire_chance", 0.35D, 0.0D, 1.0D);
+    public static final ModConfigSpec.IntValue FLINT_TOOLS_FIRE_DURATION =
+        COMMON.comment("Duration in seconds for flint tools to set fire to mobs when hitting them.")
+                    .defineInRange("flint_tools_fire_duration", 2, 0, 1024);
+    public static final ModConfigSpec.DoubleValue BONE_TOOLS_REPAIR_PERCENTAGE =
+        COMMON.comment("Percentage of durability that bone tools will repair when a milk fluid is consumed.")
+                    .defineInRange("flint_tools_fire_chance", 0.2D, 0.05D, 1.0D);
     static {COMMON.pop();}
     
     static{SERVER.push("Machines");}

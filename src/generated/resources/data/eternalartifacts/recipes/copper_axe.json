@@ -2,17 +2,17 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "I": {
+    "F": {
       "tag": "forge:ingots/copper"
     },
-    "S": {
+    "R": {
       "tag": "forge:rods/wooden"
     }
   },
   "pattern": [
-    "II",
-    "IS",
-    " S"
+    "FF ",
+    "FR ",
+    " R "
   ],
   "result": {
     "item": "eternalartifacts:copper_axe"

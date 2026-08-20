@@ -19,16 +19,23 @@ public class ArmorSetRegistry {
 		ARMOR_SETS.put(armorSet.getKey(), setBonus);
 	}
 	
-	@Nullable
-	public static ArmorSetBonus getActiveBonus(LivingEntity entity) {
+	public static List<ArmorSetBonus> getActiveBonuses(LivingEntity entity) {
 		List<ItemStack> equippedArmor = new ArrayList<>();
+		List<ArmorSetBonus> activeBonuses = new ArrayList<>();
 		entity.getArmorSlots().forEach(equippedArmor::add);
 		for (Map.Entry<ArmorSet, ArmorSetBonus> entry : ARMOR_SET_BONUSES.entrySet()) {
 			if (entry.getKey().canActivate(equippedArmor)) {
-				return entry.getValue();
+				activeBonuses.add(entry.getValue());
 			}
 		}
-		return null;
+		return activeBonuses;
+	}
+	
+	public static boolean hasActiveBonus(ResourceLocation bonusRL, LivingEntity entity) {
+		return hasActiveBonus(getBonus(bonusRL), entity);
+	}
+	public static boolean hasActiveBonus(ArmorSetBonus bonus, LivingEntity entity) {
+		return getActiveBonuses(entity).contains(bonus);
 	}
 	
 	@Nullable

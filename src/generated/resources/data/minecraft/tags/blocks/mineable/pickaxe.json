@@ -33,6 +33,7 @@
     "eternalartifacts:asphalt_block",
     "eternalartifacts:steel_block",
     "eternalartifacts:tempered_glass",
+    "eternalartifacts:tempered_glass_pane",
     "eternalartifacts:demon_block",
     "eternalartifacts:obsidian_bricks",
     "eternalartifacts:mossy_bricks",
@@ -131,9 +132,9 @@
     "eternalartifacts:pumpjack",
     "eternalartifacts:generator",
     "eternalartifacts:chunk_eater",
-    "eternalartifacts:redstone_port",
     "eternalartifacts:fluid_port",
     "eternalartifacts:energy_port",
+    "eternalartifacts:redstone_port",
     "eternalartifacts:item_port"
   ]
 }

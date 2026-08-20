@@ -115,6 +115,10 @@ public class ModTags {
         public static final TagKey<Item> HARDENED_GLASS = forgeTag("hardened_glass");
         public static final TagKey<Item> DUSTS_AMETHYST = forgeTag("dusts/amethyst");
         public static final TagKey<Item> INGOTS_PURPLE_GOLD = forgeTag("ingots/purple_gold");
+        public static final TagKey<Item> PEDESTAL_TEXTURE_SUITABLE = modTag("pedestal_texture_suitable");
+        public static final TagKey<Item> FLINTS = forgeTag("flints");
+        public static final TagKey<Item> FLINT_TOOLS = modTag("tools_flint");
+        public static final TagKey<Item> BONE_TOOLS = modTag("tools_bone");
 		
 		private static TagKey<Item> forgeTag(String name) { return ItemTags.create(new ResourceLocation("forge", name)); }
         private static TagKey<Item> modTag(String name) { return ItemTags.create(new ResourceLocation(MODID, name)); }

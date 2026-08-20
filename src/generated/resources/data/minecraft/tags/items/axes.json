@@ -2,6 +2,8 @@
   "values": [
     "eternalartifacts:copper_axe",
     "eternalartifacts:axe_of_regrowth",
-    "eternalartifacts:steel_axe"
+    "eternalartifacts:steel_axe",
+    "eternalartifacts:flint_axe",
+    "eternalartifacts:bone_axe"
   ]
 }

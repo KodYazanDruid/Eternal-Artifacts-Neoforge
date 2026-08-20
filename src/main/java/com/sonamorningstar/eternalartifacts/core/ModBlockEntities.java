@@ -81,7 +81,9 @@ public class ModBlockEntities {
             BlockEntityType.Builder.of(BluePlasticCauldronBlockEntity::new, ModBlocks.BLUE_PLASTIC_CAULDRON.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<CrudeOilCauldron>> CRUDE_OIL_CAULDRON = BLOCK_ENTITIES.register("crude_oil_cauldron", () ->
             BlockEntityType.Builder.of(CrudeOilCauldron::new, ModBlocks.CRUDE_OIL_CAULDRON.get()).build(null));
-
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<PedestalBlockEntity>> PEDESTAL = BLOCK_ENTITIES.register("pedestal", () ->
+            BlockEntityType.Builder.of(PedestalBlockEntity::new, ModBlocks.PEDESTAL.get()).build(null));
+    
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<FancyChestBlockEntity>> FANCY_CHEST = BLOCK_ENTITIES.register("fancy_chest", () ->
             BlockEntityType.Builder.of(FancyChestBlockEntity::new, ModBlocks.FANCY_CHEST.get()).build(null));
     

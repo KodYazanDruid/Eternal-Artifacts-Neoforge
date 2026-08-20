@@ -72,6 +72,7 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tierAndTool(ModBlocks.ASPHALT_BLOCK.get(), "stone", "pickaxe");
         tierAndTool(ModBlocks.STEEL_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.TEMPERED_GLASS.get(), "diamond", "pickaxe");
+        tierAndTool(ModBlocks.TEMPERED_GLASS_PANE.get(), "diamond", "pickaxe");
         tierAndTool(ModBlocks.DEMON_BLOCK.get(), "iron", "pickaxe");
         tierAndTool(ModBlocks.OBSIDIAN_BRICKS.get(), "diamond", "pickaxe");
         tierAndTool(ModBlocks.MOSSY_BRICKS.get(), "", "pickaxe");
@@ -334,10 +335,12 @@ public class BlockTagsProvider extends net.neoforged.neoforge.common.data.BlockT
         tag(BlockTags.LOGS_THAT_BURN).add(ModBlocks.CITRUS_LOG.get(), ModBlocks.STRIPPED_CITRUS_LOG.get(), ModBlocks.CITRUS_WOOD.get(), ModBlocks.STRIPPED_CITRUS_WOOD.get());
         tag(BlockTags.PLANKS).add(ModBlocks.CITRUS_PLANKS.get());
         tag(Tags.Blocks.GLASS).add(ModBlocks.TEMPERED_GLASS.get());
+        tag(Tags.Blocks.GLASS_PANES).add(ModBlocks.TEMPERED_GLASS_PANE.get());
         tag(ModTags.Blocks.GLASS_HARDENED).add(ModBlocks.TEMPERED_GLASS.get());
         tag(ModTags.Blocks.HARDENED_GLASS).add(ModBlocks.TEMPERED_GLASS.get());
         tag(BlockTags.IMPERMEABLE).add(
             ModBlocks.TEMPERED_GLASS.get(),
+            ModBlocks.TEMPERED_GLASS_PANE.get(),
             ModBlocks.BEACON_AGITATOR.get()
         );
         tag(BlockTags.FLOWER_POTS).add(ModBlocks.POTTED_TIGRIS.get());

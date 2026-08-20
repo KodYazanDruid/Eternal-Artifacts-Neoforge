@@ -1,6 +1,7 @@
 package com.sonamorningstar.eternalartifacts.content.item;
 
 import com.sonamorningstar.eternalartifacts.api.item.ToolBlockPlaceContext;
+import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.BlockItemCanPlace;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 public class TrowelItem extends TieredItem implements Vanishable {
-	private static final long SEED = 2799417252375080941L;
+	private static final long SEED = 5955620864924859449L;
 	public TrowelItem(Tier tier, Properties properties) {
 		super(tier, properties);
 	}
@@ -44,7 +45,7 @@ public class TrowelItem extends TieredItem implements Vanishable {
 					ToolBlockPlaceContext placeContext = new ToolBlockPlaceContext(player, hand, stack, placePos, context.getHitResult());
 					Block block = blockItem.getBlock();
 					BlockState state = block.getStateForPlacement(placeContext);
-					return state != null && blockItem.canPlace(placeContext, state);
+					return state != null && ((BlockItemCanPlace) blockItem).canPlaceBI(placeContext, state);
 				}
 				return false;
 			}).toList();

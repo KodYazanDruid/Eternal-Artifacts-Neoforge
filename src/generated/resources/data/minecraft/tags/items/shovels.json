@@ -2,6 +2,8 @@
   "values": [
     "eternalartifacts:copper_shovel",
     "eternalartifacts:natural_spade",
-    "eternalartifacts:steel_shovel"
+    "eternalartifacts:steel_shovel",
+    "eternalartifacts:flint_shovel",
+    "eternalartifacts:bone_shovel"
   ]
 }

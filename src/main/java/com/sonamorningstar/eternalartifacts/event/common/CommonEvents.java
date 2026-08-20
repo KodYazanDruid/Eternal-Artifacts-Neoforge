@@ -45,7 +45,6 @@ import com.sonamorningstar.eternalartifacts.network.SavePlayerDataToClient;
 import com.sonamorningstar.eternalartifacts.network.tesseract.TesseractNetworksToClient;
 import com.sonamorningstar.eternalartifacts.util.*;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
-import mekanism.common.content.gear.IBlastingItem;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
@@ -63,11 +62,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -103,9 +102,9 @@ import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
@@ -128,8 +127,8 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.village.VillagerTradesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import javax.annotation.Nullable;
@@ -185,6 +184,7 @@ public class CommonEvents {
         }
     }
 
+    //Damage after protections calculated.
     @SubscribeEvent
     public static void livingHurtEvent(LivingHurtEvent event) {
         LivingEntity hurtEntity = event.getEntity();
@@ -254,12 +254,12 @@ public class CommonEvents {
             }
         }
         
-        ArmorSetRegistry.ArmorSetBonus activeBonus = ArmorSetRegistry.getActiveBonus(hurtEntity);
-        if (attacker != null && !source.is(DamageTypes.THORNS) && activeBonus != null && activeBonus.armorSet().is(ArmorSets.CACTUS_ARMOR)) {
+        if (attacker != null && !source.is(DamageTypes.THORNS) && ArmorSetRegistry.hasActiveBonus(ArmorSets.CACTUS_ARMOR, hurtEntity)) {
             attacker.hurt(hurtEntity.damageSources().thorns(hurtEntity), damage * 0.25F);
         }
     }
     
+    //damage before the protections calculated
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void livingDamageEvent(LivingDamageEvent event) {
         DamageSource source = event.getSource();
@@ -272,8 +272,6 @@ public class CommonEvents {
             if (!finalCut.isEmpty()) {
                 float threshold = Config.FINAL_CUT_EXECUTE_THRESHOLD.get().floatValue();
                 if (remainingHealth / target.getMaxHealth() <= threshold) {
-                    //event.setCanceled(true);
-                    //target.hurt(ModDamageSources.INSTANCES.get(level).execute(leAttacker), Float.MAX_VALUE);
                     Level level = target.level();
                     target.setHealth(0.0F);
                     target.die(ModDamageSources.INSTANCES.get(level).execute(leAttacker));
@@ -285,6 +283,28 @@ public class CommonEvents {
                             target.getX(), pPosY, target.getZ(),
                             50, 0.5D, 0.5D, 0.5D, 0.1D);
                     }
+                }
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public static void livingDeathEvent(LivingDeathEvent event) {
+        LivingEntity toDie = event.getEntity();
+        DamageSource source = event.getSource();
+        Entity killer = source.getEntity();
+        
+        if (killer instanceof LivingEntity livingKiller) {
+            ItemStack charm = CharmManager.findCharm(livingKiller, ModItems.SANGUINE_AMULET.get());
+            if (!charm.isEmpty()) {
+                int storedSouls = charm.hasTag() ? charm.getTag().getInt(SanguineAmulet.SOUL_KEY) : 0;
+                int maxSouls = Config.SANGUINE_AMULET_MAX_SOULS.getAsInt();
+                if (storedSouls < maxSouls) {
+                    storedSouls = Math.min(storedSouls + SanguineAmulet.getSoulValue(toDie.getType()), maxSouls);
+                    CompoundTag tag = charm.getOrCreateTag();
+                    tag.putInt(SanguineAmulet.SOUL_KEY, storedSouls);
+                    charm.setTag(tag);
+                    CharmStorage.get(livingKiller).updateCharmAttributes();
                 }
             }
         }
@@ -302,10 +322,9 @@ public class CommonEvents {
     @SubscribeEvent
     public static void jumpEvent(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-        if (!CharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty() &&
-                !entity.isCrouching()) {
-            entity.hurtMarked = true;
+        if (!CharmManager.findCharm(entity, ModItems.FROG_LEGS.get()).isEmpty() && !entity.isCrouching()) {
             entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, 0.2F, 0.0D));
+            entity.hurtMarked = true;
         }
         entity.getPersistentData().putInt(ILivingDasher.KEY, 1);
     }
@@ -319,6 +338,17 @@ public class CommonEvents {
     }
     
     @SubscribeEvent
+    public static void effectApplicableEvent(MobEffectEvent.Applicable event) {
+        MobEffectInstance effect = event.getEffectInstance();
+        LivingEntity entity = event.getEntity();
+        if (effect != null && effect.getEffect().getCategory() == MobEffectCategory.HARMFUL && entity instanceof Player player &&
+            !player.getCooldowns().isOnCooldown(ModItems.RAINCOAT.get()) && !CharmManager.findCharm(entity, ModItems.RAINCOAT.get()).isEmpty()) {
+            player.getCooldowns().addCooldown(ModItems.RAINCOAT.get(), 300);
+            event.setResult(Event.Result.DENY);
+        }
+    }
+    
+    /*@SubscribeEvent
     public static void effectAddedEvent(MobEffectEvent.Added event) {
         MobEffectInstance oldEffect = event.getOldEffectInstance();
         MobEffectInstance newEffect = event.getEffectInstance();
@@ -330,7 +360,7 @@ public class CommonEvents {
             newEffect.duration = 0;
             player.getCooldowns().addCooldown(ModItems.RAINCOAT.get(), 300);
         }
-    }
+    }*/
     
     @SubscribeEvent
     public static void getItemAttributesEvent(ItemAttributeModifierEvent event) {
@@ -390,7 +420,6 @@ public class CommonEvents {
             List<ItemStack> equippedArmor = new ArrayList<>();
             living.getArmorSlots().forEach(equippedArmor::add);
             if (set.canActivate(equippedArmor)) {
-                bonus.effect().accept(living);
                 if (set instanceof AttributeArmorSet attributeSet) {
                     attributeSet.getModifiers().forEach((attr, mod) -> {
                         AttributeInstance attrInstance = living.getAttribute(attr);
@@ -402,6 +431,7 @@ public class CommonEvents {
                         }
                     });
                 }
+                bonus.effect().accept(living);
             }
         });
         
@@ -631,7 +661,6 @@ public class CommonEvents {
         if(entity.hasEffect(ModEffects.MALADY.get())) event.setCanceled(true);
     }
     
-    private static final Set<Player> MINERS = new HashSet<>();
     @SubscribeEvent
     public static void blockBreakEvent(BlockEvent.BreakEvent event) {
         Player player = event.getPlayer();
@@ -670,7 +699,7 @@ public class CommonEvents {
     public static void preExplosionEvent(ExplosionEvent.Start event) {
         Level level = event.getLevel();
         Explosion explosion = event.getExplosion();
-        if(explosion.radius() <= 0) return;
+        if(explosion.radius() <= 0 || explosion.getBlockInteraction() == Explosion.BlockInteraction.KEEP) return;
         Vec3 center = explosion.center();
         BlockPos pos = BlockPos.containing(center.x, center.y, center.z);
         for (BlockPos blockPos : BlockPos.betweenClosed(pos.offset(2, 2, 2), pos.offset(-2, -2, -2))) {
@@ -703,6 +732,10 @@ public class CommonEvents {
         int lvl = tool.getEnchantmentLevel(ModEnchantments.MELTING_TOUCH.get());
         if (lvl > 0) {
             entity.setSecondsOnFire(lvl * 4);
+        }
+        RandomSource random = entity.getRandom();
+        if (tool.is(ModTags.Items.FLINT_TOOLS) && random.nextFloat() < Config.FLINT_TOOLS_FIRE_CHANCE.get()) {
+            entity.setSecondsOnFire(Config.FLINT_TOOLS_FIRE_DURATION.get());
         }
         if (attacker instanceof ServerPlayer sp && PlayerMorphUtil.MORPH_MAP.get(sp) == EntityType.WITHER_SKELETON) {
             entity.addEffect(new MobEffectInstance(MobEffects.WITHER, 200), attacker);
@@ -869,6 +902,28 @@ public class CommonEvents {
         }
     }
 
+    @SubscribeEvent
+    public static void finishUsingItemEvent(LivingEntityUseItemEvent.Finish event) {
+        LivingEntity usingEntity = event.getEntity();
+        ItemStack useItem = event.getItem();
+        IFluidHandlerItem itemTank = useItem.getCapability(Capabilities.FluidHandler.ITEM);
+        if (itemTank != null) {
+            FluidStack fluidStack = itemTank.getFluidInTank(0);
+            if (fluidStack.is(Tags.Fluids.MILK)) {
+                IItemHandler invCap = usingEntity.getCapability(Capabilities.ItemHandler.ENTITY);
+                if (invCap != null) {
+                    for (int i = 0; i < invCap.getSlots(); i++) {
+                        ItemStack stack = invCap.getStackInSlot(i);
+                        if (stack.is(ModTags.Items.BONE_TOOLS)) {
+                            int maxRepair = (int) (stack.getMaxDamage() * Config.BONE_TOOLS_REPAIR_PERCENTAGE.getAsDouble());
+                            stack.setDamageValue(Math.max(stack.getDamageValue() - maxRepair, 0));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     @SubscribeEvent
     public static void registerResourceReloadEvent(AddReloadListenerEvent event) {
         event.addListener(new ModResourceReloadListener());
@@ -1048,7 +1103,9 @@ public class CommonEvents {
         Entity killer = event.getSource().getEntity();
         if (killer instanceof ModFakePlayer fakePlayer && fakePlayer.getMachine() instanceof MobHarvester harvester) {
             for (ItemEntity itemEntity : drops) {
-                ItemStack remainder = ItemHelper.insertItemStackedForced(harvester.inventory, itemEntity.getItem(), false);
+                ItemStack remainder = ItemHelper.insertItemStackedForced(
+                    harvester.inventory, itemEntity.getItem(), false, harvester.outputSlots
+                ).getFirst();
                 if (!remainder.isEmpty()) {
                     killer.level().addFreshEntity(new ItemEntity(killer.level(), itemEntity.getX(), itemEntity.getY(), itemEntity.getZ(), remainder));
                 }

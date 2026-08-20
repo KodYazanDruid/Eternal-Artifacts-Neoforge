@@ -112,6 +112,12 @@ public class TreeFinder {
 				
 				int neighborDist = getDistance(neighborState);
 				
+				if ((neighborDist == 7 && currentDist == 7) ||
+					(neighborDist == 8 && currentDist == 8) ||
+					(neighborDist == 9 && currentDist == 9)) {
+					neighborDist += 1;
+				}
+				
 				if (neighborDist > currentDist) {
 					BlockPos immutable = neighbor.immutable();
 					visited.put(immutable, neighborDist);

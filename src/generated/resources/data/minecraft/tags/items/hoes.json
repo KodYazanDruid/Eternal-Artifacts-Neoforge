@@ -2,6 +2,8 @@
   "values": [
     "eternalartifacts:copper_hoe",
     "eternalartifacts:lush_grubber",
-    "eternalartifacts:steel_hoe"
+    "eternalartifacts:steel_hoe",
+    "eternalartifacts:flint_hoe",
+    "eternalartifacts:bone_hoe"
   ]
 }

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "F": {
+      "tag": "forge:bones"
+    },
+    "R": {
+      "tag": "forge:rods/wooden"
+    }
+  },
+  "pattern": [
+    "FF ",
+    "FR ",
+    " R "
+  ],
+  "result": {
+    "item": "eternalartifacts:bone_axe"
+  }
+}

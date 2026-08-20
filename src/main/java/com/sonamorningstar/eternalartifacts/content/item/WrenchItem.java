@@ -3,13 +3,16 @@ package com.sonamorningstar.eternalartifacts.content.item;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.MultiblockPatternHelper;
 import com.sonamorningstar.eternalartifacts.api.machine.multiblock.OilDepositData;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.AbstractMultiblockBlockEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.flyingitem.FlyingItemProjectile;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.flyingitem.FlyingItemSpawner;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.flyingitem.ProjectileMovements;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
+import com.sonamorningstar.eternalartifacts.util.RayTraceHelper;
 import it.unimi.dsi.fastutil.longs.LongArraySet;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -23,6 +26,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -39,11 +44,29 @@ public class WrenchItem extends DiggerItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        if (!level.isClientSide()) {
+        /*if (!level.isClientSide()) {
             OilDepositData oilData = OilDepositData.get(((ServerLevel) level));
             long oilAmount = oilData.getOilAmount(player.chunkPosition(), ((ServerLevel) level));
             player.displayClientMessage(Component.literal("Oil deposit in this chunk: " + oilAmount + " mB"), true);
             return InteractionResultHolder.success(stack);
+        }*/
+        /*HitResult result = RayTraceHelper.retraceGenericForPlayer(player);
+        if (result instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity target) {
+            FlyingItemProjectile flyingItem = new FlyingItemProjectile(level, player, stack);
+            flyingItem.setSpinSpeed(2.0F);
+            flyingItem.setMovement(ProjectileMovements.homing(target, 1.0, 1.0));
+            
+        }*/
+        ItemStack thrown = player.getItemInHand(InteractionHand.OFF_HAND).copy();
+        if (!level.isClientSide && !thrown.isEmpty()) {
+            var projectile = FlyingItemSpawner.shootFromLook(
+                ModEntities.FLYING_ITEM_PROJECTILE.get(),
+                level, player, thrown, 1.5F, 8.0F
+            );
+            if (thrown.getItem() instanceof AxeItem) projectile.setOrientationMode(FlyingItemProjectile.OrientationMode.TUMBLING);
+            else if (thrown.getItem() instanceof SwordItem) projectile.setOrientationMode(FlyingItemProjectile.OrientationMode.POINT_FORWARD);
+            projectile.setSpinSpeed(10.0F);
+            projectile.setMaxLife(60);
         }
         return super.use(level, player, hand);
     }

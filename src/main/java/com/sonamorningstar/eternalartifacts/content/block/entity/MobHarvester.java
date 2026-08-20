@@ -6,9 +6,10 @@ import com.sonamorningstar.eternalartifacts.api.filter.EntityTypeEntry;
 import com.sonamorningstar.eternalartifacts.content.block.base.EntityFilterable;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.GenericMachine;
 import com.sonamorningstar.eternalartifacts.content.block.entity.base.WorkingAreaProvider;
+import com.sonamorningstar.eternalartifacts.core.ModDamageSources;
+import com.sonamorningstar.eternalartifacts.core.ModEnchantments;
 import com.sonamorningstar.eternalartifacts.core.ModMachines;
 import com.sonamorningstar.eternalartifacts.core.ModTags;
-import com.sonamorningstar.eternalartifacts.mixin_helper.ducking.LivingEntityExposer;
 import com.sonamorningstar.eternalartifacts.util.EntityFilterHelper;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -39,15 +43,38 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider,
 		setEnergy(this::createDefaultEnergy);
 		setTank(() -> createBasicTank(16000, fs -> fs.is(ModTags.Fluids.EXPERIENCE), true, false));
 		outputSlots.addAll(List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		setInventory(() -> createBasicInventory(16, outputSlots, (slot, stack) -> slot == 0, s -> {}));
+		setInventory(() -> createBasicInventory(16, outputSlots, (slot, stack) -> slot == 0, slot -> {
+			if (!level.isClientSide() && slot == 0) {
+				calculateMaxProgress();
+			}
+		}));
 		setEnergyPerTick(250);
-		screenInfo.setShouldDrawArrow(false);
+		isChargeProgress = true;
+		screenInfo.setArrowPos(46, 19);
 		screenInfo.setSlotPosition(46, 44, 0);
-		
 		for (int i = 0; i < 15; i++) {
 			int x = i % 5;
 			int y = i / 5;
-			screenInfo.setSlotPosition(67 + x * 18, 19 + y * 18, i + 1);
+			screenInfo.setSlotPosition(75 + x * 18, 19 + y * 18, i + 1);
+		}
+	}
+	
+	private void calculateMaxProgress() {
+		getFakePlayer().detectEquipmentUpdates();
+		double attackSpeed = Math.max(1.0D, Math.min(2.5D, getFakePlayer().getAttributeValue(Attributes.ATTACK_SPEED)));
+		double multiplier = 2.0D / attackSpeed;
+		maxProgress = (int) (defaultMaxProgress * multiplier);
+		int effLvl = getEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY);
+		int reduction = 10;
+		double reductionFactor = (100 - reduction) / 100.0;
+		maxProgress = (int) Math.max(1, Math.round(maxProgress * Math.pow(reductionFactor, effLvl)));
+	}
+	
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		if (!level.isClientSide()) {
+			calculateMaxProgress();
 		}
 	}
 	
@@ -92,22 +119,32 @@ public class MobHarvester extends GenericMachine implements WorkingAreaProvider,
 		super.tickServer(lvl, pos, st);
 		performAutoOutputFluids(lvl, pos);
 		if (!redstoneChecks(lvl)) return;
-		getFakePlayer();
-		fakePlayer.detectEquipmentUpdates();
-		if (fakePlayer instanceof LivingEntityExposer exp) exp.incrementAttackStrengthTicker(1);
-		if (canWork(energy) && fakePlayer.getAttackStrengthScale(0) >= 1.0F) {
-			List<LivingEntity> targets = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(getBlockPos()))
-				.stream().filter(living ->
-					!living.isSpectator() && !living.isDeadOrDying() && living.isAlive() && !living.isInvulnerable() &&
-						matchesAllFilters(living) && fakePlayer.canAttack(living)
-				).toList();
-			if (!targets.isEmpty()) {
-				spendEnergy(energy);
-				LivingEntity target = targets.get(lvl.random.nextInt(targets.size()));
-				fakePlayer.attack(target);
-				fakePlayer.resetAttackStrengthTicker();
+		List<LivingEntity> targets = lvl.getEntitiesOfClass(LivingEntity.class, getWorkingArea(getBlockPos()))
+			.stream().filter(living ->
+				!living.isSpectator() && !living.isDeadOrDying() && living.isAlive() &&
+				!living.isInvulnerable() && matchesAllFilters(living) && getFakePlayer().canAttack(living)
+			).toList();
+		progressCharge(targets::isEmpty, () -> {
+			spendEnergy(energy);
+			int killCount = 1 + getEnchantmentLevel(ModEnchantments.CELERITY.get());
+			List<LivingEntity> copy = new ArrayList<>(targets);
+			copy.sort(Comparator.comparingDouble(living -> living.distanceToSqr(getFakePlayer())));
+			while (killCount > 0 && !copy.isEmpty()) {
+				killAndRemoveTarget(copy, lvl);
+				killCount--;
 			}
+			return true;
+		}, energy);
+	}
+	
+	private void killAndRemoveTarget(List<LivingEntity> targets, ServerLevel lvl) {
+		LivingEntity target = targets.get(lvl.random.nextInt(targets.size()));
+		getFakePlayer().attack(target);
+		if (target.isAlive() && !(target instanceof Player)) {
+			target.setHealth(0.0F);
+			target.die(ModDamageSources.INSTANCES.get(lvl).execute(getFakePlayer()));
 		}
+		targets.remove(target);
 	}
 	
 	@Override

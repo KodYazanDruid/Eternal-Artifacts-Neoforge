@@ -1,4 +1,4 @@
-// 1.20.4	2026-07-19T16:23:10.467228	Loot Tables
+// 1.20.4	2026-08-11T21:53:25.9239602	Loot Tables
 5a6f57f07a9b956b41c5b5b518d868cb9696b88f data/eternalartifacts/loot_tables/blocks/advanced_crafter.json
 43130f051a065de076436882ec98b1e239568a2a data/eternalartifacts/loot_tables/blocks/alchemical_brewer.json
 86b5183cb0ef8d72f1df62c3677cae6e595fa0c5 data/eternalartifacts/loot_tables/blocks/alchemical_dynamo.json
@@ -142,6 +142,7 @@ a9eb6224d29a286589ac34906e17fe3ab126c1cb data/eternalartifacts/loot_tables/block
 759788c76b3fa537fb72c6efb2b79fc3ff0ef057 data/eternalartifacts/loot_tables/blocks/oil_refinery.json
 862cd5eabe12623eeebe8e96b26880974d064a0e data/eternalartifacts/loot_tables/blocks/packer.json
 0ce749e37b8304d21f61987db1ad74bfbcb7ebb5 data/eternalartifacts/loot_tables/blocks/paved_prismarine_bricks.json
+365328bdf36d03d8b58c491f9cbeda7c173cdf8e data/eternalartifacts/loot_tables/blocks/pedestal.json
 70b338006aa1f3784f668b899a2eb5d8206e3260 data/eternalartifacts/loot_tables/blocks/picture_screen.json
 68cbd8c32f7be9bad5fa4e1de06852f7be205a3b data/eternalartifacts/loot_tables/blocks/pink_slime_block.json
 e50b3f14d590cdcdcf486d4fd02a6dbd9b8f5569 data/eternalartifacts/loot_tables/blocks/plastic_cauldron.json
@@ -181,6 +182,7 @@ b32df60ac22ceac897f8b11c45e6a5bb42a8b3fc data/eternalartifacts/loot_tables/block
 145407764456d011ae939ab17360018386db053d data/eternalartifacts/loot_tables/blocks/stripped_citrus_wood.json
 c1bc5e28cf5db7bcd682ba3f629a120acfefc497 data/eternalartifacts/loot_tables/blocks/sugar_charcoal_block.json
 c11f341ee1ea31eb97953ab066aed44ae28c95ee data/eternalartifacts/loot_tables/blocks/tempered_glass.json
+5b833d729e60063b5180bdf7532aea6abde781f2 data/eternalartifacts/loot_tables/blocks/tempered_glass_pane.json
 b9bdab8b92c61dbc047133dd35ab57d27284bb11 data/eternalartifacts/loot_tables/blocks/tesseract.json
 a73544fcf8d4f119e8314d33514cc820bd14e0e3 data/eternalartifacts/loot_tables/blocks/thermo_dynamo.json
 0e22ab1bbe5eae86e56859e0e6ddc45e51a0ca1b data/eternalartifacts/loot_tables/blocks/tigris_flower.json

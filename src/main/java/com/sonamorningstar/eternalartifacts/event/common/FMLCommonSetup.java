@@ -12,6 +12,7 @@ import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.ArmorSet
 import com.sonamorningstar.eternalartifacts.api.item.armorset.sets.base.AttributeArmorSet;
 import com.sonamorningstar.eternalartifacts.api.machine.MachineEnchants;
 import com.sonamorningstar.eternalartifacts.api.machine.tesseract.TesseractNetwork;
+import com.sonamorningstar.eternalartifacts.content.item.SanguineAmulet;
 import com.sonamorningstar.eternalartifacts.content.multiblock.base.Multiblock;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.AddRandomCharmModifier;
@@ -25,7 +26,9 @@ import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.core.dispenser.OptionalDispenseItemBehavior;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -46,11 +49,13 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -79,7 +84,7 @@ FMLCommonSetup {
             TesseractNetwork.CAPABILITY_NAMES.put(IEnergyStorage.class, ModConstants.ENERGY_CAPABILITY.translatable());
             TesseractNetwork.CAPABILITY_NAMES.put(IFluidHandler.class, ModConstants.FLUID_CAPABILITY.translatable());
             TesseractNetwork.CAPABILITY_NAMES.put(IItemHandler.class, ModConstants.ITEM_CAPABILITY.translatable());
-            ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes));
+            ModLoader.get().postEvent(new RegisterCharmAttributesEvent(CharmStorage.itemAttributes, CharmStorage.dynamicAttributeBuilders));
             ModLoader.get().postEvent(new RegisterFarmBehaviorEvent());
             ModLoader.get().postEvent(new RegisterMultiblockPatternsEvent(Multiblock.PATTERNS));
             
@@ -183,6 +188,26 @@ FMLCommonSetup {
             ModBlocks.RESONATOR.asItem(),
             ModItems.LIGHTSABER.get()
         );
+        
+        Map<EntityType<?>, Integer> soulMap = SanguineAmulet.SOUL_VALUES;
+        BuiltInRegistries.ENTITY_TYPE.stream().forEach(entityType -> {
+            if (entityType.is(EntityTypeTags.ZOMBIES) || entityType.is(EntityTypeTags.SKELETONS)|| entityType == EntityType.CREEPER) {
+                soulMap.put(entityType, 5);
+            }
+            if (entityType == EntityType.SPIDER || entityType == EntityType.CAVE_SPIDER)
+                soulMap.put(entityType, 6);
+            if (entityType == EntityType.PIGLIN || entityType == EntityType.HOGLIN) soulMap.put(entityType, 8);
+            if (entityType == EntityType.PLAYER) soulMap.put(entityType, 10);
+            if (entityType.is(EntityTypeTags.RAIDERS)) soulMap.put(entityType, 10);
+            if (entityType == EntityType.BLAZE || entityType == ModEntities.SOUL_BLAZE.get() || entityType == EntityType.GHAST)
+                soulMap.put(entityType, 12);
+            if (entityType == EntityType.ENDERMAN || entityType == EntityType.SHULKER) soulMap.put(entityType, 15);
+            if (entityType == EntityType.WITCH) soulMap.put(entityType, 20);
+            if (entityType == EntityType.ELDER_GUARDIAN || entityType == EntityType.WARDEN) soulMap.put(entityType, 25);
+            if (entityType == EntityType.RAVAGER) soulMap.put(entityType, 25);
+            if (entityType.is(Tags.EntityTypes.BOSSES)) soulMap.put(entityType, 50);
+            
+        });
         
         VoxelShape pumpjackShape = Shapes.box(0, 0, 0, 3, 0.5, 5);
         VoxelShape leftPole = Shapes.box(0.25, 0.5, 2.25, 0.75, 3, 2.75);

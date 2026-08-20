@@ -90,13 +90,13 @@ public class MachineEnchants {
 		enchantMap.put(ModMachines.ENERGY_DISTRIBUTOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ENTITY_INTERACTOR.getBlockEntity(), commonMachineEnchants);
 		enchantMap.put(ModMachines.ENCHANTER.getBlockEntity(), commonMachineEnchants);
+		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), commonMachineEnchants);
 		
 		enchantMap.put(ModMachines.BOOK_DUPLICATOR.getBlockEntity(), commonVersatileMachineEnchants);
 		enchantMap.put(ModMachines.ELECTRIC_BEEHIVE.getBlockEntity(), commonVersatileMachineEnchants);
 		
 		enchantMap.put(ModMachines.BLOCK_BREAKER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.BLOCK_PLACER.getBlockEntity(), nonProgressMachineEnchants);
-		enchantMap.put(ModMachines.MOB_HARVESTER.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.ITEM_COLLECTOR.getBlockEntity(), nonProgressMachineEnchants);
 		enchantMap.put(ModMachines.ENTITY_WATCHER.getBlockEntity(), nonProgressMachineEnchants);
 		

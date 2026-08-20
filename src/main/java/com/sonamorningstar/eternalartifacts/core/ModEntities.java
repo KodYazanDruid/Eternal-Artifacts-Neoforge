@@ -3,6 +3,7 @@ package com.sonamorningstar.eternalartifacts.core;
 import com.sonamorningstar.eternalartifacts.content.entity.*;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.*;
 import com.sonamorningstar.eternalartifacts.content.entity.projectile.BlackHoleEntity;
+import com.sonamorningstar.eternalartifacts.content.entity.projectile.flyingitem.FlyingItemProjectile;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -73,6 +74,8 @@ public class ModEntities {
         ()-> EntityType.Builder.<LightningStrikeProjectile>of(LightningStrikeProjectile::new, MobCategory.MISC).fireImmune().sized(0.25f, 0.25f).clientTrackingRange(4).updateInterval(10).build("lightning_strike_projectile"));
     public static final DeferredHolder<EntityType<?>, EntityType<SpellWitherSkullProj>> SPELL_WITHER_SKULL = ENTITY_TYPES.register("spell_wither_skull",
             ()-> EntityType.Builder.<SpellWitherSkullProj>of(SpellWitherSkullProj::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("spell_wither_skull"));
+    public static final DeferredHolder<EntityType<?>, EntityType<FlyingItemProjectile>> FLYING_ITEM_PROJECTILE = ENTITY_TYPES.register("flying_item_projectile",
+                ()-> EntityType.Builder.<FlyingItemProjectile>of(FlyingItemProjectile::new, MobCategory.MISC).sized(0.3125F, 0.3125F).clientTrackingRange(4).updateInterval(10).build("flying_item_projectile"));
 
     public static final DeferredHolder<EntityType<?>, EntityType<BlackHoleEntity>> BLACK_HOLE = ENTITY_TYPES.register("black_hole",
             () -> EntityType.Builder.<BlackHoleEntity>of(BlackHoleEntity::new, MobCategory.MISC).fireImmune().sized(1.0f, 1.0f).clientTrackingRange(10).updateInterval(1).build("black_hole"));

@@ -17,11 +17,11 @@ import com.sonamorningstar.eternalartifacts.client.resources.model.*;
 import com.sonamorningstar.eternalartifacts.client.render.blockentity.*;
 import com.sonamorningstar.eternalartifacts.client.shader.SpellShaders;
 import com.sonamorningstar.eternalartifacts.content.entity.client.*;
+import com.sonamorningstar.eternalartifacts.content.entity.client.flyingitem.FlyingItemProjectileRenderer;
 import com.sonamorningstar.eternalartifacts.core.*;
 import com.sonamorningstar.eternalartifacts.data.loot.modifier.CutlassModifier;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterTabHoldersEvent;
 import com.sonamorningstar.eternalartifacts.event.custom.RegisterUnrenderableOverridesEvent;
-import com.sonamorningstar.eternalartifacts.registrar.MachineRegistry;
 import net.minecraft.client.color.block.BlockColors;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.SkullModel;
@@ -118,6 +118,7 @@ public class ClientModEvents {
                 event.register((stack, ti) -> ti == 1 ? holder.tintColor() : 0xFFFFFFFF, holder.getBucketItem());
         });
         event.register(ColorUtils::getColorFromNBT, ModItems.LIGHTSABER);
+        event.register(new RetexturedColor(), ModItems.PEDESTAL.get());
     }
 
     @SubscribeEvent
@@ -128,6 +129,7 @@ public class ClientModEvents {
             level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos)
                     : GrassColor.getDefaultColor()
         , ModBlocks.FOUR_LEAF_CLOVER.get());
+        event.register(new RetexturedColor(), ModBlocks.PEDESTAL.get());
     }
 
     @SubscribeEvent
@@ -224,6 +226,7 @@ public class ClientModEvents {
         });*/
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_ITEM_STORAGE_UNIT.get(), ctx -> new DSUItemRenderer());
         event.registerBlockEntityRenderer(ModBlockEntities.DEEP_FLUID_STORAGE_UNIT.get(), ctx -> new DSUFluidRenderer());
+        event.registerBlockEntityRenderer(ModBlockEntities.PEDESTAL.get(), ctx -> new PedestalItemRenderer());
 
         event.registerBlockEntityRenderer(ModMultiblocks.PUMPJACK.getBlockEntity(), PumpjackRenderer::new);
         event.registerBlockEntityRenderer(ModMultiblocks.GENERATOR.getBlockEntity(), DeformsMultiblockRenderer::new);
@@ -257,6 +260,7 @@ public class ClientModEvents {
         event.registerEntityRenderer(ModEntities.BLACK_HOLE.get(), BlackHoleRenderer::new);
         event.registerEntityRenderer(ModEntities.SPELL_VOIDLOCK.get(), ctx -> new ThrownItemRenderer<>(ctx, 0.75F, true));
         event.registerEntityRenderer(ModEntities.SPELL_BOUNCING_HONEY.get(), BouncingHoneyRenderer::new);
+        event.registerEntityRenderer(ModEntities.FLYING_ITEM_PROJECTILE.get(), FlyingItemProjectileRenderer::new);
     }
 
     @SubscribeEvent

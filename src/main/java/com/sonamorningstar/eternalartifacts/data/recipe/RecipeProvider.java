@@ -439,27 +439,11 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .pattern("ESE")
                 .define('S', ModItems.STONE_TABLET).define('E', Items.ENDER_PEARL)
                 .unlockedBy("has_item", has(ModItems.STONE_TABLET)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_SWORD)
-                .pattern("I").pattern("I").pattern("S")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_PICKAXE)
-                .pattern("III").pattern(" S ").pattern(" S ")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_AXE)
-                .pattern("II").pattern("IS").pattern(" S")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_SHOVEL)
-                .pattern("I").pattern("S").pattern("S")
-                .define('I', Tags.Items.INGOTS_COPPER).define('S', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.COPPER_HOE)
-                .pattern("II").pattern(" S").pattern(" S")
-                .define('I', Tags.Items.INGOTS_COPPER)
-                .define('S', Tags.Items.RODS_WOODEN)
-                .unlockedBy("has_item", has(Tags.Items.INGOTS_COPPER)).save(recipeOutput);
+        createSwordRecipe(recipeOutput, ModItems.COPPER_SWORD, Tags.Items.INGOTS_COPPER);
+        createPickaxeRecipe(recipeOutput, ModItems.COPPER_PICKAXE, Tags.Items.INGOTS_COPPER);
+        createAxeRecipe(recipeOutput, ModItems.COPPER_AXE, Tags.Items.INGOTS_COPPER);
+        createShovelRecipe(recipeOutput, ModItems.COPPER_SHOVEL, Tags.Items.INGOTS_COPPER);
+        createHoeRecipe(recipeOutput, ModItems.COPPER_HOE, Tags.Items.INGOTS_COPPER);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.CHLOROPHYTE_TABLET)
                 .pattern("ESE")
                 .define('S', ModItems.STONE_TABLET).define('E', ModItems.CHLOROPHYTE_INGOT)
@@ -511,33 +495,17 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('T', ModTags.Items.INGOTS_STEEL)
                 .define('S', ModItems.STEEL_INGOT)
                 .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_SWORD)
-            .pattern("I").pattern("I").pattern("S")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_PICKAXE)
-            .pattern("III").pattern(" S ").pattern(" S ")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_AXE)
-            .pattern("II").pattern("IS").pattern(" S")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_SHOVEL)
-            .pattern("I").pattern("S").pattern("S")
-            .define('I', ModTags.Items.INGOTS_STEEL).define('S', Tags.Items.RODS_WOODEN)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.STEEL_HOE)
-            .pattern("II").pattern(" S").pattern(" S")
-            .define('I', ModTags.Items.INGOTS_STEEL)
-            .define('S', Tags.Items.RODS_WOODEN)
-            .unlockedBy("has_item", has(ModTags.Items.INGOTS_STEEL)).save(recipeOutput);
+        createSwordRecipe(recipeOutput, ModItems.STEEL_SWORD, ModTags.Items.INGOTS_STEEL);
+        createPickaxeRecipe(recipeOutput, ModItems.STEEL_PICKAXE, ModTags.Items.INGOTS_STEEL);
+        createAxeRecipe(recipeOutput, ModItems.STEEL_AXE, ModTags.Items.INGOTS_STEEL);
+        createShovelRecipe(recipeOutput, ModItems.STEEL_SHOVEL, ModTags.Items.INGOTS_STEEL);
+        createHoeRecipe(recipeOutput, ModItems.STEEL_HOE, ModTags.Items.INGOTS_STEEL);
         helmetRecipe(recipeOutput, ModItems.STEEL_HELMET, ModTags.Items.INGOTS_STEEL);
         chestplateRecipe(recipeOutput, ModItems.STEEL_CHESTPLATE, ModTags.Items.INGOTS_STEEL);
         leggingsRecipe(recipeOutput, ModItems.STEEL_LEGGINGS, ModTags.Items.INGOTS_STEEL);
         bootsRecipe(recipeOutput, ModItems.STEEL_BOOTS, ModTags.Items.INGOTS_STEEL);
         createHammerRecipe(recipeOutput, ModItems.WOODEN_HAMMER, ItemTags.PLANKS, ItemTags.LOGS);
-        createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, Tags.Items.COBBLESTONE, Tags.Items.STONE);
+        createHammerRecipe(recipeOutput, ModItems.STONE_HAMMER, ItemTags.STONE_TOOL_MATERIALS, Tags.Items.STONE);
         createHammerRecipe(recipeOutput, ModItems.COPPER_HAMMER, Tags.Items.INGOTS_COPPER, Tags.Items.STORAGE_BLOCKS_COPPER);
         createHammerRecipe(recipeOutput, ModItems.IRON_HAMMER, Tags.Items.INGOTS_IRON, Tags.Items.STORAGE_BLOCKS_IRON);
         createHammerRecipe(recipeOutput, ModItems.GOLDEN_HAMMER, Tags.Items.INGOTS_GOLD, Tags.Items.STORAGE_BLOCKS_GOLD);
@@ -575,14 +543,14 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
                 .define('W', Tags.Items.CROPS_WHEAT).define('B', ModTags.Items.FRUITS_BANANA)
                 .unlockedBy("has_item", has(Items.PAPER)).save(recipeOutput);
         createCutlassRecipe(recipeOutput, ModItems.WOODEN_CUTLASS, ItemTags.PLANKS);
-        createCutlassRecipe(recipeOutput, ModItems.STONE_CUTLASS, Tags.Items.COBBLESTONE);
+        createCutlassRecipe(recipeOutput, ModItems.STONE_CUTLASS, ItemTags.STONE_TOOL_MATERIALS);
         createCutlassRecipe(recipeOutput, ModItems.COPPER_CUTLASS, Tags.Items.INGOTS_COPPER);
         createCutlassRecipe(recipeOutput, ModItems.IRON_CUTLASS, Tags.Items.INGOTS_IRON);
         createCutlassRecipe(recipeOutput, ModItems.GOLDEN_CUTLASS, Tags.Items.INGOTS_GOLD);
         createCutlassRecipe(recipeOutput, ModItems.DIAMOND_CUTLASS, Tags.Items.GEMS_DIAMOND);
         createCutlassRecipe(recipeOutput, ModItems.STEEL_CUTLASS, ModTags.Items.INGOTS_STEEL);
         createSickleRecipe(recipeOutput, ModItems.WOODEN_SICKLE, ItemTags.PLANKS);
-        createSickleRecipe(recipeOutput, ModItems.STONE_SICKLE, Tags.Items.COBBLESTONE);
+        createSickleRecipe(recipeOutput, ModItems.STONE_SICKLE, ItemTags.STONE_TOOL_MATERIALS);
         createSickleRecipe(recipeOutput, ModItems.COPPER_SICKLE, Tags.Items.INGOTS_COPPER);
         createSickleRecipe(recipeOutput, ModItems.IRON_SICKLE, Tags.Items.INGOTS_IRON);
         createSickleRecipe(recipeOutput, ModItems.GOLDEN_SICKLE, Tags.Items.INGOTS_GOLD);
@@ -920,6 +888,25 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .pattern(" L ").pattern("LEL").pattern(" LR")
             .define('L', ModItems.LENS).define('E', Items.ENDER_EYE).define('R', ModItems.GOLD_RING)
             .unlockedBy("has_item", has(ModItems.LENS)).save(recipeOutput);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModItems.SANGUINE_AMULET)
+            .pattern("S S").pattern("DRD").pattern(" I ")
+            .define('S', Tags.Items.STRING).define('D', Tags.Items.GEMS_DIAMOND)
+            .define('R', Tags.Items.STORAGE_BLOCKS_REDSTONE).define('I', Tags.Items.INGOTS_IRON)
+            .unlockedBy("has_item", has(Tags.Items.GEMS_DIAMOND)).save(recipeOutput);
+        createSwordRecipe(recipeOutput, ModItems.FLINT_SWORD, ModTags.Items.FLINTS);
+        createPickaxeRecipe(recipeOutput, ModItems.FLINT_PICKAXE, ModTags.Items.FLINTS);
+        createAxeRecipe(recipeOutput, ModItems.FLINT_AXE, ModTags.Items.FLINTS);
+        createShovelRecipe(recipeOutput, ModItems.FLINT_SHOVEL, ModTags.Items.FLINTS);
+        createHoeRecipe(recipeOutput, ModItems.FLINT_HOE, ModTags.Items.FLINTS);
+        createSwordRecipe(recipeOutput, ModItems.BONE_SWORD, Tags.Items.BONES);
+        createPickaxeRecipe(recipeOutput, ModItems.BONE_PICKAXE, Tags.Items.BONES);
+        createAxeRecipe(recipeOutput, ModItems.BONE_AXE, Tags.Items.BONES);
+        createShovelRecipe(recipeOutput, ModItems.BONE_SHOVEL, Tags.Items.BONES);
+        createHoeRecipe(recipeOutput, ModItems.BONE_HOE, Tags.Items.BONES);
+		ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.TEMPERED_GLASS_PANE, 16)
+			.pattern("GGG").pattern("GGG")
+			.define('G', ModBlocks.TEMPERED_GLASS)
+			.unlockedBy("has_item", has(ModBlocks.TEMPERED_GLASS)).save(recipeOutput);
         //endregion
         //region Shapeless recipes
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SUGAR_CHARCOAL, 9)
@@ -1195,6 +1182,41 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider im
             .define('I', ingotIngredient)
             .define('B', blockIngredient)
             .unlockedBy("has_item", has(ingotIngredient)).save(output);
+    }
+    private static void createSwordRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern(" F ").pattern(" F ").pattern(" R ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private static void createPickaxeRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("FFF").pattern(" R ").pattern(" R ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private static void createAxeRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("FF ").pattern("FR ").pattern(" R ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private static void createShovelRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern(" F ").pattern(" R ").pattern(" R ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
+    }
+    private static void createHoeRecipe(RecipeOutput output, ItemLike result, TagKey<Item> ingredient) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, result)
+                .pattern("FF ").pattern(" R ").pattern(" R ")
+                .define('F', ingredient)
+                .define('R', Tags.Items.RODS_WOODEN)
+                .unlockedBy("has_item", has(ingredient)).save(output);
     }
     private static void createColoredShulkerBoxRecipe(RecipeOutput output, ItemLike result, Item shell) {
         ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, result)

@@ -29,8 +29,9 @@ public class GardeningPotEntity extends DefaultRetexturedBlockEntity {
 
     public GardeningPotEntity(BlockPos pPos, BlockState pBlockState) {
         super(ModBlockEntities.GARDENING_POT.get(), pPos, pBlockState);
+        texture = Blocks.TERRACOTTA;
     }
-
+    
     public void tick(Level level, BlockPos pos, BlockState state) {
         if (level.isClientSide()) {
             return;

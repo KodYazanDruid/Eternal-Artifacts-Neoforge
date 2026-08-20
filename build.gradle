@@ -21,12 +21,6 @@ repositories {
             includeGroup "mezz.jei"
         }
     }
-    maven { // TOP
-        url = "https://maven.k-4u.nl"
-        content {
-            includeGroup "mcjty.theoneprobe"
-        }
-    }
     maven {
         name = "Modmaven"
         url = "https://modmaven.dev/"
@@ -42,9 +36,12 @@ repositories {
             includeGroup "curse.maven"
         }
     }
-    maven {
+    /*maven {
         name = "TerraformersMC"
         url = "https://maven.terraformersmc.com/"
+    }*/
+    maven {
+        url = "https://maven.gnomecraft.net/"
     }
     maven {
         url = "https://maven.ryanliptak.com/"
@@ -71,6 +68,8 @@ sourceSets.main.resources {
 neoForge {
     version = project.neo_version
     validateAccessTransformers = true
+
+    accessTransformers.from 'src/main/resources/META-INF/accesstransformer.cfg'
 
     parchment {
         mappingsVersion = project.parchment_mappings_version
@@ -122,10 +121,10 @@ dependencies {
 
     compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
-    //runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
-    compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
-    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"
+    /*compileOnly "dev.emi:emi-neoforge:${emi_version}:api"
+    runtimeOnly "dev.emi:emi-neoforge:${emi_version}"*/
 
     //runtimeOnly "mcjty.theoneprobe:theoneprobe:${top_version}"
     runtimeOnly "curse.maven:jade-324717:5109393"

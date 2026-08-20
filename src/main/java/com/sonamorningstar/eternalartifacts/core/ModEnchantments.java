@@ -7,16 +7,17 @@ import com.sonamorningstar.eternalartifacts.content.item.block.base.MachineBlock
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-import java.util.Map;
 import java.util.Set;
 
 import static com.sonamorningstar.eternalartifacts.EternalArtifacts.MODID;
@@ -35,8 +36,10 @@ public class ModEnchantments {
     public static final DeferredHolder<Enchantment, MachineEnchantment> WORLDBIND = ENCHANTMENTS.register("worldbind", () -> new MachineEnchantment(Enchantment.Rarity.VERY_RARE));
     public static final DeferredHolder<Enchantment, MagicProtectionEnchantment> MAGIC_PROTECTION = ENCHANTMENTS.register("magic_protection", MagicProtectionEnchantment::new);
     public static final DeferredHolder<Enchantment, AttributeEnchantment> FORTIFICATION = ENCHANTMENTS.register("fortification",
-        () -> new FortificationEnchantment(Enchantment.Rarity.RARE, Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS),
-            EnchantmentCategory.ARMOR, ARMOR_SLOTS)
+        () -> new FortificationEnchantment(Enchantment.Rarity.RARE, 3, Set.of(Attributes.ARMOR, Attributes.ARMOR_TOUGHNESS), EnchantmentCategory.ARMOR, ARMOR_SLOTS)
+    );
+    public static final DeferredHolder<Enchantment, AttributeEnchantment> RAPID_HIT = ENCHANTMENTS.register("rapid_hit",
+        () -> new RapidHitEnchantment(Enchantment.Rarity.RARE, 3, Set.of(Attributes.ATTACK_SPEED), ModEnchantmentCategory.ATTACK_SPEED, new EquipmentSlot[]{EquipmentSlot.MAINHAND})
     );
     public static class ModEnchantmentCategory{
         public static final EnchantmentCategory VOLUME = EnchantmentCategory.create("volume", item -> {
@@ -47,6 +50,7 @@ public class ModEnchantments {
         public static final EnchantmentCategory VERSATILITY = EnchantmentCategory.create("versatility", VersatilityEnchantment.acceptedItems);
         public static final EnchantmentCategory SOULBOUND = EnchantmentCategory.create("soulbound", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1 || item instanceof MachineBlockItem);
         public static final EnchantmentCategory EVERLASTING = EnchantmentCategory.create("everlasting", item -> item.getMaxStackSize(item.getDefaultInstance()) == 1 || item instanceof MachineBlockItem);
+        public static final EnchantmentCategory ATTACK_SPEED = EnchantmentCategory.create("attack_speed", item -> item instanceof TieredItem);
         public static final EnchantmentCategory EMPTY = EnchantmentCategory.create("machine", item -> false);
         
         private static boolean hasAnyCapability(ItemStack stack) {

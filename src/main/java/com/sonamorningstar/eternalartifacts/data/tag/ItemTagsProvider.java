@@ -97,6 +97,7 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.GLOW_INK_DUST.get(),
             ModItems.AMETHYST_DUST.get()
         );
+        tag(ModTags.Items.FLINTS).add(Items.FLINT);
         tag(ModTags.Items.DUSTS_COAL).add(ModItems.COAL_DUST.get());
         tag(ModTags.Items.DUSTS_CHARCOAL).add(ModItems.CHARCOAL_DUST.get());
         tag(ModTags.Items.DUSTS_SUGAR_CHARCOAL).add(ModItems.SUGAR_CHARCOAL_DUST.get());
@@ -198,28 +199,38 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
         tag(ItemTags.SWORDS).add(
             ModItems.COPPER_SWORD.get(),
             ModItems.SWORD_OF_THE_GREEN_EARTH.get(),
-            ModItems.STEEL_SWORD.get()
+            ModItems.STEEL_SWORD.get(),
+            ModItems.FLINT_SWORD.get(),
+            ModItems.BONE_SWORD.get()
         );
         tag(ItemTags.SWORDS).addTags(ModTags.Items.TOOLS_CUTLASS);
         tag(ItemTags.PICKAXES).add(
             ModItems.COPPER_PICKAXE.get(),
             ModItems.CHLOROVEIN_PICKAXE.get(),
-            ModItems.STEEL_PICKAXE.get()
+            ModItems.STEEL_PICKAXE.get(),
+            ModItems.FLINT_PICKAXE.get(),
+            ModItems.BONE_PICKAXE.get()
         );
         tag(ItemTags.AXES).add(
             ModItems.COPPER_AXE.get(),
             ModItems.AXE_OF_REGROWTH.get(),
-            ModItems.STEEL_AXE.get()
+            ModItems.STEEL_AXE.get(),
+            ModItems.FLINT_AXE.get(),
+            ModItems.BONE_AXE.get()
         );
         tag(ItemTags.SHOVELS).add(
             ModItems.COPPER_SHOVEL.get(),
             ModItems.NATURAL_SPADE.get(),
-            ModItems.STEEL_SHOVEL.get()
+            ModItems.STEEL_SHOVEL.get(),
+            ModItems.FLINT_SHOVEL.get(),
+            ModItems.BONE_SHOVEL.get()
         );
         tag(ItemTags.HOES).add(
             ModItems.COPPER_HOE.get(),
             ModItems.LUSH_GRUBBER.get(),
-            ModItems.STEEL_HOE.get()
+            ModItems.STEEL_HOE.get(),
+            ModItems.FLINT_HOE.get(),
+            ModItems.BONE_HOE.get()
         );
         tag(ModTags.Items.TOOLS_WRENCH).add(ModItems.WRENCH.get());
         tag(ModTags.Items.TOOLS_HAMMER).add(
@@ -263,7 +274,9 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModTags.Items.TOOLS_HAMMER,
             ModTags.Items.TOOLS_CUTLASS,
             ModTags.Items.TOOLS_SICKLE,
-            ModTags.Items.TOOLS_WRENCH
+            ModTags.Items.TOOLS_WRENCH,
+            ModTags.Items.FLINT_TOOLS,
+            ModTags.Items.BONE_TOOLS
         );
         tag(Tags.Items.TOOLS).add(
             ModItems.GRAFTER.get(),
@@ -274,6 +287,20 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.LIFTER.get(),
             ModItems.GOLD_KEY.get(),
             ModItems.TROWEL.get()
+        );
+        tag(ModTags.Items.FLINT_TOOLS).add(
+            ModItems.FLINT_SWORD.get(),
+            ModItems.FLINT_PICKAXE.get(),
+            ModItems.FLINT_AXE.get(),
+            ModItems.FLINT_SHOVEL.get(),
+            ModItems.FLINT_HOE.get()
+        );
+        tag(ModTags.Items.BONE_TOOLS).add(
+            ModItems.BONE_SWORD.get(),
+            ModItems.BONE_PICKAXE.get(),
+            ModItems.BONE_AXE.get(),
+            ModItems.BONE_SHOVEL.get(),
+            ModItems.BONE_HOE.get()
         );
         tag(ModTags.Items.TABLETS).add(
             ModItems.STONE_TABLET.get(),
@@ -302,7 +329,8 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
             ModItems.HEART_NECKLACE.get(),
             ModItems.SAGES_TALISMAN.get(),
             ModItems.ODDLY_SHAPED_OPAL.get(),
-            ModItems.MOONGLASS_PENDANT.get()
+            ModItems.MOONGLASS_PENDANT.get(),
+            ModItems.SANGUINE_AMULET.get()
         );
         tag(ModTags.Items.CHARMS_HAND).add(
             ModItems.IRON_LEATHER_GLOVES.get(),
@@ -446,7 +474,6 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 ItemTags.STONE_BRICKS,
                 ItemTags.STONE_CRAFTING_MATERIALS,
                 Tags.Items.SANDSTONE,
-                Tags.Items.COBBLESTONE,
                 Tags.Items.COBBLESTONE_MOSSY,
                 Tags.Items.COBBLESTONE_DEEPSLATE,
                 ItemTags.PLANKS,
@@ -524,6 +551,59 @@ public class ItemTagsProvider extends net.minecraft.data.tags.ItemTagsProvider {
                 Blocks.WARPED_STEM.asItem(),
                 Blocks.STRIPPED_WARPED_STEM.asItem()
         );
+        
+        tag(ModTags.Items.PEDESTAL_TEXTURE_SUITABLE).addTags(
+            ItemTags.TERRACOTTA,
+            ItemTags.STONE_BRICKS,
+            ItemTags.STONE_CRAFTING_MATERIALS,
+            Tags.Items.SANDSTONE,
+            Tags.Items.COBBLESTONE,
+            Tags.Items.COBBLESTONE_MOSSY,
+            Tags.Items.COBBLESTONE_DEEPSLATE,
+            ItemTags.PLANKS,
+            Tags.Items.STORAGE_BLOCKS
+        );
+        tag(ModTags.Items.PEDESTAL_TEXTURE_SUITABLE).add(
+            Blocks.BRICKS.asItem(),
+            Blocks.QUARTZ_BLOCK.asItem(),
+            Blocks.QUARTZ_BRICKS.asItem(),
+            Blocks.PRISMARINE.asItem(),
+            Blocks.DARK_PRISMARINE.asItem(),
+            Blocks.SHROOMLIGHT.asItem(),
+            Blocks.GLOWSTONE.asItem(),
+            Blocks.RED_MUSHROOM_BLOCK.asItem(),
+            Blocks.BROWN_MUSHROOM_BLOCK.asItem(),
+            Blocks.MUSHROOM_STEM.asItem(),
+            Blocks.OCHRE_FROGLIGHT.asItem(),
+            Blocks.VERDANT_FROGLIGHT.asItem(),
+            Blocks.PEARLESCENT_FROGLIGHT.asItem(),
+            ModBlocks.ROSY_FROGLIGHT.asItem(),
+            ModBlocks.MOSSY_BRICKS.asItem(),
+            ModBlocks.MOSSY_DEEPSLATE_BRICKS.asItem(),
+            Blocks.OAK_LOG.asItem(),
+            Blocks.STRIPPED_OAK_LOG.asItem(),
+            Blocks.SPRUCE_LOG.asItem(),
+            Blocks.STRIPPED_SPRUCE_LOG.asItem(),
+            Blocks.BIRCH_LOG.asItem(),
+            Blocks.STRIPPED_BIRCH_LOG.asItem(),
+            Blocks.JUNGLE_LOG.asItem(),
+            Blocks.STRIPPED_JUNGLE_LOG.asItem(),
+            Blocks.ACACIA_LOG.asItem(),
+            Blocks.STRIPPED_ACACIA_LOG.asItem(),
+            Blocks.DARK_OAK_LOG.asItem(),
+            Blocks.STRIPPED_DARK_OAK_LOG.asItem(),
+            Blocks.MANGROVE_LOG.asItem(),
+            Blocks.STRIPPED_MANGROVE_LOG.asItem(),
+            Blocks.CHERRY_LOG.asItem(),
+            Blocks.STRIPPED_CHERRY_LOG.asItem(),
+            Blocks.BAMBOO_BLOCK.asItem(),
+            Blocks.STRIPPED_BAMBOO_BLOCK.asItem(),
+            Blocks.CRIMSON_STEM.asItem(),
+            Blocks.STRIPPED_CRIMSON_STEM.asItem(),
+            Blocks.WARPED_STEM.asItem(),
+            Blocks.STRIPPED_WARPED_STEM.asItem()
+        );
+        
         ModHooks.ItemTagAppender.itemTags.forEach((tagKey, itemSupList) -> itemSupList.stream().map(Supplier::get).forEach(item -> {
             ResourceLocation rl = BuiltInRegistries.ITEM.getKey(item);
             tag(tagKey).addOptional(rl);

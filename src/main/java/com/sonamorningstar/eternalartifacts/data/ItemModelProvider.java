@@ -254,6 +254,17 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         basicItem(ModItems.COPPER_BOOTS.get());
         handheld(ModItems.TROWEL);
         basicItem(ModItems.EYE_OF_DESTRUCTION.get());
+        basicItem(ModItems.SANGUINE_AMULET.get());
+        handheld(ModItems.FLINT_SWORD);
+        handheld(ModItems.FLINT_PICKAXE);
+        handheld(ModItems.FLINT_AXE);
+        handheld(ModItems.FLINT_SHOVEL);
+        handheld(ModItems.FLINT_HOE);
+        handheld(ModItems.BONE_SWORD);
+        handheld(ModItems.BONE_PICKAXE);
+        handheld(ModItems.BONE_AXE);
+        handheld(ModItems.BONE_SHOVEL);
+        handheld(ModItems.BONE_HOE);
         
         withParentItem(ModItems.ENCHANTED_GOLDEN_ANCIENT_FRUIT, ModItems.GOLDEN_ANCIENT_FRUIT);
         itemGeneratedWithTexture(ModItems.GLASS_SPLASH_BOTTLE, new ResourceLocation("splash_potion"));
@@ -291,6 +302,7 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         withParentBlock(ModBlocks.MACHINE_WORKBENCH);
         withParentBlock(ModBlocks.WATER_TNT);
         withParentBlock(ModBlocks.BEACON_AGITATOR);
+        withParentBlock(ModBlocks.PEDESTAL);
 
         ModFluids.FLUIDS.getFluids().stream().filter(FluidHolder::hasBucket).forEach(this::bucketItem);
         ModMachines.MACHINES.getMachines().forEach(holder -> {

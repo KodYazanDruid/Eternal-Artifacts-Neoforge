@@ -29,3 +29,5 @@ description='''
 [[mixins]]
    config = "eternalartifacts.mixins.json"
 
+[[accessTransformers]]
+    file="META-INF/accesstransformer.cfg"

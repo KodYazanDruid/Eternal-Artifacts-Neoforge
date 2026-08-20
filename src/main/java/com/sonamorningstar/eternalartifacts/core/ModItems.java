@@ -4,10 +4,7 @@ import com.sonamorningstar.eternalartifacts.content.block.BewlrStandingAndWallBl
 import com.sonamorningstar.eternalartifacts.content.item.*;
 import com.sonamorningstar.eternalartifacts.content.item.base.ChanneledSpellTomeItem;
 import com.sonamorningstar.eternalartifacts.content.item.base.SpellTomeItem;
-import com.sonamorningstar.eternalartifacts.content.item.block.FancyChestBlockItem;
-import com.sonamorningstar.eternalartifacts.content.item.block.GardeningPotBlockItem;
-import com.sonamorningstar.eternalartifacts.content.item.block.JarBlockItem;
-import com.sonamorningstar.eternalartifacts.content.item.block.TesseractItem;
+import com.sonamorningstar.eternalartifacts.content.item.block.*;
 import com.sonamorningstar.eternalartifacts.content.item.block.base.RetexturedBlockItem;
 import com.sonamorningstar.eternalartifacts.content.spell.*;
 import com.sonamorningstar.eternalartifacts.content.spell.base.Spell;
@@ -197,6 +194,7 @@ public class ModItems {
     public static final DeferredItem<Item> DEATH_CAP = registerStacksToOne("death_cap");
     public static final DeferredItem<Item> MOONGLASS_PENDANT = registerStacksToOne("moonglass_pendant");
     public static final DeferredItem<Item> EYE_OF_DESTRUCTION = registerStacksToOne("eye_of_destruction");
+    public static final DeferredItem<Item> SANGUINE_AMULET = registerStacksToOne("sanguine_amulet", SanguineAmulet::new);
     //endregion
     //region Tools
     public static final DeferredItem<Item> COPPER_SWORD = registerStacksToOne("copper_sword", p -> new SwordItem(ModTiers.COPPER, 3, -2.4f, p));
@@ -261,14 +259,11 @@ public class ModItems {
     public static final DeferredItem<Item> STEEL_LEGGINGS = registerStacksToOne("steel_leggings", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> STEEL_BOOTS = registerStacksToOne("steel_boots", p -> new ArmorItem(ModArmorMaterials.STEEL, ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<Item> SPAWNER_EXTRACTOR = registerStacksToOne("spawner_extractor", p -> new SpawnerExtractorItem(p.durability(32)));
-    //public static final DeferredItem<Item> BONE_SWORD = registerStacksToOne("bone_sword", p -> new SwordItem(ModTiers.BONE, 3, -2.4f, p));
-    //public static final DeferredItem<Item> BONE_PICKAXE = registerStacksToOne("bone_pickaxe", p -> new PickaxeItem(ModTiers.BONE, 1, -2.8f, p));
-    //public static final DeferredItem<Item> BONE_AXE = registerStacksToOne("bone_axe", p -> new AxeItem(ModTiers.BONE, 7, -3.2f, p));
-    //public static final DeferredItem<Item> BONE_SHOVEL = registerStacksToOne("bone_shovel", p -> new ShovelItem(ModTiers.BONE, 1.5F, -3.0f, p));
-    //public static final DeferredItem<Item> BONE_HOE = registerStacksToOne("bone_hoe", p -> new HoeItem(ModTiers.BONE, -1, -2.0f, p));
-    //public static final DeferredItem<Item> BONE_HAMMER = registerStacksToOne("bone_hammer", p -> new HammerItem(ModTiers.BONE, p));
-    //public static final DeferredItem<Item> BONE_SICKLE = registerStacksToOne("bone_sickle", p -> new SickleItem(ModTiers.BONE, p));
-    //public static final DeferredItem<Item> BONE_CUTLASS = registerStacksToOne("bone_cutlass", p -> new CutlassItem(ModTiers.BONE, p));
+    public static final DeferredItem<Item> BONE_SWORD = registerStacksToOne("bone_sword", p -> new SwordItem(ModTiers.BONE, 3, -2.4f, p));
+    public static final DeferredItem<Item> BONE_PICKAXE = registerStacksToOne("bone_pickaxe", p -> new PickaxeItem(ModTiers.BONE, 1, -2.8f, p));
+    public static final DeferredItem<Item> BONE_AXE = registerStacksToOne("bone_axe", p -> new AxeItem(ModTiers.BONE, 7, -3.2f, p));
+    public static final DeferredItem<Item> BONE_SHOVEL = registerStacksToOne("bone_shovel", p -> new ShovelItem(ModTiers.BONE, 1.5F, -3.0f, p));
+    public static final DeferredItem<Item> BONE_HOE = registerStacksToOne("bone_hoe", p -> new HoeItem(ModTiers.BONE, -1, -2.0f, p));
     public static final DeferredItem<Item> SWORD_OF_THE_TWILIGHT = registerStacksToOne("sword_of_the_twilight", SwordOfTheTwilightItem::new);
     public static final DeferredItem<Item> SWORD_OF_THE_DAWN = registerStacksToOne("sword_of_the_dawn", SwordOfTheDawnItem::new);
     public static final DeferredItem<Item> SOLAR_PANEL_HELMET = registerStacksToOne("solar_panel_helmet", SolarPanelHelmet::new);
@@ -298,6 +293,11 @@ public class ModItems {
     public static final DeferredItem<Item> COPPER_LEGGINGS = registerStacksToOne("copper_leggings", p -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.LEGGINGS, p));
     public static final DeferredItem<Item> COPPER_BOOTS = registerStacksToOne("copper_boots", p -> new ArmorItem(ModArmorMaterials.COPPER, ArmorItem.Type.BOOTS, p));
     public static final DeferredItem<Item> TROWEL = registerStacksToOne("trowel", p -> new TrowelItem(ModTiers.STEEL, p));
+    public static final DeferredItem<Item> FLINT_SWORD = registerStacksToOne("flint_sword", p -> new SwordItem(ModTiers.FLINT, 3, -2.4f, p));
+    public static final DeferredItem<Item> FLINT_PICKAXE = registerStacksToOne("flint_pickaxe", p -> new PickaxeItem(ModTiers.FLINT, 1, -2.8f, p));
+    public static final DeferredItem<Item> FLINT_AXE = registerStacksToOne("flint_axe", p -> new AxeItem(ModTiers.FLINT, 7, -3.2f, p));
+    public static final DeferredItem<Item> FLINT_SHOVEL = registerStacksToOne("flint_shovel", p -> new ShovelItem(ModTiers.FLINT, 1.5F, -3.0f, p));
+    public static final DeferredItem<Item> FLINT_HOE = registerStacksToOne("flint_hoe", p -> new HoeItem(ModTiers.FLINT, -1, -2.0f, p));
     //endregion
     
     public static final DeferredItem<RetexturedBlockItem> GARDENING_POT = register("gardening_pot", ()-> new GardeningPotBlockItem(ModTags.Items.GARDENING_POT_SUITABLE, new Item.Properties()));
@@ -310,6 +310,7 @@ public class ModItems {
     public static final DeferredItem<StandingAndWallBlockItem> GLOWTORCH = register("glowtorch",
             () -> new StandingAndWallBlockItem(ModBlocks.GLOWTORCH.get(), ModBlocks.WALL_GLOWTORCH.get(),
                 new Item.Properties().rarity(Rarity.UNCOMMON), Direction.DOWN));
+    public static final DeferredItem<RetexturedBlockItem> PEDESTAL = register("pedestal", ()-> new PedestalBlockItem(ModTags.Items.PEDESTAL_TEXTURE_SUITABLE, new Item.Properties()));
 
     public static final DeferredItem<Item> ANCIENT_SEED = register("ancient_seed",
             () -> new ItemNameBlockItem(ModBlocks.ANCIENT_CROP.get(), new Item.Properties()));

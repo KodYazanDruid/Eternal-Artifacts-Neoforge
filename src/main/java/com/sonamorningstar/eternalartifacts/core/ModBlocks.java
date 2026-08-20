@@ -75,6 +75,8 @@ public class ModBlocks {
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(7.0f, 8.0f).mapColor(MapColor.COLOR_GRAY)));
     public static final DeferredBlock<Block> TEMPERED_GLASS = registerWithItem("tempered_glass",
             () -> new TemperedGlassBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).strength(25.0f, 3600000.0F).mapColor(MapColor.COLOR_PURPLE).requiresCorrectToolForDrops()));
+    public static final DeferredBlock<Block> TEMPERED_GLASS_PANE = registerWithItem("tempered_glass_pane",
+            () -> new TemperedGlassPaneBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS_PANE).strength(25.0f, 3600000.0F).mapColor(MapColor.COLOR_PURPLE).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> DEMON_BLOCK = registerWithItem("demon_block",
             () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).mapColor(MapColor.COLOR_RED)));
     public static final DeferredBlock<Block> MOSS_MANGANESE_ORE = registerMossOres("moss_manganese_ore");
@@ -339,6 +341,7 @@ public class ModBlocks {
             ()-> new FancyChestBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CHEST)));
     public static final DeferredBlock<TesseractBlock> TESSERACT = registerNoItem("tesseract",
             ()-> new TesseractBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).noOcclusion()));
+    public static final DeferredBlock<PedestalBlock> PEDESTAL = registerNoItem("pedestal", PedestalBlock::new);
     
     public static final DeferredBlock<AncientCropBlock> ANCIENT_CROP = registerNoItem("ancient_crop",
             ()-> new AncientCropBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));

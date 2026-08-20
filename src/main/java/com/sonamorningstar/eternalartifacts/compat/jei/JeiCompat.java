@@ -44,6 +44,7 @@ public class JeiCompat implements IModPlugin {
         IIngredientSubtypeInterpreter<ItemStack> retextured = getSubtypes(RetexturedBlockItem::getTextureName);
         registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModBlocks.GARDENING_POT.asItem(), retextured);
         registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModBlocks.FANCY_CHEST.asItem(), retextured);
+        registration.registerSubtypeInterpreter(VanillaTypes.ITEM_STACK, ModBlocks.PEDESTAL.asItem(), retextured);
     }
 
     @Override

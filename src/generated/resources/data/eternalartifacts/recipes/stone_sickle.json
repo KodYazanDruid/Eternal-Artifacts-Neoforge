@@ -3,7 +3,7 @@
   "category": "equipment",
   "key": {
     "F": {
-      "tag": "forge:cobblestone"
+      "tag": "minecraft:stone_tool_materials"
     },
     "R": {
       "tag": "forge:rods/wooden"

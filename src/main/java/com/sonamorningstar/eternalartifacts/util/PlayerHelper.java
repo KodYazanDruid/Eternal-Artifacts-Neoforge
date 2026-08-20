@@ -8,9 +8,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.protocol.game.ClientboundUpdateMobEffectPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.RelativeMovement;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -103,8 +105,12 @@ public class PlayerHelper {
     }
 
     public static void teleportToDimension(ServerPlayer player, ServerLevel level, Vec3 targetVec) {
+        player.unRide();
         player.teleportTo(level, targetVec.x(), targetVec.y(), targetVec.z(), EnumSet.noneOf(RelativeMovement.class), player.getYRot(), player.getXRot());
         Channel.sendToPlayer(new SyncPlayerXpToClient(player.experienceLevel, player.totalExperience, player.experienceProgress), player);
+        for (MobEffectInstance effect : player.getActiveEffects()) {
+            player.connection.send(new ClientboundUpdateMobEffectPacket(player.getId(), effect));
+        }
     }
 
     public static void giveItemOrPop(Player player, ItemStack stack) {

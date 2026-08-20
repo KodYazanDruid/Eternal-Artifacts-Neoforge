@@ -9,6 +9,7 @@ import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.Item;
@@ -271,6 +272,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COPPER_BOOTS.get(), "Copper Boots");
                 add(ModItems.TROWEL.get(), "Trowel");
                 add(ModItems.EYE_OF_DESTRUCTION.get(), "Eye of Destruction");
+                add(ModItems.SANGUINE_AMULET.get(), "Sanguine Amulet");
+                add(ModItems.FLINT_SWORD.get(), "Flint Sword");
+                add(ModItems.FLINT_PICKAXE.get(), "Flint Pickaxe");
+                add(ModItems.FLINT_AXE.get(), "Flint Axe");
+                add(ModItems.FLINT_SHOVEL.get(), "Flint Shovel");
+                add(ModItems.FLINT_HOE.get(), "Flint Hoe");
+                add(ModItems.BONE_SWORD.get(), "Bone Sword");
+                add(ModItems.BONE_PICKAXE.get(), "Bone Pickaxe");
+                add(ModItems.BONE_AXE.get(), "Bone Axe");
+                add(ModItems.BONE_SHOVEL.get(), "Bone Shovel");
+                add(ModItems.BONE_HOE.get(), "Bone Hoe");
                 //endregion
                 //region Charm Tooltips
                 tooltipForItem(ModItems.FINAL_CUT.get(),"Attacks that leave a target with %d%% health or lower will execute the target.");
@@ -291,6 +303,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Decreases the next taken damage by %s%%.");
                 tooltipForItem(ModItems.MOONGLASS_PENDANT.get(), "Heals the user for %s%% of the magic damage they dealt.");
                 tooltipForItem(ModItems.EYE_OF_DESTRUCTION.get(), "Increases critical damage by %s%%.");
+                tooltipForItem(ModItems.SANGUINE_AMULET.get(), "Can increase health up to %1$s based on stored souls. Max soul capacity is %2$s.");
+                tooltiForTag(ModTags.Items.FLINT_TOOLS, "Has a %1$s%% chance to set the target on fire for %2$s seconds.");
+                tooltiForTag(ModTags.Items.BONE_TOOLS, "Repairs the tool in inventory by %1$s%% of its max durability when consumed %2$s.");
                 //endregion
                 //region Blocks
                 add(ModBlocks.BIOFURNACE.get(), "BioFurnace");
@@ -360,6 +375,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.COVERED_COPPER_CABLE.get(), "Covered Copper Cable");
                 add(ModBlocks.TIGRIS_FLOWER.get(), "Tigris Flower");
                 add(ModBlocks.TEMPERED_GLASS.get(), "Tempered Glass");
+                add(ModBlocks.TEMPERED_GLASS_PANE.get(), "Tempered Glass Pane");
                 add(ModBlocks.DEMON_BLOCK.get(), "Demon Block");
                 add(ModBlocks.OBSIDIAN_BRICKS.get(), "Obsidian Bricks");
                 add(ModBlocks.OBSIDIAN_BRICK_SLAB.get(), "Obsidian Brick Slab");
@@ -436,6 +452,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MOSSY_DEEPSLATE_BRICK_STAIRS.get(), "Mossy Deepslate Brick Stairs");
                 add(ModBlocks.MOSSY_DEEPSLATE_BRICK_SLAB.get(), "Mossy Deepslate Brick Slab");
                 add(ModBlocks.MOSSY_DEEPSLATE_BRICK_WALL.get(), "Mossy Deepslate Brick Wall");
+                add(ModBlocks.PEDESTAL.get(), "Pedestal");
                 //endregion
                 //region Entities
                 add(ModEntities.DEMON_EYE.get(), "Demon Eye");
@@ -477,6 +494,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 enchWithDesc(ModEnchantments.WORLDBIND.get(), "Worldbind", "Allows machines to chunkload the chunk they are in.");
                 enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Fortification", "Gives extra armor points.");
                 enchWithDesc(ModEnchantments.MAGIC_PROTECTION.get(), "Magic Protection", "Provides protection against magic damage types.");
+                enchWithDesc(ModEnchantments.RAPID_HIT.get(), "Rapid Hit", "Gives extra attack speed.");
                 //endregion
                 //region Commands
                 add(ModConstants.COMMAND.withSuffix("charm.cleared"), "%s's charms have been cleared.");
@@ -631,7 +649,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"), "Press [%s] for detailed information.");
                 add(ModConstants.FILTER.withSuffix("empty_item"), "Empty Item Tag");
                 add(ModConstants.FILTER.withSuffix("empty_fluid"), "Empty Fluid Tag");
-                
+                add(ModConstants.TOOLTIP.withSuffix("sanguine_amulet.health"), "Providing %s health.");
+                add(ModConstants.TOOLTIP.withSuffix("sanguine_amulet.stored_souls"), "Stored Souls: %1$s / %2$s");
                 // Entity Filter Predicates
                 add("filter.eternalartifacts.entity_any", "Any Entity");
                 add("filter.eternalartifacts.entity_multi", "%d Filters Active");
@@ -774,6 +793,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.GUI.withSuffix("above"), "Above");
                 add(ModConstants.GUI.withSuffix("above_equal"), "Above Equal");
                 add(ModConstants.GUI.withSuffix("exact"), "Exact");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix("any"), "When on any Charm slot:");
                 
                 //region Spell Tooltips
                 add("tooltip.eternalartifacts.spell.damage", "Damage");
@@ -1099,6 +1119,17 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModItems.COPPER_BOOTS.get(), "Bakır Bot");
                 add(ModItems.TROWEL.get(), "Mala");
                 add(ModItems.EYE_OF_DESTRUCTION.get(), "Yıkım Gözü");
+                add(ModItems.SANGUINE_AMULET.get(), "Kanlı Muska");
+                add(ModItems.FLINT_SWORD.get(), "Çakmaktaşı Kılıç");
+                add(ModItems.FLINT_PICKAXE.get(), "Çakmaktaşı Kazma");
+                add(ModItems.FLINT_AXE.get(), "Çakmaktaşı Balta");
+                add(ModItems.FLINT_SHOVEL.get(), "Çakmaktaşı Kürek");
+                add(ModItems.FLINT_HOE.get(), "Çakmaktaşı Çapa");
+                add(ModItems.BONE_SWORD.get(), "Kemik Kılıç");
+                add(ModItems.BONE_PICKAXE.get(), "Kemik Kazma");
+                add(ModItems.BONE_AXE.get(), "Kemik Balta");
+                add(ModItems.BONE_SHOVEL.get(), "Kemik Kürek");
+                add(ModItems.BONE_HOE.get(), "Kemik Çapa");
                 //endregion
                 //region Türkçe Tılsım açıklamaları
                 tooltipForItem(ModItems.FINAL_CUT.get(), "%%%d canın altına düşüren saldırılar hedefi infaz eder.");
@@ -1119,6 +1150,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 tooltipForItem(ModItems.ODDLY_SHAPED_OPAL.get(), "Sonraki alınan hasarı %%%s azaltır.");
                 tooltipForItem(ModItems.MOONGLASS_PENDANT.get(), "Kullanıcıyı verilen büyü hasarının %%%s kadar iyileştirir.");
                 tooltipForItem(ModItems.EYE_OF_DESTRUCTION.get(), "Kritik hasarını %%%s arttırır.");
+                tooltipForItem(ModItems.SANGUINE_AMULET.get(), "Ruh miktarına göre maksimum %1$s can sağlayabilir. Maksimum ruh miktarı: %2$s");
+                tooltiForTag(ModTags.Items.FLINT_TOOLS, "Hedefi %%1$s şansla %2$s saniyeliğine ateşe verir.");
+                tooltiForTag(ModTags.Items.BONE_TOOLS, "%2$s tüktetildiğinde envanterdeki itemin maksimum hasarının %%%1$s'i kadarını onarır.");
                 //endregion
                 //region Türkçe Block
                 add(ModMachines.ANVILINATOR.getBlockTranslationKey(), "Örsinatör");
@@ -1223,6 +1257,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModMachines.SOLIDIFIER.getBlockTranslationKey(), "Katılaştırıcı");
                 add(ModBlocks.TIGRIS_FLOWER.get(), "Dicle Çiçeği");
                 add(ModBlocks.TEMPERED_GLASS.get(), "Temperli Cam");
+                add(ModBlocks.TEMPERED_GLASS_PANE.get(), "Temperli Cam Paneli");
                 add(ModMachines.COMPRESSOR.getBlockTranslationKey(), "Sıkıştırıcı");
                 add(ModBlocks.DEMON_BLOCK.get(), "Şeytan Bloğu");
                 add(ModBlocks.OBSIDIAN_BRICKS.get(), "Obsidyen Tuğlası");
@@ -1344,6 +1379,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModBlocks.MOSSY_DEEPSLATE_BRICK_STAIRS.get(), "Yosunlu Kayrak Taş Tuğla Merdiven");
                 add(ModBlocks.MOSSY_DEEPSLATE_BRICK_SLAB.get(), "Yosunlu Kayrak Taş Tuğla Basamak");
                 add(ModBlocks.MOSSY_DEEPSLATE_BRICK_WALL.get(), "Yosunlu Kayrak Taş Tuğla Duvar");
+                add(ModBlocks.PEDESTAL.get(), "Kaide");
                 //endregion
                 //region Türkçe Varlık
                 add(ModEntities.DEMON_EYE.get(), "İblis Gözü");
@@ -1392,8 +1428,9 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 enchWithDesc(ModEnchantments.EVERLASTING.get(), "Ebedi", "Eşya yerdeyken kaybolmaz.");
                 enchWithDesc(ModEnchantments.CELERITY.get(), "Sürat", "Makinelerin tik başına operasyon sayısını arttırır.");
                 enchWithDesc(ModEnchantments.WORLDBIND.get(), "Dünyabağı", "Makinelerin içinde bulunduğı yığını yüklemesini sağlar.");
-                enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Tahkim", "Extra zırh puanı verir.");
+                enchWithDesc(ModEnchantments.FORTIFICATION.get(), "Tahkim", "Ekstra zırh puanı verir.");
                 enchWithDesc(ModEnchantments.MAGIC_PROTECTION.get(), "Magic Protection", "Büyü hasar tiplerine karşı koruma sağlar.");
+                enchWithDesc(ModEnchantments.RAPID_HIT.get(), "Seri Vuruş", "Ekstra saldırı hızı verir.");
                 
                 //endregion
                 //region Türkçe Komutler
@@ -1506,6 +1543,7 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.FEET.getLowerCaseName()), "Ayak tılsımında iken:");
                 add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.BACK.getLowerCaseName()), "Sırt tılsımında iken:");
                 add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix(CharmType.CHARM.getLowerCaseName()), "Genel tılsımda iken:");
+                add(ModConstants.CHARM_SLOT_MODIFIER.withSuffix("any"), "Herhangi bir tılsım slotunda iken:");
                 add(ModConstants.OVERLAY.withSuffix("hammering_recipe"), "Düşürür:");
                 add(ModConstants.TOOLTIP.withSuffix("nutrition"), "Besin");
                 add(ModConstants.TOOLTIP.withSuffix("saturation"), "Doygunluk");
@@ -1568,6 +1606,8 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
                 add(ModConstants.TOOLTIP.withSuffix("press_key_for_detailed_information"), "Detaylı bilgi için [%s] tuşuna basın.");
                 add(ModConstants.FILTER.withSuffix("empty_item"), "Boş Eşya Etiketi");
                 add(ModConstants.FILTER.withSuffix("empty_fluid"), "Boş Sıvı Etiketi");
+                add(ModConstants.TOOLTIP.withSuffix("sanguine_amulet.health"), "%s can sağlıyor.");
+                add(ModConstants.TOOLTIP.withSuffix("sanguine_amulet.stored_souls"), "Depolanan ruhlar: %1$s / %2$s");
                 
                 // Entity Filter Predicates
                 add("filter.eternalartifacts.entity_any", "Herhangi Bir Varlık");
@@ -1784,5 +1824,10 @@ public class LanguageProvider extends net.neoforged.neoforge.common.data.Languag
     
     private void tooltipForItem(Item item, String tooltip) {
         add(ModConstants.TOOLTIP.withSuffix(BuiltInRegistries.ITEM.getKey(item).getPath()), tooltip);
+    }
+    private void tooltiForTag(TagKey<Item> tag, String tooltip) {
+        ResourceLocation rl = tag.location();
+        String suffix = rl.getNamespace() + "." + rl.getPath();
+        add(ModConstants.TOOLTIP.withSuffix(suffix), tooltip);
     }
 }

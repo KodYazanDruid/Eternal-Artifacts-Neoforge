@@ -4,6 +4,8 @@
     "#eternalartifacts:tools/cutlasses",
     "#forge:tools/sickles",
     "#forge:tools/wrench",
+    "#eternalartifacts:tools_flint",
+    "#eternalartifacts:tools_bone",
     "eternalartifacts:grafter",
     "eternalartifacts:glasscutter",
     "eternalartifacts:spawner_extractor",

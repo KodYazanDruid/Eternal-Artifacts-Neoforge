@@ -30,10 +30,8 @@ public abstract class InheritorRetexturedBlock extends RetexturedBlock{
     
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        //Block texture = getTexture(level, pos);
         AuxiliaryLightManager lightManager = level.getAuxLightManager(pos);
         return lightManager.getLightAt(pos);
-        //return texture.getLightEmission(texture.defaultBlockState(), level, pos);
     }
     
     @Override

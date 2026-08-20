@@ -2,6 +2,7 @@ package com.sonamorningstar.eternalartifacts.api.charm;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.mojang.datafixers.util.Pair;
 import com.sonamorningstar.eternalartifacts.Config;
 import com.sonamorningstar.eternalartifacts.api.morph.MobModelRenderer;
 import com.sonamorningstar.eternalartifacts.api.morph.PlayerMorphUtil;
@@ -44,17 +45,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 @Getter
 public class CharmStorage extends ItemStackHandler {
-    private final List<BiConsumer<LivingEntity, Integer>> listeners = new ArrayList<>();
+    private final Map<String, BiConsumer<LivingEntity, Integer>> listeners = new HashMap<>();
     private final LivingEntity owner;
+    public static final String ATTR_KEY = "CharmAttributeModifiers";
     public static final String WILDCARD_NBT = "CharmWildcard";
     public static final String WILDCARD_BLACKLISTED = "WildcardBlacklisted";
     // 12. slot is wildcard slot. Can hold any charm.
     public static final Map<Integer, CharmType> slotTypes = new HashMap<>(12);
     public static final Set<CharmAttributes> itemAttributes = new HashSet<>();
-    public static final Multimap<Item, Multimap<Attribute, AttributeModifier>> nbtAttributes = HashMultimap.create();
+    public static final List<Function<DynamicAttributeContext, Pair<Attribute, AttributeModifier>>> dynamicAttributeBuilders = new ArrayList<>();
+    public final Multimap<Integer, Multimap<Attribute, AttributeModifier>> dynamicAttributes = HashMultimap.create();
+    public final Multimap<Item, Multimap<Attribute, AttributeModifier>> nbtAttributes = HashMultimap.create();
 
     public CharmStorage(IAttachmentHolder holder) {
         super(13);
@@ -107,15 +112,19 @@ public class CharmStorage extends ItemStackHandler {
     public void onContentsChanged(int slot) {
         if (owner != null) {
             invalidateMorph();
-            listeners.forEach(listener -> listener.accept(owner, slot));
+            listeners.forEach((key, value) -> value.accept(owner, slot));
             if (!owner.level().isClientSide){
                 syncSelfAndTracking(owner);
             }
         }
     }
-
-    public void addListener(BiConsumer<LivingEntity, Integer> listener) {
-        listeners.add(listener);
+    
+    public void addListener(String name, BiConsumer<LivingEntity, Integer> listener) {
+        listeners.put(name, listener);
+    }
+    
+    public void removeListener(String name) {
+        listeners.remove(name);
     }
     
     public void invalidateMorph() {
@@ -129,7 +138,7 @@ public class CharmStorage extends ItemStackHandler {
             }
         }
     }
-
+    
     //region Sync
     public void syncSelf() {
         if (owner instanceof ServerPlayer sp && Config.CHARMS_ENABLED.getAsBoolean()) {
@@ -179,7 +188,6 @@ public class CharmStorage extends ItemStackHandler {
         if (!Config.CHARMS_ENABLED.getAsBoolean()) return ItemStack.EMPTY;
         return super.getStackInSlot(slot);
     }
-    
     public boolean contains(Item item) {
         if (!Config.CHARMS_ENABLED.getAsBoolean()) return false;
         for (int i = 0; i < getSlots(); i++) {
@@ -203,12 +211,12 @@ public class CharmStorage extends ItemStackHandler {
         }
         return false;
     }
-
     public void updateCharmAttributes() {
         for (int i = 0; i < getSlots(); i++) calculateAttributeForSlot(i);
     }
     private void calculateAttributeForSlot(int slot) {
         ItemStack stack = getStackInSlot(slot);
+        rebuildDynamicAttributes(new DynamicAttributeContext(owner, stack, slot));
         checkNBTAttributes(stack, slot);
         itemAttributes.forEach(charmAttr -> charmAttr.getModifiers().forEach((attribute, modifier) -> {
             AttributeInstance instance = owner.getAttribute(attribute);
@@ -237,6 +245,45 @@ public class CharmStorage extends ItemStackHandler {
         }));
     }
     
+    //region Dynamic Attribute Handler
+    public record DynamicAttributeContext(LivingEntity owner, ItemStack stack, int slot) {}
+    
+    private void rebuildDynamicAttributes(DynamicAttributeContext ctx) {
+        int slot = ctx.slot();
+        List<AttributeModifier> toRemove = new ArrayList<>();
+        dynamicAttributes.get(slot).forEach(innerMap -> {
+            innerMap.forEach(((attribute, modifier) -> {
+                AttributeInstance instance = ctx.owner.getAttribute(attribute);
+                if (instance != null && instance.hasModifier(modifier)) {
+                    instance.removeModifier(modifier.getId());
+                    toRemove.add(modifier);
+                }
+            }));
+        });
+        dynamicAttributes.get(slot).forEach(innerMap -> innerMap.entries().removeIf(entry -> toRemove.contains(entry.getValue())));
+        dynamicAttributeBuilders.forEach(builder -> {
+            Pair<Attribute, AttributeModifier> attrPair = builder.apply(new DynamicAttributeContext(ctx.owner, ctx.stack, ctx.slot));
+            if (attrPair != null) {
+                Attribute attribute = attrPair.getFirst();
+                AttributeModifier modifier = attrPair.getSecond();
+                AttributeInstance instance = ctx.owner().getAttribute(attribute);
+                if (instance != null && !instance.hasModifier(modifier)) {
+                    instance.addTransientModifier(modifier);
+                }
+                Multimap<Attribute, AttributeModifier> innerMap;
+                if (dynamicAttributes.containsKey(slot)) {
+                    Multimap<Attribute, AttributeModifier> mergedMap = HashMultimap.create();
+                    dynamicAttributes.get(slot).forEach(mergedMap::putAll);
+                    innerMap = mergedMap;
+                } else {
+                    innerMap = HashMultimap.create();
+                }
+                innerMap.put(attribute, modifier);
+                dynamicAttributes.put(slot, innerMap);
+            }
+        });
+    }
+    //endregion
     //region NBT Attributes
     private void checkNBTAttributes(ItemStack stack, int slot) {
         nbtAttributes.forEach((item, multimap) -> multimap.forEach((attribute, modifier) -> {
@@ -267,8 +314,8 @@ public class CharmStorage extends ItemStackHandler {
     }
     public static Multimap<Attribute, AttributeModifier> getAttributesFromNBT(ItemStack stack, int slot) {
         Multimap<Attribute, AttributeModifier> multimap = HashMultimap.create();
-        if (stack.hasTag() && stack.getTag().contains(CharmAttributes.ATTR_KEY, 9)) {
-            ListTag listtag = stack.getTag().getList(CharmAttributes.ATTR_KEY, 10);
+        if (stack.hasTag() && stack.getTag().contains(ATTR_KEY, 9)) {
+            ListTag listtag = stack.getTag().getList(ATTR_KEY, 10);
             for(int i = 0; i < listtag.size(); ++i) {
                 CompoundTag compoundtag = listtag.getCompound(i);
                 if (slot == 12 || !compoundtag.contains("Slot", 8) ||
@@ -345,7 +392,9 @@ public class CharmStorage extends ItemStackHandler {
     
     public void setWildcardNbt(boolean value) {
         owner.getPersistentData().putBoolean(WILDCARD_NBT, value);
-        updateCharmAttributes();
+        if (!owner.level().isClientSide) {
+            syncSelfAndTracking(owner);
+        }
     }
 
     public static boolean canHaveWildcard(@NotNull LivingEntity living) {

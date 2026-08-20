@@ -8,6 +8,7 @@
     "AttachmentHolderMixin",
     "AxeItemMixin",
     "BeaconEntityMixin",
+    "BlockItemMixin",
     "BlockMixin",
     "BrewingStandBlockEntityMixin",
     "CrossbowItemMixin",

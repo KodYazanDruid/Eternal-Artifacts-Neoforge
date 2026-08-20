@@ -53,18 +53,14 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
     private static final VoxelShape TOP = BlockHelper.generateByArea(16, 2, 16, 0, 14, 0);
     private static final VoxelShape BOTTOM = BlockHelper.generateByArea(14, 14, 14, 1, 0, 1);
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
-    //public static final IntegerProperty LIGHT_LEVEL = BlockStateProperties.LEVEL;
-    //public static final ToIntFunction<BlockState> LIGHT_EMISSION = state -> state.getValue(LIGHT_LEVEL);
 
     public GardeningPotBlock() {
         super(Properties.of()
                 .destroyTime(1.5F)
                 .mapColor(MapColor.TERRACOTTA_ORANGE)
                 .noOcclusion().randomTicks());
-                //.lightLevel(LIGHT_EMISSION));
         registerDefaultState(defaultBlockState()
                 .setValue(WATERLOGGED, false));
-                //.setValue(LIGHT_LEVEL, 0));
     }
 
     @Override
@@ -137,19 +133,13 @@ public class GardeningPotBlock extends InheritorRetexturedBlock implements Simpl
         Level level = ctx.getLevel();
         BlockPos pos = ctx.getClickedPos();
         FluidState fluidstate = level.getFluidState(pos);
-        int light = 0;
-        ItemStack stack = ctx.getItemInHand();
-        Block texture = RetexturedHelper.getBlock(RetexturedHelper.getTextureName(stack.getTag()));
-        //Block texture = getTexture(level, pos);
-        if(texture != Blocks.AIR) light = texture.getLightEmission(texture.defaultBlockState(), ctx.getLevel(), ctx.getClickedPos());
         return defaultBlockState()
-                .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
-                //.setValue(LIGHT_LEVEL, light);
+            .setValue(WATERLOGGED, fluidstate.getType() == Fluids.WATER);
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(WATERLOGGED/*, LIGHT_LEVEL*/);
+        pBuilder.add(WATERLOGGED);
     }
 
     @Override

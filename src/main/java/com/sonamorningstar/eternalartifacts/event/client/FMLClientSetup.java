@@ -90,6 +90,7 @@ public class FMLClientSetup {
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWSTONE_WALL_TORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.GLOWTORCH.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(ModBlocks.WALL_GLOWTORCH.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(ModBlocks.TEMPERED_GLASS_PANE.get(), RenderType.cutoutMipped());
         
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.DROWNED, new ResourceLocation("textures/entity/zombie/drowned.png"));
         SkullBlockRenderer.SKIN_BY_TYPE.put(ModSkullType.HUSK, new ResourceLocation("textures/entity/zombie/husk.png"));

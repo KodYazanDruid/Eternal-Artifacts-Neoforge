@@ -259,6 +259,7 @@ public abstract class Machine<T extends AbstractMachineMenu> extends ModBlockEnt
             fakePlayer.setYRot(state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot());
         }
         fakePlayer.getInventory().selected = 0;
+        fakePlayer.detectEquipmentUpdates();
         isFakePlayerSetUp = true;
     }
     

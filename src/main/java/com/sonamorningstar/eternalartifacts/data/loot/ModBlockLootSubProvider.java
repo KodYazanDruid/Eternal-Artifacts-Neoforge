@@ -121,6 +121,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelf(ModBlocks.STEEL_BLOCK.get());
         dropSelf(ModBlocks.TIGRIS_FLOWER.get());
         dropSelf(ModBlocks.TEMPERED_GLASS.get());
+        dropSelf(ModBlocks.TEMPERED_GLASS_PANE.get());
         dropPottedContents(ModBlocks.POTTED_TIGRIS.get());
         dropSelf(ModBlocks.DEMON_BLOCK.get());
         add(ModBlocks.ENERGY_DOCK.get(), createSinglePropConditionTable(ModBlocks.ENERGY_DOCK.get(), EnergyDockBlock.DOCK_PART, DockPart.CENTER));
@@ -211,6 +212,7 @@ public class ModBlockLootSubProvider extends net.minecraft.data.loot.BlockLootSu
         dropSelfWithFunction(ModBlocks.DEEP_FLUID_STORAGE_UNIT, KeepFluidsFunction.builder());
         add(ModBlocks.SOLAR_PANEL.get(), this::createSlabItemTable);
         add(ModBlocks.FLUID_HOPPER.get(), this::createNameableBlockEntityTable);
+        dropSelfWithFunction(ModBlocks.PEDESTAL, RetexturedLootFunction.builder());
 
         LootItemCondition.Builder ancientCropCondition = LootItemBlockStatePropertyCondition
                 .hasBlockStateProperties(ModBlocks.ANCIENT_CROP.get())
